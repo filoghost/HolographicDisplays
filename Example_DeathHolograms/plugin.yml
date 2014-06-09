@@ -1,0 +1,5 @@
+name: DeathHolograms
+main: com.gmail.filoghost.test.DeathHolograms
+version: 1.0
+
+softdepend: [HolographicDisplays]
