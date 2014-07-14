@@ -1,35 +1,37 @@
-package com.gmail.filoghost.holograms.nms.v1_7_R2;
+package com.gmail.filoghost.holograms.nms.v1_7_R4;
 
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_7_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
-import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
-import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
 import com.gmail.filoghost.holograms.object.CraftHologram;
+import net.minecraft.server.v1_7_R4.EntityHorse;
+import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.World;
 
-import net.minecraft.server.v1_7_R2.EntityItem;
-import net.minecraft.server.v1_7_R2.ItemStack;
-import net.minecraft.server.v1_7_R2.NBTTagCompound;
-import net.minecraft.server.v1_7_R2.World;
-import net.minecraft.server.v1_7_R2.Blocks;
+public class EntityHologramHorse extends EntityHorse implements HologramHorse {
 
-public class EntityCustomItem extends EntityItem implements CustomItem, BasicEntityNMS {
-	
-	private static final ItemStack STONE = new ItemStack(Blocks.STONE, 0);
-	
 	private boolean lockTick;
 	private CraftHologram parent;
 	
-	public EntityCustomItem(World world) {
+	public EntityHologramHorse(World world) {
 		super(world);
-		super.pickupDelay = Integer.MAX_VALUE;
+		super.ageLocked = true;
+		super.persistent = true;
+		super.boundingBox.a = 0.0;
+		super.boundingBox.b = 0.0;
+		super.boundingBox.c = 0.0;
+		super.boundingBox.d = 0.0;
+		super.boundingBox.e = 0.0;
+		super.boundingBox.f = 0.0;
+		a(0.0F, 0.0F);
+		setAge(-1700000); // This is a magic value. No one will see the real horse.
 	}
 	
 	@Override
 	public void h() {
 		// Checks every 20 ticks.
 		if (ticksLived % 20 == 0) {
-			// The item dies without a vehicle.
+			// The horse dies without a vehicle.
 			if (this.vehicle == null) {
 				die();
 			}
@@ -71,12 +73,22 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		 */
 	    return true;
 	}
+
+	@Override
+	public void setCustomName(String customName) {
+		// Locks the custom name.
+	}
 	
 	@Override
-	public ItemStack getItemStack() {
-		return STONE;
+	public void setCustomNameVisible(boolean visible) {
+		// Locks the custom name.
 	}
-
+	
+	@Override
+	public void makeSound(String sound, float volume, float pitch) {
+	    // Remove sounds.
+	}
+	
 	@Override
 	public void setLockTick(boolean lock) {
 		lockTick = lock;
@@ -87,11 +99,20 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		setLockTick(false);
 		super.die();
 	}
+	
+	@Override
+	public void forceSetCustomName(String name) {
+		if (name != null && name.length() > 300) {
+			name = name.substring(0, 300);
+		}
+		super.setCustomName(name);
+		super.setCustomNameVisible(name != null);
+	}
 
 	@Override
 	public CraftEntity getBukkitEntity() {
 		if (super.bukkitEntity == null) {
-			this.bukkitEntity = new CraftCustomItem(this.world.getServer(), this);
+			this.bukkitEntity = new CraftHologramHorse(this.world.getServer(), this);
 	    }
 		return this.bukkitEntity;
 	}
@@ -99,6 +120,11 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	@Override
 	public boolean isDeadNMS() {
 		return this.dead;
+	}
+	
+	@Override
+	public String getCustomNameNMS() {
+		return super.getCustomName();
 	}
 	
 	@Override
@@ -110,14 +136,7 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	public void setLocationNMS(double x, double y, double z) {
 		super.setPosition(x, y, z);
 	}
-
-	@Override
-	public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
-		ItemStack newItem = CraftItemStack.asNMSCopy(stack);
-		newItem.count = 0;
-		setItemStack(newItem);
-	}
-
+	
 	@Override
 	public CraftHologram getParentHologram() {
 		return parent;

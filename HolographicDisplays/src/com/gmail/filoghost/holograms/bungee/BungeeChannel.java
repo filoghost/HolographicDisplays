@@ -57,8 +57,7 @@ public class BungeeChannel implements PluginMessageListener {
 			 }
 		 
 		} catch (EOFException e) {
-			//TODO
-			System.out.println("Not online!");
+			// Do nothing.
 		} catch (IOException e) {
 			// This should never happen.
 			e.printStackTrace();

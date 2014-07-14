@@ -6,11 +6,16 @@ import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftItemStack;
 import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
 import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
 import com.gmail.filoghost.holograms.object.CraftHologram;
+
+import net.minecraft.server.v1_6_R3.Block;
 import net.minecraft.server.v1_6_R3.EntityItem;
 import net.minecraft.server.v1_6_R3.NBTTagCompound;
 import net.minecraft.server.v1_6_R3.World;
+import net.minecraft.server.v1_6_R3.ItemStack;
 
 public class EntityCustomItem extends EntityItem implements CustomItem, BasicEntityNMS {
+	
+	private static final ItemStack STONE = new ItemStack(Block.STONE, 0);
 	
 	private boolean lockTick;
 	private CraftHologram parent;
@@ -66,6 +71,11 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		 */
 	    return true;
 	}
+	
+	@Override
+	public ItemStack getItemStack() {
+		return STONE;
+	}
 
 	@Override
 	public void setLockTick(boolean lock) {
@@ -103,7 +113,9 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 
 	@Override
 	public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
-		setItemStack( CraftItemStack.asNMSCopy(stack) );
+		ItemStack newItem = CraftItemStack.asNMSCopy(stack);
+		newItem.count = 0;
+		setItemStack(newItem);
 	}
 	
 	@Override

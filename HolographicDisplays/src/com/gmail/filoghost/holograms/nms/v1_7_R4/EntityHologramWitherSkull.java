@@ -1,44 +1,37 @@
-package com.gmail.filoghost.holograms.nms.v1_7_R2;
+package com.gmail.filoghost.holograms.nms.v1_7_R4;
 
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_7_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
-import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
 import com.gmail.filoghost.holograms.object.CraftHologram;
+import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.EntityWitherSkull;
+import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.World;
 
-import net.minecraft.server.v1_7_R2.EntityItem;
-import net.minecraft.server.v1_7_R2.ItemStack;
-import net.minecraft.server.v1_7_R2.NBTTagCompound;
-import net.minecraft.server.v1_7_R2.World;
-import net.minecraft.server.v1_7_R2.Blocks;
+public class EntityHologramWitherSkull extends EntityWitherSkull implements HologramWitherSkull {
 
-public class EntityCustomItem extends EntityItem implements CustomItem, BasicEntityNMS {
-	
-	private static final ItemStack STONE = new ItemStack(Blocks.STONE, 0);
-	
 	private boolean lockTick;
 	private CraftHologram parent;
 	
-	public EntityCustomItem(World world) {
+	public EntityHologramWitherSkull(World world) {
 		super(world);
-		super.pickupDelay = Integer.MAX_VALUE;
+		super.motX = 0.0;
+		super.motY = 0.0;
+		super.motZ = 0.0;
+		super.dirX = 0.0;
+		super.dirY = 0.0;
+		super.dirZ = 0.0;
+		super.boundingBox.a = 0.0;
+		super.boundingBox.b = 0.0;
+		super.boundingBox.c = 0.0;
+		super.boundingBox.d = 0.0;
+		super.boundingBox.e = 0.0;
+		super.boundingBox.f = 0.0;
+		a(0.0F, 0.0F);
 	}
 	
-	@Override
-	public void h() {
-		// Checks every 20 ticks.
-		if (ticksLived % 20 == 0) {
-			// The item dies without a vehicle.
-			if (this.vehicle == null) {
-				die();
-			}
-		}
-		
-		if (!lockTick) {
-			super.h();
-		}
-	}
 	
 	@Override
 	public void b(NBTTagCompound nbttagcompound) {
@@ -62,6 +55,7 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		// Do not save NBT.
 	}
 	
+	
 	@Override
 	public boolean isInvulnerable() {
 		/* 
@@ -71,12 +65,23 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		 */
 	    return true;
 	}
+
+	@Override
+	public void h() {
+		if (!lockTick) {
+			super.h();
+		}
+	}
 	
 	@Override
-	public ItemStack getItemStack() {
-		return STONE;
+	public void makeSound(String sound, float f1, float f2) {
+	    // Remove sounds.
 	}
-
+	
+	public void callSuperTick() {
+		super.h();
+	}
+	
 	@Override
 	public void setLockTick(boolean lock) {
 		lockTick = lock;
@@ -87,18 +92,13 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		setLockTick(false);
 		super.die();
 	}
-
+	
 	@Override
 	public CraftEntity getBukkitEntity() {
 		if (super.bukkitEntity == null) {
-			this.bukkitEntity = new CraftCustomItem(this.world.getServer(), this);
+			this.bukkitEntity = new CraftHologramWitherSkull(this.world.getServer(), this);
 	    }
 		return this.bukkitEntity;
-	}
-
-	@Override
-	public boolean isDeadNMS() {
-		return this.dead;
 	}
 	
 	@Override
@@ -112,12 +112,22 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	}
 
 	@Override
-	public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
-		ItemStack newItem = CraftItemStack.asNMSCopy(stack);
-		newItem.count = 0;
-		setItemStack(newItem);
+	public boolean isDeadNMS() {
+		return this.dead;
 	}
-
+	
+	@Override
+	public void setPassengerNMS(BasicEntityNMS passenger) {
+		if (passenger instanceof Entity) {
+			((Entity) passenger).setPassengerOf(this);
+		}
+	}
+	
+	@Override
+	public void setPassengerNMS(org.bukkit.entity.Entity bukkitEntity) {
+		((CraftEntity) bukkitEntity).getHandle().setPassengerOf(this);
+	}
+	
 	@Override
 	public CraftHologram getParentHologram() {
 		return parent;

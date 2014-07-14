@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -38,11 +39,12 @@ public class NearCommand extends HologramSubCommand {
 		int radius = CommandValidator.getInteger(args[0]);
 		CommandValidator.isTrue(radius > 0, "Radius must be at least 1.");
 		
+		World world = player.getWorld();
 		int radiusSquared = radius * radius;
 		List<CraftHologram> nearHolograms = new ArrayList<CraftHologram>();
 		
 		for (CraftHologram hologram : HologramManager.getHolograms()) {
-			if (hologram.getLocation().distanceSquared(player.getLocation()) <= radiusSquared) {
+			if (hologram.getLocation().getWorld().equals(world) && hologram.getLocation().distanceSquared(player.getLocation()) <= radiusSquared) {
 				nearHolograms.add(hologram);
 			}
 		}

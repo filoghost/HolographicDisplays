@@ -1,17 +1,21 @@
 package com.gmail.filoghost.holograms.nms.v1_7_R3;
 
+import org.bukkit.craftbukkit.v1_7_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_7_R3.util.CraftMagicNumbers;
 
 import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
 import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
 import com.gmail.filoghost.holograms.object.CraftHologram;
+
+import net.minecraft.server.v1_7_R3.Blocks;
 import net.minecraft.server.v1_7_R3.EntityItem;
 import net.minecraft.server.v1_7_R3.ItemStack;
 import net.minecraft.server.v1_7_R3.NBTTagCompound;
 import net.minecraft.server.v1_7_R3.World;
 
 public class EntityCustomItem extends EntityItem implements CustomItem, BasicEntityNMS {
+	
+	private static final ItemStack STONE = new ItemStack(Blocks.STONE, 0);
 	
 	private boolean lockTick;
 	private CraftHologram parent;
@@ -74,6 +78,11 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	}
 	
 	@Override
+	public ItemStack getItemStack() {
+		return STONE;
+	}
+	
+	@Override
 	public void die() {
 		setLockTick(false);
 		super.die();
@@ -104,9 +113,10 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 
 	@Override
 	public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
-		setItemStack( new ItemStack(CraftMagicNumbers.getItem(stack.getType()), 1, stack.getDurability()) );
+		ItemStack newItem = CraftItemStack.asNMSCopy(stack);
+		newItem.count = 0;
+		setItemStack(newItem);
 	}
-
 	
 	@Override
 	public CraftHologram getParentHologram() {

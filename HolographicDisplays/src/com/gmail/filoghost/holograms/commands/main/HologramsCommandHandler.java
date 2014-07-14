@@ -57,9 +57,9 @@ public class HologramsCommandHandler implements CommandExecutor {
 		if (args.length == 0) {
 			sender.sendMessage("");
 			sender.sendMessage(Format.formatTitle("Holographic Displays"));
-			sender.sendMessage(Format.HIGHLIGHT + "Version: §7" + HolographicDisplays.getInstance().getDescription().getVersion());
-			sender.sendMessage(Format.HIGHLIGHT + "Developer: §7filoghost");
-			sender.sendMessage(Format.HIGHLIGHT + "Commands: §7/hd help");
+			sender.sendMessage(Format.HIGHLIGHT + "Version: �7" + HolographicDisplays.getInstance().getDescription().getVersion());
+			sender.sendMessage(Format.HIGHLIGHT + "Developer: �7filoghost");
+			sender.sendMessage(Format.HIGHLIGHT + "Commands: �7/hd help");
 			return true;
 		}		
 		
@@ -67,7 +67,7 @@ public class HologramsCommandHandler implements CommandExecutor {
 			if (subCommand.isValidTrigger(args[0])) {
 				
 				if (!subCommand.hasPermission(sender)) {
-					sender.sendMessage("§cYou don't have permission.");
+					sender.sendMessage(RED + "You don't have permission.");
 					return true;
 				}
 				
@@ -78,14 +78,14 @@ public class HologramsCommandHandler implements CommandExecutor {
 						sender.sendMessage(RED + e.getMessage());
 					}
 				} else {
-					sender.sendMessage("§cUsage: /" + label + " " + subCommand.getName() + " " + subCommand.getPossibleArguments());
+					sender.sendMessage(RED + "Usage: /" + label + " " + subCommand.getName() + " " + subCommand.getPossibleArguments());
 				}
 				
 				return true;
 			}
 		}
 		
-		sender.sendMessage("§cUnknown sub-command. Type \"/hd help\" for a list of commands.");
+		sender.sendMessage(RED + "Unknown sub-command. Type \"/hd help\" for a list of commands.");
 		return true;
 	}
 }

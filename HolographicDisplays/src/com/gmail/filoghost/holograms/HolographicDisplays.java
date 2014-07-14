@@ -122,7 +122,6 @@ public class HolographicDisplays extends JavaPlugin {
 				version = null;
 			}
 		}
-
 		
 		// It's simple, we don't need reflection.
 		if ("v1_6_R3".equals(version)) {
@@ -133,6 +132,8 @@ public class HolographicDisplays extends JavaPlugin {
 			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R2.NmsManagerImpl();
 		} else if ("v1_7_R3".equals(version)) {
 			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R3.NmsManagerImpl();
+		} else if ("v1_7_R4".equals(version)) {
+			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R4.NmsManagerImpl();
 		} else {
 			printWarnAndDisable(
 				"******************************************************",
@@ -146,18 +147,14 @@ public class HolographicDisplays extends JavaPlugin {
 		}
 		
 		try {
-			if (VersionUtils.isMCPC()) {
-				getLogger().info("Trying to enable MCPC+ support...");
-			} else if (VersionUtils.isCauldron()) {
-				getLogger().info("Trying to enable Cauldron support...");
+			if (VersionUtils.isMCPC() || VersionUtils.isCauldron()) {
+				getLogger().info("Trying to enable Cauldron/MCPC+ support...");
 			}
 			
 			nmsManager.registerCustomEntities();
 			
-			if (VersionUtils.isMCPC()) {
-				getLogger().info("Successfully added support for MCPC+!");
-			} else if (VersionUtils.isCauldron()) {
-				getLogger().info("Successfully added support for Cauldron!");
+			if (VersionUtils.isMCPC() || VersionUtils.isCauldron()) {
+				getLogger().info("Successfully added support for Cauldron/MCPC+!");
 			}
 			
 		} catch (Exception e) {
@@ -284,7 +281,7 @@ public class HolographicDisplays extends JavaPlugin {
 		}
 		
 		
-		String tempColor = ConfigNode.TRANSPARENCY_COLOR.getString(getConfig()).replace("&", "ยง");
+		String tempColor = ConfigNode.TRANSPARENCY_COLOR.getString(getConfig()).replace("&", "ง");
 		boolean foundColor = false;
 		for (ChatColor chatColor : ChatColor.values()) {
 			if (chatColor.toString().equals(tempColor)) {

@@ -1,0 +1,40 @@
+package com.gmail.filoghost.holograms.nms.v1_7_R4;
+
+import org.bukkit.EntityEffect;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftItem;
+import org.bukkit.entity.Entity;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
+
+public class CraftCustomItem extends CraftItem {
+
+	public CraftCustomItem(CraftServer server, EntityCustomItem entity) {
+		super(server, entity);
+	}
+
+	// Disallow all the bukkit methods.
+	
+	@Override
+	public void remove() {
+		// Cannot be removed, this is the most important to override.
+	}
+
+	// Methods from Entity
+	@Override public void setVelocity(Vector vel) { }
+	@Override public boolean teleport(Location loc) { return false; }
+	@Override public boolean teleport(Entity entity) { return false; }
+	@Override public boolean teleport(Location loc, TeleportCause cause) { return false; }
+	@Override public boolean teleport(Entity entity, TeleportCause cause) { return false; }
+	@Override public void setFireTicks(int ticks) { }
+	@Override public boolean setPassenger(Entity entity) { return false; }
+	@Override public boolean eject() { return false; }
+	@Override public boolean leaveVehicle() { return false; }
+	@Override public void playEffect(EntityEffect effect) { }
+	
+	// Methods from Item
+	@Override public void setItemStack(ItemStack stack) { }
+	@Override public void setPickupDelay(int delay) { }
+}

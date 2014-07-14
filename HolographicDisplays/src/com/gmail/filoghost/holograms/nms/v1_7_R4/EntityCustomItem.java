@@ -1,17 +1,17 @@
-package com.gmail.filoghost.holograms.nms.v1_7_R2;
+package com.gmail.filoghost.holograms.nms.v1_7_R4;
 
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_7_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
 import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
 import com.gmail.filoghost.holograms.object.CraftHologram;
 
-import net.minecraft.server.v1_7_R2.EntityItem;
-import net.minecraft.server.v1_7_R2.ItemStack;
-import net.minecraft.server.v1_7_R2.NBTTagCompound;
-import net.minecraft.server.v1_7_R2.World;
-import net.minecraft.server.v1_7_R2.Blocks;
+import net.minecraft.server.v1_7_R4.Blocks;
+import net.minecraft.server.v1_7_R4.EntityItem;
+import net.minecraft.server.v1_7_R4.ItemStack;
+import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_7_R4.World;
 
 public class EntityCustomItem extends EntityItem implements CustomItem, BasicEntityNMS {
 	
@@ -71,15 +71,15 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		 */
 	    return true;
 	}
-	
-	@Override
-	public ItemStack getItemStack() {
-		return STONE;
-	}
 
 	@Override
 	public void setLockTick(boolean lock) {
 		lockTick = lock;
+	}
+	
+	@Override
+	public ItemStack getItemStack() {
+		return STONE;
 	}
 	
 	@Override
@@ -117,7 +117,7 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		newItem.count = 0;
 		setItemStack(newItem);
 	}
-
+	
 	@Override
 	public CraftHologram getParentHologram() {
 		return parent;
