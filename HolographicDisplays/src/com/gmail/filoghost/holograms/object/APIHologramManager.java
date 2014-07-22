@@ -59,7 +59,7 @@ public class APIHologramManager {
 			return new Hologram[0];
 		} else {
 			return pluginHologramList.toArray(new Hologram[pluginHologramList.size()]);
-			// It's a copy of the original list. Holograms should be removed with hologram.delete()
+			// It's a copy of the original list. Holograms should be removed with delete()
 		}
 	}
 }

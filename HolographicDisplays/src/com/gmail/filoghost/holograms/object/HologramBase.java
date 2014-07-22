@@ -90,12 +90,6 @@ public abstract class HologramBase {
 		return deleted;
 	}
 	
-	public abstract void onDeleteEvent();
-	
-	public abstract boolean update();
-	
-	public abstract void hide();
-	
 	public final void setLocation(Location source) {
 		Validator.notNull(source, "location cannot be null");
 		Validator.notNull(source.getWorld(), "location's world cannot be null");
@@ -108,4 +102,10 @@ public abstract class HologramBase {
 		chunkZ = source.getChunk().getZ();
 	}
 
+	public abstract void onDeleteEvent();
+	
+	public abstract boolean update();
+	
+	public abstract void hide();
+	
 }

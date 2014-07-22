@@ -3,7 +3,8 @@ package com.gmail.filoghost.holograms.nms.v1_7_R1;
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
 
 import com.gmail.filoghost.holograms.nms.interfaces.TouchSlime;
-import com.gmail.filoghost.holograms.object.CraftHologram;
+import com.gmail.filoghost.holograms.object.HologramBase;
+
 import net.minecraft.server.v1_7_R1.EntitySlime;
 import net.minecraft.server.v1_7_R1.NBTTagCompound;
 import net.minecraft.server.v1_7_R1.World;
@@ -11,7 +12,7 @@ import net.minecraft.server.v1_7_R1.World;
 public class EntityTouchSlime extends EntitySlime implements TouchSlime {
 
 	private boolean lockTick;
-	private CraftHologram parent;
+	private HologramBase parent;
 	
 	public EntityTouchSlime(World world) {
 		super(world);
@@ -124,14 +125,12 @@ public class EntityTouchSlime extends EntitySlime implements TouchSlime {
 	}
 	
 	@Override
-	public CraftHologram getParentHologram() {
+	public HologramBase getParentHologram() {
 		return parent;
 	}
 
 	@Override
-	public void setParentHologram(CraftHologram hologram) {
-		this.parent = hologram;
+	public void setParentHologram(HologramBase base) {
+		this.parent = base;
 	}
-
-
 }

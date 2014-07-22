@@ -169,7 +169,7 @@ public class HolographicDisplays extends JavaPlugin {
 			return;
 		}
 		
-		// ProtocolLib check
+		// ProtocolLib check.
 		try {
 			if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
 				ProtocolLibHook.initialize();
@@ -179,7 +179,7 @@ public class HolographicDisplays extends JavaPlugin {
 			logger.warning("Failed to load ProtocolLib support. Is it updated?");
 		}
 		
-		// Load animation files
+		// Load animation files.
 		try {
 			AnimationManager.loadAnimations();
 		} catch (Exception ex) {
@@ -187,7 +187,7 @@ public class HolographicDisplays extends JavaPlugin {
 			logger.warning("Failed to load animation files!");
 		}
 		
-		// Instantiate a PlaceholderManager
+		// Instantiate a PlaceholderManager.
 		placeholderManager = new PlaceholderManager();
 		
 		// Initalize other static classes.

@@ -1,24 +1,28 @@
 package com.gmail.filoghost.holograms.nms.v1_6_R3;
 
-import org.bukkit.craftbukkit.v1_6_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftItemStack;
-
-import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
-import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
-import com.gmail.filoghost.holograms.object.CraftHologram;
-
 import net.minecraft.server.v1_6_R3.Block;
 import net.minecraft.server.v1_6_R3.EntityItem;
+import net.minecraft.server.v1_6_R3.ItemStack;
 import net.minecraft.server.v1_6_R3.NBTTagCompound;
 import net.minecraft.server.v1_6_R3.World;
-import net.minecraft.server.v1_6_R3.ItemStack;
+import net.minecraft.server.v1_6_R3.EntityHuman;
+import net.minecraft.server.v1_6_R3.EntityPlayer;
+
+import org.bukkit.craftbukkit.v1_6_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
+
+import com.gmail.filoghost.holograms.api.FloatingItem;
+import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
+import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
+import com.gmail.filoghost.holograms.object.HologramBase;
 
 public class EntityCustomItem extends EntityItem implements CustomItem, BasicEntityNMS {
 	
 	private static final ItemStack STONE = new ItemStack(Block.STONE, 0);
 	
 	private boolean lockTick;
-	private CraftHologram parent;
+	private HologramBase parent;
 	
 	public EntityCustomItem(World world) {
 		super(world);
@@ -37,6 +41,21 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		
 		if (!lockTick) {
 			super.l_();
+		}
+	}
+	
+	// Method called when a player is near.
+	@Override
+	public void b_(EntityHuman human) {
+		
+		if (parent instanceof FloatingItem && human instanceof EntityPlayer) {
+
+			FloatingItem floatingItemParent = (FloatingItem) parent;
+			if (floatingItemParent.hasPickupHandler()) {
+				floatingItemParent.getPickupHandler().onPickup(floatingItemParent, (Player) human.getBukkitEntity());
+			}
+			
+			// It is never added to the inventory.
 		}
 	}
 	
@@ -119,13 +138,21 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	}
 	
 	@Override
-	public CraftHologram getParentHologram() {
+	public HologramBase getParentHologram() {
 		return parent;
 	}
 
 	@Override
-	public void setParentHologram(CraftHologram hologram) {
-		this.parent = hologram;
+	public void setParentHologram(HologramBase base) {
+		this.parent = base;
 	}
-
+	
+	@Override
+	public void allowPickup(boolean pickup) {
+		if (pickup) {
+			super.pickupDelay = 0;
+		} else {
+			super.pickupDelay = Integer.MAX_VALUE;
+		}
+	}
 }

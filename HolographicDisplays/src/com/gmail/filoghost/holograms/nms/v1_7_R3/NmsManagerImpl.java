@@ -1,5 +1,9 @@
 package com.gmail.filoghost.holograms.nms.v1_7_R3;
 
+import net.minecraft.server.v1_7_R3.Entity;
+import net.minecraft.server.v1_7_R3.EntityTypes;
+import net.minecraft.server.v1_7_R3.WorldServer;
+
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -9,17 +13,13 @@ import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
 import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
 import com.gmail.filoghost.holograms.nms.interfaces.FancyMessage;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramComponent;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
-import com.gmail.filoghost.holograms.nms.interfaces.HologramComponent;
 import com.gmail.filoghost.holograms.nms.interfaces.NmsManager;
-import com.gmail.filoghost.holograms.object.CraftHologram;
+import com.gmail.filoghost.holograms.object.HologramBase;
 import com.gmail.filoghost.holograms.utils.ReflectionUtils;
 import com.gmail.filoghost.holograms.utils.VersionUtils;
-
-import net.minecraft.server.v1_7_R3.Entity;
-import net.minecraft.server.v1_7_R3.EntityTypes;
-import net.minecraft.server.v1_7_R3.WorldServer;
 
 public class NmsManagerImpl implements NmsManager {
 
@@ -105,7 +105,7 @@ public class NmsManagerImpl implements NmsManager {
 	}
 
 	@Override
-	public CraftHologram getParentHologram(org.bukkit.entity.Entity bukkitEntity) {
+	public HologramBase getParentHologram(org.bukkit.entity.Entity bukkitEntity) {
 		
 		Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
 		if (nmsEntity instanceof HologramComponent) {
@@ -123,6 +123,5 @@ public class NmsManagerImpl implements NmsManager {
 	@Override
 	public boolean hasChatHoverFeature() {
 		return true;
-	}
-	
+	}	
 }

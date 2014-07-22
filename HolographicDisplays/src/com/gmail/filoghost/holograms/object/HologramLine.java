@@ -5,6 +5,8 @@ import org.bukkit.World;
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
+import com.gmail.filoghost.holograms.object.pieces.FloatingDoubleEntity;
+
 import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
 
 public class HologramLine extends FloatingDoubleEntity {
@@ -24,7 +26,7 @@ public class HologramLine extends FloatingDoubleEntity {
 	}
 	
 	@Override
-	public void spawn(CraftHologram parent, World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
+	public void spawn(HologramBase parent, World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
 		despawn();
 		
 		horse = nmsManager.spawnHologramHorse(bukkitWorld, x, y + VERTICAL_OFFSET, z);
@@ -54,6 +56,14 @@ public class HologramLine extends FloatingDoubleEntity {
 		if (skull != null) {
 			skull.killEntityNMS();
 			skull = null;
+		}
+	}
+
+	@Override
+	public void teleport(double x, double y, double z) {
+		if (skull != null) {
+			skull.setLocationNMS(x, y + VERTICAL_OFFSET, z);
+			skull.sendUpdatePacketNear();
 		}
 	}
 }

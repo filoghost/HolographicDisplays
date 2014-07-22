@@ -3,7 +3,7 @@ package com.gmail.filoghost.holograms.nms.interfaces;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
-import com.gmail.filoghost.holograms.object.CraftHologram;
+import com.gmail.filoghost.holograms.object.HologramBase;
 
 public interface NmsManager {
 	
@@ -21,8 +21,8 @@ public interface NmsManager {
 	
 	public boolean isBasicEntityNMS(org.bukkit.entity.Entity bukkitEntity);
 	
-	// Return null if not a hologram's part.
-	public CraftHologram getParentHologram(org.bukkit.entity.Entity bukkitEntity);
+	// Return null if not a hologram's (or floating item's) part.
+	public HologramBase getParentHologram(org.bukkit.entity.Entity bukkitEntity);
 	
 	public FancyMessage newFancyMessage(String text);
 

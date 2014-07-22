@@ -1,6 +1,6 @@
 name: HolographicDisplays
 main: com.gmail.filoghost.holograms.HolographicDisplays
-version: 1.8.4
+version: 1.8.5
 
 softdepend: [Multiverse-Core, MultiWorld, My Worlds, My_Worlds, ProtocolLib]
 
@@ -9,7 +9,3 @@ commands:
       description: Main command for HolographicDisplays.
       usage: /<command> (Startup error)
       aliases: [hd, holo, hologram]
-   icon:
-      description: Command to create unpickable floating items.
-      usage: /<command> (Startup error)
-      aliases: [icons, floatingitem, floatingitems]

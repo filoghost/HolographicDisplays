@@ -12,7 +12,7 @@ public interface Hologram {
 	public boolean update();
 	
 	/**
-	 * Hides the hologram.
+	 * Hides the hologram. To show the hologram call update().
 	 */
 	public void hide();
 	
@@ -86,8 +86,16 @@ public interface Hologram {
 	 * Change the location of the hologram. You have to call update() after this method.
 	 * Please note that this method will create new entities every time, so use it wisely.
 	 * @param location - the new location of the hologram.
+	 * @deprecated use teleport(Location location) - it's better and doesn't create new entities
 	 */
+	@Deprecated
 	public void setLocation(Location location);
+	
+	/**
+	 * Teleports the hologram to a new location, without calling update() and with a smooth movement.
+	 * @param location - the new location of the hologram.
+	 */
+	public void teleport(Location location);
 	
 	/**
 	 * Sets the touch handler of the hologram: whenever a player right clicks it, the onTouch()

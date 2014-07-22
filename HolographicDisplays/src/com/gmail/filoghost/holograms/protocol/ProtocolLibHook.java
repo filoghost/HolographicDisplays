@@ -17,6 +17,8 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.object.CraftHologram;
+import com.gmail.filoghost.holograms.object.HologramBase;
+
 import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
 
 public class ProtocolLibHook {
@@ -136,6 +138,11 @@ public class ProtocolLibHook {
 	
 	// Horses are always part of a CraftHologram
 	private static CraftHologram getHologram(Entity bukkitEntity) {
-		return (CraftHologram) nmsManager.getParentHologram(bukkitEntity);
+		HologramBase base = nmsManager.getParentHologram(bukkitEntity);
+		if (base instanceof CraftHologram) {
+			return (CraftHologram) base;
+		} else {
+			return null;
+		}
 	}
 }

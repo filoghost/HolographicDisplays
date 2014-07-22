@@ -15,10 +15,12 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
 import com.gmail.filoghost.holograms.Configuration;
+import com.gmail.filoghost.holograms.api.FloatingItem;
+import com.gmail.filoghost.holograms.api.Hologram;
 import com.gmail.filoghost.holograms.commands.Messages;
 import com.gmail.filoghost.holograms.nms.interfaces.NmsManager;
+import com.gmail.filoghost.holograms.object.APIFloatingItemManager;
 import com.gmail.filoghost.holograms.object.APIHologramManager;
-import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramBase;
 import com.gmail.filoghost.holograms.object.HologramManager;
 
@@ -48,6 +50,7 @@ public class MainListener implements Listener {
 		Chunk chunk = event.getChunk();
 		HologramManager.onChunkLoad(chunk);
 		APIHologramManager.onChunkLoad(chunk);
+		APIFloatingItemManager.onChunkLoad(chunk);
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = false)
@@ -80,9 +83,19 @@ public class MainListener implements Listener {
 	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onSlimeInteract(PlayerInteractEntityEvent event) {
 		if (event.getRightClicked().getType() == EntityType.SLIME) {
-			CraftHologram hologram = nmsManager.getParentHologram(event.getRightClicked());
-			if (hologram != null && hologram.hasTouchHandler()) {
-				hologram.getTouchHandler().onTouch(hologram, event.getPlayer());
+			HologramBase base = nmsManager.getParentHologram(event.getRightClicked());
+			if (base == null) return;
+			
+			if (base instanceof Hologram) {
+				Hologram textHologram = (Hologram) base;
+				if (textHologram.hasTouchHandler()) {
+					textHologram.getTouchHandler().onTouch(textHologram, event.getPlayer());
+				}
+			} else if (base instanceof FloatingItem) {
+				FloatingItem floatingItem = (FloatingItem) base;
+				if (floatingItem.hasTouchHandler()) {
+					floatingItem.getTouchHandler().onTouch(floatingItem, event.getPlayer());
+				}
 			}
 		}
 	}

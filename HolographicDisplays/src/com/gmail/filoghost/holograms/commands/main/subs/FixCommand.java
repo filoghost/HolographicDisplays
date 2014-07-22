@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-
 import com.gmail.filoghost.holograms.commands.CommandValidator;
 import com.gmail.filoghost.holograms.commands.Messages;
 import com.gmail.filoghost.holograms.commands.main.HologramSubCommand;
@@ -37,7 +36,7 @@ public class FixCommand extends HologramSubCommand {
 	public void execute(CommandSender sender, String[] args) throws CommandException {
 		CraftHologram hologram = HologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Messages.NO_SUCH_HOLOGRAM);
-		
+
 		if (args.length <= 1) {	
 			sender.sendMessage(Format.HIGHLIGHT + "This command will put a glowstone 16 blocks above the hologram to fix the lightning.");
 			sender.sendMessage(Format.HIGHLIGHT + "If you're sure, type §f/hd fix " + args[0].toLowerCase() + " confirm");

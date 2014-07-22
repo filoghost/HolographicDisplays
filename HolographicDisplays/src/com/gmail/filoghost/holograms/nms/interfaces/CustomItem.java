@@ -6,4 +6,6 @@ public interface CustomItem extends HologramComponent {
 	
 	public void setItemStackNMS(ItemStack stack);
 	
+	public void allowPickup(boolean pickup);
+	
 }

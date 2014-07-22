@@ -1,19 +1,24 @@
 package com.gmail.filoghost.holograms.api;
 
+import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
+
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holograms.nms.interfaces.NmsManager;
+import com.gmail.filoghost.holograms.object.APICraftHologram;
+import com.gmail.filoghost.holograms.object.APIFloatingItemManager;
 import com.gmail.filoghost.holograms.object.APIHologramManager;
-import com.gmail.filoghost.holograms.object.CraftHologram;
+import com.gmail.filoghost.holograms.object.CraftFloatingItem;
 import com.gmail.filoghost.holograms.utils.GenericUtils;
 import com.gmail.filoghost.holograms.utils.Validator;
 import com.gmail.filoghost.holograms.utils.VisibilityManager;
-import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
 
 public class HolographicDisplaysAPI {
 	
@@ -30,7 +35,7 @@ public class HolographicDisplaysAPI {
 		Validator.notNull(source, "source cannot be null");
 		Validator.notNull(source.getWorld(), "source's world cannot be null");
 		
-		CraftHologram hologram = new CraftHologram("{API-Hologram}", source);
+		APICraftHologram hologram = new APICraftHologram(source);
 		APIHologramManager.addHologram(plugin, hologram);
 		
 		if (lines != null && lines.length > 0) {
@@ -41,6 +46,28 @@ public class HolographicDisplaysAPI {
 		
 		hologram.update();
 		return hologram;
+	}
+	
+	/**
+	 * Creates a floating item at given location.
+	 * @param plugin - the plugin that creates it.
+	 * @param source - the location where it will appear.
+	 * @param itemstack - the floating item that will appear.
+	 * @return the new floating item created.
+	 */
+	public static FloatingItem createFloatingItem(Plugin plugin, Location source, ItemStack itemstack) {
+		
+		Validator.notNull(plugin, "plugin cannot be null");
+		Validator.notNull(source, "source cannot be null");
+		Validator.notNull(source.getWorld(), "source's world cannot be null");
+		Validator.notNull(itemstack, "itemstack cannot be null");
+		Validator.checkArgument(itemstack.getType() != Material.AIR, "itemstack cannot be AIR");
+		
+		CraftFloatingItem floatingItem = new CraftFloatingItem(source, itemstack);
+		APIFloatingItemManager.addFloatingItem(plugin, floatingItem);
+		
+		floatingItem.update();
+		return floatingItem;
 	}
 	
 	/**
@@ -71,7 +98,7 @@ public class HolographicDisplaysAPI {
 		Validator.notNull(source, "source cannot be null");
 		Validator.notNull(source.getWorld(), "source's world cannot be null");
 		
-		CraftHologram hologram = new CraftHologram("{API-Hologram}", source);
+		APICraftHologram hologram = new APICraftHologram(source);
 
 		VisibilityManager visibilityManager = new VisibilityManager();
 		hologram.setVisibilityManager(visibilityManager);
@@ -94,12 +121,22 @@ public class HolographicDisplaysAPI {
 		return hologram;
 	}
 	
+	//TODO individual floating item
+	
 	/**
 	 * @return a copy of all the holograms created with the API by a plugin.
 	 */
 	public static Hologram[] getHolograms(Plugin plugin) {
 		Validator.notNull(plugin, "plugin cannot be null");
 		return APIHologramManager.getHolograms(plugin);
+	}
+	
+	/**
+	 * @return a copy of all the holograms created with the API by a plugin.
+	 */
+	public static FloatingItem[] getFloatingItems(Plugin plugin) {
+		Validator.notNull(plugin, "plugin cannot be null");
+		return APIFloatingItemManager.getFloatingItems(plugin);
 	}
 	
 	/**

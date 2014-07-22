@@ -1,24 +1,26 @@
-package com.gmail.filoghost.holograms.object;
+package com.gmail.filoghost.holograms.object.pieces;
 
 import org.bukkit.World;
 
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
 import com.gmail.filoghost.holograms.nms.interfaces.TouchSlime;
+import com.gmail.filoghost.holograms.object.HologramBase;
+
 import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
 
-public class FloatingTouchSlime extends FloatingDoubleEntity {
+public class FloatingTouchSlimeDoubleEntity extends FloatingDoubleEntity {
 
 	private static final double VERTICAL_OFFSET = -0.3;
 
 	private TouchSlime slime;
 	private HologramWitherSkull skull;
 	
-	public FloatingTouchSlime() {
+	public FloatingTouchSlimeDoubleEntity() {
 	}
 	
 	@Override
-	public void spawn(CraftHologram parent, World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
+	public void spawn(HologramBase parent, World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
 		despawn();
 		
 		slime = nmsManager.spawnTouchSlime(bukkitWorld, x, y + VERTICAL_OFFSET, z);
@@ -49,5 +51,13 @@ public class FloatingTouchSlime extends FloatingDoubleEntity {
 	
 	public boolean isSpawned() {
 		return slime != null && skull != null;
+	}
+	
+	@Override
+	public void teleport(double x, double y, double z) {
+		if (skull != null) {
+			skull.setLocationNMS(x, y + VERTICAL_OFFSET, z);
+			skull.sendUpdatePacketNear();
+		}
 	}
 }

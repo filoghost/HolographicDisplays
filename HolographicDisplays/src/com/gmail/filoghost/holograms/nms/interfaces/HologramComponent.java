@@ -1,14 +1,14 @@
 package com.gmail.filoghost.holograms.nms.interfaces;
 
-import com.gmail.filoghost.holograms.object.CraftHologram;
+import com.gmail.filoghost.holograms.object.HologramBase;
 
 // Represents an entity that is part of a hologram.
 public interface HologramComponent extends BasicEntityNMS {
 	
-	// Returns the linked BaseMultiEntity. Can be null.
-	public CraftHologram getParentHologram();
+	// Returns the linked HologramBase. Can be null.
+	public HologramBase getParentHologram();
 	
-	// Sets the linked BaseMultiEntity.
-	public void setParentHologram(CraftHologram hologram);
+	// Sets the linked HologramBase.
+	public void setParentHologram(HologramBase base);
 	
 }

@@ -4,7 +4,10 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
-import com.gmail.filoghost.holograms.object.CraftHologram;
+import com.gmail.filoghost.holograms.object.HologramBase;
+
+import net.minecraft.server.v1_7_R4.EntityPlayer;
+import net.minecraft.server.v1_7_R4.PacketPlayOutEntityTeleport;
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityWitherSkull;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
@@ -13,7 +16,7 @@ import net.minecraft.server.v1_7_R4.World;
 public class EntityHologramWitherSkull extends EntityWitherSkull implements HologramWitherSkull {
 
 	private boolean lockTick;
-	private CraftHologram parent;
+	private HologramBase parent;
 	
 	public EntityHologramWitherSkull(World world) {
 		super(world);
@@ -108,7 +111,25 @@ public class EntityHologramWitherSkull extends EntityWitherSkull implements Holo
 	
 	@Override
 	public void setLocationNMS(double x, double y, double z) {
-		super.setPosition(x, y, z);
+		super.setPosition(x, y, z);		
+	}
+	
+	@Override
+	public void sendUpdatePacketNear() {
+		
+		// Send a packet to update the position.
+		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
+				
+		for (Object obj : this.world.players) {
+			if (obj instanceof EntityPlayer) {
+				EntityPlayer nmsPlayer = (EntityPlayer) obj;
+				
+				double distanceSquared = nmsPlayer.e(locX, locY, locZ);
+				if (distanceSquared < 8192 && nmsPlayer.playerConnection != null) {
+					nmsPlayer.playerConnection.sendPacket(teleportPacket);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -129,13 +150,12 @@ public class EntityHologramWitherSkull extends EntityWitherSkull implements Holo
 	}
 	
 	@Override
-	public CraftHologram getParentHologram() {
+	public HologramBase getParentHologram() {
 		return parent;
 	}
 
 	@Override
-	public void setParentHologram(CraftHologram hologram) {
-		this.parent = hologram;
+	public void setParentHologram(HologramBase base) {
+		this.parent = base;
 	}
-
 }

@@ -14,6 +14,9 @@ import com.gmail.filoghost.holograms.api.TouchHandler;
 import com.gmail.filoghost.holograms.commands.CommandValidator;
 import com.gmail.filoghost.holograms.exception.CommandException;
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
+import com.gmail.filoghost.holograms.object.pieces.FloatingDoubleEntity;
+import com.gmail.filoghost.holograms.object.pieces.FloatingItemDoubleEntity;
+import com.gmail.filoghost.holograms.object.pieces.FloatingTouchSlimeDoubleEntity;
 import com.gmail.filoghost.holograms.utils.Validator;
 import com.gmail.filoghost.holograms.utils.VisibilityManager;
 
@@ -23,21 +26,21 @@ import com.gmail.filoghost.holograms.utils.VisibilityManager;
 
 public class CraftHologram extends HologramBase implements Hologram {
 	
-	private List<FloatingDoubleEntity> linesEntities;
-	private List<String> textLines;
+	protected List<FloatingDoubleEntity> linesEntities;
+	protected List<String> textLines;
 	
-	private VisibilityManager visibilityManager;
+	protected VisibilityManager visibilityManager;
 	
-	private long creationTimestamp;
+	protected long creationTimestamp;
 	
-	private FloatingTouchSlime touchSlimeEntity;
-	private TouchHandler touchHandler;
+	protected FloatingTouchSlimeDoubleEntity touchSlimeEntity;
+	protected TouchHandler touchHandler;
 
 	public CraftHologram(String name, Location source) {
 		super(name, source);
 		linesEntities = new ArrayList<FloatingDoubleEntity>();
 		textLines = new ArrayList<String>();
-		touchSlimeEntity = new FloatingTouchSlime();
+		touchSlimeEntity = new FloatingTouchSlimeDoubleEntity();
 		creationTimestamp = System.currentTimeMillis();
 	}
 	
@@ -161,7 +164,7 @@ public class CraftHologram extends HologramBase implements Hologram {
 						currentY -= 0.27;
 					}
 					
-					FloatingItem lineEntity = new FloatingItem(icon);
+					FloatingItemDoubleEntity lineEntity = new FloatingItemDoubleEntity(icon);
 					lineEntity.spawn(this, bukkitWorld, x, currentY, z);
 					linesEntities.add(lineEntity);
 					
@@ -214,5 +217,61 @@ public class CraftHologram extends HologramBase implements Hologram {
 	
 	public String toString() {
 		return "CraftHologram{lines=" + textLines.toString() + ",x=" + x + ",y=" + y + ",z=" + z + ",world=" + bukkitWorld.getName() + "}";
+	}
+	
+	@Override
+	public void teleport(Location loc) {
+		if (loc.getWorld().equals(bukkitWorld) && loc.getChunk().isLoaded() && !linesEntities.isEmpty()) {
+			
+			/* Conditions:
+			 * - Same world
+			 * - Destination chunk is loaded
+			 * - Entities for this hologram are already spawned
+			 * 
+			 * Then:
+			 * Send a packet near to update the position, because of this bug: https://bugs.mojang.com/browse/MC-55638
+			 */
+			
+			double lineSpacing = Configuration.verticalLineSpacing;
+			
+			// While iterating we change this var.
+			double currentY = loc.getY();
+			
+			for (FloatingDoubleEntity lineEntity : linesEntities) {
+				
+				if (lineEntity instanceof FloatingItemDoubleEntity) {
+					
+					if (currentY != loc.getY()) {
+						// Extra space for the floating item...
+						currentY -= 0.27;
+					}
+					
+					lineEntity.teleport(loc.getX(), currentY, loc.getZ());
+					currentY -= 0.05;
+					
+				} else {
+					lineEntity.teleport(loc.getX(), currentY, loc.getZ());				
+				}
+				
+				currentY -= lineSpacing;
+			}
+			
+			if (touchSlimeEntity.isSpawned()) {
+				touchSlimeEntity.teleport(loc.getX(), loc.getY(), loc.getZ());
+			}
+			setLocation(loc);
+			
+		} else {
+			
+			boolean wasSpawned = !linesEntities.isEmpty();
+			
+			// Recreate it completely.
+			hide();
+			setLocation(loc);
+			
+			if (wasSpawned) {
+				update();
+			}
+		}
 	}
 }

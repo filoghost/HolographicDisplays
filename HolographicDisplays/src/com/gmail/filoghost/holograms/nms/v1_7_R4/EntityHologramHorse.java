@@ -3,7 +3,8 @@ package com.gmail.filoghost.holograms.nms.v1_7_R4;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
-import com.gmail.filoghost.holograms.object.CraftHologram;
+import com.gmail.filoghost.holograms.object.HologramBase;
+
 import net.minecraft.server.v1_7_R4.EntityHorse;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
 import net.minecraft.server.v1_7_R4.World;
@@ -11,7 +12,7 @@ import net.minecraft.server.v1_7_R4.World;
 public class EntityHologramHorse extends EntityHorse implements HologramHorse {
 
 	private boolean lockTick;
-	private CraftHologram parent;
+	private HologramBase parent;
 	
 	public EntityHologramHorse(World world) {
 		super(world);
@@ -138,13 +139,12 @@ public class EntityHologramHorse extends EntityHorse implements HologramHorse {
 	}
 	
 	@Override
-	public CraftHologram getParentHologram() {
+	public HologramBase getParentHologram() {
 		return parent;
 	}
 
 	@Override
-	public void setParentHologram(CraftHologram hologram) {
-		this.parent = hologram;
+	public void setParentHologram(HologramBase base) {
+		this.parent = base;
 	}
-
 }

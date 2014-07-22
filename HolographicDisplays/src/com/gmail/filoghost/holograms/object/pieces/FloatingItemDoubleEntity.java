@@ -1,4 +1,4 @@
-package com.gmail.filoghost.holograms.object;
+package com.gmail.filoghost.holograms.object.pieces;
 
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
@@ -6,9 +6,11 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
+import com.gmail.filoghost.holograms.object.HologramBase;
+
 import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
 
-public class FloatingItem extends FloatingDoubleEntity {
+public class FloatingItemDoubleEntity extends FloatingDoubleEntity {
 
 	private static final double VERTICAL_OFFSET = -0.21;
 	
@@ -16,16 +18,20 @@ public class FloatingItem extends FloatingDoubleEntity {
 	private CustomItem item;
 	private HologramWitherSkull skull;
 	
-	public FloatingItem(ItemStack itemStack) {
+	private boolean allowPickup;
+	
+	public FloatingItemDoubleEntity(ItemStack itemStack) {
 		this.itemStack = itemStack;
 	}
 	
 	@Override
-	public void spawn(CraftHologram parent, World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
+	public void spawn(HologramBase parent, World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
 		despawn();
 		
 		item = nmsManager.spawnCustomItem(bukkitWorld, x, y + VERTICAL_OFFSET, z, itemStack);
 		item.setParentHologram(parent);
+		
+		item.allowPickup(allowPickup);
 		
 		skull = nmsManager.spawnHologramWitherSkull(bukkitWorld, x, y + VERTICAL_OFFSET, z);
 		skull.setParentHologram(parent);
@@ -47,6 +53,36 @@ public class FloatingItem extends FloatingDoubleEntity {
 		if (skull != null) {
 			skull.killEntityNMS();
 			skull = null;
+		}
+	}
+	
+	public boolean isSpawned() {
+		return item != null && skull != null;
+	}
+	
+	public ItemStack getItemStack() {
+		return itemStack;
+	}
+	
+	public void setItemStack(ItemStack itemStack) {
+		this.itemStack = itemStack;
+		if (isSpawned()) {
+			item.setItemStackNMS(itemStack);
+		}
+	}
+	
+	public void setAllowPickup(boolean allowPickup) {
+		this.allowPickup = allowPickup;
+		if (item != null) {
+			item.allowPickup(allowPickup);
+		}
+	}
+	
+	@Override
+	public void teleport(double x, double y, double z) {
+		if (skull != null) {
+			skull.setLocationNMS(x, y + VERTICAL_OFFSET, z);
+			skull.sendUpdatePacketNear();
 		}
 	}
 }
