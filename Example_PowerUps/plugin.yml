@@ -1,0 +1,5 @@
+name: PowerUps
+main: com.gmail.filoghost.test.PowerUps
+version: 1.0
+
+softdepend: [HolographicDisplays]
