@@ -147,12 +147,15 @@ public class CraftFloatingItem extends HologramBase implements FloatingItem {
 	
 	@Override
 	public void teleport(Location loc) {
+		Validator.notNull(loc, "location cannot be null");
+		Validator.notNull(loc.getWorld(), "location's world cannot be null");
+		
 		if (loc.getWorld().equals(bukkitWorld) && loc.getChunk().isLoaded() && floatingItemDoubleEntity.isSpawned()) {
 			
 			/* Conditions:
 			 * - Same world
 			 * - Destination chunk is loaded
-			 * - Entities for this floating are already spawned
+			 * - Entities for this floating item are already spawned
 			 * 
 			 * Then:
 			 * Send a packet near to update the position, because of this bug: https://bugs.mojang.com/browse/MC-55638
@@ -168,7 +171,7 @@ public class CraftFloatingItem extends HologramBase implements FloatingItem {
 			
 		} else {
 			
-			boolean wasSpawned = !floatingItemDoubleEntity.isSpawned();
+			boolean wasSpawned = floatingItemDoubleEntity.isSpawned();
 			
 			// Recreate it completely.
 			hide();

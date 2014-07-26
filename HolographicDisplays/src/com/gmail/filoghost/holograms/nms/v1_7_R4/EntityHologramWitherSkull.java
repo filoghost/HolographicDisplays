@@ -5,6 +5,7 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
 import com.gmail.filoghost.holograms.object.HologramBase;
+import com.gmail.filoghost.holograms.utils.GenericUtils;
 
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.PacketPlayOutEntityTeleport;
@@ -124,7 +125,7 @@ public class EntityHologramWitherSkull extends EntityWitherSkull implements Holo
 			if (obj instanceof EntityPlayer) {
 				EntityPlayer nmsPlayer = (EntityPlayer) obj;
 				
-				double distanceSquared = nmsPlayer.e(locX, locY, locZ);
+				double distanceSquared = GenericUtils.square(nmsPlayer.locX - this.locX) + GenericUtils.square(nmsPlayer.locZ - this.locZ);
 				if (distanceSquared < 8192 && nmsPlayer.playerConnection != null) {
 					nmsPlayer.playerConnection.sendPacket(teleportPacket);
 				}

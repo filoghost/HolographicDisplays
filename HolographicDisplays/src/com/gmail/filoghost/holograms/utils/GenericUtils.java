@@ -14,4 +14,8 @@ public class GenericUtils {
 		list.add(object);
 		return list;
 	}
+	
+	public static double square(double d) {
+		return d * d;
+	}
 }

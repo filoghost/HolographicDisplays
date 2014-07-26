@@ -1,8 +1,10 @@
 package com.gmail.filoghost.holograms.object;
 
 import org.bukkit.Location;
+
 import com.gmail.filoghost.holograms.Configuration;
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
+import com.gmail.filoghost.holograms.object.pieces.HologramLine;
 import com.gmail.filoghost.holograms.utils.Validator;
 
 /**

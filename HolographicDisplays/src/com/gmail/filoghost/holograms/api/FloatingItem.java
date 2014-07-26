@@ -96,7 +96,6 @@ public interface FloatingItem {
 	 */
 	public boolean hasPickupHandler();
 	
-	
 	/**
 	 * @return the timestamp of when the floating item was created, in milliseconds.
 	 */

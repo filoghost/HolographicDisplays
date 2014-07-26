@@ -17,6 +17,7 @@ import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.object.pieces.FloatingDoubleEntity;
 import com.gmail.filoghost.holograms.object.pieces.FloatingItemDoubleEntity;
 import com.gmail.filoghost.holograms.object.pieces.FloatingTouchSlimeDoubleEntity;
+import com.gmail.filoghost.holograms.object.pieces.HologramLine;
 import com.gmail.filoghost.holograms.utils.Validator;
 import com.gmail.filoghost.holograms.utils.VisibilityManager;
 
@@ -221,6 +222,9 @@ public class CraftHologram extends HologramBase implements Hologram {
 	
 	@Override
 	public void teleport(Location loc) {
+		Validator.notNull(loc, "location cannot be null");
+		Validator.notNull(loc.getWorld(), "location's world cannot be null");
+		
 		if (loc.getWorld().equals(bukkitWorld) && loc.getChunk().isLoaded() && !linesEntities.isEmpty()) {
 			
 			/* Conditions:

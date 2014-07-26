@@ -1,11 +1,11 @@
-package com.gmail.filoghost.holograms.object;
+package com.gmail.filoghost.holograms.object.pieces;
 
 import org.bukkit.World;
 
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
-import com.gmail.filoghost.holograms.object.pieces.FloatingDoubleEntity;
+import com.gmail.filoghost.holograms.object.HologramBase;
 
 import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
 
