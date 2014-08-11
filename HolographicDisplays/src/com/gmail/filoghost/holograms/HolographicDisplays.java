@@ -26,7 +26,8 @@ import com.gmail.filoghost.holograms.placeholders.AnimationManager;
 import com.gmail.filoghost.holograms.placeholders.PlaceholderManager;
 import com.gmail.filoghost.holograms.placeholders.StaticPlaceholders;
 import com.gmail.filoghost.holograms.protocol.ProtocolLibHook;
-import com.gmail.filoghost.holograms.utils.BungeeCleanupTask;
+import com.gmail.filoghost.holograms.tasks.BungeeCleanupTask;
+import com.gmail.filoghost.holograms.tasks.WorldPlayerCounterTask;
 import com.gmail.filoghost.holograms.utils.StringUtils;
 import com.gmail.filoghost.holograms.utils.VersionUtils;
 import com.gmail.filoghost.holograms.utils.ConfigNode;
@@ -195,6 +196,7 @@ public class HolographicDisplays extends JavaPlugin {
 		ServerInfoTimer.setRefreshSeconds(Configuration.bungeeRefreshSeconds);
 		ServerInfoTimer.startTask();
 		BungeeCleanupTask.start();
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorldPlayerCounterTask(), 3 * 20L, 3 * 20L);
 		
 		Set<String> savedHolograms = HologramDatabase.getHolograms();
 		if (savedHolograms != null && savedHolograms.size() > 0) {

@@ -14,6 +14,7 @@ public class HologramLineData {
 	
 	private String[] bungeeOnlinePlayers;
 	private String[] bungeeStatuses;
+	private String[] worldsPlayerCount;
 	
 	public HologramLineData(HologramHorse horse, String originalName) {
 		this.horse = horse;
@@ -33,6 +34,11 @@ public class HologramLineData {
 	public void setBungeeStatusesToCheck(List<String> list) {
 		bungeeStatuses = new String[list.size()];
 		bungeeStatuses = list.toArray(bungeeStatuses);
+	}
+	
+	public void setWorldsCountToCheck(List<String> list) {
+		worldsPlayerCount = new String[list.size()];
+		worldsPlayerCount = list.toArray(worldsPlayerCount);
 	}
 
 	public HologramHorse getHorse() {
@@ -55,6 +61,10 @@ public class HologramLineData {
 		return bungeeStatuses != null;
 	}
 	
+	public boolean hasWorldsCountToCheck() {
+		return worldsPlayerCount != null;
+	}
+	
 	/**
 	 * Can be null.
 	 */
@@ -74,5 +84,12 @@ public class HologramLineData {
 	 */
 	public String[] getBungeeStatusesToCheck() {
 		return bungeeStatuses;
+	}
+	
+	/**
+	 * Can be null.
+	 */
+	public String[] getWorldsPlayersCountToCheck() {
+		return worldsPlayerCount;
 	}
 }

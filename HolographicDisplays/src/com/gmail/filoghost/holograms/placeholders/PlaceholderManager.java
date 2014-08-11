@@ -13,6 +13,7 @@ import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.bungee.ServerInfoTimer;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
 import com.gmail.filoghost.holograms.object.HologramLineData;
+import com.gmail.filoghost.holograms.tasks.WorldPlayerCounterTask;
 
 public class PlaceholderManager {
 	
@@ -23,6 +24,7 @@ public class PlaceholderManager {
 	private static final Pattern BUNGEE_ONLINE_PATTERN = Pattern.compile("(\\{online:)([^}]+)(\\})");
 	private static final Pattern BUNGEE_STATUS_PATTERN = Pattern.compile("(\\{status:)([^}]+)(\\})");
 	private static final Pattern ANIMATION_PATTERN = Pattern.compile("(\\{animation:)([^}]+)(\\})");
+	private static final Pattern WORLD_PATTERN = Pattern.compile("(\\{world:)([^}]+)(\\})");
 	
 	public PlaceholderManager() {
 		horsesToRefresh = new ArrayList<HologramLineData>();
@@ -48,6 +50,7 @@ public class PlaceholderManager {
 		List<Placeholder> containedPlaceholders = null;
 		List<String> bungeeServersOnlinePlayers = null;
 		List<String> bungeeServersStatuses = null;
+		List<String> worldsPlayerCount = null;
 		Matcher matcher;
 		
 		for (Placeholder placeholder : PlaceholdersList.getDefaults()) {
@@ -67,6 +70,25 @@ public class PlaceholderManager {
 			}
 			
 		}
+		
+		
+		// Players in a world count pattern. 
+		matcher = WORLD_PATTERN.matcher(customName);
+		while (matcher.find()) {
+							
+			if (worldsPlayerCount == null) {
+				worldsPlayerCount = new ArrayList<String>();
+			}
+							
+			String worldName = matcher.group(2).trim().toLowerCase();
+			
+			// Shorter placeholder without spaces.
+			customName = customName.replace(matcher.group(), "{world:" + worldName + "}");
+					
+			// Add it to tracked worlds.
+			worldsPlayerCount.add(worldName);
+		}
+		
 		
 		// BungeeCord online pattern.
 		matcher = BUNGEE_ONLINE_PATTERN.matcher(customName);
@@ -105,8 +127,6 @@ public class PlaceholderManager {
 		}
 		
 		
-		
-		
 		// Animation pattern.
 		matcher = ANIMATION_PATTERN.matcher(customName);
 		boolean updateName = false;
@@ -132,7 +152,7 @@ public class PlaceholderManager {
 			}
 		}
 		
-		if (containedPlaceholders != null || bungeeServersOnlinePlayers != null || bungeeServersStatuses != null) {
+		if (containedPlaceholders != null || bungeeServersOnlinePlayers != null || bungeeServersStatuses != null || worldsPlayerCount != null) {
 			HologramLineData data = new HologramLineData(horse, customName);
 			
 			if (containedPlaceholders != null) {
@@ -145,6 +165,10 @@ public class PlaceholderManager {
 			
 			if (bungeeServersStatuses != null) {
 				data.setBungeeStatusesToCheck(bungeeServersStatuses);
+			}
+			
+			if (worldsPlayerCount != null) {
+				data.setWorldsCountToCheck(worldsPlayerCount);
 			}
 			
 			horsesToRefresh.add(data);
@@ -220,6 +244,12 @@ public class PlaceholderManager {
 		if (data.hasBungeeStatusesToCheck()) {
 			for (String server : data.getBungeeStatusesToCheck()) {
 				newCustomName = newCustomName.replace("{status:" + server + "}", ServerInfoTimer.getOnlineStatus(server) ? Configuration.bungeeOnlineFormat : Configuration.bungeeOfflineFormat);
+			}
+		}
+		
+		if (data.hasWorldsCountToCheck()) {
+			for (String world : data.getWorldsPlayersCountToCheck()) {
+				newCustomName = newCustomName.replace("{world:" + world + "}", WorldPlayerCounterTask.getCount(world));
 			}
 		}
 		

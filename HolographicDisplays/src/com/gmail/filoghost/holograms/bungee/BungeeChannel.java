@@ -73,6 +73,7 @@ public class BungeeChannel implements PluginMessageListener {
 			out.writeUTF(server);
 		} catch (IOException e) {
 			// It should not happen.
+			e.printStackTrace();
 			HolographicDisplays.getInstance().getLogger().warning("I/O Exception while asking for player count on server '" + server + "'.");
 		}
 
