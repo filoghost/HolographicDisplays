@@ -21,7 +21,7 @@ public class HelpCommand extends HologramSubCommand {
 
 	public HelpCommand() {
 		super("help");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "help");
 	}
 
 	@Override

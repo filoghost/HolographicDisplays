@@ -20,7 +20,7 @@ public class TeleportCommand extends HologramSubCommand {
 	
 	public TeleportCommand() {
 		super("teleport", "tp");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "teleport");
 	}
 
 	@Override

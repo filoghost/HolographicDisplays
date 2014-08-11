@@ -18,7 +18,7 @@ public class DeleteCommand extends HologramSubCommand {
 
 	public DeleteCommand() {
 		super("delete", "remove");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "delete");
 	}
 
 	@Override

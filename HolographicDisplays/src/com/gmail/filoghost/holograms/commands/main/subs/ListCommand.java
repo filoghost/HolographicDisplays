@@ -19,7 +19,7 @@ public class ListCommand extends HologramSubCommand {
 
 	public ListCommand() {
 		super("list");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "list");
 	}
 
 	@Override

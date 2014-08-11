@@ -20,7 +20,7 @@ public class NearCommand extends HologramSubCommand {
 
 	public NearCommand() {
 		super("near");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "near");
 	}
 
 	@Override

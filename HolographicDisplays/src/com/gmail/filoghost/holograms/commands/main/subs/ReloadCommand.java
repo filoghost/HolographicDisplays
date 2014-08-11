@@ -26,7 +26,7 @@ public class ReloadCommand extends HologramSubCommand {
 
 	public ReloadCommand() {
 		super("reload");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "reload");
 	}
 
 	@Override

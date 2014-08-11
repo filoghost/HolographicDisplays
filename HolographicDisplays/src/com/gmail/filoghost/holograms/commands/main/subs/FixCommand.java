@@ -18,7 +18,7 @@ public class FixCommand extends HologramSubCommand {
 
 	public FixCommand() {
 		super("fix", "light");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "fix");
 	}
 
 	@Override

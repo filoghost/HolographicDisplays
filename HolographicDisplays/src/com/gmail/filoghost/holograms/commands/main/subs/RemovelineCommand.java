@@ -18,7 +18,7 @@ public class RemovelineCommand extends HologramSubCommand {
 
 	public RemovelineCommand() {
 		super("removeline");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "removeline");
 	}
 
 	@Override

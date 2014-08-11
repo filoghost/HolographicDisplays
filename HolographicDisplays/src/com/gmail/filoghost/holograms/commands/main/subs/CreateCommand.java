@@ -24,7 +24,7 @@ public class CreateCommand extends HologramSubCommand {
 
 	public CreateCommand() {
 		super("create");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "create");
 	}
 
 	@Override
@@ -38,19 +38,27 @@ public class CreateCommand extends HologramSubCommand {
 	}
 
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void execute(CommandSender sender, String[] args) throws CommandException {
 		try {
 			Player player = CommandValidator.getPlayerSender(sender);
 			String name = StringUtils.validateName(args[0].toLowerCase());
 			CommandValidator.isTrue(!HologramManager.isExistingHologram(name), "A hologram with that name already exists.");
-						
-			CraftHologram hologram = new CraftHologram(name, player.getLocation());
+			
+			Location spawnLoc = player.getLocation();
+			boolean moveUp = player.isOnGround();
+			
+			if (moveUp) {
+				spawnLoc.add(0.0, 1.2, 0.0);
+			}
+			
+			CraftHologram hologram = new CraftHologram(name, spawnLoc);
 			HologramManager.addHologram(hologram);
 			
 			if (args.length > 1) {
 				hologram.addLine(StringUtils.toReadableFormat(StringUtils.join(args, " ", 1, args.length)));
-				sender.sendMessage("§7(Change the lines with /hd edit " + hologram.getName() + ")");
+				player.sendMessage("§7(Change the lines with /hd edit " + hologram.getName() + ")");
 			} else {
 				hologram.addLine("Default hologram. Change it with " + Format.HIGHLIGHT + "/hd edit " + hologram.getName());
 			}
@@ -65,6 +73,10 @@ public class CreateCommand extends HologramSubCommand {
 			look.setPitch(90);
 			player.teleport(look, TeleportCause.PLUGIN);
 			player.sendMessage(Format.HIGHLIGHT + "You created a hologram named '" + hologram.getName() + "'.");
+			
+			if (moveUp) {
+				player.sendMessage("§7(You were on the ground, the hologram was automatically moved up. If you use /hd movehere " + hologram.getName() + ", the hologram will be moved to your feet)");
+			}
 			
 		} catch (InvalidCharactersException ex) {
 			throw new CommandException("The hologram's name must be alphanumeric. '" + ex.getMessage() + "' is not allowed.");

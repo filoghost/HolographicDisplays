@@ -29,7 +29,7 @@ public class EditCommand extends HologramSubCommand {
 
 	public EditCommand() {
 		super("edit");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "edit");
 	}
 
 	@Override

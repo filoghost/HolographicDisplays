@@ -20,7 +20,7 @@ public class InsertlineCommand extends HologramSubCommand {
 
 	public InsertlineCommand() {
 		super("insertline");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "insertline");
 	}
 
 	@Override

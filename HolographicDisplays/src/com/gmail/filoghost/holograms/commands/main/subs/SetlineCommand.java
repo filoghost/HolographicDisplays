@@ -19,7 +19,7 @@ public class SetlineCommand extends HologramSubCommand {
 
 	public SetlineCommand() {
 		super("setline");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "setline");
 	}
 
 	@Override

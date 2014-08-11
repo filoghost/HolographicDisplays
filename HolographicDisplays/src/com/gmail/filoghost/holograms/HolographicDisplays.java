@@ -139,13 +139,13 @@ public class HolographicDisplays extends JavaPlugin {
 				"******************************************************",
 				"     This version of HolographicDisplays can",
 				"     only work on these server versions:",
-				"     1.6.4, from 1.7.2 to 1.7.9.",
+				"     1.6.4, from 1.7.2 to 1.7.10.",
 				"     The plugin will be disabled.",
 				"******************************************************"
 			);
 			return;
 		}
-		
+
 		try {
 			if (VersionUtils.isMCPC() || VersionUtils.isCauldron()) {
 				getLogger().info("Trying to enable Cauldron/MCPC+ support...");

@@ -16,7 +16,7 @@ public class SaveCommand extends HologramSubCommand {
 
 	public SaveCommand() {
 		super("save");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "save");
 	}
 
 	@Override

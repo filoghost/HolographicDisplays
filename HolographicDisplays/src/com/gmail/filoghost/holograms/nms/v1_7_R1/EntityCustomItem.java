@@ -13,13 +13,10 @@ import net.minecraft.server.v1_7_R1.EntityItem;
 import net.minecraft.server.v1_7_R1.ItemStack;
 import net.minecraft.server.v1_7_R1.NBTTagCompound;
 import net.minecraft.server.v1_7_R1.World;
-import net.minecraft.server.v1_7_R1.Blocks;
 import net.minecraft.server.v1_7_R1.EntityHuman;
 import net.minecraft.server.v1_7_R1.EntityPlayer;
 
 public class EntityCustomItem extends EntityItem implements CustomItem, BasicEntityNMS {
-	
-	private static final ItemStack STONE = new ItemStack(Blocks.STONE, 0);
 	
 	private boolean lockTick;
 	private HologramBase parent;
@@ -42,6 +39,17 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		if (!lockTick) {
 			super.h();
 		}
+	}
+	
+	@Override
+	public ItemStack getItemStack() {
+		// Dirty method to check if the icon is being picked up
+		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+		if (stacktrace.length >= 2 && stacktrace[1].getClassName().contains("EntityInsentient")) {
+			return null; // Try to pickup this, dear entity ignoring the pickupDelay!
+		}
+		
+		return super.getItemStack();
 	}
 	
 	// Method called when a player is near.
@@ -89,11 +97,6 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		 * on chunk unload, we prefer to override isInvulnerable().
 		 */
 	    return true;
-	}
-	
-	@Override
-	public ItemStack getItemStack() {
-		return STONE;
 	}
 
 	@Override

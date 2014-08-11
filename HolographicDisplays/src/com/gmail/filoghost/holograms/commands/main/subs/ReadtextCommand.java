@@ -22,7 +22,7 @@ public class ReadtextCommand extends HologramSubCommand {
 
 	public ReadtextCommand() {
 		super("readtext", "readlines");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "readtext");
 	}
 
 	@Override

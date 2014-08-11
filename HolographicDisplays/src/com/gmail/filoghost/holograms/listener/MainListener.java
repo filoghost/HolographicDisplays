@@ -103,7 +103,7 @@ public class MainListener implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		if (Configuration.updateNotification && Configuration.newVersion != null) {
-			if (event.getPlayer().hasPermission(Messages.MAIN_PERMISSION)) {
+			if (event.getPlayer().hasPermission(Messages.BASE_PERM + "update")) {
 				event.getPlayer().sendMessage("§3[HolographicDisplays] §bFound an update: " + Configuration.newVersion + ". Download:");
 				event.getPlayer().sendMessage("§3>> §bhttp://dev.bukkit.org/bukkit-plugins/holographic-displays");
 			}

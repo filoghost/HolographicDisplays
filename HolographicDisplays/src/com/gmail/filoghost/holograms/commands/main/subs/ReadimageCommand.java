@@ -26,7 +26,7 @@ public class ReadimageCommand extends HologramSubCommand {
 
 	public ReadimageCommand() {
 		super("readimage", "image");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "readimage");
 	}
 
 	@Override

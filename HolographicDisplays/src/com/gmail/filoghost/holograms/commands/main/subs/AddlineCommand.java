@@ -19,7 +19,7 @@ public class AddlineCommand extends HologramSubCommand {
 
 	public AddlineCommand() {
 		super("addline");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "addline");
 	}
 
 	@Override

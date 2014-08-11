@@ -1,6 +1,5 @@
 package com.gmail.filoghost.holograms.nms.v1_6_R3;
 
-import net.minecraft.server.v1_6_R3.Block;
 import net.minecraft.server.v1_6_R3.EntityItem;
 import net.minecraft.server.v1_6_R3.ItemStack;
 import net.minecraft.server.v1_6_R3.NBTTagCompound;
@@ -18,8 +17,6 @@ import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
 import com.gmail.filoghost.holograms.object.HologramBase;
 
 public class EntityCustomItem extends EntityItem implements CustomItem, BasicEntityNMS {
-	
-	private static final ItemStack STONE = new ItemStack(Block.STONE, 0);
 	
 	private boolean lockTick;
 	private HologramBase parent;
@@ -42,6 +39,17 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		if (!lockTick) {
 			super.l_();
 		}
+	}
+	
+	@Override
+	public ItemStack getItemStack() {
+		// Dirty method to check if the icon is being picked up
+		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+		if (stacktrace.length >= 2 && stacktrace[1].getClassName().contains("EntityInsentient")) {
+			return null; // Try to pickup this, dear entity ignoring the pickupDelay!
+		}
+		
+		return super.getItemStack();
 	}
 	
 	// Method called when a player is near.
@@ -89,11 +97,6 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		 * on chunk unload, we prefer to override isInvulnerable().
 		 */
 	    return true;
-	}
-	
-	@Override
-	public ItemStack getItemStack() {
-		return STONE;
 	}
 
 	@Override

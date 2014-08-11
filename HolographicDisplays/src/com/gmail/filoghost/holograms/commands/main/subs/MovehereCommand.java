@@ -22,7 +22,7 @@ public class MovehereCommand extends HologramSubCommand {
 
 	public MovehereCommand() {
 		super("movehere");
-		setPermission(Messages.MAIN_PERMISSION);
+		setPermission(Messages.BASE_PERM + "movehere");
 	}
 
 	@Override
