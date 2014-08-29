@@ -15,6 +15,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
 import com.gmail.filoghost.holograms.Configuration;
+import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.api.FloatingItem;
 import com.gmail.filoghost.holograms.api.Hologram;
 import com.gmail.filoghost.holograms.commands.Messages;
@@ -89,7 +90,12 @@ public class MainListener implements Listener {
 			if (base instanceof Hologram) {
 				Hologram textHologram = (Hologram) base;
 				if (textHologram.hasTouchHandler()) {
-					textHologram.getTouchHandler().onTouch(textHologram, event.getPlayer());
+					try {
+						textHologram.getTouchHandler().onTouch(textHologram, event.getPlayer());
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						HolographicDisplays.getInstance().getLogger().warning("An exception occured while a player was touching a hologram. It's probably caused by another plugin using Holographic Displays as library.");
+					}
 				}
 			} else if (base instanceof FloatingItem) {
 				FloatingItem floatingItem = (FloatingItem) base;

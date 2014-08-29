@@ -22,6 +22,6 @@ public class WorldPlayerCounterTask implements Runnable {
 	
 	public static String getCount(String world) {
 		Integer count = worlds.get(world);
-		return count != null ? count.toString() : "world not found";
+		return count != null ? count.toString() : "[World \"" + world + "\" not found]";
 	}
 }

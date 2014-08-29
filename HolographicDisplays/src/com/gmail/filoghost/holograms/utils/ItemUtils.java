@@ -9,6 +9,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemUtils {
 	
+	public static final String ANTISTACK_LORE = ChatColor.BLACK + "" + Math.random();
+
 	public static ItemStack getStone(String title, List<String> lore, ChatColor defaultLoreColor) {
 		return getItem(Material.STONE, title, lore, defaultLoreColor);
 	}

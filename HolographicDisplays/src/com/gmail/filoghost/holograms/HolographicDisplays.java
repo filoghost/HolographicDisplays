@@ -196,7 +196,7 @@ public class HolographicDisplays extends JavaPlugin {
 		ServerInfoTimer.setRefreshSeconds(Configuration.bungeeRefreshSeconds);
 		ServerInfoTimer.startTask();
 		BungeeCleanupTask.start();
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorldPlayerCounterTask(), 3 * 20L, 3 * 20L);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorldPlayerCounterTask(), 0L, 3 * 20L);
 		
 		Set<String> savedHolograms = HologramDatabase.getHolograms();
 		if (savedHolograms != null && savedHolograms.size() > 0) {

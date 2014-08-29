@@ -28,7 +28,7 @@ public class ProtocolLibHook {
 			
 			HolographicDisplays.getInstance().getLogger().info("Found ProtocolLib, adding support for player relative variables.");
 
-			ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(HolographicDisplays.getInstance(), ListenerPriority.NORMAL, PacketType.Play.Server.SPAWN_ENTITY_LIVING, PacketType.Play.Server.ENTITY_METADATA) {
+			ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(HolographicDisplays.getInstance(), ListenerPriority.NORMAL, PacketType.Play.Server.SPAWN_ENTITY_LIVING, PacketType.Play.Server.SPAWN_ENTITY, PacketType.Play.Server.ENTITY_METADATA) {
 						  
 					
 					@Override
@@ -74,8 +74,16 @@ public class ProtocolLibHook {
 									
 							}
 
-						// Entity metadata packet
-						} else {
+						} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
+							
+							WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
+							
+							if (spawnEntityPacket.getType() == WrapperPlayServerSpawnEntity.ObjectTypes.ITEM_STACK) {
+								//TODO
+							}
+							
+						
+						} else { // Entity metadata packet
 							
 							WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
 							Entity entity = entityMetadataPacket.getEntity(event);
