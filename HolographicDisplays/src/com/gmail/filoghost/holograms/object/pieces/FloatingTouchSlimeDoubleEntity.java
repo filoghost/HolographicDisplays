@@ -23,11 +23,8 @@ public class FloatingTouchSlimeDoubleEntity extends FloatingDoubleEntity {
 	public void spawn(HologramBase parent, World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
 		despawn();
 		
-		slime = nmsManager.spawnTouchSlime(bukkitWorld, x, y + VERTICAL_OFFSET, z);
-		slime.setParentHologram(parent);
-		
-		skull = nmsManager.spawnHologramWitherSkull(bukkitWorld, x, y + VERTICAL_OFFSET, z);
-		skull.setParentHologram(parent);
+		slime = nmsManager.spawnTouchSlime(bukkitWorld, x, y + VERTICAL_OFFSET, z, parent);
+		skull = nmsManager.spawnHologramWitherSkull(bukkitWorld, x, y + VERTICAL_OFFSET, z, parent);
 		
 		// Let the slime ride the wither skull.
 		skull.setPassengerNMS(slime);

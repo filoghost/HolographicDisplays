@@ -19,7 +19,6 @@ import com.gmail.filoghost.holograms.object.pieces.FloatingItemDoubleEntity;
 import com.gmail.filoghost.holograms.object.pieces.FloatingTouchSlimeDoubleEntity;
 import com.gmail.filoghost.holograms.object.pieces.HologramLine;
 import com.gmail.filoghost.holograms.utils.Validator;
-import com.gmail.filoghost.holograms.utils.VisibilityManager;
 
 /**
  * This class is only used by the plugin itself. Other plugins should just use the API.
@@ -29,8 +28,6 @@ public class CraftHologram extends HologramBase implements Hologram {
 	
 	protected List<FloatingDoubleEntity> linesEntities;
 	protected List<String> textLines;
-	
-	protected VisibilityManager visibilityManager;
 	
 	protected long creationTimestamp;
 	
@@ -88,18 +85,6 @@ public class CraftHologram extends HologramBase implements Hologram {
 	@Override
 	public long getCreationTimestamp() {
 		return creationTimestamp;
-	}
-
-	public void setVisibilityManager(VisibilityManager visibilityManager) {
-		this.visibilityManager = visibilityManager;
-	}
-	
-	public boolean hasVisibilityManager() {
-		return visibilityManager != null;
-	}
-	
-	public VisibilityManager getVisibilityManager() {
-		return visibilityManager;
 	}
 	
 	public void setTouchHandler(TouchHandler touchHandler) {

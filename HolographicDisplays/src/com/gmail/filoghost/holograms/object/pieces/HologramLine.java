@@ -29,12 +29,9 @@ public class HologramLine extends FloatingDoubleEntity {
 	public void spawn(HologramBase parent, World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
 		despawn();
 		
-		horse = nmsManager.spawnHologramHorse(bukkitWorld, x, y + VERTICAL_OFFSET, z);
-		horse.setParentHologram(parent);
-		
-		skull = nmsManager.spawnHologramWitherSkull(bukkitWorld, x, y + VERTICAL_OFFSET, z);
-		skull.setParentHologram(parent);
-		
+		horse = nmsManager.spawnHologramHorse(bukkitWorld, x, y + VERTICAL_OFFSET, z, parent);
+		skull = nmsManager.spawnHologramWitherSkull(bukkitWorld, x, y + VERTICAL_OFFSET, z, parent);
+
 		// Let the horse ride the wither skull.
 		skull.setPassengerNMS(horse);
 		

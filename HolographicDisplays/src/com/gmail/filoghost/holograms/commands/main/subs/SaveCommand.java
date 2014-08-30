@@ -50,7 +50,7 @@ public class SaveCommand extends HologramSubCommand {
 	
 	@Override
 	public SubCommandType getType() {
-		return SubCommandType.GENERIC;
+		return SubCommandType.HIDDEN;
 	}
 
 }

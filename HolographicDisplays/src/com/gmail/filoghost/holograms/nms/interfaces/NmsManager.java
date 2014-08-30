@@ -9,13 +9,13 @@ public interface NmsManager {
 	
 	public void registerCustomEntities() throws Exception;
 
-	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z) throws SpawnFailedException;
+	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, HologramBase parent) throws SpawnFailedException;
 	
-	public HologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z) throws SpawnFailedException;
+	public HologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, HologramBase parent) throws SpawnFailedException;
 	
-	public CustomItem spawnCustomItem(org.bukkit.World bukkitWorld, double x, double y, double z,  ItemStack stack) throws SpawnFailedException;
+	public CustomItem spawnCustomItem(org.bukkit.World bukkitWorld, double x, double y, double z, HologramBase parent, ItemStack stack) throws SpawnFailedException;
 	
-	public TouchSlime spawnTouchSlime(org.bukkit.World bukkitWorld, double x, double y, double z) throws SpawnFailedException;
+	public TouchSlime spawnTouchSlime(org.bukkit.World bukkitWorld, double x, double y, double z, HologramBase parent) throws SpawnFailedException;
 	
 	public boolean isHologramComponent(org.bukkit.entity.Entity bukkitEntity);
 	

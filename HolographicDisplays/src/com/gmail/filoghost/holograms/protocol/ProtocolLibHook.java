@@ -1,5 +1,7 @@
 package com.gmail.filoghost.holograms.protocol;
 
+import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
+
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -16,10 +18,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.gmail.filoghost.holograms.HolographicDisplays;
-import com.gmail.filoghost.holograms.object.CraftHologram;
 import com.gmail.filoghost.holograms.object.HologramBase;
-
-import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
 
 public class ProtocolLibHook {
 	
@@ -46,13 +45,13 @@ public class ProtocolLibHook {
 								return;
 							}
 							
-							CraftHologram hologram = getHologram(entity);
-							if (hologram == null) {
+							HologramBase hologramBase = getHologram(entity);
+							if (hologramBase == null) {
 								return;
 							}
 							
 							Player player = event.getPlayer();
-							if (hologram.hasVisibilityManager() && !hologram.getVisibilityManager().isVisibleTo(player)) {
+							if (hologramBase.hasVisibilityManager() && !hologramBase.getVisibilityManager().isVisibleTo(player)) {
 								event.setCancelled(true);
 								return;
 							}
@@ -77,11 +76,25 @@ public class ProtocolLibHook {
 						} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
 							
 							WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
-							
-							if (spawnEntityPacket.getType() == WrapperPlayServerSpawnEntity.ObjectTypes.ITEM_STACK) {
-								//TODO
+							if (spawnEntityPacket.getType() != WrapperPlayServerSpawnEntity.ObjectTypes.ITEM_STACK) {
+								return;
 							}
 							
+							Entity entity = spawnEntityPacket.getEntity(event);
+							if (entity == null) {
+								return;
+							}
+							
+							HologramBase hologramBase = getHologram(entity);
+							if (hologramBase == null) {
+								return;
+							}
+							
+							Player player = event.getPlayer();
+							if (hologramBase.hasVisibilityManager() && !hologramBase.getVisibilityManager().isVisibleTo(player)) {
+								event.setCancelled(true);
+								return;
+							}
 						
 						} else { // Entity metadata packet
 							
@@ -92,13 +105,13 @@ public class ProtocolLibHook {
 								return;
 							}
 							
-							CraftHologram hologram = getHologram(entity);
-							if (hologram == null) {
+							HologramBase hologramBase = getHologram(entity);
+							if (hologramBase == null) {
 								return;
 							}
 							
 							Player player = event.getPlayer();
-							if (hologram.hasVisibilityManager() && !hologram.getVisibilityManager().isVisibleTo(player)) {
+							if (hologramBase.hasVisibilityManager() && !hologramBase.getVisibilityManager().isVisibleTo(player)) {
 								event.setCancelled(true);
 								return;
 							}
@@ -145,12 +158,7 @@ public class ProtocolLibHook {
 	}
 	
 	// Horses are always part of a CraftHologram
-	private static CraftHologram getHologram(Entity bukkitEntity) {
-		HologramBase base = nmsManager.getParentHologram(bukkitEntity);
-		if (base instanceof CraftHologram) {
-			return (CraftHologram) base;
-		} else {
-			return null;
-		}
+	private static HologramBase getHologram(Entity bukkitEntity) {
+		return nmsManager.getParentHologram(bukkitEntity);
 	}
 }

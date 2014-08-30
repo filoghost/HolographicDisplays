@@ -121,7 +121,52 @@ public class HolographicDisplaysAPI {
 		return hologram;
 	}
 	
-	//TODO individual floating item
+	/**
+	 * Creates a floating item at given location that only a player can see. If the provided player is null, no one will be able to see it.
+	 * IMPORTANT NOTE: Requires ProtocolLib.
+	 * @param plugin - the plugin that creates it.
+	 * @param source - the location where it will appear.
+	 * @param whoCanSee - the player who can see it.
+	 * @param itemstack - the floating item that will appear.
+	 * @return the new hologram created.
+	 */
+	public static FloatingItem createIndividualFloatingItem(Plugin plugin, Location source, Player whoCanSee, ItemStack itemstack) {
+		return createIndividualFloatingItem(plugin, source, GenericUtils.createList(whoCanSee), itemstack);
+	}
+	
+	/**
+	 * Creates a floating item at given location that only a list of players can see. If the provided list is null, no one will be able to see it.
+	 * IMPORTANT NOTE: Requires ProtocolLib.
+	 * @param plugin - the plugin that creates it.
+	 * @param source - the location where it will appear.
+	 * @param whoCanSee - a list of players who can see it.
+	 * @param itemstack - the floating item that will appear.
+	 * @return the new hologram created.
+	 */
+	public static FloatingItem createIndividualFloatingItem(Plugin plugin, Location source, List<Player> whoCanSee, ItemStack itemstack) {
+		
+		Validator.notNull(plugin, "plugin cannot be null");
+		Validator.notNull(source, "source cannot be null");
+		Validator.notNull(source.getWorld(), "source's world cannot be null");
+		Validator.notNull(itemstack, "itemstack cannot be null");
+		Validator.checkArgument(itemstack.getType() != Material.AIR, "itemstack cannot be AIR");
+		
+		CraftFloatingItem floatingItem = new CraftFloatingItem(source, itemstack);
+
+		VisibilityManager visibilityManager = new VisibilityManager();
+		floatingItem.setVisibilityManager(visibilityManager);
+		
+		if (whoCanSee != null) {
+			for (Player player : whoCanSee) {
+				floatingItem.getVisibilityManager().showTo(player);
+			}
+		}
+		
+		APIFloatingItemManager.addFloatingItem(plugin, floatingItem);
+		
+		floatingItem.update();
+		return floatingItem;
+	}
 	
 	/**
 	 * @return a copy of all the holograms created with the API by a plugin.

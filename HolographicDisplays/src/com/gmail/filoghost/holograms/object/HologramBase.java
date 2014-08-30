@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import com.gmail.filoghost.holograms.utils.Validator;
+import com.gmail.filoghost.holograms.utils.VisibilityManager;
 
 public abstract class HologramBase {
 	
@@ -16,6 +17,8 @@ public abstract class HologramBase {
 	
 	protected int chunkX;
 	protected int chunkZ;
+	
+	protected VisibilityManager visibilityManager;
 	
 	private boolean deleted;
 	
@@ -79,6 +82,18 @@ public abstract class HologramBase {
 	
 	public final boolean isInLoadedChunk() {
 		return bukkitWorld.isChunkLoaded(chunkX, chunkZ);
+	}
+	
+	public void setVisibilityManager(VisibilityManager visibilityManager) {
+		this.visibilityManager = visibilityManager;
+	}
+	
+	public boolean hasVisibilityManager() {
+		return visibilityManager != null;
+	}
+	
+	public VisibilityManager getVisibilityManager() {
+		return visibilityManager;
 	}
 	
 	public final void delete() {

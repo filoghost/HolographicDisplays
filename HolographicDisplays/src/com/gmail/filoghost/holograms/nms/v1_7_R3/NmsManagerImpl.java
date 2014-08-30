@@ -46,9 +46,10 @@ public class NmsManagerImpl implements NmsManager {
 	}
 	
 	@Override
-	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z) throws SpawnFailedException {
+	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, HologramBase parent) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) world).getHandle();
 		EntityHologramHorse invisibleHorse = new EntityHologramHorse(nmsWorld);
+		invisibleHorse.setParentHologram(parent);
 		invisibleHorse.setLocationNMS(x, y, z);
 		if (!nmsWorld.addEntity(invisibleHorse, SpawnReason.CUSTOM)) {
 			throw new SpawnFailedException();
@@ -57,9 +58,10 @@ public class NmsManagerImpl implements NmsManager {
 	}
 	
 	@Override
-	public HologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
+	public HologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, HologramBase parent) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
 		EntityHologramWitherSkull staticWitherSkull = new EntityHologramWitherSkull(nmsWorld);
+		staticWitherSkull.setParentHologram(parent);;
 		staticWitherSkull.setLocationNMS(x, y, z);
 		if (!nmsWorld.addEntity(staticWitherSkull, SpawnReason.CUSTOM)) {
 			throw new SpawnFailedException();
@@ -69,9 +71,10 @@ public class NmsManagerImpl implements NmsManager {
 	
 	
 	@Override
-	public CustomItem spawnCustomItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemStack stack) throws SpawnFailedException {
+	public CustomItem spawnCustomItem(org.bukkit.World bukkitWorld, double x, double y, double z, HologramBase parent, ItemStack stack) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
 		EntityCustomItem customItem = new EntityCustomItem(nmsWorld);
+		customItem.setParentHologram(parent);
 		customItem.setLocationNMS(x, y, z);
 		customItem.setItemStackNMS(stack);
 		if (!nmsWorld.addEntity(customItem, SpawnReason.CUSTOM)) {
@@ -82,9 +85,10 @@ public class NmsManagerImpl implements NmsManager {
 
 	
 	@Override
-	public EntityTouchSlime spawnTouchSlime(org.bukkit.World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
+	public EntityTouchSlime spawnTouchSlime(org.bukkit.World bukkitWorld, double x, double y, double z, HologramBase parent) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
 		EntityTouchSlime touchSlime = new EntityTouchSlime(nmsWorld);
+		touchSlime.setParentHologram(parent);
 		touchSlime.setLocationNMS(x, y, z);
 		if (!nmsWorld.addEntity(touchSlime, SpawnReason.CUSTOM)) {
 			throw new SpawnFailedException();
@@ -111,7 +115,7 @@ public class NmsManagerImpl implements NmsManager {
 		if (nmsEntity instanceof HologramComponent) {
 			return ((HologramComponent) nmsEntity).getParentHologram();
 		}
-
+		
 		return null;
 	}
 

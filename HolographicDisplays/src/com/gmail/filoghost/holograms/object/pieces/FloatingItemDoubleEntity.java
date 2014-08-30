@@ -28,13 +28,10 @@ public class FloatingItemDoubleEntity extends FloatingDoubleEntity {
 	public void spawn(HologramBase parent, World bukkitWorld, double x, double y, double z) throws SpawnFailedException {
 		despawn();
 		
-		item = nmsManager.spawnCustomItem(bukkitWorld, x, y + VERTICAL_OFFSET, z, itemStack);
-		item.setParentHologram(parent);
+		item = nmsManager.spawnCustomItem(bukkitWorld, x, y + VERTICAL_OFFSET, z, parent, itemStack);		
+		skull = nmsManager.spawnHologramWitherSkull(bukkitWorld, x, y + VERTICAL_OFFSET, z, parent);
 		
 		item.allowPickup(allowPickup);
-		
-		skull = nmsManager.spawnHologramWitherSkull(bukkitWorld, x, y + VERTICAL_OFFSET, z);
-		skull.setParentHologram(parent);
 		
 		// Let the item ride the wither skull.
 		skull.setPassengerNMS(item);
