@@ -95,7 +95,8 @@ public class FancyMessageImpl implements FancyMessage {
 	}
 	
 	public String toJSONString() {
-		JsonWriter json = new JsonWriter(new StringWriter());
+		StringWriter stringWriter = new StringWriter();
+		JsonWriter json = new JsonWriter(stringWriter);
 		
 		try {
 			if (messageParts.size() == 1) {
@@ -111,7 +112,7 @@ public class FancyMessageImpl implements FancyMessage {
 		} catch (IOException e) {
 			throw new RuntimeException("invalid message");
 		}
-		return json.toString();
+		return stringWriter.toString();
 	}
 	
 	public void send(Player player){
@@ -123,7 +124,8 @@ public class FancyMessageImpl implements FancyMessage {
 	}
 	
 	private String makeMultilineTooltip(String[] lines) {
-		JsonWriter json = new JsonWriter(new StringWriter());
+		StringWriter stringWriter = new StringWriter();
+		JsonWriter json = new JsonWriter(stringWriter);
 		try {
 			json.beginObject().name("id").value(1);
 			json.name("tag").beginObject().name("display").beginObject();
@@ -138,7 +140,7 @@ public class FancyMessageImpl implements FancyMessage {
 		} catch (IOException e) {
 			throw new RuntimeException("invalid tooltip");
 		}
-		return json.toString();
+		return stringWriter.toString();
 	}
 	
 	private void onClick(String name, String data) {
