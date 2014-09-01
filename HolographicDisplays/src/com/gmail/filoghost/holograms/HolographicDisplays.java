@@ -10,7 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.filoghost.holograms.SimpleUpdater.FailCause;
 import com.gmail.filoghost.holograms.bungee.ServerInfoTimer;
 import com.gmail.filoghost.holograms.commands.main.HologramsCommandHandler;
 import com.gmail.filoghost.holograms.database.HologramDatabase;
@@ -68,38 +67,15 @@ public class HolographicDisplays extends JavaPlugin {
 		loadConfiguration();
 		
 		if (Configuration.updateNotification) {
-			new SimpleUpdater(this, 75097, this.getFile()).checkForUpdates(new ResponseHandler() {
+			new SimpleUpdater(this, 75097).checkForUpdates(new ResponseHandler() {
 				
 				@Override
 				public void onUpdateFound(final String newVersion) {
-					Bukkit.getScheduler().scheduleSyncDelayedTask(instance, new Runnable() {
 
-						@Override
-						public void run() {
-							Configuration.newVersion = newVersion;
-							logger.info("Found a new version available: " + newVersion);
-							logger.info("Download it on Bukkit Dev:");
-							logger.info("dev.bukkit.org/bukkit-plugins/holographic-displays");
-						}
-						
-					});
-					
-				}
-				
-				@Override
-				public void onFail(FailCause result) {
-					// Handle BAD_VERSION and INVALID_PROJECT_ID only.
-					if (result == FailCause.BAD_VERSION) {
-						getLogger().warning("The author of this plugin has misconfigured the Updater system.");
-						getLogger().warning("File versions should follow the format 'PluginName vVERSION'");
-			            getLogger().warning("Please notify the author of this error.");
-					} else if (result == FailCause.INVALID_PROJECT_ID) {
-						getLogger().warning("The author of this plugin has misconfigured the Updater system.");
-						getLogger().warning("The project ID (" + 75097 + ") provided for updating is invalid.");
-						getLogger().warning("Please notify the author of this error.");
-					} else if (result == FailCause.BUKKIT_OFFLINE) {
-						getLogger().warning("Could not contact BukkitDev to check for updates.");
-					}
+					Configuration.newVersion = newVersion;
+					logger.info("Found a new version available: " + newVersion);
+					logger.info("Download it on Bukkit Dev:");
+					logger.info("dev.bukkit.org/bukkit-plugins/holographic-displays");					
 				}
 			});
 		}
