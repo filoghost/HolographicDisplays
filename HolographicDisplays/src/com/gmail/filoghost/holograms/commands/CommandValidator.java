@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holograms.exception.CommandException;
+import com.gmail.filoghost.holograms.utils.ItemUtils;
 
 public class CommandValidator {
 	
@@ -52,8 +53,8 @@ public class CommandValidator {
 	
 	@SuppressWarnings("deprecation")
 	public static ItemStack matchItemStack(String input) throws CommandException {
-		
-		String copy = input;
+
+		input = input.replace(" ", ""); // Cut the spaces
 		
 		int dataValue = 0;
 		if (input.contains(":")) {
@@ -72,17 +73,11 @@ public class CommandValidator {
 				}
 			}
 		} else {
-			input = input.replace("_", "").replace("-", "").toLowerCase();
-			for (Material mat : Material.values()) {
-				if (mat.toString().replace("_", "").toLowerCase().equals(input)) {
-					match = mat;
-					break;
-				}
-			}
+			match = ItemUtils.matchMaterial(input);
 		}
 		
-		if (match == null) {
-			throw new CommandException("Invalid material: " + copy);
+		if (match == null || match == Material.AIR) {
+			throw new CommandException("Invalid material: " + input);
 		}
 		
 		return new ItemStack(match, 1, (short) dataValue);

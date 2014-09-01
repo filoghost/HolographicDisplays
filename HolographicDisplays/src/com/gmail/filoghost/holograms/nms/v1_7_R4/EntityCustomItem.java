@@ -1,5 +1,6 @@
 package com.gmail.filoghost.holograms.nms.v1_7_R4;
 
+import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.NBTTagList;
 import net.minecraft.server.v1_7_R4.NBTTagString;
 import net.minecraft.server.v1_7_R4.EntityHuman;
@@ -145,6 +146,10 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	@Override
 	public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
 		ItemStack newItem = CraftItemStack.asNMSCopy(stack);
+		
+		if (newItem == null) {
+			newItem = new ItemStack(Blocks.BEDROCK);
+		}
 		
 		if (newItem.tag == null) {
 			newItem.tag = new NBTTagCompound();

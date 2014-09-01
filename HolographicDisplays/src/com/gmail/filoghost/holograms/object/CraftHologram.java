@@ -18,6 +18,7 @@ import com.gmail.filoghost.holograms.object.pieces.FloatingDoubleEntity;
 import com.gmail.filoghost.holograms.object.pieces.FloatingItemDoubleEntity;
 import com.gmail.filoghost.holograms.object.pieces.FloatingTouchSlimeDoubleEntity;
 import com.gmail.filoghost.holograms.object.pieces.HologramLine;
+import com.gmail.filoghost.holograms.utils.ItemUtils;
 import com.gmail.filoghost.holograms.utils.Validator;
 
 /**
@@ -139,15 +140,19 @@ public class CraftHologram extends HologramBase implements Hologram {
 					// It's a floating icon!
 					ItemStack icon;
 					try {
-						icon = CommandValidator.matchItemStack(text.substring(5).trim());
+						icon = CommandValidator.matchItemStack(text.substring(5));
 					} catch (CommandException e) {
 						icon = new ItemStack(Material.BEDROCK);
 					}
 					
 					// If the current Y has been changed, the item is NOT on top of the hologram.
 					if (currentY != this.y) {
-						// Extra space for the floating item...
-						currentY -= 0.52;
+						// Extra space for the floating item, blocks are smaller
+						if (ItemUtils.appearsAsBlock(icon.getType())) {
+							currentY -= 0.27;
+						} else {
+							currentY -= 0.52;
+						}
 					}
 					
 					FloatingItemDoubleEntity lineEntity = new FloatingItemDoubleEntity(icon);
@@ -231,8 +236,12 @@ public class CraftHologram extends HologramBase implements Hologram {
 				if (lineEntity instanceof FloatingItemDoubleEntity) {
 					
 					if (currentY != loc.getY()) {
-						// Extra space for the floating item...
-						currentY -= 0.52;
+						// Extra space for the floating item, blocks are smaller
+						if (ItemUtils.appearsAsBlock(((FloatingItemDoubleEntity) lineEntity).getItemStack().getType())) {
+							currentY -= 0.27;
+						} else {
+							currentY -= 0.52;
+						}
 					}
 					
 					lineEntity.teleport(loc.getX(), currentY, loc.getZ());

@@ -19,6 +19,7 @@ import net.minecraft.server.v1_7_R2.EntityHuman;
 import net.minecraft.server.v1_7_R2.EntityPlayer;
 import net.minecraft.server.v1_7_R2.NBTTagList;
 import net.minecraft.server.v1_7_R2.NBTTagString;
+import net.minecraft.server.v1_7_R2.Blocks;
 
 public class EntityCustomItem extends EntityItem implements CustomItem, BasicEntityNMS {
 	
@@ -145,6 +146,10 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	@Override
 	public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
 		ItemStack newItem = CraftItemStack.asNMSCopy(stack);
+		
+		if (newItem == null) {
+			newItem = new ItemStack(Blocks.BEDROCK);
+		}
 		
 		if (newItem.tag == null) {
 			newItem.tag = new NBTTagCompound();
