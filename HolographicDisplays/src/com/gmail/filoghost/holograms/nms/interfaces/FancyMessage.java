@@ -1,10 +1,11 @@
 package com.gmail.filoghost.holograms.nms.interfaces;
 
+import java.io.IOException;
+
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.json.JSONException;
-import org.json.JSONWriter;
 
 public interface FancyMessage {
 
@@ -48,28 +49,28 @@ public interface FancyMessage {
 			this.text = text;
 		}
 		
-		public JSONWriter writeJson(final JSONWriter json) throws JSONException {
-			json.object().key("text").value(text);
+		public JsonWriter writeJson(final JsonWriter json) throws IOException {
+			json.beginObject().name("text").value(text);
 			if (color != null) {
-				json.key("color").value(color.name().toLowerCase());
+				json.name("color").value(color.name().toLowerCase());
 			}
 			if (styles != null) {
 				for (final ChatColor style : styles) {
-					json.key(style == ChatColor.UNDERLINE ? "underlined" : style.name().toLowerCase()).value(true);
+					json.name(style == ChatColor.UNDERLINE ? "underlined" : style.name().toLowerCase()).value(true);
 				}
 			}
 			if (clickActionName != null && clickActionData != null) {
-				json.key("clickEvent")
-					.object()
-						.key("action").value(clickActionName)
-						.key("value").value(clickActionData)
+				json.name("clickEvent")
+					.beginObject()
+						.name("action").value(clickActionName)
+						.name("value").value(clickActionData)
 					.endObject();
 			}
 			if (hoverActionName != null && hoverActionData != null) {
-				json.key("hoverEvent")
-					.object()
-						.key("action").value(hoverActionName)
-						.key("value").value(hoverActionData)
+				json.name("hoverEvent")
+					.beginObject()
+						.name("action").value(hoverActionName)
+						.name("value").value(hoverActionData)
 					.endObject();
 			}
 			return json.endObject();
