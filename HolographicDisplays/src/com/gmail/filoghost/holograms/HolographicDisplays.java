@@ -42,6 +42,12 @@ public class HolographicDisplays extends JavaPlugin {
 	private static PlaceholderManager placeholderManager;
 	
 	public void onEnable() {
+		
+		if (instance != null) {
+			getLogger().warning("Please do not use /reload or plugin reloaders. Do \"/hd reload\" instead.");
+			return;
+		}		
+		
 		instance = this;
 		logger = getLogger();
 		
