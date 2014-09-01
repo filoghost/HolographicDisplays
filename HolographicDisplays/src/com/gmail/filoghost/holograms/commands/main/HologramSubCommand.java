@@ -35,7 +35,7 @@ public abstract class HologramSubCommand {
 	
 	public final boolean hasPermission(CommandSender sender) {
 		if (permission == null) return true;
-		return sender.hasPermission(permission);
+		return sender.hasPermission("holograms.admin") || sender.hasPermission(permission);
 	}
 	
 	public abstract String getPossibleArguments();

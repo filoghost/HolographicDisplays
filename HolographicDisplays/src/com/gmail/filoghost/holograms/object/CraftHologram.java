@@ -135,7 +135,7 @@ public class CraftHologram extends HologramBase implements Hologram {
 			for (String text : textLines) {
 				
 				if (text.length() >= 5 && text.substring(0, 5).toLowerCase().equals("icon:")) {
-					
+
 					// It's a floating icon!
 					ItemStack icon;
 					try {
@@ -147,7 +147,7 @@ public class CraftHologram extends HologramBase implements Hologram {
 					// If the current Y has been changed, the item is NOT on top of the hologram.
 					if (currentY != this.y) {
 						// Extra space for the floating item...
-						currentY -= 0.27;
+						currentY -= 0.52;
 					}
 					
 					FloatingItemDoubleEntity lineEntity = new FloatingItemDoubleEntity(icon);
@@ -232,7 +232,7 @@ public class CraftHologram extends HologramBase implements Hologram {
 					
 					if (currentY != loc.getY()) {
 						// Extra space for the floating item...
-						currentY -= 0.27;
+						currentY -= 0.52;
 					}
 					
 					lineEntity.teleport(loc.getX(), currentY, loc.getZ());
