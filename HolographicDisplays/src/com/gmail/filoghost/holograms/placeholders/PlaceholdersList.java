@@ -12,7 +12,7 @@ import com.gmail.filoghost.holograms.Configuration;
 public class PlaceholdersList {
 
 	// Each 2 tenths of second
-	private static final Placeholder RAINBOW_TEXT = new AnimatedPlaceholder("&u", 2, new String[] {"§c", "§6", "§e", "§a", "§b", "§d"});
+	private static final Placeholder RAINBOW_TEXT = new AnimatedPlaceholder("&u", 2, new String[] {"Â§c", "Â§6", "Â§e", "Â§a", "Â§b", "Â§d"});
 	
 	// Each second
 	private static final Placeholder ONLINE_PLAYERS = new Placeholder("{online}", "{o}", 10) {
@@ -34,6 +34,15 @@ public class PlaceholdersList {
 		
 	};
 	
+	// Each 60 seconds
+	private static final Placeholder MOTD = new Placeholder("{motd}", "{message_of_the_day}", 600) {
+		
+		@Override
+		public void update() {
+			currentReplacement = Bukkit.getServer().getMotd();
+		}
+	};
+	
 	// Each second
 	private static final Placeholder TIME = new Placeholder("{time}", "{t}", 10) {
 		
@@ -45,9 +54,9 @@ public class PlaceholdersList {
 	};
 	
 	// Each 5 seconds, maybe has changed
-	private static final Placeholder DISPLAYNAME = new AnimatedPlaceholder("{displayname}", 30, new String[]{"§f{displayname}", "§r{displayname}"});
+	private static final Placeholder DISPLAYNAME = new AnimatedPlaceholder("{displayname}", 30, new String[]{"Â§f{displayname}", "Â§r{displayname}"});
 	
-	private static List<Placeholder> defaultList = Arrays.asList(RAINBOW_TEXT, ONLINE_PLAYERS, MAX_PLAYERS, TIME, DISPLAYNAME);
+	private static List<Placeholder> defaultList = Arrays.asList(RAINBOW_TEXT, ONLINE_PLAYERS, MAX_PLAYERS, TIME, DISPLAYNAME, MOTD);
 	private static List<AnimatedPlaceholder> animatedList = new ArrayList<AnimatedPlaceholder>();
 
 	public static List<Placeholder> getDefaults() {
