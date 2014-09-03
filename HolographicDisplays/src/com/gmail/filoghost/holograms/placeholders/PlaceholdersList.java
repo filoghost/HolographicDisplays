@@ -61,8 +61,8 @@ public class PlaceholdersList {
 		
 	};
 	
-	// Each 5 seconds, maybe has changed
-	private static final Placeholder DISPLAYNAME = new AnimatedPlaceholder("{displayname}", 30, new String[] {ChatColor.WHITE + "{displayname}", ChatColor.WHITE + "{displayname}"});
+	// Each 10 seconds, maybe has changed
+	private static final Placeholder DISPLAYNAME = new AnimatedPlaceholder("{displayname}", 100, new String[] {ChatColor.WHITE + "{displayname}", ChatColor.WHITE + "{displayname}"});
 	
 	private static List<Placeholder> defaultList = Arrays.asList(RAINBOW_TEXT, ONLINE_PLAYERS, MAX_PLAYERS, TIME, DISPLAYNAME, MOTD);
 	private static List<AnimatedPlaceholder> animatedList = new ArrayList<AnimatedPlaceholder>();
