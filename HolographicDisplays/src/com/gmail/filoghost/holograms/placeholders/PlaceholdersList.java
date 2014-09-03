@@ -12,7 +12,7 @@ import com.gmail.filoghost.holograms.Configuration;
 public class PlaceholdersList {
 
 	// Each 2 tenths of second
-	private static final Placeholder RAINBOW_TEXT = new AnimatedPlaceholder("&u", 2, new String[] {"Â§c", "Â§6", "Â§e", "Â§a", "Â§b", "Â§d"});
+	private static final Placeholder RAINBOW_TEXT = new AnimatedPlaceholder("&u", 2, new String[] {"§c", "§6", "§e", "§a", "§b", "§d"});
 	
 	// Each second
 	private static final Placeholder ONLINE_PLAYERS = new Placeholder("{online}", "{o}", 10) {
@@ -54,7 +54,7 @@ public class PlaceholdersList {
 	};
 	
 	// Each 5 seconds, maybe has changed
-	private static final Placeholder DISPLAYNAME = new AnimatedPlaceholder("{displayname}", 30, new String[]{"Â§f{displayname}", "Â§r{displayname}"});
+	private static final Placeholder DISPLAYNAME = new AnimatedPlaceholder("{displayname}", 30, new String[]{"§f{displayname}", "§r{displayname}"});
 	
 	private static List<Placeholder> defaultList = Arrays.asList(RAINBOW_TEXT, ONLINE_PLAYERS, MAX_PLAYERS, TIME, DISPLAYNAME, MOTD);
 	private static List<AnimatedPlaceholder> animatedList = new ArrayList<AnimatedPlaceholder>();
