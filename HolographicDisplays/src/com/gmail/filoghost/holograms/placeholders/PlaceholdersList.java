@@ -6,13 +6,21 @@ import java.util.Date;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import com.gmail.filoghost.holograms.Configuration;
 
 public class PlaceholdersList {
 
 	// Each 2 tenths of second
-	private static final Placeholder RAINBOW_TEXT = new AnimatedPlaceholder("&u", 2, new String[] {"§c", "§6", "§e", "§a", "§b", "§d"});
+	private static final Placeholder RAINBOW_TEXT = new AnimatedPlaceholder("&u", 2, new String[] {
+			ChatColor.RED + "",
+			ChatColor.GOLD + "",
+			ChatColor.YELLOW + "",
+			ChatColor.GREEN + "",
+			ChatColor.AQUA + "",
+			ChatColor.LIGHT_PURPLE + ""
+	});
 	
 	// Each second
 	private static final Placeholder ONLINE_PLAYERS = new Placeholder("{online}", "{o}", 10) {
@@ -35,7 +43,7 @@ public class PlaceholdersList {
 	};
 	
 	// Each 60 seconds
-	private static final Placeholder MOTD = new Placeholder("{motd}", "{message_of_the_day}", 600) {
+	private static final Placeholder MOTD = new Placeholder("{motd}", "{motd}", 600) {
 		
 		@Override
 		public void update() {
@@ -54,7 +62,7 @@ public class PlaceholdersList {
 	};
 	
 	// Each 5 seconds, maybe has changed
-	private static final Placeholder DISPLAYNAME = new AnimatedPlaceholder("{displayname}", 30, new String[]{"§f{displayname}", "§r{displayname}"});
+	private static final Placeholder DISPLAYNAME = new AnimatedPlaceholder("{displayname}", 30, new String[] {ChatColor.WHITE + "{displayname}", ChatColor.WHITE + "{displayname}"});
 	
 	private static List<Placeholder> defaultList = Arrays.asList(RAINBOW_TEXT, ONLINE_PLAYERS, MAX_PLAYERS, TIME, DISPLAYNAME, MOTD);
 	private static List<AnimatedPlaceholder> animatedList = new ArrayList<AnimatedPlaceholder>();
