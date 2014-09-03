@@ -43,17 +43,20 @@ public class ItemUtils {
 	
 	// A map with formatter materials (lowercase and without dashes) for fast access.
 	private static Map<String, Material> materialMap = new HashMap<String, Material>();
-	private static Pattern stripSymbolsPattern = Pattern.compile("_- ");
+	private static Pattern stripSymbolsPattern = Pattern.compile("[_ \\-]+");
 	
 	static {
 		for (Material mat : Material.values()) {
-			materialMap.put(mat.toString().toLowerCase().replace("_", ""), mat);
+			materialMap.put(stripSpacingChars(mat.toString()).toLowerCase(), mat);
 		}
 	}
 	
+	public static String stripSpacingChars(String input) {
+		return stripSymbolsPattern.matcher(input).replaceAll("");
+	}
 	
 	public static Material matchMaterial(String input) {
-		return materialMap.get(stripSymbolsPattern.matcher(input.toLowerCase()).replaceAll(""));
+		return materialMap.get(stripSpacingChars(input).toLowerCase());
 	}
 	
 	@SuppressWarnings("deprecation")

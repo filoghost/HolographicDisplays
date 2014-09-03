@@ -54,7 +54,7 @@ public class CommandValidator {
 	@SuppressWarnings("deprecation")
 	public static ItemStack matchItemStack(String input) throws CommandException {
 
-		input = input.replace(" ", ""); // Cut the spaces
+		input = input.replace(" ", ""); // Remove the spaces
 		
 		int dataValue = 0;
 		if (input.contains(":")) {
