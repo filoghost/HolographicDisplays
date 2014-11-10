@@ -11,9 +11,7 @@ public enum ConfigNode {
 	TRANSPARENCY_COLOR("images.transparency.color", "&7"),
 	UPDATE_NOTIFICATION("update-notification", true),
 	BUNGEE_REFRESH_SECONDS("bungee-refresh-seconds", 3),
-	BUNGEE_ONLINE_FORMAT("bungee-online-format", "&aOnline"),
-	BUNGEE_OFFLINE_FORMAT("bungee-offline-format", "&cOffline"),
-	BUNGEE_USE_REDIS_BUNGEE("bungee-use-RedisBungee-plugin", false),
+	BUNGEE_USE_REDIS_BUNGEE("using-RedisBungee", false),
 	TIME_FORMAT("time-format", "H:mm");
 	
 	private String path;

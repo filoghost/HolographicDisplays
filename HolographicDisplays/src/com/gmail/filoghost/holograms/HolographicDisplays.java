@@ -246,8 +246,6 @@ public class HolographicDisplays extends JavaPlugin {
 		Configuration.imageSymbol = StringUtils.toReadableFormat(ConfigNode.IMAGES_SYMBOL.getString(getConfig()));		
 		Configuration.transparencySymbol = StringUtils.toReadableFormat(ConfigNode.TRANSPARENCY_SPACE.getString(getConfig()));
 		Configuration.bungeeRefreshSeconds = ConfigNode.BUNGEE_REFRESH_SECONDS.getInt(getConfig());
-		Configuration.bungeeOnlineFormat = StringUtils.toReadableFormat(ConfigNode.BUNGEE_ONLINE_FORMAT.getString(getConfig()));
-		Configuration.bungeeOfflineFormat = StringUtils.toReadableFormat(ConfigNode.BUNGEE_OFFLINE_FORMAT.getString(getConfig()));
 		Configuration.redisBungee = ConfigNode.BUNGEE_USE_REDIS_BUNGEE.getBoolean(getConfig());
 		
 		try {
