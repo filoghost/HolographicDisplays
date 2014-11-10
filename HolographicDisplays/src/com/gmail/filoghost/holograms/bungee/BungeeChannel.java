@@ -18,8 +18,6 @@ public class BungeeChannel implements PluginMessageListener {
 
 	private static BungeeChannel instance;
 	
-	private BungeeChannel() { }
-	
 	private static void initialize() {
 		instance = new BungeeChannel();
 		Bukkit.getMessenger().registerOutgoingPluginChannel(HolographicDisplays.getInstance(), "BungeeCord");
