@@ -89,7 +89,7 @@ public class HolographicDisplays extends JavaPlugin {
 		String version = VersionUtils.getBukkitVersion();
 		
 		if (version == null) {
-			// Caused by MCPC+ / Cauldron renaming packages, get the version from Bukkit.getVersion()
+			// Caused by MCPC+ / Cauldron renaming packages, extract the version from Bukkit.getVersion()
 			version = VersionUtils.getMinecraftVersion();
 			
 			if ("1.6.4".equals(version)) {
@@ -100,6 +100,8 @@ public class HolographicDisplays extends JavaPlugin {
 				version = "v1_7_R2";
 			} else if ("1.7.8".equals(version)) {
 				version = "v1_7_R3";
+			} else if ("1.7.10".equals(version)) {
+				version = "v1_7_R4";
 			} else {
 				// Cannot definitely get the version. This will cause HD to disable itself.
 				version = null;
