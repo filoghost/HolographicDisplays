@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
+import com.gmail.filoghost.holograms.Configuration;
 import com.gmail.filoghost.holograms.HolographicDisplays;
 
 public class BungeeChannel implements PluginMessageListener {
@@ -23,6 +24,8 @@ public class BungeeChannel implements PluginMessageListener {
 		instance = new BungeeChannel();
 		Bukkit.getMessenger().registerOutgoingPluginChannel(HolographicDisplays.getInstance(), "BungeeCord");
         Bukkit.getMessenger().registerIncomingPluginChannel(HolographicDisplays.getInstance(), "BungeeCord", instance);
+        Bukkit.getMessenger().registerOutgoingPluginChannel(HolographicDisplays.getInstance(), "RedisBungee");
+        Bukkit.getMessenger().registerIncomingPluginChannel(HolographicDisplays.getInstance(), "RedisBungee", instance);
 	}
 	
 	public static BungeeChannel instance() {
@@ -34,7 +37,7 @@ public class BungeeChannel implements PluginMessageListener {
 
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-		if (!channel.equals("BungeeCord")) {
+		if (!channel.equals("BungeeCord") || !channel.equals("RedisBungee")) {
             return;
         }
 		
@@ -80,7 +83,7 @@ public class BungeeChannel implements PluginMessageListener {
 		// OR, if you don't need to send it to a specific player
 		Player[] players = Bukkit.getOnlinePlayers();
 		if (players.length > 0) {
-			players[0].sendPluginMessage(HolographicDisplays.getInstance(), "BungeeCord", b.toByteArray());
+			players[0].sendPluginMessage(HolographicDisplays.getInstance(), Configuration.redisBungee ? "RedisBungee" : "BungeeCord", b.toByteArray());
 		}
 	}
 }

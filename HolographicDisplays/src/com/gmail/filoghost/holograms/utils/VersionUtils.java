@@ -25,11 +25,8 @@ public class VersionUtils {
 		}
 	}
 	
-	public static boolean isMCPC() {
-		return Bukkit.getVersion().contains("MCPC-Plus");
+	public static boolean isMCPCOrCauldron() {
+		return Bukkit.getVersion().toLowerCase().contains("mcpc") || Bukkit.getVersion().toLowerCase().contains("cauldron");
 	}
 	
-	public static boolean isCauldron() {
-		return Bukkit.getVersion().contains("Cauldron");
-	}	
 }

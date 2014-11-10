@@ -13,6 +13,7 @@ public enum ConfigNode {
 	BUNGEE_REFRESH_SECONDS("bungee-refresh-seconds", 3),
 	BUNGEE_ONLINE_FORMAT("bungee-online-format", "&aOnline"),
 	BUNGEE_OFFLINE_FORMAT("bungee-offline-format", "&cOffline"),
+	BUNGEE_USE_REDIS_BUNGEE("bungee-use-RedisBungee-plugin", false),
 	TIME_FORMAT("time-format", "H:mm");
 	
 	private String path;

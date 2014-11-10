@@ -33,7 +33,7 @@ public class NmsManagerImpl implements NmsManager {
 	
 	@SuppressWarnings("rawtypes")
 	public void registerCustomEntity(Class entityClass, String name, int id) throws Exception {
-		if (VersionUtils.isMCPC() || VersionUtils.isCauldron()) {
+		if (VersionUtils.isMCPCOrCauldron()) {
 			// MCPC+ / Cauldron entity registration.
 			Class<?> entityTypesClass = Class.forName("net.minecraft.server.v1_7_R2.EntityTypes");
 			ReflectionUtils.putInPrivateStaticMap(entityTypesClass, "field_75626_c", entityClass, name);

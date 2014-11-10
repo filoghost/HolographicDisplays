@@ -130,13 +130,13 @@ public class HolographicDisplays extends JavaPlugin {
 		}
 
 		try {
-			if (VersionUtils.isMCPC() || VersionUtils.isCauldron()) {
+			if (VersionUtils.isMCPCOrCauldron()) {
 				getLogger().info("Trying to enable Cauldron/MCPC+ support...");
 			}
 			
 			nmsManager.registerCustomEntities();
 			
-			if (VersionUtils.isMCPC() || VersionUtils.isCauldron()) {
+			if (VersionUtils.isMCPCOrCauldron()) {
 				getLogger().info("Successfully added support for Cauldron/MCPC+!");
 			}
 			
@@ -246,6 +246,7 @@ public class HolographicDisplays extends JavaPlugin {
 		Configuration.bungeeRefreshSeconds = ConfigNode.BUNGEE_REFRESH_SECONDS.getInt(getConfig());
 		Configuration.bungeeOnlineFormat = StringUtils.toReadableFormat(ConfigNode.BUNGEE_ONLINE_FORMAT.getString(getConfig()));
 		Configuration.bungeeOfflineFormat = StringUtils.toReadableFormat(ConfigNode.BUNGEE_OFFLINE_FORMAT.getString(getConfig()));
+		Configuration.redisBungee = ConfigNode.BUNGEE_USE_REDIS_BUNGEE.getBoolean(getConfig());
 		
 		try {
 			Configuration.timeFormat = new SimpleDateFormat(StringUtils.toReadableFormat(ConfigNode.TIME_FORMAT.getString(getConfig())));

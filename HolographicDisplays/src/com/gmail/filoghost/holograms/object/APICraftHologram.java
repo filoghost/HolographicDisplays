@@ -1,10 +1,16 @@
 package com.gmail.filoghost.holograms.object;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holograms.Configuration;
+import com.gmail.filoghost.holograms.commands.CommandValidator;
+import com.gmail.filoghost.holograms.exception.CommandException;
 import com.gmail.filoghost.holograms.exception.SpawnFailedException;
+import com.gmail.filoghost.holograms.object.pieces.FloatingItemDoubleEntity;
 import com.gmail.filoghost.holograms.object.pieces.HologramLine;
+import com.gmail.filoghost.holograms.utils.ItemUtils;
 import com.gmail.filoghost.holograms.utils.Validator;
 
 /**
@@ -21,7 +27,7 @@ public class APICraftHologram extends CraftHologram {
 	public boolean forceUpdate() {
 		
 		Validator.checkState(!isDeleted(), "Hologram already deleted");
-	
+		
 		// Remove previous entities.
 		hide();
 		
@@ -33,10 +39,43 @@ public class APICraftHologram extends CraftHologram {
 			double currentY = this.y;
 			
 			for (String text : textLines) {
+				
+				if (text.length() >= 5 && text.substring(0, 5).toLowerCase().equals("icon:")) {
 
-				HologramLine lineEntity = new HologramLine(text);
-				lineEntity.spawn(this, bukkitWorld, x, currentY, z);
-				linesEntities.add(lineEntity);				
+					// It's a floating icon!
+					ItemStack icon;
+					try {
+						icon = CommandValidator.matchItemStack(text.substring(5));
+					} catch (CommandException e) {
+						icon = new ItemStack(Material.BEDROCK);
+					}
+					
+					// If the current Y has been changed, the item is NOT on top of the hologram.
+					if (currentY != this.y) {
+						// Extra space for the floating item, blocks are smaller
+						if (ItemUtils.appearsAsBlock(icon.getType())) {
+							currentY -= 0.27;
+						} else {
+							currentY -= 0.52;
+						}
+					}
+					
+					FloatingItemDoubleEntity lineEntity = new FloatingItemDoubleEntity(icon);
+					lineEntity.spawn(this, bukkitWorld, x, currentY, z);
+					linesEntities.add(lineEntity);
+					
+					// And some more space below.
+					currentY -= 0.05;
+					
+				} else {
+				
+					HologramLine lineEntity = new HologramLine(text);
+					lineEntity.spawn(this, bukkitWorld, x, currentY, z);
+					linesEntities.add(lineEntity);
+				
+					// Don't track placeholders for API holograms!
+					// HolographicDisplays.getPlaceholderManager().trackIfNecessary(lineEntity.getHorse());
+				}
 				
 				currentY -= lineSpacing;
 			}

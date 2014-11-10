@@ -96,7 +96,7 @@ public class ProtocolLibHook {
 								return;
 							}
 						
-						} else { // Entity metadata packet
+						} else if (packet.getType() == PacketType.Play.Server.ENTITY_METADATA) {
 							
 							WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
 							Entity entity = entityMetadataPacket.getEntity(event);

@@ -15,6 +15,7 @@ public class Configuration {
 	public static String bungeeOnlineFormat;
 	public static String bungeeOfflineFormat;
 	public static SimpleDateFormat timeFormat;
+	public static boolean redisBungee;
 	
 	// Used for the updater.
 	public static String newVersion;
