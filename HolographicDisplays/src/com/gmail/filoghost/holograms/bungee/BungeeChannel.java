@@ -35,7 +35,7 @@ public class BungeeChannel implements PluginMessageListener {
 
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-		if (!channel.equals("BungeeCord") || !channel.equals("RedisBungee")) {
+		if (!channel.equals("BungeeCord") && !channel.equals("RedisBungee")) {
             return;
         }
 		

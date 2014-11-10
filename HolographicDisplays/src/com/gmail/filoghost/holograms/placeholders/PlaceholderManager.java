@@ -22,7 +22,6 @@ public class PlaceholderManager {
 	private static long elapsedLongTicks;
 	
 	private static final Pattern BUNGEE_ONLINE_PATTERN = Pattern.compile("(\\{online:)([^}]+)(\\})");
-	private static final Pattern BUNGEE_STATUS_PATTERN = Pattern.compile("(\\{status:)([^}]+)(\\})");
 	private static final Pattern ANIMATION_PATTERN = Pattern.compile("(\\{animation:)([^}]+)(\\})");
 	private static final Pattern WORLD_PATTERN = Pattern.compile("(\\{world:)([^}]+)(\\})");
 	
@@ -49,7 +48,6 @@ public class PlaceholderManager {
 		// Don't create a list if not necessary.
 		List<Placeholder> containedPlaceholders = null;
 		List<String> bungeeServersOnlinePlayers = null;
-		List<String> bungeeServersStatuses = null;
 		List<String> worldsPlayerCount = null;
 		Matcher matcher;
 		
@@ -106,26 +104,7 @@ public class PlaceholderManager {
 			
 			// Add it to tracked servers.
 			bungeeServersOnlinePlayers.add(serverName);
-		}
-		
-		// BungeeCord status pattern. 
-		matcher = BUNGEE_STATUS_PATTERN.matcher(customName);
-		while (matcher.find()) {
-					
-			if (bungeeServersStatuses == null) {
-				bungeeServersStatuses = new ArrayList<String>();
-			}
-					
-			String serverName = matcher.group(2).trim();
-			ServerInfoTimer.track(serverName); // Track this server.
-			
-			// Shorter placeholder without spaces.
-			customName = customName.replace(matcher.group(), "{status:" + serverName + "}");
-			
-			// Add it to tracked servers.
-			bungeeServersStatuses.add(serverName);
-		}
-		
+		}		
 		
 		// Animation pattern.
 		matcher = ANIMATION_PATTERN.matcher(customName);
@@ -152,7 +131,7 @@ public class PlaceholderManager {
 			}
 		}
 		
-		if (containedPlaceholders != null || bungeeServersOnlinePlayers != null || bungeeServersStatuses != null || worldsPlayerCount != null) {
+		if (containedPlaceholders != null || bungeeServersOnlinePlayers != null || worldsPlayerCount != null) {
 			HologramLineData data = new HologramLineData(horse, customName);
 			
 			if (containedPlaceholders != null) {
@@ -161,10 +140,6 @@ public class PlaceholderManager {
 			
 			if (bungeeServersOnlinePlayers != null) {
 				data.setBungeeOnlinePlayersToCheck(bungeeServersOnlinePlayers);
-			}
-			
-			if (bungeeServersStatuses != null) {
-				data.setBungeeStatusesToCheck(bungeeServersStatuses);
 			}
 			
 			if (worldsPlayerCount != null) {
