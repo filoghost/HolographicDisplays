@@ -26,7 +26,8 @@ public class VersionUtils {
 	}
 	
 	public static boolean isMCPCOrCauldron() {
-		return Bukkit.getVersion().toLowerCase().contains("mcpc") || Bukkit.getVersion().toLowerCase().contains("cauldron");
+		// This returns the server software e.g. CraftBukkit, Cauldron-MCPC-Plus, ...
+		return Bukkit.getName().toLowerCase().contains("mcpc") || Bukkit.getName().toLowerCase().contains("cauldron");
 	}
 	
 }
