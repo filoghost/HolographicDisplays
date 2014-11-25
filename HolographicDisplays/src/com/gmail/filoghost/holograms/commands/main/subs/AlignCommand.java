@@ -24,7 +24,7 @@ public class AlignCommand extends HologramSubCommand {
 
 	@Override
 	public String getPossibleArguments() {
-		return "<X|Y|Z|XZ> <hologramToAlign> <referenceHologram>";
+		return "<X|Y|Z|XZ> <hologram> <referenceHologram>";
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class AlignCommand extends HologramSubCommand {
 
 		Location loc = hologram.getLocation();
 		
-		if (args[0].contains("x")) {
+		if (args[0].equalsIgnoreCase("x")) {
 			loc.setX(referenceHologram.getX());
 		} else if (args[0].equalsIgnoreCase("y")) {
 			loc.setY(referenceHologram.getY());
@@ -56,7 +56,7 @@ public class AlignCommand extends HologramSubCommand {
 		} else {
 			throw new CommandException("You must specify either X, Y, Z or XZ, " + args[0] + " is not a valid axis.");
 		}
-		
+
 		hologram.setLocation(loc);
 		
 		
