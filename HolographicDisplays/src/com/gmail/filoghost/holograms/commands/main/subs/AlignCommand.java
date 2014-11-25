@@ -24,18 +24,18 @@ public class AlignCommand extends HologramSubCommand {
 
 	@Override
 	public String getPossibleArguments() {
-		return "<hologramToAlign> <referenceHologram>";
+		return "<X|Y|Z|XZ> <hologramToAlign> <referenceHologram>";
 	}
 
 	@Override
 	public int getMinimumArguments() {
-		return 2;
+		return 3;
 	}
 
 	@Override
 	public void execute(CommandSender sender, String[] args) throws CommandException {
-		CraftHologram hologram = HologramManager.getHologram(args[0].toLowerCase());
-		CraftHologram referenceHologram = HologramManager.getHologram(args[1].toLowerCase());
+		CraftHologram hologram = HologramManager.getHologram(args[1].toLowerCase());
+		CraftHologram referenceHologram = HologramManager.getHologram(args[2].toLowerCase());
 		
 		CommandValidator.notNull(hologram, Messages.NO_SUCH_HOLOGRAM + " (hologram to align)");
 		CommandValidator.notNull(referenceHologram, Messages.NO_SUCH_HOLOGRAM + " (reference hologram)");
@@ -43,7 +43,20 @@ public class AlignCommand extends HologramSubCommand {
 		CommandValidator.isTrue(hologram != referenceHologram, "The hologram must not be the same!");
 
 		Location loc = hologram.getLocation();
-		loc.setY(referenceHologram.getY());
+		
+		if (args[0].contains("x")) {
+			loc.setX(referenceHologram.getX());
+		} else if (args[0].equalsIgnoreCase("y")) {
+			loc.setY(referenceHologram.getY());
+		} else if (args[0].equalsIgnoreCase("z")) {
+			loc.setZ(referenceHologram.getZ());
+		} else if (args[0].equalsIgnoreCase("xz")) {
+			loc.setX(referenceHologram.getX());
+			loc.setZ(referenceHologram.getZ());
+		} else {
+			throw new CommandException("You must specify either X, Y, Z or XZ, " + args[0] + " is not a valid axis.");
+		}
+		
 		hologram.setLocation(loc);
 		
 		
@@ -53,12 +66,12 @@ public class AlignCommand extends HologramSubCommand {
 			
 		HologramDatabase.saveHologram(hologram);
 		HologramDatabase.trySaveToDisk();
-		sender.sendMessage(Format.HIGHLIGHT + "Hologram \"" + hologram.getName() + "\" vertically aligned to the hologram \"" + referenceHologram.getName() + "\".");
+		sender.sendMessage(Format.HIGHLIGHT + "Hologram \"" + hologram.getName() + "\" aligned to the hologram \"" + referenceHologram.getName() + "\" on the " + args[0].toUpperCase() + " axis.");
 	}
 
 	@Override
 	public List<String> getTutorial() {
-		return Arrays.asList("Vertically aligns the first hologram to the second.");
+		return Arrays.asList("Aligns the first hologram to the second, in the specified axis.");
 	}
 
 	@Override
