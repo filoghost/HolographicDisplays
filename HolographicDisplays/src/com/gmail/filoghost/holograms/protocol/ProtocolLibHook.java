@@ -154,7 +154,15 @@ public class ProtocolLibHook {
 	}
 	
 	private static boolean isHologramType(EntityType type) {
-		return type == EntityType.HORSE || type == EntityType.WITHER_SKULL || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME;
+		return type == EntityType.HORSE || type == EntityType.WITHER_SKULL || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME || isArmorstand(type); // To maintain compatibility with 1.8
+	}
+	
+	private static boolean isArmorstand(EntityType type) {
+		if (!HolographicDisplays.is1_8) {
+			return false;
+		}
+		
+		return type == EntityType.ARMOR_STAND;
 	}
 	
 	// Horses are always part of a CraftHologram

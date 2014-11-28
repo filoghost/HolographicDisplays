@@ -1,13 +1,13 @@
-package com.gmail.filoghost.holograms.nms.v1_7_R1;
+package com.gmail.filoghost.holograms.nms.v1_8_R1;
 
-import net.minecraft.server.v1_7_R1.Entity;
-import net.minecraft.server.v1_7_R1.EntityTypes;
-import net.minecraft.server.v1_7_R1.WorldServer;
+import net.minecraft.server.v1_8_R1.Entity;
+import net.minecraft.server.v1_8_R1.EntityTypes;
+import net.minecraft.server.v1_8_R1.WorldServer;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_7_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,8 +28,7 @@ public class NmsManagerImpl implements NmsManager {
 
 	@Override
 	public void registerCustomEntities() throws Exception {
-		registerCustomEntity(EntityHologramHorse.class, "EntityHorse", 100);
-		registerCustomEntity(EntityHologramWitherSkull.class, "WitherSkull", 19);
+		registerCustomEntity(EntityHologramArmorStand.class, "ArmorStand", 30);
 		registerCustomEntity(EntityCustomItem.class, "Item", 1);
 		registerCustomEntity(EntityTouchSlime.class, "Slime", 55);
 	}
@@ -38,7 +37,7 @@ public class NmsManagerImpl implements NmsManager {
 	public void registerCustomEntity(Class entityClass, String name, int id) throws Exception {
 		if (VersionUtils.isMCPCOrCauldron()) {
 			// MCPC+ / Cauldron entity registration.
-			Class<?> entityTypesClass = Class.forName("net.minecraft.server.v1_7_R1.EntityTypes");
+			Class<?> entityTypesClass = Class.forName("net.minecraft.server.v1_8_R1.EntityTypes");
 			ReflectionUtils.putInPrivateStaticMap(entityTypesClass, "field_75626_c", entityClass, name);
 			ReflectionUtils.putInPrivateStaticMap(entityTypesClass, "field_75624_e", entityClass, Integer.valueOf(id));
 		} else {
@@ -49,28 +48,27 @@ public class NmsManagerImpl implements NmsManager {
 	}
 	
 	@Override
-	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, HologramBase parent) throws SpawnFailedException {
+	public HologramArmorStand spawnHologramArmorStand(World world, double x, double y, double z, HologramBase parent) throws SpawnFailedException {
 		WorldServer nmsWorld = ((CraftWorld) world).getHandle();
-		EntityHologramHorse invisibleHorse = new EntityHologramHorse(nmsWorld);
-		invisibleHorse.setParentHologram(parent);
-		invisibleHorse.setLocationNMS(x, y, z);
-		if (!nmsWorld.addEntity(invisibleHorse, SpawnReason.CUSTOM)) {
+		EntityHologramArmorStand invisibleArmorStand = new EntityHologramArmorStand(nmsWorld);
+		invisibleArmorStand.setParentHologram(parent);
+		invisibleArmorStand.setLocationNMS(x, y, z);
+		if (!nmsWorld.addEntity(invisibleArmorStand, SpawnReason.CUSTOM)) {
 			throw new SpawnFailedException();
 		}
-		return invisibleHorse;
+		return invisibleArmorStand;
+	}
+	
+	@Override
+	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, HologramBase parent) throws SpawnFailedException {
+		throw new NotImplementedException("Method can only be used on 1.7 or lower");
 	}
 	
 	@Override
 	public HologramWitherSkull spawnHologramWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, HologramBase parent) throws SpawnFailedException {
-		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-		EntityHologramWitherSkull staticWitherSkull = new EntityHologramWitherSkull(nmsWorld);
-		staticWitherSkull.setParentHologram(parent);
-		staticWitherSkull.setLocationNMS(x, y, z);
-		if (!nmsWorld.addEntity(staticWitherSkull, SpawnReason.CUSTOM)) {
-			throw new SpawnFailedException();
-		}
-		return staticWitherSkull;
+		throw new NotImplementedException("Method can only be used on 1.7 or lower");
 	}
+	
 	
 	@Override
 	public CustomItem spawnCustomItem(org.bukkit.World bukkitWorld, double x, double y, double z, HologramBase parent, ItemStack stack) throws SpawnFailedException {
@@ -84,6 +82,7 @@ public class NmsManagerImpl implements NmsManager {
 		}
 		return customItem;
 	}
+
 	
 	@Override
 	public EntityTouchSlime spawnTouchSlime(org.bukkit.World bukkitWorld, double x, double y, double z, HologramBase parent) throws SpawnFailedException {
@@ -97,6 +96,8 @@ public class NmsManagerImpl implements NmsManager {
 		return touchSlime;
 	}
 	
+	
+
 	@Override
 	public boolean isHologramComponent(org.bukkit.entity.Entity bukkitEntity) {
 		return ((CraftEntity) bukkitEntity).getHandle() instanceof HologramComponent;
@@ -117,7 +118,7 @@ public class NmsManagerImpl implements NmsManager {
 
 		return null;
 	}
-	
+
 	@Override
 	public FancyMessage newFancyMessage(String text) {
 		return new FancyMessageImpl(text);
@@ -126,10 +127,5 @@ public class NmsManagerImpl implements NmsManager {
 	@Override
 	public boolean hasChatHoverFeature() {
 		return true;
-	}
-	
-	@Override
-	public HologramArmorStand spawnHologramArmorStand(World world, double x, double y, double z, HologramBase parent) throws SpawnFailedException {
-		throw new NotImplementedException("Method can only be used on 1.8 or greater");
-	}
+	}	
 }

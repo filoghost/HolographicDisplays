@@ -4,6 +4,8 @@ import net.minecraft.server.v1_7_R3.Entity;
 import net.minecraft.server.v1_7_R3.EntityTypes;
 import net.minecraft.server.v1_7_R3.WorldServer;
 
+import org.apache.commons.lang.NotImplementedException;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -13,6 +15,7 @@ import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.nms.interfaces.BasicEntityNMS;
 import com.gmail.filoghost.holograms.nms.interfaces.CustomItem;
 import com.gmail.filoghost.holograms.nms.interfaces.FancyMessage;
+import com.gmail.filoghost.holograms.nms.interfaces.HologramArmorStand;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramComponent;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
 import com.gmail.filoghost.holograms.nms.interfaces.HologramWitherSkull;
@@ -127,5 +130,10 @@ public class NmsManagerImpl implements NmsManager {
 	@Override
 	public boolean hasChatHoverFeature() {
 		return true;
-	}	
+	}
+	
+	@Override
+	public HologramArmorStand spawnHologramArmorStand(World world, double x, double y, double z, HologramBase parent) throws SpawnFailedException {
+		throw new NotImplementedException("Method can only be used on 1.8 or greater");
+	}
 }

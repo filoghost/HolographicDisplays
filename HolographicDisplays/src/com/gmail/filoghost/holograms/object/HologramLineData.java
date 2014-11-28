@@ -2,12 +2,12 @@ package com.gmail.filoghost.holograms.object;
 
 import java.util.List;
 
-import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
+import com.gmail.filoghost.holograms.nms.interfaces.NameableEntityNMS;
 import com.gmail.filoghost.holograms.placeholders.Placeholder;
 
 public class HologramLineData {
 
-	private HologramHorse horse;
+	private NameableEntityNMS nameableEntity;
 	private String originalName;
 	
 	private Placeholder[] containedPlaceholders;
@@ -16,8 +16,8 @@ public class HologramLineData {
 	private String[] bungeeStatuses;
 	private String[] worldsPlayerCount;
 	
-	public HologramLineData(HologramHorse horse, String originalName) {
-		this.horse = horse;
+	public HologramLineData(NameableEntityNMS nameableEntity, String originalName) {
+		this.nameableEntity = nameableEntity;
 		this.originalName = originalName;
 	}
 	
@@ -41,8 +41,8 @@ public class HologramLineData {
 		worldsPlayerCount = list.toArray(worldsPlayerCount);
 	}
 
-	public HologramHorse getHorse() {
-		return horse;
+	public NameableEntityNMS getNameableEntity() {
+		return nameableEntity;
 	}
 
 	public String getSavedName() {

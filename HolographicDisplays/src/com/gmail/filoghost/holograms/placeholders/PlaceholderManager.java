@@ -11,7 +11,7 @@ import org.bukkit.Bukkit;
 import com.gmail.filoghost.holograms.Configuration;
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.bungee.ServerInfoTimer;
-import com.gmail.filoghost.holograms.nms.interfaces.HologramHorse;
+import com.gmail.filoghost.holograms.nms.interfaces.NameableEntityNMS;
 import com.gmail.filoghost.holograms.object.HologramLineData;
 import com.gmail.filoghost.holograms.tasks.WorldPlayerCounterTask;
 
@@ -32,9 +32,9 @@ public class PlaceholderManager {
 		startTask();
 	}
 	
-	public void trackIfNecessary(HologramHorse horse) {
+	public void trackIfNecessary(NameableEntityNMS nameableEntity) {
 		
-		String customName = horse.getCustomNameNMS();
+		String customName = nameableEntity.getCustomNameNMS();
 		if (customName == null || customName.length() == 0) {
 			return;
 		}
@@ -132,7 +132,7 @@ public class PlaceholderManager {
 		}
 		
 		if (containedPlaceholders != null || bungeeServersOnlinePlayers != null || worldsPlayerCount != null) {
-			HologramLineData data = new HologramLineData(horse, customName);
+			HologramLineData data = new HologramLineData(nameableEntity, customName);
 			
 			if (containedPlaceholders != null) {
 				data.setContainedPlaceholders(containedPlaceholders);
@@ -152,7 +152,7 @@ public class PlaceholderManager {
 			
 			// The name needs to be updated anyways.
 			if (updateName) {
-				horse.forceSetCustomName(customName);
+				nameableEntity.forceSetCustomName(customName);
 			}
 		}
 	}
@@ -165,6 +165,7 @@ public class PlaceholderManager {
 		
 		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(HolographicDisplays.getInstance(), new Runnable() {			
 			
+			@Override
 			public void run() {
 				
 				for (Placeholder placeholder : PlaceholdersList.getDefaults()) {
@@ -186,7 +187,7 @@ public class PlaceholderManager {
 				while (iter.hasNext()) {
 					current = iter.next();
 					
-					if (current.getHorse().isDeadNMS()) {
+					if (current.getNameableEntity().isDeadNMS()) {
 						iter.remove();
 					} else {
 						updatePlaceholders(current);
@@ -201,7 +202,7 @@ public class PlaceholderManager {
 	
 	private void updatePlaceholders(HologramLineData data) {
 		
-		String oldCustomName = data.getHorse().getCustomNameNMS();
+		String oldCustomName = data.getNameableEntity().getCustomNameNMS();
 		String newCustomName = data.getSavedName();
 		
 		if (data.hasPlaceholders()) {
@@ -230,7 +231,7 @@ public class PlaceholderManager {
 		
 		// Update only if needed, don't send useless packets.
 		if (!oldCustomName.equals(newCustomName)) {
-			data.getHorse().forceSetCustomName(newCustomName);
+			data.getNameableEntity().forceSetCustomName(newCustomName);
 		}
 	}
 }

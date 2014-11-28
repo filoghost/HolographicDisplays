@@ -41,6 +41,8 @@ public class HolographicDisplays extends JavaPlugin {
 	private HologramsCommandHandler mainCommandHandler;
 	private static PlaceholderManager placeholderManager;
 	
+	public static boolean is1_8;
+	
 	public void onEnable() {
 		
 		if (instance != null) {
@@ -102,6 +104,8 @@ public class HolographicDisplays extends JavaPlugin {
 				version = "v1_7_R3";
 			} else if ("1.7.10".equals(version)) {
 				version = "v1_7_R4";
+			} else if ("1.8".equals(version)) {
+				version = "v1_8_R1";
 			} else {
 				// Cannot definitely get the version. This will cause HD to disable itself.
 				version = null;
@@ -119,12 +123,15 @@ public class HolographicDisplays extends JavaPlugin {
 			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R3.NmsManagerImpl();
 		} else if ("v1_7_R4".equals(version)) {
 			nmsManager = new com.gmail.filoghost.holograms.nms.v1_7_R4.NmsManagerImpl();
+		} else if ("v1_8_R1".equals(version)) {
+			is1_8 = true;
+			nmsManager = new com.gmail.filoghost.holograms.nms.v1_8_R1.NmsManagerImpl();
 		} else {
 			printWarnAndDisable(
 				"******************************************************",
 				"     This version of HolographicDisplays can",
 				"     only work on these server versions:",
-				"     1.6.4, from 1.7.2 to 1.7.10.",
+				"     1.6.4, from 1.7 to 1.8.1.",
 				"     The plugin will be disabled.",
 				"******************************************************"
 			);

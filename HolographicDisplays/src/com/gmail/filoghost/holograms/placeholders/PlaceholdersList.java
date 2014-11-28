@@ -25,6 +25,7 @@ public class PlaceholdersList {
 	// Each second
 	private static final Placeholder ONLINE_PLAYERS = new Placeholder("{online}", "{o}", 10) {
 		
+		@SuppressWarnings("deprecation")
 		@Override
 		public void update() {
 			currentReplacement = Integer.toString(Bukkit.getOnlinePlayers().length);

@@ -8,6 +8,8 @@ import com.gmail.filoghost.holograms.object.HologramBase;
 public interface NmsManager {
 	
 	public void registerCustomEntities() throws Exception;
+	
+	public HologramArmorStand spawnHologramArmorStand(org.bukkit.World world, double x, double y, double z, HologramBase parent) throws SpawnFailedException;
 
 	public HologramHorse spawnHologramHorse(org.bukkit.World world, double x, double y, double z, HologramBase parent) throws SpawnFailedException;
 	

@@ -65,6 +65,7 @@ public class BungeeChannel implements PluginMessageListener {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void askPlayerCount(String server) {
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream(b);

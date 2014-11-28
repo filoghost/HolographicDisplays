@@ -149,7 +149,11 @@ public class CraftHologram extends HologramBase implements Hologram {
 					if (currentY != this.y) {
 						// Extra space for the floating item, blocks are smaller
 						if (ItemUtils.appearsAsBlock(icon.getType())) {
-							currentY -= 0.27;
+							if (HolographicDisplays.is1_8) {
+								currentY -= 0.42;
+							} else {
+								currentY -= 0.27;
+							}
 						} else {
 							currentY -= 0.52;
 						}
@@ -169,7 +173,7 @@ public class CraftHologram extends HologramBase implements Hologram {
 					linesEntities.add(lineEntity);
 				
 					// Placeholders.
-					HolographicDisplays.getPlaceholderManager().trackIfNecessary(lineEntity.getHorse());
+					HolographicDisplays.getPlaceholderManager().trackIfNecessary(lineEntity.getTextEntity());
 				}
 				
 				currentY -= lineSpacing;
