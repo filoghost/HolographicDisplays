@@ -4,6 +4,8 @@ import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
 
 import java.util.List;
 
+import net.minecraft.util.com.google.common.collect.Lists;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -16,7 +18,6 @@ import com.gmail.filoghost.holograms.object.APICraftHologram;
 import com.gmail.filoghost.holograms.object.APIFloatingItemManager;
 import com.gmail.filoghost.holograms.object.APIHologramManager;
 import com.gmail.filoghost.holograms.object.CraftFloatingItem;
-import com.gmail.filoghost.holograms.utils.GenericUtils;
 import com.gmail.filoghost.holograms.utils.Validator;
 import com.gmail.filoghost.holograms.utils.VisibilityManager;
 
@@ -80,7 +81,7 @@ public class HolographicDisplaysAPI {
 	 * @return the new hologram created.
 	 */
 	public static Hologram createIndividualHologram(Plugin plugin, Location source, Player whoCanSee, String... lines) {
-		return createIndividualHologram(plugin, source, GenericUtils.createList(whoCanSee), lines);
+		return createIndividualHologram(plugin, source, Lists.newArrayList(whoCanSee), lines);
 	}
 	
 	/**
@@ -131,7 +132,7 @@ public class HolographicDisplaysAPI {
 	 * @return the new hologram created.
 	 */
 	public static FloatingItem createIndividualFloatingItem(Plugin plugin, Location source, Player whoCanSee, ItemStack itemstack) {
-		return createIndividualFloatingItem(plugin, source, GenericUtils.createList(whoCanSee), itemstack);
+		return createIndividualFloatingItem(plugin, source, Lists.newArrayList(whoCanSee), itemstack);
 	}
 	
 	/**

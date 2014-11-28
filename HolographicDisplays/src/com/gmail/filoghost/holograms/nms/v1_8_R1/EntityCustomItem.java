@@ -116,6 +116,16 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	}
 	
 	@Override
+	public void setCustomName(String customName) {
+		// Locks the custom name.
+	}
+	
+	@Override
+	public void setCustomNameVisible(boolean visible) {
+		// Locks the custom name.
+	}
+	
+	@Override
 	public void die() {
 		setLockTick(false);
 		super.die();

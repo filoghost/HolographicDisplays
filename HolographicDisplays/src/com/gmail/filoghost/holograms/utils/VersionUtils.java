@@ -4,6 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.EntityType;
+
+import com.gmail.filoghost.holograms.HolographicDisplays;
 
 public class VersionUtils {
 	
@@ -30,4 +33,11 @@ public class VersionUtils {
 		return Bukkit.getName().toLowerCase().contains("mcpc") || Bukkit.getName().toLowerCase().contains("cauldron");
 	}
 	
+	public static boolean isArmorstand(EntityType type) {
+		if (!HolographicDisplays.is1_8) {
+			return false;
+		}
+		
+		return type == EntityType.ARMOR_STAND;
+	}
 }

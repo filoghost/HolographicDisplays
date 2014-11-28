@@ -21,6 +21,7 @@ public class CraftCustomItem extends CraftItem {
 	public void remove() {
 		// Cannot be removed, this is the most important to override.
 	}
+	
 
 	// Methods from Entity
 	@Override public void setVelocity(Vector vel) { }
@@ -33,6 +34,8 @@ public class CraftCustomItem extends CraftItem {
 	@Override public boolean eject() { return false; }
 	@Override public boolean leaveVehicle() { return false; }
 	@Override public void playEffect(EntityEffect effect) { }
+	@Override public void setCustomName(String name) { }
+	@Override public void setCustomNameVisible(boolean flag) { }
 	
 	// Methods from Item
 	@Override public void setItemStack(ItemStack stack) { }

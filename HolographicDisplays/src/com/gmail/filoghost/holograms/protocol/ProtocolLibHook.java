@@ -19,13 +19,22 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.gmail.filoghost.holograms.HolographicDisplays;
 import com.gmail.filoghost.holograms.object.HologramBase;
+import com.gmail.filoghost.holograms.utils.VersionUtils;
 
 public class ProtocolLibHook {
+	
+	private static int customNameWatcherIndex;
 	
 	public static void initialize() {
 		if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
 			
 			HolographicDisplays.getInstance().getLogger().info("Found ProtocolLib, adding support for player relative variables.");
+			if (HolographicDisplays.is1_8) {
+				customNameWatcherIndex = 2;
+			} else {
+				customNameWatcherIndex = 10;
+			}
+			
 
 			ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(HolographicDisplays.getInstance(), ListenerPriority.NORMAL, PacketType.Play.Server.SPAWN_ENTITY_LIVING, PacketType.Play.Server.SPAWN_ENTITY, PacketType.Play.Server.ENTITY_METADATA) {
 						  
@@ -56,18 +65,18 @@ public class ProtocolLibHook {
 								return;
 							}
 							
-							if (entity.getType() != EntityType.HORSE) {
-								// Enough, only horses are used with custom names.
+							if (entity.getType() != EntityType.HORSE && !VersionUtils.isArmorstand(entity.getType())) {
+								// Enough, only horses and armor stands are used with custom names.
 								return;
 							}
 							
 							WrappedDataWatcher dataWatcher = spawnEntityPacket.getMetadata();
-							String customName = dataWatcher.getString(10);
+							String customName = dataWatcher.getString(customNameWatcherIndex);
 								
 							if (customName.contains("{player}") || customName.contains("{displayname}")) {
 
 								WrappedDataWatcher dataWatcherClone = dataWatcher.deepClone();
-								dataWatcherClone.setObject(10, customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
+								dataWatcherClone.setObject(customNameWatcherIndex, customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
 								spawnEntityPacket.setMetadata(dataWatcherClone);
 								event.setPacket(spawnEntityPacket.getHandle());
 									
@@ -116,8 +125,8 @@ public class ProtocolLibHook {
 								return;
 							}
 							
-							if (entity.getType() != EntityType.HORSE) {
-								// Enough, only horses are used with custom names.
+							if (entity.getType() != EntityType.HORSE && !VersionUtils.isArmorstand(entity.getType())) {
+								// Enough, only horses and armorstands are used with custom names.
 								return;
 							}
 
@@ -125,7 +134,7 @@ public class ProtocolLibHook {
 								
 							for (int i = 0; i < dataWatcherValues.size(); i++) {	
 								
-								if (dataWatcherValues.get(i).getIndex() == 10) {
+								if (dataWatcherValues.get(i).getIndex() == customNameWatcherIndex) {
 										
 									Object customNameObject = dataWatcherValues.get(i).deepClone().getValue();
 									if (customNameObject instanceof String == false) {
@@ -154,18 +163,9 @@ public class ProtocolLibHook {
 	}
 	
 	private static boolean isHologramType(EntityType type) {
-		return type == EntityType.HORSE || type == EntityType.WITHER_SKULL || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME || isArmorstand(type); // To maintain compatibility with 1.8
+		return type == EntityType.HORSE || type == EntityType.WITHER_SKULL || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME || VersionUtils.isArmorstand(type); // To maintain backwards compatibility
 	}
 	
-	private static boolean isArmorstand(EntityType type) {
-		if (!HolographicDisplays.is1_8) {
-			return false;
-		}
-		
-		return type == EntityType.ARMOR_STAND;
-	}
-	
-	// Horses are always part of a CraftHologram
 	private static HologramBase getHologram(Entity bukkitEntity) {
 		return nmsManager.getParentHologram(bukkitEntity);
 	}

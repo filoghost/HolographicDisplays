@@ -24,6 +24,7 @@ public class CraftTouchSlime extends CraftSlime {
 		// Cannot be removed, this is the most important to override.
 	}
 	
+
 	// Methods from LivingEntity class
 	@Override public boolean addPotionEffect(PotionEffect effect) { return false; }
 	@Override public boolean addPotionEffect(PotionEffect effect, boolean param) { return false; }
@@ -41,7 +42,8 @@ public class CraftTouchSlime extends CraftSlime {
 	@Override public boolean eject() { return false; }
 	@Override public boolean leaveVehicle() { return false; }
 	@Override public void playEffect(EntityEffect effect) { }
-	
+	@Override public void setCustomName(String name) { }
+	@Override public void setCustomNameVisible(boolean flag) { }
 	
 	// Methods from Slime
 	@Override public void setSize(int size) { }
