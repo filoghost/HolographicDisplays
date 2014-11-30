@@ -3,7 +3,10 @@ package com.gmail.filoghost.holograms.nms.v1_8_R1;
 import net.minecraft.server.v1_8_R1.DamageSource;
 import net.minecraft.server.v1_8_R1.Entity;
 import net.minecraft.server.v1_8_R1.EntityArmorStand;
+import net.minecraft.server.v1_8_R1.EntityHuman;
+import net.minecraft.server.v1_8_R1.ItemStack;
 import net.minecraft.server.v1_8_R1.NBTTagCompound;
+import net.minecraft.server.v1_8_R1.Vec3D;
 import net.minecraft.server.v1_8_R1.World;
 
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
@@ -26,10 +29,9 @@ public class EntityHologramArmorStand extends EntityArmorStand implements Hologr
 		setGravity(true);
 		setBasePlate(true);
 		try {
-			ReflectionUtils.setPrivateField(EntityArmorStand.class, this, "bg", 1);
+			ReflectionUtils.setPrivateField(EntityArmorStand.class, this, "bg", Integer.MAX_VALUE);
 		} catch (Exception e) {
-			//TODO
-			e.printStackTrace();
+			// There's still the overridden method.
 		}
 		a(0.0F, 0.0F);
 	}
@@ -77,6 +79,24 @@ public class EntityHologramArmorStand extends EntityArmorStand implements Hologr
 	public void setCustomNameVisible(boolean visible) {
 		// Locks the custom name.
 	}
+
+	@Override
+	public boolean a(EntityHuman human, Vec3D vec3d) {
+		// Prevent stand being equipped
+		return true;
+	}
+
+	@Override
+	public boolean d(int i, ItemStack item) {
+		// Prevent stand being equipped
+		return false;
+	}
+
+	@Override
+	public void setEquipment(int i, ItemStack item) {
+		// Prevent stand being equipped
+	}
+
 
 	@Override
 	public void s_() {
