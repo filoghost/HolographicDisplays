@@ -2,9 +2,8 @@ package com.gmail.filoghost.holograms.api;
 
 import static com.gmail.filoghost.holograms.HolographicDisplays.nmsManager;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.util.com.google.common.collect.Lists;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -81,7 +80,9 @@ public class HolographicDisplaysAPI {
 	 * @return the new hologram created.
 	 */
 	public static Hologram createIndividualHologram(Plugin plugin, Location source, Player whoCanSee, String... lines) {
-		return createIndividualHologram(plugin, source, Lists.newArrayList(whoCanSee), lines);
+		List<Player> whoCanSeeList = new ArrayList<Player>();
+		whoCanSeeList.add(whoCanSee);
+		return createIndividualHologram(plugin, source, whoCanSeeList, lines);
 	}
 	
 	/**
@@ -132,7 +133,9 @@ public class HolographicDisplaysAPI {
 	 * @return the new hologram created.
 	 */
 	public static FloatingItem createIndividualFloatingItem(Plugin plugin, Location source, Player whoCanSee, ItemStack itemstack) {
-		return createIndividualFloatingItem(plugin, source, Lists.newArrayList(whoCanSee), itemstack);
+		List<Player> whoCanSeeList = new ArrayList<Player>();
+		whoCanSeeList.add(whoCanSee);
+		return createIndividualFloatingItem(plugin, source, whoCanSeeList, itemstack);
 	}
 	
 	/**
