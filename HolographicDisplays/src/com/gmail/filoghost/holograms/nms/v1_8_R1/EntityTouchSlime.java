@@ -5,6 +5,7 @@ import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
 import com.gmail.filoghost.holograms.nms.interfaces.TouchSlime;
 import com.gmail.filoghost.holograms.object.HologramBase;
 
+import net.minecraft.server.v1_8_R1.AxisAlignedBB;
 import net.minecraft.server.v1_8_R1.DamageSource;
 import net.minecraft.server.v1_8_R1.EntitySlime;
 import net.minecraft.server.v1_8_R1.NBTTagCompound;
@@ -18,9 +19,18 @@ public class EntityTouchSlime extends EntitySlime implements TouchSlime {
 	public EntityTouchSlime(World world) {
 		super(world);
 		super.persistent = true;
-		a(0.0F, 0.0F);
 		setSize(1);
 		setInvisible(true);
+		forceSetBoundingBox(new NullBoundingBox());
+	}
+	
+	@Override
+	public void a(AxisAlignedBB boundingBox) {
+		// Do not change it!
+	}
+	
+	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
+		super.a(boundingBox);
 	}
 	
 	@Override

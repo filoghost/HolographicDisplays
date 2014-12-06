@@ -1,5 +1,6 @@
 package com.gmail.filoghost.holograms.nms.v1_8_R1;
 
+import net.minecraft.server.v1_8_R1.AxisAlignedBB;
 import net.minecraft.server.v1_8_R1.DamageSource;
 import net.minecraft.server.v1_8_R1.Entity;
 import net.minecraft.server.v1_8_R1.EntityArmorStand;
@@ -33,7 +34,7 @@ public class EntityHologramArmorStand extends EntityArmorStand implements Hologr
 		} catch (Exception e) {
 			// There's still the overridden method.
 		}
-		a(0.0F, 0.0F);
+		forceSetBoundingBox(new NullBoundingBox());
 	}
 	
 	
@@ -96,7 +97,15 @@ public class EntityHologramArmorStand extends EntityArmorStand implements Hologr
 	public void setEquipment(int i, ItemStack item) {
 		// Prevent stand being equipped
 	}
-
+	
+	@Override
+	public void a(AxisAlignedBB boundingBox) {
+		// Do not change it!
+	}
+	
+	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
+		super.a(boundingBox);
+	}
 
 	@Override
 	public void s_() {

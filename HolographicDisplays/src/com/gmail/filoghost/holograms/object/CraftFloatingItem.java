@@ -11,7 +11,6 @@ import com.gmail.filoghost.holograms.exception.SpawnFailedException;
 import com.gmail.filoghost.holograms.object.pieces.FloatingItemDoubleEntity;
 import com.gmail.filoghost.holograms.object.pieces.FloatingTouchSlimeDoubleEntity;
 import com.gmail.filoghost.holograms.utils.Validator;
-import com.gmail.filoghost.holograms.utils.VisibilityManager;
 
 /**
  * This class is only used by the plugin itself. Other plugins should just use the API.
@@ -20,7 +19,6 @@ import com.gmail.filoghost.holograms.utils.VisibilityManager;
 public class CraftFloatingItem extends HologramBase implements FloatingItem {
 	
 	protected FloatingItemDoubleEntity floatingItemDoubleEntity;
-	protected VisibilityManager visibilityManager;
 	
 	protected long creationTimestamp;
 	
@@ -38,18 +36,6 @@ public class CraftFloatingItem extends HologramBase implements FloatingItem {
 	@Override
 	public long getCreationTimestamp() {
 		return creationTimestamp;
-	}
-
-	public void setVisibilityManager(VisibilityManager visibilityManager) {
-		this.visibilityManager = visibilityManager;
-	}
-	
-	public boolean hasVisibilityManager() {
-		return visibilityManager != null;
-	}
-	
-	public VisibilityManager getVisibilityManager() {
-		return visibilityManager;
 	}
 	
 	@Override

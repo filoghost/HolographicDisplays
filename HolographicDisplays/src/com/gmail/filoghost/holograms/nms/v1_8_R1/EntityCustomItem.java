@@ -23,15 +23,18 @@ import com.gmail.filoghost.holograms.object.HologramBase;
 import com.gmail.filoghost.holograms.utils.ItemUtils;
 
 public class EntityCustomItem extends EntityItem implements CustomItem, BasicEntityNMS {
-	
+
 	private boolean lockTick;
 	private HologramBase parent;
-	
+
 	public EntityCustomItem(World world) {
 		super(world);
 		super.pickupDelay = Integer.MAX_VALUE;
+
+		// To fix the bounding box
+		a(0.05f, 1.2f);
 	}
-	
+
 	@Override
 	public void s_() {
 		// Checks every 20 ticks.
@@ -41,12 +44,12 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 				die();
 			}
 		}
-		
+
 		if (!lockTick) {
 			super.s_();
 		}
 	}
-	
+
 	@Override
 	public ItemStack getItemStack() {
 		// Dirty method to check if the icon is being picked up
@@ -54,14 +57,19 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		if (stacktrace.length > 2 && stacktrace[2].getClassName().contains("EntityInsentient")) {
 			return null; // Try to pickup this, dear entity ignoring the pickupDelay!
 		}
-		
+
 		return super.getItemStack();
 	}
-	
+
 	// Method called when a player is near.
 	@Override
 	public void d(EntityHuman human) {
 		
+		if (human.locY < this.locY + 0.5) {
+			// Too low, it's a bit weird.
+			return;
+		}
+
 		if (parent instanceof FloatingItem && human instanceof EntityPlayer) {
 
 			FloatingItem floatingItemParent = (FloatingItem) parent;
@@ -73,16 +81,16 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 					HolographicDisplays.getInstance().getLogger().warning("An exception occurred while a player picking up a floating item. It's probably caused by another plugin using Holographic Displays as library.");
 				}
 			}
-			
+
 			// It is never added to the inventory.
 		}
 	}
-	
+
 	@Override
 	public void b(NBTTagCompound nbttagcompound) {
 		// Do not save NBT.
 	}
-	
+
 	@Override
 	public boolean c(NBTTagCompound nbttagcompound) {
 		// Do not save NBT.
@@ -94,12 +102,12 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		// Do not save NBT.
 		return false;
 	}
-	
+
 	@Override
 	public void e(NBTTagCompound nbttagcompound) {
 		// Do not save NBT.
 	}
-	
+
 	@Override
 	public boolean isInvulnerable(DamageSource damagesource) {
 		/* 
@@ -107,24 +115,24 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		 * It's only used while saving NBTTags, but since the entity would be killed
 		 * on chunk unload, we prefer to override isInvulnerable().
 		 */
-	    return true;
+		return true;
 	}
 
 	@Override
 	public void setLockTick(boolean lock) {
 		lockTick = lock;
 	}
-	
+
 	@Override
 	public void setCustomName(String customName) {
 		// Locks the custom name.
 	}
-	
+
 	@Override
 	public void setCustomNameVisible(boolean visible) {
 		// Locks the custom name.
 	}
-	
+
 	@Override
 	public void die() {
 		setLockTick(false);
@@ -135,7 +143,7 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	public CraftEntity getBukkitEntity() {
 		if (super.bukkitEntity == null) {
 			this.bukkitEntity = new CraftCustomItem(this.world.getServer(), this);
-	    }
+		}
 		return this.bukkitEntity;
 	}
 
@@ -143,12 +151,12 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	public boolean isDeadNMS() {
 		return this.dead;
 	}
-	
+
 	@Override
 	public void killEntityNMS() {
 		die();
 	}
-	
+
 	@Override
 	public void setLocationNMS(double x, double y, double z) {
 		super.setPosition(x, y, z);
@@ -157,28 +165,27 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	@Override
 	public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
 		ItemStack newItem = CraftItemStack.asNMSCopy(stack);
-		
+
 		if (newItem == null) {
 			newItem = new ItemStack(Blocks.BEDROCK);
 		}
-		
+
 		if (newItem.getTag() == null) {
 			newItem.setTag(new NBTTagCompound());
 		}
 		NBTTagCompound display = newItem.getTag().getCompound("display");
-		
+
 		if (!newItem.getTag().hasKey("display")) {
-		newItem.getTag().set("display", display);
+			newItem.getTag().set("display", display);
 		}
-		
+
 		NBTTagList tagList = new NBTTagList();
 		tagList.add(new NBTTagString(ItemUtils.ANTISTACK_LORE)); // Antistack lore
-		
+
 		display.set("Lore", tagList);
 		newItem.count = 0;
 		setItemStack(newItem);
 	}
-
 
 	@Override
 	public HologramBase getParentHologram() {

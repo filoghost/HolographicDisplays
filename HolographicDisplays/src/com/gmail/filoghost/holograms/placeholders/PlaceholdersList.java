@@ -9,18 +9,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import com.gmail.filoghost.holograms.Configuration;
+import com.gmail.filoghost.holograms.utils.GenericUtils;
 
 public class PlaceholdersList {
 
+	
 	// Each 2 tenths of second
-	private static final Placeholder RAINBOW_TEXT = new AnimatedPlaceholder("&u", 2, new String[] {
-			ChatColor.RED + "",
-			ChatColor.GOLD + "",
-			ChatColor.YELLOW + "",
-			ChatColor.GREEN + "",
-			ChatColor.AQUA + "",
-			ChatColor.LIGHT_PURPLE + ""
-	});
+	private static final Placeholder RAINBOW_TEXT = new AnimatedPlaceholder("&u", 2, GenericUtils.arrayToStrings(
+			ChatColor.RED,
+			ChatColor.GOLD,
+			ChatColor.YELLOW,
+			ChatColor.GREEN,
+			ChatColor.AQUA,
+			ChatColor.LIGHT_PURPLE
+	));
 	
 	// Each second
 	private static final Placeholder ONLINE_PLAYERS = new Placeholder("{online}", "{o}", 10) {
