@@ -32,7 +32,7 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 		super.pickupDelay = Integer.MAX_VALUE;
 
 		// To fix the bounding box
-		a(0.05f, 1.2f);
+		a(0.05f, 2.0f);
 	}
 
 	@Override
@@ -65,8 +65,8 @@ public class EntityCustomItem extends EntityItem implements CustomItem, BasicEnt
 	@Override
 	public void d(EntityHuman human) {
 		
-		if (human.locY < this.locY + 0.5) {
-			// Too low, it's a bit weird.
+		if (human.locY < this.locY - 1.5 || human.locY > this.locY + 1.0) {
+			// Too low or too high, it's a bit weird.
 			return;
 		}
 
