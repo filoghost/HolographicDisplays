@@ -3,13 +3,17 @@
 #.
 #.  Plugin created by filoghost.
 #.
-vertical-spacing: 0.25
+space-between-lines: 0.02
 images:
   symbol: '[x]'
   transparency:
     space: ' [|] '
     color: '&7'
-bungee-refresh-seconds: 3
-time-format: 'H:mm'
+bungee:
+  refresh-seconds: 3
+  use-RedisBungee: false
+time:
+  format: H:mm
+  zone: GMT+1
 update-notification: true
-using-RedisBungee: false
+debug: false

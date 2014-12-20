@@ -1,9 +1,0 @@
-Speed: 20
-This is an example.
-This line will change every 2 seconds...
-because it's an animation.
-You just have to put "{animation: example.txt}" in a hologram...
-to see this animated text.
-Each unit of speed will result in a 0.1 seconds delay...
-for example 20 * 0.1 = 2 seconds, like in this example.
-The fastest animation has speed 1, every 0.1 seconds.
