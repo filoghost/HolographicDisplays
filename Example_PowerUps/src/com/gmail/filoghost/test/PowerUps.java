@@ -15,10 +15,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.gmail.filoghost.holograms.api.FloatingItem;
-import com.gmail.filoghost.holograms.api.Hologram;
-import com.gmail.filoghost.holograms.api.HolographicDisplaysAPI;
-import com.gmail.filoghost.holograms.api.PickupHandler;
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
+import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 
 public class PowerUps extends JavaPlugin implements Listener {
 	
@@ -47,25 +47,25 @@ public class PowerUps extends JavaPlugin implements Listener {
 			event.setDroppedExp(0);
 			
 			// Spawn the floating item with a label.
-			final Hologram hologram = HolographicDisplaysAPI.createHologram(this, event.getEntity().getLocation().add(0.0, 0.9, 0.0), ChatColor.AQUA  + "" + ChatColor.BOLD + "Speed PowerUp");
-			FloatingItem floatingItem = HolographicDisplaysAPI.createFloatingItem(this, event.getEntity().getLocation().add(0.0, 0.2, 0.0), new ItemStack(Material.SUGAR));
+			final Hologram hologram = HologramsAPI.createHologram(this, event.getEntity().getLocation().add(0.0, 0.9, 0.0));
+			hologram.appendTextLine(ChatColor.AQUA  + "" + ChatColor.BOLD + "Speed PowerUp");
+			ItemLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
 			
-			floatingItem.setPickupHandler(new PickupHandler() {
+			icon.setPickupHandler(new PickupHandler() {
 				
 				@Override
-				public void onPickup(FloatingItem floatingItem, Player player) {
+				public void onPickup(Player player) {
 					
 					// Play a sound.
 					player.playSound(player.getLocation(), Sound.LEVEL_UP, 1F, 2F);
 					
 					// Play an effect.
-					player.playEffect(floatingItem.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
+					player.playEffect(hologram.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
 					
 					// 30 seconds of speed II.
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * 20, 1), true);
 					
-					// Delete the hologram and the floating item.
-					floatingItem.delete();
+					// Delete the hologram.
 					hologram.delete();
 					
 				}
