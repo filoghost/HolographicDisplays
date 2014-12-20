@@ -16,7 +16,6 @@ public class PluginHologram extends CraftHologram {
 		super(source);
 		Validator.notNull(plugin, "plugin");
 		this.plugin = plugin;
-		setAllowPlaceholders(true);
 	}
 	
 	public Plugin getOwner() {

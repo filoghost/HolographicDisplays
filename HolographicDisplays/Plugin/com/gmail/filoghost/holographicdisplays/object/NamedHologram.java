@@ -9,6 +9,7 @@ public class NamedHologram extends CraftHologram {
 	public NamedHologram(Location source, String name) {
 		super(source);
 		this.name = name;
+		setAllowPlaceholders(true);
 	}
 
 	public String getName() {
