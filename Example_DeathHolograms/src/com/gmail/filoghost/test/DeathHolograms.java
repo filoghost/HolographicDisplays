@@ -10,7 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.gmail.filoghost.holograms.api.HolographicDisplaysAPI;
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 public class DeathHolograms extends JavaPlugin implements Listener {
 	
@@ -31,12 +32,10 @@ public class DeathHolograms extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		
-		HolographicDisplaysAPI.createHologram(
-			this,
-			event.getEntity().getEyeLocation(),
-			ChatColor.RED + "Player " + ChatColor.GOLD + event.getEntity().getName() + ChatColor.RED + " died here!",
-			ChatColor.GRAY + "Time of death: " + new SimpleDateFormat("H:m").format(new Date())
-		);
+		Hologram hologram = HologramsAPI.createHologram(this, event.getEntity().getEyeLocation());
+		
+		hologram.appendTextLine(ChatColor.RED + "Player " + ChatColor.GOLD + event.getEntity().getName() + ChatColor.RED + " died here!");
+		hologram.appendTextLine(ChatColor.GRAY + "Time of death: " + new SimpleDateFormat("H:m").format(new Date()));
 		
 	}
 }
