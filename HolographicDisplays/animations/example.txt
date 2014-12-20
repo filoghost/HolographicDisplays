@@ -1,0 +1,6 @@
+Speed: 0.5
+This is an example.
+This line will change every 0.5 seconds...
+because it's an animation.
+You just have to put "{animation: example.txt}" in a hologram...
+to see this animated text.
