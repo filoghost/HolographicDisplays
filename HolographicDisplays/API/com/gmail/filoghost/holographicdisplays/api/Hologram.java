@@ -99,6 +99,12 @@ public interface Hologram {
 	 */
 	public void teleport(World world, double x, double y, double z);
 	
+	/**
+	 * Returns the position of the hologram.
+	 * 
+	 * @return the Location of the hologram
+	 */
+	public Location getLocation();	
 	
 	/**
 	 * Returns the X coordinate.
