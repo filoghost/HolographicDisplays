@@ -116,14 +116,15 @@ public class ReadimageCommand extends HologramSubCommand {
 			
 		} catch (MalformedURLException e) {
 			throw new CommandException("The provided URL was not valid.");
-		} catch (FileNotFoundException e) {
-			throw new CommandException("The image '" + args[1] + "' doesn't exist in the plugin's folder.");
 		} catch (TooWideException e) {
 			throw new CommandException("The image is too large. Max width allowed is " + ImageMessage.MAX_WIDTH + " pixels.");
 		} catch (UnreadableImageException e) {
 			throw new CommandException("The plugin was unable to read the image. Be sure that the format is supported.");
+		} catch (FileNotFoundException e) {
+			throw new CommandException("The image \"" + args[1] + "\" doesn't exist in the plugin's folder.");
 		} catch (IOException e) {
-			throw new CommandException("I/O exception while reading the image." + (isUrl ? "Is the URL valid?" : "Is it in use?"));
+			e.printStackTrace();
+			throw new CommandException("I/O exception while reading the image. " + (isUrl ? "Is the URL valid?" : "Is it in use?"));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new CommandException("Unhandled exception while reading the image! Please look the console.");

@@ -19,6 +19,10 @@ public class FileUtils {
 	
 	public static List<String> readLines(File file) throws IOException, Exception {
 
+		if (!file.isFile()) {
+			throw new FileNotFoundException(file.getName());
+		}
+		
 		BufferedReader br = null;
 
 		try {
@@ -49,7 +53,11 @@ public class FileUtils {
 	}
 	
 	public static BufferedImage readImage(File file) throws UnreadableImageException, IOException, Exception {
-			
+		
+		if (!file.isFile()) {
+			throw new FileNotFoundException(file.getName());
+		}
+		
 		BufferedImage image = ImageIO.read(file);
 		
 		if (image == null) {
