@@ -71,12 +71,12 @@ public class HologramsCommandHandler implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
 		if (args.length == 0) {
-			sender.sendMessage(Colors.PRIMARY_SHADOW + "This server is running " + Colors.PRIMARY + "Holographic Displays " + Colors.PRIMARY_SHADOW + "v" + HolographicDisplays.getInstance().getDescription().getVersion() + " by " + Colors.PRIMARY + "filoghost");
+			sender.sendMessage(Colors.PRIMARY_SHADOW + "Server is running " + Colors.PRIMARY + "Holographic Displays " + Colors.PRIMARY_SHADOW + "v" + HolographicDisplays.getInstance().getDescription().getVersion() + " by " + Colors.PRIMARY + "filoghost");
 			if (sender.hasPermission(Strings.BASE_PERM + "help")) {
 				sender.sendMessage(Colors.PRIMARY_SHADOW + "Commands: " + Colors.PRIMARY + "/" + label + " help");
 			}
 			return true;
-		}		
+		}
 		
 		for (HologramSubCommand subCommand : subCommands) {
 			if (subCommand.isValidTrigger(args[0])) {
