@@ -24,7 +24,7 @@ public class PluginHologramManager {
 	
 	public static void removeHologram(PluginHologram hologram) {
 		pluginHolograms.remove(hologram);
-		if (hologram.isDeleted()) {
+		if (!hologram.isDeleted()) {
 			hologram.delete();
 		}
 	}

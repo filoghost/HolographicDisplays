@@ -20,7 +20,7 @@ public class NamedHologramManager {
 	
 	public static void removeHologram(NamedHologram hologram) {
 		pluginHolograms.remove(hologram);
-		if (hologram.isDeleted()) {
+		if (!hologram.isDeleted()) {
 			hologram.delete();
 		}
 	}
