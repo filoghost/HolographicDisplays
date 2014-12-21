@@ -12,7 +12,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import com.google.common.base.Joiner;
+import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 /**
  * Just a bunch of static varibles to hold the settings.
@@ -89,13 +89,13 @@ public class Configuration {
 		
 		
 		if (needsSave) {
-			config.options().header(Joiner.on('\n').join(
+			config.options().header(Utils.join(new String[] {
 					".",
 					".  Read the tutorial at: http://dev.bukkit.org/bukkit-plugins/holographic-displays/",
 					".",
 					".  Plugin created by filoghost.",
-					"."
-					));
+					"."},
+					"\n"));
 			config.options().copyHeader(true);
 			try {
 				config.save(configFile);
@@ -108,7 +108,7 @@ public class Configuration {
 		spaceBetweenLines = config.getDouble(ConfigNode.SPACE_BETWEEN_LINES.getPath());
 		updateNotification = config.getBoolean(ConfigNode.UPDATE_NOTIFICATION.getPath());
 		
-		imageSymbol = StringConverter.toReadableFormat(config.getString(ConfigNode.IMAGES_SYMBOL.getPath()));		
+		imageSymbol = StringConverter.toReadableFormat(config.getString(ConfigNode.IMAGES_SYMBOL.getPath()));
 		transparencySymbol = StringConverter.toReadableFormat(config.getString(ConfigNode.TRANSPARENCY_SPACE.getPath()));
 		bungeeRefreshSeconds = config.getInt(ConfigNode.BUNGEE_REFRESH_SECONDS.getPath());
 		useRedisBungee = config.getBoolean(ConfigNode.BUNGEE_USE_REDIS_BUNGEE.getPath());
@@ -145,5 +145,5 @@ public class Configuration {
 			plugin.getLogger().warning("The maximum interval for pinging BungeeCord's servers is 60 seconds. It has been automatically set.");
 			bungeeRefreshSeconds = 60;
 		}
-	}	
+	}
 }

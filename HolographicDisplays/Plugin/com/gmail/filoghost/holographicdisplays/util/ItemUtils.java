@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import com.google.common.collect.Maps;
 
 public class ItemUtils {
 	
@@ -21,7 +20,7 @@ public class ItemUtils {
 	
 	static {
 		// Default material names are ugly.
-		Map<String, Material> tempMap = Maps.newHashMap();
+		Map<String, Material> tempMap = Utils.newMap();
 			
 		tempMap.put("iron bar",				Material.IRON_FENCE);
 		tempMap.put("iron bars",			Material.IRON_FENCE);

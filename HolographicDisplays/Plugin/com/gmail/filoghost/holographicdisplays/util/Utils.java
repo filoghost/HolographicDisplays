@@ -75,8 +75,8 @@ public class Utils extends Object {
 	
 	
 	public static String join(String[] elements, String separator, int startIndex, int endIndex) {
-		Validator.isTrue(startIndex > 0 && startIndex < elements.length, "startIndex out of bounds");
-		Validator.isTrue(endIndex > 0 && endIndex <= elements.length, "endIndex out of bounds");
+		Validator.isTrue(startIndex >= 0 && startIndex < elements.length, "startIndex out of bounds");
+		Validator.isTrue(endIndex >= 0 && endIndex <= elements.length, "endIndex out of bounds");
 		Validator.isTrue(startIndex <= endIndex, "startIndex lower than endIndex");
 		
 		StringBuilder result = new StringBuilder();
@@ -95,6 +95,9 @@ public class Utils extends Object {
 		return result.toString();
 	}
 
+	public static String join(String[] elements, String separator) {
+		return join(elements, separator, 0, elements.length);
+	}
 
 	public static String join(List<String> elements, String separator, int startIndex, int size) {
 		return join(elements.toArray(new String[elements.size()]), separator, startIndex, size);

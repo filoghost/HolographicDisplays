@@ -24,7 +24,7 @@ public class AlignCommand extends HologramSubCommand {
 
 	@Override
 	public String getPossibleArguments() {
-		return "<X|Y|Z|XZ> <hologram> <referenceHologram>";
+		return "<X | Y | Z | XZ> <hologram> <referenceHologram>";
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class AlignCommand extends HologramSubCommand {
 		}
 
 		hologram.teleport(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ());
-		hologram.despawnEntities();		
+		hologram.despawnEntities();
 		hologram.refreshAll();
 			
 		HologramDatabase.saveHologram(hologram);

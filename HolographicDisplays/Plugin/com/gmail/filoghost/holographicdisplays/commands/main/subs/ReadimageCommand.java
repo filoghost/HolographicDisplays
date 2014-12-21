@@ -9,8 +9,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.util.com.google.common.collect.Lists;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -27,6 +25,7 @@ import com.gmail.filoghost.holographicdisplays.image.ImageMessage;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.util.FileUtils;
+import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class ReadimageCommand extends HologramSubCommand {
 
@@ -52,7 +51,7 @@ public class ReadimageCommand extends HologramSubCommand {
 		
 		boolean append = false;
 		
-		List<String> newArgs = Lists.newArrayList();
+		List<String> newArgs = Utils.newList();
 		
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equalsIgnoreCase("-a") || args[i].equalsIgnoreCase("-append")) {
