@@ -51,7 +51,7 @@ public class NamedHologramManager {
 		}
 	}
 	
-	public static void onChunkUnload(Chunk chunk) {		
+	public static void onChunkUnload(Chunk chunk) {
 		 // Hide the holograms in that chunk.
 		for (NamedHologram hologram : pluginHolograms) {
 			if (hologram.isInChunk(chunk)) {

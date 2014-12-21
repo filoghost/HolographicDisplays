@@ -2,6 +2,7 @@ package com.gmail.filoghost.holographicdisplays.object;
 
 import java.util.Collection;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
@@ -21,6 +22,7 @@ public class BackendAPI {
 		Validator.notNull(plugin, "plugin");
 		Validator.notNull(source, "source");
 		Validator.notNull(source.getWorld(), "source's world");
+		Validator.isTrue(Bukkit.isPrimaryThread(), "Async hologram creation");
 		
 		PluginHologram hologram = new PluginHologram(source, plugin);
 		PluginHologramManager.addHologram(hologram);

@@ -1,6 +1,8 @@
 package com.gmail.filoghost.holographicdisplays.object;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
@@ -26,7 +28,7 @@ public class CraftVisibilityManager implements VisibilityManager {
 	}
 	
 	@Override
-	public boolean isVisibleByDefault() {		
+	public boolean isVisibleByDefault() {
 		return visibleByDefault;
 	}
 	
@@ -131,6 +133,17 @@ public class CraftVisibilityManager implements VisibilityManager {
 	@Override
 	public void resetVisibilityAll() {
 		if (playersVisibilityMap != null) {
+			
+			// We need to refresh all the players
+			Set<String> playerNames = new HashSet<String>(playersVisibilityMap.keySet());
+			
+			for (String playerName : playerNames) {
+				Player onlinePlayer = Bukkit.getPlayerExact(playerName);
+				if (onlinePlayer != null) {
+					resetVisibility(onlinePlayer);
+				}
+			}
+			
 			playersVisibilityMap.clear();
 			playersVisibilityMap = null;
 		}
@@ -149,7 +162,7 @@ public class CraftVisibilityManager implements VisibilityManager {
 	}
 	
 	private static boolean isNear(Player player, CraftHologram hologram) {
-		return player.getWorld().equals(hologram.getWorld()) && player.getLocation().distanceSquared(hologram.getLocation()) < VISIBILITY_DISTANCE_SQUARED;
+		return player.isOnline() && player.getWorld().equals(hologram.getWorld()) && player.getLocation().distanceSquared(hologram.getLocation()) < VISIBILITY_DISTANCE_SQUARED;
 	}
 
 	@Override

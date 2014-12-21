@@ -45,7 +45,7 @@ public class PluginHologramManager {
 		return Collections.unmodifiableSet(ownedHolograms);
 	}
 
-	public static void onChunkLoad(Chunk chunk) {		
+	public static void onChunkLoad(Chunk chunk) {
 		 // Load the holograms in that chunk.
 		for (PluginHologram hologram : pluginHolograms) {
 			if (hologram.isInChunk(chunk)) {
@@ -54,7 +54,7 @@ public class PluginHologramManager {
 		}
 	}
 	
-	public static void onChunkUnload(Chunk chunk) {		
+	public static void onChunkUnload(Chunk chunk) {
 		 // Hide the holograms in that chunk.
 		for (PluginHologram hologram : pluginHolograms) {
 			if (hologram.isInChunk(chunk)) {
