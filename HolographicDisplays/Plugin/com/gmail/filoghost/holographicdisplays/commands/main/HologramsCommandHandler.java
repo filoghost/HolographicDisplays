@@ -47,8 +47,8 @@ public class HologramsCommandHandler implements CommandExecutor {
 		registerSubCommand(new TeleportCommand());
 		registerSubCommand(new MovehereCommand());
 		registerSubCommand(new AlignCommand());
-		registerSubCommand(new FixCommand());
 		registerSubCommand(new ReloadCommand());
+		registerSubCommand(new FixCommand());
 		
 		registerSubCommand(new RemovelineCommand());
 		registerSubCommand(new SetlineCommand());
