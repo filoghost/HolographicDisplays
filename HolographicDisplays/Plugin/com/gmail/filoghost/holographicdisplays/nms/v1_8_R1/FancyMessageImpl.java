@@ -5,12 +5,12 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.v1_7_R4.ChatSerializer;
-import net.minecraft.server.v1_7_R4.PacketPlayOutChat;
+import net.minecraft.server.v1_8_R1.ChatSerializer;
+import net.minecraft.server.v1_8_R1.PacketPlayOutChat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.FancyMessage;
 
