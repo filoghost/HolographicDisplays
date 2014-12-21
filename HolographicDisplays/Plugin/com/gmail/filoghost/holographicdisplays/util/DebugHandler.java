@@ -11,6 +11,12 @@ public class DebugHandler {
 			HolographicDisplays.getInstance().getLogger().warning("[Debug] Coulnd't spawn entity for this hologram: " + parentPiece.getParent().toString());
 		}
 	}
+	
+	public static void handleAnimationLoadSuccess(String name, double speed) {
+		if (Configuration.debug) {
+			HolographicDisplays.getInstance().getLogger().info("[Debug] Successfully loaded animation '"  + name + "', speed = " + speed + ".");
+		}
+	}
 
 	
 	
