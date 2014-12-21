@@ -94,5 +94,13 @@ public class Utils extends Object {
 		
 		return result.toString();
 	}
+
+
+	public static String join(List<String> elements, String separator, int startIndex, int size) {
+		return join(elements.toArray(new String[elements.size()]), separator, startIndex, size);
+	}
 	
+	public static String join(List<String> elements, String separator) {
+		return join(elements, separator, 0, elements.size());
+	}
 }

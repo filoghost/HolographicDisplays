@@ -3,8 +3,6 @@ package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.util.com.google.common.base.Joiner;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -64,7 +62,7 @@ public class EditCommand extends HologramSubCommand {
 					HolographicDisplays.getNMSManager().newFancyMessage(usage)
 						.color(ChatColor.AQUA)
 						.suggest(usage)
-						.tooltip(Joiner.on('\n').join(help))
+						.tooltip(Utils.join(help, "\n"))
 						.send((Player) sender);
 				} else {
 					sender.sendMessage(Colors.PRIMARY + usage);
