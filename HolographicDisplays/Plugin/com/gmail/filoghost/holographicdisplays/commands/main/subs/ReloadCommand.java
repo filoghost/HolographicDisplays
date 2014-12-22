@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
@@ -14,6 +15,7 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.disk.UnicodeSymbols;
+import com.gmail.filoghost.holographicdisplays.event.HolographicDisplaysReloadEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.exception.HologramNotFoundException;
 import com.gmail.filoghost.holographicdisplays.exception.InvalidFormatException;
@@ -54,7 +56,7 @@ public class ReloadCommand extends HologramSubCommand {
 			AnimationsRegister.loadAnimations(HolographicDisplays.getInstance());
 			PlaceholdersManager.untrackAll();
 			
-			NamedHologramManager.clearAll();			
+			NamedHologramManager.clearAll();
 			
 			Set<String> savedHolograms = HologramDatabase.getHolograms();
 			if (savedHolograms != null && savedHolograms.size() > 0) {
@@ -84,6 +86,8 @@ public class ReloadCommand extends HologramSubCommand {
 			ex.printStackTrace();
 			throw new CommandException("Exception while reloading the configuration. Please look the console.");
 		}
+		
+		Bukkit.getPluginManager().callEvent(new HolographicDisplaysReloadEvent());
 	}
 	
 	@Override

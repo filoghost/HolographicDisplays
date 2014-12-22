@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -18,6 +19,7 @@ import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
+import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.exception.TooWideException;
 import com.gmail.filoghost.holographicdisplays.exception.UnreadableImageException;
@@ -113,6 +115,7 @@ public class ReadimageCommand extends HologramSubCommand {
 			} else {
 				sender.sendMessage(Colors.PRIMARY + "The image was drawn in the hologram!");
 			}
+			Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
 			
 		} catch (MalformedURLException e) {
 			throw new CommandException("The provided URL was not valid.");

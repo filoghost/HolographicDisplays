@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -16,6 +17,7 @@ import com.gmail.filoghost.holographicdisplays.commands.Strings;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.disk.StringConverter;
+import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
@@ -69,6 +71,7 @@ public class ReadtextCommand extends HologramSubCommand {
 			}
 			
 			sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram!");
+			Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
 			
 		} catch (FileNotFoundException e) {
 			throw new CommandException("A file named '" + args[1] + "' doesn't exist in the plugin's folder.");

@@ -3,6 +3,7 @@ package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
@@ -10,6 +11,7 @@ import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
+import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
@@ -50,6 +52,7 @@ public class SetlineCommand extends HologramSubCommand {
 		HologramDatabase.saveHologram(hologram);
 		HologramDatabase.trySaveToDisk();
 		sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " changed!");
+		Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
 		
 	}
 
