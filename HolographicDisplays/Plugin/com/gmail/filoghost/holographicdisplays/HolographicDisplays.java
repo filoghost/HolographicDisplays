@@ -130,7 +130,7 @@ public class HolographicDisplays extends JavaPlugin {
 				getLogger().info("Trying to enable Cauldron/MCPC+ support...");
 			}
 			
-			nmsManager.registerCustomEntities();
+			nmsManager.setup();
 			
 			if (VersionUtils.isMCPCOrCauldron()) {
 				getLogger().info("Successfully added support for Cauldron/MCPC+!");

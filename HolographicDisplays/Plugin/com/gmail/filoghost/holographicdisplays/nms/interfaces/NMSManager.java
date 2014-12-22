@@ -15,7 +15,7 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 public interface NMSManager {
 	
 	// A method to register all the custom entities of the plugin, it may fail.
-	public void registerCustomEntities() throws Exception;
+	public void setup() throws Exception;
 	
 	public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, CraftHologramLine parentPiece);
 

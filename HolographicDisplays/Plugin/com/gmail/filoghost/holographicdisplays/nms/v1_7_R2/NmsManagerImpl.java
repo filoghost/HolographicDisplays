@@ -1,10 +1,13 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_7_R2;
 
+import java.lang.reflect.Method;
 import net.minecraft.server.v1_7_R2.Entity;
 import net.minecraft.server.v1_7_R2.EntityTypes;
 import net.minecraft.server.v1_7_R2.WorldServer;
+import net.minecraft.server.v1_8_R1.MathHelper;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
@@ -23,16 +26,24 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
+import com.gmail.filoghost.holographicdisplays.util.Validator;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class NmsManagerImpl implements NMSManager {
 
+	private Method validateEntityMethod;
+
 	@Override
-	public void registerCustomEntities() throws Exception {
+	public void setup() throws Exception {
 		registerCustomEntity(EntityNMSHorse.class, "EntityHorse", 100);
 		registerCustomEntity(EntityNMSWitherSkull.class, "WitherSkull", 19);
 		registerCustomEntity(EntityNMSItem.class, "Item", 1);
 		registerCustomEntity(EntityNMSSlime.class, "Slime", 55);
+		
+		if (!VersionUtils.isMCPCOrCauldron()) {
+			validateEntityMethod = World.class.getDeclaredMethod("a", Entity.class);
+			validateEntityMethod.setAccessible(true);
+		}
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -54,7 +65,7 @@ public class NmsManagerImpl implements NMSManager {
 		WorldServer nmsWorld = ((CraftWorld) world).getHandle();
 		EntityNMSHorse invisibleHorse = new EntityNMSHorse(nmsWorld, parentPiece);
 		invisibleHorse.setLocationNMS(x, y, z);
-		if (!nmsWorld.addEntity(invisibleHorse, SpawnReason.CUSTOM)) {
+		if (!addEntityToWorld(nmsWorld, invisibleHorse)) {
 			DebugHandler.handleSpawnFail(parentPiece);
 		}
 		return invisibleHorse;
@@ -65,7 +76,7 @@ public class NmsManagerImpl implements NMSManager {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
 		EntityNMSWitherSkull staticWitherSkull = new EntityNMSWitherSkull(nmsWorld, parentPiece);
 		staticWitherSkull.setLocationNMS(x, y, z);
-		if (!nmsWorld.addEntity(staticWitherSkull, SpawnReason.CUSTOM)) {
+		if (!addEntityToWorld(nmsWorld, staticWitherSkull)) {
 			DebugHandler.handleSpawnFail(parentPiece);
 		}
 		return staticWitherSkull;
@@ -77,7 +88,7 @@ public class NmsManagerImpl implements NMSManager {
 		EntityNMSItem customItem = new EntityNMSItem(nmsWorld, parentPiece);
 		customItem.setLocationNMS(x, y, z);
 		customItem.setItemStackNMS(stack);
-		if (!nmsWorld.addEntity(customItem, SpawnReason.CUSTOM)) {
+		if (!addEntityToWorld(nmsWorld, customItem)) {
 			DebugHandler.handleSpawnFail(parentPiece);
 		}
 		return customItem;
@@ -88,11 +99,40 @@ public class NmsManagerImpl implements NMSManager {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
 		EntityNMSSlime touchSlime = new EntityNMSSlime(nmsWorld, parentPiece);
 		touchSlime.setLocationNMS(x, y, z);
-		if (!nmsWorld.addEntity(touchSlime, SpawnReason.CUSTOM)) {
+		if (!addEntityToWorld(nmsWorld, touchSlime)) {
 			DebugHandler.handleSpawnFail(parentPiece);
 		}
 		return touchSlime;
 	}
+	
+	@SuppressWarnings("unchecked")
+	private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
+		Validator.isTrue(Bukkit.isPrimaryThread(), "Async entity add");
+		
+		if (validateEntityMethod == null) {
+			return nmsWorld.addEntity(nmsEntity, SpawnReason.CUSTOM);
+		}
+		
+        final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
+        final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
+        
+        if (!nmsWorld.chunkProviderServer.isChunkLoaded(chunkX, chunkZ)) {
+        	// This should never happen
+            nmsEntity.dead = true;
+            return false;
+        }
+        
+        nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
+        nmsWorld.entityList.add(nmsEntity);
+        
+        try {
+			validateEntityMethod.invoke(nmsWorld, nmsEntity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+        return true;
+    }
 	
 	@Override
 	public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
