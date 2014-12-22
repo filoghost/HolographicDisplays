@@ -168,7 +168,7 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 		}
 		
 		lines.clear();
-	}	
+	}
 	
 	@Override
 	public int size() {
@@ -297,7 +297,7 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 	@Override
 	public void teleport(World world, double x, double y, double z) {
 		Validator.isTrue(!deleted, "hologram already deleted");
-		Validator.notNull(world, "world");		
+		Validator.notNull(world, "world");
 		
 		if (this.world != world) {
 			updateLocation(world, x, y, z);
@@ -338,47 +338,56 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 	 */
 
 	@Override
+	@Deprecated
 	public boolean update() {
 		return true;
 	}
 
 	@Override
+	@Deprecated
 	public void hide() {
 
 	}
 
 	@Override
+	@Deprecated
 	public void addLine(String text) {
 		appendTextLine(text);
 	}
 
 	@Override
+	@Deprecated
 	public void setLine(int index, String text) {
 		lines.get(index).despawn();
 		lines.set(index, new CraftTextLine(this, text));
 	}
 
 	@Override
+	@Deprecated
 	public void insertLine(int index, String text) {
 		insertLine(index, text);
 	}
 
 	@Override
+	@Deprecated
 	public String[] getLines() {
 		return null;
 	}
 
 	@Override
+	@Deprecated
 	public int getLinesLength() {
 		return size();
 	}
 
 	@Override
+	@Deprecated
 	public void setLocation(Location location) {
 		teleport(location);
 	}
 
 	@Override
+	@Deprecated
 	public void setTouchHandler(TouchHandler handler) {
 		if (size() > 0) {
 			TouchableLine line0 = ((TouchableLine) getLine(0));
@@ -392,11 +401,13 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 	}
 
 	@Override
+	@Deprecated
 	public TouchHandler getTouchHandler() {
 		return null;
 	}
 
 	@Override
+	@Deprecated
 	public boolean hasTouchHandler() {
 		return false;
 	}
