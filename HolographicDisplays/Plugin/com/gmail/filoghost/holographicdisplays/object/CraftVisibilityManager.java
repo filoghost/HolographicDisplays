@@ -71,7 +71,7 @@ public class CraftVisibilityManager implements VisibilityManager {
 		
 		playersVisibilityMap.put(player.getName().toLowerCase(), true);
 		
-		if (wasVisible == false) {
+		if (!wasVisible) {
 			sendCreatePacketIfNear(player, hologram);
 		}
 	}
@@ -90,7 +90,7 @@ public class CraftVisibilityManager implements VisibilityManager {
 		
 		playersVisibilityMap.put(player.getName().toLowerCase(), false);
 		
-		if (wasVisible == true) {
+		if (wasVisible) {
 			sendDestroyPacketIfNear(player, hologram);
 		}
 	}
