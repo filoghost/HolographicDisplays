@@ -81,7 +81,11 @@ public class ProtocolLibHook {
 							
 							WrappedDataWatcher dataWatcher = spawnEntityPacket.getMetadata();
 							String customName = dataWatcher.getString(customNameWatcherIndex);
-								
+							
+							if (customName == null) {
+								return;
+							}
+							
 							if (customName.contains("{player}") || customName.contains("{displayname}")) {
 
 								WrappedDataWatcher dataWatcherClone = dataWatcher.deepClone();
@@ -144,10 +148,10 @@ public class ProtocolLibHook {
 								
 							for (int i = 0; i < dataWatcherValues.size(); i++) {
 								
-								if (dataWatcherValues.get(i).getIndex() == customNameWatcherIndex) {
+								if (dataWatcherValues.get(i).getIndex() == customNameWatcherIndex && dataWatcherValues.get(i).getValue() != null) {
 										
 									Object customNameObject = dataWatcherValues.get(i).deepClone().getValue();
-									if (customNameObject instanceof String == false) {
+									if (customNameObject == null || customNameObject instanceof String == false) {
 										return;
 									}
 									
@@ -167,7 +171,7 @@ public class ProtocolLibHook {
 								}
 							}
 						}
-					}	
+					}
 				});
 			
 			return true;

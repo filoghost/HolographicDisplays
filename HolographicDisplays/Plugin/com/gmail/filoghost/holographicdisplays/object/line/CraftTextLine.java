@@ -41,12 +41,14 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		if (nmsNameble != null) {
 			if (text != null && !text.isEmpty()) {
 				nmsNameble.setCustomNameNMS(text);
+				if (getParent().isAllowPlaceholders()) {
+					PlaceholdersManager.trackIfNecessary(this);
+				}
 			} else {
-				nmsNameble.setCustomNameNMS(null);
-			}
-			
-			if (getParent().isAllowPlaceholders()) {
-				PlaceholdersManager.trackIfNecessary(this);
+				nmsNameble.setCustomNameNMS(""); // It will not appear
+				if (getParent().isAllowPlaceholders()) {
+					PlaceholdersManager.untrack(this);
+				}
 			}
 		}
 	}

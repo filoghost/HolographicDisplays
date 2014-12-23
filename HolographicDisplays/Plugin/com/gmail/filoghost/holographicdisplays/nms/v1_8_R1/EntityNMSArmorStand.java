@@ -67,7 +67,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	
 	@Override
 	public boolean isInvulnerable(DamageSource source) {
-		/* 
+		/*
 		 * The field Entity.invulnerable is private.
 		 * It's only used while saving NBTTags, but since the entity would be killed
 		 * on chunk unload, we prefer to override isInvulnerable().
@@ -141,7 +141,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 			name = name.substring(0, 300);
 		}
 		super.setCustomName(name);
-		super.setCustomNameVisible(name != null);
+		super.setCustomNameVisible(name != null && !name.isEmpty());
 	}
 	
 	@Override

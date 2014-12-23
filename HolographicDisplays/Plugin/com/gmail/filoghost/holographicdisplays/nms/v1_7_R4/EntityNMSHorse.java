@@ -68,7 +68,7 @@ public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 	
 	@Override
 	public boolean isInvulnerable() {
-		/* 
+		/*
 		 * The field Entity.invulnerable is private.
 		 * It's only used while saving NBTTags, but since the entity would be killed
 		 * on chunk unload, we prefer to override isInvulnerable().
@@ -108,7 +108,7 @@ public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 			name = name.substring(0, 300);
 		}
  		super.setCustomName(name);
-		super.setCustomNameVisible(name != null);
+		super.setCustomNameVisible(name != null && !name.isEmpty());
 	}
 	
 	@Override
