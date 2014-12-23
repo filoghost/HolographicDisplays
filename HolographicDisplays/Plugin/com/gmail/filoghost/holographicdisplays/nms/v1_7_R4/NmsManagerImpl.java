@@ -6,7 +6,7 @@ import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityTypes;
 import net.minecraft.server.v1_7_R4.World;
 import net.minecraft.server.v1_7_R4.WorldServer;
-import net.minecraft.server.v1_8_R1.MathHelper;
+import net.minecraft.server.v1_7_R4.MathHelper;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
