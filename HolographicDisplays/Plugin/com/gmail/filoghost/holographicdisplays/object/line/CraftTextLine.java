@@ -10,6 +10,7 @@ import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSRideable;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
+import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
 
 public class CraftTextLine extends CraftTouchableLine implements TextLine {
@@ -37,8 +38,16 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	public void setText(String text) {
 		this.text = text;
 		
-		if (nmsNameble != null && text != null && !text.isEmpty()) {
-			nmsNameble.setCustomNameNMS(text);
+		if (nmsNameble != null) {
+			if (text != null && !text.isEmpty()) {
+				nmsNameble.setCustomNameNMS(text);
+			} else {
+				nmsNameble.setCustomNameNMS(null);
+			}
+			
+			if (getParent().isAllowPlaceholders()) {
+				PlaceholdersManager.trackIfNecessary(this);
+			}
 		}
 	}
 	
@@ -143,6 +152,6 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	@Override
 	public String toString() {
 		return "CraftTextLine [text=" + text + "]";
-	}	
+	}
 	
 }

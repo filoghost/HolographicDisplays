@@ -37,7 +37,7 @@ public class PlaceholdersManager {
 	
 	public static void load(Plugin plugin) {
 		
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {			
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			
 			@Override
 			public void run() {
@@ -131,7 +131,7 @@ public class PlaceholdersManager {
 		}
 		
 		
-		// Players in a world count pattern. 
+		// Players in a world count pattern.
 		matcher = WORLD_PATTERN.matcher(name);
 		while (matcher.find()) {
 							
@@ -168,7 +168,7 @@ public class PlaceholdersManager {
 					return String.valueOf(BungeeServerTracker.getPlayersOnline(serverName));
 				}
 			});
-		}		
+		}
 		
 		// Animation pattern.
 		matcher = ANIMATION_PATTERN.matcher(name);
@@ -212,9 +212,12 @@ public class PlaceholdersManager {
 			}
 			
 			// It could be already tracked!
-			if (linesToUpdate.add(lineData)) {
-				updatePlaceholders(lineData);
+			if (!linesToUpdate.add(lineData)) {
+				linesToUpdate.remove(lineData);
+				linesToUpdate.add(lineData);
 			}
+			
+			updatePlaceholders(lineData);
 			
 		} else {
 			
