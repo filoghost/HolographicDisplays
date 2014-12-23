@@ -4,12 +4,12 @@ import java.lang.reflect.Method;
 
 import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityTypes;
+import net.minecraft.server.v1_7_R4.World;
 import net.minecraft.server.v1_7_R4.WorldServer;
 import net.minecraft.server.v1_8_R1.MathHelper;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -162,7 +162,7 @@ public class NmsManagerImpl implements NMSManager {
 	}
 
 	@Override
-	public NMSArmorStand spawnNMSArmorStand(World world, double x, double y, double z, CraftHologramLine parentPiece) {
+	public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, CraftHologramLine parentPiece) {
 		throw new NotImplementedException("Method can only be used on 1.8 or higher");
 	}
 }
