@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
+import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
+
 public class ItemUtils {
 	
 	// This is used on hologram icons, to prevent vanilla items from merging with them.
@@ -82,7 +84,11 @@ public class ItemUtils {
 		return stripSpacingSymbolsPattern.matcher(input).replaceAll("");
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static Material matchMaterial(String input) {
+		if (CommandValidator.isInteger(input)) {
+			return Material.getMaterial(Integer.parseInt(input));
+		}
 		return materialMap.get(stripSpacingChars(input).toLowerCase());
 	}
 	
