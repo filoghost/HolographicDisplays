@@ -67,7 +67,7 @@ public interface Hologram {
 	public HologramLine getLine(int index);
 	
 	/**
-	 * Removes a line at a given index.
+	 * Removes a line at a given index. Since: v2.0.1
 	 * 
 	 * @param index the index of the line, that should be between 0 and size() - 1.
 	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())

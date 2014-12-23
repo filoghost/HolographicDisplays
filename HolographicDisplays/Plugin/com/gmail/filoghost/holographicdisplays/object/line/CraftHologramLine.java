@@ -14,7 +14,8 @@ public abstract class CraftHologramLine implements HologramLine {
 	// This field is necessary for teleport.
 	private boolean isSpawned;
 	
-	protected CraftHologramLine(double height, CraftHologram parent) {		
+	protected CraftHologramLine(double height, CraftHologram parent) {
+		Validator.notNull(parent, "parent hologram");
 		this.height = height;
 		this.parent = parent;
 	}
@@ -26,6 +27,10 @@ public abstract class CraftHologramLine implements HologramLine {
 	@Override
 	public final CraftHologram getParent() {
 		return parent;
+	}
+	
+	public void removeLine() {
+		parent.removeLine(this);
 	}
 
 	public void spawn(World world, double x, double y, double z) {

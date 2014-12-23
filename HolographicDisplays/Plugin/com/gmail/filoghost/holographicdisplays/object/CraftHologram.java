@@ -161,6 +161,14 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 		refreshSingleLines();
 	}
 	
+	public void removeLine(CraftHologramLine line) {
+		Validator.isTrue(!deleted, "hologram already deleted");
+		
+		lines.remove(line);
+		line.despawn();
+		refreshSingleLines();
+	}
+	
 	@Override
 	public void clearLines() {
 		for (CraftHologramLine line : lines) {
