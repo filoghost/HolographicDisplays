@@ -65,6 +65,13 @@ public interface Hologram {
 	 */
 	public HologramLine getLine(int index);
 	
+	/**
+	 * Removes a line at a given index.
+	 * 
+	 * @param index the index of the line, that should be between 0 and size() - 1.
+	 */
+	public void removeLine(int index);
+	
 	
 	/**
 	 * Removes all the lines from this hologram.
@@ -104,7 +111,7 @@ public interface Hologram {
 	 * 
 	 * @return the Location of the hologram
 	 */
-	public Location getLocation();	
+	public Location getLocation();
 	
 	/**
 	 * Returns the X coordinate.
