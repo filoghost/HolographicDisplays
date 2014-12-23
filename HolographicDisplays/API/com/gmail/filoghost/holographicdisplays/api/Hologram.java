@@ -36,11 +36,11 @@ public interface Hologram {
 	/**
 	 * Inserts a text line in this hologram.
 	 * 
-	 * @param index the line is inserted before this index, that should be
-	 * between 0 and size() - 1. If 0, the new line will be inserted before the
-	 * first line.
+	 * @param index the line is inserted before this index. If 0, the new line will
+	 * be inserted before the first line.
 	 * @param text the content of the line, can be null for an empty line
 	 * @return the new TextLine inserted
+	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
 	 */
 	public TextLine insertTextLine(int index, String text);
 	
@@ -48,11 +48,11 @@ public interface Hologram {
 	/**
 	 * Inserts an item line in this hologram.
 	 * 
-	 * @param index the line is inserted before this index, that should be
-	 * between 0 and size() - 1. If 0, the new line will be inserted before the
-	 * first line.
+	 * @param index the line is inserted before this index. If 0, the new line will
+	 * be inserted before the first line.
 	 * @param itemStack the content of the line
 	 * @return the new ItemLine inserted
+	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
 	 */
 	public ItemLine insertItemLine(int index, ItemStack itemStack);
 	
@@ -60,8 +60,9 @@ public interface Hologram {
 	/**
 	 * Finds the element at a given index in the lines.
 	 * 
-	 * @param index the index of the line, that should be between 0 and size() - 1.
+	 * @param index the index of the line to retrieve.
 	 * @return the hologram line at the given index, can be an {@link ItemLine} or a {@link TextLine}.
+	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
 	 */
 	public HologramLine getLine(int index);
 	
@@ -69,6 +70,7 @@ public interface Hologram {
 	 * Removes a line at a given index.
 	 * 
 	 * @param index the index of the line, that should be between 0 and size() - 1.
+	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
 	 */
 	public void removeLine(int index);
 	
