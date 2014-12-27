@@ -28,9 +28,9 @@ public class BungeeChannel implements PluginMessageListener {
 	
 	public BungeeChannel(Plugin plugin) {
 		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
-        Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", instance);
+        Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", this);
         Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "RedisBungee");
-        Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "RedisBungee", instance);
+        Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "RedisBungee", this);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class BungeeChannel implements PluginMessageListener {
 		 DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
 		 
 		 try {
-			 String subChannel = in.readUTF();			 
+			 String subChannel = in.readUTF();
 			 
 			 if (subChannel.equals("PlayerCount")) {
 				 
