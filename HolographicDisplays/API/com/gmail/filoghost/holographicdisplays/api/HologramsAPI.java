@@ -32,7 +32,8 @@ public class HologramsAPI {
 	 * Finds all the holograms created by a given plugin.
 	 * 
 	 * @param plugin the plugin to search for in holograms
-	 * @return the holograms created by a plugin
+	 * @return the holograms created by a plugin. the Collection is a copy
+	 * and modifying it has no effect on the holograms.
 	 */
 	public static Collection<Hologram> getHolograms(Plugin plugin) {
 		return BackendAPI.getHolograms(plugin);
