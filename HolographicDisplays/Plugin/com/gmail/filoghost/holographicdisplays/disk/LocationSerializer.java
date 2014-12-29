@@ -26,20 +26,20 @@ public class LocationSerializer {
 			throw new InvalidFormatException();
 		}
 		
-		String[] parts = input.replace(" ", "").split(",");
+		String[] parts = input.split(",");
 		
 		if (parts.length != 4) {
 			throw new InvalidFormatException();
 		}
 		
 		try {
-			double x = Double.parseDouble(parts[1]);
-			double y = Double.parseDouble(parts[2]);
-			double z = Double.parseDouble(parts[3]);
+			double x = Double.parseDouble(parts[1].replace(" ", ""));
+			double y = Double.parseDouble(parts[2].replace(" ", ""));
+			double z = Double.parseDouble(parts[3].replace(" ", ""));
 		
-			World world = Bukkit.getWorld(parts[0]);
+			World world = Bukkit.getWorld(parts[0].trim());
 			if (world == null) {
-				throw new WorldNotFoundException(parts[0]);
+				throw new WorldNotFoundException(parts[0].trim());
 			}
 			
 			return new Location(world, x, y, z);
