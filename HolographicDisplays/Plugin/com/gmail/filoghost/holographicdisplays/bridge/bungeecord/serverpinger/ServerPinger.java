@@ -13,6 +13,6 @@ public abstract class ServerPinger {
     // For 1.6 and lower
     public static final ServerPinger PRE_NETTY_REWRITE = new ServerPingerPreNetty();
     
-    public abstract ServerStatus fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException, Exception;
+    public abstract PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException, Exception;
     
 }

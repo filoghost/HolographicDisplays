@@ -14,7 +14,7 @@ import org.json.simple.JSONValue;
 final class ServerPingerPostNetty extends ServerPinger {
 
 	@Override
-	public ServerStatus fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException, Exception {
+	public PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException, Exception {
 		
 		Socket socket = null;
 		DataOutputStream dataOut = null;
@@ -43,7 +43,7 @@ final class ServerPingerPostNetty extends ServerPinger {
 			final byte[] responseData = new byte[PacketUtils.readVarInt(dataIn)];
 			dataIn.readFully(responseData);
 			final String jsonString = new String(responseData, PacketUtils.UTF8);
-			return new ServerStatus((JSONObject) JSONValue.parse(jsonString));
+			return new PingResponse((JSONObject) JSONValue.parse(jsonString));
 		}
 		finally {
 			PacketUtils.closeQuietly(dataOut);

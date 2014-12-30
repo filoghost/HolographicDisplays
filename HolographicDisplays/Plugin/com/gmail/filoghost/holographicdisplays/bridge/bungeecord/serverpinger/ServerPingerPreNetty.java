@@ -13,7 +13,7 @@ import java.lang.String;
 final class ServerPingerPreNetty extends ServerPinger {
 	
 	@Override
-	public ServerStatus fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException, Exception {
+	public PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException, Exception {
 		
 		Socket socket = null;
 		DataOutputStream dataOut = null;
@@ -33,7 +33,7 @@ final class ServerPingerPreNetty extends ServerPinger {
 			dataIn.readFully(bytes);
 			socket.close();
 			final String[] info = new String(bytes, PacketUtils.UTF16BE).split(String.valueOf('\0'));
-			final ServerStatus response = new ServerStatus(true, info[3], Integer.parseInt(info[4]), Integer.parseInt(info[5]));
+			final PingResponse response = new PingResponse(true, info[3], Integer.parseInt(info[4]), Integer.parseInt(info[5]));
 			// String versionName = info[2];
 			// String protocol = info[1];
 			return response;

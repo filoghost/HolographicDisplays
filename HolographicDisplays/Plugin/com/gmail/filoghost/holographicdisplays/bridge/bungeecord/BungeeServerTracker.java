@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerAddress;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerPinger;
-import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerStatus;
+import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.PingResponse;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 
@@ -159,7 +159,7 @@ public class BungeeServerTracker {
 								boolean displayOffline = false;
 								
 								try {
-									ServerStatus data = pinger.fetchData(entry.getValue(), Configuration.pingerTimeout);
+									PingResponse data = pinger.fetchData(entry.getValue(), Configuration.pingerTimeout);
 									if (data.isOnline()) {
 										serverInfo.setOnline(true);
 										serverInfo.setOnlinePlayers(data.getOnlinePlayers());

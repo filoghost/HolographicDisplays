@@ -4,21 +4,21 @@ import java.lang.String;
 
 import org.json.simple.JSONObject;
 
-public class ServerStatus
+public class PingResponse
 {
 	private boolean isOnline;
     private String motd;
     private int onlinePlayers;
     private int maxPlayers;
     
-    public ServerStatus(boolean isOnline, String motd, int onlinePlayers, int maxPlayers) {
+    public PingResponse(boolean isOnline, String motd, int onlinePlayers, int maxPlayers) {
 		this.isOnline = isOnline;
 		this.motd = motd;
 		this.onlinePlayers = onlinePlayers;
 		this.maxPlayers = maxPlayers;
 	}
 
-	public ServerStatus(JSONObject json) {
+	public PingResponse(JSONObject json) {
     	isOnline = true;
         motd = ((String) json.get("description"));
         
