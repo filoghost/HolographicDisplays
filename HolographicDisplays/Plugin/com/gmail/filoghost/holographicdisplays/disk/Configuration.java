@@ -39,6 +39,7 @@ public class Configuration {
 	public static String pingerOfflineMotd;
 	public static String pingerStatusOnline;
 	public static String pingerStatusOffline;
+	public static boolean pingerTrimMotd;
 	
 	public static boolean debug;
 	

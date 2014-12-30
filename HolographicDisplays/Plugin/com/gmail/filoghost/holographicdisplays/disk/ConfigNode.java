@@ -16,6 +16,7 @@ public enum ConfigNode {
 	BUNGEE_PINGER_OFFLINE_MOTD("bungee.pinger.offline-motd", "&cOffline, couldn't get the MOTD."),
 	BUNGEE_PINGER_ONLINE_FORMAT("bungee.pinger.status.online", "&aOnline"),
 	BUNGEE_PINGER_OFFLINE_FORMAT("bungee.pinger.status.offline", "&cOffline"),
+	BUNGEE_PINGER_TRIM_MOTD("bungee.pinger.trim-motd", true),
 	BUNGEE_PINGER_SERVERS("bungee.pinger.servers", Arrays.asList("hub: 127.0.0.1:25565", "survival: 127.0.0.1:25566", "minigames: 127.0.0.1:25567")),
 	TIME_FORMAT("time.format", "H:mm"),
 	TIME_ZONE("time.zone", "GMT+1"),
