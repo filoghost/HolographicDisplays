@@ -4,7 +4,6 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.filoghost.holographicdisplays.SimpleUpdater.ResponseHandler;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
@@ -24,6 +23,7 @@ import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.placeholder.AnimationsRegister;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import com.gmail.filoghost.holographicdisplays.task.BungeeCleanupTask;
+import com.gmail.filoghost.holographicdisplays.task.StartupLoadHologramsTask;
 import com.gmail.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
@@ -70,7 +70,7 @@ public class HolographicDisplays extends JavaPlugin {
 					HolographicDisplays.newVersion = newVersion;
 					getLogger().info("Found a new version available: " + newVersion);
 					getLogger().info("Download it on Bukkit Dev:");
-					getLogger().info("dev.bukkit.org/bukkit-plugins/holographic-displays");					
+					getLogger().info("dev.bukkit.org/bukkit-plugins/holographic-displays");
 				}
 			});
 		}
@@ -203,14 +203,7 @@ public class HolographicDisplays extends JavaPlugin {
 		} catch (Exception ignore) { }
 		
 		// The entities are loaded when the server is ready.
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (NamedHologram hologram : NamedHologramManager.getHolograms()) {
-					hologram.refreshAll();
-				}
-			}
-		}.runTaskLater(this, 10L);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new StartupLoadHologramsTask(), 10L);
 	}
 	
 
