@@ -120,8 +120,10 @@ public class Configuration {
 		transparencySymbol = StringConverter.toReadableFormat(config.getString(ConfigNode.TRANSPARENCY_SPACE.getPath()));
 		bungeeRefreshSeconds = config.getInt(ConfigNode.BUNGEE_REFRESH_SECONDS.getPath());
 		useRedisBungee = config.getBoolean(ConfigNode.BUNGEE_USE_REDIS_BUNGEE.getPath());
+		
 		pingerEnable = config.getBoolean(ConfigNode.BUNGEE_USE_FULL_PINGER.getPath());
 		pingerTimeout = config.getInt(ConfigNode.BUNGEE_PINGER_TIMEOUT.getPath());
+		pingerTrimMotd = config.getBoolean(ConfigNode.BUNGEE_PINGER_TRIM_MOTD.getPath());
 		
 		pingerOfflineMotd = StringConverter.toReadableFormat(config.getString(ConfigNode.BUNGEE_PINGER_OFFLINE_MOTD.getPath()));
 		pingerStatusOnline = StringConverter.toReadableFormat(config.getString(ConfigNode.BUNGEE_PINGER_ONLINE_FORMAT.getPath()));
