@@ -1,6 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger;
 
-import java.lang.Override;
 import java.lang.String;
 
 import org.json.simple.JSONObject;
@@ -21,7 +20,7 @@ public class ServerStatus
 
 	public ServerStatus(JSONObject json) {
     	isOnline = true;
-        motd = ((String) json.get("description")).replace("\n", "");
+        motd = ((String) json.get("description"));
         
         JSONObject playersJson = (JSONObject) json.get("players");
         onlinePlayers = ((Long) playersJson.get("online")).intValue();
@@ -43,12 +42,5 @@ public class ServerStatus
 	public int getMaxPlayers() {
 		return maxPlayers;
 	}
-
-	@Override
-	public String toString() {
-		return "ServerStatus [motd=" + motd + ", onlinePlayers=" + onlinePlayers + ", maxPlayers=" + maxPlayers + "]";
-	}
-    
-    
 
 }

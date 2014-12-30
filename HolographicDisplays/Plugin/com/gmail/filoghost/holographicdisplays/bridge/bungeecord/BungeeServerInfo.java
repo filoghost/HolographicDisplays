@@ -5,12 +5,17 @@ public class BungeeServerInfo {
 	private boolean isOnline;
 	private int onlinePlayers;
 	private int maxPlayers;
-	private String motd; // Should never be null
+	
+	// The two lines of a motd
+	private String motd1; // Should never be null
+	private String motd2; // Should never be null
+	
 	private long lastRequest;
 
 	protected BungeeServerInfo() {
 		isOnline = true;
-		this.motd = "";
+		this.motd1 = "";
+		this.motd2 = "";
 		updateLastRequest();
 	}
 	
@@ -38,16 +43,29 @@ public class BungeeServerInfo {
 		this.maxPlayers = maxPlayers;
 	}
 
-	public String getMotd() {
-		return motd;
+	public String getMotd1() {
+		return motd1;
+	}
+	
+	public String getMotd2() {
+		return motd2;
 	}
 
 	public void setMotd(String motd) {
 		if (motd == null) {
-			motd = "";
+			this.motd1 = "";
+			this.motd2 = "";
+			return;
 		}
 		
-		this.motd = motd;
+		if (motd.contains("\n")) {
+			String[] split = motd.split("\n");
+			this.motd1 = split[0];
+			this.motd2 = split[1];
+		} else {
+			this.motd1 = motd;
+			this.motd2 = "";
+		}
 	}
 
 	public long getLastRequest() {

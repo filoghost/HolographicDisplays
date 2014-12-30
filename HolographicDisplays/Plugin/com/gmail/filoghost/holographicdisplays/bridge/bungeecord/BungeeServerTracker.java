@@ -82,7 +82,7 @@ public class BungeeServerTracker {
 		}
 	}
 	
-	public static String getMotd(String server) {
+	public static String getMotd1(String server) {
 		
 		if (!Configuration.pingerEnable) {
 			return "[Please enable pinger]";
@@ -91,7 +91,24 @@ public class BungeeServerTracker {
 		BungeeServerInfo info = trackedServers.get(server);
 		if (info != null) {
 			info.updateLastRequest();
-			return info.getMotd();
+			return info.getMotd1();
+		} else {
+			// It was not tracked, add it.
+			track(server);
+			return "[Loading...]";
+		}
+	}
+	
+	public static String getMotd2(String server) {
+		
+		if (!Configuration.pingerEnable) {
+			return "[Please enable pinger]";
+		}
+		
+		BungeeServerInfo info = trackedServers.get(server);
+		if (info != null) {
+			info.updateLastRequest();
+			return info.getMotd2();
 		} else {
 			// It was not tracked, add it.
 			track(server);
