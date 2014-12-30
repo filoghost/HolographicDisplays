@@ -66,7 +66,7 @@ public class ReadimageCommand extends HologramSubCommand {
 		args = newArgs.toArray(new String[0]);
 		
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
-		CommandValidator.notNull(hologram, Strings.NO_SUCH_HOLOGRAM);
+		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
 		
 		int width = CommandValidator.getInteger(args[2]);
 		

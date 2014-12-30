@@ -38,7 +38,7 @@ public class TeleportCommand extends HologramSubCommand {
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		Player player = CommandValidator.getPlayerSender(sender);
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
-		CommandValidator.notNull(hologram, Strings.NO_SUCH_HOLOGRAM);
+		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
 		
 		Location loc = hologram.getLocation();
 		loc.setPitch(90);

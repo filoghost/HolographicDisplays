@@ -14,15 +14,11 @@ import com.gmail.filoghost.holographicdisplays.commands.Strings;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
-import com.gmail.filoghost.holographicdisplays.exception.InvalidCharactersException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class CreateCommand extends HologramSubCommand {
-
-	private static final String VALID_HOLOGRAM_NAME_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
-
 	
 	public CreateCommand() {
 		super("create");
@@ -43,13 +39,11 @@ public class CreateCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		Player player = CommandValidator.getPlayerSender(sender);
-		String name = args[0];
+		String name = args[0].toLowerCase();
 
-		if (!name.matches("[a-zA-Z_\\-]+")) {
+		if (!name.matches("[a-zA-Z0-9_\\-]+")) {
 			throw new CommandException("The name must contain only alphanumeric chars, underscores and hyphens.");
 		}
-
-		name = name.toLowerCase();
 
 		CommandValidator.isTrue(!NamedHologramManager.isExistingHologram(name), "A hologram with that name already exists.");
 
@@ -86,15 +80,6 @@ public class CreateCommand extends HologramSubCommand {
 		if (moveUp) {
 			player.sendMessage(Colors.SECONDARY_SHADOW + "(You were on the ground, the hologram was automatically moved up. If you use /" + label + " movehere " + hologram.getName() + ", the hologram will be moved to your feet)");
 		}
-	}
-	
-	public static String validateName(String name) throws InvalidCharactersException {
-		for (char c : name.toCharArray()) {
-			if (VALID_HOLOGRAM_NAME_CHARS.indexOf(c) < 0) {
-				throw new InvalidCharactersException(Character.toString(c));
-			}
-		}
-		return name;
 	}
 
 	@Override

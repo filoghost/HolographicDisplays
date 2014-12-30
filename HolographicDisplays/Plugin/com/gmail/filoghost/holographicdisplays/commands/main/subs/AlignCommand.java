@@ -37,8 +37,8 @@ public class AlignCommand extends HologramSubCommand {
 		NamedHologram hologram = NamedHologramManager.getHologram(args[1].toLowerCase());
 		NamedHologram referenceHologram = NamedHologramManager.getHologram(args[2].toLowerCase());
 		
-		CommandValidator.notNull(hologram, Strings.NO_SUCH_HOLOGRAM + " (hologram to align)");
-		CommandValidator.notNull(referenceHologram, Strings.NO_SUCH_HOLOGRAM + " (reference hologram)");
+		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[1].toLowerCase()));
+		CommandValidator.notNull(referenceHologram, Strings.noSuchHologram(args[2].toLowerCase()));
 		
 		CommandValidator.isTrue(hologram != referenceHologram, "The hologram must not be the same!");
 

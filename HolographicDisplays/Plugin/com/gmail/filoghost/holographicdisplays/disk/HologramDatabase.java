@@ -96,6 +96,19 @@ public class HologramDatabase {
 		}
 	}
 	
+	public static String saveLineToString(CraftHologramLine line) {
+		if (line instanceof CraftTextLine) {
+			return StringConverter.toSaveableFormat(((CraftTextLine) line).getText());
+			
+		} else if (line instanceof CraftItemLine) {
+			CraftItemLine itemLine = (CraftItemLine) line;
+			return "ICON: " + itemLine.getItemStack().getType().toString().replace("_", " ").toLowerCase() + (itemLine.getItemStack().getDurability() != 0 ? String.valueOf(itemLine.getItemStack().getDurability()) : "");
+		} else {
+			
+			return "Unknown";
+		}
+	}
+	
 	public static void deleteHologram(String name) {
 		config.set(name, null);
 	}
@@ -109,13 +122,7 @@ public class HologramDatabase {
 		
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
 			
-			if (line instanceof CraftTextLine) {
-				lines.add(StringConverter.toSaveableFormat(((CraftTextLine) line).getText()));
-				
-			} else if (line instanceof CraftItemLine) {
-				CraftItemLine itemLine = (CraftItemLine) line;
-				lines.add("ICON: " + itemLine.getItemStack().getType().toString().replace("_", " ").toLowerCase() + (itemLine.getItemStack().getDurability() != 0 ? String.valueOf(itemLine.getItemStack().getDurability()) : ""));
-			}
+			lines.add(saveLineToString(line));
 		}
 		
 		configSection.set("lines", lines);

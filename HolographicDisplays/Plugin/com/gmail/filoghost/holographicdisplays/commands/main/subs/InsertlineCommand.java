@@ -39,7 +39,7 @@ public class InsertlineCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
-		CommandValidator.notNull(hologram, Strings.NO_SUCH_HOLOGRAM);
+		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
 		
 		int insertAfter = CommandValidator.getInteger(args[1]);
 		int oldLinesAmount = hologram.size();

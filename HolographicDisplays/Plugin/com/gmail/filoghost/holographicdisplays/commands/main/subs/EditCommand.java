@@ -43,7 +43,7 @@ public class EditCommand extends HologramSubCommand {
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		String name = args[0].toLowerCase();
 		NamedHologram hologram = NamedHologramManager.getHologram(name);
-		CommandValidator.notNull(hologram, Strings.NO_SUCH_HOLOGRAM);
+		CommandValidator.notNull(hologram, Strings.noSuchHologram(name));
 		
 		sender.sendMessage("");
 		sender.sendMessage(Strings.formatTitle("How to edit the hologram '" + name + "'"));

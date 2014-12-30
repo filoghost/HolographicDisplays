@@ -40,7 +40,7 @@ public class FixCommand extends HologramSubCommand {
 		CommandValidator.isTrue(!HolographicDisplays.is1_8(), "This command is no longer necessary in 1.8+. The holograms already use the correct ambient light.");
 		
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
-		CommandValidator.notNull(hologram, Strings.NO_SUCH_HOLOGRAM);
+		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
 
 		if (args.length <= 1) {
 			sender.sendMessage(Colors.PRIMARY + "This command will put a glowstone 16 blocks above the hologram to fix the lightning.");
