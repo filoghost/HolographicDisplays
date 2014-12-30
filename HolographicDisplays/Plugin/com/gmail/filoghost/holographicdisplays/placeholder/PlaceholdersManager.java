@@ -23,6 +23,9 @@ public class PlaceholdersManager {
 	protected static Set<DynamicLineData> linesToUpdate = Utils.newSet();
 	
 	private static final Pattern BUNGEE_ONLINE_PATTERN = makePlaceholderWithArgsPattern("online");
+	private static final Pattern BUNGEE_MAX_PATTERN = makePlaceholderWithArgsPattern("max");
+	private static final Pattern BUNGEE_MOTD_PATTERN = makePlaceholderWithArgsPattern("motd");
+	private static final Pattern BUNGEE_STATUS_PATTERN = makePlaceholderWithArgsPattern("status");
 	private static final Pattern ANIMATION_PATTERN = makePlaceholderWithArgsPattern("animation");
 	private static final Pattern WORLD_PATTERN = makePlaceholderWithArgsPattern("world");
 	
@@ -113,6 +116,10 @@ public class PlaceholdersManager {
 		Set<Placeholder> normalPlaceholders = null;
 		
 		Map<String, PlaceholderReplacer> bungeeOnlinePlayersReplacers = null;
+		Map<String, PlaceholderReplacer> bungeeMaxPlayersReplacers = null;
+		Map<String, PlaceholderReplacer> bungeeStatusReplacers = null;
+		Map<String, PlaceholderReplacer> bungeeMotdReplacers = null;
+		
 		Map<String, PlaceholderReplacer> worldsOnlinePlayersReplacers = null;
 		Map<String, Placeholder> animationsPlaceholders = null;
 		
@@ -165,10 +172,74 @@ public class PlaceholdersManager {
 				
 				@Override
 				public String update() {
-					return String.valueOf(BungeeServerTracker.getPlayersOnline(serverName));
+					return BungeeServerTracker.getPlayersOnline(serverName);
 				}
 			});
 		}
+		
+		// BungeeCord max players pattern.
+		matcher = BUNGEE_MAX_PATTERN.matcher(name);
+		while (matcher.find()) {
+			
+			if (bungeeMaxPlayersReplacers == null) {
+				bungeeMaxPlayersReplacers = Utils.newMap();
+			}
+			
+			final String serverName = extractArgumentFromPlaceholder(matcher);
+			BungeeServerTracker.track(serverName); // Track this server.
+			
+			// Add it to tracked servers.
+			bungeeMaxPlayersReplacers.put(matcher.group(), new PlaceholderReplacer() {
+				
+				@Override
+				public String update() {
+					return BungeeServerTracker.getMaxPlayers(serverName);
+				}
+			});
+		}
+		
+		// BungeeCord motd pattern.
+		matcher = BUNGEE_MOTD_PATTERN.matcher(name);
+		while (matcher.find()) {
+			
+			if (bungeeMotdReplacers == null) {
+				bungeeMotdReplacers = Utils.newMap();
+			}
+			
+			final String serverName = extractArgumentFromPlaceholder(matcher);
+			BungeeServerTracker.track(serverName); // Track this server.
+			
+			// Add it to tracked servers.
+			bungeeMotdReplacers.put(matcher.group(), new PlaceholderReplacer() {
+				
+				@Override
+				public String update() {
+					return BungeeServerTracker.getMotd(serverName);
+				}
+			});
+		}
+		
+		// BungeeCord status pattern.
+		matcher = BUNGEE_STATUS_PATTERN.matcher(name);
+		while (matcher.find()) {
+			
+			if (bungeeStatusReplacers == null) {
+				bungeeStatusReplacers = Utils.newMap();
+			}
+			
+			final String serverName = extractArgumentFromPlaceholder(matcher);
+			BungeeServerTracker.track(serverName); // Track this server.
+			
+			// Add it to tracked servers.
+			bungeeStatusReplacers.put(matcher.group(), new PlaceholderReplacer() {
+				
+				@Override
+				public String update() {
+					return BungeeServerTracker.getOnlineStatus(serverName);
+				}
+			});
+		}
+		
 		
 		// Animation pattern.
 		matcher = ANIMATION_PATTERN.matcher(name);
@@ -192,7 +263,8 @@ public class PlaceholdersManager {
 			}
 		}
 		
-		if (normalPlaceholders != null || bungeeOnlinePlayersReplacers != null || worldsOnlinePlayersReplacers != null || animationsPlaceholders != null) {
+		if (Utils.isThereNonNull(normalPlaceholders, bungeeOnlinePlayersReplacers, bungeeMaxPlayersReplacers, bungeeMotdReplacers, bungeeStatusReplacers, worldsOnlinePlayersReplacers, animationsPlaceholders)) {
+
 			DynamicLineData lineData = new DynamicLineData(nameableEntity, name);
 			
 			if (normalPlaceholders != null) {
@@ -201,6 +273,18 @@ public class PlaceholdersManager {
 			
 			if (bungeeOnlinePlayersReplacers != null) {
 				lineData.getReplacers().putAll(bungeeOnlinePlayersReplacers);
+			}
+			
+			if (bungeeMaxPlayersReplacers != null) {
+				lineData.getReplacers().putAll(bungeeMaxPlayersReplacers);
+			}
+			
+			if (bungeeMotdReplacers != null) {
+				lineData.getReplacers().putAll(bungeeMotdReplacers);
+			}
+			
+			if (bungeeStatusReplacers != null) {
+				lineData.getReplacers().putAll(bungeeStatusReplacers);
 			}
 			
 			if (worldsOnlinePlayersReplacers != null) {
@@ -236,19 +320,19 @@ public class PlaceholdersManager {
 		
 		if (!lineData.getPlaceholders().isEmpty()) {
 			for (Placeholder placeholder : lineData.getPlaceholders()) {
-				newCustomName = newCustomName.replace(placeholder.getTextPlaceholder(), placeholder.getCurrentReplacement());
+				newCustomName = newCustomName.replace(placeholder.getTextPlaceholder(), Utils.sanitize(placeholder.getCurrentReplacement()));
 			}
 		}
 		
 		if (!lineData.getReplacers().isEmpty()) {
 			for (Entry<String, PlaceholderReplacer> entry : lineData.getReplacers().entrySet()) {
-				newCustomName = newCustomName.replace(entry.getKey(), entry.getValue().update());
+				newCustomName = newCustomName.replace(entry.getKey(), Utils.sanitize(entry.getValue().update()));
 			}
 		}
 		
 		if (!lineData.getAnimations().isEmpty()) {
 			for (Entry<String, Placeholder> entry : lineData.getAnimations().entrySet()) {
-				newCustomName = newCustomName.replace(entry.getKey(), entry.getValue().getCurrentReplacement());
+				newCustomName = newCustomName.replace(entry.getKey(), Utils.sanitize(entry.getValue().getCurrentReplacement()));
 			}
 		}
 		

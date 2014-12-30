@@ -50,7 +50,9 @@ public class BungeeChannel implements PluginMessageListener {
 				 
 				 if (in.available() > 0) {
 					 int online = in.readInt();
-					 BungeeServerTracker.handlePing(server, online);
+					 
+					 BungeeServerInfo serverInfo = BungeeServerTracker.getOrCreateServerInfo(server);
+					 serverInfo.setOnlinePlayers(online);
 				 }
 			 }
 		 

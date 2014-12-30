@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.bukkit.ChatColor;
@@ -12,6 +13,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerAddress;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 /**
@@ -29,9 +31,14 @@ public class Configuration {
 	public static SimpleDateFormat timeFormat;
 	
 	public static int bungeeRefreshSeconds;
-	public static String bungeeOnlineFormat;
-	public static String bungeeOfflineFormat;
 	public static boolean useRedisBungee;
+	
+	public static boolean pingerEnable;
+	public static int pingerTimeout;
+	public static Map<String, ServerAddress> pingerServers;
+	public static String pingerOfflineMotd;
+	public static String pingerStatusOnline;
+	public static String pingerStatusOffline;
 	
 	public static boolean debug;
 	
@@ -112,6 +119,50 @@ public class Configuration {
 		transparencySymbol = StringConverter.toReadableFormat(config.getString(ConfigNode.TRANSPARENCY_SPACE.getPath()));
 		bungeeRefreshSeconds = config.getInt(ConfigNode.BUNGEE_REFRESH_SECONDS.getPath());
 		useRedisBungee = config.getBoolean(ConfigNode.BUNGEE_USE_REDIS_BUNGEE.getPath());
+		pingerEnable = config.getBoolean(ConfigNode.BUNGEE_USE_FULL_PINGER.getPath());
+		pingerTimeout = config.getInt(ConfigNode.BUNGEE_PINGER_TIMEOUT.getPath());
+		
+		pingerOfflineMotd = StringConverter.toReadableFormat(config.getString(ConfigNode.BUNGEE_PINGER_OFFLINE_MOTD.getPath()));
+		pingerStatusOnline = StringConverter.toReadableFormat(config.getString(ConfigNode.BUNGEE_PINGER_ONLINE_FORMAT.getPath()));
+		pingerStatusOffline = StringConverter.toReadableFormat(config.getString(ConfigNode.BUNGEE_PINGER_OFFLINE_FORMAT.getPath()));
+		
+		if (pingerTimeout <= 0) {
+			pingerTimeout = 1;
+		}
+		
+		pingerServers = Utils.newMap();
+		
+		if (pingerEnable) {
+			for (String singleServer : config.getStringList(ConfigNode.BUNGEE_PINGER_SERVERS.getPath())) {
+				String[] nameAndAddress = singleServer.split(":", 2);
+				if (nameAndAddress.length < 2) {
+					plugin.getLogger().warning("The server info \"" + singleServer + "\" is not valid. There should be a name and an address, separated by a colon.");
+					continue;
+				}
+				
+				String name = nameAndAddress[0].trim();
+				String address = nameAndAddress[1].replace(" ", "");
+				
+				String ip;
+				int port;
+				
+				if (address.contains(":")) {
+					String[] ipAndPort = address.split(":", 2);
+					ip = ipAndPort[0];
+					try {
+						port = Integer.parseInt(ipAndPort[1]);
+					} catch (NumberFormatException e) {
+						plugin.getLogger().warning("Invalid port number in the server info \"" + singleServer + "\".");
+						continue;
+					}
+				} else {
+					ip = address;
+					port = 25565; // The default Minecraft port.
+				}
+				
+				pingerServers.put(name, new ServerAddress(ip, port));
+			}
+		}
 		
 		debug = config.getBoolean(ConfigNode.DEBUG.getPath());
 		

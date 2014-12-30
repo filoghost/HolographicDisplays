@@ -106,4 +106,22 @@ public class Utils extends Object {
 	public static String join(List<String> elements, String separator) {
 		return join(elements, separator, 0, elements.size());
 	}
+	
+	public static String sanitize(String s) {
+		return s != null ? s : "null";
+	}
+	
+	public static boolean isThereNonNull(Object... objects) {
+		if (objects == null) {
+			return false;
+		}
+		
+		for (int i = 0; i < objects.length; i++) {
+			if (objects[i] != null) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

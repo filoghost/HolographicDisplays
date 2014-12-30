@@ -38,6 +38,9 @@ public class HolographicDisplays extends JavaPlugin {
 	// Since 1.8 we use armor stands instead of wither skulls.
 	private static boolean is1_8;
 	
+	// Used for the server pinger.
+	private static boolean isPreNetty;
+	
 	// True if ProtocolLib is installed and successfully loaded.
 	private static boolean useProtocolLib;
 	
@@ -83,6 +86,7 @@ public class HolographicDisplays extends JavaPlugin {
 			
 			if ("1.6.4".equals(version)) {
 				version = "v1_6_R3";
+				isPreNetty = true;
 			} else if ("1.7.2".equals(version)) {
 				version = "v1_7_R1";
 			} else if ("1.7.5".equals(version)) {
@@ -220,6 +224,10 @@ public class HolographicDisplays extends JavaPlugin {
 	
 	public static boolean is1_8() {
 		return is1_8;
+	}
+	
+	public static boolean isPreNetty() {
+		return isPreNetty;
 	}
 	
 	private static void printWarnAndDisable(String... messages) {
