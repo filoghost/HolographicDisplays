@@ -17,7 +17,7 @@ public class BungeeServerInfo {
 	protected BungeeServerInfo() {
 		isOnline = false;
 		this.motd1 = "";
-		this.motd2 = "".trim();
+		this.motd2 = "";
 		updateLastRequest();
 	}
 	
