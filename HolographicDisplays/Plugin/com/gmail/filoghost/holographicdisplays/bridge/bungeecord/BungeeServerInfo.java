@@ -4,20 +4,20 @@ import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 
 public class BungeeServerInfo {
 
-	private boolean isOnline;
-	private int onlinePlayers;
-	private int maxPlayers;
+	private volatile boolean isOnline;
+	private volatile int onlinePlayers;
+	private volatile int maxPlayers;
 	
 	// The two lines of a motd
-	private String motd1; // Should never be null
-	private String motd2; // Should never be null
+	private volatile String motd1; // Should never be null
+	private volatile String motd2; // Should never be null
 	
-	private long lastRequest;
+	private volatile long lastRequest;
 
 	protected BungeeServerInfo() {
-		isOnline = true;
+		isOnline = false;
 		this.motd1 = "";
-		this.motd2 = "";
+		this.motd2 = "".trim();
 		updateLastRequest();
 	}
 	
@@ -54,6 +54,7 @@ public class BungeeServerInfo {
 	}
 
 	public void setMotd(String motd) {
+
 		if (motd == null) {
 			this.motd1 = "";
 			this.motd2 = "";

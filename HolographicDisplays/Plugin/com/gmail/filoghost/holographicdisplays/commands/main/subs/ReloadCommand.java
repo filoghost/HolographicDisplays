@@ -51,11 +51,14 @@ public class ReloadCommand extends HologramSubCommand {
 
 			UnicodeSymbols.load(HolographicDisplays.getInstance());
 			Configuration.load(HolographicDisplays.getInstance());
+			
+			BungeeServerTracker.resetTrackedServers();
 			BungeeServerTracker.startTask(Configuration.bungeeRefreshSeconds);
+			
 			HologramDatabase.loadYamlFile(HolographicDisplays.getInstance());
 			AnimationsRegister.loadAnimations(HolographicDisplays.getInstance());
-			PlaceholdersManager.untrackAll();
 			
+			PlaceholdersManager.untrackAll();
 			NamedHologramManager.clearAll();
 			
 			Set<String> savedHolograms = HologramDatabase.getHolograms();

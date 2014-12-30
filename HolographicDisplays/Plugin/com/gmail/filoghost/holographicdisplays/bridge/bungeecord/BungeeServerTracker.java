@@ -31,6 +31,7 @@ public class BungeeServerTracker {
 	public static void track(String server) {
 		if (!trackedServers.containsKey(server)) {
 			BungeeServerInfo info = new BungeeServerInfo();
+			info.setMotd(Configuration.pingerOfflineMotd);
 			trackedServers.put(server, info);
 			
 			if (!Configuration.pingerEnable) {
@@ -47,6 +48,7 @@ public class BungeeServerTracker {
 		BungeeServerInfo info = trackedServers.get(server);
 		if (info == null) {
 			info = new BungeeServerInfo();
+			info.setMotd(Configuration.pingerOfflineMotd);
 			trackedServers.put(server, info);
 		}
 		
@@ -61,7 +63,7 @@ public class BungeeServerTracker {
 		} else {
 			// It was not tracked, add it.
 			track(server);
-			return "[Loading...]";
+			return "0";
 		}
 	}
 	
@@ -78,7 +80,7 @@ public class BungeeServerTracker {
 		} else {
 			// It was not tracked, add it.
 			track(server);
-			return "[Loading...]";
+			return "0";
 		}
 	}
 	
@@ -95,7 +97,7 @@ public class BungeeServerTracker {
 		} else {
 			// It was not tracked, add it.
 			track(server);
-			return "[Loading...]";
+			return Configuration.pingerOfflineMotd;
 		}
 	}
 	
@@ -112,7 +114,7 @@ public class BungeeServerTracker {
 		} else {
 			// It was not tracked, add it.
 			track(server);
-			return "[Loading...]";
+			return "";
 		}
 	}
 	
@@ -129,7 +131,7 @@ public class BungeeServerTracker {
 		} else {
 			// It was not tracked, add it.
 			track(server);
-			return "[Loading...]";
+			return "0";
 		}
 	}
 
@@ -160,6 +162,7 @@ public class BungeeServerTracker {
 								
 								try {
 									PingResponse data = pinger.fetchData(entry.getValue(), Configuration.pingerTimeout);
+									
 									if (data.isOnline()) {
 										serverInfo.setOnline(true);
 										serverInfo.setOnlinePlayers(data.getOnlinePlayers());
@@ -198,6 +201,6 @@ public class BungeeServerTracker {
 				}
 				
 			}
-		}, 0, refreshSeconds * 20);
+		}, 1, refreshSeconds * 20);
 	}
 }

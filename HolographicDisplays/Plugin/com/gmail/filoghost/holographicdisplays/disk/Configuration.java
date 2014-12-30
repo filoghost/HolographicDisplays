@@ -35,11 +35,11 @@ public class Configuration {
 	
 	public static boolean pingerEnable;
 	public static int pingerTimeout;
-	public static Map<String, ServerAddress> pingerServers;
 	public static String pingerOfflineMotd;
 	public static String pingerStatusOnline;
 	public static String pingerStatusOffline;
 	public static boolean pingerTrimMotd;
+	public static Map<String, ServerAddress> pingerServers;
 	
 	public static boolean debug;
 	
@@ -130,7 +130,9 @@ public class Configuration {
 		pingerStatusOffline = StringConverter.toReadableFormat(config.getString(ConfigNode.BUNGEE_PINGER_OFFLINE_FORMAT.getPath()));
 		
 		if (pingerTimeout <= 0) {
-			pingerTimeout = 1;
+			pingerTimeout = 100;
+		} else if (pingerTimeout >= 10000) {
+			pingerTimeout = 10000;
 		}
 		
 		pingerServers = Utils.newMap();
