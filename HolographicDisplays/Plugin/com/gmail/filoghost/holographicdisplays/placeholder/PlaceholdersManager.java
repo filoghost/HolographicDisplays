@@ -23,7 +23,7 @@ public class PlaceholdersManager {
 	protected static Set<DynamicLineData> linesToUpdate = Utils.newSet();
 	
 	private static final Pattern BUNGEE_ONLINE_PATTERN = makePlaceholderWithArgsPattern("online");
-	private static final Pattern BUNGEE_MAX_PATTERN = makePlaceholderWithArgsPattern("max");
+	private static final Pattern BUNGEE_MAX_PATTERN = makePlaceholderWithArgsPattern("max_players");
 	private static final Pattern BUNGEE_MOTD_PATTERN = makePlaceholderWithArgsPattern("motd");
 	private static final Pattern BUNGEE_MOTD_2_PATTERN = makePlaceholderWithArgsPattern("motd2");
 	private static final Pattern BUNGEE_STATUS_PATTERN = makePlaceholderWithArgsPattern("status");
