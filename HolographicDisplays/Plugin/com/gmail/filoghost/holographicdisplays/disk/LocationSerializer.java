@@ -15,7 +15,7 @@ public class LocationSerializer {
 	private static DecimalFormat decimalFormat;
 	static {
 		// More precision is not needed at all.
-		decimalFormat = new DecimalFormat("0.0000");
+		decimalFormat = new DecimalFormat("0.000");
 		DecimalFormatSymbols formatSymbols = decimalFormat.getDecimalFormatSymbols();
 		formatSymbols.setDecimalSeparator('.');
 		decimalFormat.setDecimalFormatSymbols(formatSymbols);
