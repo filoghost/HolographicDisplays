@@ -28,12 +28,15 @@ import com.gmail.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class HolographicDisplays extends JavaPlugin {
-
+	
 	// The main instance of the plugin.
 	private static HolographicDisplays instance;
 	
 	// The manager for net.minecraft.server access.
 	private static NMSManager nmsManager;
+	
+	// The command handler, just in case a plugin wants to register more commands.
+	private HologramsCommandHandler commandHandler;
 	
 	// Since 1.8 we use armor stands instead of wither skulls.
 	private static boolean is1_8;
@@ -198,7 +201,7 @@ public class HolographicDisplays extends JavaPlugin {
 			}
 		}
 		
-		getCommand("holograms").setExecutor(new HologramsCommandHandler());
+		getCommand("holograms").setExecutor(commandHandler = new HologramsCommandHandler());
 		Bukkit.getPluginManager().registerEvents(new MainListener(nmsManager), this);
 		
 		try {
@@ -221,7 +224,11 @@ public class HolographicDisplays extends JavaPlugin {
 	public static NMSManager getNMSManager() {
 		return nmsManager;
 	}
-	
+
+	public HologramsCommandHandler getCommandHandler() {
+		return commandHandler;
+	}
+
 	public static boolean is1_8() {
 		return is1_8;
 	}
