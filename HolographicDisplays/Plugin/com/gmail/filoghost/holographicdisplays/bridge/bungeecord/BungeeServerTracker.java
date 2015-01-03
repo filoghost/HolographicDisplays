@@ -55,15 +55,15 @@ public class BungeeServerTracker {
 		return info;
 	}
 
-	public static String getPlayersOnline(String server) {
+	public static int getPlayersOnline(String server) {
 		BungeeServerInfo info = trackedServers.get(server);
 		if (info != null) {
 			info.updateLastRequest();
-			return String.valueOf(info.getOnlinePlayers());
+			return info.getOnlinePlayers();
 		} else {
 			// It was not tracked, add it.
 			track(server);
-			return "0";
+			return 0;
 		}
 	}
 	

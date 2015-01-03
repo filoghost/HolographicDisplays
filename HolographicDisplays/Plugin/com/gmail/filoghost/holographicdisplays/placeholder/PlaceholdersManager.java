@@ -165,14 +165,37 @@ public class PlaceholdersManager {
 			final String serverName = extractArgumentFromPlaceholder(matcher);
 			BungeeServerTracker.track(serverName); // Track this server.
 			
-			// Add it to tracked servers.
-			bungeeReplacers.put(matcher.group(), new PlaceholderReplacer() {
+			if (serverName.contains(",")) {
 				
-				@Override
-				public String update() {
-					return BungeeServerTracker.getPlayersOnline(serverName);
+				String[] split = serverName.split(",");
+				for (int i = 0; i < split.length; i++) {
+					split[i] = split[i].trim();
 				}
-			});
+				
+				final String[] serversToTrack = split;
+			
+				// Add it to tracked servers.
+				bungeeReplacers.put(matcher.group(), new PlaceholderReplacer() {
+					
+					@Override
+					public String update() {
+						int count = 0;
+						for (String serverToTrack : serversToTrack) {
+							count += BungeeServerTracker.getPlayersOnline(serverToTrack);
+						}
+						return String.valueOf(count);
+					}
+				});
+			} else {
+				// Normal, single tracked server.
+				bungeeReplacers.put(matcher.group(), new PlaceholderReplacer() {
+					
+					@Override
+					public String update() {
+						return String.valueOf(BungeeServerTracker.getPlayersOnline(serverName));
+					}
+				});
+			}
 		}
 		
 		// BungeeCord max players pattern.
