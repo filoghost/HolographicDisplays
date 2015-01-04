@@ -1,9 +1,11 @@
 package com.gmail.filoghost.holographicdisplays.task;
 
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
@@ -16,7 +18,15 @@ public class WorldPlayerCounterTask implements Runnable {
 		worlds.clear();
 		
 		for (World world : Bukkit.getWorlds()) {
-			worlds.put(world.getName(), world.getPlayers().size());
+			List<Player> players = world.getPlayers();
+			int count = 0;
+			
+			for (Player player : players) {
+				if (!player.hasMetadata("NPC")) {
+					count++;
+				}
+			}
+			worlds.put(world.getName(), count);
 		}
 	}
 	
