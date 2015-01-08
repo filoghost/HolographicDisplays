@@ -201,6 +201,18 @@ public class HolographicDisplays extends JavaPlugin {
 			}
 		}
 		
+		if (getCommand("holograms") == null) {
+			printWarnAndDisable(
+				"******************************************************",
+				"     HolographicDisplays was unable to register",
+				"     the command \"holograms\". Do not modify",
+				"     plugin.yml removing commands, if you're",
+				"     doing so.",
+				"******************************************************"
+			);
+			return;
+		}
+		
 		getCommand("holograms").setExecutor(commandHandler = new HologramsCommandHandler());
 		Bukkit.getPluginManager().registerEvents(new MainListener(nmsManager), this);
 		
