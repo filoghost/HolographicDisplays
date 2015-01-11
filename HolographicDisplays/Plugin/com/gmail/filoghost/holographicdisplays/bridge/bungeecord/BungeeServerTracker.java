@@ -161,15 +161,17 @@ public class BungeeServerTracker {
 								boolean displayOffline = false;
 								
 								try {
-									PingResponse data = pinger.fetchData(entry.getValue(), Configuration.pingerTimeout);
-									
-									if (data.isOnline()) {
-										serverInfo.setOnline(true);
-										serverInfo.setOnlinePlayers(data.getOnlinePlayers());
-										serverInfo.setMaxPlayers(data.getMaxPlayers());
-										serverInfo.setMotd(data.getMotd());
-									} else {
-										displayOffline = true;
+									if(Bukkit.getServer().getOnlinePlayers().length > 0){
+										PingResponse data = pinger.fetchData(entry.getValue(), Configuration.pingerTimeout);
+										
+										if (data.isOnline()) {
+											serverInfo.setOnline(true);
+											serverInfo.setOnlinePlayers(data.getOnlinePlayers());
+											serverInfo.setMaxPlayers(data.getMaxPlayers());
+											serverInfo.setMotd(data.getMotd());
+										} else {
+											displayOffline = true;
+										}
 									}
 								} catch (SocketTimeoutException e) {
 									displayOffline = true;
