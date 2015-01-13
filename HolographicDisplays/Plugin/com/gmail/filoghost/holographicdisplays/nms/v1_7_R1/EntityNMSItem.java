@@ -1,6 +1,7 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_7_R1;
 
 import net.minecraft.server.v1_7_R1.Blocks;
+import net.minecraft.server.v1_7_R1.Entity;
 import net.minecraft.server.v1_7_R1.EntityHuman;
 import net.minecraft.server.v1_7_R1.EntityItem;
 import net.minecraft.server.v1_7_R1.EntityPlayer;
@@ -15,9 +16,12 @@ import org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 
 import com.gmail.filoghost.holographicdisplays.listener.MainListener;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
+import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
+import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
 	
@@ -90,7 +94,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	
 	@Override
 	public boolean isInvulnerable() {
-		/* 
+		/*
 		 * The field Entity.invulnerable is private.
 		 * It's only used while saving NBTTags, but since the entity would be killed
 		 * on chunk unload, we prefer to override isInvulnerable().
@@ -179,5 +183,29 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	@Override
 	public org.bukkit.entity.Entity getBukkitEntityNMS() {
 		return getBukkitEntity();
+	}
+	
+	@Override
+	public void setPassengerOfNMS(NMSEntityBase vehicleBase) {
+		if (vehicleBase == null || !(vehicleBase instanceof Entity)) {
+			// It should never dismount
+			return;
+		}
+		
+		Entity entity = (Entity) vehicleBase;
+		
+		try {
+			ReflectionUtils.setPrivateField(Entity.class, this, "g", (double) 0.0);
+			ReflectionUtils.setPrivateField(Entity.class, this, "h", (double) 0.0);
+		} catch (Exception ex) {
+			DebugHandler.handleDebugException(ex);
+		}
+
+        if (this.vehicle != null) {
+        	this.vehicle.passenger = null;
+        }
+        
+        this.vehicle = entity;
+        entity.passenger = this;
 	}
 }

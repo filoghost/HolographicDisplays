@@ -3,7 +3,7 @@ package com.gmail.filoghost.holographicdisplays.object.line;
 import org.bukkit.World;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSRideable;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
@@ -17,7 +17,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 	private CraftTouchableLine touchablePiece;
 	
 	private NMSSlime nmsSlime;
-	private NMSRideable nmsVehicle;
+	private NMSEntityBase nmsVehicle;
 
 	
 	protected CraftTouchSlimeLine(CraftHologram parent, CraftTouchableLine touchablePiece) {
@@ -43,8 +43,8 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 		} else {
 			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + offset, z, this);
 		}
-			
-		nmsVehicle.setPassengerNMS(nmsSlime);
+		
+		nmsSlime.setPassengerOfNMS(nmsVehicle);
 			
 		nmsSlime.setLockTick(true);
 		nmsVehicle.setLockTick(true);
@@ -68,7 +68,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 
 	
 	@Override
-	public void teleport(double x, double y, double z) {		
+	public void teleport(double x, double y, double z) {
 		
 		double offset = HolographicDisplays.is1_8() ? Offsets.ARMOR_STAND_WITH_SLIME : Offsets.WITHER_SKULL_WITH_SLIME;
 		
@@ -94,7 +94,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 		return nmsSlime;
 	}
 
-	public NMSRideable getNmsVehicle() {
+	public NMSEntityBase getNmsVehicle() {
 		return nmsVehicle;
 	}
 

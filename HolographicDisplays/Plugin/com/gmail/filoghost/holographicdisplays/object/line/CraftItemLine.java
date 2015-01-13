@@ -10,8 +10,8 @@ import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSRideable;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
@@ -22,7 +22,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	private PickupHandler pickupHandler;
 	
 	private NMSItem nmsItem;
-	private NMSRideable nmsVehicle;
+	private NMSEntityBase nmsVehicle;
 	
 	public CraftItemLine(CraftHologram parent, ItemStack itemStack) {
 		super(0.7, parent);
@@ -88,7 +88,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 				nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + offset, z, this);
 			}
 			
-			nmsVehicle.setPassengerNMS(nmsItem);
+			nmsItem.setPassengerOfNMS(nmsVehicle);
 			
 			nmsItem.setLockTick(true);
 			nmsVehicle.setLockTick(true);
@@ -143,7 +143,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 		return nmsItem;
 	}
 
-	public NMSRideable getNmsVehicle() {
+	public NMSEntityBase getNmsVehicle() {
 		return nmsVehicle;
 	}
 

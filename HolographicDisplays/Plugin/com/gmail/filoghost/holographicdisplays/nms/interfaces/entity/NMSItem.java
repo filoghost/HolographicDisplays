@@ -2,7 +2,7 @@ package com.gmail.filoghost.holographicdisplays.nms.interfaces.entity;
 
 import org.bukkit.inventory.ItemStack;
 
-public interface NMSItem extends NMSEntityBase {
+public interface NMSItem extends NMSEntityBase, NMSCanMount {
 	
 	// Sets the bukkit ItemStack for this item.
 	public void setItemStackNMS(ItemStack stack);

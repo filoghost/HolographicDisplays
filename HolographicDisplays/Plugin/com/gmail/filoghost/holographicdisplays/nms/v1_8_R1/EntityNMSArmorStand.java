@@ -2,7 +2,6 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_8_R1;
 
 import net.minecraft.server.v1_8_R1.AxisAlignedBB;
 import net.minecraft.server.v1_8_R1.DamageSource;
-import net.minecraft.server.v1_8_R1.Entity;
 import net.minecraft.server.v1_8_R1.EntityArmorStand;
 import net.minecraft.server.v1_8_R1.EntityHuman;
 import net.minecraft.server.v1_8_R1.EntityPlayer;
@@ -15,7 +14,6 @@ import net.minecraft.server.v1_8_R1.World;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
 
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
@@ -201,13 +199,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	@Override
 	public boolean isDeadNMS() {
 		return this.dead;
-	}
-	
-	@Override
-	public void setPassengerNMS(NMSEntityBase passenger) {
-		if (passenger instanceof Entity) {
-			((Entity) passenger).mount(this);
-		}
 	}
 	
 	@Override

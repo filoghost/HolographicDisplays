@@ -2,12 +2,10 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_7_R1;
 
 import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
 
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSWitherSkull;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
-import net.minecraft.server.v1_7_R1.Entity;
 import net.minecraft.server.v1_7_R1.EntityWitherSkull;
 import net.minecraft.server.v1_7_R1.NBTTagCompound;
 import net.minecraft.server.v1_7_R1.PacketPlayOutEntityTeleport;
@@ -61,7 +59,7 @@ public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWither
 
 	@Override
 	public boolean isInvulnerable() {
-		/* 
+		/*
 		 * The field Entity.invulnerable is private.
 		 * It's only used while saving NBTTags, but since the entity would be killed
 		 * on chunk unload, we prefer to override isInvulnerable().
@@ -139,13 +137,6 @@ public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWither
 	@Override
 	public boolean isDeadNMS() {
 		return this.dead;
-	}
-
-	@Override
-	public void setPassengerNMS(NMSEntityBase passenger) {
-		if (passenger instanceof Entity) {
-			((Entity) passenger).setPassengerOf(this);
-		}
 	}
 
 	@Override

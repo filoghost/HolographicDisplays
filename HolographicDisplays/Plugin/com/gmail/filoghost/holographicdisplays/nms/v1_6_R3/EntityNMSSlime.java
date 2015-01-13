@@ -1,14 +1,18 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_6_R3;
 
+import net.minecraft.server.v1_6_R3.Entity;
 import net.minecraft.server.v1_6_R3.EntitySlime;
 import net.minecraft.server.v1_6_R3.NBTTagCompound;
 import net.minecraft.server.v1_6_R3.World;
 
 import org.bukkit.craftbukkit.v1_6_R3.entity.CraftEntity;
 
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
+import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 
@@ -69,7 +73,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	
 	@Override
 	public boolean isInvulnerable() {
-		/* 
+		/*
 		 * The field Entity.invulnerable is private.
 		 * It's only used while saving NBTTags, but since the entity would be killed
 		 * on chunk unload, we prefer to override isInvulnerable().
@@ -140,5 +144,28 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	public org.bukkit.entity.Entity getBukkitEntityNMS() {
 		return getBukkitEntity();
 	}
+	
+	@Override
+	public void setPassengerOfNMS(NMSEntityBase vehicleBase) {
+		if (vehicleBase == null || !(vehicleBase instanceof Entity)) {
+			// It should never dismount
+			return;
+		}
+		
+		Entity entity = (Entity) vehicleBase;
+		
+		try {
+			ReflectionUtils.setPrivateField(Entity.class, this, "f", (double) 0.0);
+			ReflectionUtils.setPrivateField(Entity.class, this, "g", (double) 0.0);
+		} catch (Exception ex) {
+			DebugHandler.handleDebugException(ex);
+		}
 
+        if (this.vehicle != null) {
+        	this.vehicle.passenger = null;
+        }
+        
+        this.vehicle = entity;
+        entity.passenger = this;
+	}
 }

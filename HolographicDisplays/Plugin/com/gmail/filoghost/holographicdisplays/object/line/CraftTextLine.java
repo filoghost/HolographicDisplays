@@ -7,8 +7,9 @@ import org.bukkit.World;
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSCanMount;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSRideable;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
@@ -20,7 +21,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	private NMSNameable nmsNameble;
 	
 	// Legacy code for < 1.7, not used in 1.8 and greater
-	private NMSRideable nmsSkullVehicle;
+	private NMSEntityBase nmsSkullVehicle;
 	
 	
 	public CraftTextLine(CraftHologram parent, String text) {
@@ -79,8 +80,9 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		} else {
 			nmsNameble = HolographicDisplays.getNMSManager().spawnNMSHorse(world, x, y + Offsets.WITHER_SKULL_WITH_HORSE, z, this);
 			nmsSkullVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + Offsets.WITHER_SKULL_WITH_HORSE, z, this);
-				
-			nmsSkullVehicle.setPassengerNMS(nmsNameble);
+			
+			// In 1.7 it must be an instanceof NMSCanMount
+			((NMSCanMount) nmsNameble).setPassengerOfNMS(nmsSkullVehicle);
 			nmsSkullVehicle.setLockTick(true);
 		}
 		
@@ -146,7 +148,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		return nmsNameble;
 	}
 
-	public NMSRideable getNmsSkullVehicle() {
+	public NMSEntityBase getNmsSkullVehicle() {
 		return nmsSkullVehicle;
 	}
 
