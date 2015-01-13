@@ -206,7 +206,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	@Override
 	public void setPassengerNMS(NMSEntityBase passenger) {
 		if (passenger instanceof Entity) {
-			((Entity) passenger).setPassengerOf(this);
+			((Entity) passenger).mount(this);
 		}
 	}
 	
