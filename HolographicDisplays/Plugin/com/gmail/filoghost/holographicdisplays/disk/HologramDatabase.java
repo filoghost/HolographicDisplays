@@ -102,7 +102,7 @@ public class HologramDatabase {
 			
 		} else if (line instanceof CraftItemLine) {
 			CraftItemLine itemLine = (CraftItemLine) line;
-			return "ICON: " + itemLine.getItemStack().getType().toString().replace("_", " ").toLowerCase() + (itemLine.getItemStack().getDurability() != 0 ? String.valueOf(itemLine.getItemStack().getDurability()) : "");
+			return "ICON: " + itemLine.getItemStack().getType().toString().replace("_", " ").toLowerCase() + (itemLine.getItemStack().getDurability() != 0 ? ":" + itemLine.getItemStack().getDurability() : "");
 		} else {
 			
 			return "Unknown";
