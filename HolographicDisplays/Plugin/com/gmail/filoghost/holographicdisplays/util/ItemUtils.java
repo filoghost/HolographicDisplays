@@ -70,6 +70,7 @@ public class ItemUtils {
 		tempMap.put("gunpowder",			Material.SULPHUR);
 		tempMap.put("lilypad",				Material.WATER_LILY);
 		tempMap.put("command block",		Material.COMMAND);
+		tempMap.put("dye",					Material.INK_SACK);
 			
 		for (Entry<String, Material> tempEntry : tempMap.entrySet()) {
 			materialMap.put(stripSpacingChars(tempEntry.getKey()).toLowerCase(), tempEntry.getValue());
