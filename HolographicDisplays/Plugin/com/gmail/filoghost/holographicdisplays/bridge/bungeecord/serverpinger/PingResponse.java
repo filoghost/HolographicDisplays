@@ -4,6 +4,8 @@ import java.lang.String;
 
 import org.json.simple.JSONObject;
 
+import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+
 public class PingResponse
 {
 	private boolean isOnline;
@@ -20,11 +22,31 @@ public class PingResponse
 
 	public PingResponse(JSONObject json) {
     	isOnline = true;
-        motd = ((String) json.get("description"));
+    	
+    	Object descriptionObject = json.get("description");
+    	
+    	if (descriptionObject != null) {
+    		motd = descriptionObject.toString();
+    	} else {
+    		motd = "Invalid ping response";
+    		DebugHandler.logToConsole("Received invalid ping response: " + json.toString());
+    	}
         
-        JSONObject playersJson = (JSONObject) json.get("players");
-        onlinePlayers = ((Long) playersJson.get("online")).intValue();
-        maxPlayers = ((Long) playersJson.get("max")).intValue();
+        Object playersObject = json.get("players");
+
+		if (playersObject instanceof JSONObject) {
+			JSONObject playersJson = (JSONObject) playersObject;
+			
+			Object onlineObject = playersJson.get("online");
+			if (onlineObject instanceof Number) {
+				onlinePlayers = ((Number) onlineObject).intValue();
+			}
+			
+			Object maxObject = playersJson.get("max");
+			if (maxObject instanceof Number) {
+				maxPlayers = ((Number) maxObject).intValue();
+			}
+        }
     }
 
 	public boolean isOnline() {
