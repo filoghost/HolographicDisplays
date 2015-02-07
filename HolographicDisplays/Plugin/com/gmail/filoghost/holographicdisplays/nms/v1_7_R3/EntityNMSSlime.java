@@ -1,11 +1,16 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_7_R3;
 
+import net.minecraft.server.v1_7_R3.DamageSource;
+import net.minecraft.server.v1_7_R3.EntityDamageSource;
+import net.minecraft.server.v1_7_R3.EntityPlayer;
 import net.minecraft.server.v1_7_R3.Entity;
 import net.minecraft.server.v1_7_R3.EntitySlime;
 import net.minecraft.server.v1_7_R3.NBTTagCompound;
 import net.minecraft.server.v1_7_R3.World;
 
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
@@ -69,6 +74,17 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	@Override
 	public void e(NBTTagCompound nbttagcompound) {
 		// Do not save NBT.
+	}
+	
+	@Override
+	public boolean damageEntity(DamageSource damageSource, float amount) {
+		if (damageSource instanceof EntityDamageSource) {
+			EntityDamageSource entityDamageSource = (EntityDamageSource) damageSource;
+			if (entityDamageSource.getEntity() instanceof EntityPlayer) {
+				Bukkit.getPluginManager().callEvent(new PlayerInteractEntityEvent(((EntityPlayer) entityDamageSource.getEntity()).getBukkitEntity(), getBukkitEntity()));
+			}
+		}
+		return false;
 	}
 	
 	@Override
