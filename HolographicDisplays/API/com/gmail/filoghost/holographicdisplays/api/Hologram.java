@@ -90,6 +90,14 @@ public interface Hologram {
 	
 	
 	/**
+	 * The physical height of the hologram, counting all the lines. Since: v2.1.4
+	 * 
+	 * @return the height of the hologram, counting all the lines and the gaps between them
+	 */
+	public double getHeight();
+	
+	
+	/**
 	 * Teleports a hologram to the given location.
 	 * 
 	 * @param location the new location

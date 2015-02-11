@@ -3,6 +3,7 @@ package com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger;
 import java.lang.String;
 
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 
@@ -20,7 +21,23 @@ public class PingResponse
 		this.maxPlayers = maxPlayers;
 	}
 
-	public PingResponse(JSONObject json) {
+	public PingResponse(String jsonString, ServerAddress address) {
+		
+		if (jsonString == null || jsonString.isEmpty()) {
+    		motd = "Invalid ping response";
+    		DebugHandler.logToConsole("Received empty Json response from IP \"" + address.toString() + "\"!");
+    		return;
+    	}
+		
+		Object jsonObject = JSONValue.parse(jsonString);
+		
+    	if (!(jsonObject instanceof JSONObject)) {
+    		motd = "Invalid ping response";
+    		DebugHandler.logToConsole("Received invalid Json response from IP \"" + address.toString() + "\": " + jsonString);
+    		return;
+    	}
+    	
+    	JSONObject json = (JSONObject) jsonObject;
     	isOnline = true;
     	
     	Object descriptionObject = json.get("description");
@@ -29,7 +46,7 @@ public class PingResponse
     		motd = descriptionObject.toString();
     	} else {
     		motd = "Invalid ping response";
-    		DebugHandler.logToConsole("Received invalid ping response: " + json.toString());
+    		DebugHandler.logToConsole("Received invalid Json response from IP \"" + address.toString() + "\": " + jsonString);
     	}
         
         Object playersObject = json.get("players");

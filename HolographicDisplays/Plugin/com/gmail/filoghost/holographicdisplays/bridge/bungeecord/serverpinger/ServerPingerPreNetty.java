@@ -8,7 +8,10 @@ import java.lang.Integer;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 import java.lang.String;
+
+import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 
 final class ServerPingerPreNetty extends ServerPinger {
 	
@@ -33,6 +36,12 @@ final class ServerPingerPreNetty extends ServerPinger {
 			dataIn.readFully(bytes);
 			socket.close();
 			final String[] info = new String(bytes, PacketUtils.UTF16BE).split(String.valueOf('\0'));
+			
+			if (info.length < 6) {
+				DebugHandler.logToConsole("Received invalid ping response: " + Arrays.toString(info));
+				return new PingResponse(true, "Invalid ping response", 0, 0);
+			}
+			
 			final PingResponse response = new PingResponse(true, info[3], Integer.parseInt(info[4]), Integer.parseInt(info[5]));
 			// String versionName = info[2];
 			// String protocol = info[1];

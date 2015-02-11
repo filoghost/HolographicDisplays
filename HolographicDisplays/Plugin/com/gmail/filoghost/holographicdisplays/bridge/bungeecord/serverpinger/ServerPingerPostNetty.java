@@ -8,9 +8,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-
 final class ServerPingerPostNetty extends ServerPinger {
 
 	@Override
@@ -43,7 +40,7 @@ final class ServerPingerPostNetty extends ServerPinger {
 			final byte[] responseData = new byte[PacketUtils.readVarInt(dataIn)];
 			dataIn.readFully(responseData);
 			final String jsonString = new String(responseData, PacketUtils.UTF8);
-			return new PingResponse((JSONObject) JSONValue.parse(jsonString));
+			return new PingResponse(jsonString, serverAddress);
 		}
 		finally {
 			PacketUtils.closeQuietly(dataOut);

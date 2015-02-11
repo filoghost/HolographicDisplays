@@ -183,6 +183,21 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 		return lines.size();
 	}
 	
+	@Override
+	public double getHeight() {
+		if (lines.isEmpty()) {
+			return 0;
+		}
+		
+		double height = 0.0;
+		
+		for (CraftHologramLine line : lines) {
+			height += line.getHeight();
+		}
+		
+		height += Configuration.spaceBetweenLines * (lines.size() - 1);
+		return height;
+	}
 	
 	@Override
 	public CraftVisibilityManager getVisibilityManager() {
@@ -241,10 +256,11 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 			
 			for (CraftHologramLine line : lines) {
 				
+				currentY -= line.getHeight();
+				
 				if (first) {
 					first = false;
 				} else {
-					currentY -= line.getHeight();
 					currentY -= Configuration.spaceBetweenLines;
 				}
 				
@@ -273,10 +289,11 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 		
 		for (CraftHologramLine line : lines) {
 			
+			currentY -= line.getHeight();
+			
 			if (first) {
 				first = false;
 			} else {
-				currentY -= line.getHeight();
 				currentY -= Configuration.spaceBetweenLines;
 			}
 			
@@ -325,10 +342,11 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 				continue;
 			}
 			
+			currentY -= line.getHeight();
+			
 			if (first) {
 				first = false;
 			} else {
-				currentY -= line.getHeight();
 				currentY -= Configuration.spaceBetweenLines;
 			}
 			
