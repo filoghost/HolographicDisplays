@@ -1,19 +1,19 @@
-package com.gmail.filoghost.holographicdisplays.nms.v1_8_R1;
+package com.gmail.filoghost.holographicdisplays.nms.v1_8_R2;
 
-import net.minecraft.server.v1_8_R1.Entity;
-import net.minecraft.server.v1_8_R1.Blocks;
-import net.minecraft.server.v1_8_R1.DamageSource;
-import net.minecraft.server.v1_8_R1.EntityHuman;
-import net.minecraft.server.v1_8_R1.EntityItem;
-import net.minecraft.server.v1_8_R1.EntityPlayer;
-import net.minecraft.server.v1_8_R1.ItemStack;
-import net.minecraft.server.v1_8_R1.NBTTagCompound;
-import net.minecraft.server.v1_8_R1.NBTTagList;
-import net.minecraft.server.v1_8_R1.NBTTagString;
-import net.minecraft.server.v1_8_R1.World;
+import net.minecraft.server.v1_8_R2.Entity;
+import net.minecraft.server.v1_8_R2.Blocks;
+import net.minecraft.server.v1_8_R2.DamageSource;
+import net.minecraft.server.v1_8_R2.EntityHuman;
+import net.minecraft.server.v1_8_R2.EntityItem;
+import net.minecraft.server.v1_8_R2.EntityPlayer;
+import net.minecraft.server.v1_8_R2.ItemStack;
+import net.minecraft.server.v1_8_R2.NBTTagCompound;
+import net.minecraft.server.v1_8_R2.NBTTagList;
+import net.minecraft.server.v1_8_R2.NBTTagString;
+import net.minecraft.server.v1_8_R2.World;
 
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 
 import com.gmail.filoghost.holographicdisplays.listener.MainListener;
@@ -36,7 +36,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	}
 	
 	@Override
-	public void s_() {
+	public void t_() {
 		// Checks every 20 ticks.
 		if (ticksLived % 20 == 0) {
 			// The item dies without a vehicle.
@@ -46,7 +46,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		}
 		
 		if (!lockTick) {
-			super.s_();
+			super.t_();
 		}
 	}
 	
@@ -201,8 +201,8 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		Entity entity = (Entity) vehicleBase;
 		
 		try {
-			ReflectionUtils.setPrivateField(Entity.class, this, "ap", (double) 0.0);
-			ReflectionUtils.setPrivateField(Entity.class, this, "aq", (double) 0.0);
+			ReflectionUtils.setPrivateField(Entity.class, this, "ar", (double) 0.0);
+			ReflectionUtils.setPrivateField(Entity.class, this, "as", (double) 0.0);
 		} catch (Exception ex) {
 			DebugHandler.handleDebugException(ex);
 		}

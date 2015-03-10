@@ -100,6 +100,8 @@ public class HolographicDisplays extends JavaPlugin {
 				version = "v1_7_R4";
 			} else if ("1.8".equals(version)) {
 				version = "v1_8_R1";
+			} else if ("1.8.3".equals(version)) {
+				version = "v1_8_R2";
 			} else {
 				// Cannot definitely get the version. This will cause the plugin to disable itself.
 				version = null;
@@ -120,12 +122,15 @@ public class HolographicDisplays extends JavaPlugin {
 		} else if ("v1_8_R1".equals(version)) {
 			is1_8 = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_8_R1.NmsManagerImpl();
+		} else if ("v1_8_R2".equals(version)) {
+			is1_8 = true;
+			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_8_R2.NmsManagerImpl();
 		} else {
 			printWarnAndDisable(
 				"******************************************************",
 				"     This version of HolographicDisplays can",
 				"     only work on these server versions:",
-				"     1.6.4, from 1.7 to 1.8.1.",
+				"     1.6.4, from 1.7 to 1.8.3.",
 				"     The plugin will be disabled.",
 				"******************************************************"
 			);
