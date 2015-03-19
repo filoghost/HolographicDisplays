@@ -3,8 +3,9 @@ package com.gmail.filoghost.holographicdisplays.nms.interfaces;
 import java.io.IOException;
 
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
 import org.bukkit.entity.Player;
+
+import com.google.gson.stream.JsonWriter;
 
 public interface FancyMessage {
 
