@@ -1,10 +1,13 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_6_R3;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.libs.com.google.gson.stream.JsonWriter;
 import org.bukkit.entity.Player;
+
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.FancyMessage;
 
 public class FancyMessageImpl implements FancyMessage {
@@ -91,5 +94,48 @@ public class FancyMessageImpl implements FancyMessage {
 	
 	private MessagePart latest() {
 		return messageParts.get(messageParts.size() - 1);
+	}
+	
+	static class MessagePart {
+
+		public ChatColor color = null;
+		public ChatColor[] styles = null;
+		public String clickActionName = null;
+		public String clickActionData = null;
+		public String hoverActionName = null;
+		public String hoverActionData = null;
+		public final String text;
+		
+		public MessagePart(final String text) {
+			this.text = text;
+		}
+		
+		public JsonWriter writeJson(final JsonWriter json) throws IOException {
+			json.beginObject().name("text").value(text);
+			if (color != null) {
+				json.name("color").value(color.name().toLowerCase());
+			}
+			if (styles != null) {
+				for (final ChatColor style : styles) {
+					json.name(style == ChatColor.UNDERLINE ? "underlined" : style.name().toLowerCase()).value(true);
+				}
+			}
+			if (clickActionName != null && clickActionData != null) {
+				json.name("clickEvent")
+					.beginObject()
+						.name("action").value(clickActionName)
+						.name("value").value(clickActionData)
+					.endObject();
+			}
+			if (hoverActionName != null && hoverActionData != null) {
+				json.name("hoverEvent")
+					.beginObject()
+						.name("action").value(hoverActionName)
+						.name("value").value(hoverActionData)
+					.endObject();
+			}
+			return json.endObject();
+		}
+		
 	}
 }
