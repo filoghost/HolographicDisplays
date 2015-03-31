@@ -35,26 +35,42 @@ public class BungeeChannel implements PluginMessageListener {
 
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-		if (!channel.equals("BungeeCord") && !channel.equals("RedisBungee")) {
-            return;
-        }
 		
-		 DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
+		if (channel.equals("BungeeCord")) {
+			
+			if (Configuration.useRedisBungee) {
+				// If we use RedisBungee, we must ignore this channel.
+				return;
+			}
+			
+		} else if (channel.equals("RedisBungee")) {
+			
+			if (!Configuration.useRedisBungee) {
+				// Same as above, just the opposite case.
+				return;
+			}
+			
+		} else {
+			// Not our channels, ignore the message.
+			return;
+		}
+		
+		DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
 		 
-		 try {
-			 String subChannel = in.readUTF();
+		try {
+			String subChannel = in.readUTF();
 			 
-			 if (subChannel.equals("PlayerCount")) {
+			if (subChannel.equals("PlayerCount")) {
 				 
-				 String server = in.readUTF();
+				String server = in.readUTF();
 				 
-				 if (in.available() > 0) {
-					 int online = in.readInt();
-					 
-					 BungeeServerInfo serverInfo = BungeeServerTracker.getOrCreateServerInfo(server);
-					 serverInfo.setOnlinePlayers(online);
-				 }
-			 }
+				if (in.available() > 0) {
+					int online = in.readInt();
+					
+					BungeeServerInfo serverInfo = BungeeServerTracker.getOrCreateServerInfo(server);
+					serverInfo.setOnlinePlayers(online);
+				}
+			}
 		 
 		} catch (EOFException e) {
 			// Do nothing.
