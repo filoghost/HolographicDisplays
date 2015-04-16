@@ -103,6 +103,15 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		 */
 	    return true;
 	}
+	
+	@Override
+	public void inactiveTick() {
+		// Check inactive ticks.
+		
+		if (!lockTick) {
+			super.inactiveTick();
+		}
+	}
 
 	@Override
 	public void setLockTick(boolean lock) {
@@ -111,6 +120,8 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	
 	@Override
 	public void die() {
+		System.out.println("Hologram Item died:");
+		Thread.dumpStack();
 		setLockTick(false);
 		super.die();
 	}

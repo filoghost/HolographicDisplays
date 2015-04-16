@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
@@ -15,6 +16,7 @@ import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
+import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class AddlineCommand extends HologramSubCommand {
@@ -38,8 +40,21 @@ public class AddlineCommand extends HologramSubCommand {
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
+		String line = Utils.join(args, " ", 1, args.length);
+		
+		// Check material validity
+		if (line.toLowerCase().startsWith("icon:")) {
+			String iconMaterial = ItemUtils.stripSpacingChars(line.substring("icon:".length(), line.length()));
+			
+			if (iconMaterial.contains(":")) {
+				iconMaterial = iconMaterial.split(":")[0];
+			}
+			
+			Material mat = ItemUtils.matchMaterial(iconMaterial);
+			CommandValidator.notNull(mat, "Invalid icon material.");
+		}
 
-		hologram.getLinesUnsafe().add(HologramDatabase.readLineFromString(Utils.join(args, " ", 1, args.length), hologram));
+		hologram.getLinesUnsafe().add(HologramDatabase.readLineFromString(line, hologram));
 		hologram.refreshAll();
 			
 		HologramDatabase.saveHologram(hologram);
