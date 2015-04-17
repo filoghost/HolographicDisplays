@@ -120,8 +120,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	
 	@Override
 	public void die() {
-		System.out.println("Hologram Item died:");
-		Thread.dumpStack();
 		setLockTick(false);
 		super.die();
 	}

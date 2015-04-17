@@ -37,13 +37,9 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	
 	@Override
 	public void s_() {
-		// Checks every 20 ticks.
-		if (ticksLived % 20 == 0) {
-			// The item dies without a vehicle.
-			if (this.vehicle == null) {
-				die();
-			}
-		}
+		
+		// So it won't get removed.
+		ticksLived = 0;
 		
 		if (!lockTick) {
 			super.s_();
@@ -106,6 +102,15 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		 * on chunk unload, we prefer to override isInvulnerable().
 		 */
 	    return true;
+	}
+	
+	@Override
+	public void inactiveTick() {
+		// Check inactive ticks.
+		
+		if (!lockTick) {
+			super.inactiveTick();
+		}
 	}
 
 	@Override
