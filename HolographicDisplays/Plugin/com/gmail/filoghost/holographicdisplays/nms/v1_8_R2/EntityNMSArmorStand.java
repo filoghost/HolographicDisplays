@@ -1,30 +1,26 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_8_R2;
 
-import net.minecraft.server.v1_8_R2.AxisAlignedBB;
-import net.minecraft.server.v1_8_R2.DamageSource;
-import net.minecraft.server.v1_8_R2.EntityArmorStand;
-import net.minecraft.server.v1_8_R2.EntityHuman;
-import net.minecraft.server.v1_8_R2.EntityPlayer;
-import net.minecraft.server.v1_8_R2.ItemStack;
-import net.minecraft.server.v1_8_R2.NBTTagCompound;
-import net.minecraft.server.v1_8_R2.PacketPlayOutEntityTeleport;
-import net.minecraft.server.v1_8_R2.Vec3D;
-import net.minecraft.server.v1_8_R2.World;
-
-import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
-
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
+import net.minecraft.server.v1_8_R2.*;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
-
 	private boolean lockTick;
 	private CraftHologramLine parentPiece;
-	
+
 	public EntityNMSArmorStand(World world, CraftHologramLine parentPiece) {
 		super(world);
+
+		// set the marker flag
+		// see EntityArmorStand.n(boolean)
+		byte settings = this.datawatcher.getByte(10);
+		settings = (byte) (settings | 0x10);
+		this.datawatcher.watch(10, Byte.valueOf(settings));
+		setSize(0, 0);
+
 		setInvisible(true);
 		setSmall(true);
 		setArms(false);
@@ -36,15 +32,15 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		} catch (Exception e) {
 			// There's still the overridden method.
 		}
+
 		forceSetBoundingBox(new NullBoundingBox());
 	}
-	
-	
+
 	@Override
 	public void b(NBTTagCompound nbttagcompound) {
 		// Do not save NBT.
 	}
-	
+
 	@Override
 	public boolean c(NBTTagCompound nbttagcompound) {
 		// Do not save NBT.
@@ -56,28 +52,27 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		// Do not save NBT.
 		return false;
 	}
-	
+
 	@Override
 	public void e(NBTTagCompound nbttagcompound) {
 		// Do not save NBT.
 	}
-	
-	
+
 	@Override
 	public boolean isInvulnerable(DamageSource source) {
 		/*
-		 * The field Entity.invulnerable is private.
+         * The field Entity.invulnerable is private.
 		 * It's only used while saving NBTTags, but since the entity would be killed
 		 * on chunk unload, we prefer to override isInvulnerable().
 		 */
-	    return true;
+		return true;
 	}
-	
+
 	@Override
 	public void setCustomName(String customName) {
 		// Locks the custom name.
 	}
-	
+
 	@Override
 	public void setCustomNameVisible(boolean visible) {
 		// Locks the custom name.
@@ -99,25 +94,31 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	public void setEquipment(int i, ItemStack item) {
 		// Prevent stand being equipped
 	}
-	
+
+	@Override
+	public boolean s() {
+		// there is no bounding box for this armor stand
+		return true;
+	}
+
 	@Override
 	public void a(AxisAlignedBB boundingBox) {
 		// Do not change it!
 	}
-	
+
 	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
 		super.a(boundingBox);
 	}
-	
+
 	@Override
 	public int getId() {
-		
+
 		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
 		if (elements.length > 2 && elements[2] != null && elements[2].getFileName().equals("EntityTrackerEntry.java") && elements[2].getLineNumber() > 137 && elements[2].getLineNumber() < 147) {
 			// Then this method is being called when creating a new packet, we return a fake ID!
 			return -1;
 		}
-		
+
 		return super.getId();
 	}
 
@@ -127,12 +128,12 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 			super.t_();
 		}
 	}
-	
+
 	@Override
 	public void makeSound(String sound, float f1, float f2) {
-	    // Remove sounds.
+		// Remove sounds.
 	}
-	
+
 	@Override
 	public void setCustomNameNMS(String name) {
 		if (name != null && name.length() > 300) {
@@ -141,45 +142,44 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		super.setCustomName(name);
 		super.setCustomNameVisible(name != null && !name.isEmpty());
 	}
-	
+
 	@Override
 	public String getCustomNameNMS() {
 		return super.getCustomName();
 	}
-	
-	
+
+
 	public void callSuperTick() {
 		super.h();
 	}
-	
+
 	@Override
 	public void setLockTick(boolean lock) {
 		lockTick = lock;
 	}
-	
+
 	@Override
 	public void die() {
 		setLockTick(false);
 		super.die();
 	}
-	
+
 	@Override
 	public CraftEntity getBukkitEntity() {
 		if (super.bukkitEntity == null) {
 			this.bukkitEntity = new CraftNMSArmorStand(this.world.getServer(), this);
-	    }
+		}
 		return this.bukkitEntity;
 	}
-	
+
 	@Override
 	public void killEntityNMS() {
 		die();
 	}
-	
+
 	@Override
 	public void setLocationNMS(double x, double y, double z) {
 		super.setPosition(x, y, z);
-		
 
 		// Send a packet near to update the position.
 		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
@@ -200,7 +200,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	public boolean isDeadNMS() {
 		return this.dead;
 	}
-	
+
 	@Override
 	public int getIdNMS() {
 		return this.getId();
@@ -210,7 +210,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	public CraftHologramLine getHologramLine() {
 		return parentPiece;
 	}
-	
+
 	@Override
 	public org.bukkit.entity.Entity getBukkitEntityNMS() {
 		return getBukkitEntity();
