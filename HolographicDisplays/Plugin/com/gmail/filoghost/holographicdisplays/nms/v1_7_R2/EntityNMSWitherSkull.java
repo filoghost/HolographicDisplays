@@ -5,6 +5,7 @@ import net.minecraft.server.v1_7_R2.EntityWitherSkull;
 import net.minecraft.server.v1_7_R2.NBTTagCompound;
 import net.minecraft.server.v1_7_R2.PacketPlayOutEntityTeleport;
 import net.minecraft.server.v1_7_R2.World;
+import net.minecraft.server.v1_7_R2.MathHelper;
 
 import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
 
@@ -122,7 +123,14 @@ public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWither
 		super.setPosition(x, y, z);
 		
 		// Send a packet near to update the position.
-		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
+		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(
+			getIdNMS(),
+			MathHelper.floor(this.locX * 32.0D),
+			MathHelper.floor(this.locY * 32.0D),
+			MathHelper.floor(this.locZ * 32.0D),
+			(byte) (int) (this.yaw * 256.0F / 360.0F),
+			(byte) (int) (this.pitch * 256.0F / 360.0F)
+		);
 		
 		for (Object obj : this.world.players) {
 			if (obj instanceof EntityPlayer) {
@@ -143,7 +151,7 @@ public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWither
 
 	@Override
 	public int getIdNMS() {
-		return this.getId();
+		return super.getId(); // Return the real ID without checking the stack trace.
 	}
 	
 	@Override
