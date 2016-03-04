@@ -1,8 +1,9 @@
-package com.gmail.filoghost.holographicdisplays.bridge.protocollib;
+package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -16,8 +17,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
-import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
-import com.gmail.filoghost.holographicdisplays.bridge.protocollib.WrapperPlayServerSpawnEntity.ObjectTypes;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.WrapperPlayServerSpawnEntity.ObjectTypes;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
@@ -27,29 +27,29 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchableLine;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class ProtocolLibHook {
 	
 	private static boolean hasProtocolLib;
 	private static NMSManager nmsManager;
 	
-	private static int customNameWatcherIndex;
-	
-	public static boolean load(NMSManager nmsManager, Plugin plugin, boolean is1_8) {
+	public static boolean load(NMSManager nmsManager, Plugin plugin) {
 		ProtocolLibHook.nmsManager = nmsManager;
 		
 		if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
 			
+			//TODO
+			Bukkit.getConsoleSender().sendMessage(
+					ChatColor.RED + "[Holographic Displays] Detected development version of ProtocolLib, support disabled. " +
+					"Related functions (the placeholders {player} {displayname} and the visibility API) will not work.\n" +
+					"The reason is that this version of ProtocolLib is unstable and partly broken. " +
+					"A new version of Holographic Displays will be out when ProtocolLib gets fixed.");
+			return false;
+			
+			/*
 			hasProtocolLib = true;
 						
 			plugin.getLogger().info("Found ProtocolLib, adding support for player relative variables.");
-			if (is1_8) {
-				customNameWatcherIndex = 2;
-			} else {
-				customNameWatcherIndex = 10;
-			}
-			
 
 			ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.SPAWN_ENTITY_LIVING, PacketType.Play.Server.SPAWN_ENTITY, PacketType.Play.Server.ENTITY_METADATA) {
 						  
@@ -80,7 +80,7 @@ public class ProtocolLibHook {
 							}
 							
 							WrappedDataWatcher dataWatcher = spawnEntityPacket.getMetadata();
-							String customName = dataWatcher.getString(customNameWatcherIndex);
+							String customName = dataWatcher.getString(2);
 							
 							if (customName == null) {
 								return;
@@ -89,7 +89,7 @@ public class ProtocolLibHook {
 							if (customName.contains("{player}") || customName.contains("{displayname}")) {
 
 								WrappedDataWatcher dataWatcherClone = dataWatcher.deepClone();
-								dataWatcherClone.setObject(customNameWatcherIndex, customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
+								dataWatcherClone.setObject(2, customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
 								spawnEntityPacket.setMetadata(dataWatcherClone);
 								event.setPacket(spawnEntityPacket.getHandle());
 								
@@ -99,7 +99,7 @@ public class ProtocolLibHook {
 							
 							WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
 							int objectId = spawnEntityPacket.getType();
-							if (objectId != ObjectTypes.ITEM_STACK && objectId != ObjectTypes.WITHER_SKULL && objectId != ObjectTypes.ARMOR_STAND) {
+							if (objectId != ObjectTypes.ITEM_STACK && objectId != ObjectTypes.ARMOR_STAND) {
 								return;
 							}
 							
@@ -128,8 +128,8 @@ public class ProtocolLibHook {
 								return;
 							}
 
-							if (entity.getType() != EntityType.HORSE && !VersionUtils.isArmorstand(entity.getType())) {
-								// Enough, only horses and armorstands are used with custom names.
+							if (entity.getType() != EntityType.ARMOR_STAND) {
+								// Enough, only armorstands are used with custom names.
 								return;
 							}
 							
@@ -148,7 +148,7 @@ public class ProtocolLibHook {
 								
 							for (int i = 0; i < dataWatcherValues.size(); i++) {
 								
-								if (dataWatcherValues.get(i).getIndex() == customNameWatcherIndex && dataWatcherValues.get(i).getValue() != null) {
+								if (dataWatcherValues.get(i).getIndex() == 2 && dataWatcherValues.get(i).getValue() != null) {
 										
 									Object customNameObject = dataWatcherValues.get(i).deepClone().getValue();
 									if (customNameObject == null || customNameObject instanceof String == false) {
@@ -175,6 +175,7 @@ public class ProtocolLibHook {
 				});
 			
 			return true;
+			*/
 		}
 		
 		return false;
@@ -217,15 +218,6 @@ public class ProtocolLibHook {
 						AbstractPacket nameablePacket = new WrapperPlayServerSpawnEntityLiving(textLine.getNmsNameble().getBukkitEntityNMS());
 						nameablePacket.sendPacket(player);
 						
-						if (textLine.getNmsSkullVehicle() != null) {
-							AbstractPacket vehiclePacket = new WrapperPlayServerSpawnEntity(textLine.getNmsSkullVehicle().getBukkitEntityNMS(), ObjectTypes.WITHER_SKULL, 0);
-							vehiclePacket.sendPacket(player);
-							
-							WrapperPlayServerAttachEntity attachPacket = new WrapperPlayServerAttachEntity();
-							attachPacket.setVehicleId(textLine.getNmsSkullVehicle().getIdNMS());
-							attachPacket.setEntityId(textLine.getNmsNameble().getIdNMS());
-							attachPacket.sendPacket(player);
-						}
 					}
 					
 				} else if (line instanceof CraftItemLine) {
@@ -235,19 +227,13 @@ public class ProtocolLibHook {
 						AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsItem().getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
 						itemPacket.sendPacket(player);
 						
-						AbstractPacket vehiclePacket;
-						if (HolographicDisplays.is1_8()) {
-							// In 1.8 we have armor stands, that are living entities.
-							vehiclePacket = new WrapperPlayServerSpawnEntityLiving(itemLine.getNmsVehicle().getBukkitEntityNMS());
-						} else {
-							vehiclePacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsVehicle().getBukkitEntityNMS(), ObjectTypes.WITHER_SKULL, 0);
-						}
+						AbstractPacket vehiclePacket = new WrapperPlayServerSpawnEntityLiving(itemLine.getNmsVehicle().getBukkitEntityNMS());
 						
 						vehiclePacket.sendPacket(player);
 							
-						WrapperPlayServerAttachEntity attachPacket = new WrapperPlayServerAttachEntity();
+						WrapperPlayServerMount attachPacket = new WrapperPlayServerMount();
 						attachPacket.setVehicleId(itemLine.getNmsVehicle().getIdNMS());
-						attachPacket.setEntityId(itemLine.getNmsItem().getIdNMS());
+						attachPacket.setPassengers(new int[] {itemLine.getNmsItem().getIdNMS()});
 						attachPacket.sendPacket(player);
 						
 						WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
@@ -270,23 +256,15 @@ public class ProtocolLibHook {
 					CraftTouchSlimeLine touchSlime = touchableLine.getTouchSlime();
 					
 					if (touchSlime.isSpawned()) {
-						AbstractPacket vehiclePacket;
-							
-						if (HolographicDisplays.is1_8()) {
-							// Armor stand vehicle
-							vehiclePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsVehicle().getBukkitEntityNMS());
-						} else {
-							// Wither skull vehicle
-							vehiclePacket = new WrapperPlayServerSpawnEntity(touchSlime.getNmsVehicle().getBukkitEntityNMS(), ObjectTypes.WITHER_SKULL, 0);
-						}
+						AbstractPacket vehiclePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsVehicle().getBukkitEntityNMS());
 						vehiclePacket.sendPacket(player);
 							
 						AbstractPacket slimePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsSlime().getBukkitEntityNMS());
 						slimePacket.sendPacket(player);
 							
-						WrapperPlayServerAttachEntity attachPacket = new WrapperPlayServerAttachEntity();
+						WrapperPlayServerMount attachPacket = new WrapperPlayServerMount();
 						attachPacket.setVehicleId(touchSlime.getNmsVehicle().getIdNMS());
-						attachPacket.setEntityId(touchSlime.getNmsSlime().getIdNMS());
+						attachPacket.setPassengers(new int[] {touchSlime.getNmsSlime().getIdNMS()});
 						attachPacket.sendPacket(player);
 					}
 				}
@@ -295,7 +273,7 @@ public class ProtocolLibHook {
 	}
 
 	private static boolean isHologramType(EntityType type) {
-		return type == EntityType.HORSE || type == EntityType.WITHER_SKULL || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME || VersionUtils.isArmorstand(type); // To maintain backwards compatibility
+		return type == EntityType.ARMOR_STAND || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME;
 	}
 	
 	private static CraftHologram getHologram(Entity bukkitEntity) {

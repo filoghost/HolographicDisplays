@@ -12,6 +12,7 @@ import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
+import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class PlaceholdersRegister {
 	
@@ -22,10 +23,9 @@ public class PlaceholdersRegister {
 		
 		register(new Placeholder(HolographicDisplays.getInstance(), "{online}", 1.0, new PlaceholderReplacer() {
 			
-			@SuppressWarnings("deprecation")
 			@Override
 			public String update() {
-				return String.valueOf(Bukkit.getOnlinePlayers().length);
+				return String.valueOf(VersionUtils.getOnlinePlayers().size());
 			}
 		}));
 		

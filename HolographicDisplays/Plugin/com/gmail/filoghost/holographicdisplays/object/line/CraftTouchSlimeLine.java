@@ -34,11 +34,11 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 	public void spawn(World world, double x, double y, double z) {
 		super.spawn(world, x, y, z);
 		
-		double offset = HolographicDisplays.is1_8() ? Offsets.ARMOR_STAND_WITH_SLIME : Offsets.WITHER_SKULL_WITH_SLIME;
+		double offset = getSlimeOffset();
 		
 		nmsSlime = HolographicDisplays.getNMSManager().spawnNMSSlime(world, x, y + offset, z, this);
 		
-		if (HolographicDisplays.is1_8()) {
+		if (HolographicDisplays.is18orGreater()) {
 			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
 		} else {
 			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + offset, z, this);
@@ -70,7 +70,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 	@Override
 	public void teleport(double x, double y, double z) {
 		
-		double offset = HolographicDisplays.is1_8() ? Offsets.ARMOR_STAND_WITH_SLIME : Offsets.WITHER_SKULL_WITH_SLIME;
+		double offset = getSlimeOffset();
 		
 		if (nmsVehicle != null) {
 			nmsVehicle.setLocationNMS(x, y + offset, z);
@@ -96,6 +96,16 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 
 	public NMSEntityBase getNmsVehicle() {
 		return nmsVehicle;
+	}
+	
+	private double getSlimeOffset() {
+		if (HolographicDisplays.is19orGreater()) {
+			return Offsets.ARMOR_STAND_WITH_SLIME_1_9;
+		} else if (HolographicDisplays.is18orGreater()) {
+			return Offsets.ARMOR_STAND_WITH_SLIME;
+		} else {
+			return Offsets.WITHER_SKULL_WITH_SLIME;
+		}
 	}
 
 	@Override

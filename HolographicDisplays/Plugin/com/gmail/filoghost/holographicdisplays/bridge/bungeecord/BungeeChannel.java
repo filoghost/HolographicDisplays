@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
+import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class BungeeChannel implements PluginMessageListener {
 
@@ -80,7 +82,7 @@ public class BungeeChannel implements PluginMessageListener {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
+	
 	public void askPlayerCount(String server) {
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream(b);
@@ -95,9 +97,9 @@ public class BungeeChannel implements PluginMessageListener {
 		}
 
 		// OR, if you don't need to send it to a specific player
-		Player[] players = Bukkit.getOnlinePlayers();
-		if (players.length > 0) {
-			players[0].sendPluginMessage(HolographicDisplays.getInstance(), Configuration.useRedisBungee ? "RedisBungee" : "BungeeCord", b.toByteArray());
+		Collection<? extends Player> players = VersionUtils.getOnlinePlayers();
+		if (players.size() > 0) {
+			players.iterator().next().sendPluginMessage(HolographicDisplays.getInstance(), Configuration.useRedisBungee ? "RedisBungee" : "BungeeCord", b.toByteArray());
 		}
 	}
 }

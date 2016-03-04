@@ -15,7 +15,7 @@
  *  02111-1307 USA
  */
 
-package com.gmail.filoghost.holographicdisplays.bridge.protocollib;
+package com.gmail.filoghost.holographicdisplays.bridge.protocollib.pre1_9;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 

@@ -61,10 +61,12 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 			
 			Location loc = nmsItem.getBukkitEntityNMS().getLocation();
 			
-			if (HolographicDisplays.is1_8()) {
-				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - Offsets.ARMOR_STAND_WITH_ITEM, loc.getZ());
+			if (HolographicDisplays.is19orGreater()) {
+				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
+			} else if (HolographicDisplays.is18orGreater()) {
+				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
 			} else {
-				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - Offsets.WITHER_SKULL_WITH_ITEM, loc.getZ());
+				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
 			}
 			
 		} else {
@@ -78,11 +80,11 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 		
 		if (itemStack != null && itemStack.getType() != Material.AIR) {
 			
-			double offset = HolographicDisplays.is1_8() ? Offsets.ARMOR_STAND_WITH_ITEM : Offsets.WITHER_SKULL_WITH_ITEM;
+			double offset = getItemOffset();
 			
 			nmsItem = HolographicDisplays.getNMSManager().spawnNMSItem(world, x, y + offset, z, this, itemStack);
 			
-			if (HolographicDisplays.is1_8()) {
+			if (HolographicDisplays.is18orGreater()) {
 				nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
 			} else {
 				nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + offset, z, this);
@@ -115,7 +117,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	public void teleport(double x, double y, double z) {
 		super.teleport(x, y, z);
 		
-		double offset = HolographicDisplays.is1_8() ? Offsets.ARMOR_STAND_WITH_ITEM : Offsets.WITHER_SKULL_WITH_ITEM;
+		double offset = getItemOffset();
 		
 		if (nmsVehicle != null) {
 			nmsVehicle.setLocationNMS(x, y + offset, z);
@@ -145,6 +147,16 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 
 	public NMSEntityBase getNmsVehicle() {
 		return nmsVehicle;
+	}
+	
+	private double getItemOffset() {
+		if (HolographicDisplays.is19orGreater()) {
+			return Offsets.ARMOR_STAND_WITH_ITEM_1_9;
+		} else if (HolographicDisplays.is18orGreater()) {
+			return Offsets.ARMOR_STAND_WITH_ITEM;
+		} else {
+			return Offsets.WITHER_SKULL_WITH_ITEM;
+		}
 	}
 
 	@Override

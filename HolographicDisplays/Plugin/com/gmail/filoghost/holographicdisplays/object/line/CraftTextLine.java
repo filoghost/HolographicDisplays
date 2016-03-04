@@ -59,12 +59,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		if (nmsNameble != null) {
 			
 			Location loc = nmsNameble.getBukkitEntityNMS().getLocation();
-			
-			if (HolographicDisplays.is1_8()) {
-				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - Offsets.ARMOR_STAND_ALONE, loc.getZ());
-			} else {
-				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - Offsets.WITHER_SKULL_WITH_HORSE, loc.getZ());
-			}
+			super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getTextOffset(), loc.getZ());
 			
 		} else {
 			super.setTouchHandler(touchHandler, null, 0, 0, 0);
@@ -75,8 +70,8 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	public void spawn(World world, double x, double y, double z) {
 		super.spawn(world, x, y, z);
 			
-		if (HolographicDisplays.is1_8()) {
-			nmsNameble = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + Offsets.ARMOR_STAND_ALONE, z, this);
+		if (HolographicDisplays.is18orGreater()) {
+			nmsNameble = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this);
 		} else {
 			nmsNameble = HolographicDisplays.getNMSManager().spawnNMSHorse(world, x, y + Offsets.WITHER_SKULL_WITH_HORSE, z, this);
 			nmsSkullVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + Offsets.WITHER_SKULL_WITH_HORSE, z, this);
@@ -119,7 +114,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		}
 		
 		if (nmsNameble != null) {
-			nmsNameble.setLocationNMS(x, y + (HolographicDisplays.is1_8() ? Offsets.ARMOR_STAND_ALONE : Offsets.WITHER_SKULL_WITH_HORSE), z);
+			nmsNameble.setLocationNMS(x, y + getTextOffset(), z);
 		}
 	}
 	
@@ -152,6 +147,15 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		return nmsSkullVehicle;
 	}
 
+	private double getTextOffset() {
+		if (HolographicDisplays.is19orGreater()) {
+			return Offsets.ARMOR_STAND_ALONE_1_9;
+		} else if (HolographicDisplays.is18orGreater()) {
+			return Offsets.ARMOR_STAND_ALONE;
+		} else {
+			return Offsets.WITHER_SKULL_WITH_HORSE;
+		}
+	}
 
 	@Override
 	public String toString() {

@@ -18,4 +18,10 @@ public class ReflectionUtils {
 		field.setAccessible(true);
 		field.set(handle, value);
 	}
+	
+	public static Object getPrivateField(Class<?> clazz, Object handle, String fieldName) throws Exception {
+		Field field = clazz.getDeclaredField(fieldName);
+		field.setAccessible(true);
+		return field.get(handle);
+	}
 }

@@ -1,14 +1,21 @@
 package com.gmail.filoghost.holographicdisplays.util;
 
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
+import com.google.common.collect.ImmutableList;
 
 public class VersionUtils {
+	
+	private static Method oldGetOnlinePlayersMethod;
 	
 	/**
 	 * This method uses a regex to get the NMS package part that changes with every update.
@@ -47,10 +54,29 @@ public class VersionUtils {
 	}
 	
 	public static boolean isArmorstand(EntityType type) {
-		if (!HolographicDisplays.is1_8()) {
+		if (!HolographicDisplays.is18orGreater()) {
 			return false;
 		}
 		
 		return type == EntityType.ARMOR_STAND;
+	}
+	
+	
+	public static Collection<? extends Player> getOnlinePlayers() {
+		if (HolographicDisplays.is18orGreater()) {
+			return Bukkit.getOnlinePlayers();
+		} else {
+			try {
+				if (oldGetOnlinePlayersMethod == null) {
+					oldGetOnlinePlayersMethod = Bukkit.class.getDeclaredMethod("getOnlinePlayers");
+				}
+				
+				Player[] playersArray = (Player[]) oldGetOnlinePlayersMethod.invoke(null);
+				return ImmutableList.copyOf(playersArray);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return Collections.emptyList();
+			}
+		}
 	}
 }

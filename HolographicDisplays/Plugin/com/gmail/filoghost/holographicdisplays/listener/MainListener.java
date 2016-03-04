@@ -95,16 +95,16 @@ public class MainListener implements Listener {
 	public void onSlimeInteract(PlayerInteractEntityEvent event) {
 		if (event.getRightClicked().getType() == EntityType.SLIME) {
 			
+			Player clicker = event.getPlayer();
 			NMSEntityBase entityBase = nmsManager.getNMSEntityBase(event.getRightClicked());
-			if (entityBase == null) return;
 			
-			if (entityBase.getHologramLine() instanceof CraftTouchSlimeLine) {
+			if (entityBase != null && entityBase.getHologramLine() instanceof CraftTouchSlimeLine && !isSpectatorMode(clicker)) {
 				
 				CraftTouchSlimeLine touchSlime = (CraftTouchSlimeLine) entityBase.getHologramLine();
 				
-				if (touchSlime.getTouchablePiece().getTouchHandler() != null && touchSlime.getParent().getVisibilityManager().isVisibleTo(event.getPlayer())) {
+				if (touchSlime.getTouchablePiece().getTouchHandler() != null && touchSlime.getParent().getVisibilityManager().isVisibleTo(clicker)) {
 					
-					Long lastClick = anticlickSpam.get(event.getPlayer());
+					Long lastClick = anticlickSpam.get(clicker);
 					if (lastClick != null && System.currentTimeMillis() - lastClick.longValue() < 100) {
 						return;
 					}
@@ -117,9 +117,13 @@ public class MainListener implements Listener {
 						Plugin plugin = touchSlime.getParent() instanceof PluginHologram ? ((PluginHologram) touchSlime.getParent()).getOwner() : HolographicDisplays.getInstance();
 						HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", ex);
 					}
-				}	
+				}
 			}
 		}
+	}
+	
+	public static boolean isSpectatorMode(Player player) {
+		return player.getGameMode().toString().equals("SPECTATOR");
 	}
 	
 	public static void handleItemLinePickup(Player player, PickupHandler pickupHandler, CraftHologram hologram) {

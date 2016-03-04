@@ -37,7 +37,7 @@ public class FixCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		
-		CommandValidator.isTrue(!HolographicDisplays.is1_8(), "This command is no longer necessary in 1.8+. The holograms already use the correct ambient light.");
+		CommandValidator.isTrue(!HolographicDisplays.is18orGreater(), "This command is no longer necessary in 1.8+. The holograms already use the correct ambient light.");
 		
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
@@ -70,7 +70,11 @@ public class FixCommand extends HologramSubCommand {
 	
 	@Override
 	public SubCommandType getType() {
-		return SubCommandType.GENERIC;
+		if (HolographicDisplays.is18orGreater()) {
+			return SubCommandType.HIDDEN;
+		} else {
+			return SubCommandType.GENERIC;
+		}
 	}
 
 }

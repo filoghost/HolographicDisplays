@@ -7,7 +7,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gmail.filoghost.holographicdisplays.SimpleUpdater.ResponseHandler;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
-import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramsCommandHandler;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
@@ -39,7 +38,10 @@ public class HolographicDisplays extends JavaPlugin {
 	private HologramsCommandHandler commandHandler;
 	
 	// Since 1.8 we use armor stands instead of wither skulls.
-	private static boolean is1_8;
+	private static boolean is18orGreater;
+	
+	// Since 1.9 there is a different offset for the nametag.
+	private static boolean is19orGreater;
 	
 	// Used for the server pinger.
 	private static boolean isPreNetty;
@@ -120,20 +122,24 @@ public class HolographicDisplays extends JavaPlugin {
 		} else if ("v1_7_R4".equals(version)) {
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_7_R4.NmsManagerImpl();
 		} else if ("v1_8_R1".equals(version)) {
-			is1_8 = true;
+			is18orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_8_R1.NmsManagerImpl();
 		} else if ("v1_8_R2".equals(version)) {
-			is1_8 = true;
+			is18orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_8_R2.NmsManagerImpl();
 		} else if ("v1_8_R3".equals(version)) {
-			is1_8 = true;
+			is18orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_8_R3.NmsManagerImpl();
+		} else if ("v1_9_R1".equals(version)) {
+			is18orGreater = true;
+			is19orGreater = true;
+			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_9_R1.NmsManagerImpl();
 		} else {
 			printWarnAndDisable(
 				"******************************************************",
 				"     This version of HolographicDisplays can",
 				"     only work on these server versions:",
-				"     from 1.6.4 to 1.8.8.",
+				"     from 1.6.4 to 1.9.",
 				"     The plugin will be disabled.",
 				"******************************************************"
 			);
@@ -157,7 +163,7 @@ public class HolographicDisplays extends JavaPlugin {
 				"******************************************************",
 				"     HolographicDisplays was unable to register",
 				"     custom entities, the plugin will be disabled.",
-				"     Are you using the correct Bukkit version?",
+				"     Are you using the correct Bukkit/Spigot version?",
 				"******************************************************"
 			);
 			return;
@@ -166,7 +172,11 @@ public class HolographicDisplays extends JavaPlugin {
 		// ProtocolLib check.
 		try {
 			if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-				useProtocolLib = ProtocolLibHook.load(nmsManager, this, is1_8);
+				if (is19orGreater) {
+					useProtocolLib = com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHook.load(nmsManager, this);
+				} else {
+					useProtocolLib = com.gmail.filoghost.holographicdisplays.bridge.protocollib.pre1_9.ProtocolLibHook.load(nmsManager, this, is18orGreater);
+				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -214,8 +224,8 @@ public class HolographicDisplays extends JavaPlugin {
 				"******************************************************",
 				"     HolographicDisplays was unable to register",
 				"     the command \"holograms\". Do not modify",
-				"     plugin.yml removing commands, if you're",
-				"     doing so.",
+				"     plugin.yml removing commands, if this is",
+				"     the case.",
 				"******************************************************"
 			);
 			return;
@@ -249,8 +259,12 @@ public class HolographicDisplays extends JavaPlugin {
 		return commandHandler;
 	}
 
-	public static boolean is1_8() {
-		return is1_8;
+	public static boolean is18orGreater() {
+		return is18orGreater;
+	}
+	
+	public static boolean is19orGreater() {
+		return is19orGreater;
 	}
 	
 	public static boolean isPreNetty() {
