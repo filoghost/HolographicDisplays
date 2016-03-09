@@ -57,7 +57,7 @@ public class PowerUps extends JavaPlugin implements Listener {
 				public void onPickup(Player player) {
 					
 					// Play a sound.
-					player.playSound(player.getLocation(), Sound.LEVEL_UP, 1F, 2F);
+					player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 2F);
 					
 					// Play an effect.
 					player.playEffect(hologram.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
