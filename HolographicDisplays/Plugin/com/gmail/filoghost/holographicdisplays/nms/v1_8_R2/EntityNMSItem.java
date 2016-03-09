@@ -219,4 +219,9 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         this.vehicle = entity;
         entity.passenger = this;
 	}
+	
+	@Override
+	public Object getRawItemStack() {
+		return super.getItemStack();
+	}
 }

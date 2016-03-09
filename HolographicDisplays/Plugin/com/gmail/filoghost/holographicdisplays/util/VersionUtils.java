@@ -15,7 +15,8 @@ import com.google.common.collect.ImmutableList;
 
 public class VersionUtils {
 	
-	private static Method oldGetOnlinePlayersMethod;
+	private static Method getOnlinePlayersMethod;
+	private static boolean getOnlinePlayersUseReflection;
 	
 	/**
 	 * This method uses a regex to get the NMS package part that changes with every update.
@@ -63,20 +64,25 @@ public class VersionUtils {
 	
 	
 	public static Collection<? extends Player> getOnlinePlayers() {
-		if (HolographicDisplays.is18orGreater()) {
-			return Bukkit.getOnlinePlayers();
-		} else {
-			try {
-				if (oldGetOnlinePlayersMethod == null) {
-					oldGetOnlinePlayersMethod = Bukkit.class.getDeclaredMethod("getOnlinePlayers");
+		try {
+			
+			if (getOnlinePlayersMethod == null) {
+				getOnlinePlayersMethod = Bukkit.class.getDeclaredMethod("getOnlinePlayers");
+				if (getOnlinePlayersMethod.getReturnType() == Player[].class) {
+					getOnlinePlayersUseReflection = true;
 				}
-				
-				Player[] playersArray = (Player[]) oldGetOnlinePlayersMethod.invoke(null);
-				return ImmutableList.copyOf(playersArray);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return Collections.emptyList();
 			}
+		
+			if (!getOnlinePlayersUseReflection) {
+				return Bukkit.getOnlinePlayers();
+			} else {
+				Player[] playersArray = (Player[]) getOnlinePlayersMethod.invoke(null);
+				return ImmutableList.copyOf(playersArray);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
 		}
 	}
 }

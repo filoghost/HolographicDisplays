@@ -258,4 +258,9 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 			DebugHandler.handleDebugException(ex);
 		}
 	}
+
+	@Override
+	public Object getRawItemStack() {
+		return super.getItemStack();
+	}
 }

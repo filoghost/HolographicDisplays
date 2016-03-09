@@ -10,4 +10,7 @@ public interface NMSItem extends NMSEntityBase, NMSCanMount {
 	// Sets if this item can be picked up by players.
 	public void allowPickup(boolean pickup);
 	
+	// The raw NMS ItemStack object.
+	public Object getRawItemStack();
+	
 }

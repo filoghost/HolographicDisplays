@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gmail.filoghost.holographicdisplays.SimpleUpdater.ResponseHandler;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramsCommandHandler;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
@@ -46,11 +47,11 @@ public class HolographicDisplays extends JavaPlugin {
 	// Used for the server pinger.
 	private static boolean isPreNetty;
 	
-	// True if ProtocolLib is installed and successfully loaded.
-	private static boolean useProtocolLib;
-	
 	// The new version found by the updater, null if there is no new version.
 	private static String newVersion;
+	
+	// Not null if ProtocolLib is installed and successfully loaded.
+	private static ProtocolLibHook protocolLibHook;
 	
 	@Override
 	public void onEnable() {
@@ -172,10 +173,16 @@ public class HolographicDisplays extends JavaPlugin {
 		// ProtocolLib check.
 		try {
 			if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+				ProtocolLibHook  protocolLibHook;
+				
 				if (is19orGreater) {
-					useProtocolLib = com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHook.load(nmsManager, this);
+					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl();
 				} else {
-					useProtocolLib = com.gmail.filoghost.holographicdisplays.bridge.protocollib.pre1_9.ProtocolLibHook.load(nmsManager, this, is18orGreater);
+					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.pre1_9.ProtocolLibHookImpl(is18orGreater);
+				}
+				
+				if (protocolLibHook.hook(this, nmsManager)) {
+					HolographicDisplays.protocolLibHook = protocolLibHook;
 				}
 			}
 		} catch (Exception ex) {
@@ -295,8 +302,13 @@ public class HolographicDisplays extends JavaPlugin {
 	}
 	
 	
-	public static boolean useProtocolLib() {
-		return useProtocolLib;
+	public static boolean hasProtocolLibHook() {
+		return protocolLibHook != null;
+	}
+	
+	
+	public static ProtocolLibHook getProtocolLibHook() {
+		return protocolLibHook;
 	}
 	
 }

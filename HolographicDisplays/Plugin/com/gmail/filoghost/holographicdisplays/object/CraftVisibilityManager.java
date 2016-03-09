@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
-import com.gmail.filoghost.holographicdisplays.bridge.protocollib.pre1_9.ProtocolLibHook;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
@@ -150,14 +149,14 @@ public class CraftVisibilityManager implements VisibilityManager {
 	}
 	
 	private static void sendCreatePacketIfNear(Player player, CraftHologram hologram) {
-		if (HolographicDisplays.useProtocolLib() && isNear(player, hologram)) {
-			ProtocolLibHook.sendCreateEntitiesPacket(player, hologram);
+		if (HolographicDisplays.hasProtocolLibHook() && isNear(player, hologram)) {
+			HolographicDisplays.getProtocolLibHook().sendCreateEntitiesPacket(player, hologram);
 		}
 	}
 	
 	private static void sendDestroyPacketIfNear(Player player, CraftHologram hologram) {
-		if (HolographicDisplays.useProtocolLib() && isNear(player, hologram)) {
-			ProtocolLibHook.sendDestroyEntitiesPacket(player, hologram);
+		if (HolographicDisplays.hasProtocolLibHook() && isNear(player, hologram)) {
+			HolographicDisplays.getProtocolLibHook().sendDestroyEntitiesPacket(player, hologram);
 		}
 	}
 	
