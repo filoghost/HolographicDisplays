@@ -138,6 +138,10 @@ public class HolographicDisplays extends JavaPlugin {
 			is18orGreater = true;
 			is19orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_9_R1.NmsManagerImpl();
+		} else if ("v1_9_R2".equals(version)) {
+			is18orGreater = true;
+			is19orGreater = true;
+			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_9_R2.NmsManagerImpl();
 		} else {
 			printWarnAndDisable(
 				"******************************************************",
