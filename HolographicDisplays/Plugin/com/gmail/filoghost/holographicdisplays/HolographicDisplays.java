@@ -142,12 +142,15 @@ public class HolographicDisplays extends JavaPlugin {
 			is18orGreater = true;
 			is19orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_9_R2.NmsManagerImpl();
+		} else if ("v1_10_R1".equals(version)) {
+			is18orGreater = true;
+			is19orGreater = true;
+			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_10_R1.NmsManagerImpl();
 		} else {
 			printWarnAndDisable(
 				"******************************************************",
-				"     This version of HolographicDisplays can",
-				"     only work on these server versions:",
-				"     from 1.6.4 to 1.9.4.",
+				"     This version of HolographicDisplays only",
+				"     works on server versions from 1.6.4 to 1.10.",
 				"     The plugin will be disabled.",
 				"******************************************************"
 			);
