@@ -58,6 +58,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 
 			ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.SPAWN_ENTITY_LIVING, PacketType.Play.Server.SPAWN_ENTITY, PacketType.Play.Server.ENTITY_METADATA) {
 
+					@SuppressWarnings("deprecation")
 					@Override
 					public void onPacketSending(PacketEvent event) {
 

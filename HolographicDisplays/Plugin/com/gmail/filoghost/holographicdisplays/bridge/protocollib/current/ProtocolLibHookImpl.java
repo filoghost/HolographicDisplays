@@ -176,7 +176,12 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 									
 									String customName = (String) customNameObject;
 									if (customName.contains("{player}") || customName.contains("{displayname}")) {
-										watchableObject.setValue(customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
+
+										String replacement = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
+										dataWatcherValues.set(i, new WrappedWatchableObject(watchableObject.getWatcherObject(), replacement));
+										PacketContainer clone = packet.shallowClone();
+										clone.getWatchableCollectionModifier().write(0, dataWatcherValues);
+										event.setPacket(clone);
 										return;
 									}
 								}
