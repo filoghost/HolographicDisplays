@@ -47,9 +47,6 @@ public class HolographicDisplays extends JavaPlugin {
 	// Since 1.9 there is a different offset for the nametag.
 	private static boolean is19orGreater;
 	
-	// Used for the server pinger.
-	private static boolean isPreNetty;
-	
 	// The new version found by the updater, null if there is no new version.
 	private static String newVersion;
 	
@@ -93,10 +90,7 @@ public class HolographicDisplays extends JavaPlugin {
 			// Caused by MCPC+ / Cauldron renaming packages, extract the version from Bukkit.getVersion().
 			version = VersionUtils.getMinecraftVersion();
 			
-			if ("1.6.4".equals(version)) {
-				version = "v1_6_R3";
-				isPreNetty = true;
-			} else if ("1.7.2".equals(version)) {
+			if ("1.7.2".equals(version)) {
 				version = "v1_7_R1";
 			} else if ("1.7.5".equals(version)) {
 				version = "v1_7_R2";
@@ -115,9 +109,7 @@ public class HolographicDisplays extends JavaPlugin {
 		}
 		
 		// It's simple, we don't need reflection.
-		if ("v1_6_R3".equals(version)) {
-			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_6_R3.NmsManagerImpl();
-		} else if ("v1_7_R1".equals(version)) {
+		if ("v1_7_R1".equals(version)) {
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_7_R1.NmsManagerImpl();
 		} else if ("v1_7_R2".equals(version)) {
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_7_R2.NmsManagerImpl();
@@ -150,7 +142,7 @@ public class HolographicDisplays extends JavaPlugin {
 			printWarnAndDisable(
 				"******************************************************",
 				"     This version of HolographicDisplays only",
-				"     works on server versions from 1.6.4 to 1.10.",
+				"     works on server versions from 1.7 to 1.10.",
 				"     The plugin will be disabled.",
 				"******************************************************"
 			);
@@ -285,10 +277,6 @@ public class HolographicDisplays extends JavaPlugin {
 	
 	public static boolean is19orGreater() {
 		return is19orGreater;
-	}
-	
-	public static boolean isPreNetty() {
-		return isPreNetty;
 	}
 	
 	private static void printWarnAndDisable(String... messages) {

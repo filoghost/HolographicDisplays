@@ -22,8 +22,6 @@ public class BungeeServerTracker {
 	private static Map<String, BungeeServerInfo> trackedServers = new ConcurrentHashMap<String, BungeeServerInfo>();
 	private static int taskID = -1;
 	
-	private static ServerPinger pinger = HolographicDisplays.isPreNetty() ? ServerPinger.PRE_NETTY_REWRITE : ServerPinger.POST_NETTY_REWRITE;
-
 	public static void resetTrackedServers() {
 		trackedServers.clear();
 	}
@@ -161,7 +159,7 @@ public class BungeeServerTracker {
 								boolean displayOffline = false;
 								
 								try {
-									PingResponse data = pinger.fetchData(entry.getValue(), Configuration.pingerTimeout);
+									PingResponse data = ServerPinger.fetchData(entry.getValue(), Configuration.pingerTimeout);
 									
 									if (data.isOnline()) {
 										serverInfo.setOnline(true);

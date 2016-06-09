@@ -24,7 +24,7 @@ public class BungeeCleanupTask implements Runnable {
 			if (lastRequest != 0 && System.currentTimeMillis() - lastRequest > 600000) { // 10 * 60 * 1000 = 10 minutes.
 				// Don't track that server anymore.
 				iter.remove();
-				DebugHandler.logToConsole("Untracked bungee server \"" + next.getKey() + "\" due to inactivity.");
+				DebugHandler.logToConsole("Removed bungee server \"" + next.getKey() + "\" from tracking due to inactivity.");
 			}
 		}
 	}
