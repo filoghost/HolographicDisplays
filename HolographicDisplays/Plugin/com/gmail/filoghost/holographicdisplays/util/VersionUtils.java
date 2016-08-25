@@ -85,4 +85,15 @@ public class VersionUtils {
 			return Collections.emptyList();
 		}
 	}
+	
+
+	public static boolean classExists(String className) {
+		try {
+			Class.forName(className);
+			return true;
+		} catch (Throwable t) {
+			return false;
+		}
+	}
+	
 }

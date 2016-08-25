@@ -15,7 +15,7 @@
  *  02111-1307 USA
  */
 
-package com.gmail.filoghost.holographicdisplays.bridge.protocollib.pre1_9;
+package com.gmail.filoghost.holographicdisplays.bridge.protocollib.old;
 
 import java.lang.reflect.InvocationTargetException;
 

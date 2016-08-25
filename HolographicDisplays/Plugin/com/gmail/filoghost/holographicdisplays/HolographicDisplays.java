@@ -47,6 +47,9 @@ public class HolographicDisplays extends JavaPlugin {
 	// Since 1.9 there is a different offset for the nametag.
 	private static boolean is19orGreater;
 	
+	// Since 1.10 there is a difference in the entity metadata packet index for items.
+	private static boolean is110orGreater;
+	
 	// The new version found by the updater, null if there is no new version.
 	private static String newVersion;
 	
@@ -137,6 +140,7 @@ public class HolographicDisplays extends JavaPlugin {
 		} else if ("v1_10_R1".equals(version)) {
 			is18orGreater = true;
 			is19orGreater = true;
+			is110orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_10_R1.NmsManagerImpl();
 		} else {
 			printWarnAndDisable(
@@ -177,14 +181,18 @@ public class HolographicDisplays extends JavaPlugin {
 			if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
 				ProtocolLibHook protocolLibHook;
 				
-				if (is19orGreater) {
-					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl();
+				if (VersionUtils.classExists("com.comphenix.protocol.wrappers.WrappedDataWatcher$WrappedDataWatcherObject")) {
+					// Only the new version contains this class
+					getLogger().info("Found ProtocolLib, using new version.");
+					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl(is19orGreater, is110orGreater);
 				} else {
-					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.pre1_9.ProtocolLibHookImpl(is18orGreater);
+					getLogger().info("Found ProtocolLib, using old version.");
+					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.old.ProtocolLibHookImpl(is18orGreater);
 				}
 				
 				if (protocolLibHook.hook(this, nmsManager)) {
 					HolographicDisplays.protocolLibHook = protocolLibHook;
+					getLogger().info("Enabled player relative placeholders with ProtocolLib.");
 				}
 			}
 		} catch (Exception ex) {
@@ -276,6 +284,10 @@ public class HolographicDisplays extends JavaPlugin {
 	}
 	
 	public static boolean is19orGreater() {
+		return is19orGreater;
+	}
+	
+	public static boolean is110orGreater() {
 		return is19orGreater;
 	}
 	
