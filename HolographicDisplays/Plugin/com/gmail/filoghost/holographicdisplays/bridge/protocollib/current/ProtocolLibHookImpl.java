@@ -32,6 +32,7 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchableLine;
+import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.google.common.base.Optional;
 
@@ -42,26 +43,15 @@ import com.google.common.base.Optional;
  */
 public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
-	private boolean is1_9orGreater;
-	private boolean is110orGreater;
-	
 	private NMSManager nmsManager;
 	
-	private boolean initSerializers;
-	private Serializer
-		itemSerializer,
-		intSerializer,
-		byteSerializer;
+	private Serializer itemSerializer, intSerializer, byteSerializer;
 	
-	public ProtocolLibHookImpl(boolean is19orGreater, boolean is110orGreater) {
-		this.is1_9orGreater = is19orGreater;
-		this.is110orGreater = is110orGreater;
-	}
+	private int itemstackMetadataWatcherIndex;
 	
 	@Override
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {
-		this.nmsManager = nmsManager;
-			
+		
 		String version = Bukkit.getPluginManager().getPlugin("ProtocolLib").getDescription().getVersion();
 		if (version.matches(Pattern.quote("3.7-SNAPSHOT") + ".+")) {
 			Bukkit.getConsoleSender().sendMessage(
@@ -70,6 +60,24 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					"The reason is that this version of ProtocolLib is unstable and partly broken. " +
 					"Please update ProtocolLib.");
 			return false;
+		}
+		
+		this.nmsManager = nmsManager;
+		
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+			if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_10)) {
+				itemstackMetadataWatcherIndex = 6;
+			} else {
+				itemstackMetadataWatcherIndex = 5;
+			}
+		} else {
+			itemstackMetadataWatcherIndex = 10;
+		}
+		
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+			itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
+			intSerializer = Registry.get(Integer.class);
+			byteSerializer = Registry.get(Byte.class);
 		}
 
 		AdapterParameteters params = PacketAdapter
@@ -183,7 +191,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 									String replacement = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
 
 									WrappedWatchableObject newWatchableObject;
-									if (is1_9orGreater) {
+									if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
 										// The other constructor does not work in 1.9+.
 										newWatchableObject = new WrappedWatchableObject(watchableObject.getWatcherObject(), replacement);
 									} else {
@@ -255,19 +263,12 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
 						WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 						
-						if (is1_9orGreater) {
-							if (!initSerializers) {
-								itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
-								intSerializer = Registry.get(Integer.class);
-								byteSerializer = Registry.get(Byte.class);
-								initSerializers = true;
-							}
-	
-							dataWatcher.setObject(new WrappedDataWatcherObject(is110orGreater ? 6 : 5, itemSerializer), Optional.of(itemLine.getNmsItem().getRawItemStack()));
+						if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+							dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), Optional.of(itemLine.getNmsItem().getRawItemStack()));
 							dataWatcher.setObject(new WrappedDataWatcherObject(1, intSerializer), 300);
 							dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0);
 						} else {
-							dataWatcher.setObject(10, itemLine.getNmsItem().getRawItemStack());
+							dataWatcher.setObject(itemstackMetadataWatcherIndex, itemLine.getNmsItem().getRawItemStack());
 							dataWatcher.setObject(1, 300);
 							dataWatcher.setObject(0, (byte) 0);
 						}
@@ -302,7 +303,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	
 	private AbstractPacket getAttachPacket(int vehicleId, int passengerId) {
-		if (is1_9orGreater) {
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
 			WrapperPlayServerMount attachPacket = new WrapperPlayServerMount();
 			attachPacket.setVehicleId(vehicleId);
 			attachPacket.setPassengers(new int[] {passengerId});

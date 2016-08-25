@@ -12,6 +12,7 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBa
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
+import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
 
 public class CraftTextLine extends CraftTouchableLine implements TextLine {
@@ -70,7 +71,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	public void spawn(World world, double x, double y, double z) {
 		super.spawn(world, x, y, z);
 			
-		if (HolographicDisplays.is18orGreater()) {
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
 			nmsNameble = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this);
 		} else {
 			nmsNameble = HolographicDisplays.getNMSManager().spawnNMSHorse(world, x, y + Offsets.WITHER_SKULL_WITH_HORSE, z, this);
@@ -148,9 +149,9 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	}
 
 	private double getTextOffset() {
-		if (HolographicDisplays.is19orGreater()) {
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
 			return Offsets.ARMOR_STAND_ALONE_1_9;
-		} else if (HolographicDisplays.is18orGreater()) {
+		} else if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
 			return Offsets.ARMOR_STAND_ALONE;
 		} else {
 			return Offsets.WITHER_SKULL_WITH_HORSE;

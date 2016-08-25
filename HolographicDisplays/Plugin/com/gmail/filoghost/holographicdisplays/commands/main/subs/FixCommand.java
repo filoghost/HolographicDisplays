@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 
-import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
 import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
@@ -15,6 +14,7 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
+import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
 
 public class FixCommand extends HologramSubCommand {
 
@@ -37,7 +37,7 @@ public class FixCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		
-		CommandValidator.isTrue(!HolographicDisplays.is18orGreater(), "This command is no longer necessary in 1.8+. The holograms already use the correct ambient light.");
+		CommandValidator.isTrue(!MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8), "This command is no longer necessary in 1.8+. The holograms already use the correct ambient light.");
 		
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
@@ -70,7 +70,7 @@ public class FixCommand extends HologramSubCommand {
 	
 	@Override
 	public SubCommandType getType() {
-		if (HolographicDisplays.is18orGreater()) {
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
 			return SubCommandType.HIDDEN;
 		} else {
 			return SubCommandType.GENERIC;

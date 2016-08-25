@@ -28,6 +28,7 @@ import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import com.gmail.filoghost.holographicdisplays.task.BungeeCleanupTask;
 import com.gmail.filoghost.holographicdisplays.task.StartupLoadHologramsTask;
 import com.gmail.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
+import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class HolographicDisplays extends JavaPlugin {
@@ -40,15 +41,6 @@ public class HolographicDisplays extends JavaPlugin {
 	
 	// The command handler, just in case a plugin wants to register more commands.
 	private HologramsCommandHandler commandHandler;
-	
-	// Since 1.8 we use armor stands instead of wither skulls.
-	private static boolean is18orGreater;
-	
-	// Since 1.9 there is a different offset for the nametag.
-	private static boolean is19orGreater;
-	
-	// Since 1.10 there is a difference in the entity metadata packet index for items.
-	private static boolean is110orGreater;
 	
 	// The new version found by the updater, null if there is no new version.
 	private static String newVersion;
@@ -114,34 +106,44 @@ public class HolographicDisplays extends JavaPlugin {
 		// It's simple, we don't need reflection.
 		if ("v1_7_R1".equals(version)) {
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_7_R1.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_7);
+			
 		} else if ("v1_7_R2".equals(version)) {
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_7_R2.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_7);
+			
 		} else if ("v1_7_R3".equals(version)) {
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_7_R3.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_7);
+			
 		} else if ("v1_7_R4".equals(version)) {
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_7_R4.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_7);
+			
 		} else if ("v1_8_R1".equals(version)) {
-			is18orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_8_R1.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_8);
+			
 		} else if ("v1_8_R2".equals(version)) {
-			is18orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_8_R2.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_8);
+			
 		} else if ("v1_8_R3".equals(version)) {
-			is18orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_8_R3.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_8);
+			
 		} else if ("v1_9_R1".equals(version)) {
-			is18orGreater = true;
-			is19orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_9_R1.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_9);
+			
 		} else if ("v1_9_R2".equals(version)) {
-			is18orGreater = true;
-			is19orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_9_R2.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_9);
+			
 		} else if ("v1_10_R1".equals(version)) {
-			is18orGreater = true;
-			is19orGreater = true;
-			is110orGreater = true;
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_10_R1.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_10);
+			
 		} else {
 			printWarnAndDisable(
 				"******************************************************",
@@ -184,10 +186,10 @@ public class HolographicDisplays extends JavaPlugin {
 				if (VersionUtils.classExists("com.comphenix.protocol.wrappers.WrappedDataWatcher$WrappedDataWatcherObject")) {
 					// Only the new version contains this class
 					getLogger().info("Found ProtocolLib, using new version.");
-					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl(is19orGreater, is110orGreater);
+					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl();
 				} else {
 					getLogger().info("Found ProtocolLib, using old version.");
-					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.old.ProtocolLibHookImpl(is18orGreater);
+					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.old.ProtocolLibHookImpl();
 				}
 				
 				if (protocolLibHook.hook(this, nmsManager)) {
@@ -277,18 +279,6 @@ public class HolographicDisplays extends JavaPlugin {
 
 	public HologramsCommandHandler getCommandHandler() {
 		return commandHandler;
-	}
-
-	public static boolean is18orGreater() {
-		return is18orGreater;
-	}
-	
-	public static boolean is19orGreater() {
-		return is19orGreater;
-	}
-	
-	public static boolean is110orGreater() {
-		return is19orGreater;
 	}
 	
 	private static void printWarnAndDisable(String... messages) {

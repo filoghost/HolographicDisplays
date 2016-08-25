@@ -16,7 +16,6 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
-import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.old.WrapperPlayServerSpawnEntity.ObjectTypes;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
@@ -27,6 +26,7 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchableLine;
+import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
@@ -37,21 +37,15 @@ import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
  */
 public class ProtocolLibHookImpl implements ProtocolLibHook {
 
-	private boolean is18orGreater;
-
 	private NMSManager nmsManager;
 
 	private int customNameWatcherIndex;
-	
-	public ProtocolLibHookImpl(boolean is18orGreater) {
-		this.is18orGreater = is18orGreater;
-	}
 
 	@Override
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {
 		this.nmsManager = nmsManager;
 
-		if (is18orGreater) {
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
 			customNameWatcherIndex = 2;
 		} else {
 			customNameWatcherIndex = 10;
@@ -232,7 +226,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						itemPacket.sendPacket(player);
 
 						AbstractPacket vehiclePacket;
-						if (HolographicDisplays.is18orGreater()) {
+						if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
 							// In 1.8 we have armor stands, that are living entities.
 							vehiclePacket = new WrapperPlayServerSpawnEntityLiving(itemLine.getNmsVehicle().getBukkitEntityNMS());
 						} else {
@@ -268,7 +262,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					if (touchSlime.isSpawned()) {
 						AbstractPacket vehiclePacket;
 
-						if (HolographicDisplays.is18orGreater()) {
+						if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
 							// Armor stand vehicle
 							vehiclePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsVehicle().getBukkitEntityNMS());
 						} else {

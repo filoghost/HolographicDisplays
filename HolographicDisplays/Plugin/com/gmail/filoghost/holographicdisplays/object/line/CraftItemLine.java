@@ -13,6 +13,7 @@ import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
+import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 
@@ -61,9 +62,9 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 			
 			Location loc = nmsItem.getBukkitEntityNMS().getLocation();
 			
-			if (HolographicDisplays.is19orGreater()) {
+			if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
 				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
-			} else if (HolographicDisplays.is18orGreater()) {
+			} else if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
 				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
 			} else {
 				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
@@ -84,7 +85,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 			
 			nmsItem = HolographicDisplays.getNMSManager().spawnNMSItem(world, x, y + offset, z, this, itemStack);
 			
-			if (HolographicDisplays.is18orGreater()) {
+			if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
 				nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
 			} else {
 				nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + offset, z, this);
@@ -150,9 +151,9 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	}
 	
 	private double getItemOffset() {
-		if (HolographicDisplays.is19orGreater()) {
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
 			return Offsets.ARMOR_STAND_WITH_ITEM_1_9;
-		} else if (HolographicDisplays.is18orGreater()) {
+		} else if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
 			return Offsets.ARMOR_STAND_WITH_ITEM;
 		} else {
 			return Offsets.WITHER_SKULL_WITH_ITEM;

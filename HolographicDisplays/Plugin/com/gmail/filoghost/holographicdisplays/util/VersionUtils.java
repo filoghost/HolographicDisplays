@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.google.common.collect.ImmutableList;
 
 public class VersionUtils {
@@ -55,7 +54,7 @@ public class VersionUtils {
 	}
 	
 	public static boolean isArmorstand(EntityType type) {
-		if (!HolographicDisplays.is18orGreater()) {
+		if (!MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
 			return false;
 		}
 		
