@@ -10,6 +10,7 @@ import net.minecraft.server.v1_7_R2.MathHelper;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.craftbukkit.v1_7_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -160,4 +161,10 @@ public class NmsManagerImpl implements NMSManager {
 	public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, CraftHologramLine parentPiece) {
 		throw new NotImplementedException("Method can only be used on 1.8 or higher");
 	}
+
+	@Override
+	public boolean isUnloadUnsure(Chunk bukkitChunk) {
+		return bukkitChunk.getWorld().isChunkInUse(bukkitChunk.getX(), bukkitChunk.getZ());
+	}
+	
 }

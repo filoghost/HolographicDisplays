@@ -2,14 +2,10 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_9_R2;
 
 import java.lang.reflect.Method;
 
-import net.minecraft.server.v1_9_R2.Entity;
-import net.minecraft.server.v1_9_R2.EntityTypes;
-import net.minecraft.server.v1_9_R2.MathHelper;
-import net.minecraft.server.v1_9_R2.World;
-import net.minecraft.server.v1_9_R2.WorldServer;
-
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.craftbukkit.v1_9_R2.CraftChunk;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
@@ -28,6 +24,12 @@ import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
+
+import net.minecraft.server.v1_9_R2.Entity;
+import net.minecraft.server.v1_9_R2.EntityTypes;
+import net.minecraft.server.v1_9_R2.MathHelper;
+import net.minecraft.server.v1_9_R2.World;
+import net.minecraft.server.v1_9_R2.WorldServer;
 
 public class NmsManagerImpl implements NMSManager {
 
@@ -142,6 +144,11 @@ public class NmsManagerImpl implements NMSManager {
 	@Override
 	public FancyMessage newFancyMessage(String text) {
 		return new FancyMessageImpl(text);
+	}
+
+	@Override
+	public boolean isUnloadUnsure(Chunk bukkitChunk) {
+		return bukkitChunk.getWorld().isChunkInUse(bukkitChunk.getX(), bukkitChunk.getZ()) || !((CraftChunk) bukkitChunk).getHandle().d; // Field probably representing if the chunk is scheduled to be unloaded in ChunkProviderServer
 	}
 	
 }
