@@ -33,6 +33,4 @@ public interface NMSManager {
 	
 	public FancyMessage newFancyMessage(String text);
 
-	public boolean hasChatHoverFeature();
-
 }

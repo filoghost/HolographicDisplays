@@ -64,7 +64,7 @@ public class HelpCommand extends HologramSubCommand {
 			}
 		}
 		
-		if (CommandValidator.isPlayerSender(sender) && HolographicDisplays.getNMSManager().hasChatHoverFeature()) {
+		if (CommandValidator.isPlayerSender(sender)) {
 			sendHoverTip(sender);
 		}
 	}

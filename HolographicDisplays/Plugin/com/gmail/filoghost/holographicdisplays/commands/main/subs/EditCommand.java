@@ -70,7 +70,7 @@ public class EditCommand extends HologramSubCommand {
 			}
 		}
 		
-		if (CommandValidator.isPlayerSender(sender) && HolographicDisplays.getNMSManager().hasChatHoverFeature()) {
+		if (CommandValidator.isPlayerSender(sender)) {
 			HelpCommand.sendHoverTip(sender);
 		}
 	}

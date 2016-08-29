@@ -157,11 +157,6 @@ public class NmsManagerImpl implements NMSManager {
 	}
 
 	@Override
-	public boolean hasChatHoverFeature() {
-		return true;
-	}
-
-	@Override
 	public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, CraftHologramLine parentPiece) {
 		throw new NotImplementedException("Method can only be used on 1.8 or higher");
 	}

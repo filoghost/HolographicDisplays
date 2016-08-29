@@ -153,9 +153,4 @@ public class NmsManagerImpl implements NMSManager {
 		return new FancyMessageImpl(text);
 	}
 
-	@Override
-	public boolean hasChatHoverFeature() {
-		return true;
-	}
-	
 }
