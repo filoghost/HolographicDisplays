@@ -324,14 +324,13 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 		Validator.isTrue(!deleted, "hologram already deleted");
 		Validator.notNull(world, "world");
 		
+		updateLocation(world, x, y, z);
+		
 		if (this.world != world) {
-			updateLocation(world, x, y, z);
 			despawnEntities();
 			refreshAll();
 			return;
 		}
-		
-		updateLocation(world, x, y, z);
 		
 		double currentY = y;
 		boolean first = true;

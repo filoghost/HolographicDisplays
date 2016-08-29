@@ -113,9 +113,9 @@ public class MainListener implements Listener {
 					
 					try {
 						touchSlime.getTouchablePiece().getTouchHandler().onTouch(event.getPlayer());
-					} catch (Exception ex) {
+					} catch (Throwable t) {
 						Plugin plugin = touchSlime.getParent() instanceof PluginHologram ? ((PluginHologram) touchSlime.getParent()).getOwner() : HolographicDisplays.getInstance();
-						HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", ex);
+						HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", t);
 					}
 				}
 			}
@@ -131,9 +131,9 @@ public class MainListener implements Listener {
 			if (hologram.getVisibilityManager().isVisibleTo(player)) {
 				pickupHandler.onPickup(player);
 			}
-		} catch (Exception ex) {
+		} catch (Throwable t) {
 			Plugin plugin = hologram instanceof PluginHologram ? ((PluginHologram) hologram).getOwner() : HolographicDisplays.getInstance();
-			HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + player.getName() + " picked up an item from a hologram.", ex);
+			HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + player.getName() + " picked up an item from a hologram.", t);
 		}
 	}
 	
