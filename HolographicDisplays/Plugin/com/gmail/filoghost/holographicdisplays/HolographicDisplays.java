@@ -1,6 +1,8 @@
 package com.gmail.filoghost.holographicdisplays;
 
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -181,22 +183,62 @@ public class HolographicDisplays extends JavaPlugin {
 		// ProtocolLib check.
 		try {
 			if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-				ProtocolLibHook protocolLibHook;
 				
-				if (VersionUtils.classExists("com.comphenix.protocol.wrappers.WrappedDataWatcher$WrappedDataWatcherObject")) {
-					// Only the new version contains this class
-					getLogger().info("Found ProtocolLib, using new version.");
-					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl();
-				} else {
-					getLogger().info("Found ProtocolLib, using old version.");
-					protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.old.ProtocolLibHookImpl();
+				String requiredVersionError = null;
+				
+				try {
+					String protocolVersion = Bukkit.getPluginManager().getPlugin("ProtocolLib").getDescription().getVersion();
+					Matcher versionNumbersMatcher = Pattern.compile("([0-9\\.])+").matcher(protocolVersion);
+					
+					if (versionNumbersMatcher.find()) {
+						String versionNumbers = versionNumbersMatcher.group();
+						
+						if (MinecraftVersion.get() == MinecraftVersion.v1_7) {
+							if (!VersionUtils.isVersionBetweenEqual(versionNumbers, "3.6.4", "3.7.0")) {
+								requiredVersionError = "between 3.6.4 and 3.7.0";
+							}
+						} else if (MinecraftVersion.get() == MinecraftVersion.v1_8) {
+							if (!VersionUtils.isVersionBetweenEqual(versionNumbers, "3.6.4", "3.6.5") && !VersionUtils.isVersionGreaterEqual(versionNumbers, "4.1")) {
+								requiredVersionError = "between 3.6.4 and 3.6.5 or higher than 4.1";
+							}
+						} else if (MinecraftVersion.get() == MinecraftVersion.v1_9 || MinecraftVersion.get() == MinecraftVersion.v1_10) {
+							if (!VersionUtils.isVersionGreaterEqual(versionNumbers, "4.0")) {
+								requiredVersionError = "higher than 4.0";
+							}
+						}
+						
+					} else {
+						throw new RuntimeException("could not find version numbers pattern");
+					}
+					
+				} catch (Exception e) {
+					getLogger().warning("Could not check ProtocolLib version (" + e.getClass().getName() + ": " + e.getMessage() + "), enabling support anyway and hoping for the best. If you get errors, please contact the author.");
 				}
 				
-				if (protocolLibHook.hook(this, nmsManager)) {
-					HolographicDisplays.protocolLibHook = protocolLibHook;
-					getLogger().info("Enabled player relative placeholders with ProtocolLib.");
+				if (requiredVersionError == null) {
+					ProtocolLibHook protocolLibHook;
+					
+					if (VersionUtils.classExists("com.comphenix.protocol.wrappers.WrappedDataWatcher$WrappedDataWatcherObject")) {
+						// Only the new version contains this class
+						getLogger().info("Found ProtocolLib, using new version.");
+						protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl();
+					} else {
+						getLogger().info("Found ProtocolLib, using old version.");
+						protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.old.ProtocolLibHookImpl();
+					}
+					
+					if (protocolLibHook.hook(this, nmsManager)) {
+						HolographicDisplays.protocolLibHook = protocolLibHook;
+						getLogger().info("Enabled player relative placeholders with ProtocolLib.");
+					}
+					
+				} else {
+					Bukkit.getConsoleSender().sendMessage(
+							ChatColor.RED + "[Holographic Displays] Detected incompatible version of ProtocolLib, support disabled. " +
+									"For this server version you must be using a ProtocolLib version " + requiredVersionError + ".");
 				}
 			}
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			getLogger().warning("Failed to load ProtocolLib support. Is it updated?");

@@ -1,7 +1,6 @@
 package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -53,7 +52,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {
 		
 		String version = Bukkit.getPluginManager().getPlugin("ProtocolLib").getDescription().getVersion();
-		if (version.matches(Pattern.quote("3.7-SNAPSHOT") + ".+")) {
+		if (version.startsWith("3.7-SNAPSHOT")) {
 			Bukkit.getConsoleSender().sendMessage(
 					ChatColor.RED + "[Holographic Displays] Detected development version of ProtocolLib, support disabled. " +
 					"Related functions (the placeholders {player} {displayname} and the visibility API) will not work.\n" +

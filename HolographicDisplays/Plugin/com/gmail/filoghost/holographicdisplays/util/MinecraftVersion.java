@@ -38,6 +38,10 @@ public class MinecraftVersion {
 		MinecraftVersion.version = version;
 	}
 	
+	public static MinecraftVersion get() {
+		return version;
+	}
+	
 	public static boolean isGreaterEqualThan(MinecraftVersion other) {
 		return MinecraftVersion.version.value >= other.value;
 	}
