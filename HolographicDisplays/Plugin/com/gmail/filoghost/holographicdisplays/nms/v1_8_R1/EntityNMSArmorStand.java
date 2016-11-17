@@ -147,12 +147,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	public String getCustomNameNMS() {
 		return super.getCustomName();
 	}
-	
-	
-	public void callSuperTick() {
-		super.h();
-	}
-	
+
 	@Override
 	public void setLockTick(boolean lock) {
 		lockTick = lock;
