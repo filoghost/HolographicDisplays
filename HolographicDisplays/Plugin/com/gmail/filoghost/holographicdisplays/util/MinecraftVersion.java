@@ -20,7 +20,9 @@ public class MinecraftVersion {
 		v1_9 = new MinecraftVersion(3),
 		
 		// Since 1.10 there is a difference in the entity metadata packet index for items.
-		v1_10 = new MinecraftVersion(4);
+		v1_10 = new MinecraftVersion(4),
+	
+		v1_11 = new MinecraftVersion(5);
 
 	private int value;
 	
