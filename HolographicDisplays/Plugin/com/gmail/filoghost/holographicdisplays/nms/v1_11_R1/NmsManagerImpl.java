@@ -22,8 +22,12 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
+import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
+
 import net.minecraft.server.v1_11_R1.Entity;
+import net.minecraft.server.v1_11_R1.EntityTypes;
 import net.minecraft.server.v1_11_R1.MathHelper;
+import net.minecraft.server.v1_11_R1.MinecraftKey;
 import net.minecraft.server.v1_11_R1.World;
 import net.minecraft.server.v1_11_R1.WorldServer;
 
@@ -35,6 +39,18 @@ public class NmsManagerImpl implements NMSManager {
 	public void setup() throws Exception {
 		validateEntityMethod = World.class.getDeclaredMethod("b", Entity.class);
 		validateEntityMethod.setAccessible(true);
+		
+		registerCustomEntity(EntityNMSSlime.class, "slimeHolographicDisplays", 55);
+	}
+	
+	public void registerCustomEntity(Class<? extends Entity> entityClass, String nameId, int id) throws Exception {
+		if (VersionUtils.isMCPCOrCauldron()) {
+			// MCPC+ / Cauldron entity registration.
+			throw new UnsupportedOperationException("MCPC, Cauldron and similar softwares are not supported");
+		} else {
+			// Normal entity registration.
+			EntityTypes.b.a(id, new MinecraftKey(nameId), entityClass);
+		}
 	}
 	
 	@Override
