@@ -35,7 +35,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	
 	public EntityNMSItem(World world, CraftItemLine piece) {
 		super(world);
-		super.pickupDelay = Integer.MAX_VALUE;
+		super.pickupDelay = 32767; // Lock the item pickup delay, also prevents entities from picking up the item
 		this.parentPiece = piece;
 	}
 	
@@ -68,17 +68,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		if (!lockTick) {
 			super.A_();
 		}
-	}
-	
-	@Override
-	public ItemStack getItemStack() {
-		// Dirty method to check if the icon is being picked up
-		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-		if (stacktrace.length > 2 && stacktrace[2].getClassName().contains("EntityInsentient")) {
-			return null; // Try to pickup this, dear entity ignoring the pickupDelay!
-		}
-		
-		return super.getItemStack();
 	}
 	
 	// Method called when a player is near.
@@ -193,21 +182,21 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		if (newItem == null) {
 			newItem = new ItemStack(Blocks.BEDROCK);
 		}
-		
+
 		if (newItem.getTag() == null) {
 			newItem.setTag(new NBTTagCompound());
 		}
-		NBTTagCompound display = newItem.getTag().getCompound("display");
-		
+		NBTTagCompound display = newItem.getTag().getCompound("display"); // Returns a new NBTTagCompound if not existing
 		if (!newItem.getTag().hasKey("display")) {
-		newItem.getTag().set("display", display);
+			newItem.getTag().set("display", display);
 		}
-		
+
 		NBTTagList tagList = new NBTTagList();
 		tagList.add(new NBTTagString(ItemUtils.ANTISTACK_LORE)); // Antistack lore
-		
 		display.set("Lore", tagList);
-		newItem.setCount(0);
+
+		newItem.setCount(1);
+		
 		setItemStack(newItem);
 	}
 	
@@ -226,7 +215,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		if (pickup) {
 			super.pickupDelay = 0;
 		} else {
-			super.pickupDelay = Integer.MAX_VALUE;
+			super.pickupDelay = 32767;
 		}
 	}
 	
