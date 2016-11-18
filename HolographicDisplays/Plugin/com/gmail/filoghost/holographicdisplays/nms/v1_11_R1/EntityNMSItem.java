@@ -10,7 +10,6 @@ import net.minecraft.server.v1_11_R1.ItemStack;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
 import net.minecraft.server.v1_11_R1.NBTTagList;
 import net.minecraft.server.v1_11_R1.NBTTagString;
-import net.minecraft.server.v1_11_R1.PacketPlayOutMount;
 import net.minecraft.server.v1_11_R1.World;
 
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftEntity;
@@ -24,14 +23,11 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
 	
 	private boolean lockTick;
 	private CraftItemLine parentPiece;
-	
-	private int resendMountPacketTicks;
 	
 	public EntityNMSItem(World world, CraftItemLine piece) {
 		super(world);
@@ -44,26 +40,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		
 		// So it won't get removed.
 		ticksLived = 0;
-		
-		if (resendMountPacketTicks++ > 20) {
-			resendMountPacketTicks = 0;
-			
-			if (bB() != null) {
-				// Send a packet near to "remind" players that the item is riding the armor stand (Spigot bug or client bug)
-				PacketPlayOutMount mountPacket = new PacketPlayOutMount(bB());
-	
-				for (Object obj : super.world.players) {
-					if (obj instanceof EntityPlayer) {
-						EntityPlayer nmsPlayer = (EntityPlayer) obj;
-	
-						double distanceSquared = Utils.square(nmsPlayer.locX - super.locX) + Utils.square(nmsPlayer.locZ - super.locZ);
-						if (distanceSquared < 1024 && nmsPlayer.playerConnection != null) {
-							nmsPlayer.playerConnection.sendPacket(mountPacket);
-						}
-					}
-				}
-			}
-		}
 		
 		if (!lockTick) {
 			super.A_();
