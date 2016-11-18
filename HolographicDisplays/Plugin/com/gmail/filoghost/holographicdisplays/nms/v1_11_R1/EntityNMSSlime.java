@@ -7,7 +7,6 @@ import net.minecraft.server.v1_11_R1.DamageSource;
 import net.minecraft.server.v1_11_R1.Entity;
 import net.minecraft.server.v1_11_R1.EntitySlime;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
-import net.minecraft.server.v1_11_R1.PacketPlayOutMount;
 import net.minecraft.server.v1_11_R1.SoundEffect;
 import net.minecraft.server.v1_11_R1.World;
 
@@ -21,14 +20,11 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 
 	private boolean lockTick;
 	private CraftTouchSlimeLine parentPiece;
-	
-	private int resendMountPacketTicks;
 	
 	public EntityNMSSlime(World world, CraftTouchSlimeLine parentPiece) {
 		super(world);
@@ -55,26 +51,6 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 		
 		// So it won't get removed.
 		ticksLived = 0;
-		
-		if (resendMountPacketTicks++ > 20) {
-			resendMountPacketTicks = 0;
-
-			if (bB() != null) {
-				// Send a packet near to "remind" players that the slime is riding the armor stand (Spigot bug or client bug)
-				PacketPlayOutMount mountPacket = new PacketPlayOutMount(bB());
-	
-				for (Object obj : super.world.players) {
-					if (obj instanceof EntityPlayer) {
-						EntityPlayer nmsPlayer = (EntityPlayer) obj;
-	
-						double distanceSquared = Utils.square(nmsPlayer.locX - super.locX) + Utils.square(nmsPlayer.locZ - super.locZ);
-						if (distanceSquared < 1024 && nmsPlayer.playerConnection != null) {
-							nmsPlayer.playerConnection.sendPacket(mountPacket);
-						}
-					}
-				}
-			}
-		}
 		
 		if (!lockTick) {
 			super.A_();
