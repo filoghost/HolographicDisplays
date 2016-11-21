@@ -43,9 +43,18 @@ public class PingResponse
     	Object descriptionObject = json.get("description");
     	
     	if (descriptionObject != null) {
-    		motd = descriptionObject.toString();
+    		if (descriptionObject instanceof JSONObject) {
+    			Object text = ((JSONObject) descriptionObject).get("text");
+    			if (text != null) {
+    				motd = text.toString();
+    			} else {
+    				motd = "Invalid ping response (text not found)";
+    			}
+    		} else {
+    			motd = descriptionObject.toString();
+    		}
     	} else {
-    		motd = "Invalid ping response";
+    		motd = "Invalid ping response (description not found)";
     		DebugHandler.logToConsole("Received invalid Json response from IP \"" + address.toString() + "\": " + jsonString);
     	}
         
