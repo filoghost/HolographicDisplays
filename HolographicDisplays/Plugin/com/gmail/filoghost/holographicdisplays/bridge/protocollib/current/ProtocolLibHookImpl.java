@@ -24,6 +24,7 @@ import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.WrapperPlayServerSpawnEntity.ObjectTypes;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
@@ -44,7 +45,12 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	private NMSManager nmsManager;
 	
-	private Serializer itemSerializer, intSerializer, byteSerializer;
+	private Serializer
+		itemSerializer,
+		intSerializer,
+		byteSerializer,
+		stringSerializer,
+		booleanSerializer;
 	
 	private int itemstackMetadataWatcherIndex;
 	
@@ -77,6 +83,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
 			intSerializer = Registry.get(Integer.class);
 			byteSerializer = Registry.get(Byte.class);
+			stringSerializer = Registry.get(String.class);
+			booleanSerializer = Registry.get(Boolean.class);
 		}
 
 		AdapterParameteters params = PacketAdapter
@@ -241,9 +249,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					CraftTextLine textLine = (CraftTextLine) line;
 					
 					if (textLine.isSpawned()) {
-						
-						AbstractPacket nameablePacket = new WrapperPlayServerSpawnEntityLiving(textLine.getNmsNameble().getBukkitEntityNMS());
-						nameablePacket.sendPacket(player);
+						sendSpawnArmorStandPacket(player, (NMSArmorStand) textLine.getNmsNameble());
 					}
 					
 				} else if (line instanceof CraftItemLine) {
@@ -253,17 +259,15 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsItem().getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
 						itemPacket.sendPacket(player);
 						
-						AbstractPacket vehiclePacket = new WrapperPlayServerSpawnEntityLiving(itemLine.getNmsVehicle().getBukkitEntityNMS());
-						vehiclePacket.sendPacket(player);
-						
-						AbstractPacket attachPacket = getAttachPacket(itemLine.getNmsVehicle().getIdNMS(), itemLine.getNmsItem().getIdNMS());
-						attachPacket.sendPacket(player);
+						sendSpawnArmorStandPacket(player, (NMSArmorStand) itemLine.getNmsVehicle());
+						sendVehicleAttachPacket(player, itemLine.getNmsVehicle().getIdNMS(), itemLine.getNmsItem().getIdNMS());
 						
 						WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
 						WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 						
 						if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
-							dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), Optional.of(itemLine.getNmsItem().getRawItemStack()));
+							Object itemStackObject = MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_11) ? itemLine.getNmsItem().getRawItemStack() : Optional.of(itemLine.getNmsItem().getRawItemStack());
+							dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), itemStackObject);
 							dataWatcher.setObject(new WrappedDataWatcherObject(1, intSerializer), 300);
 							dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0);
 						} else {
@@ -286,14 +290,12 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					CraftTouchSlimeLine touchSlime = touchableLine.getTouchSlime();
 					
 					if (touchSlime.isSpawned()) {
-						AbstractPacket vehiclePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsVehicle().getBukkitEntityNMS());
-						vehiclePacket.sendPacket(player);
-							
+						sendSpawnArmorStandPacket(player, (NMSArmorStand) touchSlime.getNmsVehicle());
+
 						AbstractPacket slimePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsSlime().getBukkitEntityNMS());
 						slimePacket.sendPacket(player);
 						
-						AbstractPacket attachPacket = getAttachPacket(touchSlime.getNmsVehicle().getIdNMS(), touchSlime.getNmsSlime().getIdNMS());
-						attachPacket.sendPacket(player);
+						sendVehicleAttachPacket(player, touchSlime.getNmsVehicle().getIdNMS(), touchSlime.getNmsSlime().getIdNMS());
 					}
 				}
 			}
@@ -301,17 +303,47 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	}
 	
 	
-	private AbstractPacket getAttachPacket(int vehicleId, int passengerId) {
+	private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_11)) {
+			WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), WrapperPlayServerSpawnEntity.ObjectTypes.ARMOR_STAND, 1);
+			spawnPacket.sendPacket(receiver);
+			
+			WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
+			WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
+			
+			dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0x20); // Entity status
+
+			String customName = armorStand.getCustomNameNMS();
+			if (customName != null && !customName.isEmpty()) {
+				dataWatcher.setObject(new WrappedDataWatcherObject(2, stringSerializer), customName); // Custom name
+				dataWatcher.setObject(new WrappedDataWatcherObject(3, booleanSerializer), true); // Custom name visible
+			}
+
+			dataWatcher.setObject(new WrappedDataWatcherObject(5, booleanSerializer), true); // No gravity
+			dataWatcher.setObject(new WrappedDataWatcherObject(11, byteSerializer), (byte) (0x01 | 0x08 | 0x10)); // Armor stand data: small, no base plate, marker
+			
+			dataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
+			dataPacket.setEntityId(armorStand.getIdNMS());
+			dataPacket.sendPacket(receiver);
+			
+		} else {
+			WrapperPlayServerSpawnEntityLiving spawnPacket = new WrapperPlayServerSpawnEntityLiving(armorStand.getBukkitEntityNMS());
+			spawnPacket.sendPacket(receiver);
+		}
+	}
+	
+	
+	private void sendVehicleAttachPacket(Player receiver, int vehicleId, int passengerId) {
 		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
 			WrapperPlayServerMount attachPacket = new WrapperPlayServerMount();
 			attachPacket.setVehicleId(vehicleId);
 			attachPacket.setPassengers(new int[] {passengerId});
-			return attachPacket;
+			attachPacket.sendPacket(receiver);
 		} else {
 			WrapperPlayServerAttachEntity attachPacket = new WrapperPlayServerAttachEntity();
 			attachPacket.setVehicleId(vehicleId);
 			attachPacket.setEntityId(passengerId);
-			return attachPacket;
+			attachPacket.sendPacket(receiver);
 		}
 	}
 
