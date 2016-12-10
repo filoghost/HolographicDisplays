@@ -4,13 +4,11 @@ import net.minecraft.server.v1_11_R1.AxisAlignedBB;
 import net.minecraft.server.v1_11_R1.DamageSource;
 import net.minecraft.server.v1_11_R1.EntityArmorStand;
 import net.minecraft.server.v1_11_R1.EntityHuman;
-import net.minecraft.server.v1_11_R1.EntityPlayer;
 import net.minecraft.server.v1_11_R1.EnumHand;
 import net.minecraft.server.v1_11_R1.EnumInteractionResult;
 import net.minecraft.server.v1_11_R1.EnumItemSlot;
 import net.minecraft.server.v1_11_R1.ItemStack;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
-import net.minecraft.server.v1_11_R1.PacketPlayOutEntityTeleport;
 import net.minecraft.server.v1_11_R1.SoundEffect;
 import net.minecraft.server.v1_11_R1.Vec3D;
 import net.minecraft.server.v1_11_R1.World;
@@ -19,7 +17,6 @@ import org.bukkit.craftbukkit.v1_11_R1.entity.CraftEntity;
 
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
 
@@ -132,18 +129,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
 		super.a(boundingBox);
 	}
-	
-	@Override
-	public int getId() {
-		
-		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-		if (elements.length > 2 && elements[2] != null && elements[2].getFileName().equals("EntityTrackerEntry.java") && 158 < elements[2].getLineNumber() && elements[2].getLineNumber() < 168) {
-			// Then this method is being called when creating a new movement packet, we return a fake ID!
-			return -1;
-		}
-		
-		return super.getId();
-	}
 
 	@Override
 	public void A_() {
@@ -197,20 +182,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	@Override
 	public void setLocationNMS(double x, double y, double z) {
 		super.setPosition(x, y, z);
-		
-		// Send a packet near to update the position.
-		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
-
-		for (Object obj : super.world.players) {
-			if (obj instanceof EntityPlayer) {
-				EntityPlayer nmsPlayer = (EntityPlayer) obj;
-
-				double distanceSquared = Utils.square(nmsPlayer.locX - super.locX) + Utils.square(nmsPlayer.locZ - super.locZ);
-				if (distanceSquared < 8192 && nmsPlayer.playerConnection != null) {
-					nmsPlayer.playerConnection.sendPacket(teleportPacket);
-				}
-			}
-		}
 	}
 
 	@Override
