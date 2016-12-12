@@ -135,15 +135,15 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						}
 
 					} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
-						
+
 						WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
-						int objectId = spawnEntityPacket.getType();
-						if (objectId != ObjectTypes.ITEM_STACK && objectId != ObjectTypes.ARMOR_STAND) {
+						Entity entity = spawnEntityPacket.getEntity(event);
+						
+						if (entity == null) {
 							return;
 						}
 						
-						Entity entity = spawnEntityPacket.getEntity(event);
-						if (entity == null) {
+						if (!isHologramType(entity.getType())) {
 							return;
 						}
 						
@@ -159,7 +159,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						}
 					
 					} else if (packet.getType() == PacketType.Play.Server.ENTITY_METADATA) {
-						
+
 						WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
 						Entity entity = entityMetadataPacket.getEntity(event);
 						
