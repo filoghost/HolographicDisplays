@@ -1,9 +1,13 @@
 package com.gmail.filoghost.holographicdisplays.api;
 
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
+import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
@@ -56,6 +60,12 @@ public interface Hologram {
 	 */
 	public ItemLine insertItemLine(int index, ItemStack itemStack);
 	
+	/**
+	 * Gets a list of lines
+	 * 
+	 * @return immutable list of lines
+	 */
+	public List<HologramLine> getHologramLines();
 	
 	/**
 	 * Finds the element at a given index in the lines.
@@ -104,6 +114,13 @@ public interface Hologram {
 	 */
 	public void teleport(Location location);
 	
+	/** 
+	 * Sets TouchHandler for all touchable lines of this hologram
+	 * 
+	 * @param handler
+	 */
+	
+	public void setLinesTouchHandler(TouchHandler handler); 
 	
 	/**
 	 * Teleports a hologram to the given location.
