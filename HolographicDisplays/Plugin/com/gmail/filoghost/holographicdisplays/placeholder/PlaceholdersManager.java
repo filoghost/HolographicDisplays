@@ -7,7 +7,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.gmail.filoghost.holographicdisplays.api.placeholder.PlayerRelativePlaceholderReplacer;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
@@ -37,8 +39,29 @@ public class PlaceholdersManager {
 	private static String extractArgumentFromPlaceholder(Matcher matcher) {
 		return matcher.group(2).trim();
 	}
-	
-	
+
+	public static boolean hasPlayerRelativeReplacements(String line) {
+		for (String placeholder : PlaceholdersRegister.getPlayerRelativeReplacers().keySet()) {
+			if (line.contains(placeholder)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static String processPlayerRelativeReplacements(Player player, String line) {
+		String updatedLine = line;
+
+		for (Entry<String, PlayerRelativePlaceholderReplacer> replacer : PlaceholdersRegister.getPlayerRelativeReplacers().entrySet()) {
+			if (line.contains(replacer.getKey())) {
+				updatedLine = updatedLine.replaceAll(replacer.getKey(), replacer.getValue().update(player));
+			}
+		}
+
+		return updatedLine;
+	}
+
 	public static void load(Plugin plugin) {
 		
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {

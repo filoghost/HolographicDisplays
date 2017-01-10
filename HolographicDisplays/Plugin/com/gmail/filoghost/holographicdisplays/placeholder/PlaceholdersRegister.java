@@ -2,10 +2,13 @@ package com.gmail.filoghost.holographicdisplays.placeholder;
 
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
+import com.gmail.filoghost.holographicdisplays.api.placeholder.PlayerRelativePlaceholderReplacer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
@@ -17,7 +20,10 @@ import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 public class PlaceholdersRegister {
 	
 	private static final Set<Placeholder> placeholders = Utils.newSet();
-	
+
+	private static final Map<String, PlayerRelativePlaceholderReplacer> playerRelativeReplacers = Utils.newMap();
+	private static boolean isUpdateScheduled = false, hasUndergoneFirstUpdate = false;
+
 	// Register the default placeholders statically.
 	static {
 		
@@ -61,12 +67,50 @@ public class PlaceholdersRegister {
 				ChatColor.AQUA,
 				ChatColor.LIGHT_PURPLE
 		))));
+
+		register(new Placeholder(HolographicDisplays.getInstance(), "{player}", 60.0, new PlayerRelativePlaceholderReplacer() {
+
+			@Override
+			public String update(Player player) {
+				return player.getName();
+			}
+		}));
+
+		register(new Placeholder(HolographicDisplays.getInstance(), "{displayname}", 60.0, new PlayerRelativePlaceholderReplacer() {
+
+			@Override
+			public String update(Player player) {
+				return player.getDisplayName();
+			}
+		}));
+
+		register(new Placeholder(HolographicDisplays.getInstance(), "{gamemode}", 60.0, new PlayerRelativePlaceholderReplacer() {
+			@Override
+			public String update(Player player) {
+				return player.getGameMode().toString();
+			}
+		}));
 	}
-	
+
+	public static void updatePlayerRelativeReplacers() {
+		playerRelativeReplacers.clear();
+
+		for (Placeholder placeholder : placeholders) {
+			if (placeholder.isPlayerRelative()) {
+				playerRelativeReplacers.put(placeholder.getTextPlaceholder(), placeholder.getPlayerRelativeReplacer());
+			}
+		}
+
+		hasUndergoneFirstUpdate = true;
+	}
 	
 	public static boolean register(Placeholder placeholder) {
 		if (placeholders.contains(placeholder)) {
 			return false;
+		}
+
+		if (placeholder.isPlayerRelative()) {
+			schedulePlayerRelativePlaceholdersUpdate();
 		}
 		
 		placeholders.add(placeholder);
@@ -100,6 +144,10 @@ public class PlaceholdersRegister {
 						data.getPlaceholders().remove(placeholder);
 					}
 				}
+
+				if (placeholder.isPlayerRelative()) {
+					schedulePlayerRelativePlaceholdersUpdate();
+				}
 				
 				return true;
 			}
@@ -112,4 +160,21 @@ public class PlaceholdersRegister {
 		return placeholders;
 	}
 
+	protected static Map<String, PlayerRelativePlaceholderReplacer> getPlayerRelativeReplacers() {
+		return playerRelativeReplacers;
+	}
+
+	private static void schedulePlayerRelativePlaceholdersUpdate() {
+		if (!isUpdateScheduled && hasUndergoneFirstUpdate) {
+			isUpdateScheduled = true;
+
+			Bukkit.getScheduler().scheduleSyncDelayedTask(HolographicDisplays.getInstance(), new Runnable() {
+
+				@Override
+				public void run() {
+					updatePlayerRelativeReplacers();
+				}
+			});
+		}
+	}
 }

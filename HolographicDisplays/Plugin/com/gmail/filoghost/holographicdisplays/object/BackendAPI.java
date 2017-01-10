@@ -2,6 +2,7 @@ package com.gmail.filoghost.holographicdisplays.object;
 
 import java.util.Collection;
 
+import com.gmail.filoghost.holographicdisplays.api.placeholder.PlayerRelativePlaceholderReplacer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -10,8 +11,6 @@ import org.bukkit.plugin.Plugin;
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
-import com.gmail.filoghost.holographicdisplays.object.PluginHologram;
-import com.gmail.filoghost.holographicdisplays.object.PluginHologramManager;
 import com.gmail.filoghost.holographicdisplays.placeholder.Placeholder;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersRegister;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
@@ -35,6 +34,14 @@ public class BackendAPI {
 		Validator.isTrue(refreshRate >= 0, "refreshRate should be positive");
 		Validator.notNull(replacer, "replacer");
 		
+		return PlaceholdersRegister.register(new Placeholder(plugin, textPlaceholder, refreshRate, replacer));
+	}
+
+	public static boolean registerPerPlayerPlaceholder(Plugin plugin, String textPlaceholder, double refreshRate, PlayerRelativePlaceholderReplacer replacer) {
+		Validator.notNull(textPlaceholder, "textPlaceholder");
+		Validator.isTrue(refreshRate >= 0, "refreshRate should be positive");
+		Validator.notNull(replacer, "replacer");
+
 		return PlaceholdersRegister.register(new Placeholder(plugin, textPlaceholder, refreshRate, replacer));
 	}
 

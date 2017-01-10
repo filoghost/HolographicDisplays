@@ -2,6 +2,7 @@ package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 
 import java.util.List;
 
+import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -130,10 +131,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						}
 						
 						String customName = (String) customNameWatchableObject.getValue();
-						if (customName.contains("{player}") || customName.contains("{displayname}")) {
-							customNameWatchableObject.setValue(customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
-						}
-
+						customNameWatchableObject.setValue(PlaceholdersManager.processPlayerRelativeReplacements(player, customName));
 					} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
 
 						WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
@@ -194,8 +192,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 								}
 								
 								String customName = (String) customNameObject;
-								if (customName.contains("{player}") || customName.contains("{displayname}")) {
-									String replacement = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
+								if (PlaceholdersManager.hasPlayerRelativeReplacements(customName)) {
+									String replacement = PlaceholdersManager.processPlayerRelativeReplacements(player, customName);
 
 									WrappedWatchableObject newWatchableObject;
 									if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {

@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersRegister;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -303,7 +304,16 @@ public class HolographicDisplays extends JavaPlugin {
 			MetricsLite metrics = new MetricsLite(this);
 			metrics.start();
 		} catch (Exception ignore) { }
-		
+
+		// Refresh the player relative replacements when the server is done loading the rest of the plugins
+		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+
+			@Override
+			public void run() {
+				PlaceholdersRegister.updatePlayerRelativeReplacers();
+			}
+		});
+
 		// The entities are loaded when the server is ready.
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new StartupLoadHologramsTask(), 10L);
 	}

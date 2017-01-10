@@ -3,6 +3,7 @@ package com.gmail.filoghost.holographicdisplays.bridge.protocollib.old;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
+import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -86,10 +87,10 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 
-						if (customName.contains("{player}") || customName.contains("{displayname}")) {
+						if (PlaceholdersManager.hasPlayerRelativeReplacements(customName)) {
 
 							WrappedDataWatcher dataWatcherClone = dataWatcher.deepClone();
-							dataWatcherClone.setObject(customNameWatcherIndex, customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
+							dataWatcherClone.setObject(customNameWatcherIndex, PlaceholdersManager.processPlayerRelativeReplacements(player, customName));
 							spawnEntityPacket.setMetadata(dataWatcherClone);
 							event.setPacket(spawnEntityPacket.getHandle());
 
@@ -158,12 +159,12 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 
 								String customName = (String) customNameObject;
 
-								if (customName.contains("{player}") || customName.contains("{displayname}")) {
+								if (PlaceholdersManager.hasPlayerRelativeReplacements(customName)) {
 
 									entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet.deepClone());
 									List<WrappedWatchableObject> clonedList = entityMetadataPacket.getEntityMetadata();
 									WrappedWatchableObject clonedElement = clonedList.get(i);
-									clonedElement.setValue(customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
+									clonedElement.setValue(PlaceholdersManager.processPlayerRelativeReplacements(player, customName));
 									entityMetadataPacket.setEntityMetadata(clonedList);
 									event.setPacket(entityMetadataPacket.getHandle());
 									return;

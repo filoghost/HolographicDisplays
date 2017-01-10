@@ -1,5 +1,6 @@
 package com.gmail.filoghost.holographicdisplays.placeholder;
 
+import com.gmail.filoghost.holographicdisplays.api.placeholder.PlayerRelativePlaceholderReplacer;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
@@ -19,12 +20,24 @@ public class Placeholder {
 	private String currentReplacement;
 	
 	private PlaceholderReplacer replacer;
+
+	private boolean isPlayerRelative = false;
+	private PlayerRelativePlaceholderReplacer playerRelativePlaceholderReplacer;
 	
 	public Placeholder(Plugin owner, String textPlaceholder, double refreshRate, PlaceholderReplacer replacer) {
 		this.owner = owner;
 		this.textPlaceholder = textPlaceholder;
 		this.tenthsToRefresh = refreshRate <= 0.1 ? 1 : (int) (refreshRate * 10.0);
 		this.replacer = replacer;
+		this.currentReplacement = "";
+	}
+
+	public Placeholder(Plugin owner, String textPlaceholder, double refreshRate, PlayerRelativePlaceholderReplacer replacer) {
+		this.owner = owner;
+		this.textPlaceholder = textPlaceholder;
+		this.tenthsToRefresh = refreshRate <= 0.1 ? 1 : (int) (refreshRate * 10.0);
+		this.isPlayerRelative = true;
+		this.playerRelativePlaceholderReplacer = replacer;
 		this.currentReplacement = "";
 	}
 	
@@ -61,10 +74,23 @@ public class Placeholder {
 	}
 
 	public void update() {
-		setCurrentReplacement(replacer.update());
+		if (!isPlayerRelative) {
+			replacer.update();
+		}
 	}
 	
-	
+	public boolean isPlayerRelative() {
+		return isPlayerRelative;
+	}
+
+	public PlayerRelativePlaceholderReplacer getPlayerRelativeReplacer() {
+		return playerRelativePlaceholderReplacer;
+	}
+
+	public void setPlayerRelativePlaceholderReplacer(PlayerRelativePlaceholderReplacer replacer) {
+		this.playerRelativePlaceholderReplacer = replacer;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
