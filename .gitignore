@@ -1,0 +1,23 @@
+# Eclipse
+/.classpath
+/.project
+/.settings
+
+# Netbeans
+/nbproject
+
+# IntelliJ
+/*.iml
+/.idea
+
+# Mac filesystem
+.DS_Store
+.DS_Storetarget
+
+# Misc
+/bin
+/dist
+/manifest.mf
+/.fatjar
+/build
+/target
