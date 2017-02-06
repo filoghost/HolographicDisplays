@@ -21,13 +21,15 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 import net.minecraft.server.v1_11_R1.Entity;
 import net.minecraft.server.v1_11_R1.EntityTypes;
 import net.minecraft.server.v1_11_R1.MathHelper;
-import net.minecraft.server.v1_11_R1.MinecraftKey;
+import net.minecraft.server.v1_11_R1.RegistryID;
+import net.minecraft.server.v1_11_R1.RegistryMaterials;
 import net.minecraft.server.v1_11_R1.World;
 import net.minecraft.server.v1_11_R1.WorldServer;
 
@@ -40,19 +42,30 @@ public class NmsManagerImpl implements NMSManager {
 		validateEntityMethod = World.class.getDeclaredMethod("b", Entity.class);
 		validateEntityMethod.setAccessible(true);
 		
-		registerCustomEntity(EntityNMSSlime.class, "slimeHolographicDisplays", 55);
+		registerCustomEntity(EntityNMSSlime.class, 55);
 	}
 	
-	public void registerCustomEntity(Class<? extends Entity> entityClass, String nameId, int id) throws Exception {
+	@SuppressWarnings("unchecked")
+	public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
 		if (VersionUtils.isMCPCOrCauldron()) {
 			// MCPC+ / Cauldron entity registration.
 			throw new UnsupportedOperationException("MCPC, Cauldron and similar softwares are not supported");
 		} else {
-			// Normal entity registration.
-			EntityTypes.b.a(id, new MinecraftKey(nameId), entityClass);
+			// Use reflection to get the RegistryID of entities.
+			RegistryID<Class<? extends Entity>> registryID = (RegistryID<Class<? extends Entity>>) ReflectionUtils.getPrivateField(RegistryMaterials.class, EntityTypes.b, "a");
+			Object[] idToClassMap = (Object[]) ReflectionUtils.getPrivateField(RegistryID.class, registryID, "d");
+			
+			// Save the the ID -> entity class mapping before the registration.
+			Object oldValue = idToClassMap[id];
+
+			// Register the entity class.
+			registryID.a(entityClass, id);
+
+			// Restore the ID -> entity class mapping.
+			idToClassMap[id] = oldValue;
 		}
 	}
-	
+
 	@Override
 	public NMSHorse spawnNMSHorse(org.bukkit.World world, double x, double y, double z, CraftHologramLine parentPiece) {
 		throw new NotImplementedException("Method can only be used on 1.7 or lower");
