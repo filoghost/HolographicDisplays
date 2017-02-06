@@ -3,6 +3,7 @@ package com.gmail.filoghost.holographicdisplays.listener;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -59,7 +60,27 @@ public class MainListener implements Listener {
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public void onChunkLoad(ChunkLoadEvent event) {
-		Chunk chunk = event.getChunk();
+		final Chunk chunk = event.getChunk();
+		
+		// Other plugins could call this event wrongly, check if the chunk is actually loaded.
+		if (chunk.isLoaded()) {
+			
+			// In case another plugin loads the chunk asynchronously always make sure to load the holograms on the main thread.
+			if (Bukkit.isPrimaryThread()) {
+				processChunkLoad(chunk);
+			} else {
+				Bukkit.getScheduler().runTask(HolographicDisplays.getInstance(), new Runnable() {
+					@Override
+					public void run() {
+						processChunkLoad(chunk);
+					}
+				});
+			}
+		}
+	}
+	
+	// This method should be always called synchronously.
+	public void processChunkLoad(Chunk chunk) {
 		NamedHologramManager.onChunkLoad(chunk);
 		PluginHologramManager.onChunkLoad(chunk);
 	}
