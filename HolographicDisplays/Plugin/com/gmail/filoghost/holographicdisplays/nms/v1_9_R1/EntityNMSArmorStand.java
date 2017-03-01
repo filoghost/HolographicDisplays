@@ -131,9 +131,8 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	
 	@Override
 	public int getId() {
-		
-		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-		if (elements.length > 2 && elements[2] != null && elements[2].getFileName().equals("EntityTrackerEntry.java") && elements[2].getLineNumber() > 142 && elements[2].getLineNumber() < 152) {
+		StackTraceElement element = ReflectionUtils.getStackTraceElement(2);
+		if (element.getFileName().equals("EntityTrackerEntry.java") && element.getLineNumber() > 142 && element.getLineNumber() < 152) {
 			// Then this method is being called when creating a new packet, we return a fake ID!
 			return -1;
 		}

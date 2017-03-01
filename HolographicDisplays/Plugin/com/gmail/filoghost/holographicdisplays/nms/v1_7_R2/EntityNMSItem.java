@@ -52,8 +52,8 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	@Override
 	public ItemStack getItemStack() {
 		// Dirty method to check if the icon is being picked up
-		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-		if (stacktrace.length > 2 && stacktrace[2].getClassName().contains("EntityInsentient")) {
+		StackTraceElement element = ReflectionUtils.getStackTraceElement(2);
+		if (element.getClassName().contains("EntityInsentient")) {
 			return null; // Try to pickup this, dear entity ignoring the pickupDelay!
 		}
 		

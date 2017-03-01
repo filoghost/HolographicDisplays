@@ -11,6 +11,7 @@ import org.bukkit.craftbukkit.v1_7_R2.entity.CraftEntity;
 
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSWitherSkull;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
+import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWitherSkull {
@@ -72,9 +73,8 @@ public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWither
 	
 	@Override
 	public int getId() {
-		
-		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-		if (elements.length > 2 && elements[2] != null && elements[2].getFileName().equals("EntityTrackerEntry.java") && elements[2].getLineNumber() > 134 && elements[2].getLineNumber() < 144) {
+		StackTraceElement element = ReflectionUtils.getStackTraceElement(2);
+		if (element.getFileName().equals("EntityTrackerEntry.java") && element.getLineNumber() > 134 && element.getLineNumber() < 144) {
 			// Then this method is being called when creating a new packet, we return a fake ID!
 			return -1;
 		}

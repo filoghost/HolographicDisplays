@@ -4,6 +4,7 @@ import org.bukkit.craftbukkit.v1_11_R1.entity.CraftEntity;
 
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
+import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 import net.minecraft.server.v1_11_R1.AxisAlignedBB;
@@ -135,9 +136,8 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	
 	@Override
 	public int getId() {
-		
-		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-		if (elements.length > 2 && elements[2] != null && elements[2].getFileName().equals("EntityTrackerEntry.java") && 158 < elements[2].getLineNumber() && elements[2].getLineNumber() < 168) {
+		StackTraceElement element = ReflectionUtils.getStackTraceElement(2);
+		if (element.getFileName().equals("EntityTrackerEntry.java") && 158 < element.getLineNumber() && element.getLineNumber() < 168) {
 			// Then this method is being called when creating a new movement packet, we return a fake ID!
 			return -1;
 		}
