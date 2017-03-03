@@ -57,14 +57,11 @@ public final class SimpleUpdater {
 					JSONArray filesArray = (JSONArray) readJson("https://api.curseforge.com/servermods/files?projectIds=" + projectId);
 
 					if (filesArray.size() == 0) {
-						// The array cannot be empty, there must be at least one file. The project ID is not valid.
-						plugin.getLogger().warning("The author of this plugin has misconfigured the Updater system.");
-						plugin.getLogger().warning("The project ID (" + projectId + ") provided for updating is invalid.");
-						plugin.getLogger().warning("Please notify the author of this error.");
+						// The array cannot be empty, there must be at least one file. The project ID is not valid or curse returned a wrong response.
 						return;
 					}
 					
-					String updateName = (String) ((JSONObject) filesArray.get(filesArray.size() - 1)).get("name");			
+					String updateName = (String) ((JSONObject) filesArray.get(filesArray.size() - 1)).get("name");
 					final String newVersion = extractVersion(updateName);
 					
 					if (newVersion == null) {
@@ -92,7 +89,7 @@ public final class SimpleUpdater {
 					plugin.getLogger().warning("Unable to check for updates: unhandled exception.");
 				}
 
-			}			
+			}
 		});
 		updaterThread.start();
 	}
@@ -129,7 +126,7 @@ public final class SimpleUpdater {
 			throw new IllegalArgumentException("fetched version's format is incorrect");
 		}
 		
-		// Remove all the "v" from the versions, replace multiple full stops with a single full stop, and split them.		
+		// Remove all the "v" from the versions, replace multiple full stops with a single full stop, and split them.
 		String[] pluginVersionSplit = pluginVersion.replace("v", "").replaceAll("[\\.]{2,}", ".").split("\\.");
 		String[] remoteVersionSplit = remoteVersion.replace("v", "").replaceAll("[\\.]{2,}", ".").split("\\.");
 		
