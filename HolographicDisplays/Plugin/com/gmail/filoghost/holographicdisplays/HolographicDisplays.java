@@ -205,7 +205,7 @@ public class HolographicDisplays extends JavaPlugin {
 							if (!VersionUtils.isVersionBetweenEqual(versionNumbers, "3.6.4", "3.6.5") && !VersionUtils.isVersionGreaterEqual(versionNumbers, "4.1")) {
 								requiredVersionError = "between 3.6.4 and 3.6.5 or higher than 4.1";
 							}
-						} else if (MinecraftVersion.get() == MinecraftVersion.v1_9 || MinecraftVersion.get() == MinecraftVersion.v1_10) {
+						} else {
 							if (!VersionUtils.isVersionGreaterEqual(versionNumbers, "4.0")) {
 								requiredVersionError = "higher than 4.0";
 							}
