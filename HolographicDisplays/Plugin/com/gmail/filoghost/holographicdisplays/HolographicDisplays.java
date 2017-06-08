@@ -99,6 +99,8 @@ public class HolographicDisplays extends JavaPlugin {
 				version = "v1_8_R1";
 			} else if ("1.8.3".equals(version)) {
 				version = "v1_8_R2";
+			} else if ("1.8.8".equals(version)) { //TODO Not shure about when v1_8R3 was introduced, not time for testing today
+				version = "v1_8_R3";
 			} else {
 				// Cannot definitely get the version. This will cause the plugin to disable itself.
 				version = null;
