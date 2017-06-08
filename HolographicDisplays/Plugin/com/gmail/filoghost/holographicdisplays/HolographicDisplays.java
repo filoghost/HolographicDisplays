@@ -150,11 +150,15 @@ public class HolographicDisplays extends JavaPlugin {
 			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_11_R1.NmsManagerImpl();
 			MinecraftVersion.set(MinecraftVersion.v1_11);
 			
+		} else if ("v1_12_R1".equals(version)) {
+			nmsManager = new com.gmail.filoghost.holographicdisplays.nms.v1_12_R1.NmsManagerImpl();
+			MinecraftVersion.set(MinecraftVersion.v1_12);
+			
 		} else {
 			printWarnAndDisable(
 				"******************************************************",
 				"     This version of HolographicDisplays only",
-				"     works on server versions from 1.7 to 1.11.",
+				"     works on server versions from 1.7 to 1.12.",
 				"     The plugin will be disabled.",
 				"******************************************************"
 			);
