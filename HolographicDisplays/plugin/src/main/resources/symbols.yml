@@ -1,0 +1,14 @@
+#
+# This is the configuration file for static placeholders.
+# Dynamic placeholders are {online}, {max_players}, ...
+# Static placeholders are symbols.
+#
+# List of unicode symbols: http://www.fileformat.info/info/unicode/index.htm
+#
+[x]: \u2588
+[/]: \u258C
+[.]: \u2591
+[..]: \u2592
+[...]: \u2593
+[p]: \u2022
+[|]: \u23B9

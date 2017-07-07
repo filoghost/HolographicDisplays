@@ -1,0 +1,24 @@
+<<<<<<< HEAD:HolographicDisplays/plugin.yml
+name: HolographicDisplays
+main: com.gmail.filoghost.holographicdisplays.HolographicDisplays
+version: 2.2.6
+
+softdepend: [Multiverse-Core, MultiWorld, My Worlds, My_Worlds, ProtocolLib]
+
+commands:
+   holograms:
+      description: Main command for HolographicDisplays.
+      usage: /<command> (Startup error)
+=======
+name: HolographicDisplays
+main: com.gmail.filoghost.holographicdisplays.HolographicDisplays
+version: 2.2.1
+
+softdepend: [Multiverse-Core, MultiWorld, My Worlds, My_Worlds, ProtocolLib]
+
+commands:
+   holograms:
+      description: Main command for HolographicDisplays.
+      usage: /<command> (Startup error)
+>>>>>>> 12198b7... Mavenize project (Fixes #12):HolographicDisplays/plugin/src/main/resources/plugin.yml
+      aliases: [hd, holo, hologram, holograms]

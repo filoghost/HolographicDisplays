@@ -1,0 +1,11 @@
+name: HolographicDisplays
+main: com.gmail.filoghost.holographicdisplays.HolographicDisplays
+version: 2.2.6
+
+softdepend: [Multiverse-Core, MultiWorld, My Worlds, My_Worlds, ProtocolLib]
+
+commands:
+   holograms:
+      description: Main command for HolographicDisplays.
+      usage: /<command> (Startup error)
+      aliases: [hd, holo, hologram, holograms]

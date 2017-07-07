@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.gmail.filoghost</groupId>
+        <artifactId>holographic-displays</artifactId>
+        <version>2.2.1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>holographic-displays-plugin</artifactId>
+    <packaging>jar</packaging>
+
+    <repositories>
+        <!--Bukkit-Server-API -->
+        <repository>
+            <id>spigot-repo</id>
+            <url>http://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+          
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>http://repo.dmulloy2.net/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>  
+        <!--Server API-->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.10.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+              
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib-API</artifactId>
+            <version>4.3.0</version>
+        </dependency>
+    </dependencies>
+</project>
