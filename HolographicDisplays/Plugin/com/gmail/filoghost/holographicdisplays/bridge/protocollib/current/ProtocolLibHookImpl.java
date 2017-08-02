@@ -8,6 +8,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -102,6 +104,10 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 				public void onPacketSending(PacketEvent event) {
 					
 					PacketContainer packet = event.getPacket();
+					
+					if (event.getPlayer() instanceof Factory) {
+						return; // Ignore temporary players (reference: https://github.com/dmulloy2/ProtocolLib/issues/349)
+					}
 
 					// Spawn entity packet
 					if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
