@@ -50,7 +50,7 @@ public class VersionUtils {
 	 * @return true if the server software is MCPC+ or Cauldron
 	 */
 	public static boolean isMCPCOrCauldron() {
-		return Utils.containsIgnoreCase(Bukkit.getName(), "MCPC") || Utils.containsIgnoreCase(Bukkit.getName(), "Cauldron");
+		return Utils.containsIgnoreCase(Bukkit.getName(), "MCPC") || Utils.containsIgnoreCase(Bukkit.getName(), "Cauldron" || Utils.containsIgnoreCase(Bukkit.getName(), "Uranium" ));
 	}
 	
 	public static boolean isArmorstand(EntityType type) {
