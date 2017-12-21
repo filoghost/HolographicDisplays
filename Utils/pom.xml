@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.gmail.filoghost.holographicdisplays</groupId>
+		<artifactId>holographicdisplays-parent</artifactId>
+		<version>2.2.7-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>holographicdisplays-utils</artifactId>
+	<name>HolographicDisplays Utils</name>
+
+	<repositories>
+		<repository>
+			<id>elmakers-repo</id>
+			<url>http://maven.elmakers.com/repository/</url>
+		</repository>
+		<repository>
+			<id>dmulloy2-repo</id>
+			<url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>holographicdisplays-api</artifactId>
+			<version>2.2.7-SNAPSHOT</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>1.8-R0.1-SNAPSHOT</version>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+</project>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.gmail.filoghost.holographicdisplays</groupId>
+	<artifactId>holographicdisplays-parent</artifactId>
+	<name>HolographicDisplays Parent</name>
+	<version>2.2.7-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
+
+	<modules>
+		<module>API</module>
+		<module>Utils</module>
+		<module>NMS/Interfaces</module>
+		<module>NMS/v1_7_R1</module>
+		<module>NMS/v1_7_R2</module>
+		<module>NMS/v1_7_R3</module>
+		<module>NMS/v1_7_R4</module>
+		<module>NMS/v1_8_R1</module>
+		<module>NMS/v1_8_R2</module>
+		<module>NMS/v1_8_R3</module>
+		<module>NMS/v1_9_R1</module>
+		<module>NMS/v1_9_R2</module>
+		<module>NMS/v1_10_R1</module>
+		<module>NMS/v1_11_R1</module>
+		<module>NMS/v1_12_R1</module>
+		<module>Plugin</module>
+		<module>Examples/DeathHolograms</module>
+		<module>Examples/PowerUps</module>
+	</modules>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<configuration>
+						<archive>
+							<addMavenDescriptor>false</addMavenDescriptor>
+							<manifest>
+								<addClasspath>false</addClasspath>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
