@@ -47,9 +47,8 @@ public class NmsManagerImpl implements NMSManager {
 	
 	@SuppressWarnings("unchecked")
 	public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
-		if (VersionUtils.isMCPCOrCauldron()) {
-			// MCPC+ / Cauldron entity registration.
-			throw new UnsupportedOperationException("MCPC, Cauldron and similar softwares are not supported");
+		if (VersionUtils.isForgeServer()) {
+			throw new UnsupportedOperationException("Forge based servers are not supported");
 		} else {
 			// Use reflection to get the RegistryID of entities.
 			RegistryID<Class<? extends Entity>> registryID = (RegistryID<Class<? extends Entity>>) ReflectionUtils.getPrivateField(RegistryMaterials.class, EntityTypes.b, "a");

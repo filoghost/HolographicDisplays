@@ -41,7 +41,7 @@ public class NmsManagerImpl implements NMSManager {
 		registerCustomEntity(EntityNMSItem.class, "Item", 1);
 		registerCustomEntity(EntityNMSSlime.class, "Slime", 55);
 		
-		if (!VersionUtils.isMCPCOrCauldron()) {
+		if (!VersionUtils.isForgeServer()) {
 			validateEntityMethod = World.class.getDeclaredMethod("a", Entity.class);
 			validateEntityMethod.setAccessible(true);
 		}
@@ -49,8 +49,8 @@ public class NmsManagerImpl implements NMSManager {
 	
 	@SuppressWarnings("rawtypes")
 	public void registerCustomEntity(Class entityClass, String name, int id) throws Exception {
-		if (VersionUtils.isMCPCOrCauldron()) {
-			// MCPC+ / Cauldron entity registration.
+		if (VersionUtils.isForgeServer()) {
+			// Forge entity registration.
 			Class<?> entityTypesClass = Class.forName("net.minecraft.server.v1_8_R2.EntityTypes");
 			ReflectionUtils.putInPrivateStaticMap(entityTypesClass, "field_75626_c", entityClass, name);
 			ReflectionUtils.putInPrivateStaticMap(entityTypesClass, "field_75624_e", entityClass, Integer.valueOf(id));

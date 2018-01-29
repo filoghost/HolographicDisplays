@@ -46,9 +46,8 @@ public class NmsManagerImpl implements NMSManager {
 	
 	@SuppressWarnings("rawtypes")
 	public void registerCustomEntity(Class entityClass, String name, int id) throws Exception {
-		if (VersionUtils.isMCPCOrCauldron()) {
-			// MCPC+ / Cauldron entity registration.
-			throw new UnsupportedOperationException("MCPC, Cauldron and similar softwares are not supported");
+		if (VersionUtils.isForgeServer()) {
+			throw new UnsupportedOperationException("Forge based servers are not supported");
 		} else {
 			// Normal entity registration.
 			ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "d", entityClass, name);

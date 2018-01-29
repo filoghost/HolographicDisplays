@@ -172,14 +172,14 @@ public class HolographicDisplays extends JavaPlugin {
 		}
 
 		try {
-			if (VersionUtils.isMCPCOrCauldron()) {
-				getLogger().info("Trying to enable Cauldron/MCPC+ support...");
+			if (VersionUtils.isForgeServer()) {
+				getLogger().info("Trying to enable Forge support...");
 			}
 			
 			nmsManager.setup();
 			
-			if (VersionUtils.isMCPCOrCauldron()) {
-				getLogger().info("Successfully added support for Cauldron/MCPC+!");
+			if (VersionUtils.isForgeServer()) {
+				getLogger().info("Successfully added Forge support!");
 			}
 			
 		} catch (Exception e) {

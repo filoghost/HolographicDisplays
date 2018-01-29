@@ -46,11 +46,15 @@ public class VersionUtils {
 	}
 	
 	/**
-	 * Checks if the server is using MCPC+ or Cauldron.
-	 * @return true if the server software is MCPC+ or Cauldron
+	 * @return if the server is based on Forge.
 	 */
-	public static boolean isMCPCOrCauldron() {
-		return Utils.containsIgnoreCase(Bukkit.getName(), "MCPC") || Utils.containsIgnoreCase(Bukkit.getName(), "Cauldron");
+	public static boolean isForgeServer() {
+		try {
+			Class.forName("net.minecraftforge.common.MinecraftForge");
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
 	}
 	
 	public static boolean isArmorstand(EntityType type) {
