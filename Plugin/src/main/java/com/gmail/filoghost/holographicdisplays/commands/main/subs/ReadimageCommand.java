@@ -75,7 +75,6 @@ public class ReadimageCommand extends HologramSubCommand {
 		boolean isUrl = false;
 		
 		try {
-			
 			String fileName = args[1];
 			BufferedImage image = null;
 			
@@ -88,7 +87,11 @@ public class ReadimageCommand extends HologramSubCommand {
 					Strings.sendWarning(sender, "The image path seems to be an URL. If so, please use http:// or https:// in the path.");
 				}
 				
-				image = FileUtils.readImage(new File(HolographicDisplays.getInstance().getDataFolder(), fileName));
+				File targetImage = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
+				CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetImage), "The image must be inside HolographicDisplays' folder.");
+				CommandValidator.isTrue(!FileUtils.isConfigFile(targetImage), "Cannot read default configuration files.");
+				
+				image = FileUtils.readImage(targetImage);
 			}
 			
 			if (!append) {
@@ -117,6 +120,8 @@ public class ReadimageCommand extends HologramSubCommand {
 			}
 			Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
 			
+		} catch (CommandException e) {
+			throw e;
 		} catch (MalformedURLException e) {
 			throw new CommandException("The provided URL was not valid.");
 		} catch (TooWideException e) {

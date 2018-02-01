@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.exception.UnreadableImageException;
 
 
@@ -76,5 +77,21 @@ public class FileUtils {
 		}
 			
 		return image;
+	}
+	
+	public static boolean isParentFolder(File folder, File file) throws IOException {
+		File iteratorFile = file.getCanonicalFile();
+		folder = folder.getCanonicalFile();
+		while ((iteratorFile = iteratorFile.getParentFile()) != null) {
+			if (iteratorFile.equals(folder)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public static boolean isConfigFile(File file) {
+		return file.getName().toLowerCase().endsWith(".yml") && HolographicDisplays.getInstance().getResource(file.getName()) != null;
 	}
 }

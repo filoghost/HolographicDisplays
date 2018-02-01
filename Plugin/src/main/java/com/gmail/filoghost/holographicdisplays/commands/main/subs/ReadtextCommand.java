@@ -46,7 +46,12 @@ public class ReadtextCommand extends HologramSubCommand {
 		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
 		
 		try {
-			List<String> lines = FileUtils.readLines(new File(HolographicDisplays.getInstance().getDataFolder(), args[1]));
+			String fileName = args[1];
+			File targetFile = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
+			CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetFile), "The file must be inside HolographicDisplays' folder.");
+			CommandValidator.isTrue(!FileUtils.isConfigFile(targetFile), "Cannot read default configuration files.");
+			
+			List<String> lines = FileUtils.readLines(targetFile);
 			hologram.clearLines();
 			
 			int linesAmount = lines.size();
@@ -73,6 +78,8 @@ public class ReadtextCommand extends HologramSubCommand {
 			sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram!");
 			Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
 			
+		} catch (CommandException e) {
+			throw e;
 		} catch (FileNotFoundException e) {
 			throw new CommandException("A file named '" + args[1] + "' doesn't exist in the plugin's folder.");
 		} catch (IOException e) {
@@ -104,4 +111,5 @@ public class ReadtextCommand extends HologramSubCommand {
 	private boolean isImageExtension(String input) {
 		return Arrays.asList("jpg", "png", "jpeg", "gif").contains(input.toLowerCase());
 	}
+	
 }
