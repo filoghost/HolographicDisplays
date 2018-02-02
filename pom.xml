@@ -52,6 +52,18 @@
 						</archive>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<configuration>
+						<sourceFileIncludes>
+							<include>**/holographicdisplays/api/**/*.java</include>
+						</sourceFileIncludes>
+						<sourceFileExcludes>
+							<exclude>**/holographicdisplays/api/internal/**/*.java</exclude>
+						</sourceFileExcludes>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>

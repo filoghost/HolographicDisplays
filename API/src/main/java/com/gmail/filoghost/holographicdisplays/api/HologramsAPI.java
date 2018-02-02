@@ -16,6 +16,11 @@ import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplac
 public class HologramsAPI {
 	
 	
+	private HologramsAPI() {
+		// No constructor needed.
+	}
+	
+	
 	/**
 	 * Creates a hologram at given location.
 	 * 

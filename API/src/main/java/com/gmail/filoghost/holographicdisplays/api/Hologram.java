@@ -40,7 +40,7 @@ public interface Hologram {
 	 * be inserted before the first line.
 	 * @param text the content of the line, can be null for an empty line
 	 * @return the new TextLine inserted
-	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+	 * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
 	 */
 	public TextLine insertTextLine(int index, String text);
 	
@@ -52,7 +52,7 @@ public interface Hologram {
 	 * be inserted before the first line.
 	 * @param itemStack the content of the line
 	 * @return the new ItemLine inserted
-	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+	 * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
 	 */
 	public ItemLine insertItemLine(int index, ItemStack itemStack);
 	
@@ -62,7 +62,7 @@ public interface Hologram {
 	 * 
 	 * @param index the index of the line to retrieve.
 	 * @return the hologram line at the given index, can be an {@link ItemLine} or a {@link TextLine}.
-	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+	 * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
 	 */
 	public HologramLine getLine(int index);
 	
@@ -70,7 +70,7 @@ public interface Hologram {
 	 * Removes a line at a given index. Since: v2.0.1
 	 * 
 	 * @param index the index of the line, that should be between 0 and size() - 1.
-	 * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+	 * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
 	 */
 	public void removeLine(int index);
 	
