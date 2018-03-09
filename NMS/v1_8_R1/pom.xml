@@ -1,43 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>com.gmail.filoghost.holographicdisplays</groupId>
-		<artifactId>holographicdisplays-parent</artifactId>
+		<artifactId>holographicdisplays-nms</artifactId>
 		<version>2.2.7-SNAPSHOT</version>
-		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>holographicdisplays-nms-v1_8_r1</artifactId>
-	<name>HolographicDisplays NMS v1_8_R1</name>
 
-	<repositories>
-		<repository>
-			<id>elmakers-repo</id>
-			<url>http://maven.elmakers.com/repository/</url>
-		</repository>
-	</repositories>
+	<name>HolographicDisplays NMS v1_8_R1</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-interfaces</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-utils</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>${spigot-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot</artifactId>
 			<version>1.8-R0.1-SNAPSHOT</version>
-			<optional>true</optional>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

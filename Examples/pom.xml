@@ -10,9 +10,19 @@
 		<version>2.2.7-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>holographicdisplays-utils</artifactId>
+	<artifactId>holographicdisplays-examples</artifactId>
+	<packaging>pom</packaging>
 
-	<name>HolographicDisplays Utils</name>
+	<modules>
+		<module>DeathHolograms</module>
+		<module>PowerUps</module>
+	</modules>
+
+	<name>HolographicDisplays Examples</name>
+
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -27,35 +37,5 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>aggregate</goal>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

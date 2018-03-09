@@ -37,6 +37,9 @@ public class ReflectionUtils {
 	/**
 	 * If you only need one stack trace element this is faster than Throwable.getStackTrace()[element],
 	 * it doesn't generate the full stack trace.
+	 *
+	 * @param index the index of the element
+	 * @return the stack trace element, null if not found
 	 */
 	public static StackTraceElement getStackTraceElement(int index) {
 		try {
