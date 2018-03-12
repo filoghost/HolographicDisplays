@@ -10,7 +10,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>Api</module>
+		<module>API</module>
 		<module>Utils</module>
 		<module>NMS</module>
 		<module>Plugin</module>
