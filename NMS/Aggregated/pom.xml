@@ -13,7 +13,7 @@
 	<artifactId>holographicdisplays-nms-aggregated</artifactId>
 	<packaging>pom</packaging>
 
-	<name>HolographicDisplays NMS Aggregated</name>
+	<name>HolographicDisplaysNMSAggregated</name>
 
 	<dependencies>
 		<dependency>

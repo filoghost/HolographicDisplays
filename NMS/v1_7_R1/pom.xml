@@ -12,7 +12,7 @@
 
     <artifactId>holographicdisplays-nms-v1_7_r1</artifactId>
 
-    <name>HolographicDisplays NMS v1_7_R1</name>
+    <name>HolographicDisplaysNMSv1_7_R1</name>
 
     <dependencies>
         <dependency>

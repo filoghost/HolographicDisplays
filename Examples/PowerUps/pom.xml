@@ -12,7 +12,7 @@
 
 	<artifactId>powerups</artifactId>
 
-	<name>HolographicDisplays PowerUps</name>
+	<name>PowerUps</name>
 
 	<dependencies>
 		<dependency>

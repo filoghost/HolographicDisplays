@@ -12,7 +12,7 @@
 
 	<artifactId>deathholograms</artifactId>
 
-	<name>HolographicDisplays DeathHolograms</name>
+	<name>DeathHolograms</name>
 
 	<dependencies>
 		<dependency>

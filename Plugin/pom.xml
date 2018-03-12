@@ -12,7 +12,7 @@
 
 	<artifactId>holographicdisplays-plugin</artifactId>
 
-	<name>HolographicDisplays Plugin</name>
+	<name>HolographicDisplays</name>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>

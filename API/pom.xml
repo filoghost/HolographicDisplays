@@ -12,7 +12,7 @@
 
 	<artifactId>holographicdisplays-api</artifactId>
 
-	<name>HolographicDisplays API</name>
+	<name>HolographicDisplaysAPI</name>
 
 	<dependencies>
 		<dependency>

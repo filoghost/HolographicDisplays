@@ -30,7 +30,7 @@
 		<module>Aggregated</module>
 	</modules>
 
-	<name>HolographicDisplays NMS</name>
+	<name>HolographicDisplaysNMS</name>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>

@@ -12,7 +12,7 @@
 
 	<artifactId>holographicdisplays-utils</artifactId>
 
-	<name>HolographicDisplays Utils</name>
+	<name>HolographicDisplaysUtils</name>
 
 	<dependencies>
 		<dependency>

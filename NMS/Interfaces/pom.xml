@@ -12,7 +12,7 @@
 
 	<artifactId>holographicdisplays-nms-interfaces</artifactId>
 
-	<name>HolographicDisplays NMS Interfaces</name>
+	<name>HolographicDisplaysNMSInterfaces</name>
 
 	<dependencies>
 		<dependency>

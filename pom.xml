@@ -17,7 +17,7 @@
 		<module>Examples</module>
 	</modules>
 
-	<name>HolographicDisplays Parent</name>
+	<name>HolographicDisplaysParent</name>
 	<description>A Bukkit plugin to create configurable holograms.</description>
 	<inceptionYear>2014</inceptionYear>
 	<url>https://dev.bukkit.org/projects/holographic-displays</url>
@@ -66,6 +66,7 @@
 
 	<build>
 		<defaultGoal>clean install</defaultGoal>
+		<finalName>${project.name}-${project.version}</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources/</directory>
