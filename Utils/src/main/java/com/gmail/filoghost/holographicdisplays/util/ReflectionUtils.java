@@ -33,33 +33,44 @@ public class ReflectionUtils {
 	private static Method getStackTraceDepthMethod;
 	
 	private static boolean stackTraceErrorPrinted;
-	
+
 	/**
 	 * If you only need one stack trace element this is faster than Throwable.getStackTrace()[element],
 	 * it doesn't generate the full stack trace.
-	 *
-	 * @param index the index of the element
-	 * @return the stack trace element, null if not found
 	 */
 	public static StackTraceElement getStackTraceElement(int index) {
 		try {
-			if (getStackTraceElementMethod == null) {
-				getStackTraceElementMethod = Throwable.class.getDeclaredMethod("getStackTraceElement", int.class);
-				getStackTraceElementMethod.setAccessible(true);
+			boolean noGetStackTraceElement = false;
+
+			try {
+				if (getStackTraceElementMethod == null) {
+					getStackTraceElementMethod = Throwable.class.getDeclaredMethod("getStackTraceElement", int.class);
+					getStackTraceElementMethod.setAccessible(true);
+				}
+				if (getStackTraceDepthMethod == null) {
+					getStackTraceDepthMethod = Throwable.class.getDeclaredMethod("getStackTraceDepth");
+					getStackTraceDepthMethod.setAccessible(true);
+				}
+			} catch (NoSuchMethodException e) {
+				noGetStackTraceElement = true;
 			}
-			if (getStackTraceDepthMethod == null) {
-				getStackTraceDepthMethod = Throwable.class.getDeclaredMethod("getStackTraceDepth");
-				getStackTraceDepthMethod.setAccessible(true);
-			}
-			
-			Throwable dummyThrowable = new Throwable();
-			int depth = (Integer) getStackTraceDepthMethod.invoke(dummyThrowable);
-			
-			if (index < depth) {
-				return (StackTraceElement) getStackTraceElementMethod.invoke(new Throwable(), index);
+
+			if (noGetStackTraceElement) {
+				// Hotfix for: https://github.com/filoghost/HolographicDisplays/issues/70
+				// TODO: use StackWalker
+				Throwable dummyThrowable = new Throwable();
+				return dummyThrowable.getStackTrace()[index];
 			} else {
-				return null;
+				Throwable dummyThrowable = new Throwable();
+				int depth = (Integer) getStackTraceDepthMethod.invoke(dummyThrowable);
+
+				if (index < depth) {
+					return (StackTraceElement) getStackTraceElementMethod.invoke(new Throwable(), index);
+				} else {
+					return null;
+				}
 			}
+
 		} catch (Throwable t) {
 			if (!stackTraceErrorPrinted) {
 				Bukkit.getPluginManager().getPlugin("HolographicDisplays").getLogger().log(Level.WARNING, "Unable to get a stacktrace element, please inform the developer. You will only see this error once to avoid spam.", t);
@@ -68,4 +79,5 @@ public class ReflectionUtils {
 			return null;
 		}
 	}
+
 }
