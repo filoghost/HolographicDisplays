@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 
 public abstract class BackendAPI {
@@ -37,7 +38,14 @@ public abstract class BackendAPI {
 
 	public abstract void unregisterPlaceholders(Plugin plugin);
 
-	public abstract boolean isHologramEntity(Entity bukkitEntity);	
+	public abstract boolean isHologramEntity(Entity bukkitEntity);
+
+	public abstract HologramLine getHologramLine(Entity bukkitEntity);
+
+	public Hologram getHologram(Entity bukkitEntity) {
+		HologramLine line = getHologramLine(bukkitEntity);
+		return line != null ? line.getParent(): null;
+	}
 	
 
 }

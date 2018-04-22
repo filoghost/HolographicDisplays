@@ -103,5 +103,16 @@ public class HologramsAPI {
 	public static boolean isHologramEntity(Entity bukkitEntity) {
 		return BackendAPI.getImplementation().isHologramEntity(bukkitEntity);
 	}
+	
+	
+	/**
+	 * Gets the hologram that the entity is part of.
+	 * 
+	 * @param bukkitEntity the entity of the hologram
+	 * @return the hologram that the entity is part of
+	 */
+	public static Hologram getHologram(Entity bukkitEntity) {
+		return BackendAPI.getImplementation().getHologram(bukkitEntity);
+	}
 
 }

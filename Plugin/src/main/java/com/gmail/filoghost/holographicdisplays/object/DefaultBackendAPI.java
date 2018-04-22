@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.internal.BackendAPI;
+import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import com.gmail.filoghost.holographicdisplays.object.PluginHologram;
 import com.gmail.filoghost.holographicdisplays.object.PluginHologramManager;
@@ -42,6 +43,11 @@ public class DefaultBackendAPI extends BackendAPI {
 	public boolean isHologramEntity(Entity bukkitEntity) {
 		Validator.notNull(bukkitEntity, "bukkitEntity");
 		return HolographicDisplays.getNMSManager().isNMSEntityBase(bukkitEntity);
+	}
+
+	public HologramLine getHologramLine(Entity bukkitEntity) {
+		Validator.notNull(bukkitEntity, "bukkitEntity");
+		return HolographicDisplays.getNMSManager().getNMSEntityBase(bukkitEntity).getHologramLine();
 	}
 
 	public Collection<Hologram> getHolograms(Plugin plugin) {
