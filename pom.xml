@@ -1,70 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.gmail.filoghost.holographicdisplays</groupId>
 	<artifactId>holographicdisplays-parent</artifactId>
-	<name>HolographicDisplays Parent</name>
 	<version>2.2.7-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
-		<maven.test.skip>true</maven.test.skip>
-	</properties>
 
 	<modules>
 		<module>API</module>
 		<module>Utils</module>
-		<module>NMS/Interfaces</module>
-		<module>NMS/v1_7_R1</module>
-		<module>NMS/v1_7_R2</module>
-		<module>NMS/v1_7_R3</module>
-		<module>NMS/v1_7_R4</module>
-		<module>NMS/v1_8_R1</module>
-		<module>NMS/v1_8_R2</module>
-		<module>NMS/v1_8_R3</module>
-		<module>NMS/v1_9_R1</module>
-		<module>NMS/v1_9_R2</module>
-		<module>NMS/v1_10_R1</module>
-		<module>NMS/v1_11_R1</module>
-		<module>NMS/v1_12_R1</module>
+		<module>NMS</module>
 		<module>Plugin</module>
-		<module>Examples/DeathHolograms</module>
-		<module>Examples/PowerUps</module>
+		<module>Examples</module>
 	</modules>
 
+	<name>HolographicDisplaysParent</name>
+	<description>A Bukkit plugin to create configurable holograms.</description>
+	<inceptionYear>2014</inceptionYear>
+	<url>https://dev.bukkit.org/projects/holographic-displays</url>
+
+	<scm>
+		<connection>scm:git:https://github.com/filoghost/HolographicDisplays.git</connection>
+		<developerConnection>scm:git:git@github.com:filoghost/HolographicDisplays.git</developerConnection>
+		<url>https://github.com/filoghost/HolographicDisplays</url>
+	</scm>
+
+	<ciManagement>
+		<system>jenkins</system>
+		<url>http://ci.codemc.org/job/HolographicDisplays/</url>
+	</ciManagement>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/filoghost/HolographicDisplays/issues</url>
+	</issueManagement>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>codemc-snapshots</id>
+			<url>https://repo.codemc.org/repository/maven-snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>codemc-releases</id>
+			<url>https://repo.codemc.org/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<spigot-api.version>1.13-pre7-R0.1-SNAPSHOT</spigot-api.version>
+	</properties>
+
+	<repositories>
+		<!-- SpigotAPI Repo -->
+		<repository>
+			<id>spigotmc-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<configuration>
-						<archive>
-							<addMavenDescriptor>false</addMavenDescriptor>
-							<manifest>
-								<addClasspath>false</addClasspath>
-							</manifest>
-						</archive>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<configuration>
-						<sourceFileIncludes>
-							<include>**/holographicdisplays/api/**/*.java</include>
-						</sourceFileIncludes>
-						<sourceFileExcludes>
-							<exclude>**/holographicdisplays/api/internal/**/*.java</exclude>
-						</sourceFileExcludes>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+		<defaultGoal>clean install</defaultGoal>
+		<finalName>${project.name}-${project.version}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.1.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<show>public</show>
+					<failOnError>false</failOnError>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+			</plugin>
+		</plugins>
 	</build>
+
 </project>

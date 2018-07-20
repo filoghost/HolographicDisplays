@@ -29,7 +29,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 		super(world);
 		super.persistent = true;
 		super.collides = false;
-		a(0.0F, 0.0F);
+		setSize(0.0F, 0.0F);
 		setSize(1, false);
 		setInvisible(true);
 		this.parentPiece = parentPiece;

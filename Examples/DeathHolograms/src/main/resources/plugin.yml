@@ -1,0 +1,4 @@
+name: DeathHolograms
+main: com.gmail.filoghost.holographicdisplays.deathholograms.DeathHolograms
+version: ${project.version}
+softdepend: [HolographicDisplays]
