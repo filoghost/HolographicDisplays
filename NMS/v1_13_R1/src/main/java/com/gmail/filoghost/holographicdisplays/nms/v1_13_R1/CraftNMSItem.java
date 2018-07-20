@@ -1,0 +1,120 @@
+package com.gmail.filoghost.holographicdisplays.nms.v1_13_R1;
+
+import org.bukkit.EntityEffect;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_13_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftItem;
+import org.bukkit.entity.Entity;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
+
+/**
+ * Non interactive version of the CraftItem entity.
+ */
+public class CraftNMSItem extends CraftItem {
+
+    public CraftNMSItem(CraftServer server, EntityNMSItem entity) {
+        super(server, entity);
+    }
+
+    /*
+     * Handle CraftEntity methods.
+     */
+
+    // Make the item not removable. Very important to override.
+    @Override
+    public void remove() {
+    }
+
+    @Override
+    public void setVelocity(Vector vel) {
+    }
+
+    @Override
+    public boolean teleport(Location loc) {
+        return false;
+    }
+
+    @Override
+    public boolean teleport(Entity entity) {
+        return false;
+    }
+
+    @Override
+    public boolean teleport(Location loc, TeleportCause cause) {
+        return false;
+    }
+
+    @Override
+    public boolean teleport(Entity entity, TeleportCause cause) {
+        return false;
+    }
+
+    @Override
+    public void setFireTicks(int ticks) {
+    }
+
+    @Override
+    public boolean setPassenger(Entity entity) {
+        return false;
+    }
+
+    @Override
+    public boolean eject() {
+        return false;
+    }
+
+    @Override
+    public boolean leaveVehicle() {
+        return false;
+    }
+
+    @Override
+    public void playEffect(EntityEffect effect) {
+    }
+
+    @Override
+    public void setCustomName(String name) {
+    }
+
+    @Override
+    public void setCustomNameVisible(boolean flag) {
+    }
+
+    @Override
+    public void setGlowing(boolean flag) {
+    }
+
+    @Override
+    public void setGravity(boolean gravity) {
+    }
+
+    @Override
+    public void setInvulnerable(boolean flag) {
+    }
+
+    @Override
+    public void setMomentum(Vector value) {
+    }
+
+    @Override
+    public void setSilent(boolean flag) {
+    }
+
+    @Override
+    public void setTicksLived(int value) {
+    }
+
+    /*
+     * Handle CraftItem methods.
+     */
+
+    @Override
+    public void setItemStack(ItemStack stack) {
+    }
+
+    @Override
+    public void setPickupDelay(int delay) {
+    }
+}

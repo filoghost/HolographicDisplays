@@ -32,7 +32,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	public EntityNMSSlime(World world, HologramLine parentPiece) {
 		super(world);
 		super.persistent = true;
-		a(0.0F, 0.0F);
+		setSize(0.0F, 0.0F);
 		setSize(1);
 		setInvisible(true);
 		this.parentPiece = parentPiece;

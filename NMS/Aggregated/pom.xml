@@ -76,6 +76,11 @@
 			<artifactId>holographicdisplays-nms-v1_12_r1</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>holographicdisplays-nms-v1_13_r1</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>
