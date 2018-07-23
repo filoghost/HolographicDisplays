@@ -18,13 +18,20 @@ public enum BukkitVersion {
 	v1_9_R2,
 	v1_10_R1,
 	v1_11_R1,
-	v1_12_R1;
+	v1_12_R1,
+	v1_13_R1;
 
 	private static BukkitVersion currentVersion;
 
 	static {
 		currentVersion = Optional.ofNullable(BukkitUtils.getNMSVersion())
-				.map(BukkitVersion::valueOf)
+				.map(version -> {
+					try {
+						return BukkitVersion.valueOf(version);
+					} catch (IllegalArgumentException e) {
+						return null;
+					}
+				})
 				.orElse(UNKNOWN);
 	}
 
