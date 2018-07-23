@@ -70,7 +70,7 @@ public class NullBoundingBox extends AxisAlignedBB {
 	public AxisAlignedBB shrink(double arg0) {
 		return this;
 	}
-	
+
 	@Override
 	public AxisAlignedBB a(BlockPosition arg0) {
 		return this;
@@ -100,7 +100,7 @@ public class NullBoundingBox extends AxisAlignedBB {
 	public AxisAlignedBB e(double arg0) {
 		return this;
 	}
-	
+
 	@Override
 	public AxisAlignedBB g(double arg0) {
 		return this;

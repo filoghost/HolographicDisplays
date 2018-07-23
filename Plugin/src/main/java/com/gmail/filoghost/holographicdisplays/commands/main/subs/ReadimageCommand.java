@@ -1,20 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-
-import com.gmail.filoghost.holographicdisplays.util.io.FileUtils;
-import com.gmail.filoghost.holographicdisplays.util.io.UnreadableImageException;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
 import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
@@ -28,6 +13,20 @@ import com.gmail.filoghost.holographicdisplays.image.ImageMessage;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
+import com.gmail.filoghost.holographicdisplays.util.io.FileUtils;
+import com.gmail.filoghost.holographicdisplays.util.io.UnreadableImageException;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 public class ReadimageCommand extends HologramSubCommand {
 
@@ -50,11 +49,11 @@ public class ReadimageCommand extends HologramSubCommand {
 
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		
+
 		boolean append = false;
-		
+
 		List<String> newArgs = Utils.newList();
-		
+
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equalsIgnoreCase("-a") || args[i].equalsIgnoreCase("-append")) {
 				append = true;
@@ -62,64 +61,64 @@ public class ReadimageCommand extends HologramSubCommand {
 				newArgs.add(args[i]);
 			}
 		}
-		
+
 		args = newArgs.toArray(new String[0]);
-		
+
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
-		
+
 		int width = CommandValidator.getInteger(args[2]);
-		
+
 		CommandValidator.isTrue(width >= 2, "The width of the image must be 2 or greater.");
 
 		boolean isUrl = false;
-		
+
 		try {
 			String fileName = args[1];
 			BufferedImage image = null;
-			
+
 			if (fileName.startsWith("http://") || fileName.startsWith("https://")) {
 				isUrl = true;
 				image = FileUtils.readImage(new URL(fileName));
 			} else {
-				
+
 				if (fileName.matches(".*[a-zA-Z0-9\\-]+\\.[a-zA-Z0-9\\-]{1,4}\\/.+")) {
 					Strings.sendWarning(sender, "The image path seems to be an URL. If so, please use http:// or https:// in the path.");
 				}
-				
+
 				File targetImage = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
 				CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetImage), "The image must be inside HolographicDisplays' folder.");
 				CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetImage), "Cannot read default configuration files.");
-				
+
 				image = FileUtils.readImage(targetImage);
 			}
-			
+
 			if (!append) {
 				hologram.clearLines();
 			}
-			
+
 			ImageMessage imageMessage = new ImageMessage(image, width);
 			String[] newLines = imageMessage.getLines();
 			for (int i = 0; i < newLines.length; i++) {
 				hologram.appendTextLine(newLines[i]);
 			}
-			
+
 			hologram.refreshAll();
-			
+
 			if (newLines.length < 5) {
 				sender.sendMessage(Strings.TIP_PREFIX + "The image has a very low height. You can increase it by increasing the width, it will scale automatically.");
 			}
-			
+
 			HologramDatabase.saveHologram(hologram);
 			HologramDatabase.trySaveToDisk();
-			
+
 			if (append) {
 				sender.sendMessage(Colors.PRIMARY + "The image was appended int the end of the hologram!");
 			} else {
 				sender.sendMessage(Colors.PRIMARY + "The image was drawn in the hologram!");
 			}
 			Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
-			
+
 		} catch (CommandException e) {
 			throw e;
 		} catch (MalformedURLException e) {
@@ -138,7 +137,7 @@ public class ReadimageCommand extends HologramSubCommand {
 			throw new CommandException("Unhandled exception while reading the image! Please look the console.");
 		}
 	}
-	
+
 	@Override
 	public List<String> getTutorial() {
 		return Arrays.asList("Reads an image from a file. Tutorial:",
@@ -156,7 +155,7 @@ public class ReadimageCommand extends HologramSubCommand {
 				"",
 				"The symbols used to create the image are taken from the config.yml.");
 	}
-	
+
 	@Override
 	public SubCommandType getType() {
 		return SubCommandType.EDIT_LINES;

@@ -39,7 +39,7 @@ import java.util.Optional;
 
 /**
  * This is for the ProtocolLib versions containing the WrappedDataWatcher.WrappedDataWatcherObject class.
- * 
+ * <p>
  * These versions are only used from 1.8, there is no need to handle 1.7 entities.
  */
 public class ProtocolLibHookImpl implements ProtocolLibHook {
@@ -47,33 +47,33 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	private final static String LEGACY_TEMPORARY_PLAYER_CHECK_CLASS = "com.comphenix.net.sf.cglib.proxy.Factor";
 
 	private NMSManager nmsManager;
-	
+
 	private Serializer
-		itemSerializer,
-		intSerializer,
-		byteSerializer,
-		stringSerializer,
-		booleanSerializer;
-	
+			itemSerializer,
+			intSerializer,
+			byteSerializer,
+			stringSerializer,
+			booleanSerializer;
+
 	private int itemstackMetadataWatcherIndex;
 
 	private Method isPlayerTemporaryMethod;
-	
+
 	@Override
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {
-		
+
 		String version = Bukkit.getPluginManager().getPlugin("ProtocolLib").getDescription().getVersion();
 		if (version.startsWith("3.7-SNAPSHOT")) {
 			Bukkit.getConsoleSender().sendMessage(
 					ChatColor.RED + "[Holographic Displays] Detected development version of ProtocolLib, support disabled. " +
-					"Related functions (the placeholders {player} {displayname} and the visibility API) will not work.\n" +
-					"The reason is that this version of ProtocolLib is unstable and partly broken. " +
-					"Please update ProtocolLib.");
+							"Related functions (the placeholders {player} {displayname} and the visibility API) will not work.\n" +
+							"The reason is that this version of ProtocolLib is unstable and partly broken. " +
+							"Please update ProtocolLib.");
 			return false;
 		}
-		
+
 		this.nmsManager = nmsManager;
-		
+
 		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
 			if (BukkitVersion.isAtLeast(BukkitVersion.V1_10_R1)) {
 				itemstackMetadataWatcherIndex = 6;
@@ -83,7 +83,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		} else {
 			itemstackMetadataWatcherIndex = 10;
 		}
-		
+
 		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
 			itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
 			intSerializer = Registry.get(Integer.class);
@@ -95,7 +95,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		AdapterParameteters params = PacketAdapter
 				.params()
 				.plugin(plugin)
-				.types(	PacketType.Play.Server.SPAWN_ENTITY_LIVING,
+				.types(PacketType.Play.Server.SPAWN_ENTITY_LIVING,
 						PacketType.Play.Server.SPAWN_ENTITY,
 						PacketType.Play.Server.ENTITY_METADATA)
 				.serverSide()
@@ -109,143 +109,143 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		}
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(params) {
-					  
-				@Override
-				public void onPacketSending(PacketEvent event) {
-					PacketContainer packet = event.getPacket();
 
-					// See https://github.com/dmulloy2/ProtocolLib/issues/349
-					if(isPlayerTemporaryMethod != null) {
-						try {
-							if((boolean) isPlayerTemporaryMethod.invoke(event)) {
-								return;
-							}
-						} catch (IllegalAccessException | InvocationTargetException e) {
-							ConsoleLogger.error(e);
-						}
-					} else {
-						// For older ProtocolLib versions
-						if(ReflectionUtils.instanceOf(event, LEGACY_TEMPORARY_PLAYER_CHECK_CLASS)) {
+			@Override
+			public void onPacketSending(PacketEvent event) {
+				PacketContainer packet = event.getPacket();
+
+				// See https://github.com/dmulloy2/ProtocolLib/issues/349
+				if (isPlayerTemporaryMethod != null) {
+					try {
+						if ((boolean) isPlayerTemporaryMethod.invoke(event)) {
 							return;
 						}
+					} catch (IllegalAccessException | InvocationTargetException e) {
+						ConsoleLogger.error(e);
+					}
+				} else {
+					// For older ProtocolLib versions
+					if (ReflectionUtils.instanceOf(event, LEGACY_TEMPORARY_PLAYER_CHECK_CLASS)) {
+						return;
+					}
+				}
+
+				// Spawn entity packet
+				if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
+
+					WrapperPlayServerSpawnEntityLiving spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet);
+					Entity entity = spawnEntityPacket.getEntity(event);
+
+					if (entity == null || !isHologramType(entity.getType())) {
+						return;
 					}
 
-					// Spawn entity packet
-					if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
+					Hologram hologram = getHologram(entity);
+					if (hologram == null) {
+						return;
+					}
 
-						WrapperPlayServerSpawnEntityLiving spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet);
-						Entity entity = spawnEntityPacket.getEntity(event);
-						
-						if (entity == null || !isHologramType(entity.getType())) {
-							return;
-						}
-						
-						Hologram hologram = getHologram(entity);
-						if (hologram == null) {
-							return;
-						}
-						
-						Player player = event.getPlayer();
-						if (!hologram.getVisibilityManager().isVisibleTo(player)) {
-							event.setCancelled(true);
-							return;
-						}
-						
-						WrappedWatchableObject customNameWatchableObject = spawnEntityPacket.getMetadata().getWatchableObject(2);
-						if (customNameWatchableObject == null || !(customNameWatchableObject.getValue() instanceof String)) {
-							return;
-						}
-						
-						String customName = (String) customNameWatchableObject.getValue();
-						if (customName.contains("{player}") || customName.contains("{displayname}")) {
-							customNameWatchableObject.setValue(customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
-						}
+					Player player = event.getPlayer();
+					if (!hologram.getVisibilityManager().isVisibleTo(player)) {
+						event.setCancelled(true);
+						return;
+					}
 
-					} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
+					WrappedWatchableObject customNameWatchableObject = spawnEntityPacket.getMetadata().getWatchableObject(2);
+					if (customNameWatchableObject == null || !(customNameWatchableObject.getValue() instanceof String)) {
+						return;
+					}
 
-						WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
-						Entity entity = spawnEntityPacket.getEntity(event);
-						
-						if (entity == null) {
-							return;
-						}
-						
-						if (!isHologramType(entity.getType())) {
-							return;
-						}
-						
-						Hologram hologram = getHologram(entity);
-						if (hologram == null) {
-							return;
-						}
-						
-						Player player = event.getPlayer();
-						if (!hologram.getVisibilityManager().isVisibleTo(player)) {
-							event.setCancelled(true);
-						}
-					} else if (packet.getType() == PacketType.Play.Server.ENTITY_METADATA) {
+					String customName = (String) customNameWatchableObject.getValue();
+					if (customName.contains("{player}") || customName.contains("{displayname}")) {
+						customNameWatchableObject.setValue(customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
+					}
 
-						WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
-						Entity entity = entityMetadataPacket.getEntity(event);
-						
-						if (entity == null) {
-							return;
-						}
+				} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
 
-						if (!isHologramType(entity.getType())) {
-							return;
-						}
-						
-						Hologram hologram = getHologram(entity);
-						if (hologram == null) {
-							return;
-						}
-						
-						Player player = event.getPlayer();
-						if (!hologram.getVisibilityManager().isVisibleTo(player)) {
-							event.setCancelled(true);
-							return;
-						}
-						
-						List<WrappedWatchableObject> dataWatcherValues = entityMetadataPacket.getEntityMetadata();
-						for (int i = 0; i < dataWatcherValues.size(); i++) {
-							
-							WrappedWatchableObject watchableObject = dataWatcherValues.get(i);
-							if (watchableObject.getIndex() == 2) { // Custom name index
-									
-								Object customNameObject = watchableObject.getValue();
-								if (!(customNameObject instanceof String)) {
-									return;
+					WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
+					Entity entity = spawnEntityPacket.getEntity(event);
+
+					if (entity == null) {
+						return;
+					}
+
+					if (!isHologramType(entity.getType())) {
+						return;
+					}
+
+					Hologram hologram = getHologram(entity);
+					if (hologram == null) {
+						return;
+					}
+
+					Player player = event.getPlayer();
+					if (!hologram.getVisibilityManager().isVisibleTo(player)) {
+						event.setCancelled(true);
+					}
+				} else if (packet.getType() == PacketType.Play.Server.ENTITY_METADATA) {
+
+					WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
+					Entity entity = entityMetadataPacket.getEntity(event);
+
+					if (entity == null) {
+						return;
+					}
+
+					if (!isHologramType(entity.getType())) {
+						return;
+					}
+
+					Hologram hologram = getHologram(entity);
+					if (hologram == null) {
+						return;
+					}
+
+					Player player = event.getPlayer();
+					if (!hologram.getVisibilityManager().isVisibleTo(player)) {
+						event.setCancelled(true);
+						return;
+					}
+
+					List<WrappedWatchableObject> dataWatcherValues = entityMetadataPacket.getEntityMetadata();
+					for (int i = 0; i < dataWatcherValues.size(); i++) {
+
+						WrappedWatchableObject watchableObject = dataWatcherValues.get(i);
+						if (watchableObject.getIndex() == 2) { // Custom name index
+
+							Object customNameObject = watchableObject.getValue();
+							if (!(customNameObject instanceof String)) {
+								return;
+							}
+
+							String customName = (String) customNameObject;
+							if (customName.contains("{player}") || customName.contains("{displayname}")) {
+								String replacement = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
+
+								WrappedWatchableObject newWatchableObject;
+								if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
+									// The other constructor does not work in 1.9+.
+									newWatchableObject = new WrappedWatchableObject(watchableObject.getWatcherObject(), replacement);
+								} else {
+									newWatchableObject = new WrappedWatchableObject(watchableObject.getIndex(), replacement);
 								}
-								
-								String customName = (String) customNameObject;
-								if (customName.contains("{player}") || customName.contains("{displayname}")) {
-									String replacement = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
 
-									WrappedWatchableObject newWatchableObject;
-									if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
-										// The other constructor does not work in 1.9+.
-										newWatchableObject = new WrappedWatchableObject(watchableObject.getWatcherObject(), replacement);
-									} else {
-										newWatchableObject = new WrappedWatchableObject(watchableObject.getIndex(), replacement);
-									}
-									
-									dataWatcherValues.set(i, newWatchableObject);
-									PacketContainer clone = packet.shallowClone();
-									clone.getWatchableCollectionModifier().write(0, dataWatcherValues);
-									event.setPacket(clone);
-									return;
-								}
+								dataWatcherValues.set(i, newWatchableObject);
+								PacketContainer clone = packet.shallowClone();
+								clone.getWatchableCollectionModifier().write(0, dataWatcherValues);
+								event.setPacket(clone);
+								return;
 							}
 						}
 					}
 				}
-			});
-		
+			}
+		});
+
 		return true;
 	}
-	
-	
+
+
 	@Override
 	public void sendDestroyEntitiesPacket(Player player, CraftHologram hologram) {
 		List<Integer> ids = Utils.newList();
@@ -256,15 +256,15 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 				}
 			}
 		}
-		
+
 		if (!ids.isEmpty()) {
 			WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
 			packet.setEntities(ids);
 			packet.sendPacket(player);
 		}
 	}
-	
-	
+
+
 	@Override
 	public void sendCreateEntitiesPacket(Player player, CraftHologram hologram) {
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
@@ -299,36 +299,36 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					itemDataPacket.setEntityId(itemLine.getNmsItem().getIdNMS());
 					itemDataPacket.sendPacket(player);
 				}
-				
+
 				// Unsafe cast, however both CraftTextLine and CraftItemLine are touchable.
 				CraftTouchableLine touchableLine = (CraftTouchableLine) line;
-				
+
 				if (touchableLine.isSpawned() && touchableLine.getTouchSlime() != null) {
-					
+
 					CraftTouchSlimeLine touchSlime = touchableLine.getTouchSlime();
-					
+
 					if (touchSlime.isSpawned()) {
 						sendSpawnArmorStandPacket(player, (NMSArmorStand) touchSlime.getNmsVehicle());
 
 						AbstractPacket slimePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsSlime().getBukkitEntityNMS());
 						slimePacket.sendPacket(player);
-						
+
 						sendVehicleAttachPacket(player, touchSlime.getNmsVehicle().getIdNMS(), touchSlime.getNmsSlime().getIdNMS());
 					}
 				}
 			}
 		}
 	}
-	
-	
+
+
 	private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {
 		if (BukkitVersion.isAtLeast(BukkitVersion.V1_11_R1)) {
 			WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), ObjectTypes.ARMOR_STAND, 1);
 			spawnPacket.sendPacket(receiver);
-			
+
 			WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
 			WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
-			
+
 			dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0x20); // Entity status
 
 			String customName = armorStand.getCustomNameNMS();
@@ -339,23 +339,23 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 
 			dataWatcher.setObject(new WrappedDataWatcherObject(5, booleanSerializer), true); // No gravity
 			dataWatcher.setObject(new WrappedDataWatcherObject(11, byteSerializer), (byte) (0x01 | 0x08 | 0x10)); // Armor stand data: small, no base plate, marker
-			
+
 			dataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
 			dataPacket.setEntityId(armorStand.getIdNMS());
 			dataPacket.sendPacket(receiver);
-			
+
 		} else {
 			WrapperPlayServerSpawnEntityLiving spawnPacket = new WrapperPlayServerSpawnEntityLiving(armorStand.getBukkitEntityNMS());
 			spawnPacket.sendPacket(receiver);
 		}
 	}
-	
-	
+
+
 	private void sendVehicleAttachPacket(Player receiver, int vehicleId, int passengerId) {
 		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
 			WrapperPlayServerMount attachPacket = new WrapperPlayServerMount();
 			attachPacket.setVehicleId(vehicleId);
-			attachPacket.setPassengers(new int[] {passengerId});
+			attachPacket.setPassengers(new int[]{passengerId});
 			attachPacket.sendPacket(receiver);
 		} else {
 			WrapperPlayServerAttachEntity attachPacket = new WrapperPlayServerAttachEntity();
@@ -368,13 +368,13 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	private boolean isHologramType(EntityType type) {
 		return type == EntityType.ARMOR_STAND || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME;
 	}
-	
+
 	private Hologram getHologram(Entity bukkitEntity) {
 		NMSEntityBase entity = nmsManager.getNMSEntityBase(bukkitEntity);
 		if (entity != null) {
 			return entity.getHologramLine().getParent();
 		}
-		
+
 		return null;
 	}
 }

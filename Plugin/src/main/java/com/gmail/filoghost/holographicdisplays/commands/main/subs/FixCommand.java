@@ -1,13 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitVersion;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
 import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
@@ -15,6 +7,13 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitVersion;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class FixCommand extends HologramSubCommand {
 
@@ -37,7 +36,7 @@ public class FixCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		CommandValidator.isTrue(!BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1), "This command is no longer necessary in 1.8+. The holograms already use the correct ambient light.");
-		
+
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
 
@@ -46,13 +45,13 @@ public class FixCommand extends HologramSubCommand {
 			sender.sendMessage(Colors.PRIMARY + "If you're sure, type " + Colors.SECONDARY + "/" + label + " fix " + args[0].toLowerCase() + " confirm");
 			return;
 		}
-		
+
 		if (args[1].equalsIgnoreCase("confirm")) {
-			
+
 			Block block = hologram.getWorld().getBlockAt((int) hologram.getX(), (int) hologram.getY() + 16, (int) hologram.getZ());
 			String oldType = block.getType().toString().replace("_", " ").toLowerCase();
 			block.setType(Material.GLOWSTONE);
-			
+
 			sender.sendMessage(Colors.PRIMARY + "Changed the block 16 block above the hologram (" + oldType + ") to glowstone!");
 
 		} else {
@@ -63,10 +62,10 @@ public class FixCommand extends HologramSubCommand {
 	@Override
 	public List<String> getTutorial() {
 		return Arrays.asList("This command will fix the lightning of a hologram,",
-							"placing a glowstone block 16 blocks above it.",
-							"That's the only way to fix it (Only for 1.7 and lower).");
+				"placing a glowstone block 16 blocks above it.",
+				"That's the only way to fix it (Only for 1.7 and lower).");
 	}
-	
+
 	@Override
 	public SubCommandType getType() {
 		if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {

@@ -67,7 +67,7 @@ public class ReflectionUtils {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static void putInPrivateStaticMap(Class<?> clazz, String fieldName, Object key, Object value) throws Exception {
 		Field field = clazz.getDeclaredField(fieldName);
 		field.setAccessible(true);
@@ -80,7 +80,7 @@ public class ReflectionUtils {
 		field.setAccessible(true);
 		field.set(handle, value);
 	}
-	
+
 	public static Object getPrivateField(Class<?> clazz, Object handle, String fieldName) throws Exception {
 		Field field = clazz.getDeclaredField(fieldName);
 		field.setAccessible(true);

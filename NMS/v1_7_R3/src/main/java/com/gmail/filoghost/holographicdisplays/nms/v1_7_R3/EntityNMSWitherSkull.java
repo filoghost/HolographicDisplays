@@ -1,18 +1,11 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_7_R3;
 
-import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
-
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSWitherSkull;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
-
-import net.minecraft.server.v1_7_R3.EntityPlayer;
-import net.minecraft.server.v1_7_R3.EntityWitherSkull;
-import net.minecraft.server.v1_7_R3.MathHelper;
-import net.minecraft.server.v1_7_R3.NBTTagCompound;
-import net.minecraft.server.v1_7_R3.PacketPlayOutEntityTeleport;
-import net.minecraft.server.v1_7_R3.World;
+import net.minecraft.server.v1_7_R3.*;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 
 public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWitherSkull {
 
@@ -76,10 +69,10 @@ public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWither
 			// Then this method is being called when creating a new packet, we return a fake ID!
 			return -1;
 		}
-		
+
 		return super.getId();
 	}
-	
+
 	@Override
 	public void h() {
 		if (!lockTick) {
@@ -122,12 +115,12 @@ public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWither
 
 		// Send a packet near to update the position.
 		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(
-			getIdNMS(),
-			MathHelper.floor(this.locX * 32.0D),
-			MathHelper.floor(this.locY * 32.0D),
-			MathHelper.floor(this.locZ * 32.0D),
-			(byte) (int) (this.yaw * 256.0F / 360.0F),
-			(byte) (int) (this.pitch * 256.0F / 360.0F)
+				getIdNMS(),
+				MathHelper.floor(this.locX * 32.0D),
+				MathHelper.floor(this.locY * 32.0D),
+				MathHelper.floor(this.locZ * 32.0D),
+				(byte) (int) (this.yaw * 256.0F / 360.0F),
+				(byte) (int) (this.pitch * 256.0F / 360.0F)
 		);
 
 		for (Object obj : this.world.players) {

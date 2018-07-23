@@ -14,7 +14,7 @@ public interface Hologram {
 
 	@Deprecated
 	public void hide();
-	
+
 	@Deprecated
 	public void addLine(String text);
 
@@ -29,40 +29,40 @@ public interface Hologram {
 
 	@Deprecated
 	public String[] getLines();
-	
+
 	@Deprecated
 	public int getLinesLength();
-	
+
 	@Deprecated
 	public void clearLines();
-	
+
 	@Deprecated
 	public Location getLocation();
-	
+
 	@Deprecated
 	public double getX();
-	
+
 	@Deprecated
 	public double getY();
-	
+
 	@Deprecated
 	public double getZ();
-	
+
 	@Deprecated
 	public World getWorld();
 
 	@Deprecated
 	public void setLocation(Location location);
-	
+
 	@Deprecated
 	public void teleport(Location location);
-	
+
 	@Deprecated
 	public void setTouchHandler(TouchHandler handler);
 
 	@Deprecated
 	public TouchHandler getTouchHandler();
-	
+
 	@Deprecated
 	public boolean hasTouchHandler();
 
@@ -74,5 +74,5 @@ public interface Hologram {
 
 	@Deprecated
 	public boolean isDeleted();
-	
+
 }

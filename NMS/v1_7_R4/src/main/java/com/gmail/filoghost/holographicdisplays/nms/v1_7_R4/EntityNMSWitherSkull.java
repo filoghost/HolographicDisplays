@@ -1,17 +1,11 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_7_R4;
 
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
-
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSWitherSkull;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
-
-import net.minecraft.server.v1_7_R4.EntityPlayer;
-import net.minecraft.server.v1_7_R4.EntityWitherSkull;
-import net.minecraft.server.v1_7_R4.NBTTagCompound;
-import net.minecraft.server.v1_7_R4.PacketPlayOutEntityTeleport;
-import net.minecraft.server.v1_7_R4.World;
+import net.minecraft.server.v1_7_R4.*;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 
 public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWitherSkull {
 
@@ -67,7 +61,7 @@ public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWither
 		 */
 		return true;
 	}
-	
+
 	@Override
 	public int getId() {
 		StackTraceElement element = ReflectionUtils.getStackTraceElement(2);
@@ -75,7 +69,7 @@ public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWither
 			// Then this method is being called when creating a new packet, we return a fake ID!
 			return -1;
 		}
-		
+
 		return super.getId();
 	}
 
@@ -114,7 +108,7 @@ public class EntityNMSWitherSkull extends EntityWitherSkull implements NMSWither
 	public void killEntityNMS() {
 		die();
 	}
-	
+
 
 	@Override
 	public void setLocationNMS(double x, double y, double z) {

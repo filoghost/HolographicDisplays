@@ -48,7 +48,7 @@ public interface FloatingItem {
 
 	@Deprecated
 	public boolean hasTouchHandler();
-	
+
 	@Deprecated
 	public void setPickupHandler(PickupHandler handler);
 

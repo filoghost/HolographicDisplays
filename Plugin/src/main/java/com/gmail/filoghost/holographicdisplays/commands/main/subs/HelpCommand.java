@@ -1,13 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
-import java.util.List;
-
-import com.gmail.filoghost.holographicdisplays.util.message.FancyComponent;
-import com.gmail.filoghost.holographicdisplays.util.message.FancyMessage;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
 import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
@@ -16,6 +8,13 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramsCommandHandler;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
+import com.gmail.filoghost.holographicdisplays.util.message.FancyComponent;
+import com.gmail.filoghost.holographicdisplays.util.message.FancyMessage;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class HelpCommand extends HologramSubCommand {
 

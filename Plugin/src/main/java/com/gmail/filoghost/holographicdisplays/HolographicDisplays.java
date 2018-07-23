@@ -1,19 +1,5 @@
 package com.gmail.filoghost.holographicdisplays;
 
-import java.io.File;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
-import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
-import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitVersion;
-import org.bstats.bukkit.MetricsLite;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.gmail.filoghost.holographicdisplays.SimpleUpdater.ResponseHandler;
 import com.gmail.filoghost.holographicdisplays.api.internal.BackendAPI;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
@@ -27,57 +13,66 @@ import com.gmail.filoghost.holographicdisplays.exception.InvalidFormatException;
 import com.gmail.filoghost.holographicdisplays.exception.WorldNotFoundException;
 import com.gmail.filoghost.holographicdisplays.listener.MainListener;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
-import com.gmail.filoghost.holographicdisplays.object.DefaultBackendAPI;
-import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
-import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
-import com.gmail.filoghost.holographicdisplays.object.PluginHologram;
-import com.gmail.filoghost.holographicdisplays.object.PluginHologramManager;
+import com.gmail.filoghost.holographicdisplays.object.*;
 import com.gmail.filoghost.holographicdisplays.placeholder.AnimationsRegister;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import com.gmail.filoghost.holographicdisplays.task.BungeeCleanupTask;
 import com.gmail.filoghost.holographicdisplays.task.StartupLoadHologramsTask;
 import com.gmail.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
+import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
+import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitVersion;
+import org.bstats.bukkit.MetricsLite;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HolographicDisplays extends JavaPlugin {
-	
+
 	// The main instance of the plugin.
 	private static HolographicDisplays instance;
-	
+
 	// The manager for net.minecraft.server access.
 	private static NMSManager nmsManager;
-	
+
 	// The listener for all the Bukkit and NMS events.
 	private static MainListener mainListener;
-	
+
 	// The command handler, just in case a plugin wants to register more commands.
 	private HologramsCommandHandler commandHandler;
-	
+
 	// The new version found by the updater, null if there is no new version.
 	private static String newVersion;
-	
+
 	// Not null if ProtocolLib is installed and successfully loaded.
 	private static ProtocolLibHook protocolLibHook;
-	
+
 	@Override
 	public void onEnable() {
-		
+
 		// Warn about plugin reloaders and the /reload command.
 		if (instance != null || System.getProperty("HolographicDisplaysLoaded") != null) {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[HolographicDisplays] Please do not use /reload or plugin reloaders. Use the command \"/holograms reload\" instead. You will receive no support for doing this operation.");
 		}
-		
+
 		System.setProperty("HolographicDisplaysLoaded", "true");
 		instance = this;
-		
+
 		// Load placeholders.yml.
 		UnicodeSymbols.load(this);
 
 		// Load the configuration.
 		Configuration.load(this);
-		
+
 		if (Configuration.updateNotification) {
 			new SimpleUpdater(this, 75097).checkForUpdates(new ResponseHandler() {
-				
+
 				@Override
 				public void onUpdateFound(final String newVersion) {
 
@@ -89,7 +84,7 @@ public class HolographicDisplays extends JavaPlugin {
 			});
 		}
 
-		if(BukkitVersion.getCurrentVersion() == BukkitVersion.UNKNOWN) {
+		if (BukkitVersion.getCurrentVersion() == BukkitVersion.UNKNOWN) {
 			printWarnAndDisable(
 					"******************************************************",
 					"     This version of HolographicDisplays only",
@@ -99,16 +94,16 @@ public class HolographicDisplays extends JavaPlugin {
 			);
 			return;
 		}
-		
+
 		try {
 			nmsManager = (NMSManager) Class.forName("com.gmail.filoghost.holographicdisplays.nms." + BukkitVersion.getCurrentVersion() + ".NmsManagerImpl").getConstructor().newInstance();
 		} catch (Throwable t) {
 			t.printStackTrace();
 			printWarnAndDisable(
-				"******************************************************",
-				"     HolographicDisplays was unable to instantiate",
-				"     the NMS manager. The plugin will be disabled.",
-				"******************************************************"
+					"******************************************************",
+					"     HolographicDisplays was unable to instantiate",
+					"     the NMS manager. The plugin will be disabled.",
+					"******************************************************"
 			);
 			return;
 		}
@@ -117,38 +112,38 @@ public class HolographicDisplays extends JavaPlugin {
 			if (BukkitUtils.isForgeServer()) {
 				getLogger().info("Trying to enable Forge support...");
 			}
-			
+
 			nmsManager.setup();
-			
+
 			if (BukkitUtils.isForgeServer()) {
 				getLogger().info("Successfully added Forge support!");
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			printWarnAndDisable(
-				"******************************************************",
-				"     HolographicDisplays was unable to register",
-				"     custom entities, the plugin will be disabled.",
-				"     Are you using the correct Bukkit/Spigot version?",
-				"******************************************************"
+					"******************************************************",
+					"     HolographicDisplays was unable to register",
+					"     custom entities, the plugin will be disabled.",
+					"     Are you using the correct Bukkit/Spigot version?",
+					"******************************************************"
 			);
 			return;
 		}
-		
+
 		// ProtocolLib check.
 		try {
 			if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-				
+
 				String requiredVersionError = null;
-				
+
 				try {
 					String protocolVersion = Bukkit.getPluginManager().getPlugin("ProtocolLib").getDescription().getVersion();
 					Matcher versionNumbersMatcher = Pattern.compile("([0-9.])+").matcher(protocolVersion);
-					
+
 					if (versionNumbersMatcher.find()) {
 						String versionNumbers = versionNumbersMatcher.group();
-						
+
 						if (BukkitVersion.isBetweenOrEqual(BukkitVersion.V1_7_R1, BukkitVersion.V1_7_R4)) {
 							if (!VersionUtils.isVersionBetweenOrEqual(versionNumbers, "3.6.4", "3.7.0")) {
 								requiredVersionError = "between 3.6.4 and 3.7.0";
@@ -165,14 +160,14 @@ public class HolographicDisplays extends JavaPlugin {
 					} else {
 						throw new RuntimeException("could not find version numbers pattern");
 					}
-					
+
 				} catch (Exception e) {
 					getLogger().warning("Could not check ProtocolLib version (" + e.getClass().getName() + ": " + e.getMessage() + "), enabling support anyway and hoping for the best. If you get errors, please contact the author.");
 				}
-				
+
 				if (requiredVersionError == null) {
 					ProtocolLibHook protocolLibHook;
-					
+
 					if (ReflectionUtils.isClassLoaded("com.comphenix.protocol.wrappers.WrappedDataWatcher$WrappedDataWatcherObject")) {
 						// Only the new version contains this class
 						getLogger().info("Found ProtocolLib, using new version.");
@@ -181,24 +176,24 @@ public class HolographicDisplays extends JavaPlugin {
 						getLogger().info("Found ProtocolLib, using old version.");
 						protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.old.ProtocolLibHookImpl();
 					}
-					
+
 					if (protocolLibHook.hook(this, nmsManager)) {
 						HolographicDisplays.protocolLibHook = protocolLibHook;
 						getLogger().info("Enabled player relative placeholders with ProtocolLib.");
 					}
-					
+
 				} else {
 					Bukkit.getConsoleSender().sendMessage(
 							ChatColor.RED + "[Holographic Displays] Detected incompatible version of ProtocolLib, support disabled. " +
 									"For this server version you must be using a ProtocolLib version " + requiredVersionError + ".");
 				}
 			}
-			
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			getLogger().warning("Failed to load ProtocolLib support. Is it updated?");
 		}
-		
+
 		// Load animation files and the placeholder manager.
 		PlaceholdersManager.load(this);
 		try {
@@ -207,15 +202,15 @@ public class HolographicDisplays extends JavaPlugin {
 			ex.printStackTrace();
 			getLogger().warning("Failed to load animation files!");
 		}
-		
+
 		// Initalize other static classes.
 		HologramDatabase.loadYamlFile(this);
 		BungeeServerTracker.startTask(Configuration.bungeeRefreshSeconds);
-		
+
 		// Start repeating tasks.
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new BungeeCleanupTask(), 5 * 60 * 20, 5 * 60 * 20);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorldPlayerCounterTask(), 0L, 3 * 20);
-		
+
 		Set<String> savedHologramsNames = HologramDatabase.getHolograms();
 		if (savedHologramsNames != null && savedHologramsNames.size() > 0) {
 			for (String singleHologramName : savedHologramsNames) {
@@ -234,34 +229,34 @@ public class HolographicDisplays extends JavaPlugin {
 				}
 			}
 		}
-		
+
 		if (getCommand("holograms") == null) {
 			printWarnAndDisable(
-				"******************************************************",
-				"     HolographicDisplays was unable to register",
-				"     the command \"holograms\". Do not modify",
-				"     plugin.yml removing commands, if this is",
-				"     the case.",
-				"******************************************************"
+					"******************************************************",
+					"     HolographicDisplays was unable to register",
+					"     the command \"holograms\". Do not modify",
+					"     plugin.yml removing commands, if this is",
+					"     the case.",
+					"******************************************************"
 			);
 			return;
 		}
-		
+
 		getCommand("holograms").setExecutor(commandHandler = new HologramsCommandHandler());
 		Bukkit.getPluginManager().registerEvents(mainListener = new MainListener(nmsManager), this);
-		
+
 		try {
 			new MetricsLite(this);
 		} catch (Exception ignore) {
 		}
-		
+
 		// The entities are loaded when the server is ready.
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new StartupLoadHologramsTask(), 10L);
-		
+
 		// Enable the API.
 		BackendAPI.setImplementation(new DefaultBackendAPI());
 	}
-	
+
 
 	@Override
 	public void onDisable() {
@@ -272,11 +267,11 @@ public class HolographicDisplays extends JavaPlugin {
 			hologram.despawnEntities();
 		}
 	}
-	
+
 	public static NMSManager getNMSManager() {
 		return nmsManager;
 	}
-	
+
 	public static MainListener getMainListener() {
 		return mainListener;
 	}
@@ -284,7 +279,7 @@ public class HolographicDisplays extends JavaPlugin {
 	public HologramsCommandHandler getCommandHandler() {
 		return commandHandler;
 	}
-	
+
 	private static void printWarnAndDisable(String... messages) {
 		StringBuffer buffer = new StringBuffer("\n ");
 		for (String message : messages) {
@@ -295,7 +290,8 @@ public class HolographicDisplays extends JavaPlugin {
 		System.out.println(buffer.toString());
 		try {
 			Thread.sleep(5000);
-		} catch (InterruptedException ex) { }
+		} catch (InterruptedException ex) {
+		}
 		instance.setEnabled(false);
 	}
 
@@ -307,13 +303,13 @@ public class HolographicDisplays extends JavaPlugin {
 	public static String getNewVersion() {
 		return newVersion;
 	}
-	
-	
+
+
 	public static boolean hasProtocolLibHook() {
 		return protocolLibHook != null;
 	}
-	
-	
+
+
 	public static ProtocolLibHook getProtocolLibHook() {
 		return protocolLibHook;
 	}

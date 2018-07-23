@@ -1,8 +1,14 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_12_R1;
 
-import java.lang.reflect.Method;
-
+import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
+import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.*;
+import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
 import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitValidator;
+import com.gmail.filoghost.holographicdisplays.util.message.FancyMessage;
 import net.minecraft.server.v1_12_R1.*;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Chunk;
@@ -13,18 +19,7 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
-import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
-import com.gmail.filoghost.holographicdisplays.util.message.FancyMessage;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSHorse;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSWitherSkull;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
-import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
+import java.lang.reflect.Method;
 
 public class NmsManagerImpl implements NMSManager {
 
@@ -105,26 +100,26 @@ public class NmsManagerImpl implements NMSManager {
 	private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
 		BukkitValidator.isSync("Async entity add");
 
-        final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
-        final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
+		final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
+		final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
 
-        if (!nmsWorld.getChunkProviderServer().isLoaded(chunkX, chunkZ)) {
-        	// This should never happen
-            nmsEntity.dead = true;
-            return false;
-        }
+		if (!nmsWorld.getChunkProviderServer().isLoaded(chunkX, chunkZ)) {
+			// This should never happen
+			nmsEntity.dead = true;
+			return false;
+		}
 
-        nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
-        nmsWorld.entityList.add(nmsEntity);
+		nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
+		nmsWorld.entityList.add(nmsEntity);
 
-        try {
+		try {
 			validateEntityMethod.invoke(nmsWorld, nmsEntity);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-        return true;
-    }
+		return true;
+	}
 
 	@Override
 	public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {

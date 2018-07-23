@@ -1,26 +1,25 @@
 package com.gmail.filoghost.holograms.api.replacements;
 
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.inventory.ItemStack;
-
 import com.gmail.filoghost.holograms.api.FloatingItem;
 import com.gmail.filoghost.holograms.api.ItemTouchHandler;
 import com.gmail.filoghost.holograms.api.PickupHandler;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Do not use this class!
  */
 @SuppressWarnings("deprecation")
 public class FakeFloatingItem implements FloatingItem {
-	
+
 	public CraftHologram hologram;
 	private CraftItemLine mainLine;
-	
+
 	public FakeFloatingItem(CraftHologram hologram, ItemStack item) {
-		this.hologram = hologram;		
+		this.hologram = hologram;
 		mainLine = hologram.appendItemLine(item);
 	}
 
@@ -31,7 +30,7 @@ public class FakeFloatingItem implements FloatingItem {
 
 	@Override
 	public void hide() {
-		
+
 	}
 
 	@Override

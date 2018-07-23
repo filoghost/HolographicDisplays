@@ -10,5 +10,5 @@ public interface PickupHandler {
 
 	@Deprecated
 	public void onPickup(FloatingItem floatingItem, Player player);
-	
+
 }

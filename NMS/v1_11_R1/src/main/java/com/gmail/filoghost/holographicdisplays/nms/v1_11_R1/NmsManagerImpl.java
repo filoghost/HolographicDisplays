@@ -1,8 +1,14 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_11_R1;
 
-import java.lang.reflect.Method;
-
+import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
+import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.*;
+import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
 import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitValidator;
+import com.gmail.filoghost.holographicdisplays.util.message.FancyMessage;
 import net.minecraft.server.v1_11_R1.*;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Chunk;
@@ -13,31 +19,20 @@ import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
-import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
-import com.gmail.filoghost.holographicdisplays.util.message.FancyMessage;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSHorse;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSWitherSkull;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
-import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
+import java.lang.reflect.Method;
 
 public class NmsManagerImpl implements NMSManager {
 
 	private Method validateEntityMethod;
-	
+
 	@Override
 	public void setup() throws Exception {
 		validateEntityMethod = World.class.getDeclaredMethod("b", Entity.class);
 		validateEntityMethod.setAccessible(true);
-		
+
 		registerCustomEntity(EntityNMSSlime.class, 55);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
 		if (BukkitUtils.isForgeServer()) {
@@ -46,7 +41,7 @@ public class NmsManagerImpl implements NMSManager {
 			// Use reflection to getCurrent the RegistryID of entities.
 			RegistryID<Class<? extends Entity>> registryID = (RegistryID<Class<? extends Entity>>) ReflectionUtils.getPrivateField(RegistryMaterials.class, EntityTypes.b, "a");
 			Object[] idToClassMap = (Object[]) ReflectionUtils.getPrivateField(RegistryID.class, registryID, "d");
-			
+
 			// Save the the ID -> entity class mapping before the registration.
 			Object oldValue = idToClassMap[id];
 
@@ -62,12 +57,12 @@ public class NmsManagerImpl implements NMSManager {
 	public NMSHorse spawnNMSHorse(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece) {
 		throw new NotImplementedException("Method can only be used on 1.7 or lower");
 	}
-	
+
 	@Override
 	public NMSWitherSkull spawnNMSWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece) {
 		throw new NotImplementedException("Method can only be used on 1.7 or lower");
 	}
-	
+
 	@Override
 	public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack, ItemPickupManager itemPickupManager) {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
@@ -79,7 +74,7 @@ public class NmsManagerImpl implements NMSManager {
 		}
 		return customItem;
 	}
-	
+
 	@Override
 	public EntityNMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece) {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
@@ -90,7 +85,7 @@ public class NmsManagerImpl implements NMSManager {
 		}
 		return touchSlime;
 	}
-	
+
 	@Override
 	public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece) {
 		WorldServer nmsWorld = ((CraftWorld) world).getHandle();
@@ -101,31 +96,31 @@ public class NmsManagerImpl implements NMSManager {
 		}
 		return invisibleArmorStand;
 	}
-	
+
 	private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
 		BukkitValidator.isSync("Async entity add");
-		
-        final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
-        final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
-        
-        if (!nmsWorld.getChunkProviderServer().isLoaded(chunkX, chunkZ)) {
-        	// This should never happen
-            nmsEntity.dead = true;
-            return false;
-        }
-        
-        nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
-        nmsWorld.entityList.add(nmsEntity);
-        
-        try {
+
+		final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
+		final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
+
+		if (!nmsWorld.getChunkProviderServer().isLoaded(chunkX, chunkZ)) {
+			// This should never happen
+			nmsEntity.dead = true;
+			return false;
+		}
+
+		nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
+		nmsWorld.entityList.add(nmsEntity);
+
+		try {
 			validateEntityMethod.invoke(nmsWorld, nmsEntity);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-        return true;
-    }
-	
+		return true;
+	}
+
 	@Override
 	public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
 		return ((CraftEntity) bukkitEntity).getHandle() instanceof NMSEntityBase;
@@ -133,7 +128,7 @@ public class NmsManagerImpl implements NMSManager {
 
 	@Override
 	public NMSEntityBase getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
-		
+
 		Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
 		if (nmsEntity instanceof NMSEntityBase) {
 			return ((NMSEntityBase) nmsEntity);
@@ -151,5 +146,5 @@ public class NmsManagerImpl implements NMSManager {
 	public boolean isUnloadUnsure(Chunk bukkitChunk) {
 		return bukkitChunk.getWorld().isChunkInUse(bukkitChunk.getX(), bukkitChunk.getZ()) || !((CraftChunk) bukkitChunk).getHandle().d; // Field probably representing if the chunk is scheduled to be unloaded in ChunkProviderServer
 	}
-	
+
 }

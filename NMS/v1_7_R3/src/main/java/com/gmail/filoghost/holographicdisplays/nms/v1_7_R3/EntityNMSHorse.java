@@ -1,23 +1,21 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_7_R3;
 
-import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
-
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSHorse;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
-
 import net.minecraft.server.v1_7_R3.Entity;
 import net.minecraft.server.v1_7_R3.EntityHorse;
 import net.minecraft.server.v1_7_R3.NBTTagCompound;
 import net.minecraft.server.v1_7_R3.World;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftEntity;
 
 public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 
 	private boolean lockTick;
 	private HologramLine parentPiece;
-	
+
 	public EntityNMSHorse(World world, HologramLine parentPiece) {
 		super(world);
 		super.ageLocked = true;
@@ -32,7 +30,7 @@ public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 		setAge(-1700000); // This is a magic value. No one will see the real horse.
 		this.parentPiece = parentPiece;
 	}
-	
+
 	@Override
 	public void h() {
 		// Checks every 20 ticks.
@@ -42,17 +40,17 @@ public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 				die();
 			}
 		}
-		
+
 		if (!lockTick) {
 			super.h();
 		}
 	}
-	
+
 	@Override
 	public void b(NBTTagCompound nbttagcompound) {
 		// Do not save NBT.
 	}
-	
+
 	@Override
 	public boolean c(NBTTagCompound nbttagcompound) {
 		// Do not save NBT.
@@ -64,12 +62,12 @@ public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 		// Do not save NBT.
 		return false;
 	}
-	
+
 	@Override
 	public void e(NBTTagCompound nbttagcompound) {
 		// Do not save NBT.
 	}
-	
+
 	@Override
 	public boolean isInvulnerable() {
 		/*
@@ -77,49 +75,49 @@ public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 		 * It's only used while saving NBTTags, but since the entity would be killed
 		 * on chunk unload, we prefer to override isInvulnerable().
 		 */
-	    return true;
+		return true;
 	}
 
 	@Override
 	public void setCustomName(String customName) {
 		// Locks the custom name.
 	}
-	
+
 	@Override
 	public void setCustomNameVisible(boolean visible) {
 		// Locks the custom name.
 	}
-	
+
 	@Override
 	public void makeSound(String sound, float volume, float pitch) {
-	    // Remove sounds.
+		// Remove sounds.
 	}
-	
+
 	@Override
 	public void setLockTick(boolean lock) {
 		lockTick = lock;
 	}
-	
+
 	@Override
 	public void die() {
 		setLockTick(false);
 		super.die();
 	}
-	
+
 	@Override
 	public void setCustomNameNMS(String name) {
 		if (name != null && name.length() > 300) {
 			name = name.substring(0, 300);
 		}
- 		super.setCustomName(name);
+		super.setCustomName(name);
 		super.setCustomNameVisible(name != null && !name.isEmpty());
 	}
-	
+
 	@Override
 	public CraftEntity getBukkitEntity() {
 		if (super.bukkitEntity == null) {
 			this.bukkitEntity = new CraftNMSHorse(this.world.getServer(), this);
-	    }
+		}
 		return this.bukkitEntity;
 	}
 
@@ -132,17 +130,17 @@ public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 	public String getCustomNameNMS() {
 		return super.getCustomName();
 	}
-	
+
 	@Override
 	public void killEntityNMS() {
 		die();
 	}
-	
+
 	@Override
 	public void setLocationNMS(double x, double y, double z) {
 		super.setPosition(x, y, z);
 	}
-	
+
 	@Override
 	public int getIdNMS() {
 		return this.getId();
@@ -157,16 +155,16 @@ public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 	public org.bukkit.entity.Entity getBukkitEntityNMS() {
 		return getBukkitEntity();
 	}
-	
+
 	@Override
 	public void setPassengerOfNMS(NMSEntityBase vehicleBase) {
 		if (vehicleBase == null || !(vehicleBase instanceof Entity)) {
 			// It should never dismount
 			return;
 		}
-		
+
 		Entity entity = (Entity) vehicleBase;
-		
+
 		try {
 			ReflectionUtils.setPrivateField(Entity.class, this, "g", (double) 0.0);
 			ReflectionUtils.setPrivateField(Entity.class, this, "h", (double) 0.0);
@@ -174,11 +172,11 @@ public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 			ConsoleLogger.error(ex);
 		}
 
-        if (this.vehicle != null) {
-        	this.vehicle.passenger = null;
-        }
-        
-        this.vehicle = entity;
-        entity.passenger = this;
+		if (this.vehicle != null) {
+			this.vehicle.passenger = null;
+		}
+
+		this.vehicle = entity;
+		entity.passenger = this;
 	}
 }

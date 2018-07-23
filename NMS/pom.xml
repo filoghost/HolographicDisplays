@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xmlns="http://maven.apache.org/POM/4.0.0"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.gmail.filoghost.holographicdisplays</groupId>
-		<artifactId>holographicdisplays-parent</artifactId>
-		<version>2.2.7-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+        <artifactId>holographicdisplays-parent</artifactId>
+        <version>2.2.7-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>holographicdisplays-nms</artifactId>
-	<packaging>pom</packaging>
+    <artifactId>holographicdisplays-nms</artifactId>
+    <packaging>pom</packaging>
 
-	<modules>
-		<module>Interfaces</module>
-		<module>v1_7_R1</module>
-		<module>v1_7_R2</module>
-		<module>v1_7_R3</module>
-		<module>v1_7_R4</module>
-		<module>v1_8_R1</module>
-		<module>v1_8_R2</module>
-		<module>v1_8_R3</module>
-		<module>v1_9_R1</module>
-		<module>v1_9_R2</module>
-		<module>v1_10_R1</module>
-		<module>v1_11_R1</module>
-		<module>v1_12_R1</module>
-		<module>v1_13_R1</module>
-		<module>Aggregated</module>
-	</modules>
+    <modules>
+        <module>Interfaces</module>
+        <module>v1_7_R1</module>
+        <module>v1_7_R2</module>
+        <module>v1_7_R3</module>
+        <module>v1_7_R4</module>
+        <module>v1_8_R1</module>
+        <module>v1_8_R2</module>
+        <module>v1_8_R3</module>
+        <module>v1_9_R1</module>
+        <module>v1_9_R2</module>
+        <module>v1_10_R1</module>
+        <module>v1_11_R1</module>
+        <module>v1_12_R1</module>
+        <module>v1_13_R1</module>
+        <module>Aggregated</module>
+    </modules>
 
-	<name>HolographicDisplays-NMS</name>
+    <name>HolographicDisplays-NMS</name>
 
-	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
-	</properties>
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
-	<repositories>
-		<!-- NMS Repository -->
-		<repository>
-			<id>nms-repo</id>
-			<url>https://repo.codemc.org/repository/nms/</url>
-		</repository>
-	</repositories>
+    <repositories>
+        <!-- NMS Repository -->
+        <repository>
+            <id>nms-repo</id>
+            <url>https://repo.codemc.org/repository/nms/</url>
+        </repository>
+    </repositories>
 
 </project>

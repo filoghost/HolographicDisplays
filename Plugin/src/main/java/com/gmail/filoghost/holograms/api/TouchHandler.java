@@ -10,5 +10,5 @@ public interface TouchHandler {
 
 	@Deprecated
 	public void onTouch(Hologram hologram, Player player);
-	
+
 }
