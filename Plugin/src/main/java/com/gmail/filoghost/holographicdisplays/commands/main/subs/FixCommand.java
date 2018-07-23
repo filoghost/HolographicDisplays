@@ -35,7 +35,7 @@ public class FixCommand extends HologramSubCommand {
 
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		CommandValidator.isTrue(!BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1), "This command is no longer necessary in 1.8+. The holograms already use the correct ambient light.");
+		CommandValidator.isTrue(!BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1), "This command is no longer necessary in 1.8+. The holograms already use the correct ambient light.");
 
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
@@ -68,7 +68,7 @@ public class FixCommand extends HologramSubCommand {
 
 	@Override
 	public SubCommandType getType() {
-		if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
 			return SubCommandType.HIDDEN;
 		} else {
 			return SubCommandType.GENERIC;

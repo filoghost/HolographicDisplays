@@ -17,8 +17,6 @@ import java.util.regex.Pattern;
 
 /**
  * A very simple and lightweight updater, without download features.
- *
- * @autor filoghost
  */
 public final class SimpleUpdater {
 
@@ -29,7 +27,7 @@ public final class SimpleUpdater {
 		 *
 		 * @param newVersion - the new version
 		 */
-		public void onUpdateFound(final String newVersion);
+		void onUpdateFound(final String newVersion);
 
 	}
 
@@ -97,7 +95,7 @@ public final class SimpleUpdater {
 		updaterThread.start();
 	}
 
-	private Object readJson(String url) throws MalformedURLException, IOException {
+	private Object readJson(String url) throws IOException {
 
 		URLConnection conn = new URL(url).openConnection();
 		conn.setConnectTimeout(5000);

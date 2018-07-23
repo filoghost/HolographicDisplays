@@ -7,13 +7,13 @@ public interface TextLine extends TouchableLine {
 	 *
 	 * @return the current text of this line.
 	 */
-	public String getText();
+	String getText();
 
 	/**
 	 * Sets the text of this TextLine.
 	 *
 	 * @param text the new text of this line.
 	 */
-	public void setText(String text);
+	void setText(String text);
 
 }

@@ -1,7 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.util.io;
 
-import lombok.experimental.UtilityClass;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -13,8 +11,10 @@ import java.util.List;
  * File related utilities.
  * TODO: javadoc
  */
-@UtilityClass
-public class FileUtils {
+public final class FileUtils {
+
+	private FileUtils() {
+	}
 
 	public static List<String> readLines(File file) throws IOException {
 		if (!file.isFile()) {

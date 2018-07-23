@@ -166,8 +166,8 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 		Entity entity = (Entity) vehicleBase;
 
 		try {
-			ReflectionUtils.setPrivateField(Entity.class, this, "ar", (double) 0.0);
-			ReflectionUtils.setPrivateField(Entity.class, this, "as", (double) 0.0);
+			ReflectionUtils.setPrivateField(Entity.class, this, "ar", 0.0);
+			ReflectionUtils.setPrivateField(Entity.class, this, "as", 0.0);
 		} catch (Exception ex) {
 			ConsoleLogger.error(ex);
 		}

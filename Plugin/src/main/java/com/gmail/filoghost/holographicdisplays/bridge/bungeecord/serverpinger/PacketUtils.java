@@ -8,7 +8,6 @@ import java.nio.charset.Charset;
 
 class PacketUtils {
 	public static final Charset UTF16BE = Charset.forName("UTF-16BE");
-	;
 	public static final Charset UTF8 = Charset.forName("UTF-8");
 
 	public static void a(final DataOutputStream out, final String s) throws IOException {

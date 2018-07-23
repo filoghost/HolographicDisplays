@@ -3,7 +3,6 @@ package com.gmail.filoghost.holographicdisplays.util.bukkit;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.google.common.collect.ImmutableList;
-import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -18,8 +17,7 @@ import java.util.regex.Pattern;
 /**
  * A collection of utility methods related to Bukkit server versions.
  */
-@UtilityClass
-public class BukkitUtils {
+public final class BukkitUtils {
 
 	private static Method getOnlinePlayersMethod;
 	private static boolean getOnlinePlayersUseReflection;
@@ -33,6 +31,9 @@ public class BukkitUtils {
 		} catch (NoSuchMethodException e) {
 			ConsoleLogger.error(e);
 		}
+	}
+
+	private BukkitUtils() {
 	}
 
 	/**
@@ -119,7 +120,7 @@ public class BukkitUtils {
 	 * @return true if the type is ArmourStand, false otherwise.
 	 */
 	public static boolean isArmorstand(EntityType type) {
-		if (!BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
+		if (!BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
 			return false;
 		}
 

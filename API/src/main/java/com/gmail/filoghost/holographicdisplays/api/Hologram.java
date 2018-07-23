@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
  * Holographic lines appear as a nametag without any entity below.
  * To create one, please see {@link HologramsAPI#createHologram(org.bukkit.plugin.Plugin, Location)}.
  */
-interface Hologram {
+public interface Hologram {
 
 	/**
 	 * Appends a text line to end of this hologram.

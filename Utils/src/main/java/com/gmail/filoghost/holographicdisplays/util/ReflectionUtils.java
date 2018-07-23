@@ -1,23 +1,24 @@
 package com.gmail.filoghost.holographicdisplays.util;
 
+import org.bukkit.Bukkit;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.logging.Level;
 
-import lombok.experimental.UtilityClass;
-import org.bukkit.Bukkit;
-
 /**
  * A set of reflection related utilities.
  * TODO: javadoc
  */
-@UtilityClass
-public class ReflectionUtils {
+public final class ReflectionUtils {
 
 	private static Method getStackTraceElementMethod;
 	private static Method getStackTraceDepthMethod;
 	private static boolean stackTraceErrorPrinted;
+
+	private ReflectionUtils() {
+	}
 
 	/**
 	 * Obtains one stack trace element faster than Throwable.getStackTrace()[element]

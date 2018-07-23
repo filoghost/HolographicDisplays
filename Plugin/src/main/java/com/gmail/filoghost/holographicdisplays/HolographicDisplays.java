@@ -1,6 +1,5 @@
 package com.gmail.filoghost.holographicdisplays;
 
-import com.gmail.filoghost.holographicdisplays.SimpleUpdater.ResponseHandler;
 import com.gmail.filoghost.holographicdisplays.api.internal.BackendAPI;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
@@ -19,6 +18,7 @@ import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import com.gmail.filoghost.holographicdisplays.task.BungeeCleanupTask;
 import com.gmail.filoghost.holographicdisplays.task.StartupLoadHologramsTask;
 import com.gmail.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
@@ -54,8 +54,13 @@ public class HolographicDisplays extends JavaPlugin {
 	private static ProtocolLibHook protocolLibHook;
 
 	@Override
-	public void onEnable() {
+	public void onLoad() {
+		// Prepare the logger
+		ConsoleLogger.setLogger(getLogger());
+	}
 
+	@Override
+	public void onEnable() {
 		// Warn about plugin reloaders and the /reload command.
 		if (instance != null || System.getProperty("HolographicDisplaysLoaded") != null) {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[HolographicDisplays] Please do not use /reload or plugin reloaders. Use the command \"/holograms reload\" instead. You will receive no support for doing this operation.");
@@ -71,16 +76,12 @@ public class HolographicDisplays extends JavaPlugin {
 		Configuration.load(this);
 
 		if (Configuration.updateNotification) {
-			new SimpleUpdater(this, 75097).checkForUpdates(new ResponseHandler() {
+			new SimpleUpdater(this, 75097).checkForUpdates(newVersion -> {
 
-				@Override
-				public void onUpdateFound(final String newVersion) {
-
-					HolographicDisplays.newVersion = newVersion;
-					getLogger().info("Found a new version available: " + newVersion);
-					getLogger().info("Download it on Bukkit Dev:");
-					getLogger().info("dev.bukkit.org/bukkit-plugins/holographic-displays");
-				}
+				HolographicDisplays.newVersion = newVersion;
+				getLogger().info("Found a new version available: " + newVersion);
+				getLogger().info("Download it on Bukkit Dev:");
+				getLogger().info("dev.bukkit.org/bukkit-plugins/holographic-displays");
 			});
 		}
 
@@ -144,11 +145,11 @@ public class HolographicDisplays extends JavaPlugin {
 					if (versionNumbersMatcher.find()) {
 						String versionNumbers = versionNumbersMatcher.group();
 
-						if (BukkitVersion.isBetweenOrEqual(BukkitVersion.V1_7_R1, BukkitVersion.V1_7_R4)) {
+						if (BukkitVersion.isBetweenOrEqual(BukkitVersion.v1_7_R1, BukkitVersion.v1_7_R4)) {
 							if (!VersionUtils.isVersionBetweenOrEqual(versionNumbers, "3.6.4", "3.7.0")) {
 								requiredVersionError = "between 3.6.4 and 3.7.0";
 							}
-						} else if (BukkitVersion.isBetweenOrEqual(BukkitVersion.V1_8_R1, BukkitVersion.V1_8_R3)) {
+						} else if (BukkitVersion.isBetweenOrEqual(BukkitVersion.v1_8_R1, BukkitVersion.v1_8_R3)) {
 							if (!VersionUtils.isVersionBetweenOrEqual(versionNumbers, "3.6.4", "3.6.5") && !VersionUtils.isVersionGreaterEqual(versionNumbers, "4.1")) {
 								requiredVersionError = "between 3.6.4 and 3.6.5 or higher than 4.1";
 							}

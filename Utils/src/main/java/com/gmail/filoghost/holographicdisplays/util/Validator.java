@@ -1,12 +1,12 @@
 package com.gmail.filoghost.holographicdisplays.util;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * Validation utilities.
  */
-@UtilityClass
-public class Validator {
+public final class Validator {
+
+	private Validator() {
+	}
 
 	public static void notNull(Object o, String name) {
 		if (o == null) {

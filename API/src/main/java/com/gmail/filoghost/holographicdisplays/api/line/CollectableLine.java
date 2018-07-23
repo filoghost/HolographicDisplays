@@ -12,13 +12,13 @@ public interface CollectableLine extends HologramLine {
 	 *
 	 * @param pickupHandler the new PickupHandler, can be null.
 	 */
-	public void setPickupHandler(PickupHandler pickupHandler);
+	void setPickupHandler(PickupHandler pickupHandler);
 
 	/**
 	 * Returns the current PickupHandler of this line.
 	 *
 	 * @return the current PickupHandler, can be null.
 	 */
-	public PickupHandler getPickupHandler();
+	PickupHandler getPickupHandler();
 
 }

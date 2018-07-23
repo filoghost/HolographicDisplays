@@ -37,7 +37,7 @@ public class HelpCommand extends HologramSubCommand {
 	}
 
 	@Override
-	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+	public void execute(CommandSender sender, String label, String[] args) {
 		sender.sendMessage("");
 		sender.sendMessage(Strings.formatTitle("Holographic Displays Commands"));
 		for (HologramSubCommand subCommand : mainCommandHandler.getSubCommands()) {

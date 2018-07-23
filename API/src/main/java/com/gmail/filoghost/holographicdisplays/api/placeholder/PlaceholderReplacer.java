@@ -7,6 +7,6 @@ public interface PlaceholderReplacer {
 	 *
 	 * @return the replacement
 	 */
-	public String update();
+	String update();
 
 }

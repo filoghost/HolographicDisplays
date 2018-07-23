@@ -1,16 +1,15 @@
 package com.gmail.filoghost.holographicdisplays.util;
 
-import lombok.experimental.UtilityClass;
-import org.bukkit.ChatColor;
-
 import java.util.*;
 
 /**
  * A collection of common utilities.
  * TODO: javadoc
  */
-@UtilityClass
-public class Utils {
+public final class Utils {
+
+	private Utils() {
+	}
 
 	/**
 	 * Converts a generic array to an array of Strings using the method toString().
@@ -23,43 +22,19 @@ public class Utils {
 		for (int i = 0; i < array.length; i++) {
 			result[i] = array[i] != null ? array[i].toString() : null;
 		}
-
 		return result;
 	}
 
-	/**
-	 * Convenience method to add colors to a string.
-	 *
-	 * @param text the text to colorize
-	 * @return the colorized text, or null if text was null
-	 */
-	public static String addColors(String text) {
-		if (text == null) {
-			return null;
-		}
-
-		return ChatColor.translateAlternateColorCodes('&', text);
-	}
-
-	public static boolean containsIgnoreCase(String toCheck, String content) {
-		return toCheck.toLowerCase().contains(content.toLowerCase());
-	}
-
 	public static <T, V> Map<T, V> newMap() {
-		return new HashMap<T, V>();
+		return new HashMap<>();
 	}
 
 	public static <T> List<T> newList() {
-		return new ArrayList<T>();
+		return new ArrayList<>();
 	}
 
 	public static <T> Set<T> newSet() {
-		return new HashSet<T>();
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T[] listToArray(List<T> list) {
-		return (T[]) list.toArray();
+		return new HashSet<>();
 	}
 
 	public static int floor(double num) {
@@ -88,20 +63,7 @@ public class Utils {
 			}
 			startIndex++;
 		}
-
 		return result.toString();
-	}
-
-	public static String join(String[] elements, String separator) {
-		return join(elements, separator, 0, elements.length);
-	}
-
-	public static String join(List<String> elements, String separator, int startIndex, int size) {
-		return join(elements.toArray(new String[0]), separator, startIndex, size);
-	}
-
-	public static String join(List<String> elements, String separator) {
-		return join(elements, separator, 0, elements.size());
 	}
 
 	public static String sanitize(String s) {
@@ -112,14 +74,11 @@ public class Utils {
 		if (objects == null) {
 			return false;
 		}
-
 		for (Object object : objects) {
 			if (object != null) {
 				return true;
 			}
 		}
-
 		return false;
 	}
-
 }

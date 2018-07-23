@@ -12,6 +12,6 @@ public interface TouchHandler {
 	 *
 	 * @param player the player who interacts
 	 */
-	public void onTouch(Player player);
+	void onTouch(Player player);
 
 }

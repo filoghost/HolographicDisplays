@@ -1,12 +1,12 @@
 package com.gmail.filoghost.holographicdisplays.constant;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * A class containing the constant hologram spacing offsets values.
  */
-@UtilityClass
-public class Offsets {
+public final class Offsets {
+
+	private Offsets() {
+	}
 
 	// Spawning a hologram line on top of a full block, the bottom part of the nametag should be perfectly on the surface of the block.
 	public static final double WITHER_SKULL_WITH_HORSE = 54.56;

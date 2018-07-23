@@ -64,15 +64,6 @@
         </repository>
     </repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.0</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
     <build>
         <defaultGoal>clean install</defaultGoal>
         <finalName>${project.name}-${project.version}</finalName>

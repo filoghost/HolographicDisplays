@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 
 public class ServerPinger {
 
-	public static PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException, Exception {
+	public static PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws Exception {
 
 		Socket socket = null;
 		DataOutputStream dataOut = null;

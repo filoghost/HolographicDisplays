@@ -1,13 +1,13 @@
 package com.gmail.filoghost.holographicdisplays.util;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * Version comparison related utilities.
  * TODO: javadoc
  */
-@UtilityClass
 public class VersionUtils {
+
+	private VersionUtils() {
+	}
 
 	/**
 	 * Compares version codes.

@@ -15,7 +15,7 @@ public interface VisibilityManager {
 	 *
 	 * @return if the hologram hologram is visible by default
 	 */
-	public boolean isVisibleByDefault();
+	boolean isVisibleByDefault();
 
 	/**
 	 * Sets if the hologram is visible by default. If not changed, this value
@@ -23,7 +23,7 @@ public interface VisibilityManager {
 	 *
 	 * @param visibleByDefault the new behaviour
 	 */
-	public void setVisibleByDefault(boolean visibleByDefault);
+	void setVisibleByDefault(boolean visibleByDefault);
 
 	/**
 	 * Shows the hologram to a player, overriding the value of {@link #isVisibleByDefault()}.
@@ -31,7 +31,7 @@ public interface VisibilityManager {
 	 *
 	 * @param player the involved player
 	 */
-	public void showTo(Player player);
+	void showTo(Player player);
 
 	/**
 	 * Hides the hologram to a player, overriding the value of {@link #isVisibleByDefault()}.
@@ -39,7 +39,7 @@ public interface VisibilityManager {
 	 *
 	 * @param player the involved player
 	 */
-	public void hideTo(Player player);
+	void hideTo(Player player);
 
 	/**
 	 * Checks if a hologram is visible to a player.
@@ -47,7 +47,7 @@ public interface VisibilityManager {
 	 * @param player the involved player
 	 * @return if the player can see the hologram
 	 */
-	public boolean isVisibleTo(Player player);
+	boolean isVisibleTo(Player player);
 
 	/**
 	 * Resets the visibility to the default value. If you previously called {@link #showTo(Player)}
@@ -56,11 +56,11 @@ public interface VisibilityManager {
 	 *
 	 * @param player the involved player
 	 */
-	public void resetVisibility(Player player);
+	void resetVisibility(Player player);
 
 	/**
 	 * Resets the visibility for all the players. See {@link #resetVisibility(Player)} for more details.
 	 */
-	public void resetVisibilityAll();
+	void resetVisibilityAll();
 
 }

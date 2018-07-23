@@ -187,8 +187,8 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		Entity entity = (Entity) vehicleBase;
 
 		try {
-			ReflectionUtils.setPrivateField(Entity.class, this, "g", (double) 0.0);
-			ReflectionUtils.setPrivateField(Entity.class, this, "h", (double) 0.0);
+			ReflectionUtils.setPrivateField(Entity.class, this, "g", 0.0);
+			ReflectionUtils.setPrivateField(Entity.class, this, "h", 0.0);
 		} catch (Exception ex) {
 			ConsoleLogger.error(ex);
 		}

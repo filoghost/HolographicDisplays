@@ -70,7 +70,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	public void spawn(World world, double x, double y, double z) {
 		super.spawn(world, x, y, z);
 
-		if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
 			nmsNameble = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this);
 		} else {
 			nmsNameble = HolographicDisplays.getNMSManager().spawnNMSHorse(world, x, y + Offsets.WITHER_SKULL_WITH_HORSE, z, this);
@@ -148,9 +148,9 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	}
 
 	private double getTextOffset() {
-		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
 			return Offsets.ARMOR_STAND_ALONE_1_9;
-		} else if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
+		} else if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
 			return Offsets.ARMOR_STAND_ALONE;
 		} else {
 			return Offsets.WITHER_SKULL_WITH_HORSE;

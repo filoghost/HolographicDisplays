@@ -96,13 +96,13 @@ public class Configuration {
 
 
 		if (needsSave) {
-			config.options().header(Utils.join(new String[]{
+			config.options().header(String.join("\n",
+					new String[]{
 							".",
 							".  Read the tutorial at: http://dev.bukkit.org/bukkit-plugins/holographic-displays/",
 							".",
 							".  Plugin created by filoghost.",
-							"."},
-					"\n"));
+							"."}));
 			config.options().copyHeader(true);
 			try {
 				config.save(configFile);

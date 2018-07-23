@@ -1,6 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.util.bukkit;
 
-import lombok.experimental.UtilityClass;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -12,8 +11,7 @@ import java.util.regex.Pattern;
  * A set of Item/Material related utilities.
  * TODO: javadoc
  */
-@UtilityClass
-public class ItemUtils {
+public final class ItemUtils {
 
 	/**
 	 * This is used on hologram icons, to prevent vanilla items from merging with them.
@@ -86,6 +84,9 @@ public class ItemUtils {
 		for (Material mat : Material.values()) {
 			materialMap.put(stripSpacingChars(mat.toString()).toLowerCase(), mat);
 		}
+	}
+
+	private ItemUtils() {
 	}
 
 	public static String stripSpacingChars(String input) {

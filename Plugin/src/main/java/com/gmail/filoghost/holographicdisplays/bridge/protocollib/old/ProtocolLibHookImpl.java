@@ -41,7 +41,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {
 		this.nmsManager = nmsManager;
 
-		if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
 			customNameWatcherIndex = 2;
 		} else {
 			customNameWatcherIndex = 10;
@@ -222,7 +222,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						itemPacket.sendPacket(player);
 
 						AbstractPacket vehiclePacket;
-						if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
+						if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
 							// In 1.8 we have armor stands, that are living entities.
 							vehiclePacket = new WrapperPlayServerSpawnEntityLiving(itemLine.getNmsVehicle().getBukkitEntityNMS());
 						} else {
@@ -258,7 +258,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					if (touchSlime.isSpawned()) {
 						AbstractPacket vehiclePacket;
 
-						if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
+						if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
 							// Armor stand vehicle
 							vehiclePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsVehicle().getBukkitEntityNMS());
 						} else {

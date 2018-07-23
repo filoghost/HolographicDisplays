@@ -7,10 +7,10 @@ import org.bukkit.plugin.Plugin;
 
 public interface ProtocolLibHook {
 
-	public boolean hook(Plugin plugin, NMSManager nmsManager);
+	boolean hook(Plugin plugin, NMSManager nmsManager);
 
-	public void sendDestroyEntitiesPacket(Player player, CraftHologram hologram);
+	void sendDestroyEntitiesPacket(Player player, CraftHologram hologram);
 
-	public void sendCreateEntitiesPacket(Player player, CraftHologram hologram);
+	void sendCreateEntitiesPacket(Player player, CraftHologram hologram);
 
 }

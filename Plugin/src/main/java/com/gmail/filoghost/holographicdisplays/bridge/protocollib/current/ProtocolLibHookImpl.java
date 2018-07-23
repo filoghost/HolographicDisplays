@@ -74,8 +74,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 
 		this.nmsManager = nmsManager;
 
-		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
-			if (BukkitVersion.isAtLeast(BukkitVersion.V1_10_R1)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
+			if (BukkitVersion.isAtLeast(BukkitVersion.v1_10_R1)) {
 				itemstackMetadataWatcherIndex = 6;
 			} else {
 				itemstackMetadataWatcherIndex = 5;
@@ -84,7 +84,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			itemstackMetadataWatcherIndex = 10;
 		}
 
-		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
 			itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
 			intSerializer = Registry.get(Integer.class);
 			byteSerializer = Registry.get(Byte.class);
@@ -223,7 +223,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 								String replacement = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
 
 								WrappedWatchableObject newWatchableObject;
-								if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
+								if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
 									// The other constructor does not work in 1.9+.
 									newWatchableObject = new WrappedWatchableObject(watchableObject.getWatcherObject(), replacement);
 								} else {
@@ -284,8 +284,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
 					WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 
-					if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
-						Object itemStackObject = BukkitVersion.isAtLeast(BukkitVersion.V1_11_R1) ? itemLine.getNmsItem().getRawItemStack() : Optional.of(itemLine.getNmsItem().getRawItemStack());
+					if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
+						Object itemStackObject = BukkitVersion.isAtLeast(BukkitVersion.v1_11_R1) ? itemLine.getNmsItem().getRawItemStack() : Optional.of(itemLine.getNmsItem().getRawItemStack());
 						dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), itemStackObject);
 						dataWatcher.setObject(new WrappedDataWatcherObject(1, intSerializer), 300);
 						dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0);
@@ -322,7 +322,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 
 
 	private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {
-		if (BukkitVersion.isAtLeast(BukkitVersion.V1_11_R1)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.v1_11_R1)) {
 			WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), ObjectTypes.ARMOR_STAND, 1);
 			spawnPacket.sendPacket(receiver);
 
@@ -352,7 +352,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 
 
 	private void sendVehicleAttachPacket(Player receiver, int vehicleId, int passengerId) {
-		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
 			WrapperPlayServerMount attachPacket = new WrapperPlayServerMount();
 			attachPacket.setVehicleId(vehicleId);
 			attachPacket.setPassengers(new int[]{passengerId});
