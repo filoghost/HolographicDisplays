@@ -1,15 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -30,14 +20,22 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
-import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
-import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
-import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
-import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
-import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchableLine;
-import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
+import com.gmail.filoghost.holographicdisplays.object.line.*;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
+import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
-import com.google.common.base.Optional;
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitVersion;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * This is for the ProtocolLib versions containing the WrappedDataWatcher.WrappedDataWatcherObject class.
@@ -45,7 +43,9 @@ import com.google.common.base.Optional;
  * These versions are only used from 1.8, there is no need to handle 1.7 entities.
  */
 public class ProtocolLibHookImpl implements ProtocolLibHook {
-	
+
+	private final static String LEGACY_TEMPORARY_PLAYER_CHECK_CLASS = "com.comphenix.net.sf.cglib.proxy.Factor";
+
 	private NMSManager nmsManager;
 	
 	private Serializer
@@ -56,6 +56,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		booleanSerializer;
 	
 	private int itemstackMetadataWatcherIndex;
+
+	private Method isPlayerTemporaryMethod;
 	
 	@Override
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {
@@ -72,8 +74,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		
 		this.nmsManager = nmsManager;
 		
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
-			if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_10)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
+			if (BukkitVersion.isAtLeast(BukkitVersion.V1_10_R1)) {
 				itemstackMetadataWatcherIndex = 6;
 			} else {
 				itemstackMetadataWatcherIndex = 5;
@@ -82,7 +84,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			itemstackMetadataWatcherIndex = 10;
 		}
 		
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
 			itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
 			intSerializer = Registry.get(Integer.class);
 			byteSerializer = Registry.get(Byte.class);
@@ -98,16 +100,34 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						PacketType.Play.Server.ENTITY_METADATA)
 				.serverSide()
 				.listenerPriority(ListenerPriority.NORMAL);
-		
+
+
+		try {
+			isPlayerTemporaryMethod = PacketEvent.class.getDeclaredMethod("isPlayerTemporary");
+		} catch (NoSuchMethodException e) {
+			isPlayerTemporaryMethod = null;
+		}
+
 		ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(params) {
 					  
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					
 					PacketContainer packet = event.getPacket();
-					
-					if (event.getPlayer() instanceof Factory) {
-						return; // Ignore temporary players (reference: https://github.com/dmulloy2/ProtocolLib/issues/349)
+
+					// See https://github.com/dmulloy2/ProtocolLib/issues/349
+					if(isPlayerTemporaryMethod != null) {
+						try {
+							if((boolean) isPlayerTemporaryMethod.invoke(event)) {
+								return;
+							}
+						} catch (IllegalAccessException | InvocationTargetException e) {
+							ConsoleLogger.error(e);
+						}
+					} else {
+						// For older ProtocolLib versions
+						if(ReflectionUtils.instanceOf(event, LEGACY_TEMPORARY_PLAYER_CHECK_CLASS)) {
+							return;
+						}
 					}
 
 					// Spawn entity packet
@@ -162,9 +182,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						Player player = event.getPlayer();
 						if (!hologram.getVisibilityManager().isVisibleTo(player)) {
 							event.setCancelled(true);
-							return;
 						}
-					
 					} else if (packet.getType() == PacketType.Play.Server.ENTITY_METADATA) {
 
 						WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
@@ -205,7 +223,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 									String replacement = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
 
 									WrappedWatchableObject newWatchableObject;
-									if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+									if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
 										// The other constructor does not work in 1.9+.
 										newWatchableObject = new WrappedWatchableObject(watchableObject.getWatcherObject(), replacement);
 									} else {
@@ -251,42 +269,35 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	public void sendCreateEntitiesPacket(Player player, CraftHologram hologram) {
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
 			if (line.isSpawned()) {
-				
 				if (line instanceof CraftTextLine) {
 					CraftTextLine textLine = (CraftTextLine) line;
-					
-					if (textLine.isSpawned()) {
-						sendSpawnArmorStandPacket(player, (NMSArmorStand) textLine.getNmsNameble());
-					}
-					
+					sendSpawnArmorStandPacket(player, (NMSArmorStand) textLine.getNmsNameble());
 				} else if (line instanceof CraftItemLine) {
 					CraftItemLine itemLine = (CraftItemLine) line;
-					
-					if (itemLine.isSpawned()) {
-						AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsItem().getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
-						itemPacket.sendPacket(player);
-						
-						sendSpawnArmorStandPacket(player, (NMSArmorStand) itemLine.getNmsVehicle());
-						sendVehicleAttachPacket(player, itemLine.getNmsVehicle().getIdNMS(), itemLine.getNmsItem().getIdNMS());
-						
-						WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
-						WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
-						
-						if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
-							Object itemStackObject = MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_11) ? itemLine.getNmsItem().getRawItemStack() : Optional.of(itemLine.getNmsItem().getRawItemStack());
-							dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), itemStackObject);
-							dataWatcher.setObject(new WrappedDataWatcherObject(1, intSerializer), 300);
-							dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0);
-						} else {
-							dataWatcher.setObject(itemstackMetadataWatcherIndex, itemLine.getNmsItem().getRawItemStack());
-							dataWatcher.setObject(1, 300);
-							dataWatcher.setObject(0, (byte) 0);
-						}
 
-						itemDataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
-						itemDataPacket.setEntityId(itemLine.getNmsItem().getIdNMS());
-						itemDataPacket.sendPacket(player);
+					AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsItem().getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
+					itemPacket.sendPacket(player);
+
+					sendSpawnArmorStandPacket(player, (NMSArmorStand) itemLine.getNmsVehicle());
+					sendVehicleAttachPacket(player, itemLine.getNmsVehicle().getIdNMS(), itemLine.getNmsItem().getIdNMS());
+
+					WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
+					WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
+
+					if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
+						Object itemStackObject = BukkitVersion.isAtLeast(BukkitVersion.V1_11_R1) ? itemLine.getNmsItem().getRawItemStack() : Optional.of(itemLine.getNmsItem().getRawItemStack());
+						dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), itemStackObject);
+						dataWatcher.setObject(new WrappedDataWatcherObject(1, intSerializer), 300);
+						dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0);
+					} else {
+						dataWatcher.setObject(itemstackMetadataWatcherIndex, itemLine.getNmsItem().getRawItemStack());
+						dataWatcher.setObject(1, 300);
+						dataWatcher.setObject(0, (byte) 0);
 					}
+
+					itemDataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
+					itemDataPacket.setEntityId(itemLine.getNmsItem().getIdNMS());
+					itemDataPacket.sendPacket(player);
 				}
 				
 				// Unsafe cast, however both CraftTextLine and CraftItemLine are touchable.
@@ -311,8 +322,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	
 	private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_11)) {
-			WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), WrapperPlayServerSpawnEntity.ObjectTypes.ARMOR_STAND, 1);
+		if (BukkitVersion.isAtLeast(BukkitVersion.V1_11_R1)) {
+			WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), ObjectTypes.ARMOR_STAND, 1);
 			spawnPacket.sendPacket(receiver);
 			
 			WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
@@ -341,7 +352,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	
 	private void sendVehicleAttachPacket(Player receiver, int vehicleId, int passengerId) {
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
 			WrapperPlayServerMount attachPacket = new WrapperPlayServerMount();
 			attachPacket.setVehicleId(vehicleId);
 			attachPacket.setPassengers(new int[] {passengerId});
@@ -354,11 +365,9 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		}
 	}
 
-	
 	private boolean isHologramType(EntityType type) {
 		return type == EntityType.ARMOR_STAND || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME;
 	}
-	
 	
 	private Hologram getHologram(Entity bukkitEntity) {
 		NMSEntityBase entity = nmsManager.getNMSEntityBase(bukkitEntity);

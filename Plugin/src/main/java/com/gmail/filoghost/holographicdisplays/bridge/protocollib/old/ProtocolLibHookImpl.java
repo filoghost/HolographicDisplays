@@ -3,6 +3,8 @@ package com.gmail.filoghost.holographicdisplays.bridge.protocollib.old;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitVersion;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -27,9 +29,7 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchableLine;
-import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 /**
  * This is for the ProtocolLib versions without the WrappedDataWatcher.WrappedDataWatcherObject class.
@@ -46,7 +46,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {
 		this.nmsManager = nmsManager;
 
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
 			customNameWatcherIndex = 2;
 		} else {
 			customNameWatcherIndex = 10;
@@ -129,7 +129,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 
-						if (entity.getType() != EntityType.HORSE && !VersionUtils.isArmorstand(entity.getType())) {
+						if (entity.getType() != EntityType.HORSE && BukkitUtils.isArmorstand(entity.getType())) {
 							// Enough, only horses and armorstands are used with custom names.
 							return;
 						}
@@ -227,7 +227,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						itemPacket.sendPacket(player);
 
 						AbstractPacket vehiclePacket;
-						if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
+						if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
 							// In 1.8 we have armor stands, that are living entities.
 							vehiclePacket = new WrapperPlayServerSpawnEntityLiving(itemLine.getNmsVehicle().getBukkitEntityNMS());
 						} else {
@@ -263,7 +263,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					if (touchSlime.isSpawned()) {
 						AbstractPacket vehiclePacket;
 
-						if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
+						if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
 							// Armor stand vehicle
 							vehiclePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsVehicle().getBukkitEntityNMS());
 						} else {
@@ -300,7 +300,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	}
 
 	private boolean isHologramType(EntityType type) {
-		return type == EntityType.HORSE || type == EntityType.WITHER_SKULL || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME || VersionUtils.isArmorstand(type); // To maintain backwards compatibility
+		return type == EntityType.HORSE || type == EntityType.WITHER_SKULL || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME || BukkitUtils.isArmorstand(type); // To maintain backwards compatibility
 	}
 
 	private Hologram getHologram(Entity bukkitEntity) {

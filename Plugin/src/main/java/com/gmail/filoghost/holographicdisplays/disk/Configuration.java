@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerAddress;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 /**
@@ -170,7 +170,7 @@ public class Configuration {
 			}
 		}
 		
-		DebugHandler.setDebugEnabled(config.getBoolean(ConfigNode.DEBUG.getPath()));
+		ConsoleLogger.setDebugEnabled(config.getBoolean(ConfigNode.DEBUG.getPath()));
 		
 		String tempColor = config.getString(ConfigNode.TRANSPARENCY_COLOR.getPath()).replace('&', ChatColor.COLOR_CHAR);
 		boolean foundColor = false;

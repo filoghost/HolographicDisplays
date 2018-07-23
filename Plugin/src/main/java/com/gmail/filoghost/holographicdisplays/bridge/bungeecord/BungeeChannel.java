@@ -8,6 +8,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.Collection;
 
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -97,7 +98,7 @@ public class BungeeChannel implements PluginMessageListener {
 		}
 
 		// OR, if you don't need to send it to a specific player
-		Collection<? extends Player> players = VersionUtils.getOnlinePlayers();
+		Collection<? extends Player> players = BukkitUtils.getOnlinePlayers();
 		if (players.size() > 0) {
 			players.iterator().next().sendPluginMessage(HolographicDisplays.getInstance(), Configuration.useRedisBungee ? "RedisBungee" : "BungeeCord", b.toByteArray());
 		}

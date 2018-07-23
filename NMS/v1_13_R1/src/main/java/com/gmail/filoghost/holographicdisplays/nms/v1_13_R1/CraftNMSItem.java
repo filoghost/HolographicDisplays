@@ -14,107 +14,107 @@ import org.bukkit.util.Vector;
  */
 public class CraftNMSItem extends CraftItem {
 
-    public CraftNMSItem(CraftServer server, EntityNMSItem entity) {
-        super(server, entity);
-    }
+	public CraftNMSItem(CraftServer server, EntityNMSItem entity) {
+		super(server, entity);
+	}
 
-    /*
-     * Handle CraftEntity methods.
-     */
+	/*
+	 * Handle CraftEntity methods.
+	 */
 
-    // Make the item not removable. Very important to override.
-    @Override
-    public void remove() {
-    }
+	// Make the item not removable. Very important to override.
+	@Override
+	public void remove() {
+	}
 
-    @Override
-    public void setVelocity(Vector vel) {
-    }
+	@Override
+	public void setVelocity(Vector vel) {
+	}
 
-    @Override
-    public boolean teleport(Location loc) {
-        return false;
-    }
+	@Override
+	public boolean teleport(Location loc) {
+		return false;
+	}
 
-    @Override
-    public boolean teleport(Entity entity) {
-        return false;
-    }
+	@Override
+	public boolean teleport(Entity entity) {
+		return false;
+	}
 
-    @Override
-    public boolean teleport(Location loc, TeleportCause cause) {
-        return false;
-    }
+	@Override
+	public boolean teleport(Location loc, TeleportCause cause) {
+		return false;
+	}
 
-    @Override
-    public boolean teleport(Entity entity, TeleportCause cause) {
-        return false;
-    }
+	@Override
+	public boolean teleport(Entity entity, TeleportCause cause) {
+		return false;
+	}
 
-    @Override
-    public void setFireTicks(int ticks) {
-    }
+	@Override
+	public void setFireTicks(int ticks) {
+	}
 
-    @Override
-    public boolean setPassenger(Entity entity) {
-        return false;
-    }
+	@Override
+	public boolean setPassenger(Entity entity) {
+		return false;
+	}
 
-    @Override
-    public boolean eject() {
-        return false;
-    }
+	@Override
+	public boolean eject() {
+		return false;
+	}
 
-    @Override
-    public boolean leaveVehicle() {
-        return false;
-    }
+	@Override
+	public boolean leaveVehicle() {
+		return false;
+	}
 
-    @Override
-    public void playEffect(EntityEffect effect) {
-    }
+	@Override
+	public void playEffect(EntityEffect effect) {
+	}
 
-    @Override
-    public void setCustomName(String name) {
-    }
+	@Override
+	public void setCustomName(String name) {
+	}
 
-    @Override
-    public void setCustomNameVisible(boolean flag) {
-    }
+	@Override
+	public void setCustomNameVisible(boolean flag) {
+	}
 
-    @Override
-    public void setGlowing(boolean flag) {
-    }
+	@Override
+	public void setGlowing(boolean flag) {
+	}
 
-    @Override
-    public void setGravity(boolean gravity) {
-    }
+	@Override
+	public void setGravity(boolean gravity) {
+	}
 
-    @Override
-    public void setInvulnerable(boolean flag) {
-    }
+	@Override
+	public void setInvulnerable(boolean flag) {
+	}
 
-    @Override
-    public void setMomentum(Vector value) {
-    }
+	@Override
+	public void setMomentum(Vector value) {
+	}
 
-    @Override
-    public void setSilent(boolean flag) {
-    }
+	@Override
+	public void setSilent(boolean flag) {
+	}
 
-    @Override
-    public void setTicksLived(int value) {
-    }
+	@Override
+	public void setTicksLived(int value) {
+	}
 
-    /*
-     * Handle CraftItem methods.
-     */
+	/*
+	 * Handle CraftItem methods.
+	 */
 
-    @Override
-    public void setItemStack(ItemStack stack) {
-    }
+	@Override
+	public void setItemStack(ItemStack stack) {
+	}
 
-    @Override
-    public void setPickupDelay(int delay) {
-    }
+	@Override
+	public void setPickupDelay(int delay) {
+	}
 }

@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gmail.filoghost.holographicdisplays.util.io.FileUtils;
+import com.gmail.filoghost.holographicdisplays.util.io.UnreadableImageException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -22,11 +24,9 @@ import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.exception.TooWideException;
-import com.gmail.filoghost.holographicdisplays.exception.UnreadableImageException;
 import com.gmail.filoghost.holographicdisplays.image.ImageMessage;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
-import com.gmail.filoghost.holographicdisplays.util.FileUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class ReadimageCommand extends HologramSubCommand {
@@ -89,7 +89,7 @@ public class ReadimageCommand extends HologramSubCommand {
 				
 				File targetImage = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
 				CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetImage), "The image must be inside HolographicDisplays' folder.");
-				CommandValidator.isTrue(!FileUtils.isConfigFile(targetImage), "Cannot read default configuration files.");
+				CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetImage), "Cannot read default configuration files.");
 				
 				image = FileUtils.readImage(targetImage);
 			}

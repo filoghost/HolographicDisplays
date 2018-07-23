@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.gmail.filoghost.holographicdisplays.util.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.plugin.Plugin;
-
-import com.gmail.filoghost.holographicdisplays.util.FileUtils;
 
 public class UnicodeSymbols {
 

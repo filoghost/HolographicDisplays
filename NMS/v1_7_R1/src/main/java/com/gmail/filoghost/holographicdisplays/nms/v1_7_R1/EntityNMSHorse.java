@@ -5,7 +5,7 @@ import org.bukkit.craftbukkit.v1_7_R1.entity.CraftEntity;
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSHorse;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 
 import net.minecraft.server.v1_7_R1.Entity;
@@ -171,7 +171,7 @@ public class EntityNMSHorse extends EntityHorse implements NMSHorse {
 			ReflectionUtils.setPrivateField(Entity.class, this, "g", (double) 0.0);
 			ReflectionUtils.setPrivateField(Entity.class, this, "h", (double) 0.0);
 		} catch (Exception ex) {
-			DebugHandler.handleDebugException(ex);
+			ConsoleLogger.error(ex);
 		}
 
         if (this.vehicle != null) {

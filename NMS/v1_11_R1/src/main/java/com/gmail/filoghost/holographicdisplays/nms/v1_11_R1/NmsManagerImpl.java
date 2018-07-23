@@ -2,17 +2,20 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_11_R1;
 
 import java.lang.reflect.Method;
 
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitValidator;
+import net.minecraft.server.v1_11_R1.*;
 import org.apache.commons.lang.NotImplementedException;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.craftbukkit.v1_11_R1.CraftChunk;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.FancyMessage;
+import com.gmail.filoghost.holographicdisplays.util.message.FancyMessage;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
@@ -20,18 +23,8 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBa
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSHorse;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSWitherSkull;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
-import com.gmail.filoghost.holographicdisplays.util.Validator;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
-
-import net.minecraft.server.v1_11_R1.Entity;
-import net.minecraft.server.v1_11_R1.EntityTypes;
-import net.minecraft.server.v1_11_R1.MathHelper;
-import net.minecraft.server.v1_11_R1.RegistryID;
-import net.minecraft.server.v1_11_R1.RegistryMaterials;
-import net.minecraft.server.v1_11_R1.World;
-import net.minecraft.server.v1_11_R1.WorldServer;
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
 
 public class NmsManagerImpl implements NMSManager {
 
@@ -47,10 +40,10 @@ public class NmsManagerImpl implements NMSManager {
 	
 	@SuppressWarnings("unchecked")
 	public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
-		if (VersionUtils.isForgeServer()) {
+		if (BukkitUtils.isForgeServer()) {
 			throw new UnsupportedOperationException("Forge based servers are not supported");
 		} else {
-			// Use reflection to get the RegistryID of entities.
+			// Use reflection to getCurrent the RegistryID of entities.
 			RegistryID<Class<? extends Entity>> registryID = (RegistryID<Class<? extends Entity>>) ReflectionUtils.getPrivateField(RegistryMaterials.class, EntityTypes.b, "a");
 			Object[] idToClassMap = (Object[]) ReflectionUtils.getPrivateField(RegistryID.class, registryID, "d");
 			
@@ -82,7 +75,7 @@ public class NmsManagerImpl implements NMSManager {
 		customItem.setLocationNMS(x, y, z);
 		customItem.setItemStackNMS(stack);
 		if (!addEntityToWorld(nmsWorld, customItem)) {
-			DebugHandler.handleSpawnFail(parentPiece);
+			handleSpawnFail(parentPiece);
 		}
 		return customItem;
 	}
@@ -93,7 +86,7 @@ public class NmsManagerImpl implements NMSManager {
 		EntityNMSSlime touchSlime = new EntityNMSSlime(nmsWorld, parentPiece);
 		touchSlime.setLocationNMS(x, y, z);
 		if (!addEntityToWorld(nmsWorld, touchSlime)) {
-			DebugHandler.handleSpawnFail(parentPiece);
+			handleSpawnFail(parentPiece);
 		}
 		return touchSlime;
 	}
@@ -104,13 +97,13 @@ public class NmsManagerImpl implements NMSManager {
 		EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece);
 		invisibleArmorStand.setLocationNMS(x, y, z);
 		if (!addEntityToWorld(nmsWorld, invisibleArmorStand)) {
-			DebugHandler.handleSpawnFail(parentPiece);
+			handleSpawnFail(parentPiece);
 		}
 		return invisibleArmorStand;
 	}
 	
 	private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
-		Validator.isTrue(Bukkit.isPrimaryThread(), "Async entity add");
+		BukkitValidator.isSync("Async entity add");
 		
         final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
         final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
@@ -150,8 +143,8 @@ public class NmsManagerImpl implements NMSManager {
 	}
 
 	@Override
-	public FancyMessage newFancyMessage(String text) {
-		return new FancyMessageImpl(text);
+	public void sendFancyMessage(FancyMessage message, Player player) {
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a(message.toJson().toString())));
 	}
 
 	@Override

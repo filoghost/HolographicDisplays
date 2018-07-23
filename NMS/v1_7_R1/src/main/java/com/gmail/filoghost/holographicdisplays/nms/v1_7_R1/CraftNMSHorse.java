@@ -17,14 +17,14 @@ public class CraftNMSHorse extends CraftHorse {
 	public CraftNMSHorse(CraftServer server, EntityNMSHorse entity) {
 		super(server, entity);
 	}
-	
+
 	// Disallow all the bukkit methods.
-	
+
 	@Override
 	public void remove() {
 		// Cannot be removed, this is the most important to override.
 	}
-	
+
 	// Methods from Horse class
 	@Override public void setVariant(Variant variant) { }
 	@Override public void setColor(Color color) { }
@@ -32,20 +32,20 @@ public class CraftNMSHorse extends CraftHorse {
 	@Override public void setCarryingChest(boolean chest) { }
 	@Override public void setDomestication(int domestication) { }
 	@Override public void setJumpStrength(double jump) { }
-	
+
 	// Methods form Ageable class
 	@Override public void setAge(int age) { }
 	@Override public void setAgeLock(boolean lock) { }
 	@Override public void setBreed(boolean breed) { }
 	@Override public void setAdult() { }
 	@Override public void setBaby() { }
-	
+
 	// Methods from LivingEntity class
 	@Override public boolean addPotionEffect(PotionEffect effect) { return false; }
 	@Override public boolean addPotionEffect(PotionEffect effect, boolean param) { return false; }
 	@Override public boolean addPotionEffects(Collection<PotionEffect> effects) { return false; }
 	@Override public void setRemoveWhenFarAway(boolean remove) { }
-	
+
 	// Methods from Entity
 	@Override public void setVelocity(Vector vel) { }
 	@Override public boolean teleport(Location loc) { return false; }
@@ -57,7 +57,7 @@ public class CraftNMSHorse extends CraftHorse {
 	@Override public boolean eject() { return false; }
 	@Override public boolean leaveVehicle() { return false; }
 	@Override public void playEffect(EntityEffect effect) { }
-	
+
 	// Methods from Tameable
 	@Override public void setTamed(boolean tame) { }
 	@Override public void setOwner(AnimalTamer owner) { }

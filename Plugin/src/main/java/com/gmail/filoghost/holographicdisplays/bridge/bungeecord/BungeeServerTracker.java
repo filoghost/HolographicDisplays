@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -15,7 +16,6 @@ import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.Se
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerPinger;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.PingResponse;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 
 public class BungeeServerTracker {
 	
@@ -178,8 +178,8 @@ public class BungeeServerTracker {
 									displayOffline = true;
 								} catch (Exception e) {
 									displayOffline = true;
-									HolographicDisplays.getInstance().getLogger().warning("Couldn't fetch data from " + entry.getKey() + "(" + entry.getValue().toString() + "), unhandled exception: " + e.toString());
-									DebugHandler.handleDebugException(e);
+									ConsoleLogger.warning("Couldn't fetch data from " + entry.getKey() + "(" + entry.getValue().toString() + "), unhandled exception: " + e.toString());
+									ConsoleLogger.error(e);
 								}
 								
 								if (displayOffline) {

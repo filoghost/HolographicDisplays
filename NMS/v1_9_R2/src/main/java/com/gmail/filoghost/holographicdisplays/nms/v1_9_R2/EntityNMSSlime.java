@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
@@ -51,7 +51,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	@Override
 	public void m() {
 		
-		// So it won't get removed.
+		// So it won't getCurrent removed.
 		ticksLived = 0;
 		
 		if (resendMountPacketTicks++ > 20) {
@@ -222,7 +222,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	        entity.passengers.add(this);
 
 		} catch (Exception ex) {
-			DebugHandler.handleDebugException(ex);
+			ConsoleLogger.error(ex);
 		}
 	}
 }

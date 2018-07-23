@@ -1,5 +1,7 @@
 package com.gmail.filoghost.holographicdisplays.object.line;
 
+import com.gmail.filoghost.holographicdisplays.constant.Offsets;
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitVersion;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,8 +15,6 @@ import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
-import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
-import com.gmail.filoghost.holographicdisplays.util.Offsets;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 
 public class CraftItemLine extends CraftTouchableLine implements ItemLine {
@@ -62,9 +62,9 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 			
 			Location loc = nmsItem.getBukkitEntityNMS().getLocation();
 			
-			if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+			if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
 				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
-			} else if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
+			} else if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
 				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
 			} else {
 				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
@@ -85,7 +85,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 			
 			nmsItem = HolographicDisplays.getNMSManager().spawnNMSItem(world, x, y + offset, z, this, itemStack, HolographicDisplays.getMainListener());
 			
-			if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
+			if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
 				nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
 			} else {
 				nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + offset, z, this);
@@ -151,9 +151,9 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	}
 	
 	private double getItemOffset() {
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+		if (BukkitVersion.isAtLeast(BukkitVersion.V1_9_R1)) {
 			return Offsets.ARMOR_STAND_WITH_ITEM_1_9;
-		} else if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
+		} else if (BukkitVersion.isAtLeast(BukkitVersion.V1_8_R1)) {
 			return Offsets.ARMOR_STAND_WITH_ITEM;
 		} else {
 			return Offsets.WITHER_SKULL_WITH_ITEM;

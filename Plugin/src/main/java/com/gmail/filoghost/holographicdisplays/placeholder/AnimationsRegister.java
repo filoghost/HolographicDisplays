@@ -4,12 +4,12 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
+import com.gmail.filoghost.holographicdisplays.util.io.FileUtils;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.disk.StringConverter;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
-import com.gmail.filoghost.holographicdisplays.util.FileUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class AnimationsRegister {
@@ -67,8 +67,7 @@ public class AnimationsRegister {
 				}
 				
 				animations.put(file.getName(), new Placeholder(HolographicDisplays.getInstance(), file.getName(), speed, new CyclicPlaceholderReplacer(lines.toArray(new String[lines.size()]))));
-				DebugHandler.handleAnimationLoadSuccess(file.getName(), speed);
-				
+				ConsoleLogger.info("Successfully loaded animation '"  + file.getName() + "', speed = " + speed + ".");
 			} catch (Exception e) {
 				e.printStackTrace();
 				plugin.getLogger().severe("Couldn't load the file '" + file.getName() + "'!");
@@ -76,7 +75,6 @@ public class AnimationsRegister {
 		}
 	}
 
-	
 	public static Map<String, Placeholder> getAnimations() {
 		return animations;
 	}
@@ -84,5 +82,4 @@ public class AnimationsRegister {
 	public static Placeholder getAnimation(String name) {
 		return animations.get(name);
 	}
-	
 }

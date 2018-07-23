@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gmail.filoghost.holographicdisplays.util.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +22,6 @@ import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
-import com.gmail.filoghost.holographicdisplays.util.FileUtils;
 
 public class ReadtextCommand extends HologramSubCommand {
 
@@ -49,7 +49,7 @@ public class ReadtextCommand extends HologramSubCommand {
 			String fileName = args[1];
 			File targetFile = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
 			CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetFile), "The file must be inside HolographicDisplays' folder.");
-			CommandValidator.isTrue(!FileUtils.isConfigFile(targetFile), "Cannot read default configuration files.");
+			CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetFile), "Cannot read default configuration files.");
 			
 			List<String> lines = FileUtils.readLines(targetFile);
 			hologram.clearLines();

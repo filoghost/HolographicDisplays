@@ -1,24 +1,32 @@
-package com.gmail.filoghost.holographicdisplays.util;
+package com.gmail.filoghost.holographicdisplays.util.bukkit;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
-
+import lombok.experimental.UtilityClass;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+/**
+ * A set of Item/Material related utilities.
+ * TODO: javadoc
+ */
+@UtilityClass
 public class ItemUtils {
-	
-	// This is used on hologram icons, to prevent vanilla items from merging with them.
+
+	/**
+	 * This is used on hologram icons, to prevent vanilla items from merging with them.
+	 */
 	public static final String ANTISTACK_LORE = ChatColor.BLACK.toString() + Math.random();
-	
+
 	// A map with formatter materials (lowercase and without dashes) for fast access.
-	private static Map<String, Material> materialMap = new HashMap<String, Material>();
-	
+	private static Map<String, Material> materialMap = new HashMap<>();
+
 	private static Pattern stripSpacingSymbolsPattern = Pattern.compile("[_ \\-]+");
-	
+
 	static {
+		/* FIXME: minecraft version dependant
 		// Default material names are ugly.
 		Map<String, Material> tempMap = Utils.newMap();
 			
@@ -73,23 +81,25 @@ public class ItemUtils {
 		for (Entry<String, Material> tempEntry : tempMap.entrySet()) {
 			materialMap.put(stripSpacingChars(tempEntry.getKey()).toLowerCase(), tempEntry.getValue());
 		}
-		
+		*/
+
 		for (Material mat : Material.values()) {
 			materialMap.put(stripSpacingChars(mat.toString()).toLowerCase(), mat);
 		}
 	}
-	
+
 	public static String stripSpacingChars(String input) {
 		return stripSpacingSymbolsPattern.matcher(input).replaceAll("");
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	public static Material matchMaterial(String input) {
+		/* FIXME: we no longer have a safe way to obtain materials from id.
 		try {
 			return Material.getMaterial(Integer.parseInt(input));
 		} catch (NumberFormatException e) {
 			return materialMap.get(stripSpacingChars(input).toLowerCase());
 		}
+		*/
+		return materialMap.get(stripSpacingChars(input).toLowerCase());
 	}
-
 }

@@ -1,8 +1,10 @@
 package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import com.gmail.filoghost.holographicdisplays.util.bukkit.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -16,7 +18,6 @@ import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
-import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class SetlineCommand extends HologramSubCommand {
@@ -72,7 +73,7 @@ public class SetlineCommand extends HologramSubCommand {
 
 	@Override
 	public List<String> getTutorial() {
-		return Arrays.asList("Changes a line of a hologram.");
+		return Collections.singletonList("Changes a line of a hologram.");
 	}
 	
 	@Override

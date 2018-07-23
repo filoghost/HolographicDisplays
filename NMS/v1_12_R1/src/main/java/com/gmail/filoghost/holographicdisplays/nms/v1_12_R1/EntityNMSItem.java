@@ -8,8 +8,8 @@ import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
-import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
+import com.gmail.filoghost.holographicdisplays.util.bukkit.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 
 import net.minecraft.server.v1_12_R1.Blocks;
@@ -40,7 +40,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	@Override
 	public void B_() {
 		
-		// So it won't get removed.
+		// So it won't getCurrent removed.
 		ticksLived = 0;
 		
 		if (!lockTick) {
@@ -223,7 +223,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	        entity.passengers.add(this);
 
 		} catch (Exception ex) {
-			DebugHandler.handleDebugException(ex);
+			ConsoleLogger.error(ex);
 		}
 	}
 

@@ -5,13 +5,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class CraftVisibilityManager implements VisibilityManager {
 
@@ -39,7 +39,7 @@ public class CraftVisibilityManager implements VisibilityManager {
 			boolean oldVisibleByDefault = this.visibleByDefault;
 			this.visibleByDefault = visibleByDefault;
 			
-			for (Player player : VersionUtils.getOnlinePlayers()) {
+			for (Player player : BukkitUtils.getOnlinePlayers()) {
 				
 				if (playersVisibilityMap != null && playersVisibilityMap.containsKey(player.getName().toLowerCase())) {
 					// Has a specific value set

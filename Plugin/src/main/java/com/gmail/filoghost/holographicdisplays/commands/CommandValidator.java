@@ -1,12 +1,12 @@
 package com.gmail.filoghost.holographicdisplays.commands;
 
+import com.gmail.filoghost.holographicdisplays.util.bukkit.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
-import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 
 public class CommandValidator {
 	

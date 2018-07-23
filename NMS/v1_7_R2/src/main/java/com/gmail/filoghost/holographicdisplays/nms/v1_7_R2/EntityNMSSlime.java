@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 
 import net.minecraft.server.v1_7_R2.DamageSource;
@@ -173,7 +173,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 			ReflectionUtils.setPrivateField(Entity.class, this, "g", (double) 0.0);
 			ReflectionUtils.setPrivateField(Entity.class, this, "h", (double) 0.0);
 		} catch (Exception ex) {
-			DebugHandler.handleDebugException(ex);
+			ConsoleLogger.error(ex);
 		}
 
         if (this.vehicle != null) {

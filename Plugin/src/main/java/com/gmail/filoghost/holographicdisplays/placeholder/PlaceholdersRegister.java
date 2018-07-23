@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
@@ -25,7 +26,7 @@ public class PlaceholdersRegister {
 			
 			@Override
 			public String update() {
-				return String.valueOf(VersionUtils.getOnlinePlayers().size());
+				return String.valueOf(BukkitUtils.getOnlinePlayers().size());
 			}
 		}));
 		

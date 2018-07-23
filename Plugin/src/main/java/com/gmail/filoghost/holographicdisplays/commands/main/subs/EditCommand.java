@@ -3,6 +3,8 @@ package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gmail.filoghost.holographicdisplays.util.message.FancyComponent;
+import com.gmail.filoghost.holographicdisplays.util.message.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -58,12 +60,16 @@ public class EditCommand extends HologramSubCommand {
 					for (String tutLine : subCommand.getTutorial()) {
 						help.add(Colors.SECONDARY_SHADOW + tutLine);
 					}
-					
-					HolographicDisplays.getNMSManager().newFancyMessage(usage)
-						.color(ChatColor.AQUA)
-						.suggest(usage)
-						.tooltip(Utils.join(help, "\n"))
-						.send((Player) sender);
+
+					HolographicDisplays.getNMSManager().sendFancyMessage(FancyMessage.builder()
+							.component(
+									FancyComponent.builder()
+											.text(usage)
+											.color(ChatColor.AQUA)
+											.suggest(usage)
+											.tooltip(help)
+											.build()
+							).build(), (Player) sender);
 				} else {
 					sender.sendMessage(Colors.PRIMARY + usage);
 				}
