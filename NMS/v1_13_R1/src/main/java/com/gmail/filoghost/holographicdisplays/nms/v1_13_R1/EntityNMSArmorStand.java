@@ -98,11 +98,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 
 	@Override
 	public String getCustomNameNMS() {
-		IChatBaseComponent customName = super.getCustomName();
-		if (customName == null) {
-			return null;
-		}
-		return CraftChatMessage.fromComponent(customName);
+		return CraftChatMessage.fromComponent(super.getCustomName());
 	}
 
 	/*
