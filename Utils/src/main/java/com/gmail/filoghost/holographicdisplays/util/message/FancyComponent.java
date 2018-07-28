@@ -80,7 +80,7 @@ public class FancyComponent {
 		}
 
 		public FancyComponentBuilder tooltip(Collection<String> lines) {
-			onHover("show_text", String.join("/n", lines));
+			onHover("show_text", String.join("\n", lines));
 			return this;
 		}
 
