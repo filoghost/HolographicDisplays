@@ -49,7 +49,7 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 	}
 
 	public boolean isInChunk(Chunk chunk) {
-		return chunk.getX() == chunkX && chunk.getZ() == chunkZ;
+		return chunk.getWorld().equals(world) && chunk.getX() == chunkX && chunk.getZ() == chunkZ;
 	}
 
 	@Override
