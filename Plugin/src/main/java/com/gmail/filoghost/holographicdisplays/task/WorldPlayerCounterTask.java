@@ -4,11 +4,12 @@ import com.gmail.filoghost.holographicdisplays.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Map;
 
-public class WorldPlayerCounterTask implements Runnable {
+public class WorldPlayerCounterTask extends BukkitRunnable {
 
 	private static Map<String, Integer> worlds = Utils.newMap();
 

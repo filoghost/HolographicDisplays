@@ -32,53 +32,45 @@ public class PlaceholdersManager {
 	private static final Pattern WORLD_PATTERN = makePlaceholderWithArgsPattern("world");
 
 	private static Pattern makePlaceholderWithArgsPattern(String prefix) {
-		return Pattern.compile("(\\{" + Pattern.quote(prefix) + ":)(.+?)(\\})");
+		return Pattern.compile("(\\{" + Pattern.quote(prefix) + ":)(.+?)(})");
 	}
 
 	private static String extractArgumentFromPlaceholder(Matcher matcher) {
 		return matcher.group(2).trim();
 	}
 
-
 	public static void load(Plugin plugin) {
-
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-
-			@Override
-			public void run() {
-
-				for (Placeholder placeholder : PlaceholdersRegister.getPlaceholders()) {
-					if (elapsedTenthsOfSecond % placeholder.getTenthsToRefresh() == 0) {
-						try {
-							placeholder.update();
-						} catch (Throwable t) {
-							HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "The placeholder " + placeholder.getTextPlaceholder() + " registered by the plugin " + placeholder.getOwner().getName() + " generated an exception while updating. Please contact the author of " + placeholder.getOwner().getName(), t);
-						}
-					}
-				}
-
-				for (Placeholder placeholder : AnimationsRegister.getAnimations().values()) {
-					if (elapsedTenthsOfSecond % placeholder.getTenthsToRefresh() == 0) {
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+			for (Placeholder placeholder : PlaceholdersRegister.getPlaceholders()) {
+				if (elapsedTenthsOfSecond % placeholder.getTenthsToRefresh() == 0) {
+					try {
 						placeholder.update();
+					} catch (Throwable t) {
+						HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "The placeholder " + placeholder.getTextPlaceholder() + " registered by the plugin " + placeholder.getOwner().getName() + " generated an exception while updating. Please contact the author of " + placeholder.getOwner().getName(), t);
 					}
 				}
-
-				Iterator<DynamicLineData> iter = linesToUpdate.iterator();
-				DynamicLineData currentLineData;
-
-				while (iter.hasNext()) {
-					currentLineData = iter.next();
-
-					if (currentLineData.getEntity().isDeadNMS()) {
-						iter.remove();
-					} else {
-						updatePlaceholders(currentLineData);
-					}
-				}
-
-				elapsedTenthsOfSecond++;
 			}
 
+			for (Placeholder placeholder : AnimationsRegister.getAnimations().values()) {
+				if (elapsedTenthsOfSecond % placeholder.getTenthsToRefresh() == 0) {
+					placeholder.update();
+				}
+			}
+
+			Iterator<DynamicLineData> iterator = linesToUpdate.iterator();
+			DynamicLineData currentLineData;
+
+			while (iterator.hasNext()) {
+				currentLineData = iterator.next();
+
+				if (currentLineData.getEntity().isDeadNMS()) {
+					iterator.remove();
+				} else {
+					updatePlaceholders(currentLineData);
+				}
+			}
+
+			elapsedTenthsOfSecond++;
 		}, 2L, 2L);
 	}
 
@@ -88,7 +80,6 @@ public class PlaceholdersManager {
 	}
 
 	public static void untrack(CraftTextLine line) {
-
 		if (line == null || !line.isSpawned()) {
 			return;
 		}
@@ -104,7 +95,6 @@ public class PlaceholdersManager {
 	}
 
 	public static void trackIfNecessary(CraftTextLine line) {
-
 		NMSNameable nameableEntity = line.getNmsNameble();
 		String name = line.getText();
 
@@ -129,40 +119,28 @@ public class PlaceholdersManager {
 		Matcher matcher;
 
 		for (Placeholder placeholder : PlaceholdersRegister.getPlaceholders()) {
-
 			if (name.contains(placeholder.getTextPlaceholder())) {
-
 				if (normalPlaceholders == null) {
 					normalPlaceholders = Utils.newSet();
 				}
-
 				normalPlaceholders.add(placeholder);
 			}
 		}
 
-
 		// Players in a world count pattern.
 		matcher = WORLD_PATTERN.matcher(name);
 		while (matcher.find()) {
-
 			if (worldsOnlinePlayersReplacers == null) {
 				worldsOnlinePlayersReplacers = Utils.newMap();
 			}
 
 			final String worldName = extractArgumentFromPlaceholder(matcher);
-			worldsOnlinePlayersReplacers.put(matcher.group(), new PlaceholderReplacer() {
-
-				@Override
-				public String update() {
-					return WorldPlayerCounterTask.getCount(worldName);
-				}
-			});
+			worldsOnlinePlayersReplacers.put(matcher.group(), () -> WorldPlayerCounterTask.getCount(worldName));
 		}
 
 		// BungeeCord online pattern.
 		matcher = BUNGEE_ONLINE_PATTERN.matcher(name);
 		while (matcher.find()) {
-
 			if (bungeeReplacers == null) {
 				bungeeReplacers = Utils.newMap();
 			}
@@ -171,7 +149,6 @@ public class PlaceholdersManager {
 			BungeeServerTracker.track(serverName); // Track this server.
 
 			if (serverName.contains(",")) {
-
 				String[] split = serverName.split(",");
 				for (int i = 0; i < split.length; i++) {
 					split[i] = split[i].trim();
@@ -180,33 +157,22 @@ public class PlaceholdersManager {
 				final String[] serversToTrack = split;
 
 				// Add it to tracked servers.
-				bungeeReplacers.put(matcher.group(), new PlaceholderReplacer() {
-
-					@Override
-					public String update() {
-						int count = 0;
-						for (String serverToTrack : serversToTrack) {
-							count += BungeeServerTracker.getPlayersOnline(serverToTrack);
-						}
-						return String.valueOf(count);
+				bungeeReplacers.put(matcher.group(), () -> {
+					int count = 0;
+					for (String serverToTrack : serversToTrack) {
+						count += BungeeServerTracker.getPlayersOnline(serverToTrack);
 					}
+					return String.valueOf(count);
 				});
 			} else {
 				// Normal, single tracked server.
-				bungeeReplacers.put(matcher.group(), new PlaceholderReplacer() {
-
-					@Override
-					public String update() {
-						return String.valueOf(BungeeServerTracker.getPlayersOnline(serverName));
-					}
-				});
+				bungeeReplacers.put(matcher.group(), () -> String.valueOf(BungeeServerTracker.getPlayersOnline(serverName)));
 			}
 		}
 
 		// BungeeCord max players pattern.
 		matcher = BUNGEE_MAX_PATTERN.matcher(name);
 		while (matcher.find()) {
-
 			if (bungeeReplacers == null) {
 				bungeeReplacers = Utils.newMap();
 			}
@@ -215,19 +181,12 @@ public class PlaceholdersManager {
 			BungeeServerTracker.track(serverName); // Track this server.
 
 			// Add it to tracked servers.
-			bungeeReplacers.put(matcher.group(), new PlaceholderReplacer() {
-
-				@Override
-				public String update() {
-					return BungeeServerTracker.getMaxPlayers(serverName);
-				}
-			});
+			bungeeReplacers.put(matcher.group(), () -> BungeeServerTracker.getMaxPlayers(serverName));
 		}
 
 		// BungeeCord motd pattern.
 		matcher = BUNGEE_MOTD_PATTERN.matcher(name);
 		while (matcher.find()) {
-
 			if (bungeeReplacers == null) {
 				bungeeReplacers = Utils.newMap();
 			}
@@ -236,19 +195,12 @@ public class PlaceholdersManager {
 			BungeeServerTracker.track(serverName); // Track this server.
 
 			// Add it to tracked servers.
-			bungeeReplacers.put(matcher.group(), new PlaceholderReplacer() {
-
-				@Override
-				public String update() {
-					return BungeeServerTracker.getMotd1(serverName);
-				}
-			});
+			bungeeReplacers.put(matcher.group(), () -> BungeeServerTracker.getMotd1(serverName));
 		}
 
 		// BungeeCord motd (line 2) pattern.
 		matcher = BUNGEE_MOTD_2_PATTERN.matcher(name);
 		while (matcher.find()) {
-
 			if (bungeeReplacers == null) {
 				bungeeReplacers = Utils.newMap();
 			}
@@ -257,19 +209,12 @@ public class PlaceholdersManager {
 			BungeeServerTracker.track(serverName); // Track this server.
 
 			// Add it to tracked servers.
-			bungeeReplacers.put(matcher.group(), new PlaceholderReplacer() {
-
-				@Override
-				public String update() {
-					return BungeeServerTracker.getMotd2(serverName);
-				}
-			});
+			bungeeReplacers.put(matcher.group(), () -> BungeeServerTracker.getMotd2(serverName));
 		}
 
 		// BungeeCord status pattern.
 		matcher = BUNGEE_STATUS_PATTERN.matcher(name);
 		while (matcher.find()) {
-
 			if (bungeeReplacers == null) {
 				bungeeReplacers = Utils.newMap();
 			}
@@ -278,32 +223,21 @@ public class PlaceholdersManager {
 			BungeeServerTracker.track(serverName); // Track this server.
 
 			// Add it to tracked servers.
-			bungeeReplacers.put(matcher.group(), new PlaceholderReplacer() {
-
-				@Override
-				public String update() {
-					return BungeeServerTracker.getOnlineStatus(serverName);
-				}
-			});
+			bungeeReplacers.put(matcher.group(), () -> BungeeServerTracker.getOnlineStatus(serverName));
 		}
-
 
 		// Animation pattern.
 		matcher = ANIMATION_PATTERN.matcher(name);
 		while (matcher.find()) {
-
 			String fileName = extractArgumentFromPlaceholder(matcher);
 			Placeholder animation = AnimationsRegister.getAnimation(fileName);
 
 			// If exists...
 			if (animation != null) {
-
 				if (animationsPlaceholders == null) {
 					animationsPlaceholders = Utils.newMap();
 				}
-
 				animationsPlaceholders.put(matcher.group(), animation);
-
 			} else {
 				name = name.replace(matcher.group(), "[Animation not found: " + fileName + "]");
 				updateName = true;
@@ -311,7 +245,6 @@ public class PlaceholdersManager {
 		}
 
 		if (Utils.isThereNonNull(normalPlaceholders, bungeeReplacers, worldsOnlinePlayersReplacers, animationsPlaceholders)) {
-
 			DynamicLineData lineData = new DynamicLineData(nameableEntity, name);
 
 			if (normalPlaceholders != null) {
@@ -337,9 +270,7 @@ public class PlaceholdersManager {
 			}
 
 			updatePlaceholders(lineData);
-
 		} else {
-
 			// The name needs to be updated anyways.
 			if (updateName) {
 				nameableEntity.setCustomNameNMS(name);
@@ -347,9 +278,7 @@ public class PlaceholdersManager {
 		}
 	}
 
-
 	private static void updatePlaceholders(DynamicLineData lineData) {
-
 		String oldCustomName = lineData.getEntity().getCustomNameNMS();
 		String newCustomName = lineData.getOriginalName();
 
@@ -376,5 +305,4 @@ public class PlaceholdersManager {
 			lineData.getEntity().setCustomNameNMS(newCustomName);
 		}
 	}
-
 }

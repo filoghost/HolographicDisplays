@@ -96,12 +96,4 @@ public final class ReflectionUtils {
 			return false;
 		}
 	}
-
-	public static boolean instanceOf(Object object, String classPath) {
-		try {
-			return Class.forName(classPath).isAssignableFrom(object.getClass());
-		} catch (Throwable t) {
-			return false;
-		}
-	}
 }

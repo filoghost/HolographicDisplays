@@ -17,11 +17,8 @@ import java.util.Map.Entry;
 public class ImageMessage {
 
 	public static final int MAX_WIDTH = 150;
-
 	private static final Map<ChatColor, Color> colorsMap = Utils.newMap();
-
 	private static final Map<ChatColor, Color> graysMap = Utils.newMap();
-
 
 	static {
 		colorsMap.put(ChatColor.DARK_BLUE, new Color(0, 0, 170));
@@ -42,7 +39,6 @@ public class ImageMessage {
 		graysMap.put(ChatColor.GRAY, new Color(170, 170, 170));
 		graysMap.put(ChatColor.WHITE, new Color(255, 255, 255));
 	}
-
 
 	private String[] lines;
 
@@ -82,17 +78,11 @@ public class ImageMessage {
 		String imageSymbol = Configuration.imageSymbol;
 
 		for (int y = 0; y < colors[0].length; y++) {
-
-			StringBuffer line = new StringBuffer();
-
+			StringBuilder line = new StringBuilder();
 			ChatColor previous = ChatColor.RESET;
-
-			for (int x = 0; x < colors.length; x++) {
-
-				ChatColor currentColor = colors[x][y];
-
+			for (ChatColor[] color : colors) {
+				ChatColor currentColor = color[y];
 				if (currentColor == null) {
-
 					// Use the trasparent char
 					if (previous != transparencyColor) {
 
@@ -102,18 +92,14 @@ public class ImageMessage {
 
 					}
 					line.append(transparencySymbol);
-
 				} else {
-
 					if (previous != currentColor) {
 						line.append(currentColor.toString());
 						previous = currentColor;
 					}
-
 					line.append(imageSymbol);
 				}
 			}
-
 			lines[y] = line.toString();
 		}
 
@@ -196,7 +182,6 @@ public class ImageMessage {
 		// Minecraft has 15 colors
 		return bestColorMatch;
 	}
-
 
 	public String[] getLines() {
 		return lines;
