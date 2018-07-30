@@ -19,7 +19,6 @@ import com.gmail.filoghost.holographicdisplays.task.BungeeCleanupTask;
 import com.gmail.filoghost.holographicdisplays.task.StartupLoadHologramsTask;
 import com.gmail.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
 import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitVersion;
@@ -85,11 +84,11 @@ public class HolographicDisplays extends JavaPlugin {
 			});
 		}
 
-		if (BukkitVersion.getCurrentVersion() == BukkitVersion.UNKNOWN) {
+		if (!BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
 			printWarnAndDisable(
 					"******************************************************",
 					"     This version of HolographicDisplays only",
-					"     works on server versions from 1.7 to 1.12.",
+					"     works on server versions from 1.8 to 1.13.",
 					"     The plugin will be disabled.",
 					"******************************************************"
 			);
@@ -135,7 +134,6 @@ public class HolographicDisplays extends JavaPlugin {
 		// ProtocolLib check.
 		try {
 			if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-
 				String requiredVersionError = null;
 
 				try {
@@ -144,19 +142,8 @@ public class HolographicDisplays extends JavaPlugin {
 
 					if (versionNumbersMatcher.find()) {
 						String versionNumbers = versionNumbersMatcher.group();
-
-						if (BukkitVersion.isBetweenOrEqual(BukkitVersion.v1_7_R1, BukkitVersion.v1_7_R4)) {
-							if (!VersionUtils.isVersionBetweenOrEqual(versionNumbers, "3.6.4", "3.7.0")) {
-								requiredVersionError = "between 3.6.4 and 3.7.0";
-							}
-						} else if (BukkitVersion.isBetweenOrEqual(BukkitVersion.v1_8_R1, BukkitVersion.v1_8_R3)) {
-							if (!VersionUtils.isVersionBetweenOrEqual(versionNumbers, "3.6.4", "3.6.5") && !VersionUtils.isVersionGreaterEqual(versionNumbers, "4.1")) {
-								requiredVersionError = "between 3.6.4 and 3.6.5 or higher than 4.1";
-							}
-						} else {
-							if (!VersionUtils.isVersionGreaterEqual(versionNumbers, "4.0")) {
-								requiredVersionError = "higher than 4.0";
-							}
+						if (!VersionUtils.isVersionGreaterEqual(versionNumbers, "4.4.0")) {
+							requiredVersionError = "higher than or equal to 4.4.0-SNAPSHOT";
 						}
 					} else {
 						throw new RuntimeException("could not find version numbers pattern");
@@ -167,29 +154,17 @@ public class HolographicDisplays extends JavaPlugin {
 				}
 
 				if (requiredVersionError == null) {
-					ProtocolLibHook protocolLibHook;
-
-					if (ReflectionUtils.isClassLoaded("com.comphenix.protocol.wrappers.WrappedDataWatcher$WrappedDataWatcherObject")) {
-						// Only the new version contains this class
-						getLogger().info("Found ProtocolLib, using new version.");
-						protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl();
-					} else {
-						getLogger().info("Found ProtocolLib, using old version.");
-						protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.old.ProtocolLibHookImpl();
-					}
-
+					getLogger().info("Found ProtocolLib, hooking in it.");
+					ProtocolLibHook protocolLibHook = new ProtocolLibHook();
 					if (protocolLibHook.hook(this, nmsManager)) {
 						HolographicDisplays.protocolLibHook = protocolLibHook;
 						getLogger().info("Enabled player relative placeholders with ProtocolLib.");
 					}
-
 				} else {
-					Bukkit.getConsoleSender().sendMessage(
-							ChatColor.RED + "[Holographic Displays] Detected incompatible version of ProtocolLib, support disabled. " +
-									"For this server version you must be using a ProtocolLib version " + requiredVersionError + ".");
+					ConsoleLogger.warning(ChatColor.RED + "[Holographic Displays] Detected incompatible version of ProtocolLib, support disabled. " +
+							"For this server version you must be using a ProtocolLib version " + requiredVersionError + ".");
 				}
 			}
-
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			getLogger().warning("Failed to load ProtocolLib support. Is it updated?");

@@ -20,10 +20,6 @@ public interface NMSManager {
 
 	NMSArmorStand spawnNMSArmorStand(World world, double x, double y, double z, HologramLine parentPiece);
 
-	NMSHorse spawnNMSHorse(World world, double x, double y, double z, HologramLine parentPiece);
-
-	NMSWitherSkull spawnNMSWitherSkull(World bukkitWorld, double x, double y, double z, HologramLine parentPiece);
-
 	NMSItem spawnNMSItem(World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack, ItemPickupManager itemPickupManager);
 
 	NMSSlime spawnNMSSlime(World bukkitWorld, double x, double y, double z, HologramLine parentPiece);
@@ -33,8 +29,6 @@ public interface NMSManager {
 	NMSEntityBase getNMSEntityBase(Entity bukkitEntity);
 
 	void sendFancyMessage(FancyMessage message, Player player);
-
-	boolean isUnloadUnsure(Chunk bukkitChunk);
 
 	default void handleSpawnFail(HologramLine parentPiece) {
 		ConsoleLogger.warning("Coulnd't spawn entity for this hologram: " + parentPiece.getParent());

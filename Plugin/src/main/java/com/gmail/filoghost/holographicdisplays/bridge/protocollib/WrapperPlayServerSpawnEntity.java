@@ -15,7 +15,7 @@
  *  02111-1307 USA
  */
 
-package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
+package com.gmail.filoghost.holographicdisplays.bridge.protocollib;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;

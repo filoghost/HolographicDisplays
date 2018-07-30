@@ -15,7 +15,7 @@
  *  02111-1307 USA
  */
 
-package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
+package com.gmail.filoghost.holographicdisplays.bridge.protocollib;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
@@ -23,35 +23,16 @@ import com.google.common.primitives.Ints;
 
 import java.util.List;
 
-public class WrapperPlayServerMount extends AbstractPacket {
+public class WrapperPlayServerEntityDestroy extends AbstractPacket {
+	public static final PacketType TYPE = PacketType.Play.Server.ENTITY_DESTROY;
 
-	public static final PacketType TYPE = PacketType.Play.Server.MOUNT;
-
-	public WrapperPlayServerMount() {
+	public WrapperPlayServerEntityDestroy() {
 		super(new PacketContainer(TYPE), TYPE);
 		handle.getModifier().writeDefaults();
 	}
 
-	public WrapperPlayServerMount(PacketContainer packet) {
+	public WrapperPlayServerEntityDestroy(PacketContainer packet) {
 		super(packet, TYPE);
-	}
-
-	/**
-	 * Retrieve the player entity ID being attached.
-	 *
-	 * @return The current Entity ID
-	 */
-	public int getVehicleId() {
-		return handle.getIntegers().read(0);
-	}
-
-	/**
-	 * Set the player entity ID being attached.
-	 *
-	 * @param value - new value.
-	 */
-	public void setVehicleId(int value) {
-		handle.getIntegers().write(0, value);
 	}
 
 	/**
@@ -59,7 +40,7 @@ public class WrapperPlayServerMount extends AbstractPacket {
 	 *
 	 * @return The current entities.
 	 */
-	public List<Integer> getPassengers() {
+	public List<Integer> getEntities() {
 		return Ints.asList(handle.getIntegerArrays().read(0));
 	}
 
@@ -68,7 +49,7 @@ public class WrapperPlayServerMount extends AbstractPacket {
 	 *
 	 * @param value - new value.
 	 */
-	public void setPassengers(int[] entities) {
+	public void setEntities(int[] entities) {
 		handle.getIntegerArrays().write(0, entities);
 	}
 
@@ -77,7 +58,7 @@ public class WrapperPlayServerMount extends AbstractPacket {
 	 *
 	 * @param value - new value.
 	 */
-	public void setPassengers(List<Integer> entities) {
-		setPassengers(Ints.toArray(entities));
+	public void setEntities(List<Integer> entities) {
+		setEntities(Ints.toArray(entities));
 	}
 }

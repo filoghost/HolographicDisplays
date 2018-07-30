@@ -112,18 +112,4 @@ public final class BukkitUtils {
 	public static boolean isForgeServer() {
 		return ReflectionUtils.isClassLoaded("net.minecraftforge.common.MinecraftForge");
 	}
-
-	/**
-	 * 1.7 compatible method to check if an entity is an ArmorStand.
-	 *
-	 * @param type the entity type.
-	 * @return true if the type is ArmourStand, false otherwise.
-	 */
-	public static boolean isArmorstand(EntityType type) {
-		if (!BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
-			return false;
-		}
-
-		return type == EntityType.ARMOR_STAND;
-	}
 }

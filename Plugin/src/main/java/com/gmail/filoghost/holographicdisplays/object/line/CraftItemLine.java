@@ -56,19 +56,9 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	}
 
 	public void setTouchHandler(TouchHandler touchHandler) {
-
 		if (nmsItem != null) {
-
 			Location loc = nmsItem.getBukkitEntityNMS().getLocation();
-
-			if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
-				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
-			} else if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
-				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
-			} else {
-				super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
-			}
-
+			super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
 		} else {
 			super.setTouchHandler(touchHandler, null, 0, 0, 0);
 		}
@@ -84,11 +74,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 
 			nmsItem = HolographicDisplays.getNMSManager().spawnNMSItem(world, x, y + offset, z, this, itemStack, HolographicDisplays.getMainListener());
 
-			if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
-				nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
-			} else {
-				nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + offset, z, this);
-			}
+			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
 
 			nmsItem.setPassengerOfNMS(nmsVehicle);
 
@@ -152,10 +138,8 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	private double getItemOffset() {
 		if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
 			return Offsets.ARMOR_STAND_WITH_ITEM_1_9;
-		} else if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
-			return Offsets.ARMOR_STAND_WITH_ITEM;
 		} else {
-			return Offsets.WITHER_SKULL_WITH_ITEM;
+			return Offsets.ARMOR_STAND_WITH_ITEM;
 		}
 	}
 
