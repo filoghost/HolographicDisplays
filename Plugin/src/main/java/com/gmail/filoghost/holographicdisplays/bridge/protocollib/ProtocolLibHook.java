@@ -104,7 +104,6 @@ public class ProtocolLibHook {
 
 				// Spawn entity packet
 				if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
-
 					WrapperPlayServerSpawnEntityLiving spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet);
 					Entity entity = spawnEntityPacket.getEntity(event);
 
@@ -123,7 +122,7 @@ public class ProtocolLibHook {
 						return;
 					}
 
-					WrappedWatchableObject customNameWatchableObject = spawnEntityPacket.getMetadata().getWatchableObject(2);
+					WrappedWatchableObject customNameWatchableObject = spawnEntityPacket.getMetadata().getWatchableObject(BukkitVersion.isAtLeast(BukkitVersion.v1_13_R1) ? 3 : 2);
 					if (customNameWatchableObject == null || !(customNameWatchableObject.getValue() instanceof String)) {
 						return;
 					}
@@ -183,7 +182,7 @@ public class ProtocolLibHook {
 					for (int i = 0; i < dataWatcherValues.size(); i++) {
 
 						WrappedWatchableObject watchableObject = dataWatcherValues.get(i);
-						if (watchableObject.getIndex() == 2) { // Custom name index
+						if (watchableObject.getIndex() == (BukkitVersion.isAtLeast(BukkitVersion.v1_13_R1) ? 3 : 2)) { // Custom name index
 
 							Object customNameObject = watchableObject.getValue();
 							if (!(customNameObject instanceof String)) {
