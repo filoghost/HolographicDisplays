@@ -51,10 +51,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.comphenix.packetwrapper</groupId>
+            <artifactId>PacketWrapper</artifactId>
+            <version>1.13-R0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit-lite</artifactId>
             <version>1.2</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -76,6 +84,10 @@
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>com.gmail.filoghost.holographicdisplays.metrics</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.comphenix.packetwrapper</pattern>
+                            <shadedPattern>com.gmail.filoghost.holographicdisplays.libs.packetwrapper</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

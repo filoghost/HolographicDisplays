@@ -38,11 +38,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 
 		nmsSlime = HolographicDisplays.getNMSManager().spawnNMSSlime(world, x, y + offset, z, this);
 
-		if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
-			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
-		} else {
-			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + offset, z, this);
-		}
+		nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
 
 		nmsSlime.setPassengerOfNMS(nmsVehicle);
 
@@ -101,10 +97,8 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 	private double getSlimeOffset() {
 		if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
 			return Offsets.ARMOR_STAND_WITH_SLIME_1_9;
-		} else if (BukkitVersion.isAtLeast(BukkitVersion.v1_8_R1)) {
-			return Offsets.ARMOR_STAND_WITH_SLIME;
 		} else {
-			return Offsets.WITHER_SKULL_WITH_SLIME;
+			return Offsets.ARMOR_STAND_WITH_SLIME;
 		}
 	}
 

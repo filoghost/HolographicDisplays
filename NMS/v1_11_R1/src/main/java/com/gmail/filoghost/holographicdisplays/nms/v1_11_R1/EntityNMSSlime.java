@@ -23,16 +23,11 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 		setSize(1, false);
 		setInvisible(true);
 		this.parentPiece = parentPiece;
-		forceSetBoundingBox(new NullBoundingBox());
 	}
 
 	@Override
 	public void a(AxisAlignedBB boundingBox) {
 		// Do not change it!
-	}
-
-	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
-		super.a(boundingBox);
 	}
 
 	@Override

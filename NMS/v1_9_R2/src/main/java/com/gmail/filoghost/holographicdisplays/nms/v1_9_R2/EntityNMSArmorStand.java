@@ -21,7 +21,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		super.setBasePlate(true);
 		super.setMarker(true);
 		this.parentPiece = parentPiece;
-		forceSetBoundingBox(new NullBoundingBox());
+		setSize(0.0F, 0.0F);
 	}
 
 
@@ -104,10 +104,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	@Override
 	public void a(AxisAlignedBB boundingBox) {
 		// Do not change it!
-	}
-
-	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
-		super.a(boundingBox);
 	}
 
 	@Override

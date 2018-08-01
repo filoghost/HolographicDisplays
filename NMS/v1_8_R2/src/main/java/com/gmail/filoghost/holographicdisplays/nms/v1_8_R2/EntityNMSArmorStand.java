@@ -25,7 +25,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		} catch (Exception e) {
 			// There's still the overridden method.
 		}
-		forceSetBoundingBox(new NullBoundingBox());
+		setSize(0.0F, 0.0F);
 	}
 
 
@@ -92,10 +92,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	@Override
 	public void a(AxisAlignedBB boundingBox) {
 		// Do not change it!
-	}
-
-	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
-		super.a(boundingBox);
 	}
 
 	@Override

@@ -4,15 +4,14 @@ import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.*;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitUtils;
 import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitValidator;
 import com.gmail.filoghost.holographicdisplays.util.message.FancyMessage;
 import net.minecraft.server.v1_12_R1.*;
-import org.apache.commons.lang.NotImplementedException;
-import org.bukkit.Chunk;
-import org.bukkit.craftbukkit.v1_12_R1.CraftChunk;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
@@ -51,16 +50,6 @@ public class NmsManagerImpl implements NMSManager {
 			// Restore the ID -> entity class mapping.
 			idToClassMap[id] = oldValue;
 		}
-	}
-
-	@Override
-	public NMSHorse spawnNMSHorse(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece) {
-		throw new NotImplementedException("Method can only be used on 1.7 or lower");
-	}
-
-	@Override
-	public NMSWitherSkull spawnNMSWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece) {
-		throw new NotImplementedException("Method can only be used on 1.7 or lower");
 	}
 
 	@Override
@@ -141,10 +130,4 @@ public class NmsManagerImpl implements NMSManager {
 	public void sendFancyMessage(FancyMessage message, Player player) {
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a(message.toJson().toString())));
 	}
-
-	@Override
-	public boolean isUnloadUnsure(Chunk bukkitChunk) {
-		return bukkitChunk.getWorld().isChunkInUse(bukkitChunk.getX(), bukkitChunk.getZ()) || !((CraftChunk) bukkitChunk).getHandle().d; // Field probably representing if the chunk is scheduled to be unloaded in ChunkProviderServer
-	}
-
 }
