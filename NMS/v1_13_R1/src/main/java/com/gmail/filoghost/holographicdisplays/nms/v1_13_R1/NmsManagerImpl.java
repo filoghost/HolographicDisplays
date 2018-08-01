@@ -28,7 +28,6 @@ public class NmsManagerImpl implements NMSManager {
 	public void setup() throws Exception {
 		validateEntityMethod = World.class.getDeclaredMethod("b", Entity.class);
 		validateEntityMethod.setAccessible(true);
-
 		registerCustomEntity(EntityNMSSlime.class, 55);
 	}
 

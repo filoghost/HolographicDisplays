@@ -1,5 +1,6 @@
 package com.gmail.filoghost.holographicdisplays.bridge.protocollib;
 
+import com.comphenix.packetwrapper.*;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -8,13 +9,14 @@ import com.comphenix.protocol.events.PacketAdapter.AdapterParameteters;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.utility.MinecraftReflection;
+import com.comphenix.protocol.wrappers.ComponentConverter;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Serializer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.bridge.protocollib.WrapperPlayServerSpawnEntity.ObjectTypes;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
@@ -22,8 +24,8 @@ import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.object.line.*;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.bukkit.BukkitVersion;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -34,8 +36,6 @@ import java.util.Optional;
 
 /**
  * This is for the ProtocolLib versions containing the WrappedDataWatcher.WrappedDataWatcherObject class.
- * <p>
- * These versions are only used from 1.8, there is no need to handle 1.7 entities.
  */
 public class ProtocolLibHook {
 
@@ -50,18 +50,47 @@ public class ProtocolLibHook {
 
 	private int itemstackMetadataWatcherIndex;
 
-	public boolean hook(Plugin plugin, NMSManager nmsManager) {
-
-		String version = Bukkit.getPluginManager().getPlugin("ProtocolLib").getDescription().getVersion();
-		if (version.startsWith("3.7-SNAPSHOT")) {
-			Bukkit.getConsoleSender().sendMessage(
-					ChatColor.RED + "[Holographic Displays] Detected development version of ProtocolLib, support disabled. " +
-							"Related functions (the placeholders {player} {displayname} and the visibility API) will not work.\n" +
-							"The reason is that this version of ProtocolLib is unstable and partly broken. " +
-							"Please update ProtocolLib.");
+	private boolean checkHologram(PacketEvent event, Entity entity) {
+		if (entity == null || !isHologramType(entity.getType())) {
 			return false;
 		}
+		Hologram hologram = getHologram(entity);
+		if (hologram == null) {
+			return false;
+		}
+		Player player = event.getPlayer();
+		if (!hologram.getVisibilityManager().isVisibleTo(player)) {
+			event.setCancelled(true);
+			return false;
+		}
+		return true;
+	}
 
+	private boolean handleHologramText(PacketEvent event, WrappedWatchableObject wrappedObject) {
+		String message;
+		Object object = wrappedObject.getValue();
+		if (BukkitVersion.isAtLeast(BukkitVersion.v1_13_R1)) {
+			if (!(object instanceof WrappedChatComponent)) {
+				return false;
+			}
+			WrappedChatComponent componentWrapper = (WrappedChatComponent) object;
+			message = BaseComponent.toLegacyText(ComponentConverter.fromWrapper(componentWrapper));
+		} else {
+			if (!(object instanceof String)) {
+				return false;
+			}
+			message = (String) object;
+		}
+		if (!message.contains("{player}") && !message.contains("{displayname}")) {
+			return false;
+		}
+		message = message.replace("{player}", event.getPlayer().getName()).replace("{displayname}", event.getPlayer().getDisplayName());
+		wrappedObject.setValue(BukkitVersion.isAtLeast(BukkitVersion.v1_13_R1) ?
+				ComponentConverter.fromBaseComponent(TextComponent.fromLegacyText(message)) : message);
+		return true;
+	}
+
+	public boolean hook(Plugin plugin, NMSManager nmsManager) {
 		this.nmsManager = nmsManager;
 
 		if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
@@ -107,107 +136,37 @@ public class ProtocolLibHook {
 					WrapperPlayServerSpawnEntityLiving spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet);
 					Entity entity = spawnEntityPacket.getEntity(event);
 
-					if (entity == null || !isHologramType(entity.getType())) {
+					if (!checkHologram(event, entity)) {
 						return;
 					}
 
-					Hologram hologram = getHologram(entity);
-					if (hologram == null) {
-						return;
+					WrappedWatchableObject customNameWatchableObject = spawnEntityPacket.getMetadata().getWatchableObject(2);
+					if (customNameWatchableObject == null) {
+						return; // Should never happen!
 					}
 
-					Player player = event.getPlayer();
-					if (!hologram.getVisibilityManager().isVisibleTo(player)) {
-						event.setCancelled(true);
-						return;
-					}
-
-					WrappedWatchableObject customNameWatchableObject = spawnEntityPacket.getMetadata().getWatchableObject(BukkitVersion.isAtLeast(BukkitVersion.v1_13_R1) ? 3 : 2);
-					if (customNameWatchableObject == null || !(customNameWatchableObject.getValue() instanceof String)) {
-						return;
-					}
-
-					String customName = (String) customNameWatchableObject.getValue();
-					if (customName.contains("{player}") || customName.contains("{displayname}")) {
-						customNameWatchableObject.setValue(customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
-					}
-
+					handleHologramText(event, customNameWatchableObject);
 				} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
-
 					WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
 					Entity entity = spawnEntityPacket.getEntity(event);
 
-					if (entity == null) {
-						return;
-					}
-
-					if (!isHologramType(entity.getType())) {
-						return;
-					}
-
-					Hologram hologram = getHologram(entity);
-					if (hologram == null) {
-						return;
-					}
-
-					Player player = event.getPlayer();
-					if (!hologram.getVisibilityManager().isVisibleTo(player)) {
-						event.setCancelled(true);
-					}
+					checkHologram(event, entity);
 				} else if (packet.getType() == PacketType.Play.Server.ENTITY_METADATA) {
-
 					WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
 					Entity entity = entityMetadataPacket.getEntity(event);
 
-					if (entity == null) {
+					if (!checkHologram(event, entity)) {
 						return;
 					}
 
-					if (!isHologramType(entity.getType())) {
-						return;
+					List<WrappedWatchableObject> dataWatcherValues = entityMetadataPacket.getMetadata();
+					WrappedWatchableObject customNameWatchableObject = dataWatcherValues.get(2);
+					if (customNameWatchableObject == null) {
+						return; // Should never happen!
 					}
 
-					Hologram hologram = getHologram(entity);
-					if (hologram == null) {
-						return;
-					}
-
-					Player player = event.getPlayer();
-					if (!hologram.getVisibilityManager().isVisibleTo(player)) {
-						event.setCancelled(true);
-						return;
-					}
-
-					List<WrappedWatchableObject> dataWatcherValues = entityMetadataPacket.getEntityMetadata();
-					for (int i = 0; i < dataWatcherValues.size(); i++) {
-
-						WrappedWatchableObject watchableObject = dataWatcherValues.get(i);
-						if (watchableObject.getIndex() == (BukkitVersion.isAtLeast(BukkitVersion.v1_13_R1) ? 3 : 2)) { // Custom name index
-
-							Object customNameObject = watchableObject.getValue();
-							if (!(customNameObject instanceof String)) {
-								return;
-							}
-
-							String customName = (String) customNameObject;
-							if (customName.contains("{player}") || customName.contains("{displayname}")) {
-								String replacement = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
-
-								WrappedWatchableObject newWatchableObject;
-								if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
-									// The other constructor does not work in 1.9+.
-									newWatchableObject = new WrappedWatchableObject(watchableObject.getWatcherObject(), replacement);
-								} else {
-									newWatchableObject = new WrappedWatchableObject(watchableObject.getIndex(), replacement);
-								}
-
-								dataWatcherValues.set(i, newWatchableObject);
-								PacketContainer clone = packet.shallowClone();
-								clone.getWatchableCollectionModifier().write(0, dataWatcherValues);
-								event.setPacket(clone);
-								return;
-							}
-						}
+					if (handleHologramText(event, customNameWatchableObject)) {
+						entityMetadataPacket.setMetadata(dataWatcherValues);
 					}
 				}
 			}
@@ -228,7 +187,11 @@ public class ProtocolLibHook {
 
 		if (!ids.isEmpty()) {
 			WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
-			packet.setEntities(ids);
+			int[] entityArray = new int[ids.size()];
+			for (int i = 0; i < ids.size(); i++) {
+				entityArray[i] = ids.get(i);
+			}
+			packet.setEntityIds(entityArray);
 			packet.sendPacket(player);
 		}
 	}
@@ -242,7 +205,7 @@ public class ProtocolLibHook {
 				} else if (line instanceof CraftItemLine) {
 					CraftItemLine itemLine = (CraftItemLine) line;
 
-					AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsItem().getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
+					AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsItem().getBukkitEntityNMS(), WrapperPlayServerSpawnEntity.ObjectTypes.ITEM_STACK, 1);
 					itemPacket.sendPacket(player);
 
 					sendSpawnArmorStandPacket(player, (NMSArmorStand) itemLine.getNmsVehicle());
@@ -262,8 +225,8 @@ public class ProtocolLibHook {
 						dataWatcher.setObject(0, (byte) 0);
 					}
 
-					itemDataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
-					itemDataPacket.setEntityId(itemLine.getNmsItem().getIdNMS());
+					itemDataPacket.setMetadata(dataWatcher.getWatchableObjects());
+					itemDataPacket.setEntityID(itemLine.getNmsItem().getIdNMS());
 					itemDataPacket.sendPacket(player);
 				}
 
@@ -289,7 +252,7 @@ public class ProtocolLibHook {
 
 	private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {
 		if (BukkitVersion.isAtLeast(BukkitVersion.v1_11_R1)) {
-			WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), ObjectTypes.ARMOR_STAND, 1);
+			WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), WrapperPlayServerSpawnEntity.ObjectTypes.ARMORSTAND, 1);
 			spawnPacket.sendPacket(receiver);
 
 			WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
@@ -299,17 +262,21 @@ public class ProtocolLibHook {
 
 			String customName = armorStand.getCustomNameNMS();
 			if (customName != null && !customName.isEmpty()) {
-				dataWatcher.setObject(new WrappedDataWatcherObject(2, stringSerializer), customName); // Custom name
+				// Custom name
+				if (BukkitVersion.isAtLeast(BukkitVersion.v1_13_R1)) {
+					dataWatcher.setObject(2, ComponentConverter.fromBaseComponent(TextComponent.fromLegacyText(customName)));
+				} else {
+					dataWatcher.setObject(new WrappedDataWatcherObject(2, stringSerializer), customName);
+				}
 				dataWatcher.setObject(new WrappedDataWatcherObject(3, booleanSerializer), true); // Custom name visible
 			}
 
 			dataWatcher.setObject(new WrappedDataWatcherObject(5, booleanSerializer), true); // No gravity
 			dataWatcher.setObject(new WrappedDataWatcherObject(11, byteSerializer), (byte) (0x01 | 0x08 | 0x10)); // Armor stand data: small, no base plate, marker
 
-			dataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
-			dataPacket.setEntityId(armorStand.getIdNMS());
+			dataPacket.setMetadata(dataWatcher.getWatchableObjects());
+			dataPacket.setEntityID(armorStand.getIdNMS());
 			dataPacket.sendPacket(receiver);
-
 		} else {
 			WrapperPlayServerSpawnEntityLiving spawnPacket = new WrapperPlayServerSpawnEntityLiving(armorStand.getBukkitEntityNMS());
 			spawnPacket.sendPacket(receiver);
@@ -319,13 +286,13 @@ public class ProtocolLibHook {
 	private void sendVehicleAttachPacket(Player receiver, int vehicleId, int passengerId) {
 		if (BukkitVersion.isAtLeast(BukkitVersion.v1_9_R1)) {
 			WrapperPlayServerMount attachPacket = new WrapperPlayServerMount();
-			attachPacket.setVehicleId(vehicleId);
-			attachPacket.setPassengers(new int[]{passengerId});
+			attachPacket.setEntityID(vehicleId);
+			attachPacket.setPassengerIds(new int[]{passengerId});
 			attachPacket.sendPacket(receiver);
 		} else {
 			WrapperPlayServerAttachEntity attachPacket = new WrapperPlayServerAttachEntity();
 			attachPacket.setVehicleId(vehicleId);
-			attachPacket.setEntityId(passengerId);
+			attachPacket.setEntityID(passengerId);
 			attachPacket.sendPacket(receiver);
 		}
 	}
