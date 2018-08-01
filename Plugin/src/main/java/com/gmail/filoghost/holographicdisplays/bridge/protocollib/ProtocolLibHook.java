@@ -70,10 +70,15 @@ public class ProtocolLibHook {
 		String message;
 		Object object = wrappedObject.getValue();
 		if (BukkitVersion.isAtLeast(BukkitVersion.v1_13_R1)) {
-			if (!(object instanceof WrappedChatComponent)) {
+			if (!(object instanceof Optional)) {
 				return false;
 			}
-			WrappedChatComponent componentWrapper = (WrappedChatComponent) object;
+			Optional<?> optional = (Optional<?>) object;
+			if (!optional.isPresent()) {
+				return false; // No custom name
+			}
+			Object optionalValue = optional.get();
+			WrappedChatComponent componentWrapper = WrappedChatComponent.fromHandle(optionalValue);
 			message = BaseComponent.toLegacyText(ComponentConverter.fromWrapper(componentWrapper));
 		} else {
 			if (!(object instanceof String)) {
@@ -86,7 +91,7 @@ public class ProtocolLibHook {
 		}
 		message = message.replace("{player}", event.getPlayer().getName()).replace("{displayname}", event.getPlayer().getDisplayName());
 		wrappedObject.setValue(BukkitVersion.isAtLeast(BukkitVersion.v1_13_R1) ?
-				ComponentConverter.fromBaseComponent(TextComponent.fromLegacyText(message)) : message);
+				Optional.of(ComponentConverter.fromBaseComponent(TextComponent.fromLegacyText(message)).getHandle()) : message);
 		return true;
 	}
 
@@ -146,6 +151,8 @@ public class ProtocolLibHook {
 					}
 
 					handleHologramText(event, customNameWatchableObject);
+					spawnEntityPacket.getMetadata().setObject(2, customNameWatchableObject);
+					event.setPacket(spawnEntityPacket.getHandle());
 				} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
 					WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
 					Entity entity = spawnEntityPacket.getEntity(event);
@@ -160,13 +167,14 @@ public class ProtocolLibHook {
 					}
 
 					List<WrappedWatchableObject> dataWatcherValues = entityMetadataPacket.getMetadata();
-					WrappedWatchableObject customNameWatchableObject = dataWatcherValues.get(2);
-					if (customNameWatchableObject == null) {
-						return; // Should never happen!
-					}
-
-					if (handleHologramText(event, customNameWatchableObject)) {
-						entityMetadataPacket.setMetadata(dataWatcherValues);
+					for (WrappedWatchableObject current : dataWatcherValues) {
+						if (current.getIndex() == 2) {
+							if (handleHologramText(event, current)) {
+								entityMetadataPacket.setMetadata(dataWatcherValues);
+								event.setPacket(entityMetadataPacket.getHandle());
+							}
+							break;
+						}
 					}
 				}
 			}
