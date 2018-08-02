@@ -1,0 +1,4 @@
+name: PowerUps
+main: com.gmail.filoghost.holographicdisplays.powerups.PowerUps
+version: ${project.version}
+softdepend: [HolographicDisplays]

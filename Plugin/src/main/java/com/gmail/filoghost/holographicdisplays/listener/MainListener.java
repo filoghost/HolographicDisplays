@@ -1,8 +1,20 @@
 package com.gmail.filoghost.holographicdisplays.listener;
 
-import java.util.Map;
-import java.util.logging.Level;
-
+import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
+import com.gmail.filoghost.holographicdisplays.commands.Colors;
+import com.gmail.filoghost.holographicdisplays.commands.Strings;
+import com.gmail.filoghost.holographicdisplays.disk.Configuration;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
+import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
+import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
+import com.gmail.filoghost.holographicdisplays.object.PluginHologram;
+import com.gmail.filoghost.holographicdisplays.object.PluginHologramManager;
+import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
+import com.gmail.filoghost.holographicdisplays.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
@@ -21,52 +33,39 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
-import com.gmail.filoghost.holographicdisplays.commands.Colors;
-import com.gmail.filoghost.holographicdisplays.commands.Strings;
-import com.gmail.filoghost.holographicdisplays.disk.Configuration;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
-import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
-import com.gmail.filoghost.holographicdisplays.object.PluginHologram;
-import com.gmail.filoghost.holographicdisplays.object.PluginHologramManager;
-import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
+import java.util.Map;
+import java.util.logging.Level;
 
 public class MainListener implements Listener, ItemPickupManager {
-	
+
 	private NMSManager nmsManager;
-	
+
 	private Map<Player, Long> anticlickSpam = Utils.newMap();
-	
+
 	public MainListener(NMSManager nmsManager) {
 		this.nmsManager = nmsManager;
 	}
-	
+
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onChunkUnload(ChunkUnloadEvent event) {
 		for (Entity entity : event.getChunk().getEntities()) {
 			if (!entity.isDead()) {
 				NMSEntityBase entityBase = nmsManager.getNMSEntityBase(entity);
-				
+
 				if (entityBase != null) {
 					((CraftHologram) entityBase.getHologramLine().getParent()).despawnEntities();
 				}
 			}
 		}
 	}
-	
-	@EventHandler (priority = EventPriority.MONITOR)
+
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChunkLoad(ChunkLoadEvent event) {
 		final Chunk chunk = event.getChunk();
-		
+
 		// Other plugins could call this event wrongly, check if the chunk is actually loaded.
 		if (chunk.isLoaded()) {
-			
+
 			// In case another plugin loads the chunk asynchronously always make sure to load the holograms on the main thread.
 			if (Bukkit.isPrimaryThread()) {
 				processChunkLoad(chunk);
@@ -80,14 +79,14 @@ public class MainListener implements Listener, ItemPickupManager {
 			}
 		}
 	}
-	
+
 	// This method should be always called synchronously.
 	public void processChunkLoad(Chunk chunk) {
 		NamedHologramManager.onChunkLoad(chunk);
 		PluginHologramManager.onChunkLoad(chunk);
 	}
-	
-	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = false)
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		if (nmsManager.isNMSEntityBase(event.getEntity())) {
 			if (event.isCancelled()) {
@@ -95,8 +94,8 @@ public class MainListener implements Listener, ItemPickupManager {
 			}
 		}
 	}
-	
-	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = false)
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public void onProjectileLaunch(ProjectileLaunchEvent event) {
 		if (nmsManager.isNMSEntityBase(event.getEntity())) {
 			if (event.isCancelled()) {
@@ -104,8 +103,8 @@ public class MainListener implements Listener, ItemPickupManager {
 			}
 		}
 	}
-	
-	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = false)
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public void onItemSpawn(ItemSpawnEvent event) {
 		if (nmsManager.isNMSEntityBase(event.getEntity())) {
 			if (event.isCancelled()) {
@@ -113,27 +112,27 @@ public class MainListener implements Listener, ItemPickupManager {
 			}
 		}
 	}
-	
-	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onSlimeInteract(PlayerInteractEntityEvent event) {
 		if (event.getRightClicked().getType() == EntityType.SLIME) {
-			
+
 			Player clicker = event.getPlayer();
 			NMSEntityBase entityBase = nmsManager.getNMSEntityBase(event.getRightClicked());
-			
+
 			if (entityBase != null && entityBase.getHologramLine() instanceof CraftTouchSlimeLine && !isSpectatorMode(clicker)) {
-				
+
 				CraftTouchSlimeLine touchSlime = (CraftTouchSlimeLine) entityBase.getHologramLine();
-				
+
 				if (touchSlime.getTouchablePiece().getTouchHandler() != null && touchSlime.getParent().getVisibilityManager().isVisibleTo(clicker)) {
-					
+
 					Long lastClick = anticlickSpam.get(clicker);
 					if (lastClick != null && System.currentTimeMillis() - lastClick.longValue() < 100) {
 						return;
 					}
-					
+
 					anticlickSpam.put(event.getPlayer(), System.currentTimeMillis());
-					
+
 					try {
 						touchSlime.getTouchablePiece().getTouchHandler().onTouch(event.getPlayer());
 					} catch (Throwable t) {
@@ -144,11 +143,11 @@ public class MainListener implements Listener, ItemPickupManager {
 			}
 		}
 	}
-	
+
 	public boolean isSpectatorMode(Player player) {
 		return player.getGameMode().toString().equals("SPECTATOR");
 	}
-	
+
 	@Override
 	public void handleItemLinePickup(Player player, PickupHandler pickupHandler, Hologram hologram) {
 		try {
@@ -160,7 +159,7 @@ public class MainListener implements Listener, ItemPickupManager {
 			HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + player.getName() + " picked up an item from a hologram.", t);
 		}
 	}
-	
+
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		if (Configuration.updateNotification && HolographicDisplays.getNewVersion() != null) {
@@ -170,7 +169,7 @@ public class MainListener implements Listener, ItemPickupManager {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		anticlickSpam.remove(event.getPlayer());

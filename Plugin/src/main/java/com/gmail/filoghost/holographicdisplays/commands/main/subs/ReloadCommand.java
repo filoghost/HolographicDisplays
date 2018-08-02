@@ -1,12 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
@@ -25,6 +18,12 @@ import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.placeholder.AnimationsRegister;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 public class ReloadCommand extends HologramSubCommand {
 
@@ -46,21 +45,21 @@ public class ReloadCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		try {
-			
+
 			long startMillis = System.currentTimeMillis();
 
 			UnicodeSymbols.load(HolographicDisplays.getInstance());
 			Configuration.load(HolographicDisplays.getInstance());
-			
+
 			BungeeServerTracker.resetTrackedServers();
 			BungeeServerTracker.startTask(Configuration.bungeeRefreshSeconds);
-			
+
 			HologramDatabase.loadYamlFile(HolographicDisplays.getInstance());
 			AnimationsRegister.loadAnimations(HolographicDisplays.getInstance());
-			
+
 			PlaceholdersManager.untrackAll();
 			NamedHologramManager.clearAll();
-			
+
 			Set<String> savedHolograms = HologramDatabase.getHolograms();
 			if (savedHolograms != null && savedHolograms.size() > 0) {
 				for (String singleSavedHologram : savedHolograms) {
@@ -76,28 +75,28 @@ public class ReloadCommand extends HologramSubCommand {
 					}
 				}
 			}
-			
+
 			for (CraftHologram hologram : NamedHologramManager.getHolograms()) {
 				hologram.refreshAll();
 			}
-			
+
 			long endMillis = System.currentTimeMillis();
-			
+
 			sender.sendMessage(Colors.PRIMARY + "Configuration reloaded successfully in " + (endMillis - startMillis) + "ms!");
-			
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new CommandException("Exception while reloading the configuration. Please look the console.");
 		}
-		
+
 		Bukkit.getPluginManager().callEvent(new HolographicDisplaysReloadEvent());
 	}
-	
+
 	@Override
 	public List<String> getTutorial() {
 		return Arrays.asList("Reloads the holograms from the database.");
 	}
-	
+
 	@Override
 	public SubCommandType getType() {
 		return SubCommandType.GENERIC;

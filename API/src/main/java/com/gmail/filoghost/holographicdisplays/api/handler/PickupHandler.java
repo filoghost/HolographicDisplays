@@ -9,8 +9,9 @@ public interface PickupHandler {
 
 	/**
 	 * Called when a player picks up the item.
+	 *
 	 * @param player the player who picked up the item
 	 */
-	public void onPickup(Player player);
-	
+	void onPickup(Player player);
+
 }

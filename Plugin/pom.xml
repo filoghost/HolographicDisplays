@@ -1,163 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.gmail.filoghost.holographicdisplays</groupId>
-		<artifactId>holographicdisplays-parent</artifactId>
-		<version>2.2.7-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+        <artifactId>holographicdisplays-parent</artifactId>
+        <version>2.3.0-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>holographicdisplays-plugin</artifactId>
-	<name>HolographicDisplays Plugin</name>
+    <artifactId>holographicdisplays-plugin</artifactId>
 
-	<repositories>
-		<repository>
-			<id>elmakers-repo</id>
-			<url>http://maven.elmakers.com/repository/</url>
-		</repository>
-		<repository>
-			<id>dmulloy2-repo</id>
-			<url>http://repo.dmulloy2.net/nexus/repository/public/</url>
-		</repository>
-	</repositories>
+    <name>HolographicDisplays</name>
 
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-api</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-utils</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
+    <repositories>
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+        </repository>
+        <repository>
+            <id>bstats-repo</id>
+            <url>http://repo.bstats.org/content/repositories/releases/</url>
+        </repository>
+    </repositories>
 
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-interfaces</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>holographicdisplays-nms-aggregated</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+            <scope>compile</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_7_r1</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib-API</artifactId>
+            <version>4.4.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.comphenix.packetwrapper</groupId>
+            <artifactId>PacketWrapper</artifactId>
+            <version>1.13-R0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit-lite</artifactId>
+            <version>1.2</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_7_r2</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_7_r3</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_7_r4</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_8_r1</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_8_r2</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_8_r3</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_9_r1</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_9_r2</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_10_r1</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_11_r1</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_12_r1</artifactId>
-			<version>2.2.7-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.8-R0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.comphenix.protocol</groupId>
-			<artifactId>ProtocolLib</artifactId>
-			<version>4.3.0</version>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<createDependencyReducedPom>false</createDependencyReducedPom>
-					<shadedArtifactAttached>false</shadedArtifactAttached>
-					<artifactSet>
-						<includes>
-							<include>${project.groupId}:*</include>
-						</includes>
-					</artifactSet>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>com.gmail.filoghost.holographicdisplays.metrics</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.comphenix.packetwrapper</pattern>
+                            <shadedPattern>com.gmail.filoghost.holographicdisplays.libs.packetwrapper</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

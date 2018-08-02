@@ -21,21 +21,21 @@ public enum ConfigNode {
 	TIME_FORMAT("time.format", "H:mm"),
 	TIME_ZONE("time.zone", "GMT+1"),
 	DEBUG("debug", false);
-	
+
 	private final String path;
 	private final Object value;
-	
-	private ConfigNode(String path, Object defaultValue) {
+
+	ConfigNode(String path, Object defaultValue) {
 		this.path = path;
 		value = defaultValue;
 	}
-	
+
 	public String getPath() {
 		return path;
 	}
-	
+
 	public Object getDefaultValue() {
 		return value;
 	}
-	
+
 }

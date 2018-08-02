@@ -1,9 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
 import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
@@ -14,6 +10,10 @@ import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
+import org.bukkit.command.CommandSender;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class InfoCommand extends HologramSubCommand {
 
@@ -38,11 +38,11 @@ public class InfoCommand extends HologramSubCommand {
 		String name = args[0].toLowerCase();
 		NamedHologram hologram = NamedHologramManager.getHologram(name);
 		CommandValidator.notNull(hologram, Strings.noSuchHologram(name));
-		
+
 		sender.sendMessage("");
 		sender.sendMessage(Strings.formatTitle("Lines of the hologram '" + name + "'"));
 		int index = 0;
-		
+
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
 			sender.sendMessage(Colors.SECONDARY + Colors.BOLD + (++index) + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + (line instanceof CraftTextLine ? ((CraftTextLine) line).getText() : HologramDatabase.saveLineToString(line)));
 		}
@@ -52,7 +52,7 @@ public class InfoCommand extends HologramSubCommand {
 	public List<String> getTutorial() {
 		return Arrays.asList("Shows the lines of a hologram.");
 	}
-	
+
 	@Override
 	public SubCommandType getType() {
 		return SubCommandType.EDIT_LINES;

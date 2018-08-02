@@ -5,7 +5,7 @@ import org.bukkit.Location;
 public class NamedHologram extends CraftHologram {
 
 	private final String name;
-	
+
 	public NamedHologram(Location source, String name) {
 		super(source);
 		this.name = name;
@@ -15,7 +15,7 @@ public class NamedHologram extends CraftHologram {
 	public String getName() {
 		return name;
 	}
-	
+
 	@Override
 	public void delete() {
 		super.delete();
@@ -25,6 +25,6 @@ public class NamedHologram extends CraftHologram {
 	@Override
 	public String toString() {
 		return "NamedHologram [name=" + name + ", super=" + super.toString() + "]";
-	}	
-	
+	}
+
 }

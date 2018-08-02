@@ -1,13 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
 import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
@@ -17,9 +9,16 @@ import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CreateCommand extends HologramSubCommand {
-	
+
 	public CreateCommand() {
 		super("create");
 		setPermission(Strings.BASE_PERM + "create");
@@ -57,10 +56,10 @@ public class CreateCommand extends HologramSubCommand {
 		NamedHologramManager.addHologram(hologram);
 
 		if (args.length > 1) {
-			
+
 			String text = Utils.join(args, " ", 1, args.length);
 			CommandValidator.isTrue(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
-			
+
 			hologram.getLinesUnsafe().add(HologramDatabase.readLineFromString(text, hologram));
 			player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + label + " edit " + hologram.getName() + ")");
 		} else {

@@ -7,11 +7,11 @@ public class BungeeServerInfo {
 	private volatile boolean isOnline;
 	private volatile int onlinePlayers;
 	private volatile int maxPlayers;
-	
+
 	// The two lines of a motd
 	private volatile String motd1; // Should never be null
 	private volatile String motd2; // Should never be null
-	
+
 	private volatile long lastRequest;
 
 	protected BungeeServerInfo() {
@@ -20,7 +20,7 @@ public class BungeeServerInfo {
 		this.motd2 = "";
 		updateLastRequest();
 	}
-	
+
 	public boolean isOnline() {
 		return isOnline;
 	}
@@ -36,7 +36,7 @@ public class BungeeServerInfo {
 	public void setOnlinePlayers(int onlinePlayers) {
 		this.onlinePlayers = onlinePlayers;
 	}
-	
+
 	public int getMaxPlayers() {
 		return maxPlayers;
 	}
@@ -48,7 +48,7 @@ public class BungeeServerInfo {
 	public String getMotd1() {
 		return motd1;
 	}
-	
+
 	public String getMotd2() {
 		return motd2;
 	}
@@ -60,7 +60,7 @@ public class BungeeServerInfo {
 			this.motd2 = "";
 			return;
 		}
-		
+
 		if (motd.contains("\n")) {
 			String[] split = motd.split("\n");
 			this.motd1 = Configuration.pingerTrimMotd ? split[0].trim() : split[0];
