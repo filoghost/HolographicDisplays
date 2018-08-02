@@ -6,7 +6,7 @@ public class CyclicPlaceholderReplacer implements PlaceholderReplacer {
 
 	String[] frames;
 	private int index;
-	
+
 	public CyclicPlaceholderReplacer(String[] frames) {
 		this.frames = frames;
 		index = 0;
@@ -15,12 +15,12 @@ public class CyclicPlaceholderReplacer implements PlaceholderReplacer {
 	@Override
 	public String update() {
 		String result = frames[index];
-		
+
 		index++;
 		if (index >= frames.length) {
 			index = 0;
 		}
-		
+
 		return result;
 	}
 

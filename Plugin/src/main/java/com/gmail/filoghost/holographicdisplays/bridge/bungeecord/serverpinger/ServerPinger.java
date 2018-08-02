@@ -10,12 +10,12 @@ import java.net.UnknownHostException;
 
 public class ServerPinger {
 
-	public static PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException, Exception {
-		
+	public static PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws Exception {
+
 		Socket socket = null;
 		DataOutputStream dataOut = null;
 		DataInputStream dataIn = null;
-		
+
 		try {
 			socket = new Socket(serverAddress.getAddress(), serverAddress.getPort());
 			socket.setSoTimeout(timeout);
@@ -31,7 +31,7 @@ public class ServerPinger {
 			byte[] bytes = byteOut.toByteArray();
 			PacketUtils.writeVarInt(dataOut, bytes.length);
 			dataOut.write(bytes);
-			bytes = new byte[] { 0 };
+			bytes = new byte[]{0};
 			PacketUtils.writeVarInt(dataOut, bytes.length);
 			dataOut.write(bytes);
 			PacketUtils.readVarInt(dataIn);
@@ -40,8 +40,7 @@ public class ServerPinger {
 			dataIn.readFully(responseData);
 			final String jsonString = new String(responseData, PacketUtils.UTF8);
 			return new PingResponse(jsonString, serverAddress);
-		}
-		finally {
+		} finally {
 			PacketUtils.closeQuietly(dataOut);
 			PacketUtils.closeQuietly(dataIn);
 			PacketUtils.closeQuietly(socket);

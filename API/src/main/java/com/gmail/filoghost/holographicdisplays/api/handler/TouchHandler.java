@@ -9,8 +9,9 @@ public interface TouchHandler {
 
 	/**
 	 * Called when a player interacts with the hologram (right click).
+	 *
 	 * @param player the player who interacts
 	 */
-	public void onTouch(Player player);
-	
+	void onTouch(Player player);
+
 }

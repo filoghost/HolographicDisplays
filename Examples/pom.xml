@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xmlns="http://maven.apache.org/POM/4.0.0"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.gmail.filoghost.holographicdisplays</groupId>
-		<artifactId>holographicdisplays-parent</artifactId>
-		<version>2.2.7-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+        <artifactId>holographicdisplays-parent</artifactId>
+        <version>2.3.0-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>holographicdisplays-examples</artifactId>
-	<packaging>pom</packaging>
+    <artifactId>holographicdisplays-examples</artifactId>
+    <packaging>pom</packaging>
 
-	<modules>
-		<module>DeathHolograms</module>
-		<module>PowerUps</module>
-	</modules>
+    <modules>
+        <module>DeathHolograms</module>
+        <module>PowerUps</module>
+    </modules>
 
-	<name>HolographicDisplaysExamples</name>
+    <name>HolographicDisplays-Examples</name>
 
-	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
-	</properties>
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
-			<version>${spigot-api.version}</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>holographicdisplays-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 </project>

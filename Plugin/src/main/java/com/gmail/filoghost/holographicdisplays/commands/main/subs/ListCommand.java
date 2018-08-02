@@ -1,10 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
-
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
 import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
@@ -12,6 +7,10 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
+import org.bukkit.command.CommandSender;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class ListCommand extends HologramSubCommand {
 
@@ -45,8 +44,8 @@ public class ListCommand extends HologramSubCommand {
 		if (NamedHologramManager.size() % HOLOGRAMS_PER_PAGE != 0) {
 			totalPages++;
 		}
-		
-		
+
+
 		if (NamedHologramManager.size() == 0) {
 			throw new CommandException("There are no holograms yet. Create one with /" + label + " create.");
 		}
@@ -72,7 +71,7 @@ public class ListCommand extends HologramSubCommand {
 	public List<String> getTutorial() {
 		return Arrays.asList("Lists all the existing holograms.");
 	}
-	
+
 	@Override
 	public SubCommandType getType() {
 		return SubCommandType.GENERIC;

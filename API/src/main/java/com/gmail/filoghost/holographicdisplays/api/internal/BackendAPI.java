@@ -1,27 +1,26 @@
 package com.gmail.filoghost.holographicdisplays.api.internal;
 
-import java.util.Collection;
-
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
+import java.util.Collection;
 
 public abstract class BackendAPI {
-	
+
 	private static BackendAPI implementation;
-	
+
 	public static void setImplementation(BackendAPI implementation) {
 		BackendAPI.implementation = implementation;
 	}
-	
+
 	public static BackendAPI getImplementation() {
 		if (implementation == null) {
 			throw new IllegalStateException("No API implementation set. Is Holographic Displays enabled?");
 		}
-		
+
 		return implementation;
 	}
 
@@ -37,7 +36,7 @@ public abstract class BackendAPI {
 
 	public abstract void unregisterPlaceholders(Plugin plugin);
 
-	public abstract boolean isHologramEntity(Entity bukkitEntity);	
-	
+	public abstract boolean isHologramEntity(Entity bukkitEntity);
+
 
 }

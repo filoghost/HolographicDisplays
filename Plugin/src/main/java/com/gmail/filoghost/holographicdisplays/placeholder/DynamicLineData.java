@@ -1,25 +1,25 @@
 package com.gmail.filoghost.holographicdisplays.placeholder;
 
-import java.util.Map;
-import java.util.Set;
-
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 
+import java.util.Map;
+import java.util.Set;
+
 public class DynamicLineData {
-	
+
 	private final NMSNameable entity;
 	private final String originalName;
-	
+
 	private Set<Placeholder> placeholders;
 	private final Map<String, Placeholder> animations;
 	private final Map<String, PlaceholderReplacer> replacers;
-	
+
 	public DynamicLineData(NMSNameable entity, String originalName) {
 		Validator.notNull(entity, "entity");
-		
+
 		this.entity = entity;
 		this.originalName = originalName;
 		placeholders = Utils.newSet();
@@ -29,12 +29,12 @@ public class DynamicLineData {
 
 	public NMSNameable getEntity() {
 		return entity;
-	}	
+	}
 
 	public String getOriginalName() {
 		return originalName;
 	}
-	
+
 	public void setPlaceholders(Set<Placeholder> placeholders) {
 		this.placeholders = placeholders;
 	}
@@ -46,7 +46,7 @@ public class DynamicLineData {
 	public Map<String, PlaceholderReplacer> getReplacers() {
 		return replacers;
 	}
-	
+
 	public Map<String, Placeholder> getAnimations() {
 		return animations;
 	}
@@ -67,7 +67,6 @@ public class DynamicLineData {
 		DynamicLineData other = (DynamicLineData) obj;
 		return this.entity == other.entity;
 	}
-	
-	
-	
+
+
 }
