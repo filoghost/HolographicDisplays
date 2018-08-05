@@ -1,6 +1,7 @@
 package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,7 +10,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -18,6 +18,7 @@ import com.comphenix.protocol.events.PacketAdapter.AdapterParameteters;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.utility.MinecraftReflection;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Serializer;
@@ -37,7 +38,6 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchableLine;
 import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
-import com.google.common.base.Optional;
 
 /**
  * This is for the ProtocolLib versions containing the WrappedDataWatcher.WrappedDataWatcherObject class.
@@ -53,9 +53,11 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		intSerializer,
 		byteSerializer,
 		stringSerializer,
-		booleanSerializer;
+		booleanSerializer,
+		chatComponentSerializer;
 	
 	private int itemstackMetadataWatcherIndex;
+	private int customNameWatcherIndex;
 	
 	@Override
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {
@@ -82,12 +84,18 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			itemstackMetadataWatcherIndex = 10;
 		}
 		
+		customNameWatcherIndex = 2;
+		
 		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
 			itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
 			intSerializer = Registry.get(Integer.class);
 			byteSerializer = Registry.get(Byte.class);
 			stringSerializer = Registry.get(String.class);
 			booleanSerializer = Registry.get(Boolean.class);
+		}
+		
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_13)) {
+			chatComponentSerializer = Registry.get(MinecraftReflection.getIChatBaseComponentClass(), true);
 		}
 
 		AdapterParameteters params = PacketAdapter
@@ -106,7 +114,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					
 					PacketContainer packet = event.getPacket();
 					
-					if (event.getPlayer() instanceof Factory) {
+					if (event.getPlayer().getClass().getName().equals("com.comphenix.net.sf.cglib.proxy.Factory")) {
 						return; // Ignore temporary players (reference: https://github.com/dmulloy2/ProtocolLib/issues/349)
 					}
 
@@ -131,15 +139,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 						
-						WrappedWatchableObject customNameWatchableObject = spawnEntityPacket.getMetadata().getWatchableObject(2);
-						if (customNameWatchableObject == null || !(customNameWatchableObject.getValue() instanceof String)) {
-							return;
-						}
-						
-						String customName = (String) customNameWatchableObject.getValue();
-						if (customName.contains("{player}") || customName.contains("{displayname}")) {
-							customNameWatchableObject.setValue(customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName()));
-						}
+						WrappedWatchableObject customNameWatchableObject = spawnEntityPacket.getMetadata().getWatchableObject(customNameWatcherIndex);
+						replacePlayerRelativePlaceholders(customNameWatchableObject, event.getPlayer());
 
 					} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
 
@@ -193,30 +194,11 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						for (int i = 0; i < dataWatcherValues.size(); i++) {
 							
 							WrappedWatchableObject watchableObject = dataWatcherValues.get(i);
-							if (watchableObject.getIndex() == 2) { // Custom name index
-									
-								Object customNameObject = watchableObject.getValue();
-								if (!(customNameObject instanceof String)) {
-									return;
-								}
+							if (watchableObject.getIndex() == customNameWatcherIndex) {
 								
-								String customName = (String) customNameObject;
-								if (customName.contains("{player}") || customName.contains("{displayname}")) {
-									String replacement = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
-
-									WrappedWatchableObject newWatchableObject;
-									if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
-										// The other constructor does not work in 1.9+.
-										newWatchableObject = new WrappedWatchableObject(watchableObject.getWatcherObject(), replacement);
-									} else {
-										newWatchableObject = new WrappedWatchableObject(watchableObject.getIndex(), replacement);
-									}
-									
-									dataWatcherValues.set(i, newWatchableObject);
-									PacketContainer clone = packet.shallowClone();
-									clone.getWatchableCollectionModifier().write(0, dataWatcherValues);
-									event.setPacket(clone);
-									return;
+								if (replacePlayerRelativePlaceholders(watchableObject, event.getPlayer())) {
+									entityMetadataPacket.setEntityMetadata(dataWatcherValues);
+									event.setPacket(entityMetadataPacket.getHandle());
 								}
 							}
 						}
@@ -226,6 +208,52 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		
 		return true;
 	}
+	
+	
+	private boolean replacePlayerRelativePlaceholders(WrappedWatchableObject customNameWatchableObject, Player player) {
+		if (customNameWatchableObject == null) {
+			return true;
+		}
+		
+		Object customNameWatchableObjectValue = customNameWatchableObject.getValue();
+		String customName;
+		
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_13)) {
+			if (!(customNameWatchableObjectValue instanceof Optional)) {
+				return false;
+			}
+			
+			Optional<?> customNameOptional = (Optional<?>) customNameWatchableObjectValue;
+			if (!customNameOptional.isPresent()) {
+				return false;
+			}
+			
+			WrappedChatComponent componentWrapper = WrappedChatComponent.fromHandle(customNameOptional.get());
+			customName = componentWrapper.getJson();
+			
+		} else {
+			if (!(customNameWatchableObjectValue instanceof String)) {
+				return false;
+			}
+			
+			customName = (String) customNameWatchableObjectValue;
+		}
+		
+		if (!customName.contains("{player}") && !customName.contains("{displayname}")) {
+			return false;
+		}
+		
+		customName = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
+			
+		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_13)) {
+			customNameWatchableObject.setValue(Optional.of(WrappedChatComponent.fromJson(customName).getHandle()));
+		} else {
+			customNameWatchableObject.setValue(customName);
+		}
+		
+		return true;
+	}
+	
 	
 	
 	@Override
@@ -318,11 +346,15 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
 			WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 			
-			dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0x20); // Entity status
+			dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0x20); // Entity status: invisible
 
 			String customName = armorStand.getCustomNameNMS();
 			if (customName != null && !customName.isEmpty()) {
-				dataWatcher.setObject(new WrappedDataWatcherObject(2, stringSerializer), customName); // Custom name
+				if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_13)) {
+					dataWatcher.setObject(new WrappedDataWatcherObject(customNameWatcherIndex, chatComponentSerializer), Optional.of(WrappedChatComponent.fromText(customName).getHandle()));
+				} else {
+					dataWatcher.setObject(new WrappedDataWatcherObject(customNameWatcherIndex, stringSerializer), customName);
+				}
 				dataWatcher.setObject(new WrappedDataWatcherObject(3, booleanSerializer), true); // Custom name visible
 			}
 

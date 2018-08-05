@@ -24,7 +24,9 @@ public class MinecraftVersion {
 	
 		v1_11 = new MinecraftVersion(5),
 		
-		v1_12 = new MinecraftVersion(6);
+		v1_12 = new MinecraftVersion(6),
+		
+		v1_13 = new MinecraftVersion(7);
 
 	private int value;
 	

@@ -10,8 +10,8 @@
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>holographicdisplays-nms-v1_11_r1</artifactId>
-	<name>HolographicDisplays NMS v1_11_R1</name>
+	<artifactId>holographicdisplays-nms-v1_13_r1</artifactId>
+	<name>HolographicDisplays NMS v1_13_R1</name>
 
 	<repositories>
 		<repository>
@@ -36,8 +36,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot</artifactId>
-			<version>1.11-R0.1-SNAPSHOT</version>
-			<optional>true</optional>
+			<version>1.13-R0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

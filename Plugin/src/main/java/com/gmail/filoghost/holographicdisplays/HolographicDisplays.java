@@ -147,11 +147,14 @@ public class HolographicDisplays extends JavaPlugin {
 		} else if ("v1_12_R1".equals(version)) {
 			MinecraftVersion.set(MinecraftVersion.v1_12);
 			
+		} else if ("v1_13_R1".equals(version)) {
+			MinecraftVersion.set(MinecraftVersion.v1_13);
+			
 		} else {
 			printWarnAndDisable(
 				"******************************************************",
 				"     This version of HolographicDisplays only",
-				"     works on server versions from 1.7 to 1.12.",
+				"     works on server versions from 1.7 to 1.13.",
 				"     The plugin will be disabled.",
 				"******************************************************"
 			);
