@@ -15,24 +15,19 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import com.google.common.primitives.Ints;
+
 /**
  * A very simple and lightweight updater, without download features.
  * @autor filoghost
  */
 public final class SimpleUpdater {
-	
-	public interface ResponseHandler {
-		
-		/**
-		 * Called when the updater finds a new version.
-		 * @param newVersion - the new version
-		 */
-		public void onUpdateFound(final String newVersion);
-		
-	}
 
+	private static Pattern VERSION_PATTERN = Pattern.compile("v?([0-9\\.]+)");
+	
 	private Plugin plugin;
 	private int projectId;
+	
 
 	public SimpleUpdater(Plugin plugin, int projectId) {
 		if (plugin == null) {
@@ -43,17 +38,18 @@ public final class SimpleUpdater {
 		this.projectId = projectId;
 	}
 	
+	
 	/**
 	 * This method creates a new async thread to check for updates.
 	 * @param responseHandler the response handler
 	 */
 	public void checkForUpdates(final ResponseHandler responseHandler) {
 		Thread updaterThread = new Thread(new Runnable() {
+			
 			@Override
 			public void run() {
 
 				try {
-
 					JSONArray filesArray = (JSONArray) readJson("https://api.curseforge.com/servermods/files?projectIds=" + projectId);
 
 					if (filesArray.size() == 0) {
@@ -62,27 +58,23 @@ public final class SimpleUpdater {
 					}
 					
 					String updateName = (String) ((JSONObject) filesArray.get(filesArray.size() - 1)).get("name");
-					final String newVersion = extractVersion(updateName);
+					final int[] remoteVersion = extractVersion(updateName);
+					int[] localVersion = extractVersion(plugin.getDescription().getVersion());
 					
-					if (newVersion == null) {
-						throw new NumberFormatException();
-					}
-					
-					if (isNewerVersion(newVersion)) {
+					if (isNewerVersion(localVersion, remoteVersion)) {
 						Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
 							@Override
 							public void run() {
-								responseHandler.onUpdateFound(newVersion);
+								responseHandler.onUpdateFound("v" + Ints.join(".", remoteVersion));
 							}
 						});
 					}
 
 				} catch (IOException e) {
 					plugin.getLogger().warning("Could not contact BukkitDev to check for updates.");
-				} catch (NumberFormatException e) {
-					plugin.getLogger().warning("The author of this plugin has misconfigured the Updater system.");
-					plugin.getLogger().warning("File versions should follow the format 'PluginName vVERSION'");
+				} catch (InvalidVersionException e) {
+					plugin.getLogger().warning("Could not check for updates because of a version format error: " + e.getMessage() + ".");
 		            plugin.getLogger().warning("Please notify the author of this error.");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -91,11 +83,12 @@ public final class SimpleUpdater {
 
 			}
 		});
+		
 		updaterThread.start();
 	}
 	
+	
 	private Object readJson(String url) throws MalformedURLException, IOException {
-		
 		URLConnection conn = new URL(url).openConnection();
 		conn.setConnectTimeout(5000);
 		conn.setReadTimeout(8000);
@@ -105,46 +98,23 @@ public final class SimpleUpdater {
 		return JSONValue.parse(new BufferedReader(new InputStreamReader(conn.getInputStream())));
 	}
 	
+	
 	/**
-	 * Compare the version found with the plugin's version, from an array of integer separated by full stops.
+	 * Compare the remote version found with the local version, from an array of int.
 	 * Examples:
-	 *    v1.2 > v1.12
-	 *    v2.1 = v2.01
-	 * @param remoteVersion the remote version of the plugin
-	 * @return true if the remove version is newer
+	 * v1.12 is newer than v1.2 ([1, 12] is newer than [1, 2])
+	 * v2.01 is equal to v2.1 ([2, 1] is equal to [2, 1])
+	 * 
+	 * @return true if the remote version is newer, false if equal or older
 	 */
-	private boolean isNewerVersion(String remoteVersion) {
-		String pluginVersion = plugin.getDescription().getVersion();
-		
-		if (pluginVersion == null || !pluginVersion.matches("v?[0-9\\.]+")) {
-			// Do not throw exceptions, just consider it as v0.
-			pluginVersion = "0";
-		}
-		
-		if (!remoteVersion.matches("v?[0-9\\.]+")) {
-			// Should always be checked before by this class.
-			throw new IllegalArgumentException("fetched version's format is incorrect");
-		}
-		
-		// Remove all the "v" from the versions, replace multiple full stops with a single full stop, and split them.
-		String[] pluginVersionSplit = pluginVersion.replace("v", "").replaceAll("[\\.]{2,}", ".").split("\\.");
-		String[] remoteVersionSplit = remoteVersion.replace("v", "").replaceAll("[\\.]{2,}", ".").split("\\.");
-		
-		int longest = Math.max(pluginVersionSplit.length, remoteVersionSplit.length);
-		
-		int[] pluginVersionArray = new int[longest];
-		int[] remoteVersionArray = new int[longest];
-		
-		for (int i = 0; i < pluginVersionSplit.length; i++) {
-			pluginVersionArray[i] = Integer.parseInt(pluginVersionSplit[i]);
-		}
-		
-		for (int i = 0; i < remoteVersionSplit.length; i++) {
-			remoteVersionArray[i] = Integer.parseInt(remoteVersionSplit[i]);
-		}
+	private boolean isNewerVersion(int[] localVersion, int[] remoteVersion) {
+		int longest = Math.max(localVersion.length, remoteVersion.length);
 		
 		for (int i = 0; i < longest; i++) {
-			int diff = remoteVersionArray[i] - pluginVersionArray[i];
+			int remoteVersionPart = i < remoteVersion.length ? remoteVersion[i] : 0;
+			int localVersionPart = i < localVersion.length ? localVersion[i] : 0;
+			int diff = remoteVersionPart - localVersionPart;
+			
 			if (diff > 0) {
 				return true;
 			} else if (diff < 0) {
@@ -154,17 +124,65 @@ public final class SimpleUpdater {
 			// Continue the loop until diff = 0.
 		}
 		
+		// If we get here, they're the same version.
 		return false;
 	}
 	
-	private String extractVersion(String input) {
-		Matcher matcher = Pattern.compile("v[0-9\\.]+").matcher(input);
-		
-		String result = null;
-		if (matcher.find()) {
-			result = matcher.group();
+	
+	/**
+	 * Extracts the version from a string, e.g.:
+	 * "Holographic Displays v1.3" returns [1, 3]
+	 */
+	private int[] extractVersion(String input) throws InvalidVersionException {
+		if (input == null) {
+			throw new InvalidVersionException("input was null");
 		}
 		
-		return result;
+		Matcher matcher = VERSION_PATTERN.matcher(input);
+		
+		if (!matcher.find()) {
+			throw new InvalidVersionException("version pattern not found in \"" + input + "\"");
+		}
+		
+		// Get the first group of the matcher (without the "v")
+		String version = matcher.group(1);
+		
+		// Replace multiple full stops (probably typos) with a single full stop, and split the version with them.
+		String[] versionParts = version.replaceAll("[\\.]{2,}", ".").split("\\.");
+		
+		// Convert the strings to integers in order to compare them
+		int[] versionNumbers = new int[versionParts.length];
+		for (int i = 0; i < versionParts.length; i++) {
+			try {
+				versionNumbers[i] = Integer.parseInt(versionParts[i]);
+			} catch (NumberFormatException e) {
+				throw new InvalidVersionException("invalid number in \"" + input + "\"");
+			}
+		}
+		
+		return versionNumbers;
 	}
+	
+	
+	public interface ResponseHandler {
+		
+		/**
+		 * Called when the updater finds a new version.
+		 * @param newVersion - the new version
+		 */
+		public void onUpdateFound(final String newVersion);
+		
+	}
+	
+	
+	private class InvalidVersionException extends Exception {
+
+		private static final long serialVersionUID = -3586635317155798274L;
+
+		public InvalidVersionException(String message) {
+			super(message);
+		}
+		
+	}
+	
 }
