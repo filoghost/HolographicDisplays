@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -174,5 +175,12 @@ public class MainListener implements Listener, ItemPickupManager {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		anticlickSpam.remove(event.getPlayer());
+	}
+
+	@EventHandler
+	public void onHopper(InventoryPickupItemEvent event) {
+		if (nmsManager.isNMSEntityBase(event.getItem())) {
+			event.setCancelled(true);
+		}
 	}
 }
