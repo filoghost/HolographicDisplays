@@ -10,11 +10,17 @@
 		<version>2.3.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>holographicdisplays-utils</artifactId>
+	<artifactId>holographicdisplays-examples</artifactId>
+	<packaging>pom</packaging>
 
-	<name>HolographicDisplaysUtils</name>
+	<modules>
+		<module>DeathHolograms</module>
+		<module>PowerUps</module>
+	</modules>
 
-    <dependencies>
+	<name>HolographicDisplaysExamples</name>
+
+	<dependencies>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
@@ -25,6 +31,7 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-api</artifactId>
 			<version>${project.version}</version>
+			<scope>provided</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 </project>
