@@ -138,11 +138,11 @@
 			<version>4.3.0-SNAPSHOT</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit-lite</artifactId>
-            <version>1.2</version>
-        </dependency>
+		<dependency>
+			<groupId>org.bstats</groupId>
+			<artifactId>bstats-bukkit-lite</artifactId>
+			<version>1.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -163,15 +163,15 @@
 					<artifactSet>
 						<includes>
 							<include>${project.groupId}:*</include>
-                            <include>org.bstats</include>
+							<include>org.bstats</include>
 						</includes>
 					</artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.bstats</pattern>
-                            <shadedPattern>com.gmail.filoghost.holographicdisplays.metrics</shadedPattern>
-                        </relocation>
-                    </relocations>
+					<relocations>
+						<relocation>
+							<pattern>org.bstats</pattern>
+							<shadedPattern>com.gmail.filoghost.holographicdisplays.metrics</shadedPattern>
+						</relocation>
+					</relocations>
 				</configuration>
 				<executions>
 					<execution>
