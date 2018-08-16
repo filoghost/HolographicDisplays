@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,7 +21,6 @@ import com.gmail.filoghost.holographicdisplays.exception.HologramNotFoundExcepti
 import com.gmail.filoghost.holographicdisplays.exception.InvalidFormatException;
 import com.gmail.filoghost.holographicdisplays.exception.WorldNotFoundException;
 import com.gmail.filoghost.holographicdisplays.listener.MainListener;
-import com.gmail.filoghost.holographicdisplays.metrics.MetricsLite;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.object.DefaultBackendAPI;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
@@ -311,11 +311,9 @@ public class HolographicDisplays extends JavaPlugin {
 		
 		getCommand("holograms").setExecutor(commandHandler = new HologramsCommandHandler());
 		Bukkit.getPluginManager().registerEvents(mainListener = new MainListener(nmsManager), this);
-		
-		try {
-			MetricsLite metrics = new MetricsLite(this);
-			metrics.start();
-		} catch (Exception ignore) { }
+
+		// Register bStats metrics
+		MetricsLite metrics = new MetricsLite(this);
 		
 		// The entities are loaded when the server is ready.
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new StartupLoadHologramsTask(), 10L);
