@@ -13,6 +13,7 @@ import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
+import net.minecraft.server.v1_9_R2.AxisAlignedBB;
 import net.minecraft.server.v1_9_R2.Blocks;
 import net.minecraft.server.v1_9_R2.DamageSource;
 import net.minecraft.server.v1_9_R2.Entity;
@@ -39,6 +40,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		super.pickupDelay = Integer.MAX_VALUE;
 		this.parentPiece = piece;
 		this.itemPickupManager = itemPickupManager;
+		forceSetBoundingBox(new NullBoundingBox());
 	}
 	
 	@Override
@@ -133,6 +135,15 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	@Override
 	public boolean isCollidable() {
 		return false;
+	}
+	
+	@Override
+	public void a(AxisAlignedBB boundingBox) {
+		// Do not change it!
+	}
+	
+	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
+		super.a(boundingBox);
 	}
 	
 	@Override

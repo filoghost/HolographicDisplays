@@ -25,6 +25,7 @@ import net.minecraft.server.v1_10_R1.NBTTagList;
 import net.minecraft.server.v1_10_R1.NBTTagString;
 import net.minecraft.server.v1_10_R1.PacketPlayOutMount;
 import net.minecraft.server.v1_10_R1.World;
+import net.minecraft.server.v1_10_R1.AxisAlignedBB;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
 	
@@ -39,6 +40,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		super.pickupDelay = Integer.MAX_VALUE;
 		this.parentPiece = piece;
 		this.itemPickupManager = itemPickupManager;
+		forceSetBoundingBox(new NullBoundingBox());
 	}
 	
 	@Override
@@ -133,6 +135,15 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	@Override
 	public boolean isCollidable() {
 		return false;
+	}
+	
+	@Override
+	public void a(AxisAlignedBB boundingBox) {
+		// Do not change it!
+	}
+	
+	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
+		super.a(boundingBox);
 	}
 	
 	@Override

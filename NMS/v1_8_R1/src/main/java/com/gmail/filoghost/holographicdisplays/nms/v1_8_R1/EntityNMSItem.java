@@ -12,6 +12,7 @@ import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 
+import net.minecraft.server.v1_8_R1.AxisAlignedBB;
 import net.minecraft.server.v1_8_R1.Blocks;
 import net.minecraft.server.v1_8_R1.DamageSource;
 import net.minecraft.server.v1_8_R1.Entity;
@@ -35,6 +36,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		super.pickupDelay = Integer.MAX_VALUE;
 		this.parentPiece = piece;
 		this.itemPickupManager = itemPickupManager;
+		forceSetBoundingBox(new NullBoundingBox());
 	}
 	
 	@Override
@@ -93,6 +95,15 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		 * on chunk unload, we prefer to override isInvulnerable().
 		 */
 	    return true;
+	}
+	
+	@Override
+	public void a(AxisAlignedBB boundingBox) {
+		// Do not change it!
+	}
+	
+	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
+		super.a(boundingBox);
 	}
 	
 	@Override

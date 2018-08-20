@@ -12,6 +12,7 @@ import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 
+import net.minecraft.server.v1_13_R1.AxisAlignedBB;
 import net.minecraft.server.v1_13_R1.Blocks;
 import net.minecraft.server.v1_13_R1.DamageSource;
 import net.minecraft.server.v1_13_R1.Entity;
@@ -35,6 +36,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		super.pickupDelay = 32767; // Lock the item pickup delay, also prevents entities from picking up the item
 		this.parentPiece = piece;
 		this.itemPickupManager = itemPickupManager;
+		forceSetBoundingBox(new NullBoundingBox());
 	}
 	
 	@Override
@@ -109,6 +111,15 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	@Override
 	public boolean isCollidable() {
 		return false;
+	}
+	
+	@Override
+	public void a(AxisAlignedBB boundingBox) {
+		// Do not change it!
+	}
+	
+	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
+		super.a(boundingBox);
 	}
 	
 	@Override
