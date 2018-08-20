@@ -12,7 +12,7 @@ public class Offsets {
 		WITHER_SKULL_WITH_SLIME = -0.22,
 		
 		// For 1.8+, a single armor stand. As with wither skulls and horses, the bottom part of the nametag should be on the surface of the block.
-		ARMOR_STAND_ALONE = -1.25,
+		ARMOR_STAND_ALONE = -0.26,
 		
 		// For 1.8+, an armor stand holding an item.
 		ARMOR_STAND_WITH_ITEM = -1.48,

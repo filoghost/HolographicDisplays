@@ -29,6 +29,12 @@ public class ReflectionUtils {
 		return field.get(handle);
 	}
 	
+	public static Object callPrivateMethod(Class<?> clazz, Object handle, String methodName, Class<?>[] parameterTypes, Object[] args) throws Exception {
+		Method method = clazz.getDeclaredMethod(methodName, parameterTypes);
+		method.setAccessible(true);
+		return method.invoke(handle, args);
+	}
+	
 	private static Method getStackTraceElementMethod;
 	private static Method getStackTraceDepthMethod;
 	

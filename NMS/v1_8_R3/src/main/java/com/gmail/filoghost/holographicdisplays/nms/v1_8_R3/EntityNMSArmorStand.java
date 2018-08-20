@@ -31,6 +31,12 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		setArms(false);
 		setGravity(true);
 		setBasePlate(true);
+		try {
+			ReflectionUtils.callPrivateMethod(EntityArmorStand.class, this, "n", new Class[]{ boolean.class }, new Object[]{ true }); // n() = setMarker()
+		} catch (Exception e) {
+			e.printStackTrace();
+			// It will still work.
+		}
 		this.parentPiece = parentPiece;
 		try {
 			ReflectionUtils.setPrivateField(EntityArmorStand.class, this, "bi", Integer.MAX_VALUE);
