@@ -166,9 +166,9 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 
 	@Override
 	public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
-		ItemStack newItem = CraftItemStack.asNMSCopy(stack);
+		ItemStack newItem = CraftItemStack.asNMSCopy(stack); // ItemStack.a is returned if the stack is null, invalid or the material is not an Item
 		
-		if (newItem == null) {
+		if (newItem == null || newItem == ItemStack.a) {
 			newItem = new ItemStack(Blocks.BEDROCK);
 		}
 
