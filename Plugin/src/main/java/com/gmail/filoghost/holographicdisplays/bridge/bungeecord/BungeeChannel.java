@@ -15,6 +15,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
+import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class BungeeChannel implements PluginMessageListener {
@@ -31,8 +32,13 @@ public class BungeeChannel implements PluginMessageListener {
 	public BungeeChannel(Plugin plugin) {
 		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
         Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", this);
-        Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "RedisBungee");
-        Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "RedisBungee", this);
+        
+        if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_13)) {
+        	// TODO implement when RedisBungee will be updated
+        } else {
+        	Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "RedisBungee");
+        	Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "RedisBungee", this);
+        }
 	}
 
 	@Override
