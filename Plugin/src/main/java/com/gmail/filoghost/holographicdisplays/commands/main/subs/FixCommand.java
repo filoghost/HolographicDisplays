@@ -14,7 +14,7 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
-import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
+import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 
 public class FixCommand extends HologramSubCommand {
 
@@ -37,7 +37,7 @@ public class FixCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		
-		CommandValidator.isTrue(!MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8), "This command is no longer necessary in 1.8+. The holograms already use the correct ambient light.");
+		CommandValidator.isTrue(!NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1), "This command is no longer necessary in 1.8+. The holograms already use the correct ambient light.");
 		
 		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
 		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
@@ -70,7 +70,7 @@ public class FixCommand extends HologramSubCommand {
 	
 	@Override
 	public SubCommandType getType() {
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1)) {
 			return SubCommandType.HIDDEN;
 		} else {
 			return SubCommandType.GENERIC;

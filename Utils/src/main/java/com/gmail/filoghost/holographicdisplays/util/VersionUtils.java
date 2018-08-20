@@ -22,7 +22,7 @@ public class VersionUtils {
 	 * Example: v1_8_R1
 	 * @return the NMS package part or null if not found.
 	 */
-	public static String getBukkitVersion() {
+	public static String extractNMSVersion() {
 		Matcher matcher = Pattern.compile("v\\d+_\\d+_R\\d+").matcher(Bukkit.getServer().getClass().getPackage().getName());
 		if (matcher.find()) {
 			return matcher.group();
@@ -36,7 +36,7 @@ public class VersionUtils {
 	 * Example: 1.8.1
 	 * @return the version of this release or null if not found.
 	 */
-	public static String getMinecraftVersion() {
+	public static String extractMinecraftVersion() {
 		Matcher matcher = Pattern.compile("(\\(MC: )([\\d\\.]+)(\\))").matcher(Bukkit.getVersion());
 		if (matcher.find()) {
 			return matcher.group(2);
@@ -58,7 +58,7 @@ public class VersionUtils {
 	}
 	
 	public static boolean isArmorstand(EntityType type) {
-		if (!MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
+		if (!NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1)) {
 			return false;
 		}
 		

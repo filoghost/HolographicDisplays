@@ -32,7 +32,7 @@ import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import com.gmail.filoghost.holographicdisplays.task.BungeeCleanupTask;
 import com.gmail.filoghost.holographicdisplays.task.StartupLoadHologramsTask;
 import com.gmail.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
-import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
+import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class HolographicDisplays extends JavaPlugin {
@@ -86,71 +86,7 @@ public class HolographicDisplays extends JavaPlugin {
 			});
 		}
 		
-		String version = VersionUtils.getBukkitVersion();
-		
-		if (version == null) {
-			// Caused by MCPC+ / Cauldron renaming packages, extract the version from Bukkit.getVersion().
-			version = VersionUtils.getMinecraftVersion();
-			
-			if ("1.7.2".equals(version)) {
-				version = "v1_7_R1";
-			} else if ("1.7.5".equals(version)) {
-				version = "v1_7_R2";
-			} else if ("1.7.8".equals(version)) {
-				version = "v1_7_R3";
-			} else if ("1.7.10".equals(version)) {
-				version = "v1_7_R4";
-			} else if ("1.8".equals(version)) {
-				version = "v1_8_R1";
-			} else if ("1.8.3".equals(version)) {
-				version = "v1_8_R2";
-			} else {
-				// Cannot definitely get the version. This will cause the plugin to disable itself.
-				version = null;
-			}
-		}
-		
-		// It's simple, we don't need reflection.
-		if ("v1_7_R1".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_7);
-			
-		} else if ("v1_7_R2".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_7);
-			
-		} else if ("v1_7_R3".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_7);
-			
-		} else if ("v1_7_R4".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_7);
-			
-		} else if ("v1_8_R1".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_8);
-			
-		} else if ("v1_8_R2".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_8);
-			
-		} else if ("v1_8_R3".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_8);
-			
-		} else if ("v1_9_R1".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_9);
-			
-		} else if ("v1_9_R2".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_9);
-			
-		} else if ("v1_10_R1".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_10);
-			
-		} else if ("v1_11_R1".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_11);
-			
-		} else if ("v1_12_R1".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_12);
-			
-		} else if ("v1_13_R1".equals(version)) {
-			MinecraftVersion.set(MinecraftVersion.v1_13);
-			
-		} else {
+		if (!NMSVersion.isValid()) {
 			printWarnAndDisable(
 				"******************************************************",
 				"     This version of HolographicDisplays only",
@@ -162,7 +98,7 @@ public class HolographicDisplays extends JavaPlugin {
 		}
 		
 		try {
-			nmsManager = (NMSManager) Class.forName("com.gmail.filoghost.holographicdisplays.nms." + version + ".NmsManagerImpl").getConstructor().newInstance();
+			nmsManager = (NMSManager) Class.forName("com.gmail.filoghost.holographicdisplays.nms." + NMSVersion.getCurrent() + ".NmsManagerImpl").getConstructor().newInstance();
 		} catch (Throwable t) {
 			t.printStackTrace();
 			printWarnAndDisable(
@@ -210,11 +146,11 @@ public class HolographicDisplays extends JavaPlugin {
 					if (versionNumbersMatcher.find()) {
 						String versionNumbers = versionNumbersMatcher.group();
 						
-						if (MinecraftVersion.get() == MinecraftVersion.v1_7) {
+						if (NMSVersion.isBetween(NMSVersion.v1_7_R1, NMSVersion.v1_7_R4)) {
 							if (!VersionUtils.isVersionBetweenEqual(versionNumbers, "3.6.4", "3.7.0")) {
 								requiredVersionError = "between 3.6.4 and 3.7.0";
 							}
-						} else if (MinecraftVersion.get() == MinecraftVersion.v1_8) {
+						} else if (NMSVersion.isBetween(NMSVersion.v1_8_R1, NMSVersion.v1_8_R3)) {
 							if (!VersionUtils.isVersionBetweenEqual(versionNumbers, "3.6.4", "3.6.5") && !VersionUtils.isVersionGreaterEqual(versionNumbers, "4.1")) {
 								requiredVersionError = "between 3.6.4 and 3.6.5 or higher than 4.1";
 							}

@@ -36,7 +36,7 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchableLine;
-import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
+import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 /**
@@ -74,8 +74,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		
 		this.nmsManager = nmsManager;
 		
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
-			if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_10)) {
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
+			if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_10_R1)) {
 				itemstackMetadataWatcherIndex = 6;
 			} else {
 				itemstackMetadataWatcherIndex = 5;
@@ -86,7 +86,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		
 		customNameWatcherIndex = 2;
 		
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
 			itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
 			intSerializer = Registry.get(Integer.class);
 			byteSerializer = Registry.get(Byte.class);
@@ -94,7 +94,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			booleanSerializer = Registry.get(Boolean.class);
 		}
 		
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_13)) {
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
 			chatComponentSerializer = Registry.get(MinecraftReflection.getIChatBaseComponentClass(), true);
 		}
 
@@ -218,7 +218,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		Object customNameWatchableObjectValue = customNameWatchableObject.getValue();
 		String customName;
 		
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_13)) {
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
 			if (!(customNameWatchableObjectValue instanceof Optional)) {
 				return false;
 			}
@@ -245,7 +245,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		
 		customName = customName.replace("{player}", player.getName()).replace("{displayname}", player.getDisplayName());
 			
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_13)) {
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
 			customNameWatchableObject.setValue(Optional.of(WrappedChatComponent.fromJson(customName).getHandle()));
 		} else {
 			customNameWatchableObject.setValue(customName);
@@ -300,8 +300,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
 						WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 						
-						if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
-							Object itemStackObject = MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_11) ? itemLine.getNmsItem().getRawItemStack() : Optional.of(itemLine.getNmsItem().getRawItemStack());
+						if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
+							Object itemStackObject = NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1) ? itemLine.getNmsItem().getRawItemStack() : Optional.of(itemLine.getNmsItem().getRawItemStack());
 							dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), itemStackObject);
 							dataWatcher.setObject(new WrappedDataWatcherObject(1, intSerializer), 300);
 							dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0);
@@ -339,7 +339,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	
 	private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_11)) {
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1)) {
 			WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), WrapperPlayServerSpawnEntity.ObjectTypes.ARMOR_STAND, 1);
 			spawnPacket.sendPacket(receiver);
 			
@@ -350,7 +350,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 
 			String customName = armorStand.getCustomNameNMS();
 			if (customName != null && !customName.isEmpty()) {
-				if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_13)) {
+				if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
 					dataWatcher.setObject(new WrappedDataWatcherObject(customNameWatcherIndex, chatComponentSerializer), Optional.of(WrappedChatComponent.fromText(customName).getHandle()));
 				} else {
 					dataWatcher.setObject(new WrappedDataWatcherObject(customNameWatcherIndex, stringSerializer), customName);
@@ -373,7 +373,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	
 	private void sendVehicleAttachPacket(Player receiver, int vehicleId, int passengerId) {
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
 			WrapperPlayServerMount attachPacket = new WrapperPlayServerMount();
 			attachPacket.setVehicleId(vehicleId);
 			attachPacket.setPassengers(new int[] {passengerId});

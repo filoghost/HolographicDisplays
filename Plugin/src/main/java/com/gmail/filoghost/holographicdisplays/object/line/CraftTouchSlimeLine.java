@@ -6,7 +6,7 @@ import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
-import com.gmail.filoghost.holographicdisplays.util.MinecraftVersion;
+import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
 
 /**
@@ -39,7 +39,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 		
 		nmsSlime = HolographicDisplays.getNMSManager().spawnNMSSlime(world, x, y + offset, z, this);
 		
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1)) {
 			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
 		} else {
 			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + offset, z, this);
@@ -100,9 +100,9 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 	}
 	
 	private double getSlimeOffset() {
-		if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_9)) {
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
 			return Offsets.ARMOR_STAND_WITH_SLIME_1_9;
-		} else if (MinecraftVersion.isGreaterEqualThan(MinecraftVersion.v1_8)) {
+		} else if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1)) {
 			return Offsets.ARMOR_STAND_WITH_SLIME;
 		} else {
 			return Offsets.WITHER_SKULL_WITH_SLIME;
