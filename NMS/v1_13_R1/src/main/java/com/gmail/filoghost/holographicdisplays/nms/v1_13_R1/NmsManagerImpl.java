@@ -21,8 +21,6 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
-
 import net.minecraft.server.v1_13_R1.Entity;
 import net.minecraft.server.v1_13_R1.EntityTypes;
 import net.minecraft.server.v1_13_R1.MathHelper;
@@ -45,29 +43,25 @@ public class NmsManagerImpl implements NMSManager {
 	
 	@SuppressWarnings("unchecked")
 	public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
-		if (VersionUtils.isForgeServer()) {
-			throw new UnsupportedOperationException("Forge based servers are not supported");
-		} else {
-			// Use reflection to get the RegistryID of entities.
-			RegistryID<EntityTypes<?>> registryID = (RegistryID<EntityTypes<?>>) ReflectionUtils.getPrivateField(RegistryMaterials.class, EntityTypes.REGISTRY, "a");
-			Object[] idToClassMap = (Object[]) ReflectionUtils.getPrivateField(RegistryID.class, registryID, "d");
+		// Use reflection to get the RegistryID of entities.
+		RegistryID<EntityTypes<?>> registryID = (RegistryID<EntityTypes<?>>) ReflectionUtils.getPrivateField(RegistryMaterials.class, EntityTypes.REGISTRY, "a");
+		Object[] idToClassMap = (Object[]) ReflectionUtils.getPrivateField(RegistryID.class, registryID, "d");
+		
+		// Save the the ID -> EntityTypes mapping before the registration.
+		Object oldValue = idToClassMap[id];
+
+		// Register the EntityTypes object.
+		registryID.a(new EntityTypes<Entity>(entityClass, new Function<World, Entity>() {
+
+			@Override
+			public Entity apply(World world) {
+				return null;
+			}
 			
-			// Save the the ID -> EntityTypes mapping before the registration.
-			Object oldValue = idToClassMap[id];
+		}, true, true, null), id);
 
-			// Register the EntityTypes object.
-			registryID.a(new EntityTypes<Entity>(entityClass, new Function<World, Entity>() {
-
-				@Override
-				public Entity apply(World world) {
-					return null;
-				}
-				
-			}, true, true, null), id);
-
-			// Restore the ID -> EntityTypes mapping.
-			idToClassMap[id] = oldValue;
-		}
+		// Restore the ID -> EntityTypes mapping.
+		idToClassMap[id] = oldValue;
 	}
 	
 	@Override

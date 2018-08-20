@@ -20,8 +20,6 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
-
 import net.minecraft.server.v1_11_R1.Entity;
 import net.minecraft.server.v1_11_R1.EntityTypes;
 import net.minecraft.server.v1_11_R1.MathHelper;
@@ -44,22 +42,18 @@ public class NmsManagerImpl implements NMSManager {
 	
 	@SuppressWarnings("unchecked")
 	public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
-		if (VersionUtils.isForgeServer()) {
-			throw new UnsupportedOperationException("Forge based servers are not supported");
-		} else {
-			// Use reflection to get the RegistryID of entities.
-			RegistryID<Class<? extends Entity>> registryID = (RegistryID<Class<? extends Entity>>) ReflectionUtils.getPrivateField(RegistryMaterials.class, EntityTypes.b, "a");
-			Object[] idToClassMap = (Object[]) ReflectionUtils.getPrivateField(RegistryID.class, registryID, "d");
-			
-			// Save the the ID -> entity class mapping before the registration.
-			Object oldValue = idToClassMap[id];
+		// Use reflection to get the RegistryID of entities.
+		RegistryID<Class<? extends Entity>> registryID = (RegistryID<Class<? extends Entity>>) ReflectionUtils.getPrivateField(RegistryMaterials.class, EntityTypes.b, "a");
+		Object[] idToClassMap = (Object[]) ReflectionUtils.getPrivateField(RegistryID.class, registryID, "d");
+		
+		// Save the the ID -> entity class mapping before the registration.
+		Object oldValue = idToClassMap[id];
 
-			// Register the entity class.
-			registryID.a(entityClass, id);
+		// Register the entity class.
+		registryID.a(entityClass, id);
 
-			// Restore the ID -> entity class mapping.
-			idToClassMap[id] = oldValue;
-		}
+		// Restore the ID -> entity class mapping.
+		idToClassMap[id] = oldValue;
 	}
 	
 	@Override

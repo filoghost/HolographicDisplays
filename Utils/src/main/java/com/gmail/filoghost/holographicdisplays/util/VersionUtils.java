@@ -21,31 +21,6 @@ public class VersionUtils {
 		}
 	}
 	
-	/**
-	 * This method uses a regex to get the version of this Minecraft release.
-	 * Example: 1.8.1
-	 * @return the version of this release or null if not found.
-	 */
-	public static String extractMinecraftVersion() {
-		Matcher matcher = Pattern.compile("(\\(MC: )([\\d\\.]+)(\\))").matcher(Bukkit.getVersion());
-		if (matcher.find()) {
-			return matcher.group(2);
-		} else {
-			return null;
-		}
-	}
-	
-	/**
-	 * @return if the server is based on Forge.
-	 */
-	public static boolean isForgeServer() {
-		try {
-			Class.forName("net.minecraftforge.common.MinecraftForge");
-			return true;
-		} catch (ClassNotFoundException e) {
-			return false;
-		}
-	}
 	
 	/**
 	 * @return 1 if reference > comparison, 0 if reference == comparison, -1 if reference < comparison

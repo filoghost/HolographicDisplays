@@ -111,16 +111,7 @@ public class HolographicDisplays extends JavaPlugin {
 		}
 
 		try {
-			if (VersionUtils.isForgeServer()) {
-				getLogger().info("Trying to enable Forge support...");
-			}
-			
 			nmsManager.setup();
-			
-			if (VersionUtils.isForgeServer()) {
-				getLogger().info("Successfully added Forge support!");
-			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			printWarnAndDisable(

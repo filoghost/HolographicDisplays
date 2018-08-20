@@ -20,8 +20,6 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
-
 import net.minecraft.server.v1_9_R2.Entity;
 import net.minecraft.server.v1_9_R2.EntityTypes;
 import net.minecraft.server.v1_9_R2.MathHelper;
@@ -42,15 +40,9 @@ public class NmsManagerImpl implements NMSManager {
 		validateEntityMethod.setAccessible(true);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public void registerCustomEntity(Class entityClass, String name, int id) throws Exception {
-		if (VersionUtils.isForgeServer()) {
-			throw new UnsupportedOperationException("Forge based servers are not supported");
-		} else {
-			// Normal entity registration.
-			ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "d", entityClass, name);
-			ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "f", entityClass, Integer.valueOf(id));
-		}
+	public void registerCustomEntity(Class<?> entityClass, String name, int id) throws Exception {
+		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "d", entityClass, name);
+		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "f", entityClass, Integer.valueOf(id));
 	}
 	
 	@Override
