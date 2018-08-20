@@ -1,17 +1,14 @@
 package com.gmail.filoghost.holographicdisplays.util;
 
+/**
+ *  When spawning a hologram at a location, the top part of the first line should be exactly on that location.
+ *  The second line is below the first, and so on.
+ */
 public class Offsets {
 	
 	public static final double
-	
-		// Spawning a hologram line on top of a full block, the bottom part of the nametag should be perfectly on the surface of the block.
-		WITHER_SKULL_WITH_HORSE = 54.56,
 		
-		WITHER_SKULL_WITH_ITEM = -0.21,
-		
-		WITHER_SKULL_WITH_SLIME = -0.22,
-		
-		// For 1.8+, a single armor stand. As with wither skulls and horses, the bottom part of the nametag should be on the surface of the block.
+		// For 1.8+, a single armor stand.
 		ARMOR_STAND_ALONE = -0.26,
 		
 		// For 1.8+, an armor stand holding an item.
@@ -21,7 +18,7 @@ public class Offsets {
 		ARMOR_STAND_WITH_SLIME = -1.49,
 	
 	
-		// For 1.9+, a single armor stand. As with wither skulls and horses, the bottom part of the nametag should be on the surface of the block.
+		// For 1.9+, a single armor stand.
 		ARMOR_STAND_ALONE_1_9 = -0.29,
 		
 		// For 1.9+, an armor stand holding an item.

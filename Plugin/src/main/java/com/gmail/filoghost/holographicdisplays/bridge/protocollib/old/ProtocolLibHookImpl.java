@@ -27,30 +27,22 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchableLine;
-import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 /**
  * This is for the ProtocolLib versions without the WrappedDataWatcher.WrappedDataWatcherObject class.
  * 
- * These versions are only used for 1.7 and 1.8.
+ * These versions are only used for 1.8.
  */
 public class ProtocolLibHookImpl implements ProtocolLibHook {
 
 	private NMSManager nmsManager;
 
-	private int customNameWatcherIndex;
+	private int customNameWatcherIndex = 2;
 
 	@Override
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {
 		this.nmsManager = nmsManager;
-
-		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1)) {
-			customNameWatcherIndex = 2;
-		} else {
-			customNameWatcherIndex = 10;
-		}
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.SPAWN_ENTITY_LIVING, PacketType.Play.Server.SPAWN_ENTITY, PacketType.Play.Server.ENTITY_METADATA) {
 
@@ -100,7 +92,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 
 						WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
 						int objectId = spawnEntityPacket.getType();
-						if (objectId != ObjectTypes.ITEM_STACK && objectId != ObjectTypes.WITHER_SKULL && objectId != ObjectTypes.ARMOR_STAND) {
+						if (objectId != ObjectTypes.ITEM_STACK && objectId != ObjectTypes.ARMOR_STAND) {
 							return;
 						}
 
@@ -129,8 +121,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 
-						if (entity.getType() != EntityType.HORSE && !VersionUtils.isArmorstand(entity.getType())) {
-							// Enough, only horses and armorstands are used with custom names.
+						if (entity.getType() != EntityType.ARMOR_STAND) {
+							// Enough, only armorstands are used with custom names.
 							return;
 						}
 
@@ -204,19 +196,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					CraftTextLine textLine = (CraftTextLine) line;
 
 					if (textLine.isSpawned()) {
-
 						AbstractPacket nameablePacket = new WrapperPlayServerSpawnEntityLiving(textLine.getNmsNameble().getBukkitEntityNMS());
 						nameablePacket.sendPacket(player);
-
-						if (textLine.getNmsSkullVehicle() != null) {
-							AbstractPacket vehiclePacket = new WrapperPlayServerSpawnEntity(textLine.getNmsSkullVehicle().getBukkitEntityNMS(), ObjectTypes.WITHER_SKULL, 0);
-							vehiclePacket.sendPacket(player);
-
-							WrapperPlayServerAttachEntity attachPacket = new WrapperPlayServerAttachEntity();
-							attachPacket.setVehicleId(textLine.getNmsSkullVehicle().getIdNMS());
-							attachPacket.setEntityId(textLine.getNmsNameble().getIdNMS());
-							attachPacket.sendPacket(player);
-						}
 					}
 
 				} else if (line instanceof CraftItemLine) {
@@ -226,14 +207,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsItem().getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
 						itemPacket.sendPacket(player);
 
-						AbstractPacket vehiclePacket;
-						if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1)) {
-							// In 1.8 we have armor stands, that are living entities.
-							vehiclePacket = new WrapperPlayServerSpawnEntityLiving(itemLine.getNmsVehicle().getBukkitEntityNMS());
-						} else {
-							vehiclePacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsVehicle().getBukkitEntityNMS(), ObjectTypes.WITHER_SKULL, 0);
-						}
-
+						AbstractPacket vehiclePacket = new WrapperPlayServerSpawnEntityLiving(itemLine.getNmsVehicle().getBukkitEntityNMS());
 						vehiclePacket.sendPacket(player);
 
 						WrapperPlayServerAttachEntity attachPacket = new WrapperPlayServerAttachEntity();
@@ -261,15 +235,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					CraftTouchSlimeLine touchSlime = touchableLine.getTouchSlime();
 
 					if (touchSlime.isSpawned()) {
-						AbstractPacket vehiclePacket;
-
-						if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1)) {
-							// Armor stand vehicle
-							vehiclePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsVehicle().getBukkitEntityNMS());
-						} else {
-							// Wither skull vehicle
-							vehiclePacket = new WrapperPlayServerSpawnEntity(touchSlime.getNmsVehicle().getBukkitEntityNMS(), ObjectTypes.WITHER_SKULL, 0);
-						}
+						AbstractPacket vehiclePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsVehicle().getBukkitEntityNMS());
 						vehiclePacket.sendPacket(player);
 
 						AbstractPacket slimePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsSlime().getBukkitEntityNMS());
@@ -300,7 +266,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	}
 
 	private boolean isHologramType(EntityType type) {
-		return type == EntityType.HORSE || type == EntityType.WITHER_SKULL || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME || VersionUtils.isArmorstand(type); // To maintain backwards compatibility
+		return type == EntityType.ARMOR_STAND || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME;
 	}
 
 	private Hologram getHologram(Entity bukkitEntity) {

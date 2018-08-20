@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.ImmutableList;
@@ -56,15 +55,6 @@ public class VersionUtils {
 			return false;
 		}
 	}
-	
-	public static boolean isArmorstand(EntityType type) {
-		if (!NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1)) {
-			return false;
-		}
-		
-		return type == EntityType.ARMOR_STAND;
-	}
-	
 	
 	public static Collection<? extends Player> getOnlinePlayers() {
 		try {

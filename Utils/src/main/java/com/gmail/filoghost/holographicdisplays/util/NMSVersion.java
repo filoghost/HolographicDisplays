@@ -5,10 +5,6 @@ package com.gmail.filoghost.holographicdisplays.util;
  */
 public enum NMSVersion {
 	
-	v1_7_R1,
-	v1_7_R2,
-	v1_7_R3,
-	v1_7_R4,
 	v1_8_R1,
 	v1_8_R2,
 	v1_8_R3,
@@ -32,25 +28,7 @@ public enum NMSVersion {
 				return null;
 			}
 		} else {
-			// Caused by MCPC+ / Cauldron renaming packages, get the NMS version from the Minecraft version.
-			nmsVersionName = VersionUtils.extractMinecraftVersion();
-			
-			if ("1.7.2".equals(nmsVersionName)) {
-				return v1_7_R1;
-			} else if ("1.7.5".equals(nmsVersionName)) {
-				return v1_7_R2;
-			} else if ("1.7.8".equals(nmsVersionName)) {
-				return v1_7_R3;
-			} else if ("1.7.10".equals(nmsVersionName)) {
-				return v1_7_R4;
-			} else if ("1.8".equals(nmsVersionName)) {
-				return v1_8_R1;
-			} else if ("1.8.3".equals(nmsVersionName)) {
-				return v1_8_R2;
-			} else {
-				// Cannot definitely get the version. This will cause the plugin to disable itself.
-				return null;
-			}
+			return null;
 		}
 	}
 	

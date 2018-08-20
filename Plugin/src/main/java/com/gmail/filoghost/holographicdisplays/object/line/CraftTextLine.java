@@ -7,8 +7,6 @@ import org.bukkit.World;
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSCanMount;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
@@ -18,11 +16,7 @@ import com.gmail.filoghost.holographicdisplays.util.Offsets;
 public class CraftTextLine extends CraftTouchableLine implements TextLine {
 
 	private String text;
-	
 	private NMSNameable nmsNameble;
-	
-	// Legacy code for < 1.7, not used in 1.8 and greater
-	private NMSEntityBase nmsSkullVehicle;
 	
 	
 	public CraftTextLine(CraftHologram parent, String text) {
@@ -71,17 +65,8 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	public void spawn(World world, double x, double y, double z) {
 		super.spawn(world, x, y, z);
 			
-		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1)) {
-			nmsNameble = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this);
-		} else {
-			nmsNameble = HolographicDisplays.getNMSManager().spawnNMSHorse(world, x, y + Offsets.WITHER_SKULL_WITH_HORSE, z, this);
-			nmsSkullVehicle = HolographicDisplays.getNMSManager().spawnNMSWitherSkull(world, x, y + Offsets.WITHER_SKULL_WITH_HORSE, z, this);
-			
-			// In 1.7 it must be an instanceof NMSCanMount
-			((NMSCanMount) nmsNameble).setPassengerOfNMS(nmsSkullVehicle);
-			nmsSkullVehicle.setLockTick(true);
-		}
-		
+		nmsNameble = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this);
+
 		if (text != null && !text.isEmpty()) {
 			nmsNameble.setCustomNameNMS(text);
 		}
@@ -94,11 +79,6 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	public void despawn() {
 		super.despawn();
 		
-		if (nmsSkullVehicle != null) {
-			nmsSkullVehicle.killEntityNMS();
-			nmsSkullVehicle = null;
-		}
-		
 		if (nmsNameble != null) {
 			nmsNameble.killEntityNMS();
 			nmsNameble = null;
@@ -110,10 +90,6 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	public void teleport(double x, double y, double z) {
 		super.teleport(x, y, z);
 		
-		if (nmsSkullVehicle != null) {
-			nmsSkullVehicle.setLocationNMS(x, y + Offsets.WITHER_SKULL_WITH_HORSE, z);
-		}
-		
 		if (nmsNameble != null) {
 			nmsNameble.setLocationNMS(x, y + getTextOffset(), z);
 		}
@@ -122,18 +98,10 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	@Override
 	public int[] getEntitiesIDs() {
 		if (isSpawned()) {
-			if (nmsSkullVehicle != null) {
-				if (touchSlime != null) {
-					return ArrayUtils.addAll(new int[] {nmsNameble.getIdNMS(), nmsSkullVehicle.getIdNMS()}, touchSlime.getEntitiesIDs());
-				} else {
-					return new int[] {nmsNameble.getIdNMS(), nmsSkullVehicle.getIdNMS()};
-				}
+			if (touchSlime != null) {
+				return ArrayUtils.add(touchSlime.getEntitiesIDs(), nmsNameble.getIdNMS());
 			} else {
-				if (touchSlime != null) {
-					return ArrayUtils.add(touchSlime.getEntitiesIDs(), nmsNameble.getIdNMS());
-				} else {
-					return new int[] {nmsNameble.getIdNMS()};
-				}
+				return new int[] {nmsNameble.getIdNMS()};
 			}
 		} else {
 			return new int[0];
@@ -144,17 +112,11 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		return nmsNameble;
 	}
 
-	public NMSEntityBase getNmsSkullVehicle() {
-		return nmsSkullVehicle;
-	}
-
 	private double getTextOffset() {
 		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
 			return Offsets.ARMOR_STAND_ALONE_1_9;
-		} else if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_8_R1)) {
-			return Offsets.ARMOR_STAND_ALONE;
 		} else {
-			return Offsets.WITHER_SKULL_WITH_HORSE;
+			return Offsets.ARMOR_STAND_ALONE;
 		}
 	}
 

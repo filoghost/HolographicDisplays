@@ -41,8 +41,6 @@ import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 /**
  * This is for the ProtocolLib versions containing the WrappedDataWatcher.WrappedDataWatcherObject class.
- * 
- * These versions are only used from 1.8, there is no need to handle 1.7 entities.
  */
 public class ProtocolLibHookImpl implements ProtocolLibHook {
 	

@@ -20,10 +20,6 @@
 		<module>API</module>
 		<module>Utils</module>
 		<module>NMS/Interfaces</module>
-		<module>NMS/v1_7_R1</module>
-		<module>NMS/v1_7_R2</module>
-		<module>NMS/v1_7_R3</module>
-		<module>NMS/v1_7_R4</module>
 		<module>NMS/v1_8_R1</module>
 		<module>NMS/v1_8_R2</module>
 		<module>NMS/v1_8_R3</module>

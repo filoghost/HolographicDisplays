@@ -90,7 +90,7 @@ public class HolographicDisplays extends JavaPlugin {
 			printWarnAndDisable(
 				"******************************************************",
 				"     This version of HolographicDisplays only",
-				"     works on server versions from 1.7 to 1.13.",
+				"     works on server versions from 1.8 to 1.13.",
 				"     The plugin will be disabled.",
 				"******************************************************"
 			);
@@ -146,11 +146,7 @@ public class HolographicDisplays extends JavaPlugin {
 					if (versionNumbersMatcher.find()) {
 						String versionNumbers = versionNumbersMatcher.group();
 						
-						if (NMSVersion.isBetween(NMSVersion.v1_7_R1, NMSVersion.v1_7_R4)) {
-							if (!VersionUtils.isVersionBetweenEqual(versionNumbers, "3.6.4", "3.7.0")) {
-								requiredVersionError = "between 3.6.4 and 3.7.0";
-							}
-						} else if (NMSVersion.isBetween(NMSVersion.v1_8_R1, NMSVersion.v1_8_R3)) {
+						if (NMSVersion.isBetween(NMSVersion.v1_8_R1, NMSVersion.v1_8_R3)) {
 							if (!VersionUtils.isVersionBetweenEqual(versionNumbers, "3.6.4", "3.6.5") && !VersionUtils.isVersionGreaterEqual(versionNumbers, "4.1")) {
 								requiredVersionError = "between 3.6.4 and 3.6.5 or higher than 4.1";
 							}

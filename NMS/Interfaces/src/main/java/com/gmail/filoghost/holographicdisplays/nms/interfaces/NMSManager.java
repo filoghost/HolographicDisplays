@@ -6,10 +6,8 @@ import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSHorse;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSWitherSkull;
 
 public interface NMSManager {
 	
@@ -17,10 +15,6 @@ public interface NMSManager {
 	public void setup() throws Exception;
 	
 	public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece);
-
-	public NMSHorse spawnNMSHorse(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece);
-	
-	public NMSWitherSkull spawnNMSWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece);
 	
 	public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack,  ItemPickupManager itemPickupManager);
 	

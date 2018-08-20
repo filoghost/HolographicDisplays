@@ -3,7 +3,6 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_13_R1;
 import java.lang.reflect.Method;
 import java.util.function.Function;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.craftbukkit.v1_13_R1.CraftChunk;
@@ -18,9 +17,7 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSHorse;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSWitherSkull;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
@@ -71,16 +68,6 @@ public class NmsManagerImpl implements NMSManager {
 			// Restore the ID -> EntityTypes mapping.
 			idToClassMap[id] = oldValue;
 		}
-	}
-
-	@Override
-	public NMSHorse spawnNMSHorse(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece) {
-		throw new NotImplementedException("Method can only be used on 1.7 or lower");
-	}
-	
-	@Override
-	public NMSWitherSkull spawnNMSWitherSkull(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece) {
-		throw new NotImplementedException("Method can only be used on 1.7 or lower");
 	}
 	
 	@Override
