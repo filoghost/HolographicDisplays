@@ -8,23 +8,44 @@ public class Offsets {
 	
 	public static final double
 		
-		// For 1.8+, a single armor stand.
-		ARMOR_STAND_ALONE = -0.26,
+		// A single armor stand.
+		ARMOR_STAND_ALONE = getArmorStandAloneOffset(),
 		
-		// For 1.8+, an armor stand holding an item.
-		ARMOR_STAND_WITH_ITEM = -1.48,
+		// An armor stand holding an item.
+		ARMOR_STAND_WITH_ITEM = getArmorStandWithItemOffset(),
 	
-		// For 1.8+, an armor stand holding a slime.
-		ARMOR_STAND_WITH_SLIME = -1.49,
+		// An armor stand holding a slime.
+		ARMOR_STAND_WITH_SLIME = getArmorStandWithSlimeOffset();
 	
 	
-		// For 1.9+, a single armor stand.
-		ARMOR_STAND_ALONE_1_9 = -0.29,
-		
-		// For 1.9+, an armor stand holding an item.
-		ARMOR_STAND_WITH_ITEM_1_9 = -0.0,
+	private static double getArmorStandAloneOffset() {
+		if (NMSVersion.getCurrent() == NMSVersion.v1_8_R1) {
+			// When the NBT tag "Marker" was not implemented
+			return -1.25;
+		} else {
+			return -0.29;
+		}
+	}
 	
-		// For 1.9+, an armor stand holding a slime.
-		ARMOR_STAND_WITH_SLIME_1_9 = -0.01;
+	
+	private static double getArmorStandWithItemOffset() {
+		if (NMSVersion.getCurrent() == NMSVersion.v1_8_R1) {
+			// When the NBT tag "Marker" was not implemented
+			return -1.48;
+		} else {
+			return 0;
+		}
+	}
+	
+	
+	private static double getArmorStandWithSlimeOffset() {
+		if (NMSVersion.getCurrent() == NMSVersion.v1_8_R1) {
+			// When the NBT tag "Marker" was not implemented
+			return -1.48;
+		} else {
+			return 0;
+		}
+	}
+	
 
 }

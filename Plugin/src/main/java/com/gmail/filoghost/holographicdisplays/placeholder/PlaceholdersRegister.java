@@ -12,7 +12,6 @@ import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class PlaceholdersRegister {
 	
@@ -25,7 +24,7 @@ public class PlaceholdersRegister {
 			
 			@Override
 			public String update() {
-				return String.valueOf(VersionUtils.getOnlinePlayers().size());
+				return String.valueOf(Bukkit.getOnlinePlayers().size());
 			}
 		}));
 		

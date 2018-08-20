@@ -6,7 +6,6 @@ import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
-import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
 
 /**
@@ -95,11 +94,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 	}
 	
 	private double getSlimeOffset() {
-		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
-			return Offsets.ARMOR_STAND_WITH_SLIME_1_9;
-		} else {
-			return Offsets.ARMOR_STAND_WITH_SLIME;
-		}
+		return Offsets.ARMOR_STAND_WITH_SLIME;
 	}
 
 	@Override

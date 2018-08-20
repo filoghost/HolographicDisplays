@@ -16,7 +16,6 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
-import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class BungeeChannel implements PluginMessageListener {
 
@@ -103,7 +102,7 @@ public class BungeeChannel implements PluginMessageListener {
 		}
 
 		// OR, if you don't need to send it to a specific player
-		Collection<? extends Player> players = VersionUtils.getOnlinePlayers();
+		Collection<? extends Player> players = Bukkit.getOnlinePlayers();
 		if (players.size() > 0) {
 			players.iterator().next().sendPluginMessage(HolographicDisplays.getInstance(), Configuration.useRedisBungee ? "RedisBungee" : "BungeeCord", b.toByteArray());
 		}

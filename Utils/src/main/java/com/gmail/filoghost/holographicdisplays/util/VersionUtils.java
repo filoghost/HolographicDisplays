@@ -1,20 +1,11 @@
 package com.gmail.filoghost.holographicdisplays.util;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import com.google.common.collect.ImmutableList;
 
 public class VersionUtils {
-	
-	private static Method getOnlinePlayersMethod;
-	private static boolean getOnlinePlayersUseReflection;
 	
 	/**
 	 * This method uses a regex to get the NMS package part that changes with every update.
@@ -55,30 +46,6 @@ public class VersionUtils {
 			return false;
 		}
 	}
-	
-	public static Collection<? extends Player> getOnlinePlayers() {
-		try {
-			
-			if (getOnlinePlayersMethod == null) {
-				getOnlinePlayersMethod = Bukkit.class.getDeclaredMethod("getOnlinePlayers");
-				if (getOnlinePlayersMethod.getReturnType() == Player[].class) {
-					getOnlinePlayersUseReflection = true;
-				}
-			}
-		
-			if (!getOnlinePlayersUseReflection) {
-				return Bukkit.getOnlinePlayers();
-			} else {
-				Player[] playersArray = (Player[]) getOnlinePlayersMethod.invoke(null);
-				return ImmutableList.copyOf(playersArray);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Collections.emptyList();
-		}
-	}
-	
 	
 	/**
 	 * @return 1 if reference > comparison, 0 if reference == comparison, -1 if reference < comparison

@@ -10,7 +10,6 @@ import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
-import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
 
 public class CraftTextLine extends CraftTouchableLine implements TextLine {
@@ -49,6 +48,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		}
 	}
 	
+	@Override
 	public void setTouchHandler(TouchHandler touchHandler) {
 		
 		if (nmsNameble != null) {
@@ -113,11 +113,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	}
 
 	private double getTextOffset() {
-		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
-			return Offsets.ARMOR_STAND_ALONE_1_9;
-		} else {
-			return Offsets.ARMOR_STAND_ALONE;
-		}
+		return Offsets.ARMOR_STAND_ALONE;
 	}
 
 	@Override

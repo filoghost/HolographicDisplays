@@ -13,7 +13,6 @@ import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
-import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 
@@ -56,6 +55,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 		this.pickupHandler = pickupHandler;
 	}
 	
+	@Override
 	public void setTouchHandler(TouchHandler touchHandler) {
 		if (nmsItem != null) {
 			Location loc = nmsItem.getBukkitEntityNMS().getLocation();
@@ -136,11 +136,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	}
 	
 	private double getItemOffset() {
-		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
-			return Offsets.ARMOR_STAND_WITH_ITEM_1_9;
-		} else {
-			return Offsets.ARMOR_STAND_WITH_ITEM;
-		}
+		return Offsets.ARMOR_STAND_WITH_ITEM;
 	}
 
 	@Override
