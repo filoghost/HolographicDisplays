@@ -10,7 +10,7 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBa
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 
 import net.minecraft.server.v1_13_R1.AxisAlignedBB;
 import net.minecraft.server.v1_13_R1.Blocks;
@@ -26,6 +26,8 @@ import net.minecraft.server.v1_13_R1.NBTTagString;
 import net.minecraft.server.v1_13_R1.World;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
+	
+	private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<Entity>(Entity.class, "ax");
 	
 	private boolean lockTick;
 	private ItemLine parentPiece;
@@ -225,11 +227,11 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		try {
 			if (super.getVehicle() != null) {
 	        	Entity oldVehicle = super.getVehicle();
-	        	ReflectionUtils.setPrivateField(Entity.class, this, "ax", null);
+	        	VEHICLE_FIELD.set(this, null);
 	        	oldVehicle.passengers.remove(this);
 	        }
 
-	        ReflectionUtils.setPrivateField(Entity.class, this, "ax", entity);
+			VEHICLE_FIELD.set(this, entity);
 	        entity.passengers.clear();
 	        entity.passengers.add(this);
 

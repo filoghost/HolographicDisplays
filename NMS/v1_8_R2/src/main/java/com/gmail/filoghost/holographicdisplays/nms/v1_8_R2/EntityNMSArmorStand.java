@@ -4,8 +4,11 @@ import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
+import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectMethod;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectionUtils;
 
 import net.minecraft.server.v1_8_R2.AxisAlignedBB;
 import net.minecraft.server.v1_8_R2.DamageSource;
@@ -20,6 +23,9 @@ import net.minecraft.server.v1_8_R2.Vec3D;
 import net.minecraft.server.v1_8_R2.World;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
+	
+	private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = new ReflectField<Integer>(EntityArmorStand.class, "bi");
+	private static final ReflectMethod<Void> SET_MARKER_METHOD = new ReflectMethod<Void>(EntityArmorStand.class, "n", boolean.class);
 
 	private boolean lockTick;
 	private HologramLine parentPiece;
@@ -32,14 +38,14 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		setGravity(true);
 		setBasePlate(true);
 		try {
-			ReflectionUtils.callPrivateMethod(EntityArmorStand.class, this, "n", new Class[]{ boolean.class }, new Object[]{ true }); // n() = setMarker()
+			SET_MARKER_METHOD.invoke(this, true);
 		} catch (Exception e) {
-			e.printStackTrace();
-			// It will still work.
+			DebugHandler.handleDebugException(e);
+			// It will still work, but the offset will be wrong.
 		}
 		this.parentPiece = parentPiece;
 		try {
-			ReflectionUtils.setPrivateField(EntityArmorStand.class, this, "bi", Integer.MAX_VALUE);
+			DISABLED_SLOTS_FIELD.set(this, Integer.MAX_VALUE);
 		} catch (Exception e) {
 			// There's still the overridden method.
 		}

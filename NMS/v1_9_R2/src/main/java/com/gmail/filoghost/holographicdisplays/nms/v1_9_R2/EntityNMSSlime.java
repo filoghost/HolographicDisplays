@@ -8,8 +8,8 @@ import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 
 import net.minecraft.server.v1_9_R2.AxisAlignedBB;
 import net.minecraft.server.v1_9_R2.DamageSource;
@@ -23,6 +23,8 @@ import net.minecraft.server.v1_9_R2.SoundEffect;
 import net.minecraft.server.v1_9_R2.World;
 
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
+	
+	private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<Entity>(Entity.class, "at");
 
 	private boolean lockTick;
 	private HologramLine parentPiece;
@@ -213,11 +215,11 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 		try {
 			if (super.bz() != null) {
 	        	Entity oldVehicle = super.bz();
-	        	ReflectionUtils.setPrivateField(Entity.class, this, "at", null);
+	        	VEHICLE_FIELD.set(this, null);
 	        	oldVehicle.passengers.remove(this);
 	        }
 
-	        ReflectionUtils.setPrivateField(Entity.class, this, "at", entity);
+			VEHICLE_FIELD.set(this, entity);
 	        entity.passengers.clear();
 	        entity.passengers.add(this);
 

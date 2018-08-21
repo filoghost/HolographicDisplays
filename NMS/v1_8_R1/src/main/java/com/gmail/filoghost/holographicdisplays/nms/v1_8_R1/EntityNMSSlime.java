@@ -8,7 +8,7 @@ import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 
 import net.minecraft.server.v1_8_R1.AxisAlignedBB;
 import net.minecraft.server.v1_8_R1.DamageSource;
@@ -20,6 +20,9 @@ import net.minecraft.server.v1_8_R1.NBTTagCompound;
 import net.minecraft.server.v1_8_R1.World;
 
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
+	
+	private static final ReflectField<Double> RIDER_PITCH_DELTA = new ReflectField<Double>(Entity.class, "ap");
+	private static final ReflectField<Double> RIDER_YAW_DELTA = new ReflectField<Double>(Entity.class, "aq");
 
 	private boolean lockTick;
 	private HologramLine parentPiece;
@@ -175,8 +178,8 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 		Entity entity = (Entity) vehicleBase;
 		
 		try {
-			ReflectionUtils.setPrivateField(Entity.class, this, "ap", (double) 0.0);
-			ReflectionUtils.setPrivateField(Entity.class, this, "aq", (double) 0.0);
+			RIDER_PITCH_DELTA.set(this, 0.0);
+			RIDER_YAW_DELTA.set(this, 0.0);
 		} catch (Exception ex) {
 			DebugHandler.handleDebugException(ex);
 		}

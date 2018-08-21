@@ -18,8 +18,9 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorSta
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
+
 import net.minecraft.server.v1_12_R1.Entity;
 import net.minecraft.server.v1_12_R1.EntityTypes;
 import net.minecraft.server.v1_12_R1.MathHelper;
@@ -29,6 +30,9 @@ import net.minecraft.server.v1_12_R1.World;
 import net.minecraft.server.v1_12_R1.WorldServer;
 
 public class NmsManagerImpl implements NMSManager {
+	
+	private static final ReflectField<RegistryID<Class<? extends Entity>>> REGISTRY_ID_FIELD = new ReflectField<RegistryID<Class<? extends Entity>>>(RegistryMaterials.class, "a");
+	private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = new ReflectField<Object[]>(RegistryID.class, "d");
 
 	private Method validateEntityMethod;
 	
@@ -40,11 +44,10 @@ public class NmsManagerImpl implements NMSManager {
 		registerCustomEntity(EntityNMSSlime.class, 55);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
 		// Use reflection to get the RegistryID of entities.
-		RegistryID<Class<? extends Entity>> registryID = (RegistryID<Class<? extends Entity>>) ReflectionUtils.getPrivateField(RegistryMaterials.class, EntityTypes.b, "a");
-		Object[] idToClassMap = (Object[]) ReflectionUtils.getPrivateField(RegistryID.class, registryID, "d");
+		RegistryID<Class<? extends Entity>> registryID = REGISTRY_ID_FIELD.get(EntityTypes.b);
+		Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
 		
 		// Save the the ID -> entity class mapping before the registration.
 		Object oldValue = idToClassMap[id];

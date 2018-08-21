@@ -10,7 +10,7 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBa
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 
 import net.minecraft.server.v1_8_R3.AxisAlignedBB;
 import net.minecraft.server.v1_8_R3.Blocks;
@@ -26,6 +26,9 @@ import net.minecraft.server.v1_8_R3.NBTTagString;
 import net.minecraft.server.v1_8_R3.World;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
+	
+	private static final ReflectField<Double> RIDER_PITCH_DELTA = new ReflectField<Double>(Entity.class, "ar");
+	private static final ReflectField<Double> RIDER_YAW_DELTA = new ReflectField<Double>(Entity.class, "as");
 	
 	private boolean lockTick;
 	private ItemLine parentPiece;
@@ -208,8 +211,8 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		Entity entity = (Entity) vehicleBase;
 		
 		try {
-			ReflectionUtils.setPrivateField(Entity.class, this, "ar", 0.0);
-			ReflectionUtils.setPrivateField(Entity.class, this, "as", 0.0);
+			RIDER_PITCH_DELTA.set(this, 0.0);
+			RIDER_YAW_DELTA.set(this, 0.0);
 		} catch (Exception ex) {
 			DebugHandler.handleDebugException(ex);
 		}

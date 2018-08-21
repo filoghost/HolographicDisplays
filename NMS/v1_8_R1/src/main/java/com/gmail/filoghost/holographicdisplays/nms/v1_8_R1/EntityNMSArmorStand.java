@@ -4,8 +4,9 @@ import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectionUtils;
 
 import net.minecraft.server.v1_8_R1.AxisAlignedBB;
 import net.minecraft.server.v1_8_R1.DamageSource;
@@ -21,6 +22,8 @@ import net.minecraft.server.v1_8_R1.World;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
 
+	private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = new ReflectField<Integer>(EntityArmorStand.class, "bg");
+	
 	private boolean lockTick;
 	private HologramLine parentPiece;
 	
@@ -34,7 +37,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		// There is no "Marker" tag in v1_8_R1
 		this.parentPiece = parentPiece;
 		try {
-			ReflectionUtils.setPrivateField(EntityArmorStand.class, this, "bg", Integer.MAX_VALUE);
+			DISABLED_SLOTS_FIELD.set(this, Integer.MAX_VALUE);
 		} catch (Exception e) {
 			// There's still the overridden method.
 		}

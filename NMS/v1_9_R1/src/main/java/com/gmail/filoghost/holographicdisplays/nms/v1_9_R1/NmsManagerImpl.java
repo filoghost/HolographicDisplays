@@ -1,6 +1,7 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_9_R1;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -17,8 +18,8 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorSta
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
-import com.gmail.filoghost.holographicdisplays.util.ReflectionUtils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
+import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 
 import net.minecraft.server.v1_9_R1.Entity;
 import net.minecraft.server.v1_9_R1.EntityTypes;
@@ -27,6 +28,9 @@ import net.minecraft.server.v1_9_R1.World;
 import net.minecraft.server.v1_9_R1.WorldServer;
 
 public class NmsManagerImpl implements NMSManager {
+	
+	private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD = new ReflectField<Map<Class<?>, String>>(EntityTypes.class, "d");
+	private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD = new ReflectField<Map<Class<?>, Integer>>(EntityTypes.class, "f");
 
 	private Method validateEntityMethod;
 	
@@ -41,8 +45,8 @@ public class NmsManagerImpl implements NMSManager {
 	}
 	
 	public void registerCustomEntity(Class<?> entityClass, String name, int id) throws Exception {
-		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "d", entityClass, name);
-		ReflectionUtils.putInPrivateStaticMap(EntityTypes.class, "f", entityClass, Integer.valueOf(id));
+		ENTITY_NAMES_BY_CLASS_FIELD.getStatic().put(entityClass, name);
+		ENTITY_IDS_BY_CLASS_FIELD.getStatic().put(entityClass, Integer.valueOf(id));
 	}
 	
 	@Override
