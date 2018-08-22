@@ -1,5 +1,7 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_9_R2;
 
+import java.util.logging.Level;
+
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
@@ -8,7 +10,7 @@ import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
@@ -260,7 +262,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	        entity.passengers.add(this);
 
 		} catch (Exception ex) {
-			DebugHandler.handleDebugException(ex);
+			ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set " + vehicleBase + " as passenger of " + this, ex);
 		}
 	}
 

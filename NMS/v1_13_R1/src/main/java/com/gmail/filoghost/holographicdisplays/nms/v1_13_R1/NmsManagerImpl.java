@@ -19,7 +19,7 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
@@ -77,7 +77,7 @@ public class NmsManagerImpl implements NMSManager {
 		customItem.setLocationNMS(x, y, z);
 		customItem.setItemStackNMS(stack);
 		if (!addEntityToWorld(nmsWorld, customItem)) {
-			DebugHandler.handleSpawnFail(parentPiece);
+			ConsoleLogger.handleSpawnFail(parentPiece);
 		}
 		return customItem;
 	}
@@ -88,7 +88,7 @@ public class NmsManagerImpl implements NMSManager {
 		EntityNMSSlime touchSlime = new EntityNMSSlime(nmsWorld, parentPiece);
 		touchSlime.setLocationNMS(x, y, z);
 		if (!addEntityToWorld(nmsWorld, touchSlime)) {
-			DebugHandler.handleSpawnFail(parentPiece);
+			ConsoleLogger.handleSpawnFail(parentPiece);
 		}
 		return touchSlime;
 	}
@@ -99,7 +99,7 @@ public class NmsManagerImpl implements NMSManager {
 		EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece);
 		invisibleArmorStand.setLocationNMS(x, y, z);
 		if (!addEntityToWorld(nmsWorld, invisibleArmorStand)) {
-			DebugHandler.handleSpawnFail(parentPiece);
+			ConsoleLogger.handleSpawnFail(parentPiece);
 		}
 		return invisibleArmorStand;
 	}

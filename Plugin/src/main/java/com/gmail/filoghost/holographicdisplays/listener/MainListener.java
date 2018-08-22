@@ -35,6 +35,7 @@ import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.object.PluginHologram;
 import com.gmail.filoghost.holographicdisplays.object.PluginHologramManager;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class MainListener implements Listener, ItemPickupManager {
@@ -138,7 +139,7 @@ public class MainListener implements Listener, ItemPickupManager {
 						touchSlime.getTouchablePiece().getTouchHandler().onTouch(event.getPlayer());
 					} catch (Throwable t) {
 						Plugin plugin = touchSlime.getParent() instanceof PluginHologram ? ((PluginHologram) touchSlime.getParent()).getOwner() : HolographicDisplays.getInstance();
-						HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", t);
+						ConsoleLogger.log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", t);
 					}
 				}
 			}
@@ -157,7 +158,7 @@ public class MainListener implements Listener, ItemPickupManager {
 			}
 		} catch (Throwable t) {
 			Plugin plugin = hologram instanceof PluginHologram ? ((PluginHologram) hologram).getOwner() : HolographicDisplays.getInstance();
-			HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + player.getName() + " picked up an item from a hologram.", t);
+			ConsoleLogger.log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + player.getName() + " picked up an item from a hologram.", t);
 		}
 	}
 	

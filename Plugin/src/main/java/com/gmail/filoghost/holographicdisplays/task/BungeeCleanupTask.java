@@ -3,10 +3,11 @@ package com.gmail.filoghost.holographicdisplays.task;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerInfo;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 
 /**
  * A task to remove unused server data in the server tracker.
@@ -28,7 +29,7 @@ public class BungeeCleanupTask implements Runnable {
 			if (lastRequest != 0 && now - lastRequest > MAX_INACTIVITY) {
 				// Don't track that server anymore.
 				iter.remove();
-				DebugHandler.logToConsole("Removed bungee server \"" + next.getKey() + "\" from tracking due to inactivity.");
+				ConsoleLogger.logDebug(Level.INFO, "Removed bungee server \"" + next.getKey() + "\" from tracking due to inactivity.");
 			}
 		}
 	}

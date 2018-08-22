@@ -3,12 +3,13 @@ package com.gmail.filoghost.holographicdisplays.placeholder;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.disk.StringConverter;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.FileUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
@@ -53,12 +54,12 @@ public class AnimationsRegister {
 				}
 				
 				if (!validSpeedFound) {
-					plugin.getLogger().warning("Could not find a valid 'speed: <number>' in the first line of the file '" + file.getName() + "'. Default speed of 0.5 seconds will be used.");
+					ConsoleLogger.log(Level.WARNING, "Could not find a valid 'speed: <number>' in the first line of the file '" + file.getName() + "'. Default speed of 0.5 seconds will be used.");
 				}
 				
 				if (lines.isEmpty()) {
 					lines.add("[No lines: " + file.getName() + "]");
-					plugin.getLogger().warning("Could not find any line in '" + file.getName() + "' (excluding the speed). You should add at least one more line.");
+					ConsoleLogger.log(Level.WARNING, "Could not find any line in '" + file.getName() + "' (excluding the speed). You should add at least one more line.");
 				}
 				
 				// Replace placeholders.
@@ -67,11 +68,10 @@ public class AnimationsRegister {
 				}
 				
 				animations.put(file.getName(), new Placeholder(HolographicDisplays.getInstance(), file.getName(), speed, new CyclicPlaceholderReplacer(lines.toArray(new String[lines.size()]))));
-				DebugHandler.handleAnimationLoadSuccess(file.getName(), speed);
+				ConsoleLogger.logDebug(Level.INFO, "Successfully loaded animation '"  + file.getName() + "', speed = " + speed + ".");
 				
 			} catch (Exception e) {
-				e.printStackTrace();
-				plugin.getLogger().severe("Couldn't load the file '" + file.getName() + "'!");
+				ConsoleLogger.log(Level.SEVERE, "Couldn't load the file '" + file.getName() + "'!", e);
 			}
 		}
 	}

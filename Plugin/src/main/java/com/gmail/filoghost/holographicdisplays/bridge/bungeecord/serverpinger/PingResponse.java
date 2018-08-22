@@ -1,11 +1,12 @@
 package com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger;
 
 import java.lang.String;
+import java.util.logging.Level;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 
 public class PingResponse
 {
@@ -25,7 +26,7 @@ public class PingResponse
 		
 		if (jsonString == null || jsonString.isEmpty()) {
     		motd = "Invalid ping response";
-    		DebugHandler.logToConsole("Received empty Json response from IP \"" + address.toString() + "\"!");
+    		ConsoleLogger.logDebug(Level.WARNING, "Received empty Json response from IP \"" + address.toString() + "\"!");
     		return;
     	}
 		
@@ -33,7 +34,7 @@ public class PingResponse
 		
     	if (!(jsonObject instanceof JSONObject)) {
     		motd = "Invalid ping response";
-    		DebugHandler.logToConsole("Received invalid Json response from IP \"" + address.toString() + "\": " + jsonString);
+    		ConsoleLogger.logDebug(Level.WARNING, "Received invalid Json response from IP \"" + address.toString() + "\": " + jsonString);
     		return;
     	}
     	
@@ -55,7 +56,7 @@ public class PingResponse
     		}
     	} else {
     		motd = "Invalid ping response (description not found)";
-    		DebugHandler.logToConsole("Received invalid Json response from IP \"" + address.toString() + "\": " + jsonString);
+    		ConsoleLogger.logDebug(Level.WARNING, "Received invalid Json response from IP \"" + address.toString() + "\": " + jsonString);
     	}
         
         Object playersObject = json.get("players");

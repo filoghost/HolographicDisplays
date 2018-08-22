@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 
 import net.minecraft.server.v1_8_R2.AxisAlignedBB;
@@ -181,7 +181,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 			RIDER_PITCH_DELTA.set(this, 0.0);
 			RIDER_YAW_DELTA.set(this, 0.0);
 		} catch (Exception ex) {
-			DebugHandler.handleDebugException(ex);
+			ConsoleLogger.logDebugException(ex);
 		}
 
         if (this.vehicle != null) {

@@ -3,7 +3,7 @@ package com.gmail.filoghost.holographicdisplays.util.reflection;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 
 public class ReflectionUtils {
 	
@@ -38,7 +38,7 @@ public class ReflectionUtils {
 			}
 		} catch (Throwable t) {
 			if (!stackTraceErrorPrinted) {
-				Bukkit.getPluginManager().getPlugin("HolographicDisplays").getLogger().log(Level.WARNING, "Unable to get a stacktrace element, please inform the developer. You will only see this error once to avoid spam.", t);
+				ConsoleLogger.log(Level.WARNING, "Unable to get a stacktrace element, please inform the developer. You will only see this error once to avoid spam.", t);
 				stackTraceErrorPrinted = true;
 			}
 			return null;

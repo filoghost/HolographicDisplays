@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -14,7 +15,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerAddress;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 /**
@@ -57,15 +58,15 @@ public class Configuration {
 			config.load(configFile);
 		} catch (InvalidConfigurationException e) {
 			e.printStackTrace();
-			plugin.getLogger().warning("The configuration is not a valid YAML file! Please check it with a tool like http://yaml-online-parser.appspot.com/");
+			ConsoleLogger.log(Level.WARNING, "The configuration is not a valid YAML file! Please check it with a tool like http://yaml-online-parser.appspot.com/");
 			return;
 		} catch (IOException e) {
 			e.printStackTrace();
-			plugin.getLogger().warning("I/O error while reading the configuration. Was the file in use?");
+			ConsoleLogger.log(Level.WARNING, "I/O error while reading the configuration. Was the file in use?");
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();
-			plugin.getLogger().warning("Unhandled exception while reading the configuration!");
+			ConsoleLogger.log(Level.WARNING, "Unhandled exception while reading the configuration!");
 			return;
 		}
 		
@@ -110,7 +111,7 @@ public class Configuration {
 				config.save(configFile);
 			} catch (IOException e) {
 				e.printStackTrace();
-				plugin.getLogger().warning("I/O error while saving the configuration. Was the file in use?");
+				ConsoleLogger.log(Level.WARNING, "I/O error while saving the configuration. Was the file in use?");
 			}
 		}
 		
@@ -142,7 +143,7 @@ public class Configuration {
 			for (String singleServer : config.getStringList(ConfigNode.BUNGEE_PINGER_SERVERS.getPath())) {
 				String[] nameAndAddress = singleServer.split(":", 2);
 				if (nameAndAddress.length < 2) {
-					plugin.getLogger().warning("The server info \"" + singleServer + "\" is not valid. There should be a name and an address, separated by a colon.");
+					ConsoleLogger.log(Level.WARNING, "The server info \"" + singleServer + "\" is not valid. There should be a name and an address, separated by a colon.");
 					continue;
 				}
 				
@@ -158,7 +159,7 @@ public class Configuration {
 					try {
 						port = Integer.parseInt(ipAndPort[1]);
 					} catch (NumberFormatException e) {
-						plugin.getLogger().warning("Invalid port number in the server info \"" + singleServer + "\".");
+						ConsoleLogger.log(Level.WARNING, "Invalid port number in the server info \"" + singleServer + "\".");
 						continue;
 					}
 				} else {
@@ -170,7 +171,7 @@ public class Configuration {
 			}
 		}
 		
-		DebugHandler.setDebugEnabled(config.getBoolean(ConfigNode.DEBUG.getPath()));
+		ConsoleLogger.setDebugEnabled(config.getBoolean(ConfigNode.DEBUG.getPath()));
 		
 		String tempColor = config.getString(ConfigNode.TRANSPARENCY_COLOR.getPath()).replace('&', ChatColor.COLOR_CHAR);
 		boolean foundColor = false;
@@ -182,7 +183,7 @@ public class Configuration {
 		}
 		if (!foundColor) {
 			Configuration.transparencyColor = ChatColor.GRAY;
-			plugin.getLogger().warning("You didn't set a valid chat color for transparency in the configuration, light gray (&7) will be used.");
+			ConsoleLogger.log(Level.WARNING, "You didn't set a valid chat color for transparency in the configuration, light gray (&7) will be used.");
 		}
 		
 		try {
@@ -190,16 +191,16 @@ public class Configuration {
 			timeFormat.setTimeZone(TimeZone.getTimeZone(config.getString(ConfigNode.TIME_ZONE.getPath())));
 		} catch (IllegalArgumentException ex) {
 			timeFormat = new SimpleDateFormat("H:mm");
-			plugin.getLogger().warning("Time format not valid in the configuration, using the default.");
+			ConsoleLogger.log(Level.WARNING, "Time format not valid in the configuration, using the default.");
 		}
 		
 		if (bungeeRefreshSeconds < 1) {
-			plugin.getLogger().warning("The minimum interval for pinging BungeeCord's servers is 1 second. It has been automatically set.");
+			ConsoleLogger.log(Level.WARNING, "The minimum interval for pinging BungeeCord's servers is 1 second. It has been automatically set.");
 			bungeeRefreshSeconds = 1;
 		}
 		
 		if (bungeeRefreshSeconds > 60) {
-			plugin.getLogger().warning("The maximum interval for pinging BungeeCord's servers is 60 seconds. It has been automatically set.");
+			ConsoleLogger.log(Level.WARNING, "The maximum interval for pinging BungeeCord's servers is 60 seconds. It has been automatically set.");
 			bungeeRefreshSeconds = 60;
 		}
 	}

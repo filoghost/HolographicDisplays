@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 
 public class BungeeChannel implements PluginMessageListener {
@@ -97,8 +99,7 @@ public class BungeeChannel implements PluginMessageListener {
 			out.writeUTF(server);
 		} catch (IOException e) {
 			// It should not happen.
-			e.printStackTrace();
-			HolographicDisplays.getInstance().getLogger().warning("I/O Exception while asking for player count on server '" + server + "'.");
+			ConsoleLogger.log(Level.WARNING, "I/O Exception while asking for player count on server '" + server + "'.", e);
 		}
 
 		// OR, if you don't need to send it to a specific player

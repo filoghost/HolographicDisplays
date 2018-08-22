@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,7 +16,7 @@ import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.Se
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerPinger;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.PingResponse;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 
 public class BungeeServerTracker {
 	
@@ -172,14 +173,14 @@ public class BungeeServerTracker {
 								} catch (SocketTimeoutException e) {
 									displayOffline = true;
 								} catch (UnknownHostException e) {
-									HolographicDisplays.getInstance().getLogger().warning("Couldn't fetch data from " + entry.getKey() + "(" + entry.getValue().toString() + "): unknown host address.");
+									ConsoleLogger.log(Level.WARNING, "Couldn't fetch data from " + entry.getKey() + "(" + entry.getValue().toString() + "): unknown host address.");
 									displayOffline = true;
 								} catch (IOException e) {
 									displayOffline = true;
 								} catch (Exception e) {
 									displayOffline = true;
-									HolographicDisplays.getInstance().getLogger().warning("Couldn't fetch data from " + entry.getKey() + "(" + entry.getValue().toString() + "), unhandled exception: " + e.toString());
-									DebugHandler.handleDebugException(e);
+									ConsoleLogger.log(Level.WARNING, "Couldn't fetch data from " + entry.getKey() + "(" + entry.getValue().toString() + "), unhandled exception: " + e.toString());
+									ConsoleLogger.logDebugException(e);
 								}
 								
 								if (displayOffline) {

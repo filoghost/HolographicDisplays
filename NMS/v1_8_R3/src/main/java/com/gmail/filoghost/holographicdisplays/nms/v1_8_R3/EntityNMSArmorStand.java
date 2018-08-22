@@ -4,7 +4,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectMethod;
@@ -40,7 +40,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		try {
 			SET_MARKER_METHOD.invoke(this, true);
 		} catch (Exception e) {
-			DebugHandler.handleDebugException(e);
+			ConsoleLogger.logDebugException(e);
 			// It will still work, but the offset will be wrong.
 		}
 		this.parentPiece = parentPiece;

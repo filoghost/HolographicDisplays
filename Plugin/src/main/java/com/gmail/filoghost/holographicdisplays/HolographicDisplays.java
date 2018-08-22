@@ -1,6 +1,7 @@
 package com.gmail.filoghost.holographicdisplays;
 
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +33,7 @@ import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import com.gmail.filoghost.holographicdisplays.task.BungeeCleanupTask;
 import com.gmail.filoghost.holographicdisplays.task.StartupLoadHologramsTask;
 import com.gmail.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
@@ -65,6 +67,7 @@ public class HolographicDisplays extends JavaPlugin {
 		
 		System.setProperty("HolographicDisplaysLoaded", "true");
 		instance = this;
+		ConsoleLogger.setLogger(instance.getLogger());
 		
 		// Load placeholders.yml.
 		UnicodeSymbols.load(this);
@@ -79,9 +82,9 @@ public class HolographicDisplays extends JavaPlugin {
 				public void onUpdateFound(final String newVersion) {
 
 					HolographicDisplays.newVersion = newVersion;
-					getLogger().info("Found a new version available: " + newVersion);
-					getLogger().info("Download it on Bukkit Dev:");
-					getLogger().info("dev.bukkit.org/bukkit-plugins/holographic-displays");
+					ConsoleLogger.log(Level.INFO, "Found a new version available: " + newVersion);
+					ConsoleLogger.log(Level.INFO, "Download it on Bukkit Dev:");
+					ConsoleLogger.log(Level.INFO, "dev.bukkit.org/bukkit-plugins/holographic-displays");
 				}
 			});
 		}
@@ -152,7 +155,7 @@ public class HolographicDisplays extends JavaPlugin {
 					}
 					
 				} catch (Exception e) {
-					getLogger().warning("Could not check ProtocolLib version (" + e.getClass().getName() + ": " + e.getMessage() + "), enabling support anyway and hoping for the best. If you get errors, please contact the author.");
+					ConsoleLogger.log(Level.WARNING, "Could not check ProtocolLib version (" + e.getClass().getName() + ": " + e.getMessage() + "), enabling support anyway and hoping for the best. If you get errors, please contact the author.");
 				}
 				
 				if (requiredVersionError == null) {
@@ -160,16 +163,16 @@ public class HolographicDisplays extends JavaPlugin {
 					
 					if (VersionUtils.classExists("com.comphenix.protocol.wrappers.WrappedDataWatcher$WrappedDataWatcherObject")) {
 						// Only the new version contains this class
-						getLogger().info("Found ProtocolLib, using new version.");
+						ConsoleLogger.log(Level.INFO, "Found ProtocolLib, using new version.");
 						protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl();
 					} else {
-						getLogger().info("Found ProtocolLib, using old version.");
+						ConsoleLogger.log(Level.INFO, "Found ProtocolLib, using old version.");
 						protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.old.ProtocolLibHookImpl();
 					}
 					
 					if (protocolLibHook.hook(this, nmsManager)) {
 						HolographicDisplays.protocolLibHook = protocolLibHook;
-						getLogger().info("Enabled player relative placeholders with ProtocolLib.");
+						ConsoleLogger.log(Level.INFO, "Enabled player relative placeholders with ProtocolLib.");
 					}
 					
 				} else {
@@ -180,8 +183,7 @@ public class HolographicDisplays extends JavaPlugin {
 			}
 			
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			getLogger().warning("Failed to load ProtocolLib support. Is it updated?");
+			ConsoleLogger.log(Level.WARNING, "Failed to load ProtocolLib support. Is it updated?", ex);
 		}
 		
 		// Load animation files and the placeholder manager.
@@ -189,8 +191,7 @@ public class HolographicDisplays extends JavaPlugin {
 		try {
 			AnimationsRegister.loadAnimations(this);
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			getLogger().warning("Failed to load animation files!");
+			ConsoleLogger.log(Level.WARNING, "Failed to load animation files!", ex);
 		}
 		
 		// Initalize other static classes.
@@ -208,14 +209,13 @@ public class HolographicDisplays extends JavaPlugin {
 					NamedHologram singleHologram = HologramDatabase.loadHologram(singleHologramName);
 					NamedHologramManager.addHologram(singleHologram);
 				} catch (HologramNotFoundException e) {
-					getLogger().warning("Hologram '" + singleHologramName + "' not found, skipping it.");
+					ConsoleLogger.log(Level.WARNING, "Hologram '" + singleHologramName + "' not found, skipping it.");
 				} catch (InvalidFormatException e) {
-					getLogger().warning("Hologram '" + singleHologramName + "' has an invalid location format.");
+					ConsoleLogger.log(Level.WARNING, "Hologram '" + singleHologramName + "' has an invalid location format.");
 				} catch (WorldNotFoundException e) {
-					getLogger().warning("Hologram '" + singleHologramName + "' was in the world '" + e.getMessage() + "' but it wasn't loaded.");
+					ConsoleLogger.log(Level.WARNING, "Hologram '" + singleHologramName + "' was in the world '" + e.getMessage() + "' but it wasn't loaded.");
 				} catch (Exception e) {
-					e.printStackTrace();
-					getLogger().warning("Unhandled exception while loading the hologram '" + singleHologramName + "'. Please contact the developer.");
+					ConsoleLogger.log(Level.WARNING, "Unhandled exception while loading the hologram '" + singleHologramName + "'. Please contact the developer.", e);
 				}
 			}
 		}

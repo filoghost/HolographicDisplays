@@ -19,7 +19,7 @@ import com.google.common.primitives.Ints;
 
 /**
  * A very simple and lightweight updater, without download features.
- * @autor filoghost
+ * @author filoghost
  */
 public final class SimpleUpdater {
 

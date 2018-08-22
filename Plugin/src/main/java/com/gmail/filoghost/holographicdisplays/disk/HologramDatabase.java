@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,7 +14,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.exception.HologramNotFoundException;
 import com.gmail.filoghost.holographicdisplays.exception.InvalidFormatException;
 import com.gmail.filoghost.holographicdisplays.exception.WorldNotFoundException;
@@ -22,6 +22,7 @@ import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
@@ -147,7 +148,7 @@ public class HologramDatabase {
 			saveToDisk();
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			HolographicDisplays.getInstance().getLogger().severe("Unable to save database.yml to disk!");
+			ConsoleLogger.log(Level.SEVERE, "Unable to save database.yml to disk!");
 		}
 	}
 }

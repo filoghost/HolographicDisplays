@@ -8,7 +8,7 @@ import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 
@@ -214,7 +214,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 			RIDER_PITCH_DELTA.set(this, 0.0);
 			RIDER_YAW_DELTA.set(this, 0.0);
 		} catch (Exception ex) {
-			DebugHandler.handleDebugException(ex);
+			ConsoleLogger.logDebugException(ex);
 		}
 
         if (this.vehicle != null) {

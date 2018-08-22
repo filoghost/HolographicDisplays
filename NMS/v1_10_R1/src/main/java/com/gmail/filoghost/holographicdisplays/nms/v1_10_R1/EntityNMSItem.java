@@ -8,7 +8,7 @@ import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
@@ -260,7 +260,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	        entity.passengers.add(this);
 
 		} catch (Exception ex) {
-			DebugHandler.handleDebugException(ex);
+			ConsoleLogger.logDebugException(ex);
 		}
 	}
 
