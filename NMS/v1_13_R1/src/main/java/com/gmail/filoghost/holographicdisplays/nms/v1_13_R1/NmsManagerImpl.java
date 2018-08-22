@@ -1,6 +1,7 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_13_R1;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.function.Function;
 
 import org.bukkit.Bukkit;
@@ -20,6 +21,7 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBa
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.util.DebugHandler;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
+import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 
 import net.minecraft.server.v1_13_R1.Entity;
@@ -34,6 +36,7 @@ public class NmsManagerImpl implements NMSManager {
 	
 	private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = new ReflectField<RegistryID<EntityTypes<?>>>(RegistryMaterials.class, "a");
 	private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = new ReflectField<Object[]>(RegistryID.class, "d");
+	private static final ReflectField<List<Entity>> ENTITY_LIST_FIELD = new ReflectField<List<Entity>>(World.class, "entityList");
 
 	private Method validateEntityMethod;
 	
@@ -114,7 +117,17 @@ public class NmsManagerImpl implements NMSManager {
         }
         
         nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
-        nmsWorld.entityList.add(nmsEntity);
+        if (VersionUtils.isPaperServer()) {
+        	try {
+        		// Workaround because nmsWorld.entityList is a different class in Paper, if used without reflection it throws NoSuchFieldError.
+				ENTITY_LIST_FIELD.get(nmsWorld).add(nmsEntity);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+        } else {
+        	nmsWorld.entityList.add(nmsEntity);
+        }
         
         try {
 			validateEntityMethod.invoke(nmsWorld, nmsEntity);
