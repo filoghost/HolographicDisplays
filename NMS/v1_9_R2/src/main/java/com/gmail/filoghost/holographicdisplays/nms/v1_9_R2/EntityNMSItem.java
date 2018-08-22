@@ -1,7 +1,5 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_9_R2;
 
-import java.util.logging.Level;
-
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
@@ -262,7 +260,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	        entity.passengers.add(this);
 
 		} catch (Exception ex) {
-			ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set " + vehicleBase + " as passenger of " + this, ex);
+			ConsoleLogger.logDebugException(ex);
 		}
 	}
 
