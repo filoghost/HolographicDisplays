@@ -35,6 +35,7 @@ import com.gmail.filoghost.holographicdisplays.task.StartupLoadHologramsTask;
 import com.gmail.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
+import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.VersionUtils;
 
 public class HolographicDisplays extends JavaPlugin {
@@ -161,7 +162,7 @@ public class HolographicDisplays extends JavaPlugin {
 				if (requiredVersionError == null) {
 					ProtocolLibHook protocolLibHook;
 					
-					if (VersionUtils.classExists("com.comphenix.protocol.wrappers.WrappedDataWatcher$WrappedDataWatcherObject")) {
+					if (Utils.classExists("com.comphenix.protocol.wrappers.WrappedDataWatcher$WrappedDataWatcherObject")) {
 						// Only the new version contains this class
 						ConsoleLogger.log(Level.INFO, "Found ProtocolLib, using new version.");
 						protocolLibHook = new com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl();

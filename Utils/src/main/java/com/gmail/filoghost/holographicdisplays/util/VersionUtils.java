@@ -79,14 +79,4 @@ public class VersionUtils {
 		return isVersionGreaterEqual(reference, lowest) && isVersionLessEqual(reference, highest);
 	}
 	
-
-	public static boolean classExists(String className) {
-		try {
-			Class.forName(className);
-			return true;
-		} catch (Throwable t) {
-			return false;
-		}
-	}
-	
 }

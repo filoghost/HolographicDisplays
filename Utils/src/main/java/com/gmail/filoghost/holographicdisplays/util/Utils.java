@@ -53,15 +53,10 @@ public class Utils extends Object {
 		return new ArrayList<T>();
 	}
 	
-	
 	public static <T> Set<T> newSet() {
 		return new HashSet<T>();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static <T> T[] listToArray(List<T> list) {
-		return (T[]) list.toArray();
-	}
 	
 	public static int floor(double num) {
 		int floor = (int) num;
@@ -107,9 +102,11 @@ public class Utils extends Object {
 		return join(elements, separator, 0, elements.size());
 	}
 	
+	
 	public static String sanitize(String s) {
 		return s != null ? s : "null";
 	}
+	
 	
 	public static boolean isThereNonNull(Object... objects) {
 		if (objects == null) {
@@ -123,5 +120,15 @@ public class Utils extends Object {
 		}
 		
 		return false;
+	}
+	
+	
+	public static boolean classExists(String className) {
+		try {
+			Class.forName(className);
+			return true;
+		} catch (Throwable t) {
+			return false;
+		}
 	}
 }
