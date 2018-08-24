@@ -39,7 +39,7 @@ public class ReflectionUtils {
 					return result != null ? result.toStackTraceElement() : null;
 					
 				} else {
-					// Use reflection to avoid generating the full stacktrace
+					// Use reflection to avoid generating the full stack trace
 					Throwable dummyThrowable = new Throwable();
 					int depth = GET_STACKTRACE_DEPTH_METHOD.invoke(dummyThrowable);
 		
@@ -50,10 +50,8 @@ public class ReflectionUtils {
 					}
 				}
 			} catch (Throwable t) {
-				if (!stackTraceError) {
-					ConsoleLogger.log(Level.WARNING, "Unable to get a stacktrace element, please inform the developer. You will only see this error once and a fallback method will be used.", t);
-					stackTraceError = true;
-				}
+				ConsoleLogger.log(Level.WARNING, "Unable to get a stack trace element, please inform the developer. You will only see this error once and a fallback method will be used.", t);
+				stackTraceError = true;
 			}
 		}
 		
