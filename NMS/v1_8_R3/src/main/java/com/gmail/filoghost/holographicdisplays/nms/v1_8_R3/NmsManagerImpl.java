@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.FancyMessage;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
@@ -125,11 +124,6 @@ public class NmsManagerImpl implements NMSManager {
 		}
 
 		return null;
-	}
-
-	@Override
-	public FancyMessage newFancyMessage(String text) {
-		return new FancyMessageImpl(text);
 	}
 
 }

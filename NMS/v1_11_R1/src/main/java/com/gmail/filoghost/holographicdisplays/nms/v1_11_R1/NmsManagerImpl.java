@@ -1,6 +1,7 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_11_R1;
 
 import java.lang.reflect.Method;
+
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftEntity;
@@ -8,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
-import com.gmail.filoghost.holographicdisplays.nms.interfaces.FancyMessage;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
@@ -128,11 +128,6 @@ public class NmsManagerImpl implements NMSManager {
 		}
 
 		return null;
-	}
-
-	@Override
-	public FancyMessage newFancyMessage(String text) {
-		return new FancyMessageImpl(text);
 	}
 
 }

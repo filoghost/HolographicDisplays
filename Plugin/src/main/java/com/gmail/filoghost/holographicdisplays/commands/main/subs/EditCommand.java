@@ -3,11 +3,9 @@ package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
 import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
@@ -17,6 +15,12 @@ import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
+
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class EditCommand extends HologramSubCommand {
 	
@@ -59,11 +63,12 @@ public class EditCommand extends HologramSubCommand {
 						help.add(Colors.SECONDARY_SHADOW + tutLine);
 					}
 					
-					HolographicDisplays.getNMSManager().newFancyMessage(usage)
+					((Player) sender).spigot().sendMessage(new ComponentBuilder(usage)
 						.color(ChatColor.AQUA)
-						.suggest(usage)
-						.tooltip(Utils.join(help, "\n"))
-						.send((Player) sender);
+						.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
+						.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Utils.join(help, "\n"))))
+						.create());
+					
 				} else {
 					sender.sendMessage(Colors.PRIMARY + usage);
 				}
@@ -71,7 +76,7 @@ public class EditCommand extends HologramSubCommand {
 		}
 		
 		if (CommandValidator.isPlayerSender(sender)) {
-			HelpCommand.sendHoverTip(sender);
+			HelpCommand.sendHoverTip((Player) sender);
 		}
 	}
 

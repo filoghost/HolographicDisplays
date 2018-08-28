@@ -23,7 +23,5 @@ public interface NMSManager {
 	public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity);
 
 	public NMSEntityBase getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity);
-	
-	public FancyMessage newFancyMessage(String text);
 
 }

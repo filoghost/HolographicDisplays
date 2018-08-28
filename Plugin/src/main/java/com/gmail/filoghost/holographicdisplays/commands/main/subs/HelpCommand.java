@@ -2,11 +2,9 @@ package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
 import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
@@ -14,6 +12,13 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramsCommandHandler;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
+
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention;
 
 public class HelpCommand extends HologramSubCommand {
 	
@@ -52,11 +57,11 @@ public class HelpCommand extends HologramSubCommand {
 						help.add(Colors.SECONDARY_SHADOW + tutLine);
 					}
 					
-					HolographicDisplays.getNMSManager().newFancyMessage(usage)
-					.color(ChatColor.AQUA)
-					.suggest(usage)
-					.tooltip(Utils.join(help, "\n"))
-					.send((Player) sender);
+					((Player) sender).spigot().sendMessage(new ComponentBuilder(usage)
+						.color(ChatColor.AQUA)
+						.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
+						.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Utils.join(help, "\n"))))
+						.create());
 					
 				} else {
 					sender.sendMessage(Colors.PRIMARY + usage);
@@ -65,21 +70,21 @@ public class HelpCommand extends HologramSubCommand {
 		}
 		
 		if (CommandValidator.isPlayerSender(sender)) {
-			sendHoverTip(sender);
+			sendHoverTip((Player) sender);
 		}
 	}
 	
-	public static void sendHoverTip(CommandSender sender) {
-		sender.sendMessage("");
-		HolographicDisplays.getNMSManager().newFancyMessage("TIP").style(ChatColor.BOLD).color(ChatColor.YELLOW)
-			.then(" Try to ").color(ChatColor.GRAY)
-			.then("hover").color(ChatColor.WHITE).style(ChatColor.ITALIC, ChatColor.UNDERLINE)
-			.tooltip(ChatColor.LIGHT_PURPLE + "Hover on the commands to get info about them.")
-			.then(" or ").color(ChatColor.GRAY)
-			.then("click").color(ChatColor.WHITE).style(ChatColor.ITALIC, ChatColor.UNDERLINE)
-			.tooltip(ChatColor.LIGHT_PURPLE + "Click on the commands to insert them in the chat.")
-			.then(" on the commands!").color(ChatColor.GRAY)
-			.send((Player) sender);
+	public static void sendHoverTip(Player player) {
+		player.sendMessage("");
+		player.spigot().sendMessage(new ComponentBuilder("TIP").color(ChatColor.YELLOW).bold(true)
+			.append(" Try to ", FormatRetention.NONE).color(ChatColor.GRAY)
+			.append("hover").color(ChatColor.WHITE).italic(true).underlined(true)
+			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(ChatColor.LIGHT_PURPLE + "Hover on the commands to get info about them.")))
+			.append(" or ", FormatRetention.NONE).color(ChatColor.GRAY)
+			.append("click").color(ChatColor.WHITE).italic(true).underlined(true)
+			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(ChatColor.LIGHT_PURPLE + "Click on the commands to insert them in the chat.")))
+			.append(" on the commands!", FormatRetention.NONE).color(ChatColor.GRAY)
+			.create());
 	}
 
 	@Override
