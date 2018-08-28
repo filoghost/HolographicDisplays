@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -131,11 +130,6 @@ public class NmsManagerImpl implements NMSManager {
 	@Override
 	public FancyMessage newFancyMessage(String text) {
 		return new FancyMessageImpl(text);
-	}
-
-	@Override
-	public boolean isUnloadUnsure(Chunk bukkitChunk) {
-		return bukkitChunk.getWorld().isChunkInUse(bukkitChunk.getX(), bukkitChunk.getZ());
 	}
 
 }

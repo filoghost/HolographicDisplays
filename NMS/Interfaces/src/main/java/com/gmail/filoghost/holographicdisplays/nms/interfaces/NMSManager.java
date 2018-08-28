@@ -25,7 +25,5 @@ public interface NMSManager {
 	public NMSEntityBase getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity);
 	
 	public FancyMessage newFancyMessage(String text);
-	
-	public boolean isUnloadUnsure(org.bukkit.Chunk bukkitChunk);
 
 }

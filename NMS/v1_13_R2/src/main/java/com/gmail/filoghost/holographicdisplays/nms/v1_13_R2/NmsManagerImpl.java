@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
@@ -157,11 +156,6 @@ public class NmsManagerImpl implements NMSManager {
 	@Override
 	public FancyMessage newFancyMessage(String text) {
 		return new FancyMessageImpl(text);
-	}
-
-	@Override
-	public boolean isUnloadUnsure(Chunk bukkitChunk) {
-		return bukkitChunk.getWorld().isChunkInUse(bukkitChunk.getX(), bukkitChunk.getZ());
 	}
 	
 }

@@ -2,8 +2,6 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_11_R1;
 
 import java.lang.reflect.Method;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.craftbukkit.v1_11_R1.CraftChunk;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
@@ -137,9 +135,4 @@ public class NmsManagerImpl implements NMSManager {
 		return new FancyMessageImpl(text);
 	}
 
-	@Override
-	public boolean isUnloadUnsure(Chunk bukkitChunk) {
-		return bukkitChunk.getWorld().isChunkInUse(bukkitChunk.getX(), bukkitChunk.getZ()) || !((CraftChunk) bukkitChunk).getHandle().d; // Field probably representing if the chunk is scheduled to be unloaded in ChunkProviderServer
-	}
-	
 }
