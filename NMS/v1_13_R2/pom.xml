@@ -37,6 +37,7 @@
 		    <groupId>org.spigotmc</groupId>
 		    <artifactId>spigot</artifactId>
 		    <version>1.13.1-R0.1-20180826.175839-1</version>
+		    <scope>provided</scope>
 		</dependency>
 	</dependencies>
 
