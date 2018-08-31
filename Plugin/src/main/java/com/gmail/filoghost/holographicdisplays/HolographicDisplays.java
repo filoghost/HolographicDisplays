@@ -1,5 +1,6 @@
 package com.gmail.filoghost.holographicdisplays;
 
+import java.io.File;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -300,6 +301,11 @@ public class HolographicDisplays extends JavaPlugin {
 	
 	public static ProtocolLibHook getProtocolLibHook() {
 		return protocolLibHook;
+	}
+	
+	
+	public static boolean isConfigFile(File file) {
+		return file.getName().toLowerCase().endsWith(".yml") && instance.getResource(file.getName()) != null;
 	}
 	
 }

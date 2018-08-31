@@ -49,7 +49,7 @@ public class ReadtextCommand extends HologramSubCommand {
 			String fileName = args[1];
 			File targetFile = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
 			CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetFile), "The file must be inside HolographicDisplays' folder.");
-			CommandValidator.isTrue(!FileUtils.isConfigFile(targetFile), "Cannot read default configuration files.");
+			CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetFile), "Cannot read default configuration files.");
 			
 			List<String> lines = FileUtils.readLines(targetFile);
 			hologram.clearLines();

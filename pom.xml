@@ -21,6 +21,7 @@
 		<module>API</module>
 		<module>JavaCompat</module>
 		<module>Utils</module>
+		<module>Config</module>
 		<module>NMS/Interfaces</module>
 		<module>NMS/v1_8_R1</module>
 		<module>NMS/v1_8_R2</module>

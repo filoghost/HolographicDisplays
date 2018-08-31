@@ -89,7 +89,7 @@ public class ReadimageCommand extends HologramSubCommand {
 				
 				File targetImage = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
 				CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetImage), "The image must be inside HolographicDisplays' folder.");
-				CommandValidator.isTrue(!FileUtils.isConfigFile(targetImage), "Cannot read default configuration files.");
+				CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetImage), "Cannot read default configuration files.");
 				
 				image = FileUtils.readImage(targetImage);
 			}

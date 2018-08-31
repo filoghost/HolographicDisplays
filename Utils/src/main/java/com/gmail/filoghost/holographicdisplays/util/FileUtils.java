@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.exception.UnreadableImageException;
 
 
@@ -90,8 +89,5 @@ public class FileUtils {
 		
 		return false;
 	}
-	
-	public static boolean isConfigFile(File file) {
-		return file.getName().toLowerCase().endsWith(".yml") && HolographicDisplays.getInstance().getResource(file.getName()) != null;
-	}
+
 }

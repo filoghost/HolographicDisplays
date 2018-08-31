@@ -1,4 +1,4 @@
-package com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger;
+package com.gmail.filoghost.holographicdisplays.disk;
 
 public class ServerAddress {
 	

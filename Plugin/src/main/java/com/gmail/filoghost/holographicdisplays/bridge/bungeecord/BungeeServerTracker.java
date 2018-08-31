@@ -12,10 +12,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
-import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerAddress;
-import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerPinger;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.PingResponse;
+import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerPinger;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
+import com.gmail.filoghost.holographicdisplays.disk.ServerAddress;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 
 public class BungeeServerTracker {

@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import com.gmail.filoghost.holographicdisplays.disk.ServerAddress;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 
 public class PingResponse
