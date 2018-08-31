@@ -4,6 +4,7 @@
 #.  Plugin created by filoghost.
 #.
 space-between-lines: 0.02
+precise-hologram-movement: true
 images:
   symbol: '[x]'
   transparency:

@@ -24,6 +24,7 @@ import com.gmail.filoghost.holographicdisplays.util.Utils;
 public class Configuration {
 	
 	public static double spaceBetweenLines;
+	public static boolean preciseHologramMovement;
 	public static String imageSymbol;
 	public static String transparencySymbol;
 	public static boolean updateNotification;
@@ -41,9 +42,7 @@ public class Configuration {
 	public static String pingerStatusOffline;
 	public static boolean pingerTrimMotd;
 	public static Map<String, ServerAddress> pingerServers;
-	
-	//public static boolean debug; update DebugHandler instead
-	
+
 	
 	public static void load(Plugin plugin) {
 		File configFile = new File(plugin.getDataFolder(), "config.yml");
@@ -115,6 +114,8 @@ public class Configuration {
 		}
 		
 		spaceBetweenLines = config.getDouble(ConfigNode.SPACE_BETWEEN_LINES.getPath());
+		preciseHologramMovement = config.getBoolean(ConfigNode.PRECISE_HOLOGRAM_MOVEMENT.getPath());
+		
 		updateNotification = config.getBoolean(ConfigNode.UPDATE_NOTIFICATION.getPath());
 		
 		imageSymbol = StringConverter.toReadableFormat(config.getString(ConfigNode.IMAGES_SYMBOL.getPath()));

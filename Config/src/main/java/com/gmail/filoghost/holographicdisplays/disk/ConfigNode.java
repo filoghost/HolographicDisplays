@@ -5,6 +5,7 @@ import java.util.Arrays;
 public enum ConfigNode {
 
 	SPACE_BETWEEN_LINES("space-between-lines", 0.02),
+	PRECISE_HOLOGRAM_MOVEMENT("precise-hologram-movement", true),
 	IMAGES_SYMBOL("images.symbol", "[x]"),
 	TRANSPARENCY_SPACE("images.transparency.space", " [|] "),
 	TRANSPARENCY_COLOR("images.transparency.color", "&7"),

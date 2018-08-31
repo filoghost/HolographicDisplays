@@ -3,6 +3,7 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_9_R2;
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
+import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectionUtils;
@@ -127,10 +128,12 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	
 	@Override
 	public int getId() {
-		StackTraceElement element = ReflectionUtils.getStackTraceElement(2);
-		if (element != null && element.getFileName() != null && element.getFileName().equals("EntityTrackerEntry.java") && element.getLineNumber() > 142 && element.getLineNumber() < 152) {
-			// Then this method is being called when creating a new packet, we return a fake ID!
-			return -1;
+		if (Configuration.preciseHologramMovement) {
+			StackTraceElement element = ReflectionUtils.getStackTraceElement(2);
+			if (element != null && element.getFileName() != null && element.getFileName().equals("EntityTrackerEntry.java") && element.getLineNumber() > 142 && element.getLineNumber() < 152) {
+				// Then this method is being called when creating a new packet, we return a fake ID!
+				return -1;
+			}
 		}
 		
 		return super.getId();
@@ -189,16 +192,18 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	public void setLocationNMS(double x, double y, double z) {
 		super.setPosition(x, y, z);
 		
-		// Send a packet near to update the position.
-		PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
-
-		for (Object obj : super.world.players) {
-			if (obj instanceof EntityPlayer) {
-				EntityPlayer nmsPlayer = (EntityPlayer) obj;
-
-				double distanceSquared = Utils.square(nmsPlayer.locX - super.locX) + Utils.square(nmsPlayer.locZ - super.locZ);
-				if (distanceSquared < 8192 && nmsPlayer.playerConnection != null) {
-					nmsPlayer.playerConnection.sendPacket(teleportPacket);
+		if (Configuration.preciseHologramMovement) {
+			// Send a packet near to update the position.
+			PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
+	
+			for (Object obj : super.world.players) {
+				if (obj instanceof EntityPlayer) {
+					EntityPlayer nmsPlayer = (EntityPlayer) obj;
+	
+					double distanceSquared = Utils.square(nmsPlayer.locX - super.locX) + Utils.square(nmsPlayer.locZ - super.locZ);
+					if (distanceSquared < 8192 && nmsPlayer.playerConnection != null) {
+						nmsPlayer.playerConnection.sendPacket(teleportPacket);
+					}
 				}
 			}
 		}
