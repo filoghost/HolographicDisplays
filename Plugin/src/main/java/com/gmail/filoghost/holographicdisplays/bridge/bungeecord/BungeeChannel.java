@@ -30,7 +30,7 @@ public class BungeeChannel implements PluginMessageListener {
 		return instance;
 	}
 	
-	public BungeeChannel(Plugin plugin) {
+	private BungeeChannel(Plugin plugin) {
 		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
         Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", this);
         
@@ -44,48 +44,31 @@ public class BungeeChannel implements PluginMessageListener {
 
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+		String targetChannel = Configuration.useRedisBungee ? "RedisBungee" : "BungeeCord";
 		
-		if (channel.equals("BungeeCord")) {
+		if (channel.equals(targetChannel)) {
+			DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
 			
-			if (Configuration.useRedisBungee) {
-				// If we use RedisBungee, we must ignore this channel.
-				return;
-			}
-			
-		} else if (channel.equals("RedisBungee")) {
-			
-			if (!Configuration.useRedisBungee) {
-				// Same as above, just the opposite case.
-				return;
-			}
-			
-		} else {
-			// Not our channels, ignore the message.
-			return;
-		}
-		
-		DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
-		 
-		try {
-			String subChannel = in.readUTF();
-			 
-			if (subChannel.equals("PlayerCount")) {
+			try {
+				String subChannel = in.readUTF();
 				 
-				String server = in.readUTF();
-				 
-				if (in.available() > 0) {
-					int online = in.readInt();
-					
-					BungeeServerInfo serverInfo = BungeeServerTracker.getOrCreateServerInfo(server);
-					serverInfo.setOnlinePlayers(online);
+				if (subChannel.equals("PlayerCount")) {
+					String server = in.readUTF();
+					 
+					if (in.available() > 0) {
+						int online = in.readInt();
+						
+						BungeeServerInfo serverInfo = BungeeServerTracker.getOrCreateServerInfo(server);
+						serverInfo.setOnlinePlayers(online);
+					}
 				}
+			 
+			} catch (EOFException e) {
+				// Do nothing.
+			} catch (IOException e) {
+				// This should never happen.
+				e.printStackTrace();
 			}
-		 
-		} catch (EOFException e) {
-			// Do nothing.
-		} catch (IOException e) {
-			// This should never happen.
-			e.printStackTrace();
 		}
 	}
 	
