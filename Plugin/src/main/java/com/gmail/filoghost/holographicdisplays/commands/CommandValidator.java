@@ -1,12 +1,8 @@
 package com.gmail.filoghost.holographicdisplays.commands;
 
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
-import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 
 public class CommandValidator {
 	
@@ -49,38 +45,6 @@ public class CommandValidator {
 	
 	public static boolean isPlayerSender(CommandSender sender) {
 		return sender instanceof Player;
-	}
-	
-	@SuppressWarnings("deprecation")
-	public static ItemStack matchItemStack(String input) throws CommandException {
-
-		input = input.replace(" ", ""); // Remove the spaces
-		
-		int dataValue = 0;
-		if (input.contains(":")) {
-			String[] split = input.split(":", 2);
-			dataValue = getInteger(split[1]);
-			input = split[0];
-		}
-		
-		Material match = null;
-		if (isInteger(input)) {
-			int id = getInteger(input);
-			for (Material mat : Material.values()) {
-				if (mat.getId() == id) {
-					match = mat;
-					break;
-				}
-			}
-		} else {
-			match = ItemUtils.matchMaterial(input);
-		}
-		
-		if (match == null || match == Material.AIR) {
-			throw new CommandException("Invalid material: " + input);
-		}
-		
-		return new ItemStack(match, 1, (short) dataValue);
 	}
 	
 }
