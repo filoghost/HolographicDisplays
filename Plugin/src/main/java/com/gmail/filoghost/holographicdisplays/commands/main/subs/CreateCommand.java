@@ -35,6 +35,7 @@ public class CreateCommand extends HologramSubCommand {
 		return 1;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		Player player = CommandValidator.getPlayerSender(sender);

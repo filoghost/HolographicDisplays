@@ -2,7 +2,6 @@ package com.gmail.filoghost.holographicdisplays.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
@@ -13,83 +12,95 @@ public class ItemUtils {
 	// This is used on hologram icons, to prevent vanilla items from merging with them.
 	public static final String ANTISTACK_LORE = ChatColor.BLACK.toString() + Math.random();
 	
-	// A map with formatter materials (lowercase and without dashes) for fast access.
-	private static Map<String, Material> materialMap = new HashMap<String, Material>();
+	// A map with formatted materials (lowercase and without symbols) for fast access.
+	private static final Map<String, Material> NAMES_TO_MATERIALS = new HashMap<String, Material>();
 	
-	private static Pattern stripSpacingSymbolsPattern = Pattern.compile("[_ \\-]+");
+	// The chars that will be ignored when matching materials.
+	private static final Pattern STRIP_SPACING_SYMBOLS_PATTERN = Pattern.compile("[_ \\-]+");
 	
 	static {
-		// Default material names are ugly.
-		Map<String, Material> tempMap = Utils.newMap();
-			
-		tempMap.put("iron bar",				Material.IRON_FENCE);
-		tempMap.put("iron bars",			Material.IRON_FENCE);
-		tempMap.put("glass pane",			Material.THIN_GLASS);
-		tempMap.put("nether wart",			Material.NETHER_STALK);
-		tempMap.put("nether warts",			Material.NETHER_STALK);
-		tempMap.put("slab",					Material.STEP);
-		tempMap.put("double slab",			Material.DOUBLE_STEP);
-		tempMap.put("stone brick",			Material.SMOOTH_BRICK);
-		tempMap.put("stone bricks",			Material.SMOOTH_BRICK);
-		tempMap.put("stone stair",			Material.SMOOTH_STAIRS);
-		tempMap.put("stone stairs",			Material.SMOOTH_STAIRS);
-		tempMap.put("potato",				Material.POTATO_ITEM);
-		tempMap.put("carrot",				Material.CARROT_ITEM);
-		tempMap.put("brewing stand",		Material.BREWING_STAND_ITEM);
-		tempMap.put("cauldron",				Material.CAULDRON_ITEM);
-		tempMap.put("carrot on stick",		Material.CARROT_STICK);
-		tempMap.put("carrot on a stick",	Material.CARROT_STICK);
-		tempMap.put("cobblestone wall",		Material.COBBLE_WALL);
-		tempMap.put("wood slab",			Material.WOOD_STEP);
-		tempMap.put("double wood slab",		Material.WOOD_DOUBLE_STEP);
-		tempMap.put("repeater",				Material.DIODE);
-		tempMap.put("piston",				Material.PISTON_BASE);
-		tempMap.put("sticky piston",		Material.PISTON_STICKY_BASE);
-		tempMap.put("flower pot",			Material.FLOWER_POT_ITEM);
-		tempMap.put("wood showel",			Material.WOOD_SPADE);
-		tempMap.put("stone showel",			Material.STONE_SPADE);
-		tempMap.put("gold showel",			Material.GOLD_SPADE);
-		tempMap.put("iron showel",			Material.IRON_SPADE);
-		tempMap.put("diamond showel",		Material.DIAMOND_SPADE);
-		tempMap.put("steak",				Material.COOKED_BEEF);
-		tempMap.put("cooked porkchop",		Material.GRILLED_PORK);
-		tempMap.put("raw porkchop",			Material.PORK);
-		tempMap.put("hardened clay",		Material.HARD_CLAY);
-		tempMap.put("huge brown mushroom",	Material.HUGE_MUSHROOM_1);
-		tempMap.put("huge red mushroom",	Material.HUGE_MUSHROOM_2);
-		tempMap.put("mycelium",				Material.MYCEL);
-		tempMap.put("poppy",				Material.RED_ROSE);
-		tempMap.put("comparator",			Material.REDSTONE_COMPARATOR);
-		tempMap.put("skull",				Material.SKULL_ITEM);
-		tempMap.put("head",					Material.SKULL_ITEM);
-		tempMap.put("redstone torch",		Material.REDSTONE_TORCH_ON);
-		tempMap.put("redstone lamp",		Material.REDSTONE_LAMP_OFF);
-		tempMap.put("glistering melon",		Material.SPECKLED_MELON);
-		tempMap.put("gunpowder",			Material.SULPHUR);
-		tempMap.put("lilypad",				Material.WATER_LILY);
-		tempMap.put("command block",		Material.COMMAND);
-		tempMap.put("dye",					Material.INK_SACK);
-		
-		for (Entry<String, Material> tempEntry : tempMap.entrySet()) {
-			materialMap.put(stripSpacingChars(tempEntry.getKey()).toLowerCase(), tempEntry.getValue());
+		// Add default materials.
+		for (Material mat : Material.values()) {
+			NAMES_TO_MATERIALS.put(stripSpacingChars(mat.toString()).toLowerCase(), mat);
 		}
 		
-		for (Material mat : Material.values()) {
-			materialMap.put(stripSpacingChars(mat.toString()).toLowerCase(), mat);
+		// Only add aliases before 1.13.
+		if (!NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
+			// Default material names are not intuitive and sometimes confusing.
+			addAlias("iron bar",			"IRON_FENCE");
+			addAlias("iron bars",			"IRON_FENCE");
+			addAlias("glass pane",			"THIN_GLASS");
+			addAlias("nether wart",			"NETHER_STALK");
+			addAlias("nether warts",		"NETHER_STALK");
+			addAlias("slab",				"STEP");
+			addAlias("double slab",			"DOUBLE_STEP");
+			addAlias("stone brick",			"SMOOTH_BRICK");
+			addAlias("stone bricks",		"SMOOTH_BRICK");
+			addAlias("stone stair",			"SMOOTH_STAIRS");
+			addAlias("stone stairs",		"SMOOTH_STAIRS");
+			addAlias("potato",				"POTATO_ITEM");
+			addAlias("carrot",				"CARROT_ITEM");
+			addAlias("brewing stand",		"BREWING_STAND_ITEM");
+			addAlias("cauldron",			"CAULDRON_ITEM");
+			addAlias("carrot on stick",		"CARROT_STICK");
+			addAlias("carrot on a stick",	"CARROT_STICK");
+			addAlias("cobblestone wall",	"COBBLE_WALL");
+			addAlias("wood slab",			"WOOD_STEP");
+			addAlias("double wood slab",	"WOOD_DOUBLE_STEP");
+			addAlias("repeater",			"DIODE");
+			addAlias("piston",				"PISTON_BASE");
+			addAlias("sticky piston",		"PISTON_STICKY_BASE");
+			addAlias("flower pot",			"FLOWER_POT_ITEM");
+			addAlias("wood showel",			"WOOD_SPADE");
+			addAlias("stone showel",		"STONE_SPADE");
+			addAlias("gold showel",			"GOLD_SPADE");
+			addAlias("iron showel",			"IRON_SPADE");
+			addAlias("diamond showel",		"DIAMOND_SPADE");
+			addAlias("steak",				"COOKED_BEEF");
+			addAlias("cooked porkchop",		"GRILLED_PORK");
+			addAlias("raw porkchop",		"PORK");
+			addAlias("hardened clay",		"HARD_CLAY");
+			addAlias("huge brown mushroom",	"HUGE_MUSHROOM_1");
+			addAlias("huge red mushroom",	"HUGE_MUSHROOM_2");
+			addAlias("mycelium",			"MYCEL");
+			addAlias("poppy",				"RED_ROSE");
+			addAlias("comparator",			"REDSTONE_COMPARATOR");
+			addAlias("skull",				"SKULL_ITEM");
+			addAlias("head",				"SKULL_ITEM");
+			addAlias("redstone torch",		"REDSTONE_TORCH_ON");
+			addAlias("redstone lamp",		"REDSTONE_LAMP_OFF");
+			addAlias("glistering melon",	"SPECKLED_MELON");
+			addAlias("gunpowder",			"SULPHUR");
+			addAlias("lilypad",				"WATER_LILY");
+			addAlias("command block",		"COMMAND");
+			addAlias("dye",					"INK_SACK");
+		}
+	}
+	
+	private static void addAlias(String alias, String material) {
+		try {
+			NAMES_TO_MATERIALS.put(stripSpacingChars(alias).toLowerCase(), Material.valueOf(material));
+		} catch (IllegalArgumentException e) {
+			// Not found, do nothing.
 		}
 	}
 	
 	public static String stripSpacingChars(String input) {
-		return stripSpacingSymbolsPattern.matcher(input).replaceAll("");
+		return STRIP_SPACING_SYMBOLS_PATTERN.matcher(input).replaceAll("");
 	}
 	
 	@SuppressWarnings("deprecation")
 	public static Material matchMaterial(String input) {
-		try {
-			return Material.getMaterial(Integer.parseInt(input));
-		} catch (NumberFormatException e) {
-			return materialMap.get(stripSpacingChars(input).toLowerCase());
+		if (!NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
+			// Before 1.13, allow IDs as materials.
+			try {
+				return Material.getMaterial(Integer.parseInt(input));
+			} catch (NumberFormatException e) {
+				// Not a number, ignore and go on.
+			}
 		}
+
+		return NAMES_TO_MATERIALS.get(stripSpacingChars(input).toLowerCase());
 	}
 
 }
