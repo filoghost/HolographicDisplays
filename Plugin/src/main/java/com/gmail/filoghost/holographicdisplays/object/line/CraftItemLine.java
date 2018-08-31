@@ -2,7 +2,6 @@ package com.gmail.filoghost.holographicdisplays.object.line;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
@@ -37,7 +36,6 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	@Override
 	public void setItemStack(ItemStack itemStack) {
 		Validator.notNull(itemStack, "itemStack");
-		Validator.isTrue(itemStack.getType() != Material.AIR, "itemStack's material cannot be AIR");
 		this.itemStack = itemStack;
 		
 		if (nmsItem != null) {
@@ -69,8 +67,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	public void spawn(World world, double x, double y, double z) {
 		super.spawn(world, x, y, z);
 		
-		if (itemStack != null && itemStack.getType() != Material.AIR) {
-			
+		if (itemStack != null) {
 			double offset = getItemOffset();
 			
 			nmsItem = HolographicDisplays.getNMSManager().spawnNMSItem(world, x, y + offset, z, this, itemStack, HolographicDisplays.getMainListener());
