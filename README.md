@@ -1,4 +1,4 @@
-HolographicDisplays
+Holographic Displays
 ===================
 
 Bukkit Dev Page: http://dev.bukkit.org/bukkit-plugins/holographic-displays
@@ -19,7 +19,7 @@ Development Builds: https://ci.filoghost.me/job/HolographicDisplays
 <dependency>
     <groupId>com.gmail.filoghost.holographicdisplays</groupId>
     <artifactId>holographicdisplays-api</artifactId>
-    <version>2.2.7-SNAPSHOT</version>
+    <version>2.3.0</version>
     <scope>provided</scope>
 </dependency>
 ```
