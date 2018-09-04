@@ -141,6 +141,13 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
+			<resource>
+				<directory>..</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>LICENSE.txt</include>
+				</includes>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>
