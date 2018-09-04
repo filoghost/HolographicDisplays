@@ -163,6 +163,14 @@
 							<include>org.bstats</include>
 						</includes>
 					</artifactSet>
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/</exclude>
+							</excludes>
+						</filter>
+					</filters>
 					<relocations>
 						<relocation>
 							<pattern>org.bstats</pattern>
