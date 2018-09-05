@@ -72,15 +72,15 @@ public final class SimpleUpdater {
 					}
 					
 					String updateName = (String) ((JSONObject) filesArray.get(filesArray.size() - 1)).get("name");
-					final int[] remoteVersion = extractVersion(updateName);
-					int[] localVersion = extractVersion(plugin.getDescription().getVersion());
+					final PluginVersion remoteVersion = new PluginVersion(updateName);
+					PluginVersion localVersion = new PluginVersion(plugin.getDescription().getVersion());
 					
-					if (isNewerVersion(localVersion, remoteVersion)) {
+					if (remoteVersion.isNewerThan(localVersion)) {
 						Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 
 							@Override
 							public void run() {
-								responseHandler.onUpdateFound("v" + Ints.join(".", remoteVersion));
+								responseHandler.onUpdateFound(remoteVersion.toString());
 							}
 						});
 					}
@@ -113,68 +113,95 @@ public final class SimpleUpdater {
 	}
 	
 	
-	/**
-	 * Compare the remote version found with the local version, from an array of int.
-	 * Examples:
-	 * v1.12 is newer than v1.2 ([1, 12] is newer than [1, 2])
-	 * v2.01 is equal to v2.1 ([2, 1] is equal to [2, 1])
-	 * 
-	 * @return true if the remote version is newer, false if equal or older
-	 */
-	private boolean isNewerVersion(int[] localVersion, int[] remoteVersion) {
-		int longest = Math.max(localVersion.length, remoteVersion.length);
+	private static class PluginVersion {
 		
-		for (int i = 0; i < longest; i++) {
-			int remoteVersionPart = i < remoteVersion.length ? remoteVersion[i] : 0;
-			int localVersionPart = i < localVersion.length ? localVersion[i] : 0;
-			int diff = remoteVersionPart - localVersionPart;
-			
-			if (diff > 0) {
-				return true;
-			} else if (diff < 0) {
-				return false;
+		// The version extracted from a string, e.g. "Holographic Displays v1.3" becomes [1, 3]
+		private int[] versionNumbers;
+		private boolean isDevBuild;
+		
+		
+		public PluginVersion(String input) throws InvalidVersionException {
+			if (input == null) {
+				throw new InvalidVersionException("input was null");
 			}
 			
-			// Continue the loop until diff = 0.
+			Matcher matcher = VERSION_PATTERN.matcher(input);
+			
+			if (!matcher.find()) {
+				throw new InvalidVersionException("version pattern not found in \"" + input + "\"");
+			}
+			
+			// Get the first group of the matcher (without the "v")
+			String version = matcher.group(1);
+			
+			// Replace multiple full stops (probably typos) with a single full stop, and split the version with them.
+			String[] versionParts = version.replaceAll("[\\.]{2,}", ".").split("\\.");
+			
+			// Convert the strings to integers in order to compare them
+			this.versionNumbers = new int[versionParts.length];
+			for (int i = 0; i < versionParts.length; i++) {
+				try {
+					this.versionNumbers[i] = Integer.parseInt(versionParts[i]);
+				} catch (NumberFormatException e) {
+					throw new InvalidVersionException("invalid number in \"" + input + "\"");
+				}
+			}
+			
+			this.isDevBuild = input.contains("SNAPSHOT");
 		}
 		
-		// If we get here, they're the same version.
-		return false;
+		
+		/**
+		 * Compares this version with another version, using the array "versionNumbers".
+		 * Examples:
+		 * v1.12 is newer than v1.2 ([1, 12] is newer than [1, 2])
+		 * v2.01 is equal to v2.1 ([2, 1] is equal to [2, 1])
+		 * 
+		 * @return true if this version is newer than the other, false if equal or older
+		 */
+		public boolean isNewerThan(PluginVersion other) {
+			int longest = Math.max(this.versionNumbers.length, other.versionNumbers.length);
+			
+			for (int i = 0; i < longest; i++) {
+				int thisVersionPart = i < this.versionNumbers.length ? this.versionNumbers[i] : 0;
+				int otherVersionPart = i < other.versionNumbers.length ? other.versionNumbers[i] : 0;
+				int diff = thisVersionPart - otherVersionPart;
+				
+				if (diff > 0) {
+					return true;
+				} else if (diff < 0) {
+					return false;
+				}
+				
+				// Continue the loop until diff = 0.
+			}
+			
+			// If we get here, they're the same version, check dev builds.
+			// This version is newer only if it's not a dev build and the other is.
+			if (other.isDevBuild && !this.isDevBuild) {
+				return true;
+			}
+			
+			return false;
+		}
+		
+		
+		@Override
+		public String toString() {
+			return "v" + Ints.join(".", versionNumbers);
+		}
+		
 	}
 	
 	
-	/**
-	 * Extracts the version from a string, e.g.:
-	 * "Holographic Displays v1.3" returns [1, 3]
-	 */
-	private int[] extractVersion(String input) throws InvalidVersionException {
-		if (input == null) {
-			throw new InvalidVersionException("input was null");
+	private static class InvalidVersionException extends Exception {
+
+		private static final long serialVersionUID = 1L;
+
+		public InvalidVersionException(String message) {
+			super(message);
 		}
 		
-		Matcher matcher = VERSION_PATTERN.matcher(input);
-		
-		if (!matcher.find()) {
-			throw new InvalidVersionException("version pattern not found in \"" + input + "\"");
-		}
-		
-		// Get the first group of the matcher (without the "v")
-		String version = matcher.group(1);
-		
-		// Replace multiple full stops (probably typos) with a single full stop, and split the version with them.
-		String[] versionParts = version.replaceAll("[\\.]{2,}", ".").split("\\.");
-		
-		// Convert the strings to integers in order to compare them
-		int[] versionNumbers = new int[versionParts.length];
-		for (int i = 0; i < versionParts.length; i++) {
-			try {
-				versionNumbers[i] = Integer.parseInt(versionParts[i]);
-			} catch (NumberFormatException e) {
-				throw new InvalidVersionException("invalid number in \"" + input + "\"");
-			}
-		}
-		
-		return versionNumbers;
 	}
 	
 	
@@ -185,17 +212,6 @@ public final class SimpleUpdater {
 		 * @param newVersion - the new version
 		 */
 		public void onUpdateFound(final String newVersion);
-		
-	}
-	
-	
-	private class InvalidVersionException extends Exception {
-
-		private static final long serialVersionUID = -3586635317155798274L;
-
-		public InvalidVersionException(String message) {
-			super(message);
-		}
 		
 	}
 	
