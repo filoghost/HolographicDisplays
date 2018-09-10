@@ -27,7 +27,6 @@ import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 
-import net.minecraft.server.v1_9_R2.AxisAlignedBB;
 import net.minecraft.server.v1_9_R2.Blocks;
 import net.minecraft.server.v1_9_R2.DamageSource;
 import net.minecraft.server.v1_9_R2.Entity;
@@ -56,7 +55,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		super.pickupDelay = Integer.MAX_VALUE;
 		this.parentPiece = piece;
 		this.itemPickupManager = itemPickupManager;
-		forceSetBoundingBox(new NullBoundingBox());
 	}
 	
 	@Override
@@ -154,15 +152,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	}
 	
 	@Override
-	public void a(AxisAlignedBB boundingBox) {
-		// Do not change it!
-	}
-	
-	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
-		super.a(boundingBox);
-	}
-	
-	@Override
 	public void inactiveTick() {
 		// Check inactive ticks.
 		
@@ -179,6 +168,13 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	@Override
 	public void die() {
 		// Prevent being killed.
+	}
+	
+	@Override
+	public boolean isAlive() {
+		// This override prevents items from being picked up by hoppers.
+		// Should have no side effects.
+		return false;
 	}
 
 	@Override

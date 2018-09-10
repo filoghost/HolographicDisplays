@@ -37,7 +37,6 @@ import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import net.minecraft.server.v1_12_R1.NBTTagList;
 import net.minecraft.server.v1_12_R1.NBTTagString;
 import net.minecraft.server.v1_12_R1.World;
-import net.minecraft.server.v1_12_R1.AxisAlignedBB;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
 	
@@ -52,7 +51,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		super.pickupDelay = 32767; // Lock the item pickup delay, also prevents entities from picking up the item
 		this.parentPiece = piece;
 		this.itemPickupManager = itemPickupManager;
-		forceSetBoundingBox(new NullBoundingBox());
 	}
 	
 	@Override
@@ -130,15 +128,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	}
 	
 	@Override
-	public void a(AxisAlignedBB boundingBox) {
-		// Do not change it!
-	}
-	
-	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
-		super.a(boundingBox);
-	}
-	
-	@Override
 	public void inactiveTick() {
 		// Check inactive ticks.
 		
@@ -155,6 +144,13 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	@Override
 	public void die() {
 		// Prevent being killed.
+	}
+	
+	@Override
+	public boolean isAlive() {
+		// This override prevents items from being picked up by hoppers.
+		// Should have no side effects.
+		return false;
 	}
 
 	@Override
