@@ -15,7 +15,6 @@
 package com.gmail.filoghost.holographicdisplays;
 
 import java.io.File;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,9 +32,6 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramsCommandHan
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.disk.UnicodeSymbols;
-import com.gmail.filoghost.holographicdisplays.exception.HologramNotFoundException;
-import com.gmail.filoghost.holographicdisplays.exception.InvalidFormatException;
-import com.gmail.filoghost.holographicdisplays.exception.WorldNotFoundException;
 import com.gmail.filoghost.holographicdisplays.listener.MainListener;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.object.DefaultBackendAPI;
@@ -218,24 +214,6 @@ public class HolographicDisplays extends JavaPlugin {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new BungeeCleanupTask(), 5 * 60 * 20, 5 * 60 * 20);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorldPlayerCounterTask(), 0L, 3 * 20);
 		
-		Set<String> savedHologramsNames = HologramDatabase.getHolograms();
-		if (savedHologramsNames != null && savedHologramsNames.size() > 0) {
-			for (String singleHologramName : savedHologramsNames) {
-				try {
-					NamedHologram singleHologram = HologramDatabase.loadHologram(singleHologramName);
-					NamedHologramManager.addHologram(singleHologram);
-				} catch (HologramNotFoundException e) {
-					ConsoleLogger.log(Level.WARNING, "Hologram '" + singleHologramName + "' not found, skipping it.");
-				} catch (InvalidFormatException e) {
-					ConsoleLogger.log(Level.WARNING, "Hologram '" + singleHologramName + "' has an invalid location format.");
-				} catch (WorldNotFoundException e) {
-					ConsoleLogger.log(Level.WARNING, "Hologram '" + singleHologramName + "' was in the world '" + e.getMessage() + "' but it wasn't loaded.");
-				} catch (Exception e) {
-					ConsoleLogger.log(Level.WARNING, "Unhandled exception while loading the hologram '" + singleHologramName + "'. Please contact the developer.", e);
-				}
-			}
-		}
-		
 		if (getCommand("holograms") == null) {
 			printWarnAndDisable(
 				"******************************************************",
@@ -254,8 +232,8 @@ public class HolographicDisplays extends JavaPlugin {
 		// Register bStats metrics
 		new MetricsLite(this);
 		
-		// The entities are loaded when the server is ready.
-		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new StartupLoadHologramsTask(), 10L);
+		// Holograms are loaded later, when the worlds are ready.
+		Bukkit.getScheduler().runTask(this, new StartupLoadHologramsTask());
 		
 		// Enable the API.
 		BackendAPI.setImplementation(new DefaultBackendAPI());

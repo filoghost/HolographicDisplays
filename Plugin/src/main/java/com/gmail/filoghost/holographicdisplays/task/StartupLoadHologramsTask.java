@@ -14,15 +14,38 @@
  */
 package com.gmail.filoghost.holographicdisplays.task;
 
+import java.util.Set;
+import java.util.logging.Level;
+
+import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
+import com.gmail.filoghost.holographicdisplays.exception.HologramNotFoundException;
+import com.gmail.filoghost.holographicdisplays.exception.InvalidFormatException;
+import com.gmail.filoghost.holographicdisplays.exception.WorldNotFoundException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 
 public class StartupLoadHologramsTask implements Runnable {
 
 	@Override
 	public void run() {
-		for (NamedHologram hologram : NamedHologramManager.getHolograms()) {
-			hologram.refreshAll();
+		Set<String> savedHologramsNames = HologramDatabase.getHolograms();
+		if (savedHologramsNames != null) {
+			for (String hologramName : savedHologramsNames) {
+				try {
+					NamedHologram namedHologram = HologramDatabase.loadHologram(hologramName);
+					NamedHologramManager.addHologram(namedHologram);
+					namedHologram.refreshAll();
+				} catch (HologramNotFoundException e) {
+					ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' not found, skipping it.");
+				} catch (InvalidFormatException e) {
+					ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' has an invalid location format.");
+				} catch (WorldNotFoundException e) {
+					ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' was in the world '" + e.getMessage() + "' but it wasn't loaded.");
+				} catch (Exception e) {
+					ConsoleLogger.log(Level.WARNING, "Unhandled exception while loading the hologram '" + hologramName + "'. Please contact the developer.", e);
+				}
+			}
 		}
 	}
 
