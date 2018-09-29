@@ -14,6 +14,9 @@
  */
 package com.gmail.filoghost.holographicdisplays.object.line;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -24,11 +27,14 @@ import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
+import com.gmail.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
+import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class CraftTextLine extends CraftTouchableLine implements TextLine {
 
 	private String text;
+	private List<RelativePlaceholder> relativePlaceholders;
 	private NMSNameable nmsNameble;
 	
 	
@@ -59,6 +65,22 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 					PlaceholdersManager.untrack(this);
 				}
 			}
+		}
+		
+		if (text != null) {
+			for (RelativePlaceholder relativePlaceholder : RelativePlaceholder.getRegistry()) {
+				if (text.contains(relativePlaceholder.getTextPlaceholder())) {
+					if (relativePlaceholders == null) {
+						relativePlaceholders = Utils.newList();
+					}
+					relativePlaceholders.add(relativePlaceholder);
+				}
+			}
+		}
+		
+		// Deallocate the list if unused
+		if (relativePlaceholders != null && relativePlaceholders.isEmpty()) {
+			relativePlaceholders = null;
 		}
 	}
 	
@@ -97,6 +119,12 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 			nmsNameble.killEntityNMS();
 			nmsNameble = null;
 		}
+	}
+	
+	
+	@Override
+	public Collection<RelativePlaceholder> getRelativePlaceholders() {
+		return relativePlaceholders;
 	}
 
 	

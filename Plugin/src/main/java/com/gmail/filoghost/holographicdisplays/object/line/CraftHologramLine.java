@@ -14,10 +14,13 @@
  */
 package com.gmail.filoghost.holographicdisplays.object.line;
 
+import java.util.Collection;
+
 import org.bukkit.World;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
+import com.gmail.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 
 public abstract class CraftHologramLine implements HologramLine {
@@ -63,6 +66,10 @@ public abstract class CraftHologramLine implements HologramLine {
 	
 	public final boolean isSpawned() {
 		return isSpawned;
+	}
+
+	public Collection<RelativePlaceholder> getRelativePlaceholders() {
+		return null;
 	}
 	
 	public abstract int[] getEntitiesIDs();
