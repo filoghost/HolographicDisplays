@@ -18,8 +18,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -40,7 +38,14 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher.Serializer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
-import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.WrapperPlayServerSpawnEntity.ObjectTypes;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.AbstractPacket;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerAttachEntity;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerEntityDestroy;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerEntityMetadata;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerMount;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerSpawnEntity;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerSpawnEntityLiving;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerSpawnEntity.ObjectTypes;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
@@ -73,18 +78,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	private int customNameWatcherIndex;
 	
 	@Override
-	public boolean hook(Plugin plugin, NMSManager nmsManager) {
-		
-		String version = Bukkit.getPluginManager().getPlugin("ProtocolLib").getDescription().getVersion();
-		if (version.startsWith("3.7-SNAPSHOT")) {
-			Bukkit.getConsoleSender().sendMessage(
-					ChatColor.RED + "[Holographic Displays] Detected development version of ProtocolLib, support disabled. " +
-					"Related functions (the placeholders {player} {displayname} and the visibility API) will not work.\n" +
-					"The reason is that this version of ProtocolLib is unstable and partly broken. " +
-					"Please update ProtocolLib.");
-			return false;
-		}
-		
+	public boolean hook(Plugin plugin, NMSManager nmsManager) {		
 		this.nmsManager = nmsManager;
 		
 		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
