@@ -23,6 +23,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -122,7 +123,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					PacketContainer packet = event.getPacket();
 					Player player = event.getPlayer();
 					
-					if (player.getClass().getName().equals("com.comphenix.net.sf.cglib.proxy.Factory")) {
+					if (player instanceof Factory) {
 						return; // Ignore temporary players (reference: https://github.com/dmulloy2/ProtocolLib/issues/349)
 					}
 
