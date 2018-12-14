@@ -122,7 +122,7 @@ public class NmsManagerImpl implements NMSManager {
         final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
         final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
         
-        if (!nmsWorld.getChunkProviderServer().isLoaded(chunkX, chunkZ)) {
+        if (!nmsWorld.isChunkLoaded(chunkX, chunkZ, true)) { // The boolean "true" is currently unused
         	// This should never happen
             nmsEntity.dead = true;
             return false;
