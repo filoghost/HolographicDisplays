@@ -23,3 +23,6 @@ Development Builds: https://ci.filoghost.me/job/HolographicDisplays
     <scope>provided</scope>
 </dependency>
 ```
+
+## License
+Holographic Displays is free software/open source, and is distributed under the [GPL 3.0 License](https://opensource.org/licenses/GPL-3.0). It contains third-party code, see the included THIRD-PARTY.txt file for the license information on third-party code.

@@ -1,0 +1,5 @@
+Holographic Displays contains code from the following third party projects, listed with their license information.
+
+[bStats Metrics]
+URL: https://github.com/Bastian/bStats-Metrics
+License: GNU Lesser General Public License v3.0
