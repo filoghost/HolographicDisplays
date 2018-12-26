@@ -143,9 +143,9 @@
 			</resource>
 			<resource>
 				<directory>..</directory>
-				<filtering>true</filtering>
 				<includes>
 					<include>LICENSE.txt</include>
+					<include>THIRD-PARTY.txt</include>
 				</includes>
 			</resource>
 		</resources>
