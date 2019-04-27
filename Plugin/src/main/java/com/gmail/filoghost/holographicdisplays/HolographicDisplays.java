@@ -104,7 +104,7 @@ public class HolographicDisplays extends JavaPlugin {
 			printWarnAndDisable(
 				"******************************************************",
 				"     This version of HolographicDisplays only",
-				"     works on server versions from 1.8 to 1.13.1.",
+				"     works on server versions from 1.8 to 1.14.",
 				"     The plugin will be disabled.",
 				"******************************************************"
 			);
