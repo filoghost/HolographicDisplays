@@ -19,6 +19,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
+import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 
 public interface ProtocolLibHook {
 	
@@ -26,6 +27,10 @@ public interface ProtocolLibHook {
 	
 	public void sendDestroyEntitiesPacket(Player player, CraftHologram hologram);
 	
+	public void sendDestroyEntitiesPacket(Player player, CraftHologramLine line);
+	
 	public void sendCreateEntitiesPacket(Player player, CraftHologram hologram);
+	
+	public void sendCreateEntitiesPacket(Player player, CraftHologramLine line);
 
 }

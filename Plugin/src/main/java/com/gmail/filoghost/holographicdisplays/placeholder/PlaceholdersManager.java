@@ -56,7 +56,6 @@ public class PlaceholdersManager {
 	
 	
 	public static void load(Plugin plugin) {
-		
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			
 			@Override
@@ -103,7 +102,6 @@ public class PlaceholdersManager {
 	}
 	
 	public static void untrack(CraftTextLine line) {
-		
 		if (line == null || !line.isSpawned()) {
 			return;
 		}
@@ -119,25 +117,21 @@ public class PlaceholdersManager {
 	}
 	
 	public static void trackIfNecessary(CraftTextLine line) {
-		
 		NMSNameable nameableEntity = line.getNmsNameble();
-		String name = line.getText();
-		
 		if (nameableEntity == null) {
 			return;
 		}
 		
-		boolean updateName = false;
-		
+		String name = line.getText();
 		if (name == null || name.isEmpty()) {
 			return;
 		}
+		
+		boolean updateName = false;
 
 		// Lazy initialization.
 		Set<Placeholder> normalPlaceholders = null;
-		
 		Map<String, PlaceholderReplacer> bungeeReplacers = null;
-		
 		Map<String, PlaceholderReplacer> worldsOnlinePlayersReplacers = null;
 		Map<String, Placeholder> animationsPlaceholders = null;
 		
@@ -326,7 +320,7 @@ public class PlaceholdersManager {
 		}
 		
 		if (Utils.isThereNonNull(normalPlaceholders, bungeeReplacers, worldsOnlinePlayersReplacers, animationsPlaceholders)) {
-
+			
 			DynamicLineData lineData = new DynamicLineData(nameableEntity, name);
 			
 			if (normalPlaceholders != null) {
@@ -364,7 +358,6 @@ public class PlaceholdersManager {
 	
 	
 	private static void updatePlaceholders(DynamicLineData lineData) {
-		
 		String oldCustomName = lineData.getEntity().getCustomNameNMS();
 		String newCustomName = lineData.getOriginalName();
 		

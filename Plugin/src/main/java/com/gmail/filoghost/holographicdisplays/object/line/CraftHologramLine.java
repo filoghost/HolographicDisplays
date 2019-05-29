@@ -72,6 +72,10 @@ public abstract class CraftHologramLine implements HologramLine {
 		return null;
 	}
 	
+	public boolean hasRelativePlaceholders() {
+		return getRelativePlaceholders() != null && !getRelativePlaceholders().isEmpty();
+	}
+	
 	public abstract int[] getEntitiesIDs();
 	
 	public abstract void teleport(double x, double y, double z);

@@ -231,28 +231,24 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 
 	@Override
 	public void setAllowPlaceholders(boolean allowPlaceholders) {
-		if (this.allowPlaceholders != allowPlaceholders) {
+		if (this.allowPlaceholders == allowPlaceholders) {
+			return;
+		}
 			
-			if (allowPlaceholders) {
-				// Now allowed, previously weren't
-				for (CraftHologramLine line : lines) {
-					if (line instanceof CraftTextLine) {
-						PlaceholdersManager.trackIfNecessary((CraftTextLine) line);
-					}
-				}
-				
-			} else {
-				
-				// Now not allowed
-				for (CraftHologramLine line : lines) {
-					if (line instanceof CraftTextLine) {
-						PlaceholdersManager.untrack((CraftTextLine) line);
-					}
+		for (CraftHologramLine line : lines) {
+			if (line instanceof CraftTextLine) {
+				CraftTextLine textLine = (CraftTextLine) line;
+				if (allowPlaceholders) {
+					// Now allowed, previously weren't
+					PlaceholdersManager.trackIfNecessary(textLine);
+				} else {
+					// Now not allowed
+					PlaceholdersManager.untrack(textLine);
 				}
 			}
-			
-			this.allowPlaceholders = allowPlaceholders;
 		}
+			
+		this.allowPlaceholders = allowPlaceholders;
 	}
 	
 

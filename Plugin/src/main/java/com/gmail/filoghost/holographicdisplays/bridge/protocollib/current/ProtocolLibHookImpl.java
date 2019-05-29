@@ -143,14 +143,13 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 						
-						Collection<RelativePlaceholder> relativePlaceholders = hologramLine.getRelativePlaceholders();
-						if (relativePlaceholders == null || relativePlaceholders.isEmpty()) {
+						if (!hologramLine.hasRelativePlaceholders()) {
 							return;
 						}
 						
 						spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet.deepClone());
 						WrappedWatchableObject customNameWatchableObject = spawnEntityPacket.getMetadata().getWatchableObject(customNameWatcherIndex);
-						replaceRelativePlaceholders(customNameWatchableObject, player, relativePlaceholders);
+						replaceRelativePlaceholders(customNameWatchableObject, player, hologramLine.getRelativePlaceholders());
 						event.setPacket(spawnEntityPacket.getHandle());
 
 					} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
@@ -183,8 +182,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 						
-						Collection<RelativePlaceholder> relativePlaceholders = hologramLine.getRelativePlaceholders();
-						if (relativePlaceholders == null || relativePlaceholders.isEmpty()) {
+						if (!hologramLine.hasRelativePlaceholders()) {
 							return;
 						}
 						
@@ -195,7 +193,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							WrappedWatchableObject watchableObject = dataWatcherValues.get(i);
 							
 							if (watchableObject.getIndex() == customNameWatcherIndex) {
-								if (replaceRelativePlaceholders(watchableObject, player, relativePlaceholders)) {
+								if (replaceRelativePlaceholders(watchableObject, player, hologramLine.getRelativePlaceholders())) {
 									event.setPacket(entityMetadataPacket.getHandle());
 								}
 								
@@ -275,63 +273,88 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	
 	@Override
+	public void sendDestroyEntitiesPacket(Player player, CraftHologramLine line) {
+		if (!line.isSpawned()) {
+			return;
+		}
+		
+		List<Integer> ids = Utils.newList();
+		for (int id : line.getEntitiesIDs()) {
+			ids.add(id);
+		}
+		
+		if (!ids.isEmpty()) {
+			WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
+			packet.setEntities(ids);
+			packet.sendPacket(player);
+		}
+	}
+	
+	
+	@Override
 	public void sendCreateEntitiesPacket(Player player, CraftHologram hologram) {
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
-			if (line.isSpawned()) {
+			sendCreateEntitiesPacket(player, line);
+		}
+	}
+	
+	
+	@Override
+	public void sendCreateEntitiesPacket(Player player, CraftHologramLine line) {
+		if (!line.isSpawned()) {
+			return;
+		}
+		
+		if (line instanceof CraftTextLine) {
+			CraftTextLine textLine = (CraftTextLine) line;
+			
+			if (textLine.isSpawned()) {
+				sendSpawnArmorStandPacket(player, (NMSArmorStand) textLine.getNmsNameble());
+			}
+			
+		} else if (line instanceof CraftItemLine) {
+			CraftItemLine itemLine = (CraftItemLine) line;
+			
+			if (itemLine.isSpawned()) {
+				AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsItem().getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
+				itemPacket.sendPacket(player);
 				
-				if (line instanceof CraftTextLine) {
-					CraftTextLine textLine = (CraftTextLine) line;
-					
-					if (textLine.isSpawned()) {
-						sendSpawnArmorStandPacket(player, (NMSArmorStand) textLine.getNmsNameble());
-					}
-					
-				} else if (line instanceof CraftItemLine) {
-					CraftItemLine itemLine = (CraftItemLine) line;
-					
-					if (itemLine.isSpawned()) {
-						AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsItem().getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
-						itemPacket.sendPacket(player);
-						
-						sendSpawnArmorStandPacket(player, (NMSArmorStand) itemLine.getNmsVehicle());
-						sendVehicleAttachPacket(player, itemLine.getNmsVehicle().getIdNMS(), itemLine.getNmsItem().getIdNMS());
-						
-						WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
-						WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
-						
-						if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
-							Object itemStackObject = NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1) ? itemLine.getNmsItem().getRawItemStack() : Optional.of(itemLine.getNmsItem().getRawItemStack());
-							dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), itemStackObject);
-							dataWatcher.setObject(new WrappedDataWatcherObject(1, intSerializer), 300);
-							dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0);
-						} else {
-							dataWatcher.setObject(itemstackMetadataWatcherIndex, itemLine.getNmsItem().getRawItemStack());
-							dataWatcher.setObject(1, 300);
-							dataWatcher.setObject(0, (byte) 0);
-						}
-
-						itemDataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
-						itemDataPacket.setEntityId(itemLine.getNmsItem().getIdNMS());
-						itemDataPacket.sendPacket(player);
-					}
+				sendSpawnArmorStandPacket(player, (NMSArmorStand) itemLine.getNmsVehicle());
+				sendVehicleAttachPacket(player, itemLine.getNmsVehicle().getIdNMS(), itemLine.getNmsItem().getIdNMS());
+				
+				WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
+				WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
+				
+				if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
+					Object itemStackObject = NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1) ? itemLine.getNmsItem().getRawItemStack() : Optional.of(itemLine.getNmsItem().getRawItemStack());
+					dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), itemStackObject);
+					dataWatcher.setObject(new WrappedDataWatcherObject(1, intSerializer), 300);
+					dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0);
+				} else {
+					dataWatcher.setObject(itemstackMetadataWatcherIndex, itemLine.getNmsItem().getRawItemStack());
+					dataWatcher.setObject(1, 300);
+					dataWatcher.setObject(0, (byte) 0);
 				}
-				
-				// Unsafe cast, however both CraftTextLine and CraftItemLine are touchable.
-				CraftTouchableLine touchableLine = (CraftTouchableLine) line;
-				
-				if (touchableLine.isSpawned() && touchableLine.getTouchSlime() != null) {
-					
-					CraftTouchSlimeLine touchSlime = touchableLine.getTouchSlime();
-					
-					if (touchSlime.isSpawned()) {
-						sendSpawnArmorStandPacket(player, (NMSArmorStand) touchSlime.getNmsVehicle());
 
-						AbstractPacket slimePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsSlime().getBukkitEntityNMS());
-						slimePacket.sendPacket(player);
-						
-						sendVehicleAttachPacket(player, touchSlime.getNmsVehicle().getIdNMS(), touchSlime.getNmsSlime().getIdNMS());
-					}
-				}
+				itemDataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
+				itemDataPacket.setEntityId(itemLine.getNmsItem().getIdNMS());
+				itemDataPacket.sendPacket(player);
+			}
+		}
+		
+		// Unsafe cast, however both CraftTextLine and CraftItemLine are touchable.
+		CraftTouchableLine touchableLine = (CraftTouchableLine) line;
+		
+		if (touchableLine.isSpawned() && touchableLine.getTouchSlime() != null) {
+			CraftTouchSlimeLine touchSlime = touchableLine.getTouchSlime();
+			
+			if (touchSlime.isSpawned()) {
+				sendSpawnArmorStandPacket(player, (NMSArmorStand) touchSlime.getNmsVehicle());
+
+				AbstractPacket slimePacket = new WrapperPlayServerSpawnEntityLiving(touchSlime.getNmsSlime().getBukkitEntityNMS());
+				slimePacket.sendPacket(player);
+				
+				sendVehicleAttachPacket(player, touchSlime.getNmsVehicle().getIdNMS(), touchSlime.getNmsSlime().getIdNMS());
 			}
 		}
 	}
