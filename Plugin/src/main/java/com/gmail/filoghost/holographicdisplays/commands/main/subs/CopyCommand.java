@@ -38,7 +38,7 @@ public class CopyCommand extends HologramSubCommand {
 
 	@Override
 	public String getPossibleArguments() {
-		return "<hologramToCopy> <intoHologram>";
+		return "<fromHologram> <toHologram>";
 	}
 
 	@Override
@@ -49,24 +49,24 @@ public class CopyCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		
-		NamedHologram hologramToCopy = NamedHologramManager.getHologram(args[0].toLowerCase());
-		NamedHologram intoHologram = NamedHologramManager.getHologram(args[1].toLowerCase());
+		NamedHologram fromHologram = NamedHologramManager.getHologram(args[0].toLowerCase());
+		NamedHologram toHologram = NamedHologramManager.getHologram(args[1].toLowerCase());
 		
-		CommandValidator.notNull(hologramToCopy, Strings.noSuchHologram(args[0].toLowerCase()));
-		CommandValidator.notNull(intoHologram, Strings.noSuchHologram(args[1].toLowerCase()));
+		CommandValidator.notNull(fromHologram, Strings.noSuchHologram(args[0].toLowerCase()));
+		CommandValidator.notNull(toHologram, Strings.noSuchHologram(args[1].toLowerCase()));
 		
-		intoHologram.clearLines();
-		for (CraftHologramLine line : hologramToCopy.getLinesUnsafe()) {
+		toHologram.clearLines();
+		for (CraftHologramLine line : fromHologram.getLinesUnsafe()) {
 			String lineString = HologramDatabase.saveLineToString(line);
-			intoHologram.getLinesUnsafe().add(HologramDatabase.readLineFromString(lineString, intoHologram));
+			toHologram.getLinesUnsafe().add(HologramDatabase.readLineFromString(lineString, toHologram));
 		}
 		
-		intoHologram.refreshAll();
+		toHologram.refreshAll();
 		
-		HologramDatabase.saveHologram(intoHologram);
+		HologramDatabase.saveHologram(toHologram);
 		HologramDatabase.trySaveToDisk();
 		
-		sender.sendMessage(Colors.PRIMARY + "Hologram \"" + hologramToCopy.getName() + "\" copied into hologram \"" + intoHologram.getName() + "\"!");
+		sender.sendMessage(Colors.PRIMARY + "Hologram \"" + fromHologram.getName() + "\" copied into hologram \"" + toHologram.getName() + "\"!");
 	}
 	
 	@Override
