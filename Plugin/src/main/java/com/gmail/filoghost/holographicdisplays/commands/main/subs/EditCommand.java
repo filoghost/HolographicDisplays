@@ -35,6 +35,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention;
 
 public class EditCommand extends HologramSubCommand {
 	
@@ -92,6 +93,19 @@ public class EditCommand extends HologramSubCommand {
 		if (CommandValidator.isPlayerSender(sender)) {
 			HelpCommand.sendHoverTip((Player) sender);
 		}
+	}
+	
+	public static void sendQuickEditCommands(Player player, String hologramName) {
+		player.spigot().sendMessage(new ComponentBuilder("[Quick Edit]").color(ChatColor.YELLOW).bold(true)
+			.append(" ", FormatRetention.NONE)
+			.append("[Add Line]").event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/"))
+			.append("hover").color(ChatColor.WHITE).italic(true).underlined(true)
+			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(ChatColor.LIGHT_PURPLE + "Hover on the commands to get info about them.")))
+			.append(" or ", FormatRetention.NONE).color(ChatColor.GRAY)
+			.append("click").color(ChatColor.WHITE).italic(true).underlined(true)
+			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(ChatColor.LIGHT_PURPLE + "Click on the commands to insert them in the chat.")))
+			.append(" on the commands!", FormatRetention.NONE).color(ChatColor.GRAY)
+			.create());
 	}
 
 	@Override

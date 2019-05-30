@@ -143,7 +143,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 						
-						if (!hologramLine.hasRelativePlaceholders()) {
+						if (!hologramLine.getParent().isAllowPlaceholders() || !hologramLine.hasRelativePlaceholders()) {
 							return;
 						}
 						
@@ -182,7 +182,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 						
-						if (!hologramLine.hasRelativePlaceholders()) {
+						if (!hologramLine.getParent().isAllowPlaceholders() || !hologramLine.hasRelativePlaceholders()) {
 							return;
 						}
 						
