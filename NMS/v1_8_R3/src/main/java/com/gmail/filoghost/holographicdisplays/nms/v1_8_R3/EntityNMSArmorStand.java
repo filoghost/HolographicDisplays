@@ -14,6 +14,8 @@
  */
 package com.gmail.filoghost.holographicdisplays.nms.v1_8_R3;
 
+import java.util.logging.Level;
+
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
@@ -54,8 +56,8 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		setBasePlate(true);
 		try {
 			SET_MARKER_METHOD.invoke(this, true);
-		} catch (Exception e) {
-			ConsoleLogger.logDebugException(e);
+		} catch (Throwable t) {
+			ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set armor stand as marker", t);
 			// It will still work, but the offset will be wrong.
 		}
 		this.parentPiece = parentPiece;

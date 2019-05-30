@@ -14,6 +14,8 @@
  */
 package com.gmail.filoghost.holographicdisplays.nms.v1_8_R1;
 
+import java.util.logging.Level;
+
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
@@ -223,8 +225,8 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		try {
 			RIDER_PITCH_DELTA.set(this, 0.0);
 			RIDER_YAW_DELTA.set(this, 0.0);
-		} catch (Exception ex) {
-			ConsoleLogger.logDebugException(ex);
+		} catch (Throwable t) {
+			ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set rider pitch and yaw", t);
 		}
 
         if (this.vehicle != null) {

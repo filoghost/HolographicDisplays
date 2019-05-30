@@ -52,10 +52,6 @@ public class ConsoleLogger {
 		logDebug(level, msg, null);
 	}
 	
-	public static void logDebugException(Throwable thrown) {
-		thrown.printStackTrace();
-	}
-	
 	public static void handleSpawnFail(HologramLine parentPiece) {
 		logDebug(Level.WARNING, "Coulnd't spawn entity for this hologram: " + parentPiece.getParent().toString());
 	}

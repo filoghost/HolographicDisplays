@@ -14,6 +14,8 @@
  */
 package com.gmail.filoghost.holographicdisplays.nms.v1_12_R1;
 
+import java.util.logging.Level;
+
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
@@ -245,8 +247,8 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	        entity.passengers.clear();
 	        entity.passengers.add(this);
 
-		} catch (Exception ex) {
-			ConsoleLogger.logDebugException(ex);
+		} catch (Throwable t) {
+			ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set passenger", t);
 		}
 	}
 

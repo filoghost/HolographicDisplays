@@ -14,6 +14,8 @@
  */
 package com.gmail.filoghost.holographicdisplays.nms.v1_8_R1;
 
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftEntity;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -194,8 +196,8 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 		try {
 			RIDER_PITCH_DELTA.set(this, 0.0);
 			RIDER_YAW_DELTA.set(this, 0.0);
-		} catch (Exception ex) {
-			ConsoleLogger.logDebugException(ex);
+		} catch (Throwable t) {
+			ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set rider pitch and yaw", t);
 		}
 
         if (this.vehicle != null) {

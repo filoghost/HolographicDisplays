@@ -191,10 +191,9 @@ public class BungeeServerTracker {
 									displayOffline = true;
 								} catch (IOException e) {
 									displayOffline = true;
-								} catch (Exception e) {
+								} catch (Throwable t) {
 									displayOffline = true;
-									ConsoleLogger.log(Level.WARNING, "Couldn't fetch data from " + entry.getKey() + "(" + entry.getValue().toString() + "), unhandled exception: " + e.toString());
-									ConsoleLogger.logDebugException(e);
+									ConsoleLogger.log(Level.WARNING, "Couldn't fetch data from " + entry.getKey() + "(" + entry.getValue().toString() + ")", t);
 								}
 								
 								if (displayOffline) {

@@ -14,6 +14,8 @@
  */
 package com.gmail.filoghost.holographicdisplays.nms.v1_11_R1;
 
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftEntity;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -223,8 +225,8 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	        entity.passengers.clear();
 	        entity.passengers.add(this);
 
-		} catch (Exception ex) {
-			ConsoleLogger.logDebugException(ex);
+		} catch (Throwable t) {
+			ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set passenger", t);
 		}
 	}
 }
