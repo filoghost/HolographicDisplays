@@ -21,7 +21,7 @@ public class Strings {
 
 	public static final String BASE_PERM = "holograms.";
 	
-	public static final String TIP_PREFIX = "" + ChatColor.YELLOW + ChatColor.BOLD + "TIP" + Colors.SECONDARY_SHADOW + " ";
+	public static final String TIP_PREFIX = "" + ChatColor.YELLOW + ChatColor.BOLD + "TIP:" + Colors.SECONDARY_SHADOW + " ";
 	
 	
 	public static String formatTitle(String input) {

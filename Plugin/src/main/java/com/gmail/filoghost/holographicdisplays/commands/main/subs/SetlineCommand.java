@@ -79,8 +79,10 @@ public class SetlineCommand extends HologramSubCommand {
 
 		HologramDatabase.saveHologram(hologram);
 		HologramDatabase.trySaveToDisk();
-		sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " changed!");
 		Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
+		
+		sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " changed!");
+		EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
 		
 	}
 

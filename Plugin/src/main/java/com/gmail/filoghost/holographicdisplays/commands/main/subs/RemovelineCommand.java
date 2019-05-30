@@ -65,8 +65,10 @@ public class RemovelineCommand extends HologramSubCommand {
 		
 		HologramDatabase.saveHologram(hologram);
 		HologramDatabase.trySaveToDisk();
-		sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " removed!");
 		Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
+		
+		sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " removed!");
+		EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
 	}
 
 	@Override

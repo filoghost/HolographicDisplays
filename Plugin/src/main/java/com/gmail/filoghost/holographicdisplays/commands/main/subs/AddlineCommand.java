@@ -73,8 +73,10 @@ public class AddlineCommand extends HologramSubCommand {
 			
 		HologramDatabase.saveHologram(hologram);
 		HologramDatabase.trySaveToDisk();
-		sender.sendMessage(Colors.PRIMARY + "Line added!");
 		Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
+		
+		sender.sendMessage(Colors.PRIMARY + "Line added!");
+		EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
 	}
 
 	@Override

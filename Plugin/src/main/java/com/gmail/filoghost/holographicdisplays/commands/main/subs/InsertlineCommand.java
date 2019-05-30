@@ -66,15 +66,17 @@ public class InsertlineCommand extends HologramSubCommand {
 		HologramDatabase.saveHologram(hologram);
 		HologramDatabase.trySaveToDisk();
 		
+		Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
+		
 		if (insertAfter == 0) {
 			sender.sendMessage(Colors.PRIMARY + "Line inserted before line n.1!");
 		} else if (insertAfter == oldLinesAmount) {
 			sender.sendMessage(Colors.PRIMARY + "Line appended at the end!");
-			sender.sendMessage(Strings.TIP_PREFIX + "Next time use /" + label + " addline to add a line at the end.");
+			sender.sendMessage(Strings.TIP_PREFIX + "Next time use \"/" + label + " addline\" to add a line at the end.");
 		} else {
 			sender.sendMessage(Colors.PRIMARY + "Line inserted between lines " + insertAfter + " and " + (insertAfter + 1) + "!");
 		}
-		Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
+		EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
 	}
 
 	@Override

@@ -5,6 +5,7 @@
 #.
 space-between-lines: 0.02
 precise-hologram-movement: true
+quick-edit-commands: true
 images:
   symbol: '[x]'
   transparency:

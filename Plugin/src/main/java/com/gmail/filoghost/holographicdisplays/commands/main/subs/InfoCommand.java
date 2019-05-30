@@ -60,6 +60,7 @@ public class InfoCommand extends HologramSubCommand {
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
 			sender.sendMessage(Colors.SECONDARY + Colors.BOLD + (++index) + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + (line instanceof CraftTextLine ? ((CraftTextLine) line).getText() : HologramDatabase.saveLineToString(line)));
 		}
+		EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
 	}
 
 	@Override

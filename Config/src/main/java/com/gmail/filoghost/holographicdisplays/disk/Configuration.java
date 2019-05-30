@@ -39,6 +39,7 @@ public class Configuration {
 	
 	public static double spaceBetweenLines;
 	public static boolean preciseHologramMovement;
+	public static boolean quickEditCommands;
 	public static String imageSymbol;
 	public static String transparencySymbol;
 	public static boolean updateNotification;
@@ -129,6 +130,7 @@ public class Configuration {
 		
 		spaceBetweenLines = config.getDouble(ConfigNode.SPACE_BETWEEN_LINES.getPath());
 		preciseHologramMovement = config.getBoolean(ConfigNode.PRECISE_HOLOGRAM_MOVEMENT.getPath());
+		quickEditCommands = config.getBoolean(ConfigNode.QUICK_EDIT_COMMANDS.getPath());
 		
 		updateNotification = config.getBoolean(ConfigNode.UPDATE_NOTIFICATION.getPath());
 		

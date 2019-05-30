@@ -60,7 +60,7 @@ public class HolographicDisplays extends JavaPlugin {
 	private static MainListener mainListener;
 	
 	// The command handler, just in case a plugin wants to register more commands.
-	private HologramsCommandHandler commandHandler;
+	private static HologramsCommandHandler commandHandler;
 	
 	// The new version found by the updater, null if there is no new version.
 	private static String newVersion;
@@ -201,7 +201,7 @@ public class HolographicDisplays extends JavaPlugin {
 		return mainListener;
 	}
 
-	public HologramsCommandHandler getCommandHandler() {
+	public static HologramsCommandHandler getCommandHandler() {
 		return commandHandler;
 	}
 	
