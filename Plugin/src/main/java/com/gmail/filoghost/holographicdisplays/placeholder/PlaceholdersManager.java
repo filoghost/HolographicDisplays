@@ -109,7 +109,7 @@ public class PlaceholdersManager {
 		Iterator<DynamicLineData> iter = linesToUpdate.iterator();
 		while (iter.hasNext()) {
 			DynamicLineData data = iter.next();
-			if (data.getEntity() == line.getNmsNameble()) {
+			if (data.getEntity() == line.getNmsNameable()) {
 				iter.remove();
 				data.getEntity().setCustomNameNMS(data.getOriginalName());
 			}
@@ -117,7 +117,7 @@ public class PlaceholdersManager {
 	}
 	
 	public static void trackIfNecessary(CraftTextLine line) {
-		NMSNameable nameableEntity = line.getNmsNameble();
+		NMSNameable nameableEntity = line.getNmsNameable();
 		if (nameableEntity == null) {
 			return;
 		}

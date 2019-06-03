@@ -309,7 +309,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			CraftTextLine textLine = (CraftTextLine) line;
 			
 			if (textLine.isSpawned()) {
-				sendSpawnArmorStandPacket(player, (NMSArmorStand) textLine.getNmsNameble());
+				sendSpawnArmorStandPacket(player, (NMSArmorStand) textLine.getNmsNameable());
 			}
 			
 		} else if (line instanceof CraftItemLine) {
