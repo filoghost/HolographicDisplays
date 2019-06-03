@@ -14,8 +14,6 @@
  */
 package com.gmail.filoghost.holographicdisplays.util;
 
-import org.bukkit.ChatColor;
-
 public class Utils extends Object {
 
 	/**
@@ -30,25 +28,6 @@ public class Utils extends Object {
 		}
 		
 		return result;
-	}
-	
-	
-	/**
-	 * Convenience method to add colors to a string.
-	 * @param text the text to colorize
-	 * @return the colorized text, or null if text was null
-	 */
-	public static String addColors(String text) {
-		if (text == null) {
-			return null;
-		}
-		
-		return ChatColor.translateAlternateColorCodes('&', text);
-	}
-	
-	
-	public static boolean containsIgnoreCase(String toCheck, String content) {
-		return toCheck.toLowerCase().contains(content.toLowerCase());
 	}
 	
 	
