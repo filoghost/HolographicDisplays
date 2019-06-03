@@ -86,12 +86,9 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	
 	@Override
 	public void setTouchHandler(TouchHandler touchHandler) {
-		
 		if (nmsNameble != null) {
-			
 			Location loc = nmsNameble.getBukkitEntityNMS().getLocation();
 			super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getTextOffset(), loc.getZ());
-			
 		} else {
 			super.setTouchHandler(touchHandler, null, 0, 0, 0);
 		}

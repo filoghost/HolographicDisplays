@@ -69,8 +69,8 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	
 	@Override
 	public void setTouchHandler(TouchHandler touchHandler) {
-		if (nmsItem != null) {
-			Location loc = nmsItem.getBukkitEntityNMS().getLocation();
+		if (nmsVehicle != null) {
+			Location loc = nmsVehicle.getBukkitEntityNMS().getLocation();
 			super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getItemOffset(), loc.getZ());
 		} else {
 			super.setTouchHandler(touchHandler, null, 0, 0, 0);
