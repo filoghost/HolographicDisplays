@@ -41,7 +41,7 @@ public class FileUtils {
 
 		try {
 
-			List<String> lines = new ArrayList<String>();
+			List<String> lines = new ArrayList<>();
 
 			if (!file.exists()) {
 				throw new FileNotFoundException();

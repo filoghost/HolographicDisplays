@@ -44,7 +44,7 @@ import net.minecraft.server.v1_9_R2.World;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
 	
-	private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<Entity>(Entity.class, "at");
+	private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<>(Entity.class, "at");
 	
 	private boolean lockTick;
 	private ItemLine parentPiece;

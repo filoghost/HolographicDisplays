@@ -30,7 +30,7 @@ import com.gmail.filoghost.holographicdisplays.util.FileUtils;
 
 public class UnicodeSymbols {
 
-	private static Map<String, String> placeholders = new HashMap<String, String>();
+	private static Map<String, String> placeholders = new HashMap<>();
 	
 	public static void load(Plugin plugin) {
 		placeholders.clear();

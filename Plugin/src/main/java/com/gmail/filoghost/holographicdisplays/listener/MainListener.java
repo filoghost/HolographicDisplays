@@ -14,6 +14,7 @@
  */
 package com.gmail.filoghost.holographicdisplays.listener;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -50,13 +51,12 @@ import com.gmail.filoghost.holographicdisplays.object.PluginHologram;
 import com.gmail.filoghost.holographicdisplays.object.PluginHologramManager;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class MainListener implements Listener, ItemPickupManager {
 	
 	private NMSManager nmsManager;
 	
-	private Map<Player, Long> anticlickSpam = Utils.newMap();
+	private Map<Player, Long> anticlickSpam = new HashMap<>();
 	
 	public MainListener(NMSManager nmsManager) {
 		this.nmsManager = nmsManager;
@@ -86,12 +86,7 @@ public class MainListener implements Listener, ItemPickupManager {
 			if (Bukkit.isPrimaryThread()) {
 				processChunkLoad(chunk);
 			} else {
-				Bukkit.getScheduler().runTask(HolographicDisplays.getInstance(), new Runnable() {
-					@Override
-					public void run() {
-						processChunkLoad(chunk);
-					}
-				});
+				Bukkit.getScheduler().runTask(HolographicDisplays.getInstance(), () -> processChunkLoad(chunk));
 			}
 		}
 	}

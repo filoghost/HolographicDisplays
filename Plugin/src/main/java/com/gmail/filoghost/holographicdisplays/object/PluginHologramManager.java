@@ -16,6 +16,7 @@ package com.gmail.filoghost.holographicdisplays.object;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,14 +24,13 @@ import org.bukkit.Chunk;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 /**
  * This class is only used by the plugin itself. Other plugins should just use the API.
  */
 public class PluginHologramManager {
 
-	private static List<PluginHologram> pluginHolograms = Utils.newList();
+	private static List<PluginHologram> pluginHolograms = new ArrayList<>();
 	
 	public static void addHologram(PluginHologram hologram) {
 		pluginHolograms.add(hologram);
@@ -44,11 +44,11 @@ public class PluginHologramManager {
 	}
 	
 	public static List<PluginHologram> getHolograms() {
-		return new ArrayList<PluginHologram>(pluginHolograms);
+		return new ArrayList<>(pluginHolograms);
 	}
 	
 	public static Set<Hologram> getHolograms(Plugin plugin) {
-		Set<Hologram> ownedHolograms = Utils.newSet();
+		Set<Hologram> ownedHolograms = new HashSet<>();
 		
 		for (PluginHologram hologram : pluginHolograms) {
 			if (hologram.getOwner().equals(plugin)) {
@@ -78,7 +78,7 @@ public class PluginHologramManager {
 	}
 	
 	public static void clearAll() {
-		List<PluginHologram> oldHolograms = new ArrayList<PluginHologram>(pluginHolograms);
+		List<PluginHologram> oldHolograms = new ArrayList<>(pluginHolograms);
 		pluginHolograms.clear();
 		
 		for (PluginHologram hologram : oldHolograms) {

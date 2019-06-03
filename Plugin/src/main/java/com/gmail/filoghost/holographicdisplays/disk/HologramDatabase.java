@@ -16,6 +16,7 @@ package com.gmail.filoghost.holographicdisplays.disk;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -38,7 +39,6 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class HologramDatabase {
 
@@ -133,7 +133,7 @@ public class HologramDatabase {
 		ConfigurationSection configSection = config.isConfigurationSection(hologram.getName()) ? config.getConfigurationSection(hologram.getName()) : config.createSection(hologram.getName());
 		
 		configSection.set("location", LocationSerializer.locationToString(hologram.getLocation()));
-		List<String> lines = Utils.newList();
+		List<String> lines = new ArrayList<>();
 		
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
 			

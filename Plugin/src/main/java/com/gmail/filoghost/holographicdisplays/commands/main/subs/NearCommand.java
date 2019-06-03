@@ -14,6 +14,7 @@
  */
 package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,7 +29,6 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class NearCommand extends HologramSubCommand {
 
@@ -55,7 +55,7 @@ public class NearCommand extends HologramSubCommand {
 		
 		World world = player.getWorld();
 		int radiusSquared = radius * radius;
-		List<NamedHologram> nearHolograms = Utils.newList();
+		List<NamedHologram> nearHolograms = new ArrayList<>();
 		
 		for (NamedHologram hologram : NamedHologramManager.getHolograms()) {
 			if (hologram.getLocation().getWorld().equals(world) && hologram.getLocation().distanceSquared(player.getLocation()) <= radiusSquared) {

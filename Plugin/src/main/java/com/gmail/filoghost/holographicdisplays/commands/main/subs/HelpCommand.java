@@ -14,6 +14,7 @@
  */
 package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -25,8 +26,6 @@ import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
-
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -62,7 +61,7 @@ public class HelpCommand extends HologramSubCommand {
 				
 				if (CommandValidator.isPlayerSender(sender)) {
 					
-					List<String> help = Utils.newList();
+					List<String> help = new ArrayList<>();
 					help.add(Colors.PRIMARY + usage);
 					for (String tutLine : subCommand.getTutorial()) {
 						help.add(Colors.SECONDARY_SHADOW + tutLine);
@@ -71,7 +70,7 @@ public class HelpCommand extends HologramSubCommand {
 					((Player) sender).spigot().sendMessage(new ComponentBuilder(usage)
 						.color(ChatColor.AQUA)
 						.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
-						.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Utils.join(help, "\n"))))
+						.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(String.join("\n", help))))
 						.create());
 					
 				} else {

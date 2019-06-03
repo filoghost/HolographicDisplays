@@ -14,6 +14,7 @@
  */
 package com.gmail.filoghost.holographicdisplays.task;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +22,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.gmail.filoghost.holographicdisplays.util.Utils;
-
 public class WorldPlayerCounterTask implements Runnable {
 
-	private static Map<String, Integer> worlds = Utils.newMap();
+	private static Map<String, Integer> worlds = new HashMap<>();
 	
 	@Override
 	public void run() {

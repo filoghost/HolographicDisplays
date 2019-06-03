@@ -15,13 +15,13 @@
 package com.gmail.filoghost.holographicdisplays.placeholder;
 
 import java.util.Collection;
-import org.bukkit.entity.Player;
+import java.util.HashSet;
 
-import com.gmail.filoghost.holographicdisplays.util.Utils;
+import org.bukkit.entity.Player;
 
 public abstract class RelativePlaceholder {
 	
-	private static final Collection<RelativePlaceholder> registry = Utils.newSet();
+	private static final Collection<RelativePlaceholder> registry = new HashSet<>();
 	
 	// The placeholder itself, something like {player}.
 	private final String textPlaceholder;

@@ -14,6 +14,7 @@
  */
 package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +59,6 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchableLine;
 import com.gmail.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 /**
  * This is for the ProtocolLib versions containing the WrappedDataWatcher.WrappedDataWatcherObject class.
@@ -255,7 +255,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	@Override
 	public void sendDestroyEntitiesPacket(Player player, CraftHologram hologram) {
-		List<Integer> ids = Utils.newList();
+		List<Integer> ids = new ArrayList<>();
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
 			if (line.isSpawned()) {
 				for (int id : line.getEntitiesIDs()) {
@@ -278,7 +278,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			return;
 		}
 		
-		List<Integer> ids = Utils.newList();
+		List<Integer> ids = new ArrayList<>();
 		for (int id : line.getEntitiesIDs()) {
 			ids.add(id);
 		}

@@ -14,6 +14,7 @@
  */
 package com.gmail.filoghost.holographicdisplays.object.line;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,7 +30,6 @@ import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import com.gmail.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import com.gmail.filoghost.holographicdisplays.util.Offsets;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class CraftTextLine extends CraftTouchableLine implements TextLine {
 
@@ -71,7 +71,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 			for (RelativePlaceholder relativePlaceholder : RelativePlaceholder.getRegistry()) {
 				if (text.contains(relativePlaceholder.getTextPlaceholder())) {
 					if (relativePlaceholders == null) {
-						relativePlaceholders = Utils.newList();
+						relativePlaceholders = new ArrayList<>();
 					}
 					relativePlaceholders.add(relativePlaceholder);
 				}

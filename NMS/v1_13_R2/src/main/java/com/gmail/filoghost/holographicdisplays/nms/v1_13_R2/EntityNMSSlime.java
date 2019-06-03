@@ -39,7 +39,7 @@ import net.minecraft.server.v1_13_R2.World;
 
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	
-	private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<Entity>(Entity.class, "vehicle");
+	private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<>(Entity.class, "vehicle");
 
 	private boolean lockTick;
 	private HologramLine parentPiece;

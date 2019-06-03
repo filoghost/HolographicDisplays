@@ -37,7 +37,7 @@ import net.minecraft.server.v1_8_R1.World;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
 
-	private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = new ReflectField<Integer>(EntityArmorStand.class, "bg");
+	private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = new ReflectField<>(EntityArmorStand.class, "bg");
 	
 	private boolean lockTick;
 	private HologramLine parentPiece;

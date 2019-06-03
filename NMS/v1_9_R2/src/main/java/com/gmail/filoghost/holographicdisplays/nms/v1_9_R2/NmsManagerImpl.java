@@ -41,8 +41,8 @@ import net.minecraft.server.v1_9_R2.WorldServer;
 
 public class NmsManagerImpl implements NMSManager {
 
-	private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD = new ReflectField<Map<Class<?>, String>>(EntityTypes.class, "d");
-	private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD = new ReflectField<Map<Class<?>, Integer>>(EntityTypes.class, "f");
+	private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD = new ReflectField<>(EntityTypes.class, "d");
+	private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD = new ReflectField<>(EntityTypes.class, "f");
 	
 	private Method validateEntityMethod;
 	

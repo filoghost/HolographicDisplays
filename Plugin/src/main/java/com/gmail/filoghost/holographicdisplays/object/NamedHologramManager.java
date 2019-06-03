@@ -19,14 +19,12 @@ import java.util.List;
 
 import org.bukkit.Chunk;
 
-import com.gmail.filoghost.holographicdisplays.util.Utils;
-
 /**
  * This class is only used by the plugin itself. Other plugins should just use the API.
  */
 public class NamedHologramManager {
 
-	private static List<NamedHologram> pluginHolograms = Utils.newList();
+	private static List<NamedHologram> pluginHolograms = new ArrayList<>();
 	
 	public static void addHologram(NamedHologram hologram) {
 		pluginHolograms.add(hologram);
@@ -40,7 +38,7 @@ public class NamedHologramManager {
 	}
 	
 	public static List<NamedHologram> getHolograms() {
-		return new ArrayList<NamedHologram>(pluginHolograms);
+		return new ArrayList<>(pluginHolograms);
 	}
 	
 	public static NamedHologram getHologram(String name) {
@@ -75,7 +73,7 @@ public class NamedHologramManager {
 	}
 	
 	public static void clearAll() {
-		List<NamedHologram> oldHolograms = new ArrayList<NamedHologram>(pluginHolograms);
+		List<NamedHologram> oldHolograms = new ArrayList<>(pluginHolograms);
 		pluginHolograms.clear();
 		
 		for (NamedHologram hologram : oldHolograms) {

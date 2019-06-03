@@ -39,14 +39,13 @@ import net.minecraft.server.v1_14_R1.IRegistry;
 import net.minecraft.server.v1_14_R1.MathHelper;
 import net.minecraft.server.v1_14_R1.RegistryID;
 import net.minecraft.server.v1_14_R1.RegistryMaterials;
-import net.minecraft.server.v1_14_R1.World;
 import net.minecraft.server.v1_14_R1.WorldServer;
 
 public class NmsManagerImpl implements NMSManager {
 	
-	private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = new ReflectField<RegistryID<EntityTypes<?>>>(RegistryMaterials.class, "b");
-	private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = new ReflectField<Object[]>(RegistryID.class, "d");
-	private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD = new ReflectMethod<Void>(WorldServer.class, "registerEntity", Entity.class);
+	private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = new ReflectField<>(RegistryMaterials.class, "b");
+	private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = new ReflectField<>(RegistryID.class, "d");
+	private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD = new ReflectMethod<>(WorldServer.class, "registerEntity", Entity.class);
 	
 	@Override
 	public void setup() throws Exception {		
@@ -62,14 +61,7 @@ public class NmsManagerImpl implements NMSManager {
 		Object oldValue = idToClassMap[id];
 
 		// Register the EntityTypes object.
-		registryID.a(new EntityTypes<Entity>(new EntityTypes.b<Entity>() {
-
-			@Override
-			public Entity create(EntityTypes<Entity> entityType, World world) {
-				return null;
-			}
-			
-		}, EnumCreatureType.MONSTER, true, true, false, null, EntitySize.b(2.04f, 2.04f)), id);
+		registryID.a(new EntityTypes<>((entityType, world) -> null, EnumCreatureType.MONSTER, true, true, false, null, EntitySize.b(2.04f, 2.04f)), id);
 
 		// Restore the ID -> EntityTypes mapping.
 		idToClassMap[id] = oldValue;

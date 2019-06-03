@@ -14,13 +14,6 @@
  */
 package com.gmail.filoghost.holographicdisplays.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.bukkit.ChatColor;
 
 public class Utils extends Object {
@@ -59,19 +52,6 @@ public class Utils extends Object {
 	}
 	
 	
-	public static <T, V> Map<T, V> newMap() {
-		return new HashMap<T, V>();
-	}
-	
-	public static <T> List<T> newList() {
-		return new ArrayList<T>();
-	}
-	
-	public static <T> Set<T> newSet() {
-		return new HashSet<T>();
-	}
-	
-	
 	public static int floor(double num) {
 		int floor = (int) num;
 		return floor == num ? floor : floor - (int) (Double.doubleToRawLongBits(num) >>> 63);
@@ -103,19 +83,6 @@ public class Utils extends Object {
 		
 		return result.toString();
 	}
-
-	public static String join(String[] elements, String separator) {
-		return join(elements, separator, 0, elements.length);
-	}
-
-	public static String join(List<String> elements, String separator, int startIndex, int size) {
-		return join(elements.toArray(new String[elements.size()]), separator, startIndex, size);
-	}
-	
-	public static String join(List<String> elements, String separator) {
-		return join(elements, separator, 0, elements.size());
-	}
-	
 	
 	public static String sanitize(String s) {
 		return s != null ? s : "null";

@@ -16,8 +16,6 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_13_R1;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.function.Function;
-
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity;
@@ -45,9 +43,9 @@ import net.minecraft.server.v1_13_R1.WorldServer;
 
 public class NmsManagerImpl implements NMSManager {
 	
-	private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = new ReflectField<RegistryID<EntityTypes<?>>>(RegistryMaterials.class, "a");
-	private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = new ReflectField<Object[]>(RegistryID.class, "d");
-	private static final ReflectField<List<Entity>> ENTITY_LIST_FIELD = new ReflectField<List<Entity>>(World.class, "entityList");
+	private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = new ReflectField<>(RegistryMaterials.class, "a");
+	private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = new ReflectField<>(RegistryID.class, "d");
+	private static final ReflectField<List<Entity>> ENTITY_LIST_FIELD = new ReflectField<>(World.class, "entityList");
 
 	private Method validateEntityMethod;
 	
@@ -68,14 +66,7 @@ public class NmsManagerImpl implements NMSManager {
 		Object oldValue = idToClassMap[id];
 
 		// Register the EntityTypes object.
-		registryID.a(new EntityTypes<Entity>(entityClass, new Function<World, Entity>() {
-
-			@Override
-			public Entity apply(World world) {
-				return null;
-			}
-			
-		}, true, true, null), id);
+		registryID.a(new EntityTypes<>(entityClass, world -> null, true, true, null), id);
 
 		// Restore the ID -> EntityTypes mapping.
 		idToClassMap[id] = oldValue;

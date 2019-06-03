@@ -78,7 +78,7 @@ public class CraftVisibilityManager implements VisibilityManager {
 		
 		if (playersVisibilityMap == null) {
 			// Lazy initialization
-			playersVisibilityMap = new ConcurrentHashMap<String, Boolean>();
+			playersVisibilityMap = new ConcurrentHashMap<>();
 		}
 		
 		playersVisibilityMap.put(player.getName().toLowerCase(), true);
@@ -97,7 +97,7 @@ public class CraftVisibilityManager implements VisibilityManager {
 		
 		if (playersVisibilityMap == null) {
 			// Lazy initialization
-			playersVisibilityMap = new ConcurrentHashMap<String, Boolean>();
+			playersVisibilityMap = new ConcurrentHashMap<>();
 		}
 		
 		playersVisibilityMap.put(player.getName().toLowerCase(), false);
@@ -147,7 +147,7 @@ public class CraftVisibilityManager implements VisibilityManager {
 		if (playersVisibilityMap != null) {
 			
 			// We need to refresh all the players
-			Set<String> playerNames = new HashSet<String>(playersVisibilityMap.keySet());
+			Set<String> playerNames = new HashSet<>(playersVisibilityMap.keySet());
 			
 			for (String playerName : playerNames) {
 				Player onlinePlayer = Bukkit.getPlayerExact(playerName);

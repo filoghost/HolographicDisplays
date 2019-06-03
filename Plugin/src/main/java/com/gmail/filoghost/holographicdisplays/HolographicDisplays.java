@@ -24,7 +24,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.gmail.filoghost.holographicdisplays.SimpleUpdater.ResponseHandler;
 import com.gmail.filoghost.holographicdisplays.api.internal.BackendAPI;
 import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
@@ -87,16 +86,11 @@ public class HolographicDisplays extends JavaPlugin {
 		Configuration.load(this);
 		
 		if (Configuration.updateNotification) {
-			new SimpleUpdater(this, 75097).checkForUpdates(new ResponseHandler() {
-				
-				@Override
-				public void onUpdateFound(final String newVersion) {
-
-					HolographicDisplays.newVersion = newVersion;
-					ConsoleLogger.log(Level.INFO, "Found a new version available: " + newVersion);
-					ConsoleLogger.log(Level.INFO, "Download it on Bukkit Dev:");
-					ConsoleLogger.log(Level.INFO, "dev.bukkit.org/bukkit-plugins/holographic-displays");
-				}
+			new SimpleUpdater(this, 75097).checkForUpdates(newVersion -> {
+				HolographicDisplays.newVersion = newVersion;
+				ConsoleLogger.log(Level.INFO, "Found a new version available: " + newVersion);
+				ConsoleLogger.log(Level.INFO, "Download it on Bukkit Dev:");
+				ConsoleLogger.log(Level.INFO, "dev.bukkit.org/bukkit-plugins/holographic-displays");
 			});
 		}
 		

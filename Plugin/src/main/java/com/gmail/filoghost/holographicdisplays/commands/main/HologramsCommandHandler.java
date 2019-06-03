@@ -16,6 +16,7 @@ package com.gmail.filoghost.holographicdisplays.commands.main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,6 @@ import com.gmail.filoghost.holographicdisplays.commands.main.subs.RemovelineComm
 import com.gmail.filoghost.holographicdisplays.commands.main.subs.SetlineCommand;
 import com.gmail.filoghost.holographicdisplays.commands.main.subs.TeleportCommand;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class HologramsCommandHandler implements CommandExecutor {
 
@@ -53,8 +53,8 @@ public class HologramsCommandHandler implements CommandExecutor {
 	private Map<Class<? extends HologramSubCommand>, HologramSubCommand> subCommandsByClass;
 
 	public HologramsCommandHandler() {
-		subCommands = Utils.newList();
-		subCommandsByClass = Utils.newMap();
+		subCommands = new ArrayList<>();
+		subCommandsByClass = new HashMap<>();
 		
 		registerSubCommand(new AddlineCommand());
 		registerSubCommand(new CreateCommand());
@@ -84,7 +84,7 @@ public class HologramsCommandHandler implements CommandExecutor {
 	}
 	
 	public List<HologramSubCommand> getSubCommands() {
-		return new ArrayList<HologramSubCommand>(subCommands);
+		return new ArrayList<>(subCommands);
 	}
 	
 	public HologramSubCommand getSubCommand(Class<? extends HologramSubCommand> subCommandClass) {

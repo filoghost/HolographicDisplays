@@ -37,8 +37,8 @@ import net.minecraft.server.v1_8_R2.World;
 
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	
-	private static final ReflectField<Double> RIDER_PITCH_DELTA = new ReflectField<Double>(Entity.class, "ar");
-	private static final ReflectField<Double> RIDER_YAW_DELTA = new ReflectField<Double>(Entity.class, "as");
+	private static final ReflectField<Double> RIDER_PITCH_DELTA = new ReflectField<>(Entity.class, "ar");
+	private static final ReflectField<Double> RIDER_YAW_DELTA = new ReflectField<>(Entity.class, "as");
 
 	private boolean lockTick;
 	private HologramLine parentPiece;

@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -25,7 +26,6 @@ import org.bukkit.ChatColor;
 
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.exception.TooWideException;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 /**
  * Huge thanks to bobacadodl for this awesome library!
@@ -35,10 +35,8 @@ public class ImageMessage {
 	
 	public static final int MAX_WIDTH = 150;
 
-	private static final Map<ChatColor, Color> colorsMap = Utils.newMap();
-	
-	private static final Map<ChatColor, Color> graysMap = Utils.newMap();
-	
+	private static final Map<ChatColor, Color> colorsMap = new HashMap<>();
+	private static final Map<ChatColor, Color> graysMap = new HashMap<>();
 	
 	static {
 		colorsMap.put(ChatColor.DARK_BLUE, new Color(0, 0, 170));
@@ -70,7 +68,7 @@ public class ImageMessage {
 
     private ChatColor[][] toChatColorArray(BufferedImage image, int width) throws TooWideException {
         double ratio = (double) image.getHeight() / image.getWidth();
-        int height = (int) (((double)width) * ratio);
+        int height = (int) ((width) * ratio);
         if (height == 0) {
         	height = 1;
         }

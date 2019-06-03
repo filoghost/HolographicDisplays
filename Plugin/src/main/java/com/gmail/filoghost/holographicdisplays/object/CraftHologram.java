@@ -14,6 +14,7 @@
  */
 package com.gmail.filoghost.holographicdisplays.object;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Chunk;
@@ -57,7 +58,7 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 		Validator.notNull(location, "location");
 		updateLocation(location.getWorld(), location.getX(), location.getY(), location.getZ());
 		
-		lines = Utils.newList();
+		lines = new ArrayList<>();
 		allowPlaceholders = false;
 		creationTimestamp = System.currentTimeMillis();
 		visibilityManager = new CraftVisibilityManager(this);

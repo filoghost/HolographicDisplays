@@ -15,6 +15,7 @@
 package com.gmail.filoghost.holographicdisplays.placeholder;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -23,47 +24,30 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
-import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class PlaceholdersRegister {
 	
-	private static final Set<Placeholder> placeholders = Utils.newSet();
+	private static final Set<Placeholder> placeholders = new HashSet<>();
 	
 	// Register the default placeholders statically.
 	static {
 		
-		register(new Placeholder(HolographicDisplays.getInstance(), "{online}", 1.0, new PlaceholderReplacer() {
-			
-			@Override
-			public String update() {
-				return String.valueOf(Bukkit.getOnlinePlayers().size());
-			}
+		register(new Placeholder(HolographicDisplays.getInstance(), "{online}", 1.0, () -> {
+			return String.valueOf(Bukkit.getOnlinePlayers().size());
 		}));
 		
-		register(new Placeholder(HolographicDisplays.getInstance(), "{max_players}", 10.0, new PlaceholderReplacer() {
-
-			@Override
-			public String update() {
-				return String.valueOf(Bukkit.getMaxPlayers());
-			}
+		register(new Placeholder(HolographicDisplays.getInstance(), "{max_players}", 10.0, () -> {
+			return String.valueOf(Bukkit.getMaxPlayers());
 		}));
 		
-		register(new Placeholder(HolographicDisplays.getInstance(), "{motd}", 60.0, new PlaceholderReplacer() {
-
-			@Override
-			public String update() {
-				return Bukkit.getMotd();
-			}
+		register(new Placeholder(HolographicDisplays.getInstance(), "{motd}", 60.0, () -> {
+			return Bukkit.getMotd();
 		}));
 		
-		register(new Placeholder(HolographicDisplays.getInstance(), "{time}", 0.9, new PlaceholderReplacer() {
-
-			@Override
-			public String update() {
-				return Configuration.timeFormat.format(new Date());
-			}
+		register(new Placeholder(HolographicDisplays.getInstance(), "{time}", 0.9, () -> {
+			return Configuration.timeFormat.format(new Date());
 		}));
 		
 		register(new Placeholder(HolographicDisplays.getInstance(), "&u", 0.2, new CyclicPlaceholderReplacer(Utils.arrayToStrings(
@@ -87,7 +71,7 @@ public class PlaceholdersRegister {
 	}
 	
 	public static Set<String> getTextPlaceholdersByPlugin(Plugin plugin) {
-		Set<String> found = Utils.newSet();
+		Set<String> found = new HashSet<>();
 		
 		for (Placeholder placeholder : placeholders) {
 			if (placeholder.getOwner().equals(plugin)) {

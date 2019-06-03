@@ -15,7 +15,6 @@
 package com.gmail.filoghost.holographicdisplays.util.reflection;
 
 import java.lang.StackWalker.StackFrame;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.stream.Stream;
 
@@ -26,8 +25,8 @@ public class ReflectionUtils {
 	
 	private static final boolean HAS_JAVA9_STACKWALKER = Utils.classExists("java.lang.StackWalker");
 	
-	private static final ReflectMethod<Integer> GET_STACKTRACE_DEPTH_METHOD = new ReflectMethod<Integer>(Throwable.class, "getStackTraceDepth");
-	private static final ReflectMethod<StackTraceElement> GET_STACKTRACE_ELEMENT_METHOD = new ReflectMethod<StackTraceElement>(Throwable.class, "getStackTraceElement", int.class);
+	private static final ReflectMethod<Integer> GET_STACKTRACE_DEPTH_METHOD = new ReflectMethod<>(Throwable.class, "getStackTraceDepth");
+	private static final ReflectMethod<StackTraceElement> GET_STACKTRACE_ELEMENT_METHOD = new ReflectMethod<>(Throwable.class, "getStackTraceElement", int.class);
 	
 	private static boolean stackTraceError;
 	
@@ -42,13 +41,8 @@ public class ReflectionUtils {
 			try {
 				if (HAS_JAVA9_STACKWALKER) {
 					// Use the Java 9 StackWalker API
-					StackFrame result = StackWalker.getInstance().walk(new Function<Stream<StackFrame>, StackFrame>() {
-	
-						@Override
-						public StackFrame apply(Stream<StackFrame> stream) {
-							return stream.skip(index).limit(1).findFirst().orElse(null);
-						}
-						
+					StackFrame result = StackWalker.getInstance().walk((Stream<StackFrame> stream) -> {
+						return stream.skip(index).limit(1).findFirst().orElse(null);
 					});
 					return result != null ? result.toStackTraceElement() : null;
 					

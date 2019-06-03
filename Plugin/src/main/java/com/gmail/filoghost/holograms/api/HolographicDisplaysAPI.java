@@ -34,7 +34,6 @@ import com.gmail.filoghost.holographicdisplays.api.internal.BackendAPI;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.object.PluginHologram;
 import com.gmail.filoghost.holographicdisplays.object.PluginHologramManager;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 
 /**
@@ -43,7 +42,7 @@ import com.gmail.filoghost.holographicdisplays.util.Validator;
 @Deprecated
 public class HolographicDisplaysAPI {
 	
-	private static Set<String> notifiedPlugins = new HashSet<String>();
+	private static Set<String> notifiedPlugins = new HashSet<>();
 	
 	private static void notifyOldAPI(Plugin plugin) {
 		if (notifiedPlugins.add(plugin.getName())) {
@@ -76,7 +75,7 @@ public class HolographicDisplaysAPI {
 	@Deprecated
 	public static Hologram createIndividualHologram(Plugin plugin, Location source, Player whoCanSee, String... lines) {
 		notifyOldAPI(plugin);
-		List<Player> whoCanSeeList = new ArrayList<Player>();
+		List<Player> whoCanSeeList = new ArrayList<>();
 		whoCanSeeList.add(whoCanSee);
 		return createIndividualHologram(plugin, source, whoCanSeeList, lines);
 	}
@@ -107,7 +106,7 @@ public class HolographicDisplaysAPI {
 	@Deprecated
 	public static FloatingItem createIndividualFloatingItem(Plugin plugin, Location source, Player whoCanSee, ItemStack itemstack) {
 		notifyOldAPI(plugin);
-		List<Player> whoCanSeeList = new ArrayList<Player>();
+		List<Player> whoCanSeeList = new ArrayList<>();
 		whoCanSeeList.add(whoCanSee);
 		return createIndividualFloatingItem(plugin, source, whoCanSeeList, itemstack);
 	}
@@ -139,7 +138,7 @@ public class HolographicDisplaysAPI {
 		notifyOldAPI(plugin);
 		Validator.notNull(plugin, "plugin cannot be null");
 		
-		List<Hologram> pluginHolograms = Utils.newList();
+		List<Hologram> pluginHolograms = new ArrayList<>();;
 		for (PluginHologram pluginHologram : PluginHologramManager.getHolograms()) {
 			if (pluginHologram.getOwner().equals(plugin)) {
 				pluginHolograms.add(pluginHologram);

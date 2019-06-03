@@ -42,8 +42,8 @@ import net.minecraft.server.v1_8_R1.World;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
 	
-	private static final ReflectField<Double> RIDER_PITCH_DELTA = new ReflectField<Double>(Entity.class, "ap");
-	private static final ReflectField<Double> RIDER_YAW_DELTA = new ReflectField<Double>(Entity.class, "aq");
+	private static final ReflectField<Double> RIDER_PITCH_DELTA = new ReflectField<>(Entity.class, "ap");
+	private static final ReflectField<Double> RIDER_YAW_DELTA = new ReflectField<>(Entity.class, "aq");
 	
 	private boolean lockTick;
 	private ItemLine parentPiece;

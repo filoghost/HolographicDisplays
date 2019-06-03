@@ -14,12 +14,13 @@
  */
 package com.gmail.filoghost.holographicdisplays.placeholder;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 
 public class DynamicLineData {
@@ -36,9 +37,9 @@ public class DynamicLineData {
 		
 		this.entity = entity;
 		this.originalName = originalName;
-		placeholders = Utils.newSet();
-		animations = Utils.newMap();
-		replacers = Utils.newMap();
+		placeholders = new HashSet<>();
+		animations = new HashMap<>();
+		replacers = new HashMap<>();
 	}
 
 	public NMSNameable getEntity() {

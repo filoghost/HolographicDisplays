@@ -15,6 +15,7 @@
 package com.gmail.filoghost.holographicdisplays.placeholder;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -25,12 +26,11 @@ import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.disk.StringConverter;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.FileUtils;
-import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class AnimationsRegister {
 	
 	// <fileName, lines>
-	private final static Map<String, Placeholder> animations = Utils.newMap();
+	private final static Map<String, Placeholder> animations = new HashMap<>();
 	
 	public static void loadAnimations(Plugin plugin) {
 		animations.clear();
