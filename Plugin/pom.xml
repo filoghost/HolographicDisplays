@@ -27,6 +27,11 @@
 			<id>bstats-repo</id>
 			<url>http://repo.bstats.org/content/repositories/releases/</url>
 		</repository>
+		
+		<repository>
+			<id>codemc-repo</id>
+			<url>https://repo.codemc.org/repository/maven-public/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -139,6 +144,12 @@
 			<artifactId>bstats-bukkit-lite</artifactId>
 			<version>1.2</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>me.filoghost.updatechecker</groupId>
+			<artifactId>updatechecker</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -167,6 +178,7 @@
 						<includes>
 							<include>${project.groupId}:*</include>
 							<include>org.bstats</include>
+							<include>me.filoghost.updatechecker</include>
 						</includes>
 					</artifactSet>
 					<filters>
@@ -181,6 +193,10 @@
 						<relocation>
 							<pattern>org.bstats</pattern>
 							<shadedPattern>com.gmail.filoghost.holographicdisplays.metrics</shadedPattern>
+						</relocation>
+						<relocation>
+							<pattern>me.filoghost.updatechecker</pattern>
+							<shadedPattern>com.gmail.filoghost.holographicdisplays.updater</shadedPattern>
 						</relocation>
 					</relocations>
 				</configuration>
