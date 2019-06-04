@@ -48,6 +48,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	private boolean lockTick;
 	private ItemLine parentPiece;
 	private ItemPickupManager itemPickupManager;
+	private CraftEntity customBukkitEntity;
 	
 	public EntityNMSItem(World world, ItemLine piece, ItemPickupManager itemPickupManager) {
 		super(EntityTypes.ITEM, world);
@@ -158,10 +159,10 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 
 	@Override
 	public CraftEntity getBukkitEntity() {
-		if (super.bukkitEntity == null) {
-			super.bukkitEntity = new CraftNMSItem(super.world.getServer(), this);
+		if (customBukkitEntity == null) {
+			customBukkitEntity = new CraftNMSItem(super.world.getServer(), this);
 	    }
-		return super.bukkitEntity;
+		return customBukkitEntity;
 	}
 
 	@Override

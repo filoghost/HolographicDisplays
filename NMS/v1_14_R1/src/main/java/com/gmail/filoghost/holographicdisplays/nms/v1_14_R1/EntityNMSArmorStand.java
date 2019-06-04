@@ -41,9 +41,10 @@ import net.minecraft.server.v1_14_R1.Vec3D;
 import net.minecraft.server.v1_14_R1.World;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
-
+	
 	private boolean lockTick;
 	private HologramLine parentPiece;
+	private CraftEntity customBukkitEntity;
 	
 	public EntityNMSArmorStand(World world, HologramLine parentPiece) {
 		super(EntityTypes.ARMOR_STAND, world);
@@ -203,10 +204,10 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	
 	@Override
 	public CraftEntity getBukkitEntity() {
-		if (super.bukkitEntity == null) {
-			super.bukkitEntity = new CraftNMSArmorStand(super.world.getServer(), this);
+		if (customBukkitEntity == null) {
+			customBukkitEntity = new CraftNMSArmorStand(super.world.getServer(), this);
 	    }
-		return super.bukkitEntity;
+		return customBukkitEntity;
 	}
 	
 	@Override

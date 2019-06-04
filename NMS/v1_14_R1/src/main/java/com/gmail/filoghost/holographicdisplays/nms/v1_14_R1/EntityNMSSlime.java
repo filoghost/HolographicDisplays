@@ -44,6 +44,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 
 	private boolean lockTick;
 	private HologramLine parentPiece;
+	private CraftEntity customBukkitEntity;
 	
 	public EntityNMSSlime(World world, HologramLine parentPiece) {
 		super(EntityTypes.SLIME, world);
@@ -171,10 +172,10 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	
 	@Override
 	public CraftEntity getBukkitEntity() {
-		if (super.bukkitEntity == null) {
-			super.bukkitEntity = new CraftNMSSlime(super.world.getServer(), this);
+		if (customBukkitEntity == null) {
+			customBukkitEntity = new CraftNMSSlime(super.world.getServer(), this);
 	    }
-		return super.bukkitEntity;
+		return customBukkitEntity;
 	}
 
 	@Override
