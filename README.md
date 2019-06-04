@@ -8,18 +8,18 @@ API tutorial: https://github.com/filoghost/HolographicDisplays/wiki
 Development Builds: https://ci.filoghost.me/job/HolographicDisplays
 
 ## Maven
-```
+```xml
 <repository>
-    <id>filoghost-repo</id>
-    <url>https://ci.filoghost.me/plugin/repository/everything/</url>
+    <id>codemc-repo</id>
+    <url>https://repo.codemc.org/repository/maven-public/</url>
 </repository>
 ```
 
-```
+```xml
 <dependency>
     <groupId>com.gmail.filoghost.holographicdisplays</groupId>
     <artifactId>holographicdisplays-api</artifactId>
-    <version>2.3.0</version>
+    <version>2.3.2</version>
     <scope>provided</scope>
 </dependency>
 ```
