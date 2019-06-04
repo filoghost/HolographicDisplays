@@ -5,7 +5,7 @@ Bukkit Dev Page: http://dev.bukkit.org/bukkit-plugins/holographic-displays
 
 API tutorial: https://github.com/filoghost/HolographicDisplays/wiki
 
-Development Builds: https://ci.filoghost.me/job/HolographicDisplays
+Development Builds: https://ci.codemc.org/job/filoghost/job/HolographicDisplays
 
 ## Maven
 ```xml
