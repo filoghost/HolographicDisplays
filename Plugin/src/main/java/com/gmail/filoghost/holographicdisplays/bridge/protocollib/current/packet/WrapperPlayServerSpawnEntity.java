@@ -25,6 +25,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.injector.PacketConstructor;
 import com.comphenix.protocol.reflect.IntEnum;
+import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 
 public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     public static final PacketType TYPE = PacketType.Play.Server.SPAWN_ENTITY;
@@ -90,9 +91,19 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     
     // Useful constructor
     private static PacketContainer fromEntity(Entity entity, int type, int objectData) {
-        if (entityConstructor == null)
-        	entityConstructor = ProtocolLibrary.getProtocolManager().createPacketConstructor(TYPE, entity, type, objectData);
-        return entityConstructor.createPacket(entity, type, objectData);
+        if (entityConstructor == null) {
+        	if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_14_R1)) {
+        		entityConstructor = ProtocolLibrary.getProtocolManager().createPacketConstructor(TYPE, entity, objectData);
+        	} else {
+        		entityConstructor = ProtocolLibrary.getProtocolManager().createPacketConstructor(TYPE, entity, type, objectData);
+        	}
+        }
+        
+        if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_14_R1)) {
+        	return entityConstructor.createPacket(entity, objectData);
+        } else {
+        	return entityConstructor.createPacket(entity, type, objectData);
+        }
     }
     
     /**
