@@ -326,7 +326,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 				WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 				
 				if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
-					Object itemStackObject = NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1) ? itemLine.getNmsItem().getRawItemStack() : Optional.of(itemLine.getNmsItem().getRawItemStack());
+					Object itemStackObject = NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1) ? itemLine.getNmsItem().getRawItemStack() : com.google.common.base.Optional.of(itemLine.getNmsItem().getRawItemStack());
 					dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), itemStackObject);
 					dataWatcher.setObject(new WrappedDataWatcherObject(1, intSerializer), 300);
 					dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0);
