@@ -43,7 +43,7 @@ public class NamedHologramManager {
 	
 	public static NamedHologram getHologram(String name) {
 		for (NamedHologram hologram : pluginHolograms) {
-			if (hologram.getName().equals(name)) {
+			if (hologram.getName().equalsIgnoreCase(name)) {
 				return hologram;
 			}
 		}

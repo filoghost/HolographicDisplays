@@ -26,7 +26,6 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
-import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 
 public class CopyCommand extends HologramSubCommand {
@@ -48,12 +47,8 @@ public class CopyCommand extends HologramSubCommand {
 
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		
-		NamedHologram fromHologram = NamedHologramManager.getHologram(args[0].toLowerCase());
-		NamedHologram toHologram = NamedHologramManager.getHologram(args[1].toLowerCase());
-		
-		CommandValidator.notNull(fromHologram, Strings.noSuchHologram(args[0].toLowerCase()));
-		CommandValidator.notNull(toHologram, Strings.noSuchHologram(args[1].toLowerCase()));
+		NamedHologram fromHologram = CommandValidator.getNamedHologram(args[0]);
+		NamedHologram toHologram = CommandValidator.getNamedHologram(args[1]);
 		
 		toHologram.clearLines();
 		for (CraftHologramLine line : fromHologram.getLinesUnsafe()) {

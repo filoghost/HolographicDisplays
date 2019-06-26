@@ -25,7 +25,6 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
-import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 
@@ -49,12 +48,10 @@ public class InfoCommand extends HologramSubCommand {
 
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		String name = args[0].toLowerCase();
-		NamedHologram hologram = NamedHologramManager.getHologram(name);
-		CommandValidator.notNull(hologram, Strings.noSuchHologram(name));
+		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
 		
 		sender.sendMessage("");
-		sender.sendMessage(Strings.formatTitle("Lines of the hologram '" + name + "'"));
+		sender.sendMessage(Strings.formatTitle("Lines of the hologram '" + hologram.getName() + "'"));
 		int index = 0;
 		
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {

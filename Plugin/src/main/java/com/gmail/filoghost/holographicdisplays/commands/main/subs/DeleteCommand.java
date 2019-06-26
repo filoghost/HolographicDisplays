@@ -49,8 +49,7 @@ public class DeleteCommand extends HologramSubCommand {
 
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
-		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
+		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
 		
 		hologram.delete();
 		NamedHologramManager.removeHologram(hologram);

@@ -27,7 +27,6 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
-import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 
 public class AlignCommand extends HologramSubCommand {
 
@@ -48,11 +47,8 @@ public class AlignCommand extends HologramSubCommand {
 
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		NamedHologram hologram = NamedHologramManager.getHologram(args[1].toLowerCase());
-		NamedHologram referenceHologram = NamedHologramManager.getHologram(args[2].toLowerCase());
-		
-		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[1].toLowerCase()));
-		CommandValidator.notNull(referenceHologram, Strings.noSuchHologram(args[2].toLowerCase()));
+		NamedHologram hologram = CommandValidator.getNamedHologram(args[1]);
+		NamedHologram referenceHologram = CommandValidator.getNamedHologram(args[2]);
 		
 		CommandValidator.isTrue(hologram != referenceHologram, "The hologram must not be the same!");
 

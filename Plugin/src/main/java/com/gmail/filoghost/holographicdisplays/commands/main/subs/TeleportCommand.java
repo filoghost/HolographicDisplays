@@ -28,7 +28,6 @@ import com.gmail.filoghost.holographicdisplays.commands.Strings;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
-import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 
 
 public class TeleportCommand extends HologramSubCommand {
@@ -51,8 +50,7 @@ public class TeleportCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		Player player = CommandValidator.getPlayerSender(sender);
-		NamedHologram hologram = NamedHologramManager.getHologram(args[0].toLowerCase());
-		CommandValidator.notNull(hologram, Strings.noSuchHologram(args[0].toLowerCase()));
+		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
 		
 		Location loc = hologram.getLocation();
 		loc.setPitch(90);

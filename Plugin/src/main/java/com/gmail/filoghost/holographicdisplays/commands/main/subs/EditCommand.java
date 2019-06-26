@@ -29,7 +29,6 @@ import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
-import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.google.common.collect.Lists;
 
 import net.md_5.bungee.api.ChatColor;
@@ -67,12 +66,10 @@ public class EditCommand extends HologramSubCommand {
 
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		String name = args[0].toLowerCase();
-		NamedHologram hologram = NamedHologramManager.getHologram(name);
-		CommandValidator.notNull(hologram, Strings.noSuchHologram(name));
+		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
 		
 		sender.sendMessage("");
-		sender.sendMessage(Strings.formatTitle("How to edit the hologram '" + name + "'"));
+		sender.sendMessage(Strings.formatTitle("How to edit the hologram '" + hologram.getName() + "'"));
 		for (HologramSubCommand subCommand : HolographicDisplays.getCommandHandler().getSubCommands()) {
 			if (subCommand.getType() == SubCommandType.EDIT_LINES) {
 				String usage = "/" + label + " " + subCommand.getName() + (subCommand.getPossibleArguments().length() > 0 ? " " + subCommand.getPossibleArguments().replace("<hologramName>", hologram.getName()).replace("<hologram>", hologram.getName()) : "");

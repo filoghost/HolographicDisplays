@@ -17,8 +17,16 @@ package com.gmail.filoghost.holographicdisplays.commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
+import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
+import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 
 public class CommandValidator {
+	
+	public static NamedHologram getNamedHologram(String hologramName) throws CommandException {
+		NamedHologram hologram = NamedHologramManager.getHologram(hologramName);
+		notNull(hologram, Strings.noSuchHologram(hologramName));
+		return hologram;
+	}
 	
 	public static void notNull(Object obj, String string) throws CommandException {
 		if (obj == null) {
