@@ -32,7 +32,6 @@ import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectMethod;
 
 import net.minecraft.server.v1_14_R1.Entity;
-import net.minecraft.server.v1_14_R1.EntitySize;
 import net.minecraft.server.v1_14_R1.EntityTypes;
 import net.minecraft.server.v1_14_R1.EnumCreatureType;
 import net.minecraft.server.v1_14_R1.IRegistry;
@@ -49,10 +48,10 @@ public class NmsManagerImpl implements NMSManager {
 	
 	@Override
 	public void setup() throws Exception {		
-		registerCustomEntity(EntityNMSSlime.class, 55);
+		registerCustomEntity(EntityNMSSlime.class, 55, 2.04f, 2.04f);
 	}
 	
-	public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
+	public void registerCustomEntity(Class<? extends Entity> entityClass, int id, float sizeWidth, float sizeHeight) throws Exception {
 		// Use reflection to get the RegistryID of entities.
 		RegistryID<EntityTypes<?>> registryID = REGISTRY_ID_FIELD.get(IRegistry.ENTITY_TYPE);
 		Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
@@ -61,7 +60,7 @@ public class NmsManagerImpl implements NMSManager {
 		Object oldValue = idToClassMap[id];
 
 		// Register the EntityTypes object.
-		registryID.a(new EntityTypes<>((entityType, world) -> null, EnumCreatureType.MONSTER, true, true, false, null, EntitySize.b(2.04f, 2.04f)), id);
+		registryID.a(EntityTypes.a.a(EnumCreatureType.MONSTER).a(sizeWidth, sizeHeight).b().a((String) null), id);
 
 		// Restore the ID -> EntityTypes mapping.
 		idToClassMap[id] = oldValue;
