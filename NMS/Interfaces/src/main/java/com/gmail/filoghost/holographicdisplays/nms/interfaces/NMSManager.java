@@ -38,4 +38,8 @@ public interface NMSManager {
 
 	public NMSEntityBase getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity);
 
+	default org.bukkit.entity.Entity getEntityFromID(org.bukkit.World bukkitWorld, int entityID) {
+		throw new IllegalStateException("Not implemented");
+	}
+
 }

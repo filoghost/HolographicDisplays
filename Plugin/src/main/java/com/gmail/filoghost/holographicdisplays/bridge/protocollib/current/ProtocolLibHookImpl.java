@@ -39,8 +39,10 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Serializer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.AbstractPacket;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.EntityRelatedPacketWrapper;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerAttachEntity;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerEntityDestroy;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerEntityMetadata;
@@ -77,6 +79,8 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	private int itemstackMetadataWatcherIndex;
 	private int customNameWatcherIndex;
+	
+	private boolean useGetEntityWorkaround;
 	
 	@Override
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {		
@@ -131,7 +135,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
 
 						WrapperPlayServerSpawnEntityLiving spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet);
-						Entity entity = spawnEntityPacket.getEntity(event);
+						Entity entity = getEntity(event, spawnEntityPacket);
 						
 						CraftHologramLine hologramLine = getHologramLine(entity);
 						if (hologramLine == null) {
@@ -155,7 +159,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
 
 						WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
-						Entity entity = spawnEntityPacket.getEntity(event);
+						Entity entity = getEntity(event, spawnEntityPacket);
 						
 						CraftHologramLine hologramLine = getHologramLine(entity);
 						if (hologramLine == null) {
@@ -170,7 +174,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					} else if (packet.getType() == PacketType.Play.Server.ENTITY_METADATA) {
 
 						WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
-						Entity entity = entityMetadataPacket.getEntity(event);
+						Entity entity = getEntity(event, entityMetadataPacket);
 						
 						CraftHologramLine hologramLine = getHologramLine(entity);
 						if (hologramLine == null) {
@@ -206,6 +210,20 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			});
 		
 		return true;
+	}
+	
+	
+	private Entity getEntity(PacketEvent packetEvent, EntityRelatedPacketWrapper packetWrapper) {
+		if (!useGetEntityWorkaround) {
+			try {
+				return packetWrapper.getEntity(packetEvent);
+			} catch (RuntimeException e) {
+				useGetEntityWorkaround = true;
+			}
+		}
+		
+		// Use workaround, get entity from its ID through NMS
+		return HolographicDisplays.getNMSManager().getEntityFromID(packetEvent.getPlayer().getWorld(), packetWrapper.getEntityID());
 	}
 	
 	
@@ -337,7 +355,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 				}
 
 				itemDataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
-				itemDataPacket.setEntityId(itemLine.getNmsItem().getIdNMS());
+				itemDataPacket.setEntityID(itemLine.getNmsItem().getIdNMS());
 				itemDataPacket.sendPacket(player);
 			}
 		}
@@ -384,7 +402,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			dataWatcher.setObject(new WrappedDataWatcherObject(11, byteSerializer), (byte) (0x01 | 0x08 | 0x10)); // Armor stand data: small, no base plate, marker
 			
 			dataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
-			dataPacket.setEntityId(armorStand.getIdNMS());
+			dataPacket.setEntityID(armorStand.getIdNMS());
 			dataPacket.sendPacket(receiver);
 			
 		} else {

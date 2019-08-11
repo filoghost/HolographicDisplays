@@ -28,7 +28,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 
-public class WrapperPlayServerEntityMetadata extends AbstractPacket {
+public class WrapperPlayServerEntityMetadata extends AbstractPacket implements EntityRelatedPacketWrapper {
     public static final PacketType TYPE = PacketType.Play.Server.ENTITY_METADATA;
     
     public WrapperPlayServerEntityMetadata() {
@@ -44,7 +44,7 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket {
      * Retrieve unique entity ID to update.
      * @return The current Entity ID
     */
-    public int getEntityId() {
+    public int getEntityID() {
         return handle.getIntegers().read(0);
     }
     
@@ -52,7 +52,7 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket {
      * Set unique entity ID to update.
      * @param value - new value.
     */
-    public void setEntityId(int value) {
+    public void setEntityID(int value) {
         handle.getIntegers().write(0, value);
     }
     

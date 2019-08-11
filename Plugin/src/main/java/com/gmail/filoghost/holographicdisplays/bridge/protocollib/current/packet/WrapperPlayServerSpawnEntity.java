@@ -27,7 +27,7 @@ import com.comphenix.protocol.injector.PacketConstructor;
 import com.comphenix.protocol.reflect.IntEnum;
 import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 
-public class WrapperPlayServerSpawnEntity extends AbstractPacket {
+public class WrapperPlayServerSpawnEntity extends AbstractPacket implements EntityRelatedPacketWrapper {
     public static final PacketType TYPE = PacketType.Play.Server.SPAWN_ENTITY;
         
     private static PacketConstructor entityConstructor;
