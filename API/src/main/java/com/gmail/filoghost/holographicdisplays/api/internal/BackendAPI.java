@@ -15,7 +15,9 @@
 package com.gmail.filoghost.holographicdisplays.api.internal;
 
 import java.util.Collection;
+import java.util.regex.Pattern;
 
+import com.gmail.filoghost.holographicdisplays.api.placeholder.PatternPlaceholderReplacer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
@@ -45,9 +47,15 @@ public abstract class BackendAPI {
 
 	public abstract boolean registerPlaceholder(Plugin plugin, String textPlaceholder, double refreshRate, PlaceholderReplacer replacer);
 
+	public abstract boolean registerPlaceholder(Plugin plugin, Pattern patternPlaceholder, double refreshRate, PatternPlaceholderReplacer replacer);
+
 	public abstract Collection<String> getRegisteredPlaceholders(Plugin plugin);
 
+	public abstract Collection<Pattern> getRegisteredPatternPlaceholders(Plugin plugin);
+
 	public abstract boolean unregisterPlaceholder(Plugin plugin, String textPlaceholder);
+
+	public abstract boolean unregisterPlaceholder(Plugin plugin, Pattern patternPlaceholder);
 
 	public abstract void unregisterPlaceholders(Plugin plugin);
 

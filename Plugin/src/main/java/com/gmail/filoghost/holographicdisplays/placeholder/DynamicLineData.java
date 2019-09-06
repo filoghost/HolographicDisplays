@@ -29,8 +29,8 @@ public class DynamicLineData {
 	private final String originalName;
 	
 	private Set<Placeholder> placeholders;
+	private Set<PatternPlaceholder> patternPlaceholders;
 	private final Map<String, Placeholder> animations;
-	private final Map<String, PlaceholderReplacer> replacers;
 	
 	public DynamicLineData(NMSNameable entity, String originalName) {
 		Validator.notNull(entity, "entity");
@@ -38,8 +38,8 @@ public class DynamicLineData {
 		this.entity = entity;
 		this.originalName = originalName;
 		placeholders = new HashSet<>();
+		patternPlaceholders = new HashSet<>();
 		animations = new HashMap<>();
-		replacers = new HashMap<>();
 	}
 
 	public NMSNameable getEntity() {
@@ -54,12 +54,16 @@ public class DynamicLineData {
 		this.placeholders = placeholders;
 	}
 
+	public void setPatternPlaceholders(Set<PatternPlaceholder> patternPlaceholders) {
+		this.patternPlaceholders = patternPlaceholders;
+	}
+
 	public Set<Placeholder> getPlaceholders() {
 		return placeholders;
 	}
 
-	public Map<String, PlaceholderReplacer> getReplacers() {
-		return replacers;
+	public Set<PatternPlaceholder> getPatternPlaceholders() {
+		return patternPlaceholders;
 	}
 	
 	public Map<String, Placeholder> getAnimations() {

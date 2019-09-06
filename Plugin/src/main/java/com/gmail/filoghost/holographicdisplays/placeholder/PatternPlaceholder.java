@@ -14,29 +14,31 @@
  */
 package com.gmail.filoghost.holographicdisplays.placeholder;
 
+import com.gmail.filoghost.holographicdisplays.api.placeholder.PatternPlaceholderReplacer;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Placeholder {
-	
+public class PatternPlaceholder {
+
 	// The plugin that owns this placeholder.
 	private final Plugin owner;
-	
-	// The placeholder itself, something like {onlinePlayers}. Case sensitive!
-	private final String textPlaceholder;
-	
+
+	// The placeholder itself.
+	private final Pattern patternPlaceholder;
+
 	// How many tenths of second between each refresh.
 	private int tenthsToRefresh;
-	
+
 	// This is the current replacement for this placeholder.
 	private String currentReplacement;
-	
-	private PlaceholderReplacer replacer;
-	
-	public Placeholder(Plugin owner, String textPlaceholder, double refreshRate, PlaceholderReplacer replacer) {
+
+	private PatternPlaceholderReplacer replacer;
+
+	public PatternPlaceholder(Plugin owner, Pattern patternPlaceholder, double refreshRate, PatternPlaceholderReplacer replacer) {
 		this.owner = owner;
-		this.textPlaceholder = textPlaceholder;
+		this.patternPlaceholder = patternPlaceholder;
 		this.tenthsToRefresh = refreshRate <= 0.1 ? 1 : (int) (refreshRate * 10.0);
 		this.replacer = replacer;
 		this.currentReplacement = "";
@@ -54,28 +56,28 @@ public class Placeholder {
 		this.tenthsToRefresh = tenthsToRefresh;
 	}
 
-	public String getTextPlaceholder() {
-		return textPlaceholder;
+	public Pattern getPatternPlaceholder() {
+		return patternPlaceholder;
 	}
-	
+
 	public String getCurrentReplacement() {
 		return currentReplacement;
 	}
-	
+
 	public void setCurrentReplacement(String replacement) {
 		this.currentReplacement = replacement != null ? replacement : "null";
 	}
 	
-	public PlaceholderReplacer getReplacer() {
+	public PatternPlaceholderReplacer getReplacer() {
 		return replacer;
 	}
 	
-	public void setReplacer(PlaceholderReplacer replacer) {
+	public void setReplacer(PatternPlaceholderReplacer replacer) {
 		this.replacer = replacer;
 	}
 
-	public void update() {
-		setCurrentReplacement(replacer.update());
+	public void update(Matcher matcher) {
+		setCurrentReplacement(replacer.update(matcher));
 	}
 	
 	
@@ -85,8 +87,8 @@ public class Placeholder {
 			return false;
 		}
 		
-		if (obj instanceof Placeholder) {
-			return ((Placeholder) obj).textPlaceholder.equals(this.textPlaceholder);
+		if (obj instanceof PatternPlaceholder) {
+			return ((PatternPlaceholder) obj).patternPlaceholder.equals(this.patternPlaceholder);
 		}
 		
 		return false;
@@ -95,7 +97,7 @@ public class Placeholder {
 	
 	@Override
 	public int hashCode() {
-		return textPlaceholder.hashCode();
+		return patternPlaceholder.hashCode();
 	}
 	
 	
