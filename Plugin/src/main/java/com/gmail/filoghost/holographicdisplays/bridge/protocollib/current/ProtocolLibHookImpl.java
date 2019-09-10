@@ -379,10 +379,15 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	
 	private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {
-		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1)) {
+		if (NMSVersion.isBetween(NMSVersion.v1_11_R1, NMSVersion.v1_13_R2)) {
 			WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), WrapperPlayServerSpawnEntity.ObjectTypes.ARMOR_STAND, 1);
 			spawnPacket.sendPacket(receiver);
-			
+		} else {
+			WrapperPlayServerSpawnEntityLiving spawnPacket = new WrapperPlayServerSpawnEntityLiving(armorStand.getBukkitEntityNMS());
+			spawnPacket.sendPacket(receiver);
+		}
+		
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1)) {
 			WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
 			WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 			
@@ -405,9 +410,6 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			dataPacket.setEntityID(armorStand.getIdNMS());
 			dataPacket.sendPacket(receiver);
 			
-		} else {
-			WrapperPlayServerSpawnEntityLiving spawnPacket = new WrapperPlayServerSpawnEntityLiving(armorStand.getBukkitEntityNMS());
-			spawnPacket.sendPacket(receiver);
 		}
 	}
 	
