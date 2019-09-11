@@ -49,7 +49,8 @@ public class BungeeChannel implements PluginMessageListener {
         Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", this);
         
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
-        	// TODO implement when RedisBungee will be updated
+        	Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "legacy:redisbungee");
+        	Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "legacy:redisbungee", this);
         } else {
         	Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "RedisBungee");
         	Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "RedisBungee", this);
