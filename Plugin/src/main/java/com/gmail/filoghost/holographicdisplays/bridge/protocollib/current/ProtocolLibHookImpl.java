@@ -48,11 +48,12 @@ import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerEntityMetadata;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerMount;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerSpawnEntity;
-import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerSpawnEntityLiving;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerSpawnEntity.ObjectTypes;
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerSpawnEntityLiving;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
@@ -79,6 +80,11 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	private int itemstackMetadataWatcherIndex;
 	private int customNameWatcherIndex;
+	private int customNameVisibleWatcherIndex;
+	private int noGravityWatcherIndex;
+	private int armorStandStatusWatcherIndex;
+	private int entityStatusWatcherIndex;
+	private int airLevelWatcherIndex;
 	
 	private boolean useGetEntityWorkaround;
 	
@@ -86,17 +92,22 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {		
 		this.nmsManager = nmsManager;
 		
-		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
-			if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_10_R1)) {
-				itemstackMetadataWatcherIndex = 6;
-			} else {
-				itemstackMetadataWatcherIndex = 5;
-			}
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_14_R1)) {
+			itemstackMetadataWatcherIndex = 7;
+		} else if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_10_R1)) {
+			itemstackMetadataWatcherIndex = 6;
+		} else if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
+			itemstackMetadataWatcherIndex = 5;
 		} else {
 			itemstackMetadataWatcherIndex = 10;
 		}
 		
+		entityStatusWatcherIndex = 0;
+		airLevelWatcherIndex = 1;
 		customNameWatcherIndex = 2;
+		customNameVisibleWatcherIndex = 3;
+		noGravityWatcherIndex = 5;
+		armorStandStatusWatcherIndex = 11;
 		
 		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
 			itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
@@ -334,29 +345,12 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			CraftItemLine itemLine = (CraftItemLine) line;
 			
 			if (itemLine.isSpawned()) {
-				AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(itemLine.getNmsItem().getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
-				itemPacket.sendPacket(player);
-				
+				sendSpawnItemPacket(player, itemLine.getNmsItem());
 				sendSpawnArmorStandPacket(player, (NMSArmorStand) itemLine.getNmsVehicle());
 				sendVehicleAttachPacket(player, itemLine.getNmsVehicle().getIdNMS(), itemLine.getNmsItem().getIdNMS());
+				sendItemMetadataPacket(player, itemLine.getNmsItem());
 				
-				WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
-				WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 				
-				if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
-					Object itemStackObject = NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1) ? itemLine.getNmsItem().getRawItemStack() : com.google.common.base.Optional.of(itemLine.getNmsItem().getRawItemStack());
-					dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), itemStackObject);
-					dataWatcher.setObject(new WrappedDataWatcherObject(1, intSerializer), 300);
-					dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0);
-				} else {
-					dataWatcher.setObject(itemstackMetadataWatcherIndex, itemLine.getNmsItem().getRawItemStack());
-					dataWatcher.setObject(1, 300);
-					dataWatcher.setObject(0, (byte) 0);
-				}
-
-				itemDataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
-				itemDataPacket.setEntityID(itemLine.getNmsItem().getIdNMS());
-				itemDataPacket.sendPacket(player);
 			}
 		}
 		
@@ -380,13 +374,18 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {
 		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1)) {
-			WrapperPlayServerSpawnEntity spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), WrapperPlayServerSpawnEntity.ObjectTypes.ARMOR_STAND, 1);
+			AbstractPacket spawnPacket;
+			if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_14_R1)) {
+				spawnPacket = new WrapperPlayServerSpawnEntityLiving(armorStand.getBukkitEntityNMS());
+			} else {
+				spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), WrapperPlayServerSpawnEntity.ObjectTypes.ARMOR_STAND, 1);
+			}
 			spawnPacket.sendPacket(receiver);
 			
 			WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
 			WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 			
-			dataWatcher.setObject(new WrappedDataWatcherObject(0, byteSerializer), (byte) 0x20); // Entity status: invisible
+			dataWatcher.setObject(new WrappedDataWatcherObject(entityStatusWatcherIndex, byteSerializer), (byte) 0x20); // Entity status: invisible
 
 			String customName = armorStand.getCustomNameNMS();
 			if (customName != null && !customName.isEmpty()) {
@@ -395,11 +394,11 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 				} else {
 					dataWatcher.setObject(new WrappedDataWatcherObject(customNameWatcherIndex, stringSerializer), customName);
 				}
-				dataWatcher.setObject(new WrappedDataWatcherObject(3, booleanSerializer), true); // Custom name visible
+				dataWatcher.setObject(new WrappedDataWatcherObject(customNameVisibleWatcherIndex, booleanSerializer), true); // Custom name visible
 			}
 
-			dataWatcher.setObject(new WrappedDataWatcherObject(5, booleanSerializer), true); // No gravity
-			dataWatcher.setObject(new WrappedDataWatcherObject(11, byteSerializer), (byte) (0x01 | 0x08 | 0x10)); // Armor stand data: small, no base plate, marker
+			dataWatcher.setObject(new WrappedDataWatcherObject(noGravityWatcherIndex, booleanSerializer), true); // No gravity
+			dataWatcher.setObject(new WrappedDataWatcherObject(armorStandStatusWatcherIndex, byteSerializer), (byte) (0x01 | 0x08 | 0x10)); // Armor stand data: small, no base plate, marker
 			
 			dataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
 			dataPacket.setEntityID(armorStand.getIdNMS());
@@ -409,6 +408,33 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			WrapperPlayServerSpawnEntityLiving spawnPacket = new WrapperPlayServerSpawnEntityLiving(armorStand.getBukkitEntityNMS());
 			spawnPacket.sendPacket(receiver);
 		}
+	}
+	
+	
+	private void sendSpawnItemPacket(Player receiver, NMSItem item) {
+		AbstractPacket itemPacket = new WrapperPlayServerSpawnEntity(item.getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
+		itemPacket.sendPacket(receiver);
+	}
+	
+	
+	private void sendItemMetadataPacket(Player receiver, NMSItem item) {
+		WrapperPlayServerEntityMetadata itemDataPacket = new WrapperPlayServerEntityMetadata();
+		WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
+		
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
+			Object itemStackObject = NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1) ? item.getRawItemStack() : com.google.common.base.Optional.of(item.getRawItemStack());
+			dataWatcher.setObject(new WrappedDataWatcherObject(itemstackMetadataWatcherIndex, itemSerializer), itemStackObject);
+			dataWatcher.setObject(new WrappedDataWatcherObject(airLevelWatcherIndex, intSerializer), 300);
+			dataWatcher.setObject(new WrappedDataWatcherObject(entityStatusWatcherIndex, byteSerializer), (byte) 0);
+		} else {
+			dataWatcher.setObject(itemstackMetadataWatcherIndex, item.getRawItemStack());
+			dataWatcher.setObject(airLevelWatcherIndex, 300);
+			dataWatcher.setObject(entityStatusWatcherIndex, (byte) 0);
+		}
+
+		itemDataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
+		itemDataPacket.setEntityID(item.getIdNMS());
+		itemDataPacket.sendPacket(receiver);
 	}
 	
 	
