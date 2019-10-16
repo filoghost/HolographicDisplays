@@ -36,6 +36,7 @@ import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 public class BungeeChannel implements PluginMessageListener {
 
 	private static BungeeChannel instance;
+	private String redisBungeeChannel;
 
 	public static BungeeChannel getInstance() {
 		if (instance == null) {
@@ -46,21 +47,29 @@ public class BungeeChannel implements PluginMessageListener {
 
 	private BungeeChannel(Plugin plugin) {
 		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
-        Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", this);
+		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", this);
 
-        String targetChannel = "RedisBungee";
-        if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) targetChannel = "legacy:redisbungee";
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
+			redisBungeeChannel = "legacy:redisbungee";
+		} else {
+			redisBungeeChannel = "RedisBungee";
+		}
 
-        Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, targetChannel);
-        Bukkit.getMessenger().registerIncomingPluginChannel(plugin, targetChannel, this);
-
+		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, redisBungeeChannel);
+		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, redisBungeeChannel, this);
+	}
+	
+	private String getTargetChannel() {
+		if (Configuration.useRedisBungee) {
+			return redisBungeeChannel;
+		} else {
+			return "BungeeCord";
+		}
 	}
 
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-		String targetChannel = Configuration.useRedisBungee ? "RedisBungee" : "BungeeCord";
-        if (targetChannel.equalsIgnoreCase("RedisBungee") && NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) targetChannel = "legacy:redisbungee";
-		if (channel.equals(targetChannel)) {
+		if (channel.equals(getTargetChannel())) {
 			DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
 
 			try {
@@ -86,7 +95,6 @@ public class BungeeChannel implements PluginMessageListener {
 		}
 	}
 
-
 	public void askPlayerCount(String server) {
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream(b);
@@ -102,9 +110,7 @@ public class BungeeChannel implements PluginMessageListener {
 		// OR, if you don't need to send it to a specific player
 		Collection<? extends Player> players = Bukkit.getOnlinePlayers();
 		if (players.size() > 0) {
-            String targetChannel = Configuration.useRedisBungee ? "RedisBungee" : "BungeeCord";
-            if (targetChannel.equalsIgnoreCase("RedisBungee") && NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) targetChannel = "legacy:redisbungee";
-			players.iterator().next().sendPluginMessage(HolographicDisplays.getInstance(), targetChannel, b.toByteArray());
+			players.iterator().next().sendPluginMessage(HolographicDisplays.getInstance(), getTargetChannel(), b.toByteArray());
 		}
 	}
 }
