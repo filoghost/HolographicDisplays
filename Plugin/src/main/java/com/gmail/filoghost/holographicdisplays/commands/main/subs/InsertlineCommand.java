@@ -58,7 +58,7 @@ public class InsertlineCommand extends HologramSubCommand {
 		
 		CommandValidator.isTrue(insertAfter >= 0 && insertAfter <= oldLinesAmount, "The number must be between 0 and " + hologram.size() + "(amount of lines of the hologram).");
 
-		hologram.getLinesUnsafe().add(insertAfter, HologramDatabase.readLineFromString(Utils.join(args, " ", 2, args.length), hologram));
+		hologram.getLinesUnsafe().add(insertAfter, HologramDatabase.deserializeHologramLine(Utils.join(args, " ", 2, args.length), hologram));
 		hologram.refreshAll();
 			
 		HologramDatabase.saveHologram(hologram);

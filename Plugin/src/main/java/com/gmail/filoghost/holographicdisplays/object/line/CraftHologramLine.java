@@ -31,6 +31,9 @@ public abstract class CraftHologramLine implements HologramLine {
 	// This field is necessary for teleport.
 	private boolean isSpawned;
 	
+	// Useful for saving to disk.
+	private String serializedConfigValue;
+	
 	protected CraftHologramLine(double height, CraftHologram parent) {
 		Validator.notNull(parent, "parent hologram");
 		this.height = height;
@@ -66,6 +69,14 @@ public abstract class CraftHologramLine implements HologramLine {
 	
 	public final boolean isSpawned() {
 		return isSpawned;
+	}
+	
+	public String getSerializedConfigValue() {
+		return serializedConfigValue;
+	}
+
+	public void setSerializedConfigValue(String serializedConfigValue) {
+		this.serializedConfigValue = serializedConfigValue;
 	}
 
 	public Collection<RelativePlaceholder> getRelativePlaceholders() {

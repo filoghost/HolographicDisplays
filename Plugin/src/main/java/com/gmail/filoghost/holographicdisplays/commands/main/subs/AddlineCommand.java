@@ -66,7 +66,7 @@ public class AddlineCommand extends HologramSubCommand {
 			CommandValidator.notNull(mat, "Invalid icon material.");
 		}
 
-		hologram.getLinesUnsafe().add(HologramDatabase.readLineFromString(line, hologram));
+		hologram.getLinesUnsafe().add(HologramDatabase.deserializeHologramLine(line, hologram));
 		hologram.refreshAll();
 			
 		HologramDatabase.saveHologram(hologram);

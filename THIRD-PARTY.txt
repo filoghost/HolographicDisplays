@@ -3,3 +3,7 @@ Holographic Displays contains code from the following third party projects, list
 [bStats Metrics]
 URL: https://github.com/Bastian/bStats-Metrics
 License: GNU Lesser General Public License v3.0
+
+[EisenNBT]
+URL: https://github.com/Eisenwave/eisen-nbt
+License: MIT License

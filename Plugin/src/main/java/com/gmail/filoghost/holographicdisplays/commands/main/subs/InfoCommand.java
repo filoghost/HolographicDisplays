@@ -26,7 +26,6 @@ import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
-import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 
 public class InfoCommand extends HologramSubCommand {
 
@@ -55,7 +54,7 @@ public class InfoCommand extends HologramSubCommand {
 		int index = 0;
 		
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
-			sender.sendMessage(Colors.SECONDARY + Colors.BOLD + (++index) + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + (line instanceof CraftTextLine ? ((CraftTextLine) line).getText() : HologramDatabase.saveLineToString(line)));
+			sender.sendMessage(Colors.SECONDARY + Colors.BOLD + (++index) + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + HologramDatabase.serializeHologramLine(line));
 		}
 		EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
 	}

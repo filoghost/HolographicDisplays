@@ -72,7 +72,7 @@ public class SetlineCommand extends HologramSubCommand {
 		int index = lineNumber - 1;
 		
 		hologram.getLinesUnsafe().get(index).despawn();
-		hologram.getLinesUnsafe().set(index, HologramDatabase.readLineFromString(line, hologram));
+		hologram.getLinesUnsafe().set(index, HologramDatabase.deserializeHologramLine(line, hologram));
 		hologram.refreshAll();
 
 		HologramDatabase.saveHologram(hologram);

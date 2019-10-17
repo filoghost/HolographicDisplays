@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -29,6 +30,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.exception.HologramNotFoundException;
 import com.gmail.filoghost.holographicdisplays.exception.InvalidFormatException;
 import com.gmail.filoghost.holographicdisplays.exception.WorldNotFoundException;
@@ -39,9 +41,11 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
+import com.gmail.filoghost.holographicdisplays.util.nbt.parser.MojangsonParseException;
+import com.gmail.filoghost.holographicdisplays.util.nbt.parser.MojangsonParser;
 
 public class HologramDatabase {
-
+	
 	private static File file;
 	private static FileConfiguration config;
 	
@@ -57,7 +61,6 @@ public class HologramDatabase {
 	}
 	
 	public static NamedHologram loadHologram(String name) throws HologramNotFoundException, InvalidFormatException, WorldNotFoundException {
-		
 		ConfigurationSection configSection = config.getConfigurationSection(name);
 		
 		if (configSection == null) {
@@ -75,53 +78,90 @@ public class HologramDatabase {
 		
 		NamedHologram hologram = new NamedHologram(loc, name);
 		for (int i = 0; i < lines.size(); i++) {
-			hologram.getLinesUnsafe().add(readLineFromString(lines.get(i), hologram));
+			hologram.getLinesUnsafe().add(deserializeHologramLine(lines.get(i), hologram));
 		}
 		
 		return hologram;
 	}
 	
-	public static CraftHologramLine readLineFromString(String rawText, CraftHologram hologram) {
+	public static CraftHologramLine deserializeHologramLine(String rawText, CraftHologram hologram) {
+		CraftHologramLine hologramLine;
+		
 		if (rawText.toLowerCase().startsWith("icon:")) {
-			String iconMaterial = ItemUtils.stripSpacingChars(rawText.substring("icon:".length(), rawText.length()));
-			
-			short dataValue = 0;
-			
-			if (iconMaterial.contains(":")) {
-				try {
-					dataValue = (short) Integer.parseInt(iconMaterial.split(":")[1]);
-				} catch (NumberFormatException e) {	}
-				iconMaterial = iconMaterial.split(":")[0];
-			}
-			
-			Material mat = ItemUtils.matchMaterial(iconMaterial);
-			if (mat == null) {
-				mat = Material.BEDROCK;
-			}
-			
-			return new CraftItemLine(hologram, new ItemStack(mat, 1, dataValue));
+			String serializedIcon = rawText.substring("icon:".length(), rawText.length());
+			ItemStack icon = parseItemStack(serializedIcon);
+			hologramLine = new CraftItemLine(hologram, icon);
 			
 		} else {
-			
 			if (rawText.trim().equalsIgnoreCase("{empty}")) {
-				return new CraftTextLine(hologram, "");
+				hologramLine = new CraftTextLine(hologram, "");
 			} else {
-				return new CraftTextLine(hologram, StringConverter.toReadableFormat(rawText));
+				hologramLine = new CraftTextLine(hologram, StringConverter.toReadableFormat(rawText));
 			}
 		}
+		
+		hologramLine.setSerializedConfigValue(rawText);
+		return hologramLine;
 	}
 	
-	public static String saveLineToString(CraftHologramLine line) {
-		if (line instanceof CraftTextLine) {
-			return StringConverter.toSaveableFormat(((CraftTextLine) line).getText());
-			
-		} else if (line instanceof CraftItemLine) {
-			CraftItemLine itemLine = (CraftItemLine) line;
-			return "ICON: " + itemLine.getItemStack().getType().toString().replace("_", " ").toLowerCase() + (itemLine.getItemStack().getDurability() != 0 ? ":" + itemLine.getItemStack().getDurability() : "");
+	@SuppressWarnings("deprecation")
+	private static ItemStack parseItemStack(String serializedItem) {
+		serializedItem = serializedItem.trim();
+		
+		// Parse json
+		int nbtStart = serializedItem.indexOf('{');
+		int nbtEnd = serializedItem.lastIndexOf('}');
+		String nbtString = null;
+		
+		String basicItemData;
+		
+		if (nbtStart > 0 && nbtEnd > 0 && nbtEnd > nbtStart) {
+			nbtString = serializedItem.substring(nbtStart, nbtEnd + 1);
+			basicItemData = serializedItem.substring(0, nbtStart) + serializedItem.substring(nbtEnd + 1, serializedItem.length());
 		} else {
-			
-			return "Unknown";
+			basicItemData = serializedItem;
 		}
+		
+		basicItemData = ItemUtils.stripSpacingChars(basicItemData);
+
+		String materialName;
+		short dataValue = 0;
+		
+		if (basicItemData.contains(":")) {
+			try {
+				dataValue = (short) Integer.parseInt(basicItemData.split(":")[1]);
+			} catch (NumberFormatException e) {
+				HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "Could not set data value for the item \"" + basicItemData + "\": invalid number.");
+			}
+			materialName = basicItemData.split(":")[0];
+		} else {
+			materialName = basicItemData;
+		}
+		
+		Material material = ItemUtils.matchMaterial(materialName);
+		if (material == null) {
+			material = Material.BEDROCK;
+		}
+		
+		ItemStack itemStack = new ItemStack(material, 1, dataValue);
+		
+		if (nbtString != null) {
+			try {
+				// Check NBT syntax validity before applying it.
+				MojangsonParser.parse(nbtString);
+				Bukkit.getUnsafe().modifyItemStack(itemStack, nbtString);
+			} catch (MojangsonParseException e) {
+				HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "Invalid NBT data \"" + nbtString + "\" for the item \"" + basicItemData + "\": " + e.getMessage());
+			} catch (Throwable t) {
+				HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "Could not apply NBT data \"" + nbtString + "\" to the item \"" + basicItemData + "\".", t);
+			}
+		}
+		
+		return itemStack;
+	}
+	
+	public static String serializeHologramLine(CraftHologramLine line) {
+		return line.getSerializedConfigValue();
 	}
 	
 	public static void deleteHologram(String name) {
@@ -129,18 +169,15 @@ public class HologramDatabase {
 	}
 	
 	public static void saveHologram(NamedHologram hologram) {
+		ConfigurationSection hologramSection = getOrCreateSection(hologram.getName());		
+		hologramSection.set("location", LocationSerializer.locationToString(hologram.getLocation()));
 		
-		ConfigurationSection configSection = config.isConfigurationSection(hologram.getName()) ? config.getConfigurationSection(hologram.getName()) : config.createSection(hologram.getName());
-		
-		configSection.set("location", LocationSerializer.locationToString(hologram.getLocation()));
 		List<String> lines = new ArrayList<>();
-		
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
-			
-			lines.add(saveLineToString(line));
+			lines.add(serializeHologramLine(line));
 		}
 		
-		configSection.set("lines", lines);
+		hologramSection.set("lines", lines);
 	}
 	
 	public static Set<String> getHolograms() {
@@ -149,6 +186,14 @@ public class HologramDatabase {
 	
 	public static boolean isExistingHologram(String name) {
 		return config.isConfigurationSection(name);
+	}
+	
+	private static ConfigurationSection getOrCreateSection(String name) {
+		if (config.isConfigurationSection(name)) {
+			return config.getConfigurationSection(name);
+		} else {
+			return config.createSection(name);
+		}
 	}
 	
 	public static void saveToDisk() throws IOException {

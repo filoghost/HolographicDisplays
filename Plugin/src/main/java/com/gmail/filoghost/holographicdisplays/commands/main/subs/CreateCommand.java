@@ -76,7 +76,7 @@ public class CreateCommand extends HologramSubCommand {
 			String text = Utils.join(args, " ", 1, args.length);
 			CommandValidator.isTrue(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
 			
-			hologram.getLinesUnsafe().add(HologramDatabase.readLineFromString(text, hologram));
+			hologram.getLinesUnsafe().add(HologramDatabase.deserializeHologramLine(text, hologram));
 			player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + label + " edit " + hologram.getName() + ")");
 		} else {
 			hologram.appendTextLine("Default hologram. Change it with " + Colors.PRIMARY + "/" + label + " edit " + hologram.getName());
