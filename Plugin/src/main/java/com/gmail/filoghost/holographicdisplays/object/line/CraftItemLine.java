@@ -50,6 +50,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	@Override
 	public void setItemStack(ItemStack itemStack) {
 		Validator.notNull(itemStack, "itemStack");
+		Validator.isTrue(0 < itemStack.getAmount() && itemStack.getAmount() <= 64, "Item must have amount between 1 and 64");
 		this.itemStack = itemStack;
 		
 		if (nmsItem != null) {

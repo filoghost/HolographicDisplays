@@ -197,8 +197,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		NBTTagList tagList = new NBTTagList();
 		tagList.add(new NBTTagString(ItemUtils.ANTISTACK_LORE)); // Antistack lore
 		display.set("Lore", tagList);
-
-		newItem.setCount(1);
 		
 		setItemStack(newItem);
 	}

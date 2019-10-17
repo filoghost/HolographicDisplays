@@ -215,14 +215,13 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		NBTTagCompound display = newItem.getTag().getCompound("display");
 		
 		if (!newItem.getTag().hasKey("display")) {
-		newItem.getTag().set("display", display);
+			newItem.getTag().set("display", display);
 		}
 		
 		NBTTagList tagList = new NBTTagList();
 		tagList.add(new NBTTagString(ItemUtils.ANTISTACK_LORE)); // Antistack lore
-		
 		display.set("Lore", tagList);
-		newItem.count = 0;
+		
 		setItemStack(newItem);
 	}
 	
