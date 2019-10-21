@@ -22,11 +22,6 @@
 			<id>dmulloy2-repo</id>
 			<url>http://repo.dmulloy2.net/nexus/repository/public/</url>
 		</repository>
-
-		<repository>
-			<id>bstats-repo</id>
-			<url>http://repo.bstats.org/content/repositories/releases/</url>
-		</repository>
 		
 		<repository>
 			<id>codemc-repo</id>
@@ -142,7 +137,7 @@
 		<dependency>
 			<groupId>org.bstats</groupId>
 			<artifactId>bstats-bukkit-lite</artifactId>
-			<version>1.2</version>
+			<version>1.5</version>
 		</dependency>
 		
 		<dependency>
