@@ -8,5 +8,10 @@ softdepend: [ProtocolLib]
 commands:
    holograms:
       description: Main command for HolographicDisplays.
+      permission: holograms.help
       usage: /<command> (Startup error)
       aliases: [hd, holo, hologram, holograms]
+permissions:
+   holograms.help:
+      description: gives access to /hd
+      default: true
