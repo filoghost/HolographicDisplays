@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -22,10 +22,15 @@
 			<id>dmulloy2-repo</id>
 			<url>http://repo.dmulloy2.net/nexus/repository/public/</url>
 		</repository>
-		
+
 		<repository>
 			<id>codemc-repo</id>
 			<url>https://repo.codemc.org/repository/maven-public/</url>
+		</repository>
+
+		<repository>
+			<id>placeholderapi</id>
+			<url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
 		</repository>
 	</repositories>
 
@@ -41,7 +46,7 @@
 			<artifactId>holographicdisplays-utils</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-config</artifactId>
@@ -53,67 +58,67 @@
 			<artifactId>holographicdisplays-nms-interfaces</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_8_r1</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_8_r2</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_8_r3</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_9_r1</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_9_r2</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_10_r1</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_11_r1</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_12_r1</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_13_r1</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_13_r2</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_14_r1</artifactId>
@@ -145,11 +150,18 @@
 			<artifactId>bstats-bukkit-lite</artifactId>
 			<version>1.5</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>me.filoghost.updatechecker</groupId>
 			<artifactId>updatechecker</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>me.clip</groupId>
+			<artifactId>placeholderapi</artifactId>
+			<version>2.0.6</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
