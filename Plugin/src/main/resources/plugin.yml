@@ -3,7 +3,7 @@ main: com.gmail.filoghost.holographicdisplays.HolographicDisplays
 version: ${project.version}
 api-version: 1.13
 
-softdepend: [ProtocolLib]
+softdepend: [ProtocolLib, PlaceholderAPI]
 
 commands:
    holograms:

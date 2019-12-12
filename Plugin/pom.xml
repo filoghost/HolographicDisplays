@@ -27,6 +27,11 @@
 			<id>codemc-repo</id>
 			<url>https://repo.codemc.org/repository/maven-public/</url>
 		</repository>
+
+		<repository>
+			<id>placeholderapi</id>
+			<url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -150,6 +155,13 @@
 			<groupId>me.filoghost.updatechecker</groupId>
 			<artifactId>updatechecker</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>me.clip</groupId>
+			<artifactId>placeholderapi</artifactId>
+			<version>2.0.6</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
