@@ -8,7 +8,7 @@ public class PlaceholderAPIHook {
     private static boolean enabled;
 
     public PlaceholderAPIHook() {
-        enabled = Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
+        enabled = Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
     }
 
     public static String translate(Player player, String str) {
