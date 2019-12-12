@@ -45,6 +45,7 @@
 		<module>NMS/v1_13_R1</module>
 		<module>NMS/v1_13_R2</module>
 		<module>NMS/v1_14_R1</module>
+		<module>NMS/v1_15_R1</module>
 		<module>Plugin</module>
 		<module>Examples/DeathHolograms</module>
 		<module>Examples/PowerUps</module>

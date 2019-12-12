@@ -45,6 +45,6 @@
 		    <version>1.14-R0.1-SNAPSHOT</version>
 		    <scope>provided</scope>
 		</dependency>
-	</dependencies>
+    </dependencies>
 
 </project>
