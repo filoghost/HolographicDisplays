@@ -32,19 +32,19 @@
 			<artifactId>holographicdisplays-utils</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-config</artifactId>
 			<version>2.4.1-SNAPSHOT</version>
 		</dependency>
-		
+	
 		<dependency>
-		    <groupId>org.spigotmc</groupId>
-		    <artifactId>spigot</artifactId>
-		    <version>1.14-R0.1-SNAPSHOT</version>
-		    <scope>provided</scope>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot</artifactId>
+			<version>1.14-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
 </project>
