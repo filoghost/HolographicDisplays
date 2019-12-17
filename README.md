@@ -5,13 +5,13 @@ Bukkit Dev Page: http://dev.bukkit.org/bukkit-plugins/holographic-displays
 
 API tutorial: https://github.com/filoghost/HolographicDisplays/wiki
 
-Development Builds: https://ci.codemc.org/job/filoghost/job/HolographicDisplays
+Development Builds: https://ci.codemc.io/job/filoghost/job/HolographicDisplays
 
 ## Maven
 ```xml
 <repository>
     <id>codemc-repo</id>
-    <url>https://repo.codemc.org/repository/maven-public/</url>
+    <url>https://repo.codemc.io/repository/maven-public/</url>
 </repository>
 ```
 
