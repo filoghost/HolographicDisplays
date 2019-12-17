@@ -15,8 +15,8 @@
 
 	<repositories>
 		<repository>
-			<id>elmakers-repo</id>
-			<url>http://maven.elmakers.com/repository/</url>
+			<id>nms-repo</id>
+			<url>https://repo.codemc.io/repository/nms/</url>
 		</repository>
 	</repositories>
 
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot</artifactId>
-			<version>1.8.5-R0.1-SNAPSHOT</version>
+			<version>1.8.8-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
