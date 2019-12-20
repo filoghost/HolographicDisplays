@@ -54,16 +54,16 @@ public class PacketHelper {
 			WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
 			WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
 			
-			metadataHelper.setEntityStatus_v1_9(dataWatcher, (byte) 0x20); // Invisible
+			metadataHelper.setEntityStatus(dataWatcher, (byte) 0x20); // Invisible
 
 			String customName = armorStand.getCustomNameNMS();
 			if (customName != null && !customName.isEmpty()) {
-				metadataHelper.setCustomName_v1_9(dataWatcher, customName);
-				metadataHelper.setCustomNameVisible_v1_9(dataWatcher, true);
+				metadataHelper.setCustomName(dataWatcher, customName);
+				metadataHelper.setCustomNameVisible(dataWatcher, true);
 			}
 			
-			metadataHelper.setNoGravity_v1_9(dataWatcher, true);
-			metadataHelper.setArmorStandStatus_v1_9(dataWatcher, (byte) (0x01 | 0x08 | 0x10)); // Small, no base plate, marker
+			metadataHelper.setNoGravity(dataWatcher, true);
+			metadataHelper.setArmorStandStatus(dataWatcher, (byte) (0x01 | 0x08 | 0x10)); // Small, no base plate, marker
 			
 			dataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
 			dataPacket.setEntityID(armorStand.getIdNMS());
@@ -83,8 +83,20 @@ public class PacketHelper {
 	
 	
 	public void sendSpawnSlimePacket(Player receiver, NMSSlime slime) {
-		AbstractPacket packet = new WrapperPlayServerSpawnEntityLiving(slime.getBukkitEntityNMS());
-		packet.sendPacket(receiver);
+		AbstractPacket spawnPacket = new WrapperPlayServerSpawnEntityLiving(slime.getBukkitEntityNMS());
+		spawnPacket.sendPacket(receiver);
+		
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_15_R1)) {
+			WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
+			WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
+			
+			metadataHelper.setEntityStatus(dataWatcher, (byte) 0x20); // Invisible
+			metadataHelper.setSlimeSize(dataWatcher, 1); // Size 1 = small
+			
+			dataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
+			dataPacket.setEntityID(slime.getIdNMS());
+			dataPacket.sendPacket(receiver);
+		}
 	}
 	
 	

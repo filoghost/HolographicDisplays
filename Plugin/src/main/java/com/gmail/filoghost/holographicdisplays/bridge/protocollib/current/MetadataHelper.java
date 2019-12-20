@@ -42,6 +42,7 @@ public class MetadataHelper {
 	private int customNameVisibleIndex;
 	private int noGravityIndex;
 	private int armorStandStatusIndex;
+	private int slimeSizeIndex;
 	
 	
 	public MetadataHelper() {
@@ -55,12 +56,18 @@ public class MetadataHelper {
 			itemSlotIndex = 10;
 		}
 		
+		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_15_R1)) {
+			armorStandStatusIndex = 14;
+		} else {
+			armorStandStatusIndex = 11;
+		}
+		
 		entityStatusIndex = 0;
 		airLevelWatcherIndex = 1;
 		customNameIndex = 2;
 		customNameVisibleIndex = 3;
 		noGravityIndex = 5;
-		armorStandStatusIndex = 11;
+		slimeSizeIndex = 15;
 		
 		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
 			itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
@@ -129,12 +136,15 @@ public class MetadataHelper {
 	}
 	
 
-	public void setEntityStatus_v1_9(WrappedDataWatcher dataWatcher, byte statusBitmask) {
+	public void setEntityStatus(WrappedDataWatcher dataWatcher, byte statusBitmask) {
+		requireMinimumVersion(NMSVersion.v1_9_R1);
 		dataWatcher.setObject(new WrappedDataWatcherObject(entityStatusIndex, byteSerializer), statusBitmask);
 	}
 
 	
-	public void setCustomName_v1_9(WrappedDataWatcher dataWatcher, String customName) {
+	public void setCustomName(WrappedDataWatcher dataWatcher, String customName) {
+		requireMinimumVersion(NMSVersion.v1_9_R1);
+		
 		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
 			dataWatcher.setObject(new WrappedDataWatcherObject(customNameIndex, chatComponentSerializer), Optional.of(WrappedChatComponent.fromText(customName).getHandle()));
 		} else {
@@ -143,17 +153,20 @@ public class MetadataHelper {
 	}
 
 	
-	public void setCustomNameVisible_v1_9(WrappedDataWatcher dataWatcher, boolean customNameVisible) {
+	public void setCustomNameVisible(WrappedDataWatcher dataWatcher, boolean customNameVisible) {
+		requireMinimumVersion(NMSVersion.v1_9_R1);
 		dataWatcher.setObject(new WrappedDataWatcherObject(customNameVisibleIndex, booleanSerializer), customNameVisible);
 	}
 
 	
-	public void setNoGravity_v1_9(WrappedDataWatcher dataWatcher, boolean noGravity) {
+	public void setNoGravity(WrappedDataWatcher dataWatcher, boolean noGravity) {
+		requireMinimumVersion(NMSVersion.v1_9_R1);
 		dataWatcher.setObject(new WrappedDataWatcherObject(noGravityIndex, booleanSerializer), noGravity);
 	}
 
 	
-	public void setArmorStandStatus_v1_9(WrappedDataWatcher dataWatcher, byte statusBitmask) {
+	public void setArmorStandStatus(WrappedDataWatcher dataWatcher, byte statusBitmask) {
+		requireMinimumVersion(NMSVersion.v1_9_R1);
 		dataWatcher.setObject(new WrappedDataWatcherObject(armorStandStatusIndex, byteSerializer), statusBitmask);
 	}
 
@@ -171,6 +184,19 @@ public class MetadataHelper {
 			dataWatcher.setObject(itemSlotIndex, nmsItemStack);
 			dataWatcher.setObject(airLevelWatcherIndex, 300);
 			dataWatcher.setObject(entityStatusIndex, (byte) 0);
+		}
+	}
+	
+	
+	public void setSlimeSize(WrappedDataWatcher dataWatcher, int size) {
+		requireMinimumVersion(NMSVersion.v1_15_R1);
+		dataWatcher.setObject(new WrappedDataWatcherObject(slimeSizeIndex, intSerializer), size);
+	}
+	
+	
+	private static void requireMinimumVersion(NMSVersion minimumVersion) {
+		if (!NMSVersion.isGreaterEqualThan(minimumVersion)) {
+			throw new UnsupportedOperationException("Method only available from NMS version " + minimumVersion);
 		}
 	}
 	

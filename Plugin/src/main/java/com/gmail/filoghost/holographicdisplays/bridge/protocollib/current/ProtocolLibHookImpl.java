@@ -47,6 +47,7 @@ import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTouchableLine;
 import com.gmail.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
+import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 
 /**
  * This is for the ProtocolLib versions containing the WrappedDataWatcher.WrappedDataWatcherObject class.
@@ -100,6 +101,11 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						
 						if (!hologramLine.getParent().getVisibilityManager().isVisibleTo(player)) {
 							event.setCancelled(true);
+							return;
+						}
+						
+						if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_15_R1)) {
+							// There's no metadata field in 1.15+ on the spawn entity packet
 							return;
 						}
 						
