@@ -27,6 +27,7 @@ import com.gmail.filoghost.holograms.api.replacements.OldTouchHandlerWrapper;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.line.TouchableLine;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
+import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
@@ -131,7 +132,8 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 		Validator.isTrue(!deleted, "hologram already deleted");
 		
 		CraftTextLine line = new CraftTextLine(this, text);
-		lines.add(line);
+		//lines.add(line);
+		this.getLinesUnsafe().add(HologramDatabase.deserializeHologramLine(text, this));
 		refreshSingleLines();
 		return line;
 	}
