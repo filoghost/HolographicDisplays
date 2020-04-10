@@ -31,6 +31,7 @@ import com.gmail.filoghost.holographicdisplays.commands.main.subs.AddlineCommand
 import com.gmail.filoghost.holographicdisplays.commands.main.subs.AlignCommand;
 import com.gmail.filoghost.holographicdisplays.commands.main.subs.CopyCommand;
 import com.gmail.filoghost.holographicdisplays.commands.main.subs.CreateCommand;
+import com.gmail.filoghost.holographicdisplays.commands.main.subs.DebugCommand;
 import com.gmail.filoghost.holographicdisplays.commands.main.subs.DeleteCommand;
 import com.gmail.filoghost.holographicdisplays.commands.main.subs.EditCommand;
 import com.gmail.filoghost.holographicdisplays.commands.main.subs.HelpCommand;
@@ -75,6 +76,7 @@ public class HologramsCommandHandler implements CommandExecutor {
 		registerSubCommand(new ReadimageCommand());
 		registerSubCommand(new InfoCommand());
 		
+		registerSubCommand(new DebugCommand());
 		registerSubCommand(new HelpCommand());
 	}
 	
