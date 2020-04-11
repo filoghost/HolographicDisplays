@@ -177,6 +177,10 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	
 	private Entity getEntity(PacketEvent packetEvent, EntityRelatedPacketWrapper packetWrapper) {
+		if (packetWrapper.getEntityID() < 0) {
+			return null;
+		}
+		
 		if (!useGetEntityWorkaround) {
 			try {
 				return packetWrapper.getEntity(packetEvent);
