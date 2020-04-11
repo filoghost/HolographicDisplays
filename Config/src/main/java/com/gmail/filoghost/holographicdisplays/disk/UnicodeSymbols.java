@@ -92,14 +92,6 @@ public class UnicodeSymbols {
 	}
 	
 	
-	protected static String symbolsToPlaceholders(String input) {
-		for (Entry<String, String> entry : placeholders.entrySet()) {
-			input = input.replace(entry.getValue(), entry.getKey());
-		}
-		return input;
-	}
-	
-	
 	private static String unquote(String input) {
 		if (input.length() < 2) {
 			// Cannot be quoted.

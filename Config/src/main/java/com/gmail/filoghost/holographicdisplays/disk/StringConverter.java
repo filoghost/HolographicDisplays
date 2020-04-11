@@ -28,15 +28,4 @@ public class StringConverter {
 		return input;
 	}
 	
-	
-	public static String toSaveableFormat(String input) {
-		if (input == null) {
-			return null;
-		}
-		
-		input = UnicodeSymbols.symbolsToPlaceholders(input);
-		input = input.replace("§", "&");
-		return input;
-	}
-	
 }
