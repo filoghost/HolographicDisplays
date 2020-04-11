@@ -40,6 +40,7 @@ import com.gmail.filoghost.holographicdisplays.exception.TooWideException;
 import com.gmail.filoghost.holographicdisplays.exception.UnreadableImageException;
 import com.gmail.filoghost.holographicdisplays.image.ImageMessage;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
+import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.util.FileUtils;
 
 public class ReadimageCommand extends HologramSubCommand {
@@ -113,7 +114,9 @@ public class ReadimageCommand extends HologramSubCommand {
 			ImageMessage imageMessage = new ImageMessage(image, width);
 			String[] newLines = imageMessage.getLines();
 			for (int i = 0; i < newLines.length; i++) {
-				hologram.appendTextLine(newLines[i]);
+				CraftTextLine line = new CraftTextLine(hologram, newLines[i]);
+				line.setSerializedConfigValue(newLines[i]);
+				hologram.getLinesUnsafe().add(line);
 			}
 			
 			hologram.refreshAll();

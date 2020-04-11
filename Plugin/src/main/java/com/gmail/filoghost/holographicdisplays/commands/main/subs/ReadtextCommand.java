@@ -30,7 +30,6 @@ import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
-import com.gmail.filoghost.holographicdisplays.disk.StringConverter;
 import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
@@ -64,7 +63,6 @@ public class ReadtextCommand extends HologramSubCommand {
 			CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetFile), "Cannot read default configuration files.");
 			
 			List<String> lines = FileUtils.readLines(targetFile);
-			hologram.clearLines();
 			
 			int linesAmount = lines.size();
 			if (linesAmount > 40) {
@@ -72,10 +70,10 @@ public class ReadtextCommand extends HologramSubCommand {
 				linesAmount = 40;
 			}
 			
+			hologram.clearLines();			
 			for (int i = 0; i < linesAmount; i++) {
-				hologram.appendTextLine(StringConverter.toReadableFormat(lines.get(i)));
+				hologram.getLinesUnsafe().add(HologramDatabase.deserializeHologramLine(lines.get(i), hologram));
 			}
-			
 			hologram.refreshAll();
 
 			HologramDatabase.saveHologram(hologram);
