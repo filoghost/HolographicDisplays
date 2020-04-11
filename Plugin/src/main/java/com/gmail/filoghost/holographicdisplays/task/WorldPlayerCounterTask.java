@@ -43,8 +43,22 @@ public class WorldPlayerCounterTask implements Runnable {
 		}
 	}
 	
-	public static String getCount(String world) {
-		Integer count = worlds.get(world);
-		return count != null ? count.toString() : "[World \"" + world + "\" not found]";
+	public static String getCount(String[] worldsNames) {
+		int total = 0;
+		for (String worldName : worldsNames) {
+			Integer count = worlds.get(worldName);
+			if (count == null) {
+				return "[World \"" + worldName + "\" not found]";
+			}
+			
+			total += count;
+		}
+		
+		return String.valueOf(total);
+	}
+	
+	public static String getCount(String worldName) {
+		Integer count = worlds.get(worldName);
+		return count != null ? count.toString() : "[World \"" + worldName + "\" not found]";
 	}
 }

@@ -156,10 +156,27 @@ public class PlaceholdersManager {
 				worldsOnlinePlayersReplacers = new HashMap<>();
 			}
 							
-			final String worldName = extractArgumentFromPlaceholder(matcher);
-			worldsOnlinePlayersReplacers.put(matcher.group(), () -> {
-				return WorldPlayerCounterTask.getCount(worldName);
-			});
+			final String worldsNames = extractArgumentFromPlaceholder(matcher);
+			
+			if (worldsNames.contains(",")) {
+				
+				String[] split = worldsNames.split(",");
+				for (int i = 0; i < split.length; i++) {
+					split[i] = split[i].trim();
+				}
+				
+				final String[] worldsToTrack = split;
+			
+				// Add it to tracked worlds.
+				worldsOnlinePlayersReplacers.put(matcher.group(), () -> {
+					return WorldPlayerCounterTask.getCount(worldsToTrack);
+				});
+			} else {
+				// Normal, single tracked world.
+				worldsOnlinePlayersReplacers.put(matcher.group(), () -> {
+					return WorldPlayerCounterTask.getCount(worldsNames);
+				});
+			}
 		}
 		
 		// BungeeCord online pattern.
