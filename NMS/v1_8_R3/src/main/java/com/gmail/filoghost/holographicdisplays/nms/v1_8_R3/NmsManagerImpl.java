@@ -139,5 +139,17 @@ public class NmsManagerImpl implements NMSManager {
 
 		return null;
 	}
+	
+	@Override
+	public org.bukkit.entity.Entity getEntityFromID(org.bukkit.World bukkitWorld, int entityID) {
+		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
+		Entity nmsEntity = nmsWorld.a(entityID);
+		
+		if (nmsEntity == null) {
+			return null;
+		}
+		
+		return nmsEntity.getBukkitEntity();
+	}
 
 }
