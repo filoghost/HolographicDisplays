@@ -96,14 +96,20 @@ public class HolographicDisplays extends JavaPlugin {
 			});
 		}
 		
+		// The bungee chat API is required.
+		try {
+			Class.forName("net.md_5.bungee.api.chat.ComponentBuilder");
+		} catch (ClassNotFoundException e) {
+			criticalShutdown(
+				"Holographic Displays requires the new chat API.",
+				"You are probably running CraftBukkit instead of Spigot.");
+			return;
+		}
+		
 		if (!NMSVersion.isValid()) {
-			printWarnAndDisable(
-				"******************************************************",
-				"     This version of HolographicDisplays only",
-				"     works on server versions from 1.8 to 1.15.",
-				"     The plugin will be disabled.",
-				"******************************************************"
-			);
+			criticalShutdown(
+				"Holographic Displays does not support this server version.",
+				"Supported Spigot versions: from 1.8 to 1.15.");
 			return;
 		}
 		
@@ -111,12 +117,8 @@ public class HolographicDisplays extends JavaPlugin {
 			nmsManager = (NMSManager) Class.forName("com.gmail.filoghost.holographicdisplays.nms." + NMSVersion.getCurrent() + ".NmsManagerImpl").getConstructor().newInstance();
 		} catch (Throwable t) {
 			t.printStackTrace();
-			printWarnAndDisable(
-				"******************************************************",
-				"     HolographicDisplays was unable to instantiate",
-				"     the NMS manager. The plugin will be disabled.",
-				"******************************************************"
-			);
+			criticalShutdown(
+				"Holographic Displays was unable to initialize the NMS manager.");
 			return;
 		}
 
@@ -124,13 +126,8 @@ public class HolographicDisplays extends JavaPlugin {
 			nmsManager.setup();
 		} catch (Exception e) {
 			e.printStackTrace();
-			printWarnAndDisable(
-				"******************************************************",
-				"     HolographicDisplays was unable to register",
-				"     custom entities, the plugin will be disabled.",
-				"     Are you using the correct Bukkit/Spigot version?",
-				"******************************************************"
-			);
+			criticalShutdown(
+				"Holographic Displays was unable to register custom entities.");
 			return;
 		}
 		
@@ -154,14 +151,9 @@ public class HolographicDisplays extends JavaPlugin {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorldPlayerCounterTask(), 0L, 3 * 20);
 		
 		if (getCommand("holograms") == null) {
-			printWarnAndDisable(
-				"******************************************************",
-				"     HolographicDisplays was unable to register",
-				"     the command \"holograms\". Do not modify",
-				"     plugin.yml removing commands, if this is",
-				"     the case.",
-				"******************************************************"
-			);
+			criticalShutdown(
+				"Holographic Displays was unable to register the command \"holograms\".",
+				"This can be caused by edits to plugin.yml or other plugins.");
 			return;
 		}
 		
@@ -201,14 +193,20 @@ public class HolographicDisplays extends JavaPlugin {
 		return commandHandler;
 	}
 	
-	private static void printWarnAndDisable(String... messages) {
-		StringBuffer buffer = new StringBuffer("\n ");
-		for (String message : messages) {
-			buffer.append('\n');
-			buffer.append(message);
+	private static void criticalShutdown(String... errorMessage) {
+		String separator = "****************************************************************************";
+		StringBuffer output = new StringBuffer("\n ");
+		output.append("\n" + separator);
+		for (String line : errorMessage) {
+			output.append("\n    " + line);
 		}
-		buffer.append('\n');
-		System.out.println(buffer.toString());
+		output.append("\n ");
+		output.append("\n    This plugin has been disabled.");
+		output.append("\n" + separator);
+		output.append("\n ");
+		
+		System.out.println(output);
+		
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException ex) { }
