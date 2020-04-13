@@ -34,7 +34,7 @@ public class VersionUtils {
 	
 	/**
 	 * This method uses a regex to get the NMS package part that changes with every update.
-	 * Example: v1_8_R1
+	 * Example: v1_13_R2
 	 * @return the NMS package part or null if not found.
 	 */
 	public static String extractNMSVersion() {

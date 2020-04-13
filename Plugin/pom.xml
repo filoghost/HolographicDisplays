@@ -56,12 +56,6 @@
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-v1_8_r1</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_8_r2</artifactId>
 			<version>2.4.2-SNAPSHOT</version>
 		</dependency>

@@ -19,7 +19,6 @@ package com.gmail.filoghost.holographicdisplays.util;
  */
 public enum NMSVersion {
 	
-	v1_8_R1,
 	v1_8_R2,
 	v1_8_R3,
 	v1_9_R1,
