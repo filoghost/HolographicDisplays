@@ -21,9 +21,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -59,20 +61,22 @@ public class DebugCommand extends HologramSubCommand {
 		for (World world : Bukkit.getWorlds()) {
 			Map<Hologram, HologramDebugInfo> hologramsDebugInfo = new HashMap<>();
 			
-			for (Entity entity : world.getEntities()) {
-				NMSEntityBase nmsEntity = HolographicDisplays.getNMSManager().getNMSEntityBase(entity);
-				
-				if (nmsEntity == null) {
-					continue;
-				}
-				
-				Hologram ownerHologram = nmsEntity.getHologramLine().getParent();
-				HologramDebugInfo hologramDebugInfo = hologramsDebugInfo.computeIfAbsent(ownerHologram, mapKey -> new HologramDebugInfo());
-				
-				if (nmsEntity.isDeadNMS()) {
-					hologramDebugInfo.deadEntities++;
-				} else {
-					hologramDebugInfo.aliveEntities++;
+			for (Chunk chunk : world.getLoadedChunks()) {
+				for (Entity entity : chunk.getEntities()) {
+					NMSEntityBase nmsEntity = HolographicDisplays.getNMSManager().getNMSEntityBase(entity);
+					
+					if (nmsEntity == null) {
+						continue;
+					}
+					
+					Hologram ownerHologram = nmsEntity.getHologramLine().getParent();
+					HologramDebugInfo hologramDebugInfo = hologramsDebugInfo.computeIfAbsent(ownerHologram, mapKey -> new HologramDebugInfo());
+					
+					if (nmsEntity.isDeadNMS()) {
+						hologramDebugInfo.deadEntities++;
+					} else {
+						hologramDebugInfo.aliveEntities++;
+					}
 				}
 			}
 			
