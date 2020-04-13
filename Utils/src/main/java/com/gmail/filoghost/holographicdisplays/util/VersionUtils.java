@@ -25,7 +25,7 @@ public class VersionUtils {
 	
 	
 	/**
-	 * Paper contains some changes that require
+	 * Paper contains some code changes compared to Spigot.
 	 */
 	public static boolean isPaperServer() {
 		return IS_PAPER_SERVER;
