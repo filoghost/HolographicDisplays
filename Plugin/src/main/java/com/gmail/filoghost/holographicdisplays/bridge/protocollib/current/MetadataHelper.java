@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.comphenix.protocol.utility.MinecraftReflection;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Serializer;
@@ -82,6 +81,12 @@ public class MetadataHelper {
 		}
 	}
 	
+	
+	public void setEntityStatus(WrappedDataWatcher dataWatcher, byte statusBitmask) {
+		requireMinimumVersion(NMSVersion.v1_9_R1);
+		dataWatcher.setObject(new WrappedDataWatcherObject(entityStatusIndex, byteSerializer), statusBitmask);
+	}
+	
 
 	public WrappedWatchableObject getCustomNameWacthableObject(WrappedDataWatcher metadata) {
 		return metadata.getWatchableObject(customNameIndex);
@@ -101,54 +106,45 @@ public class MetadataHelper {
 	}
 	
 	
-	public String getSerializedCustomName(WrappedWatchableObject customNameWatchableObject) {
-		Object customNameWatchableObjectValue = customNameWatchableObject.getValue();
+	public Object getCustomNameNMSObject(WrappedWatchableObject customNameWatchableObject) {
+		Object customNameNMSObject = customNameWatchableObject.getRawValue();
+		if (customNameNMSObject == null) {
+			return null;
+		}
 		
 		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
-			if (!(customNameWatchableObjectValue instanceof Optional)) {
-				return null;
+			if (!(customNameNMSObject instanceof Optional)) {
+				throw new IllegalArgumentException("Expected custom name of type " + Optional.class);
 			}
 			
-			Optional<?> customNameOptional = (Optional<?>) customNameWatchableObjectValue;
-			if (!customNameOptional.isPresent()) {
-				return null;
+			return ((Optional<?>) customNameNMSObject).orElse(null);
+			
+		} else {			
+			if (!(customNameNMSObject instanceof String)) {
+				throw new IllegalArgumentException("Expected custom name of type " + String.class);
 			}
 			
-			WrappedChatComponent componentWrapper = WrappedChatComponent.fromHandle(customNameOptional.get());
-			return componentWrapper.getJson();
-			
-		} else {
-			if (!(customNameWatchableObjectValue instanceof String)) {
-				return null;
-			}
-			
-			return (String) customNameWatchableObjectValue;
+			return (String) customNameNMSObject;
 		}
 	}
 	
 	
-	public void setSerializedCustomName(WrappedWatchableObject customNameWatchableObject, String serializedCustomName) {
+	public void setCustomNameNMSObject(WrappedWatchableObject customNameWatchableObject, Object customNameNMSObject) {
 		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
-			customNameWatchableObject.setValue(Optional.of(WrappedChatComponent.fromJson(serializedCustomName).getHandle()));
+			customNameWatchableObject.setValue(Optional.ofNullable(customNameNMSObject));
 		} else {
-			customNameWatchableObject.setValue(serializedCustomName);
+			customNameWatchableObject.setValue(customNameNMSObject);
 		}
 	}
-	
-
-	public void setEntityStatus(WrappedDataWatcher dataWatcher, byte statusBitmask) {
-		requireMinimumVersion(NMSVersion.v1_9_R1);
-		dataWatcher.setObject(new WrappedDataWatcherObject(entityStatusIndex, byteSerializer), statusBitmask);
-	}
 
 	
-	public void setCustomName(WrappedDataWatcher dataWatcher, String customName) {
+	public void setCustomNameNMSObject(WrappedDataWatcher dataWatcher, Object customNameNMSObject) {
 		requireMinimumVersion(NMSVersion.v1_9_R1);
 		
 		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
-			dataWatcher.setObject(new WrappedDataWatcherObject(customNameIndex, chatComponentSerializer), Optional.of(WrappedChatComponent.fromText(customName).getHandle()));
+			dataWatcher.setObject(new WrappedDataWatcherObject(customNameIndex, chatComponentSerializer), Optional.ofNullable(customNameNMSObject));
 		} else {
-			dataWatcher.setObject(new WrappedDataWatcherObject(customNameIndex, stringSerializer), customName);
+			dataWatcher.setObject(new WrappedDataWatcherObject(customNameIndex, stringSerializer), customNameNMSObject);
 		}
 	}
 

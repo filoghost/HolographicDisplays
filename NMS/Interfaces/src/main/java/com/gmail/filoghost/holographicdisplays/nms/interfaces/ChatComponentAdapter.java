@@ -12,17 +12,24 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.gmail.filoghost.holographicdisplays.nms.interfaces.entity;
+package com.gmail.filoghost.holographicdisplays.nms.interfaces;
 
-public interface NMSNameable extends NMSEntityBase {
-	
-	// Sets a custom name as a String.
-	public void setCustomNameNMS(String name);
-	
-	// Returns the custom name as a String.
-	public String getCustomNameStringNMS();
+import java.util.List;
 
-	// Returns the custom name as version-dependent NMS object (String for MC 1.12 and below, ChatComponent for MC 1.13+ a ChatComponent).
-	public Object getCustomNameObjectNMS();
+public interface ChatComponentAdapter<T> {
+	
+	T cast(Object chatComponentObject);
+	
+	String getText(T chatComponent);
+	
+	List<T> getSiblings(T chatComponent);
+	
+	void addSibling(T chatComponent, T newSibling);
+	
+	default T cloneComponent(T chatComponent) {
+		return cloneComponent(chatComponent, getText(chatComponent));
+	}
+	
+	T cloneComponent(T chatComponent, String newText);
 	
 }

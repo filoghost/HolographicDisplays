@@ -40,4 +40,6 @@ public interface NMSManager {
 
 	public org.bukkit.entity.Entity getEntityFromID(org.bukkit.World bukkitWorld, int entityID);
 
+	public Object replaceCustomNameText(Object customNameObject, String target, String replacement);
+
 }

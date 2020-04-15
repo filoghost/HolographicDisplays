@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.CustomNameHelper;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
@@ -154,6 +155,11 @@ public class NmsManagerImpl implements NMSManager {
 		}
 		
 		return nmsEntity.getBukkitEntity();
+	}
+	
+	@Override
+	public Object replaceCustomNameText(Object customNameObject, String target, String replacement) {
+		return CustomNameHelper.replaceCustomNameString(customNameObject, target, replacement);
 	}
 	
 }

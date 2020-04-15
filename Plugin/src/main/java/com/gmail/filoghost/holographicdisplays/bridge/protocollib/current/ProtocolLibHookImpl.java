@@ -196,19 +196,25 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	
 	private boolean replaceRelativePlaceholders(WrappedWatchableObject customNameWatchableObject, Player player, Collection<RelativePlaceholder> relativePlaceholders) {
 		if (customNameWatchableObject == null) {
-			return true;
-		}
-		
-		String customName = metadataHelper.getSerializedCustomName(customNameWatchableObject);
-		if (customName == null) {
 			return false;
 		}
 		
-		for (RelativePlaceholder relativePlaceholder : relativePlaceholders) {
-			customName = customName.replace(relativePlaceholder.getTextPlaceholder(), relativePlaceholder.getReplacement(player));
+		final Object originalCustomNameNMSObject = metadataHelper.getCustomNameNMSObject(customNameWatchableObject);
+		if (originalCustomNameNMSObject == null) {
+			return false;
 		}
 		
-		metadataHelper.setSerializedCustomName(customNameWatchableObject, customName);
+		Object replacedCustomNameNMSObject = originalCustomNameNMSObject;
+		for (RelativePlaceholder relativePlaceholder : relativePlaceholders) {
+			replacedCustomNameNMSObject = nmsManager.replaceCustomNameText(replacedCustomNameNMSObject, relativePlaceholder.getTextPlaceholder(), relativePlaceholder.getReplacement(player));
+		}
+		
+		if (replacedCustomNameNMSObject == originalCustomNameNMSObject) {
+			// It means nothing has been replaced, since original custom name has been returned.
+			return false;
+		}
+		
+		metadataHelper.setCustomNameNMSObject(customNameWatchableObject, replacedCustomNameNMSObject);
 		return true;
 	}
 	

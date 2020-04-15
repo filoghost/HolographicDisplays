@@ -345,7 +345,7 @@ public class PlaceholdersManager {
 	
 	
 	private static void updatePlaceholders(DynamicLineData lineData) {
-		String oldCustomName = lineData.getEntity().getCustomNameNMS();
+		String oldCustomName = lineData.getEntity().getCustomNameStringNMS();
 		String newCustomName = lineData.getOriginalName();
 		
 		if (!lineData.getPlaceholders().isEmpty()) {

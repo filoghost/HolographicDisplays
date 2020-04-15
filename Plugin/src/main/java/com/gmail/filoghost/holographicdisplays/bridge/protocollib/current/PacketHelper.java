@@ -56,9 +56,9 @@ public class PacketHelper {
 			
 			metadataHelper.setEntityStatus(dataWatcher, (byte) 0x20); // Invisible
 
-			String customName = armorStand.getCustomNameNMS();
+			String customName = armorStand.getCustomNameStringNMS();
 			if (customName != null && !customName.isEmpty()) {
-				metadataHelper.setCustomName(dataWatcher, customName);
+				metadataHelper.setCustomNameNMSObject(dataWatcher, armorStand.getCustomNameObjectNMS());
 				metadataHelper.setCustomNameVisible(dataWatcher, true);
 			}
 			

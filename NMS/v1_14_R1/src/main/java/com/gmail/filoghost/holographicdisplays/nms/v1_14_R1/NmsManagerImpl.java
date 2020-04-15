@@ -14,6 +14,8 @@
  */
 package com.gmail.filoghost.holographicdisplays.nms.v1_14_R1;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
@@ -21,6 +23,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.ChatComponentAdapter;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.CustomNameHelper;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
@@ -31,9 +35,12 @@ import com.gmail.filoghost.holographicdisplays.util.Validator;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectMethod;
 
+import net.minecraft.server.v1_14_R1.ChatBaseComponent;
+import net.minecraft.server.v1_14_R1.ChatComponentText;
 import net.minecraft.server.v1_14_R1.Entity;
 import net.minecraft.server.v1_14_R1.EntityTypes;
 import net.minecraft.server.v1_14_R1.EnumCreatureType;
+import net.minecraft.server.v1_14_R1.IChatBaseComponent;
 import net.minecraft.server.v1_14_R1.IRegistry;
 import net.minecraft.server.v1_14_R1.MathHelper;
 import net.minecraft.server.v1_14_R1.RegistryID;
@@ -146,6 +153,62 @@ public class NmsManagerImpl implements NMSManager {
 		}
 		
 		return nmsEntity.getBukkitEntity();
+	}
+	
+	@Override
+	public Object replaceCustomNameText(Object customNameObject, String target, String replacement) {
+		return CustomNameHelper.replaceCustomNameChatComponent(NMSChatComponentAdapter.INSTANCE, customNameObject, target, replacement);
+	}
+	
+	private static enum NMSChatComponentAdapter implements ChatComponentAdapter<IChatBaseComponent> {
+
+		INSTANCE {
+			
+			private boolean useNewGetSiblingsMethod = true;
+			private final ReflectField<List<IChatBaseComponent>> OLD_SIBLINGS_FIELD = new ReflectField<>(ChatBaseComponent.class, "a");
+			
+			public ChatComponentText cast(Object chatComponentObject) {
+				return (ChatComponentText) chatComponentObject;
+			}
+			
+			@Override
+			public String getText(IChatBaseComponent chatComponent) {
+				return chatComponent.getText();
+			}
+	
+			@Override
+			public List<IChatBaseComponent> getSiblings(IChatBaseComponent chatComponent) {
+				if (useNewGetSiblingsMethod) {
+					try {
+						return chatComponent.getSiblings();
+					} catch (NoSuchMethodError e) {
+						// The method was named differently in older 1.14 versions, use workaround.
+						useNewGetSiblingsMethod = false;
+					}
+				}
+				
+				// Access siblings field directly in older 1.14 versions.
+				try {
+					return OLD_SIBLINGS_FIELD.get(chatComponent);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+	
+			@Override
+			public void addSibling(IChatBaseComponent chatComponent, IChatBaseComponent newSibling) {
+				chatComponent.addSibling(newSibling);
+			}
+	
+			@Override
+			public ChatComponentText cloneComponent(IChatBaseComponent chatComponent, String newText) {
+				ChatComponentText clonedChatComponent = new ChatComponentText(newText);
+				clonedChatComponent.setChatModifier(chatComponent.getChatModifier().clone());
+				return clonedChatComponent;
+			}
+			
+		}
+		
 	}
 	
 }
