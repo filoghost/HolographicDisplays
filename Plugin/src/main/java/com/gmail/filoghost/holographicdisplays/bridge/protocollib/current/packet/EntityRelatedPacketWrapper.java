@@ -14,14 +14,8 @@
  */
 package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet;
 
-import org.bukkit.entity.Entity;
-
-import com.comphenix.protocol.events.PacketEvent;
-
 public interface EntityRelatedPacketWrapper {
 
 	public int getEntityID();
-
-    public Entity getEntity(PacketEvent event);
 	
 }

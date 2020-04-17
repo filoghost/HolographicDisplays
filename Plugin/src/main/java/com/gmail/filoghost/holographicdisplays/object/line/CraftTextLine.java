@@ -25,6 +25,7 @@ import org.bukkit.World;
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
@@ -35,7 +36,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 
 	private String text;
 	private List<RelativePlaceholder> relativePlaceholders;
-	private NMSNameable nmsNameable;
+	private NMSArmorStand nmsNameable;
 	
 	
 	public CraftTextLine(CraftHologram parent, String text) {
@@ -98,7 +99,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 	public void spawn(World world, double x, double y, double z) {
 		super.spawn(world, x, y, z);
 			
-		nmsNameable = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this);
+		nmsNameable = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this, HolographicDisplays.hasProtocolLibHook());
 
 		if (text != null && !text.isEmpty()) {
 			nmsNameable.setCustomNameNMS(text);
@@ -130,7 +131,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		super.teleport(x, y, z);
 		
 		if (nmsNameable != null) {
-			nmsNameable.setLocationNMS(x, y + getTextOffset(), z);
+			nmsNameable.setLocationNMS(x, y + getTextOffset(), z, HolographicDisplays.hasProtocolLibHook());
 		}
 	}
 	

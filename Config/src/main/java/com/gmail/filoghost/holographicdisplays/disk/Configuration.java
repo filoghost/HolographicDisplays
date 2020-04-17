@@ -38,7 +38,6 @@ import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 public class Configuration {
 	
 	public static double spaceBetweenLines;
-	public static boolean preciseHologramMovement;
 	public static boolean quickEditCommands;
 	public static String imageSymbol;
 	public static String transparencySymbol;
@@ -99,7 +98,8 @@ public class Configuration {
 				"bungee-refresh-seconds",
 				"using-RedisBungee",
 				"bungee-online-format",
-				"bungee-offline-format"
+				"bungee-offline-format",
+				"precise-hologram-movement"
 				);
 
 		for (String oldNode : nodesToRemove) {
@@ -128,7 +128,6 @@ public class Configuration {
 		}
 		
 		spaceBetweenLines = config.getDouble(ConfigNode.SPACE_BETWEEN_LINES.getPath());
-		preciseHologramMovement = config.getBoolean(ConfigNode.PRECISE_HOLOGRAM_MOVEMENT.getPath());
 		quickEditCommands = config.getBoolean(ConfigNode.QUICK_EDIT_COMMANDS.getPath());
 		
 		updateNotification = config.getBoolean(ConfigNode.UPDATE_NOTIFICATION.getPath());

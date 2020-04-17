@@ -102,10 +102,10 @@ public class NmsManagerImpl implements NMSManager {
 	}
 	
 	@Override
-	public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece) {
+	public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece, boolean broadcastLocationPacket) {
 		WorldServer nmsWorld = ((CraftWorld) world).getHandle();
 		EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece);
-		invisibleArmorStand.setLocationNMS(x, y, z);
+		invisibleArmorStand.setLocationNMS(x, y, z, broadcastLocationPacket);
 		if (!addEntityToWorld(nmsWorld, invisibleArmorStand)) {
 			ConsoleLogger.handleSpawnFail(parentPiece);
 		}
@@ -153,25 +153,25 @@ public class NmsManagerImpl implements NMSManager {
 
 	@Override
 	public NMSEntityBase getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
-		
 		Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
+		
 		if (nmsEntity instanceof NMSEntityBase) {
 			return ((NMSEntityBase) nmsEntity);
+		} else {
+			return null;
 		}
-
-		return null;
 	}
 	
 	@Override
-	public org.bukkit.entity.Entity getEntityFromID(org.bukkit.World bukkitWorld, int entityID) {
+	public NMSEntityBase getNMSEntityBaseFromID(org.bukkit.World bukkitWorld, int entityID) {
 		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
 		Entity nmsEntity = nmsWorld.getEntity(entityID);
 		
-		if (nmsEntity == null) {
+		if (nmsEntity instanceof NMSEntityBase) {
+			return ((NMSEntityBase) nmsEntity);
+		} else {
 			return null;
 		}
-		
-		return nmsEntity.getBukkitEntity();
 	}
 	
 	@Override

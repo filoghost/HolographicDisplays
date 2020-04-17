@@ -17,6 +17,7 @@ package com.gmail.filoghost.holographicdisplays.object.line;
 import org.bukkit.World;
 
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
@@ -31,7 +32,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 	private CraftTouchableLine touchablePiece;
 	
 	private NMSSlime nmsSlime;
-	private NMSEntityBase nmsVehicle;
+	private NMSArmorStand nmsVehicle;
 
 	
 	protected CraftTouchSlimeLine(CraftHologram parent, CraftTouchableLine touchablePiece) {
@@ -51,7 +52,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 		double offset = getSlimeOffset();
 		
 		nmsSlime = HolographicDisplays.getNMSManager().spawnNMSSlime(world, x, y + offset, z, this);
-		nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
+		nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this, HolographicDisplays.hasProtocolLibHook());
 		
 		nmsSlime.setPassengerOfNMS(nmsVehicle);
 			
@@ -82,7 +83,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 		double offset = getSlimeOffset();
 		
 		if (nmsVehicle != null) {
-			nmsVehicle.setLocationNMS(x, y + offset, z);
+			nmsVehicle.setLocationNMS(x, y + offset, z, HolographicDisplays.hasProtocolLibHook());
 		}
 		
 		if (nmsSlime != null) {

@@ -17,8 +17,8 @@ package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
+
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -57,7 +57,6 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	private NMSManager nmsManager;
 	private PacketHelper packetHelper;
 	private MetadataHelper metadataHelper;
-	private boolean useGetEntityWorkaround;
 	
 	
 	@Override
@@ -72,7 +71,9 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 			.types(
 				PacketType.Play.Server.SPAWN_ENTITY_LIVING,
 				PacketType.Play.Server.SPAWN_ENTITY,
-				PacketType.Play.Server.ENTITY_METADATA)
+				PacketType.Play.Server.ENTITY_METADATA,
+				PacketType.Play.Server.REL_ENTITY_MOVE,
+				PacketType.Play.Server.REL_ENTITY_MOVE_LOOK)
 			.serverSide()
 			.listenerPriority(ListenerPriority.NORMAL);
 		
@@ -80,7 +81,6 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					  
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					
 					PacketContainer packet = event.getPacket();
 					Player player = event.getPlayer();
 					
@@ -90,11 +90,9 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 
 					// Spawn entity packet
 					if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
-
 						WrapperPlayServerSpawnEntityLiving spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet);
-						Entity entity = getEntity(event, spawnEntityPacket);
+						CraftHologramLine hologramLine = getHologramLine(event, spawnEntityPacket);
 						
-						CraftHologramLine hologramLine = getHologramLine(entity);
 						if (hologramLine == null) {
 							return;
 						}
@@ -124,11 +122,9 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						event.setPacket(spawnEntityPacket.getHandle());
 
 					} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
-
 						WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
-						Entity entity = getEntity(event, spawnEntityPacket);
+						CraftHologramLine hologramLine = getHologramLine(event, spawnEntityPacket);
 						
-						CraftHologramLine hologramLine = getHologramLine(entity);
 						if (hologramLine == null) {
 							return;
 						}
@@ -139,11 +135,9 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						}
 					
 					} else if (packet.getType() == PacketType.Play.Server.ENTITY_METADATA) {
-
 						WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
-						Entity entity = getEntity(event, entityMetadataPacket);
+						CraftHologramLine hologramLine = getHologramLine(event, entityMetadataPacket);
 						
-						CraftHologramLine hologramLine = getHologramLine(entity);
 						if (hologramLine == null) {
 							return;
 						}
@@ -168,29 +162,19 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						if (modified) {
 							event.setPacket(entityMetadataPacket.getHandle());
 						}
+						
+					} else if (packet.getType() == PacketType.Play.Server.REL_ENTITY_MOVE || packet.getType() == PacketType.Play.Server.REL_ENTITY_MOVE_LOOK) {
+						int entityID = packet.getIntegers().read(0);
+						NMSEntityBase nmsEntityBase = getNMSEntityBase(event.getPlayer().getWorld(), entityID);
+						
+						if (nmsEntityBase instanceof NMSArmorStand) {
+							event.setCancelled(true); // Don't send relative movement packets for armor stands, only keep precise teleport packets.
+						}
 					}
 				}
 			});
 		
 		return true;
-	}
-	
-	
-	private Entity getEntity(PacketEvent packetEvent, EntityRelatedPacketWrapper packetWrapper) {
-		if (packetWrapper.getEntityID() < 0) {
-			return null;
-		}
-		
-		if (!useGetEntityWorkaround) {
-			try {
-				return packetWrapper.getEntity(packetEvent);
-			} catch (RuntimeException e) {
-				useGetEntityWorkaround = true;
-			}
-		}
-		
-		// Use workaround, get entity from its ID through NMS
-		return HolographicDisplays.getNMSManager().getEntityFromID(packetEvent.getPlayer().getWorld(), packetWrapper.getEntityID());
 	}
 	
 	
@@ -303,19 +287,25 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	}
 	
 	
-	private CraftHologramLine getHologramLine(Entity bukkitEntity) {
-		if (bukkitEntity != null && isHologramType(bukkitEntity.getType())) {		
-			NMSEntityBase entity = nmsManager.getNMSEntityBase(bukkitEntity);
-			if (entity != null) {
-				return (CraftHologramLine) entity.getHologramLine();
-			}
+	private CraftHologramLine getHologramLine(PacketEvent packetEvent, EntityRelatedPacketWrapper packetWrapper) {
+		return getHologramLine(packetEvent.getPlayer().getWorld(), packetWrapper.getEntityID());
+	}
+	
+	private CraftHologramLine getHologramLine(World world, int entityID) {
+		if (entityID < 0) {
+			return null;
+		}
+
+		NMSEntityBase nmsEntity = getNMSEntityBase(world, entityID);
+		if (nmsEntity == null) {
+			return null; // Entity not existing or not related to holograms.
 		}
 		
-		return null;
+		return (CraftHologramLine) nmsEntity.getHologramLine();
 	}
 	
-	
-	private boolean isHologramType(EntityType type) {
-		return type == EntityType.ARMOR_STAND || type == EntityType.DROPPED_ITEM || type == EntityType.SLIME;
+	private NMSEntityBase getNMSEntityBase(World world, int entityID) {
+		return HolographicDisplays.getNMSManager().getNMSEntityBaseFromID(world, entityID);
 	}
+	
 }

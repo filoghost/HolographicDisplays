@@ -15,10 +15,8 @@
 package com.gmail.filoghost.holographicdisplays.nms.v1_15_R1;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
-import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
-import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectionUtils;
 import net.minecraft.server.v1_15_R1.*;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_15_R1.util.CraftChatMessage;
@@ -41,6 +39,8 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         super.collides = false;
         this.parentPiece = parentPiece;
         forceSetBoundingBox(new NullBoundingBox());
+        
+        this.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet.
     }
 
 
@@ -104,6 +104,23 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         if (!lockTick) {
             super.inactiveTick();
         }
+        
+        // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+        if (this.onGround) {
+        	this.onGround = false;
+        }
+    }
+    
+    @Override
+    public void tick() {
+        if (!lockTick) {
+            super.tick();
+        }
+        
+        // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+        if (this.onGround) {
+        	this.onGround = false;
+        }
     }
 
     @Override
@@ -136,27 +153,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
         super.a(boundingBox);
     }
-
-    @Override
-    public int getId() {
-        if (Configuration.preciseHologramMovement) {
-            StackTraceElement element = ReflectionUtils.getStackTraceElement(2);
-            if (element != null && element.getFileName() != null && element.getFileName().equals("EntityTrackerEntry.java") && 128 < element.getLineNumber() && element.getLineNumber() < 151) {
-                // Then this method is being called when creating a new movement packet, we return a fake ID
-                return -1;
-            }
-        }
-
-        return super.getId();
-    }
-
-    @Override
-    public void tick() {
-        if (!lockTick) {
-            super.tick();
-        }
-    }
-
+    
     @Override
     public void a(SoundEffect soundeffect, float f, float f1) {
         // Remove sounds.
@@ -203,21 +200,23 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
 
     @Override
-    public void setLocationNMS(double x, double y, double z) {
+    public void setLocationNMS(double x, double y, double z, boolean broadcastLocationPacket) {
         super.setPosition(x, y, z);
+        if (broadcastLocationPacket) {
+        	broadcastLocationPacketNMS();
+        }
+    }
+    
+    private void broadcastLocationPacketNMS() {
+        PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
 
-        if (Configuration.preciseHologramMovement) {
-            // Send a packet near to update the position.
-            PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
+        for (Object obj : super.world.getPlayers()) {
+            if (obj instanceof EntityPlayer) {
+                EntityPlayer nmsPlayer = (EntityPlayer) obj;
 
-            for (Object obj : super.world.getPlayers()) {
-                if (obj instanceof EntityPlayer) {
-                    EntityPlayer nmsPlayer = (EntityPlayer) obj;
-
-                    double distanceSquared = Utils.square(nmsPlayer.locX() - super.locX()) + Utils.square(nmsPlayer.locZ() - super.locZ());
-                    if (distanceSquared < 8192 && nmsPlayer.playerConnection != null) {
-                        nmsPlayer.playerConnection.sendPacket(teleportPacket);
-                    }
+                double distanceSquared = Utils.square(nmsPlayer.locX() - super.locX()) + Utils.square(nmsPlayer.locZ() - super.locZ());
+                if (distanceSquared < 8192 && nmsPlayer.playerConnection != null) {
+                    nmsPlayer.playerConnection.sendPacket(teleportPacket);
                 }
             }
         }
@@ -230,7 +229,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 
     @Override
     public int getIdNMS() {
-        return super.getId(); // Return the real ID without checking the stack trace.
+        return super.getId();
     }
 
     @Override

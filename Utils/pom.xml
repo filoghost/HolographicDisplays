@@ -32,13 +32,6 @@
 			<version>${spigot-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-javacompat</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 
 </project>

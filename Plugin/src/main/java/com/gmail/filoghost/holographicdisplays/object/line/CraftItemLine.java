@@ -23,6 +23,7 @@ import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
+import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
@@ -35,7 +36,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 	private PickupHandler pickupHandler;
 	
 	private NMSItem nmsItem;
-	private NMSEntityBase nmsVehicle;
+	private NMSArmorStand nmsVehicle;
 	
 	public CraftItemLine(CraftHologram parent, ItemStack itemStack) {
 		super(0.7, parent);
@@ -86,7 +87,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 			double offset = getItemOffset();
 			
 			nmsItem = HolographicDisplays.getNMSManager().spawnNMSItem(world, x, y + offset, z, this, itemStack, HolographicDisplays.getMainListener());
-			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this);
+			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this, HolographicDisplays.hasProtocolLibHook());
 
 			nmsItem.setPassengerOfNMS(nmsVehicle);
 			
@@ -118,7 +119,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 		double offset = getItemOffset();
 		
 		if (nmsVehicle != null) {
-			nmsVehicle.setLocationNMS(x, y + offset, z);
+			nmsVehicle.setLocationNMS(x, y + offset, z, HolographicDisplays.hasProtocolLibHook());
 		}
 		
 		if (nmsItem != null) {
