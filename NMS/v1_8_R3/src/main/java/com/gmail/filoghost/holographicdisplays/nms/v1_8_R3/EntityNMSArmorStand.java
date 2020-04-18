@@ -40,7 +40,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = new ReflectField<>(EntityArmorStand.class, "bi");
 	private static final ReflectMethod<Void> SET_MARKER_METHOD = new ReflectMethod<>(EntityArmorStand.class, "n", boolean.class);
 
-	private boolean lockTick;
 	private HologramLine parentPiece;
 	private String customName;
 	
@@ -68,6 +67,25 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		this.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet.
 	}
 	
+	@Override
+	public void t_() {
+		// Disable normal ticking for this entity.
+		
+		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+		if (this.onGround) {
+			this.onGround = false;
+		}
+	}
+	
+	@Override
+	public void inactiveTick() {
+		// Disable normal ticking for this entity.
+		
+		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+		if (this.onGround) {
+			this.onGround = false;
+		}
+	}	
 	
 	@Override
 	public void b(NBTTagCompound nbttagcompound) {
@@ -139,32 +157,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	}
 	
 	@Override
-	public void inactiveTick() {
-		// Check inactive ticks.
-		
-		if (!lockTick) {
-			super.inactiveTick();
-		}
-		
-		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
-		if (this.onGround) {
-			this.onGround = false;
-		}
-	}
-
-	@Override
-	public void t_() {
-		if (!lockTick) {
-			super.t_();
-		}
-		
-		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
-		if (this.onGround) {
-			this.onGround = false;
-		}
-	}
-	
-	@Override
 	public void makeSound(String sound, float f1, float f2) {
 	    // Remove sounds.
 	}
@@ -187,14 +179,8 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	}
 	
 	@Override
-	public void setLockTick(boolean lock) {
-		lockTick = lock;
-	}
-	
-	@Override
 	public void die() {
-		setLockTick(false);
-		super.die();
+		// Prevent being killed.
 	}
 	
 	@Override
@@ -207,7 +193,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	
 	@Override
 	public void killEntityNMS() {
-		die();
+		super.dead = true;
 	}
 	
 	@Override

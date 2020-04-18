@@ -23,9 +23,6 @@ public interface NMSEntityBase {
 	
 	// Returns the linked CraftHologramLine, all the entities are part of a piece. Should never be null.
 	public HologramLine getHologramLine();
-
-	// Sets if the entity should tick or not.
-	public void setLockTick(boolean lock);
 	
 	// Returns if the entity is dead through NMS.
 	public boolean isDeadNMS();

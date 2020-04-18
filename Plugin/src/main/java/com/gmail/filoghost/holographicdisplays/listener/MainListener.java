@@ -20,6 +20,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -77,7 +78,7 @@ public class MainListener implements Listener, ItemPickupManager {
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public void onChunkLoad(ChunkLoadEvent event) {
-		final Chunk chunk = event.getChunk();
+		Chunk chunk = event.getChunk();
 		
 		// Other plugins could call this event wrongly, check if the chunk is actually loaded.
 		if (chunk.isLoaded()) {
@@ -126,37 +127,38 @@ public class MainListener implements Listener, ItemPickupManager {
 	
 	@EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onSlimeInteract(PlayerInteractEntityEvent event) {
-		if (event.getRightClicked().getType() == EntityType.SLIME) {
-			
-			Player clicker = event.getPlayer();
-			NMSEntityBase entityBase = nmsManager.getNMSEntityBase(event.getRightClicked());
-			
-			if (entityBase != null && entityBase.getHologramLine() instanceof CraftTouchSlimeLine && !isSpectatorMode(clicker)) {
-				
-				CraftTouchSlimeLine touchSlime = (CraftTouchSlimeLine) entityBase.getHologramLine();
-				
-				if (touchSlime.getTouchablePiece().getTouchHandler() != null && touchSlime.getParent().getVisibilityManager().isVisibleTo(clicker)) {
-					
-					Long lastClick = anticlickSpam.get(clicker);
-					if (lastClick != null && System.currentTimeMillis() - lastClick.longValue() < 100) {
-						return;
-					}
-					
-					anticlickSpam.put(event.getPlayer(), System.currentTimeMillis());
-					
-					try {
-						touchSlime.getTouchablePiece().getTouchHandler().onTouch(event.getPlayer());
-					} catch (Throwable t) {
-						Plugin plugin = touchSlime.getParent() instanceof PluginHologram ? ((PluginHologram) touchSlime.getParent()).getOwner() : HolographicDisplays.getInstance();
-						ConsoleLogger.log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", t);
-					}
-				}
-			}
+		if (event.getRightClicked().getType() != EntityType.SLIME) {
+			return;
 		}
-	}
-	
-	public boolean isSpectatorMode(Player player) {
-		return player.getGameMode().toString().equals("SPECTATOR");
+			
+		Player clicker = event.getPlayer();
+		if (clicker.getGameMode() == GameMode.SPECTATOR) {
+			return;
+		}
+		
+		NMSEntityBase entityBase = nmsManager.getNMSEntityBase(event.getRightClicked());
+		if (entityBase == null || !(entityBase.getHologramLine() instanceof CraftTouchSlimeLine)) {
+			return;
+		}
+		
+		CraftTouchSlimeLine touchSlime = (CraftTouchSlimeLine) entityBase.getHologramLine();
+		if (touchSlime.getTouchablePiece().getTouchHandler() == null || !touchSlime.getParent().getVisibilityManager().isVisibleTo(clicker)) {
+			return;
+		}
+		
+		Long lastClick = anticlickSpam.get(clicker);
+		if (lastClick != null && System.currentTimeMillis() - lastClick.longValue() < 100) {
+			return;
+		}
+		
+		anticlickSpam.put(event.getPlayer(), System.currentTimeMillis());
+		
+		try {
+			touchSlime.getTouchablePiece().getTouchHandler().onTouch(event.getPlayer());
+		} catch (Throwable t) {
+			Plugin plugin = touchSlime.getParent() instanceof PluginHologram ? ((PluginHologram) touchSlime.getParent()).getOwner() : HolographicDisplays.getInstance();
+			ConsoleLogger.log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", t);
+		}
 	}
 	
 	@Override

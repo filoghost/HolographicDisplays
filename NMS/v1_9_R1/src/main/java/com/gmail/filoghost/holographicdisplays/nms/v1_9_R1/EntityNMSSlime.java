@@ -42,7 +42,6 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	
 	private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<>(Entity.class, "as");
 
-	private boolean lockTick;
 	private HologramLine parentPiece;
 	
 	private int resendMountPacketTicks;
@@ -58,16 +57,8 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	}
 	
 	@Override
-	public void a(AxisAlignedBB boundingBox) {
-		// Do not change it!
-	}
-	
-	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
-		super.a(boundingBox);
-	}
-	
-	@Override
 	public void m() {
+		// Disable normal ticking for this entity.
 		
 		// So it won't get removed.
 		ticksLived = 0;
@@ -91,10 +82,23 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public void inactiveTick() {
+		// Disable normal ticking for this entity.
 		
-		if (!lockTick) {
-			super.m();
-		}
+		// So it won't get removed.
+		ticksLived = 0;
+	}
+	
+	@Override
+	public void a(AxisAlignedBB boundingBox) {
+		// Do not change it!
+	}
+	
+	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
+		super.a(boundingBox);
 	}
 	
 	@Override
@@ -168,11 +172,6 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	@Override
 	public void a(SoundEffect soundeffect, float f, float f1) {
 	    // Remove sounds.
-	}
-	
-	@Override
-	public void setLockTick(boolean lock) {
-		lockTick = lock;
 	}
 	
 	@Override

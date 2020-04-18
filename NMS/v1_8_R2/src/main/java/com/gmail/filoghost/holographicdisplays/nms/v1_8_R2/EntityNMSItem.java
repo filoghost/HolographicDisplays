@@ -45,7 +45,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	private static final ReflectField<Double> RIDER_PITCH_DELTA = new ReflectField<>(Entity.class, "ar");
 	private static final ReflectField<Double> RIDER_YAW_DELTA = new ReflectField<>(Entity.class, "as");
 	
-	private boolean lockTick;
 	private ItemLine parentPiece;
 	private ItemPickupManager itemPickupManager;
 	
@@ -58,13 +57,18 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	
 	@Override
 	public void t_() {
+		// Disable normal ticking for this entity.
 		
 		// So it won't get removed.
 		ticksLived = 0;
+	}
+	
+	@Override
+	public void inactiveTick() {
+		// Disable normal ticking for this entity.
 		
-		if (!lockTick) {
-			super.t_();
-		}
+		// So it won't get removed.
+		ticksLived = 0;
 	}
 	
 	// Method called when a player is near.
@@ -113,25 +117,10 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 		 */
 	    return true;
 	}
-	
-	@Override
-	public void inactiveTick() {
-		// Check inactive ticks.
-		
-		if (!lockTick) {
-			super.inactiveTick();
-		}
-	}
 
 	@Override
-	public void setLockTick(boolean lock) {
-		lockTick = lock;
-	}
-	
-	@Override
 	public void die() {
-		setLockTick(false);
-		super.die();
+		// Prevent being killed.
 	}
 	
 	@Override
@@ -156,7 +145,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	
 	@Override
 	public void killEntityNMS() {
-		die();
+		super.dead = true;
 	}
 	
 	@Override

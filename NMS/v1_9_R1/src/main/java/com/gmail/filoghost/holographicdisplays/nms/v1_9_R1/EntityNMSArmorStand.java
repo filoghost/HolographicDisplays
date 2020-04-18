@@ -39,7 +39,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	
 	private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = new ReflectField<>(EntityArmorStand.class, "bz");
 
-	private boolean lockTick;
 	private HologramLine parentPiece;
 
 	private String customName;
@@ -63,6 +62,25 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		this.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet.
 	}
 	
+	@Override
+	public void m() {
+		// Disable normal ticking for this entity.
+		
+		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+		if (this.onGround) {
+			this.onGround = false;
+		}
+	}
+	
+	@Override
+	public void inactiveTick() {
+		// Disable normal ticking for this entity.
+		
+		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+		if (this.onGround) {
+			this.onGround = false;
+		}
+	}	
 	
 	@Override
 	public void b(NBTTagCompound nbttagcompound) {
@@ -149,32 +167,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	}
 	
 	@Override
-	public void inactiveTick() {
-		// Check inactive ticks.
-		
-		if (!lockTick) {
-			super.inactiveTick();
-		}
-		
-		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
-		if (this.onGround) {
-			this.onGround = false;
-		}
-	}
-
-	@Override
-	public void m() {
-		if (!lockTick) {
-			super.m();
-		}
-		
-		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
-		if (this.onGround) {
-			this.onGround = false;
-		}
-	}
-	
-	@Override
 	public void a(SoundEffect soundeffect, float f, float f1) {
 	    // Remove sounds.
 	}
@@ -194,11 +186,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	@Override
 	public Object getCustomNameObjectNMS() {
 		return super.getCustomName();
-	}
-	
-	@Override
-	public void setLockTick(boolean lock) {
-		lockTick = lock;
 	}
 	
 	@Override

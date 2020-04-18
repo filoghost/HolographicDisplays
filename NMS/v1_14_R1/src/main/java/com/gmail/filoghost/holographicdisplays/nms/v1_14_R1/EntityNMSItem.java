@@ -45,7 +45,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	
 	private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<>(Entity.class, "vehicle");
 	
-	private boolean lockTick;
 	private ItemLine parentPiece;
 	private ItemPickupManager itemPickupManager;
 	private CraftEntity customBukkitEntity;
@@ -59,13 +58,18 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	
 	@Override
 	public void tick() {
+		// Disable normal ticking for this entity.
 		
 		// So it won't get removed.
 		ticksLived = 0;
+	}
+	
+	@Override
+	public void inactiveTick() {
+		// Disable normal ticking for this entity.
 		
-		if (!lockTick) {
-			super.tick();
-		}
+		// So it won't get removed.
+		ticksLived = 0;
 	}
 	
 	// Method called when a player is near.
@@ -129,20 +133,6 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 	@Override
 	public boolean isCollidable() {
 		return false;
-	}
-	
-	@Override
-	public void inactiveTick() {
-		// Check inactive ticks.
-		
-		if (!lockTick) {
-			super.inactiveTick();
-		}
-	}
-
-	@Override
-	public void setLockTick(boolean lock) {
-		lockTick = lock;
 	}
 	
 	@Override

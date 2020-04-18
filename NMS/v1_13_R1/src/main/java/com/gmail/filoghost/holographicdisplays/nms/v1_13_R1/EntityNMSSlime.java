@@ -40,8 +40,7 @@ import net.minecraft.server.v1_13_R1.World;
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	
 	private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<>(Entity.class, "ax");
-
-	private boolean lockTick;
+	
 	private HologramLine parentPiece;
 	
 	public EntityNMSSlime(World world, HologramLine parentPiece) {
@@ -56,23 +55,28 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	}
 	
 	@Override
+	public void tick() {
+		// Disable normal ticking for this entity.
+		
+		// So it won't get removed.
+		ticksLived = 0;
+	}
+	
+	@Override
+	public void inactiveTick() {
+		// Disable normal ticking for this entity.
+		
+		// So it won't get removed.
+		ticksLived = 0;
+	}
+	
+	@Override
 	public void a(AxisAlignedBB boundingBox) {
 		// Do not change it!
 	}
 	
 	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
 		super.a(boundingBox);
-	}
-	
-	@Override
-	public void tick() {
-		
-		// So it won't get removed.
-		ticksLived = 0;
-		
-		if (!lockTick) {
-			super.tick();
-		}
 	}
 	
 	@Override
@@ -133,15 +137,6 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	public boolean isCollidable() {
 		return false;
 	}
-	
-	@Override
-	public void inactiveTick() {
-		// Check inactive ticks.
-		
-		if (!lockTick) {
-			super.inactiveTick();
-		}
-	}
 
 	@Override
 	public void setCustomName(IChatBaseComponent ichatbasecomponent) {
@@ -156,11 +151,6 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	@Override
 	public void a(SoundEffect soundeffect, float f, float f1) {
 	    // Remove sounds.
-	}
-	
-	@Override
-	public void setLockTick(boolean lock) {
-		lockTick = lock;
 	}
 	
 	@Override

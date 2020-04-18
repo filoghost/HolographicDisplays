@@ -40,7 +40,6 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	private static final ReflectField<Double> RIDER_PITCH_DELTA = new ReflectField<>(Entity.class, "ar");
 	private static final ReflectField<Double> RIDER_YAW_DELTA = new ReflectField<>(Entity.class, "as");
 
-	private boolean lockTick;
 	private HologramLine parentPiece;
 	
 	public EntityNMSSlime(World world, HologramLine parentPiece) {
@@ -54,27 +53,33 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	}
 	
 	@Override
+	public void t_() {
+		// Disable normal ticking for this entity.
+		
+		// So it won't get removed.
+		ticksLived = 0;
+
+		// The slime dies without a vehicle.
+		if (this.vehicle == null) {
+			killEntityNMS();
+		}
+	}
+	
+	@Override
+	public void inactiveTick() {
+		// Disable normal ticking for this entity.
+		
+		// So it won't get removed.
+		ticksLived = 0;
+	}
+	
+	@Override
 	public void a(AxisAlignedBB boundingBox) {
 		// Do not change it!
 	}
 	
 	public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
 		super.a(boundingBox);
-	}
-	
-	@Override
-	public void t_() {
-		// Checks every 20 ticks.
-		if (ticksLived % 20 == 0) {
-			// The slime dies without a vehicle.
-			if (this.vehicle == null) {
-				die();
-			}
-		}
-		
-		if (!lockTick) {
-			super.t_();
-		}
 	}
 	
 	@Override
@@ -136,14 +141,8 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	}
 	
 	@Override
-	public void setLockTick(boolean lock) {
-		lockTick = lock;
-	}
-	
-	@Override
 	public void die() {
-		setLockTick(false);
-		super.die();
+		// Prevent being killed.
 	}
 	
 	@Override
@@ -161,7 +160,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 	
 	@Override
 	public void killEntityNMS() {
-		die();
+		super.dead = true;
 	}
 	
 	@Override

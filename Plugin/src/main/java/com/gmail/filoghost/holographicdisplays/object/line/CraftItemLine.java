@@ -90,9 +90,6 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 			nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this, HolographicDisplays.hasProtocolLibHook());
 
 			nmsItem.setPassengerOfNMS(nmsVehicle);
-			
-			nmsItem.setLockTick(true);
-			nmsVehicle.setLockTick(true);
 		}
 	}
 

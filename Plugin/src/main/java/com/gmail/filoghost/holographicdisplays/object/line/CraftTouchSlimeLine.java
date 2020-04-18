@@ -55,9 +55,6 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 		nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this, HolographicDisplays.hasProtocolLibHook());
 		
 		nmsSlime.setPassengerOfNMS(nmsVehicle);
-			
-		nmsSlime.setLockTick(true);
-		nmsVehicle.setLockTick(true);
 	}
 
 	

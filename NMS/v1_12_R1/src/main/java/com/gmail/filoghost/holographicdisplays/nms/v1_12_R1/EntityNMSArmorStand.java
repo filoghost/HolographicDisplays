@@ -36,7 +36,6 @@ import net.minecraft.server.v1_12_R1.World;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
 
-	private boolean lockTick;
 	private HologramLine parentPiece;
 	private String customName;
 	
@@ -55,6 +54,25 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 		this.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet.
 	}
 	
+	@Override
+	public void B_() {
+		// Disable normal ticking for this entity.
+		
+		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+		if (this.onGround) {
+			this.onGround = false;
+		}
+	}
+	
+	@Override
+	public void inactiveTick() {
+		// Disable normal ticking for this entity.
+		
+		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+		if (this.onGround) {
+			this.onGround = false;
+		}
+	}
 	
 	@Override
 	public void b(NBTTagCompound nbttagcompound) {
@@ -110,32 +128,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	}
 	
 	@Override
-	public void inactiveTick() {
-		// Check inactive ticks.
-		
-		if (!lockTick) {
-			super.inactiveTick();
-		}
-		
-		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
-		if (this.onGround) {
-			this.onGround = false;
-		}
-	}
-	
-	@Override
-	public void B_() {
-		if (!lockTick) {
-			super.B_();
-		}
-		
-		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
-		if (this.onGround) {
-			this.onGround = false;
-		}
-	}
-	
-	@Override
 	public void setCustomNameVisible(boolean visible) {
 		// Locks the custom name.
 	}
@@ -186,11 +178,6 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 	@Override
 	public Object getCustomNameObjectNMS() {
 		return super.getCustomName();
-	}
-	
-	@Override
-	public void setLockTick(boolean lock) {
-		lockTick = lock;
 	}
 	
 	@Override

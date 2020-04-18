@@ -104,8 +104,6 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		if (text != null && !text.isEmpty()) {
 			nmsNameable.setCustomNameNMS(text);
 		}
-		
-		nmsNameable.setLockTick(true);
 	}
 
 	
