@@ -31,12 +31,13 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
-import com.gmail.filoghost.holographicdisplays.util.NMSVersion;
 
 public class BungeeChannel implements PluginMessageListener {
+	
+	private static final String BUNGEECORD_CHANNEL = "BungeeCord";
+	private static final String REDISBUNGEE_CHANNEL = "legacy:redisbungee";
 
 	private static BungeeChannel instance;
-	private String redisBungeeChannel;
 
 	public static BungeeChannel getInstance() {
 		if (instance == null) {
@@ -46,24 +47,18 @@ public class BungeeChannel implements PluginMessageListener {
 	}
 
 	private BungeeChannel(Plugin plugin) {
-		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
-		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", this);
+		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, BUNGEECORD_CHANNEL);
+		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, BUNGEECORD_CHANNEL, this);
 
-		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
-			redisBungeeChannel = "legacy:redisbungee";
-		} else {
-			redisBungeeChannel = "RedisBungee";
-		}
-
-		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, redisBungeeChannel);
-		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, redisBungeeChannel, this);
+		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, REDISBUNGEE_CHANNEL);
+		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, REDISBUNGEE_CHANNEL, this);
 	}
 	
 	private String getTargetChannel() {
 		if (Configuration.useRedisBungee) {
-			return redisBungeeChannel;
+			return REDISBUNGEE_CHANNEL;
 		} else {
-			return "BungeeCord";
+			return BUNGEECORD_CHANNEL;
 		}
 	}
 
