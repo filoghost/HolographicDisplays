@@ -22,10 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.filoghost.holograms.api.TouchHandler;
-import com.gmail.filoghost.holograms.api.replacements.OldTouchHandlerWrapper;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.line.TouchableLine;
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
@@ -36,10 +33,8 @@ import com.gmail.filoghost.holographicdisplays.util.Validator;
 
 /**
  * This class is only used by the plugin itself. Do not attempt to use it.
- * It still implements the old API, but it's temporary.
  */
-@SuppressWarnings("deprecation")
-public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.api.Hologram {
+public class CraftHologram implements Hologram {
 	
 	// Position variables.
 	private World world;
@@ -355,85 +350,6 @@ public class CraftHologram implements Hologram, com.gmail.filoghost.holograms.ap
 	@Override
 	public String toString() {
 		return "CraftHologram [world=" + world + ", x=" + x + ", y=" + y + ", z=" + z + ", lines=" + lines + ", deleted=" + deleted + "]";
-	}
-	
-	/**
-	 * Old API methods, will be removed soon
-	 */
-
-	@Override
-	@Deprecated
-	public boolean update() {
-		return true;
-	}
-
-	@Override
-	@Deprecated
-	public void hide() {
-
-	}
-
-	@Override
-	@Deprecated
-	public void addLine(String text) {
-		appendTextLine(text);
-	}
-
-	@Override
-	@Deprecated
-	public void setLine(int index, String text) {
-		lines.get(index).despawn();
-		lines.set(index, new CraftTextLine(this, text));
-	}
-
-	@Override
-	@Deprecated
-	public void insertLine(int index, String text) {
-		insertLine(index, text);
-	}
-
-	@Override
-	@Deprecated
-	public String[] getLines() {
-		return null;
-	}
-
-	@Override
-	@Deprecated
-	public int getLinesLength() {
-		return size();
-	}
-
-	@Override
-	@Deprecated
-	public void setLocation(Location location) {
-		teleport(location);
-	}
-
-	@Override
-	@Deprecated
-	public void setTouchHandler(TouchHandler handler) {
-		if (size() > 0) {
-			TouchableLine line0 = ((TouchableLine) getLine(0));
-			
-			if (handler != null) {
-				line0.setTouchHandler(new OldTouchHandlerWrapper(this, handler));
-			} else {
-				line0.setTouchHandler(null);
-			}
-		}
-	}
-
-	@Override
-	@Deprecated
-	public TouchHandler getTouchHandler() {
-		return null;
-	}
-
-	@Override
-	@Deprecated
-	public boolean hasTouchHandler() {
-		return false;
 	}
 
 	/**

@@ -12,27 +12,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.gmail.filoghost.holograms.api.replacements;
+package com.gmail.filoghost.holograms.api.adapter;
 
 import org.bukkit.entity.Player;
 
 import com.gmail.filoghost.holograms.api.FloatingItem;
-import com.gmail.filoghost.holograms.api.ItemTouchHandler;
+import com.gmail.filoghost.holograms.api.PickupHandler;
 
 @SuppressWarnings("deprecation")
-public class OldItemTouchHandlerWrapper implements com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler {
+public class PickupHandlerAdapter implements com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler {
 
-	public ItemTouchHandler oldHandler;
+	public PickupHandler oldHandler;
 	private FloatingItem item;
 	
-	public OldItemTouchHandlerWrapper(FloatingItem item, ItemTouchHandler oldHandler) {
+	public PickupHandlerAdapter(FloatingItem item, PickupHandler oldPickupHandler) {
 		this.item = item;
-		this.oldHandler = oldHandler;
+		this.oldHandler = oldPickupHandler;
 	}
-
+	
 	@Override
-	public void onTouch(Player player) {
-		oldHandler.onTouch(item, player);
+	public void onPickup(Player player) {
+		oldHandler.onPickup(item, player);
 	}
 
 }

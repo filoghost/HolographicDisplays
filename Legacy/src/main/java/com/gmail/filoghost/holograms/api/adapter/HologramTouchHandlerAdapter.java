@@ -12,20 +12,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.gmail.filoghost.holograms.api.replacements;
+package com.gmail.filoghost.holograms.api.adapter;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.filoghost.holograms.api.Hologram;
 import com.gmail.filoghost.holograms.api.TouchHandler;
-import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 
 @SuppressWarnings("deprecation")
-public class OldTouchHandlerWrapper implements com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler {
+public class HologramTouchHandlerAdapter implements com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler {
 
-	public TouchHandler oldHandler;
-	private CraftHologram hologram;
+	protected TouchHandler oldHandler;
+	private Hologram hologram;
 	
-	public OldTouchHandlerWrapper(CraftHologram hologram, TouchHandler oldHandler) {
+	public HologramTouchHandlerAdapter(Hologram hologram, TouchHandler oldHandler) {
 		this.hologram = hologram;
 		this.oldHandler = oldHandler;
 	}

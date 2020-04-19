@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.gmail.filoghost.holographicdisplays</groupId>
+		<artifactId>holographicdisplays-parent</artifactId>
+		<version>2.4.2-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>holographicdisplays-legacy</artifactId>
+	<name>HolographicDisplays Legacy</name>
+
+	<repositories>
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>holographicdisplays-api</artifactId>
+			<version>2.4.2-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>holographicdisplays-utils</artifactId>
+			<version>2.4.2-SNAPSHOT</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>${spigot-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+</project>

@@ -32,6 +32,7 @@
 		<module>API</module>
 		<module>Utils</module>
 		<module>Config</module>
+		<module>Legacy</module>
 		<module>NMS/Interfaces</module>
 		<module>NMS/v1_8_R2</module>
 		<module>NMS/v1_8_R3</module>

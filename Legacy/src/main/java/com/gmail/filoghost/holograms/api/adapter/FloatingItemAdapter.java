@@ -12,30 +12,41 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.gmail.filoghost.holograms.api.replacements;
+package com.gmail.filoghost.holograms.api.adapter;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import com.gmail.filoghost.holograms.api.FloatingItem;
 import com.gmail.filoghost.holograms.api.ItemTouchHandler;
 import com.gmail.filoghost.holograms.api.PickupHandler;
-import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
-import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 
-/**
- * Do not use this class!
- */
 @SuppressWarnings("deprecation")
-public class FakeFloatingItem implements FloatingItem {
+public class FloatingItemAdapter implements FloatingItem {
 	
-	public CraftHologram hologram;
-	private CraftItemLine mainLine;
+	public static Map<Plugin, Collection<FloatingItemAdapter>> activeFloatingItems = new HashMap<>();
 	
-	public FakeFloatingItem(CraftHologram hologram, ItemStack item) {
-		this.hologram = hologram;		
-		mainLine = hologram.appendItemLine(item);
+	private Plugin plugin;
+	public Hologram hologram;
+	private ItemLine itemLine;
+	private ItemTouchHandler touchHandler;
+	private PickupHandler pickupHandler;
+	
+	public FloatingItemAdapter(Plugin plugin, Hologram delegateHologram, ItemLine delegateItemLine) {
+		this.plugin = plugin;
+		this.hologram = delegateHologram;		
+		this.itemLine = delegateItemLine;
+		
+		activeFloatingItems.computeIfAbsent(plugin, __ -> new ArrayList<>()).add(this);
 	}
 
 	@Override
@@ -50,12 +61,12 @@ public class FakeFloatingItem implements FloatingItem {
 
 	@Override
 	public void setItemStack(ItemStack itemstack) {
-		mainLine.setItemStack(itemstack);
+		itemLine.setItemStack(itemstack);
 	}
 
 	@Override
 	public ItemStack getItemStack() {
-		return mainLine.getItemStack();
+		return itemLine.getItemStack();
 	}
 
 	@Override
@@ -90,40 +101,44 @@ public class FakeFloatingItem implements FloatingItem {
 
 	@Override
 	public void setTouchHandler(ItemTouchHandler handler) {
+		this.touchHandler = handler;
+		
 		if (handler != null) {
-			mainLine.setTouchHandler(new OldItemTouchHandlerWrapper(this, handler));
+			itemLine.setTouchHandler(new ItemTouchHandlerAdapter(this, handler));
 		} else {
-			mainLine.setTouchHandler(null);
+			itemLine.setTouchHandler(null);
 		}
 	}
 
 	@Override
 	public ItemTouchHandler getTouchHandler() {
-		return ((OldItemTouchHandlerWrapper) mainLine.getTouchHandler()).oldHandler;
+		return touchHandler;
 	}
 
 	@Override
 	public boolean hasTouchHandler() {
-		return mainLine.getTouchHandler() != null;
+		return touchHandler != null;
 	}
 
 	@Override
 	public void setPickupHandler(PickupHandler handler) {
+		this.pickupHandler = handler;
+		
 		if (handler != null) {
-			mainLine.setPickupHandler(new OldPickupHandlerWrapper(this, handler));
+			itemLine.setPickupHandler(new PickupHandlerAdapter(this, handler));
 		} else {
-			mainLine.setPickupHandler(null);
+			itemLine.setPickupHandler(null);
 		}
 	}
 
 	@Override
 	public PickupHandler getPickupHandler() {
-		return ((OldPickupHandlerWrapper) mainLine.getPickupHandler()).oldHandler;
+		return pickupHandler;
 	}
 
 	@Override
 	public boolean hasPickupHandler() {
-		return mainLine.getPickupHandler() != null;
+		return pickupHandler != null;
 	}
 
 	@Override
@@ -134,6 +149,8 @@ public class FakeFloatingItem implements FloatingItem {
 	@Override
 	public void delete() {
 		hologram.delete();
+		
+		activeFloatingItems.get(plugin).remove(this);
 	}
 
 	@Override
