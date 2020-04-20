@@ -1,5 +1,6 @@
 name: HolographicDisplays
 main: com.gmail.filoghost.holographicdisplays.HolographicDisplays
+author: filoghost
 version: ${project.version}
 api-version: 1.13
 
