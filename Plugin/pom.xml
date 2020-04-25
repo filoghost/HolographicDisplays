@@ -168,6 +168,33 @@
 			</resource>
 		</resources>
 		<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-antrun-plugin</artifactId>
+			<version>3.0.0</version>
+			<executions>
+				<!-- Appends build number to plugin version on SNAPSHOT builds. -->
+				<execution>
+					<id>set-plugin-version</id>
+					<phase>validate</phase>
+					<goals>
+						<goal>run</goal>
+					</goals>
+					<configuration>
+						<exportAntProperties>true</exportAntProperties>
+						<target>
+							<property environment="env" />
+							<condition property="project.pluginVersion"	value="${project.version}-b${env.BUILD_NUMBER}"	else="${project.version}">
+								<and>
+									<isset property="env.BUILD_NUMBER" />
+									<contains string="${project.version}" substring="SNAPSHOT" />
+								</and>
+							</condition>
+						</target>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -177,6 +204,9 @@
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
+						<manifestEntries>
+							<Implementation-Version>${project.pluginVersion}</Implementation-Version>
+						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>

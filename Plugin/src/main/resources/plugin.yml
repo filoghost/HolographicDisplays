@@ -1,7 +1,7 @@
 name: HolographicDisplays
 main: com.gmail.filoghost.holographicdisplays.HolographicDisplays
 author: filoghost
-version: ${project.version}
+version: ${project.pluginVersion}
 api-version: 1.13
 
 softdepend: [ProtocolLib]
