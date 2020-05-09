@@ -128,12 +128,13 @@ public class HologramDatabase {
 		short dataValue = 0;
 		
 		if (basicItemData.contains(":")) {
+			String[] materialAndDataValue = basicItemData.split(":", -1);
 			try {
-				dataValue = (short) Integer.parseInt(basicItemData.split(":")[1]);
+				dataValue = (short) Integer.parseInt(materialAndDataValue[1]);
 			} catch (NumberFormatException e) {
 				HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "Could not set data value for the item \"" + basicItemData + "\": invalid number.");
 			}
-			materialName = basicItemData.split(":")[0];
+			materialName = materialAndDataValue[0];
 		} else {
 			materialName = basicItemData;
 		}
