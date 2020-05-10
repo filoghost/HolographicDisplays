@@ -17,6 +17,7 @@ package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,10 +31,14 @@ import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
 import com.gmail.filoghost.holographicdisplays.commands.Strings;
 import com.gmail.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
+import com.gmail.filoghost.holographicdisplays.disk.HologramLineParser;
 import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
+import com.gmail.filoghost.holographicdisplays.exception.HologramLineParseException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
+import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.util.FileUtils;
+import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class ReadtextCommand extends HologramSubCommand {
 
@@ -55,25 +60,33 @@ public class ReadtextCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+		String fileName = args[1];
 		
 		try {
-			String fileName = args[1];
 			File targetFile = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
 			CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetFile), "The file must be inside HolographicDisplays' folder.");
 			CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetFile), "Cannot read default configuration files.");
 			
-			List<String> lines = FileUtils.readLines(targetFile);
+			List<String> serializedLines = FileUtils.readLines(targetFile);
 			
-			int linesAmount = lines.size();
+			int linesAmount = serializedLines.size();
 			if (linesAmount > 40) {
 				Strings.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
 				linesAmount = 40;
 			}
 			
-			hologram.clearLines();			
+			List<CraftHologramLine> linesToAdd = new ArrayList<>();
 			for (int i = 0; i < linesAmount; i++) {
-				hologram.getLinesUnsafe().add(HologramDatabase.deserializeHologramLine(lines.get(i), hologram));
+				try {
+					CraftHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i), true);
+					linesToAdd.add(line);
+				} catch (HologramLineParseException e) {
+					throw new CommandException("Error at line " + (i + 1) + ": " + Utils.uncapitalize(e.getMessage()));
+				}
 			}
+			
+			hologram.clearLines();
+			hologram.getLinesUnsafe().addAll(linesToAdd);
 			hologram.refreshAll();
 
 			HologramDatabase.saveHologram(hologram);

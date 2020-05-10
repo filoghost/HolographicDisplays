@@ -52,8 +52,8 @@ public class CopyCommand extends HologramSubCommand {
 		
 		toHologram.clearLines();
 		for (CraftHologramLine line : fromHologram.getLinesUnsafe()) {
-			String lineString = HologramDatabase.serializeHologramLine(line);
-			toHologram.getLinesUnsafe().add(HologramDatabase.deserializeHologramLine(lineString, toHologram));
+			CraftHologramLine clonedLine = CommandValidator.parseHologramLine(toHologram, HologramDatabase.serializeHologramLine(line), false);
+			toHologram.getLinesUnsafe().add(clonedLine);
 		}
 		
 		toHologram.refreshAll();

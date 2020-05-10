@@ -17,7 +17,6 @@ package com.gmail.filoghost.holographicdisplays.commands.main.subs;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -33,12 +32,14 @@ import com.gmail.filoghost.holographicdisplays.event.HolographicDisplaysReloadEv
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.exception.HologramNotFoundException;
 import com.gmail.filoghost.holographicdisplays.exception.InvalidFormatException;
+import com.gmail.filoghost.holographicdisplays.exception.HologramLineParseException;
 import com.gmail.filoghost.holographicdisplays.exception.WorldNotFoundException;
 import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import com.gmail.filoghost.holographicdisplays.placeholder.AnimationsRegister;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
+import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class ReloadCommand extends HologramSubCommand {
 
@@ -85,6 +86,8 @@ public class ReloadCommand extends HologramSubCommand {
 						Strings.sendWarning(sender, "Hologram '" + singleSavedHologram + "' not found, skipping it.");
 					} catch (InvalidFormatException e) {
 						Strings.sendWarning(sender, "Hologram '" + singleSavedHologram + "' has an invalid location format.");
+					} catch (HologramLineParseException e) {
+						Strings.sendWarning(sender, "Hologram '" + singleSavedHologram + "' has an invalid line: " + Utils.uncapitalize(e.getMessage()));
 					} catch (WorldNotFoundException e) {
 						Strings.sendWarning(sender, "Hologram '" + singleSavedHologram + "' was in the world '" + e.getMessage() + "' but it wasn't loaded.");
 					}

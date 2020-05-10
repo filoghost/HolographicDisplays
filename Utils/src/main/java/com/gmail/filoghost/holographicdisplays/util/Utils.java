@@ -14,7 +14,7 @@
  */
 package com.gmail.filoghost.holographicdisplays.util;
 
-public class Utils extends Object {
+public class Utils {
 
 	/**
 	 * Converts a generic array to an array of Strings using the method toString().
@@ -99,4 +99,16 @@ public class Utils extends Object {
 			return false;
 		}
 	}
+	
+	public static String uncapitalize(String str) {
+		if (str == null || str.isEmpty()) {
+			return str;
+		}
+		
+		return new StringBuilder(str.length())
+				.append(Character.toLowerCase(str.charAt(0)))
+				.append(str.substring(1))
+				.toString();
+	}
+	
 }

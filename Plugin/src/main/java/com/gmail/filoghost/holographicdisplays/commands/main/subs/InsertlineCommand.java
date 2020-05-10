@@ -28,6 +28,7 @@ import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
+import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class InsertlineCommand extends HologramSubCommand {
@@ -52,13 +53,15 @@ public class InsertlineCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
-		
 		int insertAfter = CommandValidator.getInteger(args[1]);
+		String serializedLine = Utils.join(args, " ", 2, args.length);
+		
 		int oldLinesAmount = hologram.size();
 		
 		CommandValidator.isTrue(insertAfter >= 0 && insertAfter <= oldLinesAmount, "The number must be between 0 and " + hologram.size() + "(amount of lines of the hologram).");
 
-		hologram.getLinesUnsafe().add(insertAfter, HologramDatabase.deserializeHologramLine(Utils.join(args, " ", 2, args.length), hologram));
+		CraftHologramLine line = CommandValidator.parseHologramLine(hologram, serializedLine, true);
+		hologram.getLinesUnsafe().add(insertAfter, line);
 		hologram.refreshAll();
 			
 		HologramDatabase.saveHologram(hologram);

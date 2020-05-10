@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.filoghost.holographicdisplays.commands.Colors;
@@ -29,7 +28,7 @@ import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
-import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
+import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class SetlineCommand extends HologramSubCommand {
@@ -53,26 +52,16 @@ public class SetlineCommand extends HologramSubCommand {
 	@Override
 	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
 		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
-		String line = Utils.join(args, " ", 2, args.length);
-		
-		// Check material validity
-		if (line.toLowerCase().startsWith("icon:")) {
-			String iconMaterial = ItemUtils.stripSpacingChars(line.substring("icon:".length(), line.length()));
-			
-			if (iconMaterial.contains(":")) {
-				iconMaterial = iconMaterial.split(":")[0];
-			}
-					
-			Material mat = ItemUtils.matchMaterial(iconMaterial);
-			CommandValidator.notNull(mat, "Invalid icon material.");
-		}
+		String serializedLine = Utils.join(args, " ", 2, args.length);
 		
 		int lineNumber = CommandValidator.getInteger(args[1]);
 		CommandValidator.isTrue(lineNumber >= 1 && lineNumber <= hologram.size(), "The line number must be between 1 and " + hologram.size() + ".");
 		int index = lineNumber - 1;
 		
+		CraftHologramLine line = CommandValidator.parseHologramLine(hologram, serializedLine, true);
+		
 		hologram.getLinesUnsafe().get(index).despawn();
-		hologram.getLinesUnsafe().set(index, HologramDatabase.deserializeHologramLine(line, hologram));
+		hologram.getLinesUnsafe().set(index, line);
 		hologram.refreshAll();
 
 		HologramDatabase.saveHologram(hologram);

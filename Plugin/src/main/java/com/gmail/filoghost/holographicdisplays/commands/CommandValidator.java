@@ -16,11 +16,23 @@ package com.gmail.filoghost.holographicdisplays.commands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.gmail.filoghost.holographicdisplays.disk.HologramLineParser;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
+import com.gmail.filoghost.holographicdisplays.exception.HologramLineParseException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
+import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 
 public class CommandValidator {
+	
+	public static CraftHologramLine parseHologramLine(NamedHologram hologram, String serializedLine, boolean validateMaterial) throws CommandException {
+		try {
+			return HologramLineParser.parseLine(hologram, serializedLine, validateMaterial);
+		} catch (HologramLineParseException e) {
+			throw new CommandException(e.getMessage());
+		}
+	}
 	
 	public static NamedHologram getNamedHologram(String hologramName) throws CommandException {
 		NamedHologram hologram = NamedHologramManager.getHologram(hologramName);

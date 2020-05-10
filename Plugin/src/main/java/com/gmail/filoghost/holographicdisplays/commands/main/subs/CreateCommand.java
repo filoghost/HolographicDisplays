@@ -30,6 +30,7 @@ import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
+import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
 public class CreateCommand extends HologramSubCommand {
@@ -69,19 +70,19 @@ public class CreateCommand extends HologramSubCommand {
 		}
 
 		NamedHologram hologram = new NamedHologram(spawnLoc, hologramName);
-		NamedHologramManager.addHologram(hologram);
 
 		if (args.length > 1) {
-			
 			String text = Utils.join(args, " ", 1, args.length);
 			CommandValidator.isTrue(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
 			
-			hologram.getLinesUnsafe().add(HologramDatabase.deserializeHologramLine(text, hologram));
+			CraftHologramLine line = CommandValidator.parseHologramLine(hologram, text, true);
+			hologram.getLinesUnsafe().add(line);
 			player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + label + " edit " + hologram.getName() + ")");
 		} else {
 			hologram.appendTextLine("Default hologram. Change it with " + Colors.PRIMARY + "/" + label + " edit " + hologram.getName());
 		}
 
+		NamedHologramManager.addHologram(hologram);
 		hologram.refreshAll();
 
 		HologramDatabase.saveHologram(hologram);

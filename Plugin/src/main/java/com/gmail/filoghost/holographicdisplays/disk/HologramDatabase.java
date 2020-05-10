@@ -21,28 +21,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.exception.HologramNotFoundException;
 import com.gmail.filoghost.holographicdisplays.exception.InvalidFormatException;
+import com.gmail.filoghost.holographicdisplays.exception.HologramLineParseException;
 import com.gmail.filoghost.holographicdisplays.exception.WorldNotFoundException;
-import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
-import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
-import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
-import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
-import com.gmail.filoghost.holographicdisplays.util.nbt.parser.MojangsonParseException;
-import com.gmail.filoghost.holographicdisplays.util.nbt.parser.MojangsonParser;
 
 public class HologramDatabase {
 	
@@ -60,7 +51,7 @@ public class HologramDatabase {
 		config = YamlConfiguration.loadConfiguration(file);
 	}
 	
-	public static NamedHologram loadHologram(String name) throws HologramNotFoundException, InvalidFormatException, WorldNotFoundException {
+	public static NamedHologram loadHologram(String name) throws HologramNotFoundException, InvalidFormatException, WorldNotFoundException, HologramLineParseException {
 		ConfigurationSection configSection = config.getConfigurationSection(name);
 		
 		if (configSection == null) {
@@ -77,88 +68,12 @@ public class HologramDatabase {
 		Location loc = LocationSerializer.locationFromString(locationString);
 		
 		NamedHologram hologram = new NamedHologram(loc, name);
-		for (int i = 0; i < lines.size(); i++) {
-			hologram.getLinesUnsafe().add(deserializeHologramLine(lines.get(i), hologram));
+
+		for (String line : lines) {
+			hologram.getLinesUnsafe().add(HologramLineParser.parseLine(hologram, line, false));
 		}
 		
 		return hologram;
-	}
-	
-	public static CraftHologramLine deserializeHologramLine(String rawText, CraftHologram hologram) {
-		CraftHologramLine hologramLine;
-		
-		if (rawText.toLowerCase().startsWith("icon:")) {
-			String serializedIcon = rawText.substring("icon:".length(), rawText.length());
-			ItemStack icon = parseItemStack(serializedIcon);
-			hologramLine = new CraftItemLine(hologram, icon);
-			
-		} else {
-			if (rawText.trim().equalsIgnoreCase("{empty}")) {
-				hologramLine = new CraftTextLine(hologram, "");
-			} else {
-				hologramLine = new CraftTextLine(hologram, StringConverter.toReadableFormat(rawText));
-			}
-		}
-		
-		hologramLine.setSerializedConfigValue(rawText);
-		return hologramLine;
-	}
-	
-	@SuppressWarnings("deprecation")
-	private static ItemStack parseItemStack(String serializedItem) {
-		serializedItem = serializedItem.trim();
-		
-		// Parse json
-		int nbtStart = serializedItem.indexOf('{');
-		int nbtEnd = serializedItem.lastIndexOf('}');
-		String nbtString = null;
-		
-		String basicItemData;
-		
-		if (nbtStart > 0 && nbtEnd > 0 && nbtEnd > nbtStart) {
-			nbtString = serializedItem.substring(nbtStart, nbtEnd + 1);
-			basicItemData = serializedItem.substring(0, nbtStart) + serializedItem.substring(nbtEnd + 1, serializedItem.length());
-		} else {
-			basicItemData = serializedItem;
-		}
-		
-		basicItemData = ItemUtils.stripSpacingChars(basicItemData);
-
-		String materialName;
-		short dataValue = 0;
-		
-		if (basicItemData.contains(":")) {
-			String[] materialAndDataValue = basicItemData.split(":", -1);
-			try {
-				dataValue = (short) Integer.parseInt(materialAndDataValue[1]);
-			} catch (NumberFormatException e) {
-				HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "Could not set data value for the item \"" + basicItemData + "\": invalid number.");
-			}
-			materialName = materialAndDataValue[0];
-		} else {
-			materialName = basicItemData;
-		}
-		
-		Material material = ItemUtils.matchMaterial(materialName);
-		if (material == null) {
-			material = Material.BEDROCK;
-		}
-		
-		ItemStack itemStack = new ItemStack(material, 1, dataValue);
-		
-		if (nbtString != null) {
-			try {
-				// Check NBT syntax validity before applying it.
-				MojangsonParser.parse(nbtString);
-				Bukkit.getUnsafe().modifyItemStack(itemStack, nbtString);
-			} catch (MojangsonParseException e) {
-				HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "Invalid NBT data \"" + nbtString + "\" for the item \"" + basicItemData + "\": " + e.getMessage());
-			} catch (Throwable t) {
-				HolographicDisplays.getInstance().getLogger().log(Level.WARNING, "Could not apply NBT data \"" + nbtString + "\" to the item \"" + basicItemData + "\".", t);
-			}
-		}
-		
-		return itemStack;
 	}
 	
 	public static String serializeHologramLine(CraftHologramLine line) {
@@ -169,16 +84,15 @@ public class HologramDatabase {
 		config.set(name, null);
 	}
 	
-	public static void saveHologram(NamedHologram hologram) {
-		ConfigurationSection hologramSection = getOrCreateSection(hologram.getName());		
-		hologramSection.set("location", LocationSerializer.locationToString(hologram.getLocation()));
-		
-		List<String> lines = new ArrayList<>();
+	public static void saveHologram(NamedHologram hologram) {		
+		List<String> serializedLines = new ArrayList<>();
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
-			lines.add(serializeHologramLine(line));
+			serializedLines.add(serializeHologramLine(line));
 		}
 		
-		hologramSection.set("lines", lines);
+		ConfigurationSection hologramSection = getOrCreateSection(hologram.getName());		
+		hologramSection.set("location", LocationSerializer.locationToString(hologram.getLocation()));
+		hologramSection.set("lines", serializedLines);
 	}
 	
 	public static Set<String> getHolograms() {
@@ -207,8 +121,7 @@ public class HologramDatabase {
 		try {
 			saveToDisk();
 		} catch (IOException ex) {
-			ex.printStackTrace();
-			ConsoleLogger.log(Level.SEVERE, "Unable to save database.yml to disk!");
+			ConsoleLogger.log(Level.SEVERE, "Unable to save database.yml to disk!", ex);
 		}
 	}
 }

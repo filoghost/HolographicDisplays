@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
 import com.gmail.filoghost.holographicdisplays.exception.HologramNotFoundException;
 import com.gmail.filoghost.holographicdisplays.exception.InvalidFormatException;
+import com.gmail.filoghost.holographicdisplays.exception.HologramLineParseException;
 import com.gmail.filoghost.holographicdisplays.exception.WorldNotFoundException;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
@@ -42,6 +43,8 @@ public class StartupLoadHologramsTask implements Runnable {
 					ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' has an invalid location format.");
 				} catch (WorldNotFoundException e) {
 					ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' was in the world '" + e.getMessage() + "' but it wasn't loaded.");
+				} catch (HologramLineParseException e) {
+					ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' has an invalid line: " + e.getMessage());
 				} catch (Exception e) {
 					ConsoleLogger.log(Level.WARNING, "Unhandled exception while loading the hologram '" + hologramName + "'. Please contact the developer.", e);
 				}
