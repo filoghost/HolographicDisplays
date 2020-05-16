@@ -8,6 +8,7 @@ target/
 
 # IntelliJ
 *.iml
+*.java___jb_tmp___
 .idea/
 
 # Netbeans
