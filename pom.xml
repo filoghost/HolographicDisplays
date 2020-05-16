@@ -140,12 +140,14 @@
 				<groupId>org.spigotmc</groupId>
 				<artifactId>spigot-api</artifactId>
 				<version>${spigot-api.version}</version>
+				<scope>provided</scope>
 			</dependency>
 	
 			<dependency>
 				<groupId>com.comphenix.protocol</groupId>
 				<artifactId>ProtocolLib</artifactId>
 				<version>4.2.1</version>
+				<scope>provided</scope>
 			</dependency>
 	
 			<dependency>
