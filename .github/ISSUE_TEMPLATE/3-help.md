@@ -1,7 +1,7 @@
 ---
 name: 📝 Help request
 about: "Ask a question about the plugin. ⚠ Note: help requests have low priority, I will answer them only if possible."
-labels: help
+labels: Help
 ---
 <!--
 

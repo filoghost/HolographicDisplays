@@ -1,7 +1,7 @@
 ---
 name: 💡 Suggestion
 about: "Suggest a new feature or an improvement. ⚠ Note: suggestions have low priority, I will answer them only if possible."
-labels: feature
+labels: Enhancement
 ---
 <!--
 
