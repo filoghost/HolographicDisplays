@@ -35,7 +35,7 @@
 		<module>Legacy</module>
 		<module>NMS</module>
 		<module>Plugin</module>
-		<module>Examples</module>
+		<module>Example</module>
 	</modules>
 	
 	<dependencyManagement>
