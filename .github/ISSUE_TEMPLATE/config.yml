@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📌 Frequently Asked Questions
+    url: https://filoghost.me/docs/holographic-displays/faq
+    about: Please read the FAQ before opening any kind of issue.
