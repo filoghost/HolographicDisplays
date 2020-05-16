@@ -12,7 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package com.gmail.filoghost.test;
+package com.gmail.filoghost.example.powerups;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
