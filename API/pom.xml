@@ -23,7 +23,6 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>${spigot-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

@@ -33,123 +33,103 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-api</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-utils</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-legacy</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-config</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-interfaces</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_8_r2</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_8_r3</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_9_r1</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_9_r2</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_10_r1</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_11_r1</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_12_r1</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_13_r1</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_13_r2</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_14_r1</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-nms-v1_15_r1</artifactId>
-			<version>2.4.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>${spigot-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.comphenix.protocol</groupId>
 			<artifactId>ProtocolLib</artifactId>
-			<version>4.2.1</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.bstats</groupId>
 			<artifactId>bstats-bukkit-lite</artifactId>
-			<version>1.5</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>me.filoghost.updatechecker</groupId>
 			<artifactId>updatechecker</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 
