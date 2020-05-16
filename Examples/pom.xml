@@ -5,35 +5,35 @@
 
 	<parent>
 		<groupId>com.gmail.filoghost.holographicdisplays</groupId>
-		<artifactId>holographicdisplays-nms</artifactId>
+		<artifactId>holographicdisplays-parent</artifactId>
 		<version>2.4.2-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>holographicdisplays-nms-v1_8_r2</artifactId>
-	<name>HolographicDisplays NMS v1_8_R2</name>
+	<artifactId>holographicdisplays-example</artifactId>
+	<name>HolographicDisplays Example</name>
+	<packaging>pom</packaging>
 
+	<modules>
+		<module>DeathHolograms</module>
+		<module>PowerUps</module>
+	</modules>
+	
 	<repositories>
 		<repository>
-			<id>nms-repo</id>
-			<url>https://repo.codemc.io/repository/nms/</url>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
 	</repositories>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-nms-interfaces</artifactId>
+			<artifactId>holographicdisplays-api</artifactId>
 		</dependency>
 		
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-utils</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot</artifactId>
-			<version>1.8.3-R0.1-SNAPSHOT</version>
+			<artifactId>spigot-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

@@ -33,21 +33,9 @@
 		<module>Utils</module>
 		<module>Config</module>
 		<module>Legacy</module>
-		<module>NMS/Interfaces</module>
-		<module>NMS/v1_8_R2</module>
-		<module>NMS/v1_8_R3</module>
-		<module>NMS/v1_9_R1</module>
-		<module>NMS/v1_9_R2</module>
-		<module>NMS/v1_10_R1</module>
-		<module>NMS/v1_11_R1</module>
-		<module>NMS/v1_12_R1</module>
-		<module>NMS/v1_13_R1</module>
-		<module>NMS/v1_13_R2</module>
-		<module>NMS/v1_14_R1</module>
-		<module>NMS/v1_15_R1</module>
+		<module>NMS</module>
 		<module>Plugin</module>
-		<module>Examples/DeathHolograms</module>
-		<module>Examples/PowerUps</module>
+		<module>Examples</module>
 	</modules>
 	
 	<dependencyManagement>

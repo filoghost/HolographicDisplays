@@ -5,9 +5,8 @@
 
 	<parent>
 		<groupId>com.gmail.filoghost.holographicdisplays</groupId>
-		<artifactId>holographicdisplays-parent</artifactId>
+		<artifactId>holographicdisplays-nms</artifactId>
 		<version>2.4.2-SNAPSHOT</version>
-		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>holographicdisplays-nms-v1_14_r1</artifactId>
