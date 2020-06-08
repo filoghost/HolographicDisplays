@@ -1,0 +1,33 @@
+comment: >-
+  This issue has been automatically closed because it doesn't follow the issue template.
+  
+  
+  Please open a new issue and make sure to **follow the provided template**, 
+  fill out the sections **without modifying** or **deleting** the existing text.
+  
+  
+  Templates are necessary to manage the project efficiently,
+  as basic questions don't need to be asked again each time.
+
+issueConfigs:
+
+# Bug
+- content:
+  - "# Description"
+  - "# How to reproduce"
+  - "# Platform"
+
+# Feature / Documentation
+- content:
+  - "# Description"
+
+# Help
+- content:
+  - "# What are you trying to do"
+  - "# What have you tried so far"
+  - "# Platform"
+
+caseInsensitive: true
+label: "Closed by bot"
+exception:
+  - "filoghost"
