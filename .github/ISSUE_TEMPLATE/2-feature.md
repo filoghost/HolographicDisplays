@@ -5,7 +5,11 @@ labels: Enhancement
 ---
 <!--
 
+⚠️ READ BELOW BEFOR SUBMITTING ⚠️
+
 Please only suggest changes that would benefit many users, not just a specific situation.
+
+You MUST fill out the template below, without modifying or deleting the existing text, otherwise the issue will be automatically closed.
 
 -->
 
