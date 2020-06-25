@@ -15,8 +15,7 @@
 	<repositories>
 		<repository>
 			<id>nms-repo</id>
-<!--			<url>https://repo.codemc.io/repository/nms/</url>-->
-			<url>https://repo.rosewooddev.io/repository/public/</url>
+			<url>https://repo.codemc.io/repository/nms/</url>
 		</repository>
 	</repositories>
 
@@ -34,8 +33,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot</artifactId>
-<!--			<version>1.16-R0.1-SNAPSHOT</version>-->
-			<version>1.16.1</version>
+			<version>1.16.1-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
