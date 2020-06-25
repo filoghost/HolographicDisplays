@@ -161,7 +161,8 @@ public class HolographicDisplays extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(mainListener = new MainListener(nmsManager), this);
 
 		// Register bStats metrics
-		new MetricsLite(this);
+		int pluginID = 3123;
+		new MetricsLite(this, pluginID);
 		
 		// Holograms are loaded later, when the worlds are ready.
 		Bukkit.getScheduler().runTask(this, new StartupLoadHologramsTask());
