@@ -16,7 +16,6 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_16_R1;
 
 import java.util.List;
 
-import net.minecraft.server.v1_16_R1.EnumChatFormat;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R1.entity.CraftEntity;
