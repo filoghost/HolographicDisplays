@@ -109,7 +109,7 @@ public class HolographicDisplays extends JavaPlugin {
 		if (!NMSVersion.isValid()) {
 			criticalShutdown(
 				"Holographic Displays does not support this server version.",
-				"Supported Spigot versions: from 1.8.3 to 1.15.");
+				"Supported Spigot versions: from 1.8.3 to 1.16.");
 			return;
 		}
 		

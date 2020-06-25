@@ -135,6 +135,12 @@
 				<artifactId>holographicdisplays-nms-v1_15_r1</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>holographicdisplays-nms-v1_16_r1</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 	
 			<dependency>
 				<groupId>org.spigotmc</groupId>
