@@ -134,6 +134,11 @@
 			<groupId>me.filoghost.updatechecker</groupId>
 			<artifactId>updatechecker</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-chat</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

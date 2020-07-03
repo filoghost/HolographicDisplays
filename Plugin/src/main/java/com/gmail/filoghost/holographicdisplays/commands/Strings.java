@@ -14,7 +14,7 @@
  */
 package com.gmail.filoghost.holographicdisplays.commands;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class Strings {

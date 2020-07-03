@@ -24,6 +24,11 @@
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-chat</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

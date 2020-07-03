@@ -1,6 +1,6 @@
 package com.gmail.filoghost.holographicdisplays.util.nbt.parser;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 
 import java.io.IOException;
 

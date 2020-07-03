@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;

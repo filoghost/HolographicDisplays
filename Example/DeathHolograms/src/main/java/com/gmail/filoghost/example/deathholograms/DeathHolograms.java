@@ -17,8 +17,8 @@ package com.gmail.filoghost.example.deathholograms;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;

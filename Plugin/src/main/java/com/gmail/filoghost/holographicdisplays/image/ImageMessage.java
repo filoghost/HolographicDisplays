@@ -22,10 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
-
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 import com.gmail.filoghost.holographicdisplays.exception.TooWideException;
+import net.md_5.bungee.api.ChatColor;
 
 /**
  * Huge thanks to bobacadodl for this awesome library!
