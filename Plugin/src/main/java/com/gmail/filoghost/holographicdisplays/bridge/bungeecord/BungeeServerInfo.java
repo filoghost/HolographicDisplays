@@ -16,6 +16,8 @@ package com.gmail.filoghost.holographicdisplays.bridge.bungeecord;
 
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 
+import java.util.Arrays;
+
 public class BungeeServerInfo {
 
 	private volatile boolean isOnline;
@@ -74,11 +76,13 @@ public class BungeeServerInfo {
 			this.motd2 = "";
 			return;
 		}
-		
-		if (motd.contains("\n")) {
-			String[] split = motd.split("\n");
-			this.motd1 = Configuration.pingerTrimMotd ? split[0].trim() : split[0];
-			this.motd2 = Configuration.pingerTrimMotd ? split[1].trim() : split[1];
+
+		int separatorIndex = motd.indexOf("\n");
+		if (separatorIndex >= 0) {
+			String line1 = motd.substring(0, separatorIndex);
+			String line2 = motd.substring(separatorIndex);
+			this.motd1 = Configuration.pingerTrimMotd ? line1.trim() : line1;
+			this.motd2 = Configuration.pingerTrimMotd ? line2.trim() : line2;
 		} else {
 			this.motd1 = Configuration.pingerTrimMotd ? motd.trim() : motd;
 			this.motd2 = "";
