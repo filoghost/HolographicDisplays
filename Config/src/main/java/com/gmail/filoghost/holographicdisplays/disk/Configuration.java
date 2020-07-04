@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
 
+import com.gmail.filoghost.holographicdisplays.util.Utils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -187,15 +188,10 @@ public class Configuration {
 		
 		ConsoleLogger.setDebugEnabled(config.getBoolean(ConfigNode.DEBUG.getPath()));
 		
-		String tempColor = config.getString(ConfigNode.TRANSPARENCY_COLOR.getPath()).replace('&', ChatColor.COLOR_CHAR);
-		boolean foundColor = false;
-		for (ChatColor chatColor : ChatColor.values()) {
-			if (chatColor.toString().equals(tempColor)) {
-				Configuration.transparencyColor = chatColor;
-				foundColor = true;
-			}
-		}
-		if (!foundColor) {
+		String configTransparencyColor = ChatColor.translateAlternateColorCodes('&', config.getString(ConfigNode.TRANSPARENCY_COLOR.getPath()));
+		if (Utils.isColorCode(configTransparencyColor)) {
+			Configuration.transparencyColor = Utils.toChatColor(configTransparencyColor);
+		} else {
 			Configuration.transparencyColor = ChatColor.GRAY;
 			ConsoleLogger.log(Level.WARNING, "You didn't set a valid chat color for transparency in the configuration, light gray (&7) will be used.");
 		}
