@@ -16,8 +16,6 @@ package com.gmail.filoghost.holographicdisplays.bridge.bungeecord;
 
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
 
-import java.util.Arrays;
-
 public class BungeeServerInfo {
 
 	private volatile boolean isOnline;
