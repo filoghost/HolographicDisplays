@@ -3,12 +3,12 @@
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
@@ -27,11 +27,8 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
-import com.gmail.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
-import com.gmail.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.Utils;
 
@@ -40,20 +37,10 @@ public class PlaceholdersManager {
 	private static long elapsedTenthsOfSecond;
 	protected static Set<DynamicLineData> linesToUpdate = new HashSet<>();
 	
-	private static final Pattern BUNGEE_ONLINE_PATTERN = makePlaceholderWithArgsPattern("online");
-	private static final Pattern BUNGEE_MAX_PATTERN = makePlaceholderWithArgsPattern("max_players");
-	private static final Pattern BUNGEE_MOTD_PATTERN = makePlaceholderWithArgsPattern("motd");
-	private static final Pattern BUNGEE_MOTD_2_PATTERN = makePlaceholderWithArgsPattern("motd2");
-	private static final Pattern BUNGEE_STATUS_PATTERN = makePlaceholderWithArgsPattern("status");
-	private static final Pattern ANIMATION_PATTERN = makePlaceholderWithArgsPattern("animation");
-	private static final Pattern WORLD_PATTERN = makePlaceholderWithArgsPattern("world");
-	
-	private static Pattern makePlaceholderWithArgsPattern(String prefix) {
-		return Pattern.compile("(\\{" + Pattern.quote(prefix) + ":)(.+?)(\\})");
-	}
+	private static final Pattern ANIMATION_PATTERN = Pattern.compile("\\{animation:(.+?)}");
 	
 	private static String extractArgumentFromPlaceholder(Matcher matcher) {
-		return matcher.group(2).trim();
+		return matcher.group(1).trim();
 	}
 	
 	
@@ -65,7 +52,10 @@ public class PlaceholdersManager {
 					try {
 						placeholder.update();
 					} catch (Throwable t) {
-						ConsoleLogger.log(Level.WARNING, "The placeholder " + placeholder.getTextPlaceholder() + " registered by the plugin " + placeholder.getOwner().getName() + " generated an exception while updating. Please contact the author of " + placeholder.getOwner().getName(), t);
+						ConsoleLogger.log(Level.WARNING, "The placeholder " + placeholder.getTextPlaceholder()
+								+ " registered by the plugin " + placeholder.getOwner().getName()
+								+ " generated an exception while updating. Please contact the author of "
+								+ placeholder.getOwner().getName(), t);
 					}
 				}
 			}
@@ -126,11 +116,10 @@ public class PlaceholdersManager {
 		}
 		
 		boolean updateName = false;
-
+		
 		// Lazy initialization.
 		Set<Placeholder> normalPlaceholders = null;
-		Map<String, PlaceholderReplacer> bungeeReplacers = null;
-		Map<String, PlaceholderReplacer> worldsOnlinePlayersReplacers = null;
+		Set<PatternPlaceholder> patternPlaceholders = null;
 		Map<String, Placeholder> animationsPlaceholders = null;
 		
 		Matcher matcher;
@@ -147,147 +136,23 @@ public class PlaceholdersManager {
 			}
 		}
 		
-		
-		// Players in a world count pattern.
-		matcher = WORLD_PATTERN.matcher(name);
-		while (matcher.find()) {
-							
-			if (worldsOnlinePlayersReplacers == null) {
-				worldsOnlinePlayersReplacers = new HashMap<>();
-			}
-							
-			final String worldsNames = extractArgumentFromPlaceholder(matcher);
+		for (PatternPlaceholder placeholder : PlaceholdersRegister.getPatternPlaceholders()) {
 			
-			if (worldsNames.contains(",")) {
+			if (placeholder.getPatternPlaceholder().matcher(name).find()) {
 				
-				String[] split = worldsNames.split(",");
-				for (int i = 0; i < split.length; i++) {
-					split[i] = split[i].trim();
+				if (patternPlaceholders == null) {
+					patternPlaceholders = new HashSet<>();
 				}
 				
-				final String[] worldsToTrack = split;
-			
-				// Add it to tracked worlds.
-				worldsOnlinePlayersReplacers.put(matcher.group(), () -> {
-					return WorldPlayerCounterTask.getCount(worldsToTrack);
-				});
-			} else {
-				// Normal, single tracked world.
-				worldsOnlinePlayersReplacers.put(matcher.group(), () -> {
-					return WorldPlayerCounterTask.getCount(worldsNames);
-				});
+				patternPlaceholders.add(placeholder);
 			}
-		}
-		
-		// BungeeCord online pattern.
-		matcher = BUNGEE_ONLINE_PATTERN.matcher(name);
-		while (matcher.find()) {
-			
-			if (bungeeReplacers == null) {
-				bungeeReplacers = new HashMap<>();
-			}
-			
-			final String serverName = extractArgumentFromPlaceholder(matcher);
-			BungeeServerTracker.track(serverName); // Track this server.
-			
-			if (serverName.contains(",")) {
-				
-				String[] split = serverName.split(",");
-				for (int i = 0; i < split.length; i++) {
-					split[i] = split[i].trim();
-				}
-				
-				final String[] serversToTrack = split;
-			
-				// Add it to tracked servers.
-				bungeeReplacers.put(matcher.group(), () -> {
-					int count = 0;
-					for (String serverToTrack : serversToTrack) {
-						count += BungeeServerTracker.getPlayersOnline(serverToTrack);
-					}
-					return String.valueOf(count);
-				});
-			} else {
-				// Normal, single tracked server.
-				bungeeReplacers.put(matcher.group(), () -> {
-					return String.valueOf(BungeeServerTracker.getPlayersOnline(serverName));
-				});
-			}
-		}
-		
-		// BungeeCord max players pattern.
-		matcher = BUNGEE_MAX_PATTERN.matcher(name);
-		while (matcher.find()) {
-			
-			if (bungeeReplacers == null) {
-				bungeeReplacers = new HashMap<>();
-			}
-			
-			final String serverName = extractArgumentFromPlaceholder(matcher);
-			BungeeServerTracker.track(serverName); // Track this server.
-			
-			// Add it to tracked servers.
-			bungeeReplacers.put(matcher.group(), () -> {
-				return BungeeServerTracker.getMaxPlayers(serverName);
-			});
-		}
-		
-		// BungeeCord motd pattern.
-		matcher = BUNGEE_MOTD_PATTERN.matcher(name);
-		while (matcher.find()) {
-			
-			if (bungeeReplacers == null) {
-				bungeeReplacers = new HashMap<>();
-			}
-			
-			final String serverName = extractArgumentFromPlaceholder(matcher);
-			BungeeServerTracker.track(serverName); // Track this server.
-			
-			// Add it to tracked servers.
-			bungeeReplacers.put(matcher.group(), () -> {
-				return BungeeServerTracker.getMotd1(serverName);
-			});
-		}
-		
-		// BungeeCord motd (line 2) pattern.
-		matcher = BUNGEE_MOTD_2_PATTERN.matcher(name);
-		while (matcher.find()) {
-			
-			if (bungeeReplacers == null) {
-				bungeeReplacers = new HashMap<>();
-			}
-			
-			final String serverName = extractArgumentFromPlaceholder(matcher);
-			BungeeServerTracker.track(serverName); // Track this server.
-			
-			// Add it to tracked servers.
-			bungeeReplacers.put(matcher.group(), () -> {
-				return BungeeServerTracker.getMotd2(serverName);
-			});
-		}
-		
-		// BungeeCord status pattern.
-		matcher = BUNGEE_STATUS_PATTERN.matcher(name);
-		while (matcher.find()) {
-			
-			if (bungeeReplacers == null) {
-				bungeeReplacers = new HashMap<>();
-			}
-			
-			final String serverName = extractArgumentFromPlaceholder(matcher);
-			BungeeServerTracker.track(serverName); // Track this server.
-			
-			// Add it to tracked servers.
-			bungeeReplacers.put(matcher.group(), () -> {
-				return BungeeServerTracker.getOnlineStatus(serverName);
-			});
 		}
 		
 		
 		// Animation pattern.
 		matcher = ANIMATION_PATTERN.matcher(name);
 		while (matcher.find()) {
-
+			
 			String fileName = extractArgumentFromPlaceholder(matcher);
 			Placeholder animation = AnimationsRegister.getAnimation(fileName);
 			
@@ -306,7 +171,7 @@ public class PlaceholdersManager {
 			}
 		}
 		
-		if (Utils.isThereNonNull(normalPlaceholders, bungeeReplacers, worldsOnlinePlayersReplacers, animationsPlaceholders)) {
+		if (Utils.isThereNonNull(normalPlaceholders, patternPlaceholders, animationsPlaceholders)) {
 			
 			DynamicLineData lineData = new DynamicLineData(nameableEntity, name);
 			
@@ -314,12 +179,8 @@ public class PlaceholdersManager {
 				lineData.setPlaceholders(normalPlaceholders);
 			}
 			
-			if (bungeeReplacers != null) {
-				lineData.getReplacers().putAll(bungeeReplacers);
-			}
-			
-			if (worldsOnlinePlayersReplacers != null) {
-				lineData.getReplacers().putAll(worldsOnlinePlayersReplacers);
+			if (patternPlaceholders != null) {
+				lineData.setPatternPlaceholders(patternPlaceholders);
 			}
 			
 			if (animationsPlaceholders != null) {
@@ -354,9 +215,23 @@ public class PlaceholdersManager {
 			}
 		}
 		
-		if (!lineData.getReplacers().isEmpty()) {
-			for (Entry<String, PlaceholderReplacer> entry : lineData.getReplacers().entrySet()) {
-				newCustomName = newCustomName.replace(entry.getKey(), Utils.sanitize(entry.getValue().update()));
+		if (!lineData.getPatternPlaceholders().isEmpty()) {
+			for (PatternPlaceholder placeholder : lineData.getPatternPlaceholders()) {
+				final Matcher matcher = placeholder.getPatternPlaceholder().matcher(newCustomName);
+				
+				// Update the value
+				if (elapsedTenthsOfSecond % placeholder.getTenthsToRefresh() == 0 && matcher.matches()) {
+					try {
+						placeholder.update(matcher);
+					} catch (Throwable t) {
+						ConsoleLogger.log(Level.WARNING, "The placeholder " + placeholder.getPatternPlaceholder() +
+								" registered by the plugin " + placeholder.getOwner().getName() +
+								" generated an exception while updating. Please contact the author of " +
+								placeholder.getOwner().getName(), t);
+					}
+				}
+				
+				newCustomName = matcher.replaceFirst(Utils.sanitize(placeholder.getCurrentReplacement()));
 			}
 		}
 		
@@ -371,5 +246,5 @@ public class PlaceholdersManager {
 			lineData.getEntity().setCustomNameNMS(newCustomName);
 		}
 	}
-
+	
 }

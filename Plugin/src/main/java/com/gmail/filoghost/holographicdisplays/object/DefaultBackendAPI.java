@@ -3,19 +3,22 @@
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 package com.gmail.filoghost.holographicdisplays.object;
 
 import java.util.Collection;
+import java.util.regex.Pattern;
 
+import com.gmail.filoghost.holographicdisplays.api.placeholder.PatternPlaceholderReplacer;
+import com.gmail.filoghost.holographicdisplays.placeholder.PatternPlaceholder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -25,8 +28,6 @@ import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.internal.BackendAPI;
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
-import com.gmail.filoghost.holographicdisplays.object.PluginHologram;
-import com.gmail.filoghost.holographicdisplays.object.PluginHologramManager;
 import com.gmail.filoghost.holographicdisplays.placeholder.Placeholder;
 import com.gmail.filoghost.holographicdisplays.placeholder.PlaceholdersRegister;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
@@ -52,33 +53,55 @@ public class DefaultBackendAPI extends BackendAPI {
 		
 		return PlaceholdersRegister.register(new Placeholder(plugin, textPlaceholder, refreshRate, replacer));
 	}
-
+	
+	public boolean registerPlaceholder(Plugin plugin, Pattern pattenPlaceholder, double refreshRate, PatternPlaceholderReplacer replacer) {
+		Validator.notNull(pattenPlaceholder, "pattenPlaceholder");
+		Validator.isTrue(refreshRate >= 0, "refreshRate should be positive");
+		Validator.notNull(replacer, "replacer");
+		
+		return PlaceholdersRegister.register(new PatternPlaceholder(plugin, pattenPlaceholder, refreshRate, replacer));
+	}
+	
 	public boolean isHologramEntity(Entity bukkitEntity) {
 		Validator.notNull(bukkitEntity, "bukkitEntity");
 		return HolographicDisplays.getNMSManager().isNMSEntityBase(bukkitEntity);
 	}
-
+	
 	public Collection<Hologram> getHolograms(Plugin plugin) {
 		Validator.notNull(plugin, "plugin");
 		return PluginHologramManager.getHolograms(plugin);
 	}
-
+	
 	public Collection<String> getRegisteredPlaceholders(Plugin plugin) {
 		Validator.notNull(plugin, "plugin");
 		return PlaceholdersRegister.getTextPlaceholdersByPlugin(plugin);
 	}
-
+	
+	public Collection<Pattern> getRegisteredPatternPlaceholders(Plugin plugin) {
+		Validator.notNull(plugin, "plugin");
+		return PlaceholdersRegister.getPatternPlaceholdersByPlugin(plugin);
+	}
+	
 	public boolean unregisterPlaceholder(Plugin plugin, String textPlaceholder) {
 		Validator.notNull(plugin, "plugin");
 		Validator.notNull(textPlaceholder, "textPlaceholder");
 		return PlaceholdersRegister.unregister(plugin, textPlaceholder);
 	}
-
+	
+	public boolean unregisterPlaceholder(Plugin plugin, Pattern patternPlaceholder) {
+		Validator.notNull(plugin, "plugin");
+		Validator.notNull(patternPlaceholder, "patternPlaceholder");
+		return PlaceholdersRegister.unregister(plugin, patternPlaceholder);
+	}
+	
 	public void unregisterPlaceholders(Plugin plugin) {
 		Validator.notNull(plugin, "plugin");
 		for (String placeholder : getRegisteredPlaceholders(plugin)) {
 			unregisterPlaceholder(plugin, placeholder);
 		}
+		for (Pattern placeholder : getRegisteredPatternPlaceholders(plugin)) {
+			unregisterPlaceholder(plugin, placeholder);
+		}
 	}
-
+	
 }
