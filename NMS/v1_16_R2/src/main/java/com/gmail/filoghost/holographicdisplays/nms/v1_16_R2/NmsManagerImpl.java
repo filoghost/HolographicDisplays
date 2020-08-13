@@ -16,8 +16,8 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_16_R2;
 
 import java.util.List;
 
+import java.util.Map;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
@@ -48,7 +48,7 @@ import net.minecraft.server.v1_16_R2.WorldServer;
 
 public class NmsManagerImpl implements NMSManager {
 	
-	private static final ReflectField<Object2IntMap<EntityTypes<?>>> REGISTRY_TO_ID_FIELD = new ReflectField<>(RegistryMaterials.class, "bg");
+	private static final ReflectField<Map<EntityTypes<?>, Integer>> REGISTRY_TO_ID_FIELD = new ReflectField<>(RegistryMaterials.class, "bg");
 	private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD = new ReflectMethod<>(WorldServer.class, "registerEntity", Entity.class);
 	
 	@Override
@@ -58,7 +58,7 @@ public class NmsManagerImpl implements NMSManager {
 	
 	public void registerCustomEntity(Class<? extends Entity> entityClass, int id, float sizeWidth, float sizeHeight) throws Exception {
 		// Use reflection to map the custom entity to the correct ID
-		Object2IntMap<EntityTypes<?>> entityTypesToId = REGISTRY_TO_ID_FIELD.get(IRegistry.ENTITY_TYPE);
+		Map<EntityTypes<?>, Integer> entityTypesToId = REGISTRY_TO_ID_FIELD.get(IRegistry.ENTITY_TYPE);
 		EntityTypes<?> customEntityTypes = EntityTypes.Builder.a(EnumCreatureType.MONSTER).a(sizeWidth, sizeHeight).b().a((String) null);
 		entityTypesToId.put(customEntityTypes, id);
 	}
