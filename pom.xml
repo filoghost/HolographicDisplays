@@ -6,7 +6,7 @@
 	<groupId>com.gmail.filoghost.holographicdisplays</groupId>
 	<artifactId>holographicdisplays-parent</artifactId>
 	<name>HolographicDisplays Parent</name>
-	<version>2.4.4-SNAPSHOT</version>
+	<version>2.4.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -139,6 +139,12 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>holographicdisplays-nms-v1_16_r1</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>holographicdisplays-nms-v1_16_r2</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 	

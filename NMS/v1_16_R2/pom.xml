@@ -9,8 +9,8 @@
 		<version>2.4.5-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>holographicdisplays-nms-v1_16_r1</artifactId>
-	<name>HolographicDisplays NMS v1_16_R1</name>
+	<artifactId>holographicdisplays-nms-v1_16_r2</artifactId>
+	<name>HolographicDisplays NMS v1_16_R2</name>
 
 	<repositories>
 		<repository>
@@ -33,7 +33,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot</artifactId>
-			<version>1.16.1-R0.1-SNAPSHOT</version>
+			<version>1.16.2-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
