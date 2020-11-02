@@ -16,6 +16,7 @@ package com.gmail.filoghost.holographicdisplays.disk;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,14 +27,7 @@ import com.gmail.filoghost.holographicdisplays.exception.WorldNotFoundException;
 
 public class LocationSerializer {
 	
-	private static DecimalFormat decimalFormat;
-	static {
-		// More precision is not needed at all.
-		decimalFormat = new DecimalFormat("0.000");
-		DecimalFormatSymbols formatSymbols = decimalFormat.getDecimalFormatSymbols();
-		formatSymbols.setDecimalSeparator('.');
-		decimalFormat.setDecimalFormatSymbols(formatSymbols);
-	}
+	private static DecimalFormat numberFormat = new DecimalFormat("0.000", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
 	public static Location locationFromString(String input) throws WorldNotFoundException, InvalidFormatException {
 		if (input == null) {
@@ -64,6 +58,6 @@ public class LocationSerializer {
 	}
 	
 	public static String locationToString(Location loc) {
-		return (loc.getWorld().getName() + ", " + decimalFormat.format(loc.getX()) + ", " + decimalFormat.format(loc.getY()) + ", " + decimalFormat.format(loc.getZ()));
+		return (loc.getWorld().getName() + ", " + numberFormat.format(loc.getX()) + ", " + numberFormat.format(loc.getY()) + ", " + numberFormat.format(loc.getZ()));
 	}
 }
