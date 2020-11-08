@@ -29,13 +29,13 @@
 	</distributionManagement>
 
 	<modules>
-		<module>API</module>
-		<module>Utils</module>
-		<module>Config</module>
-		<module>Legacy</module>
-		<module>NMS</module>
-		<module>Plugin</module>
-		<module>Example</module>
+		<module>api</module>
+		<module>utils</module>
+		<module>config</module>
+		<module>legacy</module>
+		<module>nms</module>
+		<module>plugin</module>
+		<module>example</module>
 	</modules>
 	
 	<dependencyManagement>
