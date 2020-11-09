@@ -14,13 +14,11 @@
  */
 package com.gmail.filoghost.holograms.api;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.gmail.filoghost.holograms.api.adapter.FloatingItemAdapter;
+import com.gmail.filoghost.holograms.api.adapter.HologramAdapter;
+import me.filoghost.holographicdisplays.api.HologramsAPI;
+import me.filoghost.holographicdisplays.api.line.ItemLine;
+import me.filoghost.holographicdisplays.util.Validator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -30,11 +28,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.filoghost.holograms.api.adapter.FloatingItemAdapter;
-import com.gmail.filoghost.holograms.api.adapter.HologramAdapter;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
-import com.gmail.filoghost.holographicdisplays.util.Validator;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @deprecated Please use the new API!
@@ -59,7 +58,7 @@ public class HolographicDisplaysAPI {
 		
 		validateLocation(source);
 		
-		com.gmail.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
+		me.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
 		for (String line : lines) {
 			hologram.appendTextLine(line);
 		}
@@ -73,7 +72,7 @@ public class HolographicDisplaysAPI {
 		validateLocation(source);
 		validateItem(itemstack);
 		
-		com.gmail.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
+		me.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
 		ItemLine itemLine = hologram.appendItemLine(itemstack);
 		return new FloatingItemAdapter(plugin, hologram, itemLine);
 	}
@@ -91,7 +90,7 @@ public class HolographicDisplaysAPI {
 		
 		validateLocation(source);
 		
-		com.gmail.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
+		me.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
 		
 		hologram.getVisibilityManager().setVisibleByDefault(false);
 		if (whoCanSee != null) {
@@ -121,7 +120,7 @@ public class HolographicDisplaysAPI {
 		validateLocation(source);
 		validateItem(itemstack);
 		
-		com.gmail.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
+		me.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
 		ItemLine itemLine = hologram.appendItemLine(itemstack);
 		
 		hologram.getVisibilityManager().setVisibleByDefault(false);

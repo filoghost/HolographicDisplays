@@ -14,13 +14,13 @@
  */
 package com.gmail.filoghost.holograms.api.adapter;
 
-import org.bukkit.entity.Player;
-
 import com.gmail.filoghost.holograms.api.FloatingItem;
 import com.gmail.filoghost.holograms.api.ItemTouchHandler;
+import me.filoghost.holographicdisplays.api.handler.TouchHandler;
+import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
-public class ItemTouchHandlerAdapter implements com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler {
+public class ItemTouchHandlerAdapter implements TouchHandler {
 
 	protected ItemTouchHandler oldHandler;
 	private FloatingItem item;

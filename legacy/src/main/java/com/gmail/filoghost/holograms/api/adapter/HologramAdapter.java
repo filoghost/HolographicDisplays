@@ -14,20 +14,19 @@
  */
 package com.gmail.filoghost.holograms.api.adapter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.gmail.filoghost.holograms.api.Hologram;
+import com.gmail.filoghost.holograms.api.TouchHandler;
+import me.filoghost.holographicdisplays.api.line.HologramLine;
+import me.filoghost.holographicdisplays.api.line.TextLine;
+import me.filoghost.holographicdisplays.api.line.TouchableLine;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.filoghost.holograms.api.Hologram;
-import com.gmail.filoghost.holograms.api.TouchHandler;
-import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
-import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
-import com.gmail.filoghost.holographicdisplays.api.line.TouchableLine;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class HologramAdapter implements Hologram {
@@ -35,10 +34,10 @@ public class HologramAdapter implements Hologram {
 	public static Map<Plugin, Collection<HologramAdapter>> activeHolograms = new HashMap<>();
 	
 	private Plugin plugin;
-	private com.gmail.filoghost.holographicdisplays.api.Hologram hologram;
+	private me.filoghost.holographicdisplays.api.Hologram hologram;
 	private TouchHandler touchHandler;
 	
-	public HologramAdapter(Plugin plugin, com.gmail.filoghost.holographicdisplays.api.Hologram delegate) {
+	public HologramAdapter(Plugin plugin, me.filoghost.holographicdisplays.api.Hologram delegate) {
 		this.plugin = plugin;
 		this.hologram = delegate;
 		

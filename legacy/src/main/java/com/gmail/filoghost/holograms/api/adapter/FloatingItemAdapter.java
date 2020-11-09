@@ -14,21 +14,20 @@
  */
 package com.gmail.filoghost.holograms.api.adapter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.gmail.filoghost.holograms.api.FloatingItem;
+import com.gmail.filoghost.holograms.api.ItemTouchHandler;
+import com.gmail.filoghost.holograms.api.PickupHandler;
+import me.filoghost.holographicdisplays.api.Hologram;
+import me.filoghost.holographicdisplays.api.line.ItemLine;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.filoghost.holograms.api.FloatingItem;
-import com.gmail.filoghost.holograms.api.ItemTouchHandler;
-import com.gmail.filoghost.holograms.api.PickupHandler;
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class FloatingItemAdapter implements FloatingItem {

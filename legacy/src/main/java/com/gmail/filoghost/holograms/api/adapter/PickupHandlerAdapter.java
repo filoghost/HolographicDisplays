@@ -14,13 +14,12 @@
  */
 package com.gmail.filoghost.holograms.api.adapter;
 
-import org.bukkit.entity.Player;
-
 import com.gmail.filoghost.holograms.api.FloatingItem;
 import com.gmail.filoghost.holograms.api.PickupHandler;
+import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
-public class PickupHandlerAdapter implements com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler {
+public class PickupHandlerAdapter implements me.filoghost.holographicdisplays.api.handler.PickupHandler {
 
 	public PickupHandler oldHandler;
 	private FloatingItem item;

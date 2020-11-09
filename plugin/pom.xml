@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.gmail.filoghost.holographicdisplays</groupId>
+		<groupId>me.filoghost.holographicdisplays</groupId>
 		<artifactId>holographicdisplays-parent</artifactId>
 		<version>3.0.0-SNAPSHOT</version>
 	</parent>
@@ -228,11 +228,11 @@
 					<relocations>
 						<relocation>
 							<pattern>org.bstats</pattern>
-							<shadedPattern>com.gmail.filoghost.holographicdisplays.metrics</shadedPattern>
+							<shadedPattern>me.filoghost.holographicdisplays.metrics</shadedPattern>
 						</relocation>
 						<relocation>
 							<pattern>me.filoghost.updatechecker</pattern>
-							<shadedPattern>com.gmail.filoghost.holographicdisplays.updater</shadedPattern>
+							<shadedPattern>me.filoghost.holographicdisplays.updater</shadedPattern>
 						</relocation>
 					</relocations>
 				</configuration>

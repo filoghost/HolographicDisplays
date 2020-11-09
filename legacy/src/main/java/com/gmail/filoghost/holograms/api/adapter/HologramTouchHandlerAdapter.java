@@ -14,13 +14,12 @@
  */
 package com.gmail.filoghost.holograms.api.adapter;
 
-import org.bukkit.entity.Player;
-
 import com.gmail.filoghost.holograms.api.Hologram;
 import com.gmail.filoghost.holograms.api.TouchHandler;
+import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
-public class HologramTouchHandlerAdapter implements com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler {
+public class HologramTouchHandlerAdapter implements me.filoghost.holographicdisplays.api.handler.TouchHandler {
 
 	protected TouchHandler oldHandler;
 	private Hologram hologram;
