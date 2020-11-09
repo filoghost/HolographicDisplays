@@ -17,9 +17,9 @@ Development Builds: https://ci.codemc.io/job/filoghost/job/HolographicDisplays
 
 ```xml
 <dependency>
-    <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+    <groupId>me.filoghost.holographicdisplays</groupId>
     <artifactId>holographicdisplays-api</artifactId>
-    <version>2.4.0</version>
+    <version>3.0.0</version>
     <scope>provided</scope>
 </dependency>
 ```
