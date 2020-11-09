@@ -42,7 +42,7 @@
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>holographicdisplays-legacy</artifactId>
+			<artifactId>holographicdisplays-legacy-v1</artifactId>
 		</dependency>
 		
 		<dependency>

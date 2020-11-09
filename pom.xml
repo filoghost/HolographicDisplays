@@ -32,7 +32,7 @@
 		<module>api</module>
 		<module>utils</module>
 		<module>config</module>
-		<module>legacy</module>
+		<module>legacy-v1</module>
 		<module>nms</module>
 		<module>plugin</module>
 		<module>example</module>
@@ -54,7 +54,7 @@
 	
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>holographicdisplays-legacy</artifactId>
+				<artifactId>holographicdisplays-legacy-v1</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			
