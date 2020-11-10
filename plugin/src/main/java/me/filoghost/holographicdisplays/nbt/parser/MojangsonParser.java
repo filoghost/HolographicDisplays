@@ -3,22 +3,22 @@
  *
  * SPDX-License-Identifier: MIT
  */
-package me.filoghost.holographicdisplays.util.nbt.parser;
+package me.filoghost.holographicdisplays.nbt.parser;
 
-import me.filoghost.holographicdisplays.util.nbt.NBTByte;
-import me.filoghost.holographicdisplays.util.nbt.NBTByteArray;
-import me.filoghost.holographicdisplays.util.nbt.NBTCompound;
-import me.filoghost.holographicdisplays.util.nbt.NBTDouble;
-import me.filoghost.holographicdisplays.util.nbt.NBTFloat;
-import me.filoghost.holographicdisplays.util.nbt.NBTInt;
-import me.filoghost.holographicdisplays.util.nbt.NBTIntArray;
-import me.filoghost.holographicdisplays.util.nbt.NBTList;
-import me.filoghost.holographicdisplays.util.nbt.NBTLong;
-import me.filoghost.holographicdisplays.util.nbt.NBTLongArray;
-import me.filoghost.holographicdisplays.util.nbt.NBTShort;
-import me.filoghost.holographicdisplays.util.nbt.NBTString;
-import me.filoghost.holographicdisplays.util.nbt.NBTTag;
-import me.filoghost.holographicdisplays.util.nbt.NBTType;
+import me.filoghost.holographicdisplays.nbt.NBTByte;
+import me.filoghost.holographicdisplays.nbt.NBTByteArray;
+import me.filoghost.holographicdisplays.nbt.NBTCompound;
+import me.filoghost.holographicdisplays.nbt.NBTDouble;
+import me.filoghost.holographicdisplays.nbt.NBTFloat;
+import me.filoghost.holographicdisplays.nbt.NBTInt;
+import me.filoghost.holographicdisplays.nbt.NBTIntArray;
+import me.filoghost.holographicdisplays.nbt.NBTList;
+import me.filoghost.holographicdisplays.nbt.NBTLong;
+import me.filoghost.holographicdisplays.nbt.NBTLongArray;
+import me.filoghost.holographicdisplays.nbt.NBTShort;
+import me.filoghost.holographicdisplays.nbt.NBTString;
+import me.filoghost.holographicdisplays.nbt.NBTTag;
+import me.filoghost.holographicdisplays.nbt.NBTType;
 
 import java.util.ArrayList;
 import java.util.List;

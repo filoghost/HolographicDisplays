@@ -3,25 +3,30 @@
  *
  * SPDX-License-Identifier: MIT
  */
-package me.filoghost.holographicdisplays.util.nbt;
+package me.filoghost.holographicdisplays.nbt;
 
 import java.util.Arrays;
 
 /**
- * The {@code TAG_Byte_Array} tag.
+ * The {@code TAG_Long_Array} tag.
  */
-public final class NBTByteArray extends NBTTag {
+public final class NBTLongArray extends NBTTag {
 
-    private final byte[] value;
+    private final long[] value;
 
-    public NBTByteArray(byte[] value) {
+    /**
+     * Creates the tag with an empty name.
+     *
+     * @param value the value of the tag
+     */
+    public NBTLongArray(long... value) {
         this.value = value;
     }
 
-    public NBTByteArray(Number[] numbers) {
-        this.value = new byte[numbers.length];
+    public NBTLongArray(Number[] numbers) {
+        this.value = new long[numbers.length];
         for (int i = 0; i < numbers.length; i++)
-            value[i] = numbers[i].byteValue();
+            value[i] = numbers[i].longValue();
     }
 
     /**
@@ -34,34 +39,34 @@ public final class NBTByteArray extends NBTTag {
     }
 
     @Override
-    public byte[] getValue() {
+    public long[] getValue() {
         return value;
     }
 
     @Override
     public NBTType getType() {
-        return NBTType.BYTE_ARRAY;
+        return NBTType.LONG_ARRAY;
     }
 
     // MISC
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof NBTByteArray && equals((NBTByteArray) obj);
+        return obj instanceof NBTLongArray && equals((NBTLongArray) obj);
     }
 
-    public boolean equals(NBTByteArray tag) {
+    public boolean equals(NBTLongArray tag) {
         return Arrays.equals(this.value, tag.value);
     }
 
     @Override
     public String toMSONString() {
-        StringBuilder stringbuilder = new StringBuilder("[B;");
+        StringBuilder stringbuilder = new StringBuilder("[I;");
         for (int i = 0; i < this.value.length; i++) {
             if (i != 0) {
                 stringbuilder.append(',');
             }
-            stringbuilder.append(this.value[i]).append('B');
+            stringbuilder.append(this.value[i]);
         }
         return stringbuilder.append(']').toString();
     }

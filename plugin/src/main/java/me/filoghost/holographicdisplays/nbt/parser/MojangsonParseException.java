@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: MIT
  */
-package me.filoghost.holographicdisplays.util.nbt.parser;
+package me.filoghost.holographicdisplays.nbt.parser;
 
 import org.bukkit.ChatColor;
 

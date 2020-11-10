@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: MIT
  */
-package me.filoghost.holographicdisplays.util.nbt;
+package me.filoghost.holographicdisplays.nbt;
 
 /**
  * The {@code TAG_Short} tag.

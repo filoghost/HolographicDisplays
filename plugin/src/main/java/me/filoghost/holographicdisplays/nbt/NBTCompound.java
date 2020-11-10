@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: MIT
  */
-package me.filoghost.holographicdisplays.util.nbt;
+package me.filoghost.holographicdisplays.nbt;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
