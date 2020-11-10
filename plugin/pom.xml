@@ -44,6 +44,11 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>holographicdisplays-legacy-v1</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>holographicdisplays-legacy-v2</artifactId>
+		</dependency>
 		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
