@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) Jan Schultke
+ *
+ * SPDX-License-Identifier: MIT
+ */
 package me.filoghost.holographicdisplays.util.nbt;
 
 import java.util.Collections;
