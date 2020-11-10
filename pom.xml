@@ -31,7 +31,6 @@
     <modules>
         <module>api</module>
         <module>utils</module>
-        <module>config</module>
         <module>legacy-v1</module>
         <module>legacy-v2</module>
         <module>nms</module>
