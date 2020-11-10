@@ -29,59 +29,59 @@ import java.util.Set;
  */
 public class PluginHologramManager {
 
-	private static List<PluginHologram> pluginHolograms = new ArrayList<>();
-	
-	public static void addHologram(PluginHologram hologram) {
-		pluginHolograms.add(hologram);
-	}
-	
-	public static void removeHologram(PluginHologram hologram) {
-		pluginHolograms.remove(hologram);
-		if (!hologram.isDeleted()) {
-			hologram.delete();
-		}
-	}
-	
-	public static List<PluginHologram> getHolograms() {
-		return new ArrayList<>(pluginHolograms);
-	}
-	
-	public static Set<Hologram> getHolograms(Plugin plugin) {
-		Set<Hologram> ownedHolograms = new HashSet<>();
-		
-		for (PluginHologram hologram : pluginHolograms) {
-			if (hologram.getOwner().equals(plugin)) {
-				ownedHolograms.add(hologram);
-			}
-		}
-		
-		return Collections.unmodifiableSet(ownedHolograms);
-	}
+    private static List<PluginHologram> pluginHolograms = new ArrayList<>();
+    
+    public static void addHologram(PluginHologram hologram) {
+        pluginHolograms.add(hologram);
+    }
+    
+    public static void removeHologram(PluginHologram hologram) {
+        pluginHolograms.remove(hologram);
+        if (!hologram.isDeleted()) {
+            hologram.delete();
+        }
+    }
+    
+    public static List<PluginHologram> getHolograms() {
+        return new ArrayList<>(pluginHolograms);
+    }
+    
+    public static Set<Hologram> getHolograms(Plugin plugin) {
+        Set<Hologram> ownedHolograms = new HashSet<>();
+        
+        for (PluginHologram hologram : pluginHolograms) {
+            if (hologram.getOwner().equals(plugin)) {
+                ownedHolograms.add(hologram);
+            }
+        }
+        
+        return Collections.unmodifiableSet(ownedHolograms);
+    }
 
-	public static void onChunkLoad(Chunk chunk) {
-		 // Load the holograms in that chunk.
-		for (PluginHologram hologram : pluginHolograms) {
-			if (hologram.isInChunk(chunk)) {
-				hologram.spawnEntities();
-			}
-		}
-	}
-	
-	public static void onChunkUnload(Chunk chunk) {
-		 // Hide the holograms in that chunk.
-		for (PluginHologram hologram : pluginHolograms) {
-			if (hologram.isInChunk(chunk)) {
-				hologram.despawnEntities();
-			}
-		}
-	}
-	
-	public static void clearAll() {
-		List<PluginHologram> oldHolograms = new ArrayList<>(pluginHolograms);
-		pluginHolograms.clear();
-		
-		for (PluginHologram hologram : oldHolograms) {
-			hologram.delete();
-		}
-	}
+    public static void onChunkLoad(Chunk chunk) {
+         // Load the holograms in that chunk.
+        for (PluginHologram hologram : pluginHolograms) {
+            if (hologram.isInChunk(chunk)) {
+                hologram.spawnEntities();
+            }
+        }
+    }
+    
+    public static void onChunkUnload(Chunk chunk) {
+         // Hide the holograms in that chunk.
+        for (PluginHologram hologram : pluginHolograms) {
+            if (hologram.isInChunk(chunk)) {
+                hologram.despawnEntities();
+            }
+        }
+    }
+    
+    public static void clearAll() {
+        List<PluginHologram> oldHolograms = new ArrayList<>(pluginHolograms);
+        pluginHolograms.clear();
+        
+        for (PluginHologram hologram : oldHolograms) {
+            hologram.delete();
+        }
+    }
 }

@@ -73,7 +73,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
      * @return The entity.
      */
     public Entity getEntity(World world) {
-    	return handle.getEntityModifier(world).read(1);
+        return handle.getEntityModifier(world).read(1);
     }
 
     /**
@@ -82,7 +82,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
      * @return The entity.
      */
     public Entity getEntity(PacketEvent event) {
-    	return getEntity(event.getPlayer().getWorld());
+        return getEntity(event.getPlayer().getWorld());
     }
     
     /**
@@ -107,7 +107,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
      * @return The vehicle.
      */
     public Entity getVehicle(World world) {
-    	return handle.getEntityModifier(world).read(2);
+        return handle.getEntityModifier(world).read(2);
     }
 
     /**
@@ -116,6 +116,6 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
      * @return The vehicle.
      */
     public Entity getVehicle(PacketEvent event) {
-    	return getVehicle(event.getPlayer().getWorld());
+        return getVehicle(event.getPlayer().getWorld());
     }
 }

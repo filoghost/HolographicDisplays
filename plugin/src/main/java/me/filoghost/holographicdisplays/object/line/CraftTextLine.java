@@ -33,129 +33,129 @@ import java.util.List;
 
 public class CraftTextLine extends CraftTouchableLine implements TextLine {
 
-	private String text;
-	private List<RelativePlaceholder> relativePlaceholders;
-	private NMSArmorStand nmsNameable;
-	
-	
-	public CraftTextLine(CraftHologram parent, String text) {
-		super(0.23, parent);
-		setText(text);
-	}
-	
-	
-	@Override
-	public String getText() {
-		return text;
-	}
-	
-	@Override
-	public void setText(String text) {
-		this.text = text;
-		
-		if (nmsNameable != null) {
-			if (text != null && !text.isEmpty()) {
-				nmsNameable.setCustomNameNMS(text);
-				if (getParent().isAllowPlaceholders()) {
-					PlaceholdersManager.trackIfNecessary(this);
-				}
-			} else {
-				nmsNameable.setCustomNameNMS(""); // It will not appear
-				if (getParent().isAllowPlaceholders()) {
-					PlaceholdersManager.untrack(this);
-				}
-			}
-		}
-		
-		if (text != null) {
-			for (RelativePlaceholder relativePlaceholder : RelativePlaceholder.getRegistry()) {
-				if (text.contains(relativePlaceholder.getTextPlaceholder())) {
-					if (relativePlaceholders == null) {
-						relativePlaceholders = new ArrayList<>();
-					}
-					relativePlaceholders.add(relativePlaceholder);
-				}
-			}
-		}
-		
-		// Deallocate the list if unused
-		if (relativePlaceholders != null && relativePlaceholders.isEmpty()) {
-			relativePlaceholders = null;
-		}
-	}
-	
-	@Override
-	public void setTouchHandler(TouchHandler touchHandler) {
-		if (nmsNameable != null) {
-			Location loc = nmsNameable.getBukkitEntityNMS().getLocation();
-			super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getTextOffset(), loc.getZ());
-		} else {
-			super.setTouchHandler(touchHandler, null, 0, 0, 0);
-		}
-	}
+    private String text;
+    private List<RelativePlaceholder> relativePlaceholders;
+    private NMSArmorStand nmsNameable;
+    
+    
+    public CraftTextLine(CraftHologram parent, String text) {
+        super(0.23, parent);
+        setText(text);
+    }
+    
+    
+    @Override
+    public String getText() {
+        return text;
+    }
+    
+    @Override
+    public void setText(String text) {
+        this.text = text;
+        
+        if (nmsNameable != null) {
+            if (text != null && !text.isEmpty()) {
+                nmsNameable.setCustomNameNMS(text);
+                if (getParent().isAllowPlaceholders()) {
+                    PlaceholdersManager.trackIfNecessary(this);
+                }
+            } else {
+                nmsNameable.setCustomNameNMS(""); // It will not appear
+                if (getParent().isAllowPlaceholders()) {
+                    PlaceholdersManager.untrack(this);
+                }
+            }
+        }
+        
+        if (text != null) {
+            for (RelativePlaceholder relativePlaceholder : RelativePlaceholder.getRegistry()) {
+                if (text.contains(relativePlaceholder.getTextPlaceholder())) {
+                    if (relativePlaceholders == null) {
+                        relativePlaceholders = new ArrayList<>();
+                    }
+                    relativePlaceholders.add(relativePlaceholder);
+                }
+            }
+        }
+        
+        // Deallocate the list if unused
+        if (relativePlaceholders != null && relativePlaceholders.isEmpty()) {
+            relativePlaceholders = null;
+        }
+    }
+    
+    @Override
+    public void setTouchHandler(TouchHandler touchHandler) {
+        if (nmsNameable != null) {
+            Location loc = nmsNameable.getBukkitEntityNMS().getLocation();
+            super.setTouchHandler(touchHandler, loc.getWorld(), loc.getX(), loc.getY() - getTextOffset(), loc.getZ());
+        } else {
+            super.setTouchHandler(touchHandler, null, 0, 0, 0);
+        }
+    }
 
-	@Override
-	public void spawn(World world, double x, double y, double z) {
-		super.spawn(world, x, y, z);
-			
-		nmsNameable = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this, HolographicDisplays.hasProtocolLibHook());
+    @Override
+    public void spawn(World world, double x, double y, double z) {
+        super.spawn(world, x, y, z);
+            
+        nmsNameable = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this, HolographicDisplays.hasProtocolLibHook());
 
-		if (text != null && !text.isEmpty()) {
-			nmsNameable.setCustomNameNMS(text);
-		}
-	}
+        if (text != null && !text.isEmpty()) {
+            nmsNameable.setCustomNameNMS(text);
+        }
+    }
 
-	
-	@Override
-	public void despawn() {
-		super.despawn();
-		
-		if (nmsNameable != null) {
-			nmsNameable.killEntityNMS();
-			nmsNameable = null;
-		}
-	}
-	
-	
-	@Override
-	public Collection<RelativePlaceholder> getRelativePlaceholders() {
-		return relativePlaceholders;
-	}
+    
+    @Override
+    public void despawn() {
+        super.despawn();
+        
+        if (nmsNameable != null) {
+            nmsNameable.killEntityNMS();
+            nmsNameable = null;
+        }
+    }
+    
+    
+    @Override
+    public Collection<RelativePlaceholder> getRelativePlaceholders() {
+        return relativePlaceholders;
+    }
 
-	
-	@Override
-	public void teleport(double x, double y, double z) {
-		super.teleport(x, y, z);
-		
-		if (nmsNameable != null) {
-			nmsNameable.setLocationNMS(x, y + getTextOffset(), z, HolographicDisplays.hasProtocolLibHook());
-		}
-	}
-	
-	@Override
-	public int[] getEntitiesIDs() {
-		if (isSpawned()) {
-			if (touchSlime != null) {
-				return ArrayUtils.add(touchSlime.getEntitiesIDs(), nmsNameable.getIdNMS());
-			} else {
-				return new int[] {nmsNameable.getIdNMS()};
-			}
-		} else {
-			return new int[0];
-		}
-	}
+    
+    @Override
+    public void teleport(double x, double y, double z) {
+        super.teleport(x, y, z);
+        
+        if (nmsNameable != null) {
+            nmsNameable.setLocationNMS(x, y + getTextOffset(), z, HolographicDisplays.hasProtocolLibHook());
+        }
+    }
+    
+    @Override
+    public int[] getEntitiesIDs() {
+        if (isSpawned()) {
+            if (touchSlime != null) {
+                return ArrayUtils.add(touchSlime.getEntitiesIDs(), nmsNameable.getIdNMS());
+            } else {
+                return new int[] {nmsNameable.getIdNMS()};
+            }
+        } else {
+            return new int[0];
+        }
+    }
 
-	public NMSNameable getNmsNameable() {
-		return nmsNameable;
-	}
+    public NMSNameable getNmsNameable() {
+        return nmsNameable;
+    }
 
-	private double getTextOffset() {
-		return Offsets.ARMOR_STAND_ALONE;
-	}
+    private double getTextOffset() {
+        return Offsets.ARMOR_STAND_ALONE;
+    }
 
-	@Override
-	public String toString() {
-		return "CraftTextLine [text=" + text + "]";
-	}
-	
+    @Override
+    public String toString() {
+        return "CraftTextLine [text=" + text + "]";
+    }
+    
 }

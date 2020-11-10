@@ -29,78 +29,78 @@ import java.util.List;
 
 
 public class FileUtils {
-	
-	public static List<String> readLines(File file) throws IOException, Exception {
+    
+    public static List<String> readLines(File file) throws IOException, Exception {
 
-		if (!file.isFile()) {
-			throw new FileNotFoundException(file.getName());
-		}
-		
-		BufferedReader br = null;
+        if (!file.isFile()) {
+            throw new FileNotFoundException(file.getName());
+        }
+        
+        BufferedReader br = null;
 
-		try {
+        try {
 
-			List<String> lines = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
 
-			if (!file.exists()) {
-				throw new FileNotFoundException();
-			}
+            if (!file.exists()) {
+                throw new FileNotFoundException();
+            }
 
-			br = new BufferedReader(new FileReader(file));
-			String line = br.readLine();
+            br = new BufferedReader(new FileReader(file));
+            String line = br.readLine();
 
-			while (line != null) {
-				lines.add(line);
-				line = br.readLine();
-			}
+            while (line != null) {
+                lines.add(line);
+                line = br.readLine();
+            }
 
-			return lines;
+            return lines;
 
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) { }
-			}
-		}
-	}
-	
-	public static BufferedImage readImage(File file) throws UnreadableImageException, IOException, Exception {
-		
-		if (!file.isFile()) {
-			throw new FileNotFoundException(file.getName());
-		}
-		
-		BufferedImage image = ImageIO.read(file);
-		
-		if (image == null) {
-			throw new UnreadableImageException();
-		}
-			
-		return image;
-	}
-	
-	public static BufferedImage readImage(URL url) throws UnreadableImageException, IOException, Exception {
-		
-		BufferedImage image = ImageIO.read(url);
-		
-		if (image == null) {
-			throw new UnreadableImageException();
-		}
-			
-		return image;
-	}
-	
-	public static boolean isParentFolder(File folder, File file) throws IOException {
-		File iteratorFile = file.getCanonicalFile();
-		folder = folder.getCanonicalFile();
-		while ((iteratorFile = iteratorFile.getParentFile()) != null) {
-			if (iteratorFile.equals(folder)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) { }
+            }
+        }
+    }
+    
+    public static BufferedImage readImage(File file) throws UnreadableImageException, IOException, Exception {
+        
+        if (!file.isFile()) {
+            throw new FileNotFoundException(file.getName());
+        }
+        
+        BufferedImage image = ImageIO.read(file);
+        
+        if (image == null) {
+            throw new UnreadableImageException();
+        }
+            
+        return image;
+    }
+    
+    public static BufferedImage readImage(URL url) throws UnreadableImageException, IOException, Exception {
+        
+        BufferedImage image = ImageIO.read(url);
+        
+        if (image == null) {
+            throw new UnreadableImageException();
+        }
+            
+        return image;
+    }
+    
+    public static boolean isParentFolder(File folder, File file) throws IOException {
+        File iteratorFile = file.getCanonicalFile();
+        folder = folder.getCanonicalFile();
+        while ((iteratorFile = iteratorFile.getParentFile()) != null) {
+            if (iteratorFile.equals(folder)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
 }

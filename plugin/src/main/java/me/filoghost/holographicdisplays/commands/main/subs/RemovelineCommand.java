@@ -30,52 +30,52 @@ import java.util.List;
 
 public class RemovelineCommand extends HologramSubCommand {
 
-	public RemovelineCommand() {
-		super("removeline");
-		setPermission(Strings.BASE_PERM + "removeline");
-	}
+    public RemovelineCommand() {
+        super("removeline");
+        setPermission(Strings.BASE_PERM + "removeline");
+    }
 
-	@Override
-	public String getPossibleArguments() {
-		return "<hologramName> <lineNumber>";
-	}
+    @Override
+    public String getPossibleArguments() {
+        return "<hologramName> <lineNumber>";
+    }
 
-	@Override
-	public int getMinimumArguments() {
-		return 2;
-	}
+    @Override
+    public int getMinimumArguments() {
+        return 2;
+    }
 
 
-	@Override
-	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
-		
-		int lineNumber = CommandValidator.getInteger(args[1]);
+    @Override
+    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+        NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+        
+        int lineNumber = CommandValidator.getInteger(args[1]);
 
-		CommandValidator.isTrue(lineNumber >= 1 && lineNumber <= hologram.size(), "The line number must be between 1 and " + hologram.size() + ".");
-		int index = lineNumber - 1;
-		
-		CommandValidator.isTrue(hologram.size() > 1, "The hologram should have at least 1 line. If you want to delete it, use /" + label + " delete.");
+        CommandValidator.isTrue(lineNumber >= 1 && lineNumber <= hologram.size(), "The line number must be between 1 and " + hologram.size() + ".");
+        int index = lineNumber - 1;
+        
+        CommandValidator.isTrue(hologram.size() > 1, "The hologram should have at least 1 line. If you want to delete it, use /" + label + " delete.");
 
-		hologram.removeLine(index);
-		hologram.refreshAll();
-		
-		HologramDatabase.saveHologram(hologram);
-		HologramDatabase.trySaveToDisk();
-		Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
-		
-		sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " removed!");
-		EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
-	}
+        hologram.removeLine(index);
+        hologram.refreshAll();
+        
+        HologramDatabase.saveHologram(hologram);
+        HologramDatabase.trySaveToDisk();
+        Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
+        
+        sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " removed!");
+        EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
+    }
 
-	@Override
-	public List<String> getTutorial() {
-		return Arrays.asList("Removes a line from a hologram.");
-	}
-	
-	@Override
-	public SubCommandType getType() {
-		return SubCommandType.EDIT_LINES;
-	}
+    @Override
+    public List<String> getTutorial() {
+        return Arrays.asList("Removes a line from a hologram.");
+    }
+    
+    @Override
+    public SubCommandType getType() {
+        return SubCommandType.EDIT_LINES;
+    }
 
 }

@@ -32,46 +32,46 @@ import java.util.List;
 
 public class AddlineCommand extends HologramSubCommand {
 
-	public AddlineCommand() {
-		super("addline");
-		setPermission(Strings.BASE_PERM + "addline");
-	}
+    public AddlineCommand() {
+        super("addline");
+        setPermission(Strings.BASE_PERM + "addline");
+    }
 
-	@Override
-	public String getPossibleArguments() {
-		return "<hologramName> <text>";
-	}
+    @Override
+    public String getPossibleArguments() {
+        return "<hologramName> <text>";
+    }
 
-	@Override
-	public int getMinimumArguments() {
-		return 2;
-	}
+    @Override
+    public int getMinimumArguments() {
+        return 2;
+    }
 
-	@Override
-	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
-		String serializedLine = Utils.join(args, " ", 1, args.length);
-		
-		CraftHologramLine line = CommandValidator.parseHologramLine(hologram, serializedLine, true);
-		hologram.getLinesUnsafe().add(line);
-		hologram.refreshAll();
-			
-		HologramDatabase.saveHologram(hologram);
-		HologramDatabase.trySaveToDisk();
-		Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
-		
-		sender.sendMessage(Colors.PRIMARY + "Line added!");
-		EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
-	}
+    @Override
+    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+        NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+        String serializedLine = Utils.join(args, " ", 1, args.length);
+        
+        CraftHologramLine line = CommandValidator.parseHologramLine(hologram, serializedLine, true);
+        hologram.getLinesUnsafe().add(line);
+        hologram.refreshAll();
+            
+        HologramDatabase.saveHologram(hologram);
+        HologramDatabase.trySaveToDisk();
+        Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
+        
+        sender.sendMessage(Colors.PRIMARY + "Line added!");
+        EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
+    }
 
-	@Override
-	public List<String> getTutorial() {
-		return Arrays.asList("Adds a line to an existing hologram.");
-	}
+    @Override
+    public List<String> getTutorial() {
+        return Arrays.asList("Adds a line to an existing hologram.");
+    }
 
-	@Override
-	public SubCommandType getType() {
-		return SubCommandType.EDIT_LINES;
-	}
+    @Override
+    public SubCommandType getType() {
+        return SubCommandType.EDIT_LINES;
+    }
 
 }

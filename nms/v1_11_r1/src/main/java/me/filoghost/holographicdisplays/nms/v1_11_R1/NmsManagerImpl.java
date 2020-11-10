@@ -40,77 +40,77 @@ import org.bukkit.inventory.ItemStack;
 import java.lang.reflect.Method;
 
 public class NmsManagerImpl implements NMSManager {
-	
-	private static final ReflectField<RegistryID<Class<? extends Entity>>> REGISTRY_ID_FIELD = new ReflectField<>(RegistryMaterials.class, "a");
-	private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = new ReflectField<>(RegistryID.class, "d");
+    
+    private static final ReflectField<RegistryID<Class<? extends Entity>>> REGISTRY_ID_FIELD = new ReflectField<>(RegistryMaterials.class, "a");
+    private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = new ReflectField<>(RegistryID.class, "d");
 
-	private Method validateEntityMethod;
-	
-	@Override
-	public void setup() throws Exception {
-		validateEntityMethod = World.class.getDeclaredMethod("b", Entity.class);
-		validateEntityMethod.setAccessible(true);
-		
-		registerCustomEntity(EntityNMSSlime.class, 55);
-	}
-	
-	public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
-		// Use reflection to get the RegistryID of entities.
-		RegistryID<Class<? extends Entity>> registryID = REGISTRY_ID_FIELD.get(EntityTypes.b);
-		Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
-		
-		// Save the the ID -> entity class mapping before the registration.
-		Object oldValue = idToClassMap[id];
+    private Method validateEntityMethod;
+    
+    @Override
+    public void setup() throws Exception {
+        validateEntityMethod = World.class.getDeclaredMethod("b", Entity.class);
+        validateEntityMethod.setAccessible(true);
+        
+        registerCustomEntity(EntityNMSSlime.class, 55);
+    }
+    
+    public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
+        // Use reflection to get the RegistryID of entities.
+        RegistryID<Class<? extends Entity>> registryID = REGISTRY_ID_FIELD.get(EntityTypes.b);
+        Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
+        
+        // Save the the ID -> entity class mapping before the registration.
+        Object oldValue = idToClassMap[id];
 
-		// Register the entity class.
-		registryID.a(entityClass, id);
+        // Register the entity class.
+        registryID.a(entityClass, id);
 
-		// Restore the ID -> entity class mapping.
-		idToClassMap[id] = oldValue;
-	}
-	
-	@Override
-	public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack, ItemPickupManager itemPickupManager) {
-		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-		EntityNMSItem customItem = new EntityNMSItem(nmsWorld, parentPiece, itemPickupManager);
-		customItem.setLocationNMS(x, y, z);
-		customItem.setItemStackNMS(stack);
-		if (!addEntityToWorld(nmsWorld, customItem)) {
-			ConsoleLogger.handleSpawnFail(parentPiece);
-		}
-		return customItem;
-	}
-	
-	@Override
-	public EntityNMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece) {
-		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-		EntityNMSSlime touchSlime = new EntityNMSSlime(nmsWorld, parentPiece);
-		touchSlime.setLocationNMS(x, y, z);
-		if (!addEntityToWorld(nmsWorld, touchSlime)) {
-			ConsoleLogger.handleSpawnFail(parentPiece);
-		}
-		return touchSlime;
-	}
-	
-	@Override
-	public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece, boolean broadcastLocationPacket) {
-		WorldServer nmsWorld = ((CraftWorld) world).getHandle();
-		EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece);
-		invisibleArmorStand.setLocationNMS(x, y, z, broadcastLocationPacket);
-		if (!addEntityToWorld(nmsWorld, invisibleArmorStand)) {
-			ConsoleLogger.handleSpawnFail(parentPiece);
-		}
-		return invisibleArmorStand;
-	}
-	
-	private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
-		Validator.isTrue(Bukkit.isPrimaryThread(), "Async entity add");
-		
+        // Restore the ID -> entity class mapping.
+        idToClassMap[id] = oldValue;
+    }
+    
+    @Override
+    public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack, ItemPickupManager itemPickupManager) {
+        WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
+        EntityNMSItem customItem = new EntityNMSItem(nmsWorld, parentPiece, itemPickupManager);
+        customItem.setLocationNMS(x, y, z);
+        customItem.setItemStackNMS(stack);
+        if (!addEntityToWorld(nmsWorld, customItem)) {
+            ConsoleLogger.handleSpawnFail(parentPiece);
+        }
+        return customItem;
+    }
+    
+    @Override
+    public EntityNMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece) {
+        WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
+        EntityNMSSlime touchSlime = new EntityNMSSlime(nmsWorld, parentPiece);
+        touchSlime.setLocationNMS(x, y, z);
+        if (!addEntityToWorld(nmsWorld, touchSlime)) {
+            ConsoleLogger.handleSpawnFail(parentPiece);
+        }
+        return touchSlime;
+    }
+    
+    @Override
+    public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece, boolean broadcastLocationPacket) {
+        WorldServer nmsWorld = ((CraftWorld) world).getHandle();
+        EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece);
+        invisibleArmorStand.setLocationNMS(x, y, z, broadcastLocationPacket);
+        if (!addEntityToWorld(nmsWorld, invisibleArmorStand)) {
+            ConsoleLogger.handleSpawnFail(parentPiece);
+        }
+        return invisibleArmorStand;
+    }
+    
+    private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
+        Validator.isTrue(Bukkit.isPrimaryThread(), "Async entity add");
+        
         final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
         final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
         
         if (!nmsWorld.getChunkProviderServer().isLoaded(chunkX, chunkZ)) {
-        	// This should never happen
+            // This should never happen
             nmsEntity.dead = true;
             return false;
         }
@@ -119,45 +119,45 @@ public class NmsManagerImpl implements NMSManager {
         nmsWorld.entityList.add(nmsEntity);
         
         try {
-			validateEntityMethod.invoke(nmsWorld, nmsEntity);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+            validateEntityMethod.invoke(nmsWorld, nmsEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
-	
-	@Override
-	public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
-		return ((CraftEntity) bukkitEntity).getHandle() instanceof NMSEntityBase;
-	}
+    
+    @Override
+    public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
+        return ((CraftEntity) bukkitEntity).getHandle() instanceof NMSEntityBase;
+    }
 
-	@Override
-	public NMSEntityBase getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
-		Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
-		
-		if (nmsEntity instanceof NMSEntityBase) {
-			return ((NMSEntityBase) nmsEntity);
-		} else {
-			return null;
-		}
-	}
-	
-	@Override
-	public NMSEntityBase getNMSEntityBaseFromID(org.bukkit.World bukkitWorld, int entityID) {
-		WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-		Entity nmsEntity = nmsWorld.getEntity(entityID);
-		
-		if (nmsEntity instanceof NMSEntityBase) {
-			return ((NMSEntityBase) nmsEntity);
-		} else {
-			return null;
-		}
-	}
-	
-	@Override
-	public Object replaceCustomNameText(Object customNameObject, String target, String replacement) {
-		return CustomNameHelper.replaceCustomNameString(customNameObject, target, replacement);
-	}
+    @Override
+    public NMSEntityBase getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
+        Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
+        
+        if (nmsEntity instanceof NMSEntityBase) {
+            return ((NMSEntityBase) nmsEntity);
+        } else {
+            return null;
+        }
+    }
+    
+    @Override
+    public NMSEntityBase getNMSEntityBaseFromID(org.bukkit.World bukkitWorld, int entityID) {
+        WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
+        Entity nmsEntity = nmsWorld.getEntity(entityID);
+        
+        if (nmsEntity instanceof NMSEntityBase) {
+            return ((NMSEntityBase) nmsEntity);
+        } else {
+            return null;
+        }
+    }
+    
+    @Override
+    public Object replaceCustomNameText(Object customNameObject, String target, String replacement) {
+        return CustomNameHelper.replaceCustomNameString(customNameObject, target, replacement);
+    }
 
 }

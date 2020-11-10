@@ -22,10 +22,10 @@ import org.bukkit.inventory.ItemStack;
 @Deprecated
 public interface ItemLine extends CollectableLine, TouchableLine {
 
-	@Deprecated
-	public ItemStack getItemStack();
+    @Deprecated
+    public ItemStack getItemStack();
 
-	@Deprecated
-	public void setItemStack(ItemStack itemStack);
-	
+    @Deprecated
+    public void setItemStack(ItemStack itemStack);
+    
 }

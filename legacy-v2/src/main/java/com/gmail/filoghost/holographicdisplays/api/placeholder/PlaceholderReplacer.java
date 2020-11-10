@@ -20,7 +20,7 @@ package com.gmail.filoghost.holographicdisplays.api.placeholder;
 @Deprecated
 public interface PlaceholderReplacer {
 
-	@Deprecated
-	public String update();
-	
+    @Deprecated
+    public String update();
+    
 }

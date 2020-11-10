@@ -33,53 +33,53 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class PowerUps extends JavaPlugin implements Listener {
-	
-	@Override
-	public void onEnable() {
-		
-		if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
-			getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
-			getLogger().severe("*** This plugin will be disabled. ***");
-			this.setEnabled(false);
-			return;
-		}
-		
-		Bukkit.getPluginManager().registerEvents(this, this);
-		
-	}
-	
-	
-	@EventHandler
-	public void onEntityDeath(EntityDeathEvent event) {
-		
-		if (event.getEntityType() == EntityType.ZOMBIE) {
+    
+    @Override
+    public void onEnable() {
+        
+        if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
+            getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
+            getLogger().severe("*** This plugin will be disabled. ***");
+            this.setEnabled(false);
+            return;
+        }
+        
+        Bukkit.getPluginManager().registerEvents(this, this);
+        
+    }
+    
+    
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        
+        if (event.getEntityType() == EntityType.ZOMBIE) {
 
-			// Remove normal drops and exp.
-			event.getDrops().clear();
-			event.setDroppedExp(0);
-			
-			// Spawn the floating item with a label.
-			final Hologram hologram = HologramsAPI.createHologram(this, event.getEntity().getLocation().add(0.0, 0.9, 0.0));
-			hologram.appendTextLine(ChatColor.AQUA  + "" + ChatColor.BOLD + "Speed PowerUp");
-			ItemLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
-			
-			icon.setPickupHandler(new PickupHandler() {
-				
-				@Override
-				public void onPickup(Player player) {
-					
-					// Play an effect.
-					player.playEffect(hologram.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
-					
-					// 30 seconds of speed II.
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * 20, 1), true);
-					
-					// Delete the hologram.
-					hologram.delete();
-					
-				}
-			});
-			
-		}
-	}
+            // Remove normal drops and exp.
+            event.getDrops().clear();
+            event.setDroppedExp(0);
+            
+            // Spawn the floating item with a label.
+            final Hologram hologram = HologramsAPI.createHologram(this, event.getEntity().getLocation().add(0.0, 0.9, 0.0));
+            hologram.appendTextLine(ChatColor.AQUA  + "" + ChatColor.BOLD + "Speed PowerUp");
+            ItemLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
+            
+            icon.setPickupHandler(new PickupHandler() {
+                
+                @Override
+                public void onPickup(Player player) {
+                    
+                    // Play an effect.
+                    player.playEffect(hologram.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
+                    
+                    // 30 seconds of speed II.
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * 20, 1), true);
+                    
+                    // Delete the hologram.
+                    hologram.delete();
+                    
+                }
+            });
+            
+        }
+    }
 }

@@ -19,16 +19,16 @@ package me.filoghost.holographicdisplays.util;
  *  The second line is below the first, and so on.
  */
 public class Offsets {
-	
-	public static final double
-		
-		// A single armor stand.
-		ARMOR_STAND_ALONE = -0.29,
-		
-		// An armor stand holding an item.
-		ARMOR_STAND_WITH_ITEM = 0,
-	
-		// An armor stand holding a slime.
-		ARMOR_STAND_WITH_SLIME = 0;	
+    
+    public static final double
+        
+        // A single armor stand.
+        ARMOR_STAND_ALONE = -0.29,
+        
+        // An armor stand holding an item.
+        ARMOR_STAND_WITH_ITEM = 0,
+    
+        // An armor stand holding a slime.
+        ARMOR_STAND_WITH_SLIME = 0;    
 
 }

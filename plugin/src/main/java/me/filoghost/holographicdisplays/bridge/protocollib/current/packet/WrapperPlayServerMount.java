@@ -24,7 +24,7 @@ import com.google.common.primitives.Ints;
 import java.util.List;
 
 public class WrapperPlayServerMount extends AbstractPacket {
-	
+    
     public static final PacketType TYPE = PacketType.Play.Server.MOUNT;
     
     public WrapperPlayServerMount() {
@@ -73,6 +73,6 @@ public class WrapperPlayServerMount extends AbstractPacket {
      * @param value - new value.
     */
     public void setPassengers(List<Integer> entities) {
-    	setPassengers(Ints.toArray(entities));
+        setPassengers(Ints.toArray(entities));
     }
 }

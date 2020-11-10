@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>me.filoghost.holographicdisplays</groupId>
-		<artifactId>holographicdisplays-parent</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>me.filoghost.holographicdisplays</groupId>
+        <artifactId>holographicdisplays-parent</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>holographicdisplays-nms</artifactId>
-	<name>HolographicDisplays NMS</name>
-	<packaging>pom</packaging>
+    <artifactId>holographicdisplays-nms</artifactId>
+    <name>HolographicDisplays NMS</name>
+    <packaging>pom</packaging>
 
-	<modules>
-		<module>interfaces</module>
-		<module>v1_8_r2</module>
-		<module>v1_8_r3</module>
-		<module>v1_9_r1</module>
-		<module>v1_9_r2</module>
-		<module>v1_10_r1</module>
-		<module>v1_11_r1</module>
-		<module>v1_12_r1</module>
-		<module>v1_13_r1</module>
-		<module>v1_13_r2</module>
-		<module>v1_14_r1</module>
-		<module>v1_15_r1</module>
-		<module>v1_16_r1</module>
-		<module>v1_16_r2</module>
-		<module>v1_16_r3</module>
-	</modules>
+    <modules>
+        <module>interfaces</module>
+        <module>v1_8_r2</module>
+        <module>v1_8_r3</module>
+        <module>v1_9_r1</module>
+        <module>v1_9_r2</module>
+        <module>v1_10_r1</module>
+        <module>v1_11_r1</module>
+        <module>v1_12_r1</module>
+        <module>v1_13_r1</module>
+        <module>v1_13_r2</module>
+        <module>v1_14_r1</module>
+        <module>v1_15_r1</module>
+        <module>v1_16_r1</module>
+        <module>v1_16_r2</module>
+        <module>v1_16_r3</module>
+    </modules>
 
 </project>

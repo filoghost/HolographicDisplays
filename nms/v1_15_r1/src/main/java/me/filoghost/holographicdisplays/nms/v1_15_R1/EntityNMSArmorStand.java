@@ -57,25 +57,25 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         this.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet.
     }
     
-	@Override
-	public void tick() {
-		// Disable normal ticking for this entity.
-		
-		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
-		if (this.onGround) {
-			this.onGround = false;
-		}
-	}
-	
-	@Override
-	public void inactiveTick() {
-		// Disable normal ticking for this entity.
-		
-		// Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
-		if (this.onGround) {
-			this.onGround = false;
-		}
-	}
+    @Override
+    public void tick() {
+        // Disable normal ticking for this entity.
+        
+        // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+        if (this.onGround) {
+            this.onGround = false;
+        }
+    }
+    
+    @Override
+    public void inactiveTick() {
+        // Disable normal ticking for this entity.
+        
+        // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+        if (this.onGround) {
+            this.onGround = false;
+        }
+    }
 
     @Override
     public void b(NBTTagCompound nbttagcompound) {
@@ -178,10 +178,10 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         return this.customName;
     }
     
-	@Override
-	public Object getCustomNameObjectNMS() {
-		return super.getCustomName();
-	}
+    @Override
+    public Object getCustomNameObjectNMS() {
+        return super.getCustomName();
+    }
 
     @Override
     public void die() {
@@ -205,7 +205,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public void setLocationNMS(double x, double y, double z, boolean broadcastLocationPacket) {
         super.setPosition(x, y, z);
         if (broadcastLocationPacket) {
-        	broadcastLocationPacketNMS();
+            broadcastLocationPacketNMS();
         }
     }
     

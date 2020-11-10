@@ -29,32 +29,32 @@ import java.util.Map.Entry;
  * Bukkit thread: https://forums.bukkit.org/threads/lib-imagemessage-v2-1-send-images-to-players-via-the-chat.204902
  */
 public class ImageMessage {
-	
-	public static final int MAX_WIDTH = 150;
+    
+    public static final int MAX_WIDTH = 150;
 
-	private static final Map<ChatColor, Color> colorsMap = new HashMap<>();
-	private static final Map<ChatColor, Color> graysMap = new HashMap<>();
-	
-	static {
-		colorsMap.put(ChatColor.DARK_BLUE, new Color(0, 0, 170));
-		colorsMap.put(ChatColor.DARK_GREEN, new Color(0, 170, 0));
-		colorsMap.put(ChatColor.DARK_AQUA, new Color(0, 170, 170));
-		colorsMap.put(ChatColor.DARK_RED, new Color(170, 0, 0));
-		colorsMap.put(ChatColor.DARK_PURPLE,  new Color(170, 0, 170));
-		colorsMap.put(ChatColor.GOLD, new Color(255, 170, 0));
-		colorsMap.put(ChatColor.BLUE, new Color(85, 85, 255));
-		colorsMap.put(ChatColor.GREEN, new Color(85, 255, 85));
-		colorsMap.put(ChatColor.AQUA, new Color(85, 255, 255));
-		colorsMap.put(ChatColor.RED, new Color(255, 85, 85));
-		colorsMap.put(ChatColor.LIGHT_PURPLE, new Color(255, 85, 255));
-		colorsMap.put(ChatColor.YELLOW, new Color(255, 255, 85));
-		
-		graysMap.put(ChatColor.BLACK, new Color(0, 0, 0));
-		graysMap.put(ChatColor.DARK_GRAY, new Color(85, 85, 85));
-		graysMap.put(ChatColor.GRAY, new Color(170, 170, 170));
-		graysMap.put(ChatColor.WHITE, new Color(255, 255, 255));
-	}
-	
+    private static final Map<ChatColor, Color> colorsMap = new HashMap<>();
+    private static final Map<ChatColor, Color> graysMap = new HashMap<>();
+    
+    static {
+        colorsMap.put(ChatColor.DARK_BLUE, new Color(0, 0, 170));
+        colorsMap.put(ChatColor.DARK_GREEN, new Color(0, 170, 0));
+        colorsMap.put(ChatColor.DARK_AQUA, new Color(0, 170, 170));
+        colorsMap.put(ChatColor.DARK_RED, new Color(170, 0, 0));
+        colorsMap.put(ChatColor.DARK_PURPLE,  new Color(170, 0, 170));
+        colorsMap.put(ChatColor.GOLD, new Color(255, 170, 0));
+        colorsMap.put(ChatColor.BLUE, new Color(85, 85, 255));
+        colorsMap.put(ChatColor.GREEN, new Color(85, 255, 85));
+        colorsMap.put(ChatColor.AQUA, new Color(85, 255, 255));
+        colorsMap.put(ChatColor.RED, new Color(255, 85, 85));
+        colorsMap.put(ChatColor.LIGHT_PURPLE, new Color(255, 85, 255));
+        colorsMap.put(ChatColor.YELLOW, new Color(255, 255, 85));
+        
+        graysMap.put(ChatColor.BLACK, new Color(0, 0, 0));
+        graysMap.put(ChatColor.DARK_GRAY, new Color(85, 85, 85));
+        graysMap.put(ChatColor.GRAY, new Color(170, 170, 170));
+        graysMap.put(ChatColor.WHITE, new Color(255, 255, 255));
+    }
+    
 
     private String[] lines;
 
@@ -67,11 +67,11 @@ public class ImageMessage {
         double ratio = (double) image.getHeight() / image.getWidth();
         int height = (int) ((width) * ratio);
         if (height == 0) {
-        	height = 1;
+            height = 1;
         }
         
         if (width > MAX_WIDTH) {
-        	throw new TooWideException(width);
+            throw new TooWideException(width);
         }
 
         BufferedImage resized = resizeImage(image, width, height);
@@ -87,42 +87,42 @@ public class ImageMessage {
     }
 
     private String[] toImgMessage(ChatColor[][] colors) {
-    	
+        
         String[] lines = new String[colors[0].length];
         ChatColor transparencyColor = Configuration.transparencyColor;
         String transparencySymbol = Configuration.transparencySymbol;
         String imageSymbol = Configuration.imageSymbol;
         
         for (int y = 0; y < colors[0].length; y++) {
-        	
+            
             StringBuffer line = new StringBuffer();
             
             ChatColor previous = ChatColor.RESET;
             
             for (int x = 0; x < colors.length; x++) {
-            	
+                
                 ChatColor currentColor = colors[x][y];
                 
                 if (currentColor == null) {
-                	
-                	// Use the trasparent char
-                	if (previous != transparencyColor) {
-                		
-                		// Change the previous chat color and append the newer
-                		line.append(transparencyColor);
-                		previous = transparencyColor;
-                		
-                	}
-                	line.append(transparencySymbol);
-                	
+                    
+                    // Use the trasparent char
+                    if (previous != transparencyColor) {
+                        
+                        // Change the previous chat color and append the newer
+                        line.append(transparencyColor);
+                        previous = transparencyColor;
+                        
+                    }
+                    line.append(transparencySymbol);
+                    
                 } else {
-                	
-                	if (previous != currentColor) {
-                		line.append(currentColor.toString());
-                		previous = currentColor;
-                	}
-                	
-                	line.append(imageSymbol);
+                    
+                    if (previous != currentColor) {
+                        line.append(currentColor.toString());
+                        previous = currentColor;
+                    }
+                    
+                    line.append(imageSymbol);
                 }
             }
             
@@ -133,7 +133,7 @@ public class ImageMessage {
     }
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
-    	return toBufferedImage(originalImage.getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        return toBufferedImage(originalImage.getScaledInstance(width, height, Image.SCALE_DEFAULT));
     }
     
     private BufferedImage toBufferedImage(Image img) {
@@ -169,37 +169,37 @@ public class ImageMessage {
     }
 
     private ChatColor getClosestChatColor(Color color) {
-    	if (color.getAlpha() < 80) return null;
+        if (color.getAlpha() < 80) return null;
 
         for (Entry<ChatColor, Color> entry : colorsMap.entrySet()) {
-        	if (areIdentical(entry.getValue(), color)) {
-        		return entry.getKey();
-        	}
+            if (areIdentical(entry.getValue(), color)) {
+                return entry.getKey();
+            }
         }
         
         double bestGrayDistance = -1;
         ChatColor bestGrayMatch = null;
         
         for (Entry<ChatColor, Color> entry : graysMap.entrySet()) {
-        	double distance = getDistance(color, entry.getValue());
-        	
-        	if (distance < bestGrayDistance || bestGrayDistance == -1) {
+            double distance = getDistance(color, entry.getValue());
+            
+            if (distance < bestGrayDistance || bestGrayDistance == -1) {
                 bestGrayDistance = distance;
                 bestGrayMatch = entry.getKey();
             }
         }
         
         if (bestGrayDistance < 17500) {
-        	return bestGrayMatch;
+            return bestGrayMatch;
         }
         
         double bestColorDistance = -1;
         ChatColor bestColorMatch = null;
         
         for (Entry<ChatColor, Color> entry : colorsMap.entrySet()) {
-        	double distance = getDistance(color, entry.getValue());
-        	
-        	if (distance < bestColorDistance || bestColorDistance == -1) {
+            double distance = getDistance(color, entry.getValue());
+            
+            if (distance < bestColorDistance || bestColorDistance == -1) {
                 bestColorDistance = distance;
                 bestColorMatch = entry.getKey();
             }

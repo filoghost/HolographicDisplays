@@ -49,83 +49,83 @@ import java.util.Map;
 
 public class HologramsCommandHandler implements CommandExecutor {
 
-	private List<HologramSubCommand> subCommands;
-	private Map<Class<? extends HologramSubCommand>, HologramSubCommand> subCommandsByClass;
+    private List<HologramSubCommand> subCommands;
+    private Map<Class<? extends HologramSubCommand>, HologramSubCommand> subCommandsByClass;
 
-	public HologramsCommandHandler() {
-		subCommands = new ArrayList<>();
-		subCommandsByClass = new HashMap<>();
-		
-		registerSubCommand(new AddlineCommand());
-		registerSubCommand(new CreateCommand());
-		registerSubCommand(new DeleteCommand());
-		registerSubCommand(new EditCommand());
-		registerSubCommand(new ListCommand());
-		registerSubCommand(new NearCommand());
-		registerSubCommand(new TeleportCommand());
-		registerSubCommand(new MovehereCommand());
-		registerSubCommand(new AlignCommand());
-		registerSubCommand(new CopyCommand());
-		registerSubCommand(new ReloadCommand());
-		
-		registerSubCommand(new RemovelineCommand());
-		registerSubCommand(new SetlineCommand());
-		registerSubCommand(new InsertlineCommand());
-		registerSubCommand(new ReadtextCommand());
-		registerSubCommand(new ReadimageCommand());
-		registerSubCommand(new InfoCommand());
-		
-		registerSubCommand(new DebugCommand());
-		registerSubCommand(new HelpCommand());
-	}
-	
-	public void registerSubCommand(HologramSubCommand subCommand) {
-		subCommands.add(subCommand);
-		subCommandsByClass.put(subCommand.getClass(), subCommand);
-	}
-	
-	public List<HologramSubCommand> getSubCommands() {
-		return new ArrayList<>(subCommands);
-	}
-	
-	public HologramSubCommand getSubCommand(Class<? extends HologramSubCommand> subCommandClass) {
-		return subCommandsByClass.get(subCommandClass);
-	}
-	
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		
-		if (args.length == 0) {
-			sender.sendMessage(Colors.PRIMARY_SHADOW + "Server is running " + Colors.PRIMARY + "Holographic Displays " + Colors.PRIMARY_SHADOW + "v" + HolographicDisplays.getInstance().getDescription().getVersion() + " by " + Colors.PRIMARY + "filoghost");
-			if (sender.hasPermission(Strings.BASE_PERM + "help")) {
-				sender.sendMessage(Colors.PRIMARY_SHADOW + "Commands: " + Colors.PRIMARY + "/" + label + " help");
-			}
-			return true;
-		}
-		
-		for (HologramSubCommand subCommand : subCommands) {
-			if (subCommand.isValidTrigger(args[0])) {
-				
-				if (!subCommand.hasPermission(sender)) {
-					sender.sendMessage(Colors.ERROR + "You don't have permission.");
-					return true;
-				}
-				
-				if (args.length - 1 >= subCommand.getMinimumArguments()) {
-					try {
-						subCommand.execute(sender, label, Arrays.copyOfRange(args, 1, args.length));
-					} catch (CommandException e) {
-						sender.sendMessage(Colors.ERROR + e.getMessage());
-					}
-				} else {
-					sender.sendMessage(Colors.ERROR + "Usage: /" + label + " " + subCommand.getName() + " " + subCommand.getPossibleArguments());
-				}
-				
-				return true;
-			}
-		}
-		
-		sender.sendMessage(Colors.ERROR + "Unknown sub-command. Type \"/" + label + " help\" for a list of commands.");
-		return true;
-	}
+    public HologramsCommandHandler() {
+        subCommands = new ArrayList<>();
+        subCommandsByClass = new HashMap<>();
+        
+        registerSubCommand(new AddlineCommand());
+        registerSubCommand(new CreateCommand());
+        registerSubCommand(new DeleteCommand());
+        registerSubCommand(new EditCommand());
+        registerSubCommand(new ListCommand());
+        registerSubCommand(new NearCommand());
+        registerSubCommand(new TeleportCommand());
+        registerSubCommand(new MovehereCommand());
+        registerSubCommand(new AlignCommand());
+        registerSubCommand(new CopyCommand());
+        registerSubCommand(new ReloadCommand());
+        
+        registerSubCommand(new RemovelineCommand());
+        registerSubCommand(new SetlineCommand());
+        registerSubCommand(new InsertlineCommand());
+        registerSubCommand(new ReadtextCommand());
+        registerSubCommand(new ReadimageCommand());
+        registerSubCommand(new InfoCommand());
+        
+        registerSubCommand(new DebugCommand());
+        registerSubCommand(new HelpCommand());
+    }
+    
+    public void registerSubCommand(HologramSubCommand subCommand) {
+        subCommands.add(subCommand);
+        subCommandsByClass.put(subCommand.getClass(), subCommand);
+    }
+    
+    public List<HologramSubCommand> getSubCommands() {
+        return new ArrayList<>(subCommands);
+    }
+    
+    public HologramSubCommand getSubCommand(Class<? extends HologramSubCommand> subCommandClass) {
+        return subCommandsByClass.get(subCommandClass);
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        
+        if (args.length == 0) {
+            sender.sendMessage(Colors.PRIMARY_SHADOW + "Server is running " + Colors.PRIMARY + "Holographic Displays " + Colors.PRIMARY_SHADOW + "v" + HolographicDisplays.getInstance().getDescription().getVersion() + " by " + Colors.PRIMARY + "filoghost");
+            if (sender.hasPermission(Strings.BASE_PERM + "help")) {
+                sender.sendMessage(Colors.PRIMARY_SHADOW + "Commands: " + Colors.PRIMARY + "/" + label + " help");
+            }
+            return true;
+        }
+        
+        for (HologramSubCommand subCommand : subCommands) {
+            if (subCommand.isValidTrigger(args[0])) {
+                
+                if (!subCommand.hasPermission(sender)) {
+                    sender.sendMessage(Colors.ERROR + "You don't have permission.");
+                    return true;
+                }
+                
+                if (args.length - 1 >= subCommand.getMinimumArguments()) {
+                    try {
+                        subCommand.execute(sender, label, Arrays.copyOfRange(args, 1, args.length));
+                    } catch (CommandException e) {
+                        sender.sendMessage(Colors.ERROR + e.getMessage());
+                    }
+                } else {
+                    sender.sendMessage(Colors.ERROR + "Usage: /" + label + " " + subCommand.getName() + " " + subCommand.getPossibleArguments());
+                }
+                
+                return true;
+            }
+        }
+        
+        sender.sendMessage(Colors.ERROR + "Unknown sub-command. Type \"/" + label + " help\" for a list of commands.");
+        return true;
+    }
 }

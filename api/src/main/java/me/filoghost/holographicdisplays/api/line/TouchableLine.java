@@ -21,18 +21,18 @@ import me.filoghost.holographicdisplays.api.handler.TouchHandler;
  */
 public interface TouchableLine extends HologramLine {
 
-	/**
-	 * Sets the TouchHandler for this line.
-	 * 
-	 * @param touchHandler the new TouchHandler, can be null.
-	 */
-	public void setTouchHandler(TouchHandler touchHandler);
-	
-	/**
-	 * Returns the current TouchHandler of this line.
-	 * 
-	 * @return the current TouchHandler, can be null.
-	 */
-	public TouchHandler getTouchHandler();
-	
+    /**
+     * Sets the TouchHandler for this line.
+     * 
+     * @param touchHandler the new TouchHandler, can be null.
+     */
+    public void setTouchHandler(TouchHandler touchHandler);
+    
+    /**
+     * Returns the current TouchHandler of this line.
+     * 
+     * @return the current TouchHandler, can be null.
+     */
+    public TouchHandler getTouchHandler();
+    
 }

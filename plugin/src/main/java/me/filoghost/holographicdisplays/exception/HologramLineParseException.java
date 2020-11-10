@@ -16,14 +16,14 @@ package me.filoghost.holographicdisplays.exception;
 
 public class HologramLineParseException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public HologramLineParseException(String message) {
-		super(message);
-	}
+    public HologramLineParseException(String message) {
+        super(message);
+    }
 
-	public HologramLineParseException(String message, Throwable cause) {
-		super(message, cause);
-	}
-	
+    public HologramLineParseException(String message, Throwable cause) {
+        super(message, cause);
+    }
+    
 }

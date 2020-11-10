@@ -22,25 +22,25 @@ import org.bukkit.entity.Player;
 @Deprecated
 public interface VisibilityManager {
 
-	@Deprecated
-	public boolean isVisibleByDefault();
-	
-	@Deprecated
-	public void setVisibleByDefault(boolean visibleByDefault);
-	
-	@Deprecated
-	public void showTo(Player player);
-	
-	@Deprecated
-	public void hideTo(Player player);
-	
-	@Deprecated
-	public boolean isVisibleTo(Player player);
-	
-	@Deprecated
-	public void resetVisibility(Player player);
-	
-	@Deprecated
-	public void resetVisibilityAll();
-	
+    @Deprecated
+    public boolean isVisibleByDefault();
+    
+    @Deprecated
+    public void setVisibleByDefault(boolean visibleByDefault);
+    
+    @Deprecated
+    public void showTo(Player player);
+    
+    @Deprecated
+    public void hideTo(Player player);
+    
+    @Deprecated
+    public boolean isVisibleTo(Player player);
+    
+    @Deprecated
+    public void resetVisibility(Player player);
+    
+    @Deprecated
+    public void resetVisibilityAll();
+    
 }

@@ -48,7 +48,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket implement
     // Useful constructor
     private static PacketContainer fromEntity(Entity entity) {
         if (entityConstructor == null)
-        	entityConstructor = ProtocolLibrary.getProtocolManager().createPacketConstructor(TYPE, entity);
+            entityConstructor = ProtocolLibrary.getProtocolManager().createPacketConstructor(TYPE, entity);
         return entityConstructor.createPacket(entity);
     }
     
@@ -66,7 +66,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket implement
      * @return The spawned entity.
      */
     public Entity getEntity(World world) {
-    	return handle.getEntityModifier(world).read(0);
+        return handle.getEntityModifier(world).read(0);
     }
 
     /**
@@ -75,7 +75,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket implement
      * @return The spawned entity.
      */
     public Entity getEntity(PacketEvent event) {
-    	return getEntity(event.getPlayer().getWorld());
+        return getEntity(event.getPlayer().getWorld());
     }
     
     /**
@@ -91,7 +91,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket implement
      * @return The current Type
     */
     @SuppressWarnings("deprecation")
-	public EntityType getType() {
+    public EntityType getType() {
         return EntityType.fromId(handle.getIntegers().read(1));
     }
     
@@ -100,7 +100,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket implement
      * @param value - new value.
     */
     @SuppressWarnings("deprecation")
-	public void setType(EntityType value) {
+    public void setType(EntityType value) {
         handle.getIntegers().write(1, (int) value.getTypeId());
     }
     

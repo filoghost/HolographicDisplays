@@ -22,10 +22,10 @@ import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 @Deprecated
 public interface TouchableLine extends HologramLine {
 
-	@Deprecated
-	public void setTouchHandler(TouchHandler touchHandler);
-	
-	@Deprecated
-	public TouchHandler getTouchHandler();
-	
+    @Deprecated
+    public void setTouchHandler(TouchHandler touchHandler);
+    
+    @Deprecated
+    public TouchHandler getTouchHandler();
+    
 }

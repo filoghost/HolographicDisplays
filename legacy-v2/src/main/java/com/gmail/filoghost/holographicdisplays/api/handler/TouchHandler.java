@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 @Deprecated
 public interface TouchHandler {
 
-	@Deprecated
-	public void onTouch(Player player);
-	
+    @Deprecated
+    public void onTouch(Player player);
+    
 }

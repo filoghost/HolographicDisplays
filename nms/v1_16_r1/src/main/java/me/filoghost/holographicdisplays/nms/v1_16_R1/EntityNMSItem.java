@@ -56,19 +56,19 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 
     @Override
     public void tick() {
-    	// Disable normal ticking for this entity.
+        // Disable normal ticking for this entity.
 
         // So it won't get removed.
         ticksLived = 0;
     }
     
     @Override
-	public void inactiveTick() {
-		// Disable normal ticking for this entity.
-    	
-    	// So it won't get removed.
-    	ticksLived = 0;
-	}
+    public void inactiveTick() {
+        // Disable normal ticking for this entity.
+        
+        // So it won't get removed.
+        ticksLived = 0;
+    }
 
     // Method called when a player is near.
     @Override

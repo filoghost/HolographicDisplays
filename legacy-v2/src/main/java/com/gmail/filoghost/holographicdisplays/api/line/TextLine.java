@@ -20,10 +20,10 @@ package com.gmail.filoghost.holographicdisplays.api.line;
 @Deprecated
 public interface TextLine extends TouchableLine {
 
-	@Deprecated
-	public String getText();
-	
-	@Deprecated
-	public void setText(String text);
-	
+    @Deprecated
+    public String getText();
+    
+    @Deprecated
+    public void setText(String text);
+    
 }

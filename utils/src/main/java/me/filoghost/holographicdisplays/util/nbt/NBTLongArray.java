@@ -7,63 +7,63 @@ import java.util.Arrays;
  */
 public final class NBTLongArray extends NBTTag {
 
-	private final long[] value;
+    private final long[] value;
 
-	/**
-	 * Creates the tag with an empty name.
-	 *
-	 * @param value the value of the tag
-	 */
-	public NBTLongArray(long... value) {
-		this.value = value;
-	}
+    /**
+     * Creates the tag with an empty name.
+     *
+     * @param value the value of the tag
+     */
+    public NBTLongArray(long... value) {
+        this.value = value;
+    }
 
-	public NBTLongArray(Number[] numbers) {
-		this.value = new long[numbers.length];
-		for (int i = 0; i < numbers.length; i++)
-			value[i] = numbers[i].longValue();
-	}
+    public NBTLongArray(Number[] numbers) {
+        this.value = new long[numbers.length];
+        for (int i = 0; i < numbers.length; i++)
+            value[i] = numbers[i].longValue();
+    }
 
-	/**
-	 * Returns the length of this array.
-	 *
-	 * @return the length of this array
-	 */
-	public int length() {
-		return value.length;
-	}
+    /**
+     * Returns the length of this array.
+     *
+     * @return the length of this array
+     */
+    public int length() {
+        return value.length;
+    }
 
-	@Override
-	public long[] getValue() {
-		return value;
-	}
+    @Override
+    public long[] getValue() {
+        return value;
+    }
 
-	@Override
-	public NBTType getType() {
-		return NBTType.LONG_ARRAY;
-	}
+    @Override
+    public NBTType getType() {
+        return NBTType.LONG_ARRAY;
+    }
 
-	// MISC
+    // MISC
 
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof NBTLongArray && equals((NBTLongArray) obj);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof NBTLongArray && equals((NBTLongArray) obj);
+    }
 
-	public boolean equals(NBTLongArray tag) {
-		return Arrays.equals(this.value, tag.value);
-	}
+    public boolean equals(NBTLongArray tag) {
+        return Arrays.equals(this.value, tag.value);
+    }
 
-	@Override
-	public String toMSONString() {
-		StringBuilder stringbuilder = new StringBuilder("[I;");
-		for (int i = 0; i < this.value.length; i++) {
-			if (i != 0) {
-				stringbuilder.append(',');
-			}
-			stringbuilder.append(this.value[i]);
-		}
-		return stringbuilder.append(']').toString();
-	}
+    @Override
+    public String toMSONString() {
+        StringBuilder stringbuilder = new StringBuilder("[I;");
+        for (int i = 0; i < this.value.length; i++) {
+            if (i != 0) {
+                stringbuilder.append(',');
+            }
+            stringbuilder.append(this.value[i]);
+        }
+        return stringbuilder.append(']').toString();
+    }
 
 }

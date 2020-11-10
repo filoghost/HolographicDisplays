@@ -30,42 +30,42 @@ import java.util.List;
 
 
 public class TeleportCommand extends HologramSubCommand {
-	
-	public TeleportCommand() {
-		super("teleport", "tp");
-		setPermission(Strings.BASE_PERM + "teleport");
-	}
+    
+    public TeleportCommand() {
+        super("teleport", "tp");
+        setPermission(Strings.BASE_PERM + "teleport");
+    }
 
-	@Override
-	public String getPossibleArguments() {
-		return "<hologramName>";
-	}
+    @Override
+    public String getPossibleArguments() {
+        return "<hologramName>";
+    }
 
-	@Override
-	public int getMinimumArguments() {
-		return 1;
-	}
+    @Override
+    public int getMinimumArguments() {
+        return 1;
+    }
 
-	@Override
-	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		Player player = CommandValidator.getPlayerSender(sender);
-		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
-		
-		Location loc = hologram.getLocation();
-		loc.setPitch(90);
-		player.teleport(loc, TeleportCause.PLUGIN);
-		player.sendMessage(Colors.PRIMARY + "You were teleported to the hologram named '" + hologram.getName() + "'.");
+    @Override
+    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+        Player player = CommandValidator.getPlayerSender(sender);
+        NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+        
+        Location loc = hologram.getLocation();
+        loc.setPitch(90);
+        player.teleport(loc, TeleportCause.PLUGIN);
+        player.sendMessage(Colors.PRIMARY + "You were teleported to the hologram named '" + hologram.getName() + "'.");
 
-	}
+    }
 
-	@Override
-	public List<String> getTutorial() {
-		return Arrays.asList("Teleports you to the given hologram.");
-	}
-	
-	@Override
-	public SubCommandType getType() {
-		return SubCommandType.GENERIC;
-	}
+    @Override
+    public List<String> getTutorial() {
+        return Arrays.asList("Teleports you to the given hologram.");
+    }
+    
+    @Override
+    public SubCommandType getType() {
+        return SubCommandType.GENERIC;
+    }
 
 }

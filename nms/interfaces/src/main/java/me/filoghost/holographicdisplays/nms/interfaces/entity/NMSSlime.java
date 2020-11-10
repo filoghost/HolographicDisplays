@@ -15,8 +15,8 @@
 package me.filoghost.holographicdisplays.nms.interfaces.entity;
 
 public interface NMSSlime extends NMSEntityBase, NMSCanMount {
-	
-	// Sets the location through NMS.
-	public void setLocationNMS(double x, double y, double z);
-	
+    
+    // Sets the location through NMS.
+    public void setLocationNMS(double x, double y, double z);
+    
 }

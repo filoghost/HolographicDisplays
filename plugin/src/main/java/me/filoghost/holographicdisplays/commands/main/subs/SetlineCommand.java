@@ -32,54 +32,54 @@ import java.util.List;
 
 public class SetlineCommand extends HologramSubCommand {
 
-	public SetlineCommand() {
-		super("setline");
-		setPermission(Strings.BASE_PERM + "setline");
-	}
+    public SetlineCommand() {
+        super("setline");
+        setPermission(Strings.BASE_PERM + "setline");
+    }
 
-	@Override
-	public String getPossibleArguments() {
-		return "<hologramName> <lineNumber> <newText>";
-	}
+    @Override
+    public String getPossibleArguments() {
+        return "<hologramName> <lineNumber> <newText>";
+    }
 
-	@Override
-	public int getMinimumArguments() {
-		return 3;
-	}
+    @Override
+    public int getMinimumArguments() {
+        return 3;
+    }
 
 
-	@Override
-	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
-		String serializedLine = Utils.join(args, " ", 2, args.length);
-		
-		int lineNumber = CommandValidator.getInteger(args[1]);
-		CommandValidator.isTrue(lineNumber >= 1 && lineNumber <= hologram.size(), "The line number must be between 1 and " + hologram.size() + ".");
-		int index = lineNumber - 1;
-		
-		CraftHologramLine line = CommandValidator.parseHologramLine(hologram, serializedLine, true);
-		
-		hologram.getLinesUnsafe().get(index).despawn();
-		hologram.getLinesUnsafe().set(index, line);
-		hologram.refreshAll();
+    @Override
+    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+        NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+        String serializedLine = Utils.join(args, " ", 2, args.length);
+        
+        int lineNumber = CommandValidator.getInteger(args[1]);
+        CommandValidator.isTrue(lineNumber >= 1 && lineNumber <= hologram.size(), "The line number must be between 1 and " + hologram.size() + ".");
+        int index = lineNumber - 1;
+        
+        CraftHologramLine line = CommandValidator.parseHologramLine(hologram, serializedLine, true);
+        
+        hologram.getLinesUnsafe().get(index).despawn();
+        hologram.getLinesUnsafe().set(index, line);
+        hologram.refreshAll();
 
-		HologramDatabase.saveHologram(hologram);
-		HologramDatabase.trySaveToDisk();
-		Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
-		
-		sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " changed!");
-		EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
-		
-	}
+        HologramDatabase.saveHologram(hologram);
+        HologramDatabase.trySaveToDisk();
+        Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
+        
+        sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " changed!");
+        EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
+        
+    }
 
-	@Override
-	public List<String> getTutorial() {
-		return Arrays.asList("Changes a line of a hologram.");
-	}
-	
-	@Override
-	public SubCommandType getType() {
-		return SubCommandType.EDIT_LINES;
-	}
+    @Override
+    public List<String> getTutorial() {
+        return Arrays.asList("Changes a line of a hologram.");
+    }
+    
+    @Override
+    public SubCommandType getType() {
+        return SubCommandType.EDIT_LINES;
+    }
 
 }

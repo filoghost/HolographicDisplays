@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 @Deprecated
 public interface PickupHandler {
 
-	@Deprecated
-	public void onPickup(FloatingItem floatingItem, Player player);
-	
+    @Deprecated
+    public void onPickup(FloatingItem floatingItem, Player player);
+    
 }

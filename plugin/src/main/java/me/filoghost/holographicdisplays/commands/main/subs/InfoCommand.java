@@ -29,44 +29,44 @@ import java.util.List;
 
 public class InfoCommand extends HologramSubCommand {
 
-	public InfoCommand() {
-		super("info", "details");
-		setPermission(Strings.BASE_PERM + "info");
-	}
+    public InfoCommand() {
+        super("info", "details");
+        setPermission(Strings.BASE_PERM + "info");
+    }
 
-	@Override
-	public String getPossibleArguments() {
-		return "<hologramName>";
-	}
+    @Override
+    public String getPossibleArguments() {
+        return "<hologramName>";
+    }
 
-	@Override
-	public int getMinimumArguments() {
-		return 1;
-	}
+    @Override
+    public int getMinimumArguments() {
+        return 1;
+    }
 
 
-	@Override
-	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
-		
-		sender.sendMessage("");
-		sender.sendMessage(Strings.formatTitle("Lines of the hologram '" + hologram.getName() + "'"));
-		int index = 0;
-		
-		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
-			sender.sendMessage(Colors.SECONDARY + Colors.BOLD + (++index) + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + HologramDatabase.serializeHologramLine(line));
-		}
-		EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
-	}
+    @Override
+    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+        NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+        
+        sender.sendMessage("");
+        sender.sendMessage(Strings.formatTitle("Lines of the hologram '" + hologram.getName() + "'"));
+        int index = 0;
+        
+        for (CraftHologramLine line : hologram.getLinesUnsafe()) {
+            sender.sendMessage(Colors.SECONDARY + Colors.BOLD + (++index) + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + HologramDatabase.serializeHologramLine(line));
+        }
+        EditCommand.sendQuickEditCommands(sender, label, hologram.getName());
+    }
 
-	@Override
-	public List<String> getTutorial() {
-		return Arrays.asList("Shows the lines of a hologram.");
-	}
-	
-	@Override
-	public SubCommandType getType() {
-		return SubCommandType.EDIT_LINES;
-	}
+    @Override
+    public List<String> getTutorial() {
+        return Arrays.asList("Shows the lines of a hologram.");
+    }
+    
+    @Override
+    public SubCommandType getType() {
+        return SubCommandType.EDIT_LINES;
+    }
 
 }

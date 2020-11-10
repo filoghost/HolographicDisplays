@@ -41,97 +41,97 @@ import java.util.List;
 
 public class ReadtextCommand extends HologramSubCommand {
 
-	public ReadtextCommand() {
-		super("readtext", "readlines");
-		setPermission(Strings.BASE_PERM + "readtext");
-	}
+    public ReadtextCommand() {
+        super("readtext", "readlines");
+        setPermission(Strings.BASE_PERM + "readtext");
+    }
 
-	@Override
-	public String getPossibleArguments() {
-		return "<hologramName> <fileWithExtension>";
-	}
+    @Override
+    public String getPossibleArguments() {
+        return "<hologramName> <fileWithExtension>";
+    }
 
-	@Override
-	public int getMinimumArguments() {
-		return 2;
-	}
+    @Override
+    public int getMinimumArguments() {
+        return 2;
+    }
 
-	@Override
-	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
-		String fileName = args[1];
-		
-		try {
-			File targetFile = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
-			CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetFile), "The file must be inside HolographicDisplays' folder.");
-			CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetFile), "Cannot read default configuration files.");
-			
-			List<String> serializedLines = FileUtils.readLines(targetFile);
-			
-			int linesAmount = serializedLines.size();
-			if (linesAmount > 40) {
-				Strings.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
-				linesAmount = 40;
-			}
-			
-			List<CraftHologramLine> linesToAdd = new ArrayList<>();
-			for (int i = 0; i < linesAmount; i++) {
-				try {
-					CraftHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i), true);
-					linesToAdd.add(line);
-				} catch (HologramLineParseException e) {
-					throw new CommandException("Error at line " + (i + 1) + ": " + Utils.uncapitalize(e.getMessage()));
-				}
-			}
-			
-			hologram.clearLines();
-			hologram.getLinesUnsafe().addAll(linesToAdd);
-			hologram.refreshAll();
+    @Override
+    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+        NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+        String fileName = args[1];
+        
+        try {
+            File targetFile = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
+            CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetFile), "The file must be inside HolographicDisplays' folder.");
+            CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetFile), "Cannot read default configuration files.");
+            
+            List<String> serializedLines = FileUtils.readLines(targetFile);
+            
+            int linesAmount = serializedLines.size();
+            if (linesAmount > 40) {
+                Strings.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
+                linesAmount = 40;
+            }
+            
+            List<CraftHologramLine> linesToAdd = new ArrayList<>();
+            for (int i = 0; i < linesAmount; i++) {
+                try {
+                    CraftHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i), true);
+                    linesToAdd.add(line);
+                } catch (HologramLineParseException e) {
+                    throw new CommandException("Error at line " + (i + 1) + ": " + Utils.uncapitalize(e.getMessage()));
+                }
+            }
+            
+            hologram.clearLines();
+            hologram.getLinesUnsafe().addAll(linesToAdd);
+            hologram.refreshAll();
 
-			HologramDatabase.saveHologram(hologram);
-			HologramDatabase.trySaveToDisk();
-			
-			if (args[1].contains(".")) {
-				if (isImageExtension(args[1].substring(args[1].lastIndexOf('.') + 1))) {
-					Strings.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + label + " readimage.");
-				}
-			}
-			
-			sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram!");
-			Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
-			
-		} catch (CommandException e) {
-			throw e;
-		} catch (FileNotFoundException e) {
-			throw new CommandException("A file named '" + args[1] + "' doesn't exist in the plugin's folder.");
-		} catch (IOException e) {
-			throw new CommandException("I/O exception while reading the file. Is it in use?");
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new CommandException("Unhandled exception while reading the file! Please look the console.");
-		}
-	}
-	
-	@Override
-	public List<String> getTutorial() {
-		return Arrays.asList("Reads the lines from a text file. Tutorial:",
-			"1) Create a new text file in the plugin's folder",
-			"2) Do not use spaces in the name",
-			"3) Each line will be a line in the hologram",
-			"4) Do /holograms readlines <hologramName> <fileWithExtension>",
-			"",
-			"Example: you have a file named 'info.txt', and you want",
-			"to paste it in the hologram named 'test'. In this case you",
-			"would execute "+ ChatColor.YELLOW + "/holograms readlines test info.txt");
-	}
-	
-	@Override
-	public SubCommandType getType() {
-		return SubCommandType.EDIT_LINES;
-	}
+            HologramDatabase.saveHologram(hologram);
+            HologramDatabase.trySaveToDisk();
+            
+            if (args[1].contains(".")) {
+                if (isImageExtension(args[1].substring(args[1].lastIndexOf('.') + 1))) {
+                    Strings.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + label + " readimage.");
+                }
+            }
+            
+            sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram!");
+            Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
+            
+        } catch (CommandException e) {
+            throw e;
+        } catch (FileNotFoundException e) {
+            throw new CommandException("A file named '" + args[1] + "' doesn't exist in the plugin's folder.");
+        } catch (IOException e) {
+            throw new CommandException("I/O exception while reading the file. Is it in use?");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CommandException("Unhandled exception while reading the file! Please look the console.");
+        }
+    }
+    
+    @Override
+    public List<String> getTutorial() {
+        return Arrays.asList("Reads the lines from a text file. Tutorial:",
+            "1) Create a new text file in the plugin's folder",
+            "2) Do not use spaces in the name",
+            "3) Each line will be a line in the hologram",
+            "4) Do /holograms readlines <hologramName> <fileWithExtension>",
+            "",
+            "Example: you have a file named 'info.txt', and you want",
+            "to paste it in the hologram named 'test'. In this case you",
+            "would execute "+ ChatColor.YELLOW + "/holograms readlines test info.txt");
+    }
+    
+    @Override
+    public SubCommandType getType() {
+        return SubCommandType.EDIT_LINES;
+    }
 
-	private boolean isImageExtension(String input) {
-		return Arrays.asList("jpg", "png", "jpeg", "gif").contains(input.toLowerCase());
-	}
-	
+    private boolean isImageExtension(String input) {
+        return Arrays.asList("jpg", "png", "jpeg", "gif").contains(input.toLowerCase());
+    }
+    
 }

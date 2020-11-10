@@ -22,17 +22,17 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 public class ItemTouchHandlerAdapter implements TouchHandler {
 
-	protected ItemTouchHandler oldHandler;
-	private FloatingItem item;
-	
-	public ItemTouchHandlerAdapter(FloatingItem item, ItemTouchHandler oldHandler) {
-		this.item = item;
-		this.oldHandler = oldHandler;
-	}
+    protected ItemTouchHandler oldHandler;
+    private FloatingItem item;
+    
+    public ItemTouchHandlerAdapter(FloatingItem item, ItemTouchHandler oldHandler) {
+        this.item = item;
+        this.oldHandler = oldHandler;
+    }
 
-	@Override
-	public void onTouch(Player player) {
-		oldHandler.onTouch(item, player);
-	}
+    @Override
+    public void onTouch(Player player) {
+        oldHandler.onTouch(item, player);
+    }
 
 }

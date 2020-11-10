@@ -61,7 +61,7 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket implements E
      * @return The entity.
      */
     public Entity getEntity(World world) {
-    	return handle.getEntityModifier(world).read(0);
+        return handle.getEntityModifier(world).read(0);
     }
 
     /**
@@ -70,7 +70,7 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket implements E
      * @return The entity.
      */
     public Entity getEntity(PacketEvent event) {
-    	return getEntity(event.getPlayer().getWorld());
+        return getEntity(event.getPlayer().getWorld());
     }
     
     /**

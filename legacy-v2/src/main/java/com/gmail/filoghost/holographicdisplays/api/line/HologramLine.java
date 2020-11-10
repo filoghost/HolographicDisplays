@@ -22,10 +22,10 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 @Deprecated
 public interface HologramLine {
 
-	@Deprecated
-	public Hologram getParent();
-	
-	@Deprecated
-	public void removeLine();
+    @Deprecated
+    public Hologram getParent();
+    
+    @Deprecated
+    public void removeLine();
 
 }

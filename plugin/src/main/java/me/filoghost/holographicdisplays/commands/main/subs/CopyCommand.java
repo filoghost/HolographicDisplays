@@ -28,50 +28,50 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CopyCommand extends HologramSubCommand {
-	
-	public CopyCommand() {
-		super("copy");
-		setPermission(Strings.BASE_PERM + "copy");
-	}
+    
+    public CopyCommand() {
+        super("copy");
+        setPermission(Strings.BASE_PERM + "copy");
+    }
 
-	@Override
-	public String getPossibleArguments() {
-		return "<fromHologram> <toHologram>";
-	}
+    @Override
+    public String getPossibleArguments() {
+        return "<fromHologram> <toHologram>";
+    }
 
-	@Override
-	public int getMinimumArguments() {
-		return 2;
-	}
+    @Override
+    public int getMinimumArguments() {
+        return 2;
+    }
 
-	@Override
-	public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-		NamedHologram fromHologram = CommandValidator.getNamedHologram(args[0]);
-		NamedHologram toHologram = CommandValidator.getNamedHologram(args[1]);
-		
-		toHologram.clearLines();
-		for (CraftHologramLine line : fromHologram.getLinesUnsafe()) {
-			CraftHologramLine clonedLine = CommandValidator.parseHologramLine(toHologram, HologramDatabase.serializeHologramLine(line), false);
-			toHologram.getLinesUnsafe().add(clonedLine);
-		}
-		
-		toHologram.refreshAll();
-		
-		HologramDatabase.saveHologram(toHologram);
-		HologramDatabase.trySaveToDisk();
-		
-		sender.sendMessage(Colors.PRIMARY + "Hologram \"" + fromHologram.getName() + "\" copied into hologram \"" + toHologram.getName() + "\"!");
-	}
-	
-	@Override
-	public List<String> getTutorial() {
-		return Arrays.asList(
-				"Copies the contents of a hologram into another one.");
-	}
+    @Override
+    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+        NamedHologram fromHologram = CommandValidator.getNamedHologram(args[0]);
+        NamedHologram toHologram = CommandValidator.getNamedHologram(args[1]);
+        
+        toHologram.clearLines();
+        for (CraftHologramLine line : fromHologram.getLinesUnsafe()) {
+            CraftHologramLine clonedLine = CommandValidator.parseHologramLine(toHologram, HologramDatabase.serializeHologramLine(line), false);
+            toHologram.getLinesUnsafe().add(clonedLine);
+        }
+        
+        toHologram.refreshAll();
+        
+        HologramDatabase.saveHologram(toHologram);
+        HologramDatabase.trySaveToDisk();
+        
+        sender.sendMessage(Colors.PRIMARY + "Hologram \"" + fromHologram.getName() + "\" copied into hologram \"" + toHologram.getName() + "\"!");
+    }
+    
+    @Override
+    public List<String> getTutorial() {
+        return Arrays.asList(
+                "Copies the contents of a hologram into another one.");
+    }
 
-	@Override
-	public SubCommandType getType() {
-		return SubCommandType.GENERIC;
-	}
+    @Override
+    public SubCommandType getType() {
+        return SubCommandType.GENERIC;
+    }
 
 }

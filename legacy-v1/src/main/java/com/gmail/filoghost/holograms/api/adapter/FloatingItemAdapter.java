@@ -31,130 +31,130 @@ import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class FloatingItemAdapter implements FloatingItem {
-	
-	public static Map<Plugin, Collection<FloatingItemAdapter>> activeFloatingItems = new HashMap<>();
-	
-	private Plugin plugin;
-	public Hologram hologram;
-	private ItemLine itemLine;
-	private ItemTouchHandler touchHandler;
-	private PickupHandler pickupHandler;
-	
-	public FloatingItemAdapter(Plugin plugin, Hologram delegateHologram, ItemLine delegateItemLine) {
-		this.plugin = plugin;
-		this.hologram = delegateHologram;		
-		this.itemLine = delegateItemLine;
-		
-		activeFloatingItems.computeIfAbsent(plugin, __ -> new ArrayList<>()).add(this);
-	}
+    
+    public static Map<Plugin, Collection<FloatingItemAdapter>> activeFloatingItems = new HashMap<>();
+    
+    private Plugin plugin;
+    public Hologram hologram;
+    private ItemLine itemLine;
+    private ItemTouchHandler touchHandler;
+    private PickupHandler pickupHandler;
+    
+    public FloatingItemAdapter(Plugin plugin, Hologram delegateHologram, ItemLine delegateItemLine) {
+        this.plugin = plugin;
+        this.hologram = delegateHologram;        
+        this.itemLine = delegateItemLine;
+        
+        activeFloatingItems.computeIfAbsent(plugin, __ -> new ArrayList<>()).add(this);
+    }
 
-	@Override
-	public boolean update() {
-		return true;
-	}
+    @Override
+    public boolean update() {
+        return true;
+    }
 
-	@Override
-	public void hide() {
-		
-	}
+    @Override
+    public void hide() {
+        
+    }
 
-	@Override
-	public void setItemStack(ItemStack itemstack) {
-		itemLine.setItemStack(itemstack);
-	}
+    @Override
+    public void setItemStack(ItemStack itemstack) {
+        itemLine.setItemStack(itemstack);
+    }
 
-	@Override
-	public ItemStack getItemStack() {
-		return itemLine.getItemStack();
-	}
+    @Override
+    public ItemStack getItemStack() {
+        return itemLine.getItemStack();
+    }
 
-	@Override
-	public Location getLocation() {
-		return hologram.getLocation();
-	}
+    @Override
+    public Location getLocation() {
+        return hologram.getLocation();
+    }
 
-	@Override
-	public double getX() {
-		return hologram.getX();
-	}
+    @Override
+    public double getX() {
+        return hologram.getX();
+    }
 
-	@Override
-	public double getY() {
-		return hologram.getY();
-	}
+    @Override
+    public double getY() {
+        return hologram.getY();
+    }
 
-	@Override
-	public double getZ() {
-		return hologram.getZ();
-	}
+    @Override
+    public double getZ() {
+        return hologram.getZ();
+    }
 
-	@Override
-	public World getWorld() {
-		return hologram.getWorld();
-	}
+    @Override
+    public World getWorld() {
+        return hologram.getWorld();
+    }
 
-	@Override
-	public void teleport(Location location) {
-		hologram.teleport(location);
-	}
+    @Override
+    public void teleport(Location location) {
+        hologram.teleport(location);
+    }
 
-	@Override
-	public void setTouchHandler(ItemTouchHandler handler) {
-		this.touchHandler = handler;
-		
-		if (handler != null) {
-			itemLine.setTouchHandler(new ItemTouchHandlerAdapter(this, handler));
-		} else {
-			itemLine.setTouchHandler(null);
-		}
-	}
+    @Override
+    public void setTouchHandler(ItemTouchHandler handler) {
+        this.touchHandler = handler;
+        
+        if (handler != null) {
+            itemLine.setTouchHandler(new ItemTouchHandlerAdapter(this, handler));
+        } else {
+            itemLine.setTouchHandler(null);
+        }
+    }
 
-	@Override
-	public ItemTouchHandler getTouchHandler() {
-		return touchHandler;
-	}
+    @Override
+    public ItemTouchHandler getTouchHandler() {
+        return touchHandler;
+    }
 
-	@Override
-	public boolean hasTouchHandler() {
-		return touchHandler != null;
-	}
+    @Override
+    public boolean hasTouchHandler() {
+        return touchHandler != null;
+    }
 
-	@Override
-	public void setPickupHandler(PickupHandler handler) {
-		this.pickupHandler = handler;
-		
-		if (handler != null) {
-			itemLine.setPickupHandler(new PickupHandlerAdapter(this, handler));
-		} else {
-			itemLine.setPickupHandler(null);
-		}
-	}
+    @Override
+    public void setPickupHandler(PickupHandler handler) {
+        this.pickupHandler = handler;
+        
+        if (handler != null) {
+            itemLine.setPickupHandler(new PickupHandlerAdapter(this, handler));
+        } else {
+            itemLine.setPickupHandler(null);
+        }
+    }
 
-	@Override
-	public PickupHandler getPickupHandler() {
-		return pickupHandler;
-	}
+    @Override
+    public PickupHandler getPickupHandler() {
+        return pickupHandler;
+    }
 
-	@Override
-	public boolean hasPickupHandler() {
-		return pickupHandler != null;
-	}
+    @Override
+    public boolean hasPickupHandler() {
+        return pickupHandler != null;
+    }
 
-	@Override
-	public long getCreationTimestamp() {
-		return hologram.getCreationTimestamp();
-	}
+    @Override
+    public long getCreationTimestamp() {
+        return hologram.getCreationTimestamp();
+    }
 
-	@Override
-	public void delete() {
-		hologram.delete();
-		
-		activeFloatingItems.get(plugin).remove(this);
-	}
+    @Override
+    public void delete() {
+        hologram.delete();
+        
+        activeFloatingItems.get(plugin).remove(this);
+    }
 
-	@Override
-	public boolean isDeleted() {
-		return hologram.isDeleted();
-	}
+    @Override
+    public boolean isDeleted() {
+        return hologram.isDeleted();
+    }
 
 }

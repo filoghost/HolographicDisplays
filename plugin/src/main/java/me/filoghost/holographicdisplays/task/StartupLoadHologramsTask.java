@@ -28,28 +28,28 @@ import java.util.logging.Level;
 
 public class StartupLoadHologramsTask implements Runnable {
 
-	@Override
-	public void run() {
-		Set<String> savedHologramsNames = HologramDatabase.getHolograms();
-		if (savedHologramsNames != null) {
-			for (String hologramName : savedHologramsNames) {
-				try {
-					NamedHologram namedHologram = HologramDatabase.loadHologram(hologramName);
-					NamedHologramManager.addHologram(namedHologram);
-					namedHologram.refreshAll();
-				} catch (HologramNotFoundException e) {
-					ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' not found, skipping it.");
-				} catch (InvalidFormatException e) {
-					ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' has an invalid location format.");
-				} catch (WorldNotFoundException e) {
-					ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' was in the world '" + e.getMessage() + "' but it wasn't loaded.");
-				} catch (HologramLineParseException e) {
-					ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' has an invalid line: " + e.getMessage());
-				} catch (Exception e) {
-					ConsoleLogger.log(Level.WARNING, "Unhandled exception while loading the hologram '" + hologramName + "'. Please contact the developer.", e);
-				}
-			}
-		}
-	}
+    @Override
+    public void run() {
+        Set<String> savedHologramsNames = HologramDatabase.getHolograms();
+        if (savedHologramsNames != null) {
+            for (String hologramName : savedHologramsNames) {
+                try {
+                    NamedHologram namedHologram = HologramDatabase.loadHologram(hologramName);
+                    NamedHologramManager.addHologram(namedHologram);
+                    namedHologram.refreshAll();
+                } catch (HologramNotFoundException e) {
+                    ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' not found, skipping it.");
+                } catch (InvalidFormatException e) {
+                    ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' has an invalid location format.");
+                } catch (WorldNotFoundException e) {
+                    ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' was in the world '" + e.getMessage() + "' but it wasn't loaded.");
+                } catch (HologramLineParseException e) {
+                    ConsoleLogger.log(Level.WARNING, "Hologram '" + hologramName + "' has an invalid line: " + e.getMessage());
+                } catch (Exception e) {
+                    ConsoleLogger.log(Level.WARNING, "Unhandled exception while loading the hologram '" + hologramName + "'. Please contact the developer.", e);
+                }
+            }
+        }
+    }
 
 }

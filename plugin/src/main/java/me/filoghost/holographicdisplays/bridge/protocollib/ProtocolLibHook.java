@@ -21,15 +21,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public interface ProtocolLibHook {
-	
-	public boolean hook(Plugin plugin, NMSManager nmsManager);
-	
-	public void sendDestroyEntitiesPacket(Player player, CraftHologram hologram);
-	
-	public void sendDestroyEntitiesPacket(Player player, CraftHologramLine line);
-	
-	public void sendCreateEntitiesPacket(Player player, CraftHologram hologram);
-	
-	public void sendCreateEntitiesPacket(Player player, CraftHologramLine line);
+    
+    public boolean hook(Plugin plugin, NMSManager nmsManager);
+    
+    public void sendDestroyEntitiesPacket(Player player, CraftHologram hologram);
+    
+    public void sendDestroyEntitiesPacket(Player player, CraftHologramLine line);
+    
+    public void sendCreateEntitiesPacket(Player player, CraftHologram hologram);
+    
+    public void sendCreateEntitiesPacket(Player player, CraftHologramLine line);
 
 }

@@ -24,22 +24,22 @@ import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
 public interface NMSManager {
-	
-	// A method to register all the custom entities of the plugin, it may fail.
-	public void setup() throws Exception;
-	
-	public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece, boolean broadcastLocationPacket);
-	
-	public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack, ItemPickupManager itemPickupManager);
-	
-	public NMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece);
-	
-	public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity);
+    
+    // A method to register all the custom entities of the plugin, it may fail.
+    public void setup() throws Exception;
+    
+    public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece, boolean broadcastLocationPacket);
+    
+    public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack, ItemPickupManager itemPickupManager);
+    
+    public NMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece);
+    
+    public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity);
 
-	public NMSEntityBase getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity);
+    public NMSEntityBase getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity);
 
-	public NMSEntityBase getNMSEntityBaseFromID(World bukkitWorld, int entityID);
+    public NMSEntityBase getNMSEntityBaseFromID(World bukkitWorld, int entityID);
 
-	public Object replaceCustomNameText(Object customNameObject, String target, String replacement);
+    public Object replaceCustomNameText(Object customNameObject, String target, String replacement);
 
 }
