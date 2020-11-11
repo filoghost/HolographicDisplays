@@ -9,7 +9,7 @@ import com.gmail.filoghost.holograms.api.adapter.FloatingItemAdapter;
 import com.gmail.filoghost.holograms.api.adapter.HologramAdapter;
 import me.filoghost.holographicdisplays.api.HologramsAPI;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.util.Validator;
+import me.filoghost.holographicdisplays.common.Validator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

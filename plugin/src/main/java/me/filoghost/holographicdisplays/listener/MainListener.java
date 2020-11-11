@@ -19,7 +19,7 @@ import me.filoghost.holographicdisplays.object.NamedHologramManager;
 import me.filoghost.holographicdisplays.object.PluginHologram;
 import me.filoghost.holographicdisplays.object.PluginHologramManager;
 import me.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
-import me.filoghost.holographicdisplays.util.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.ConsoleLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;

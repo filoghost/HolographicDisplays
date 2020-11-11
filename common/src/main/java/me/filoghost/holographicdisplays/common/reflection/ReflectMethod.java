@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.util.reflection;
+package me.filoghost.holographicdisplays.common.reflection;
 
 import java.lang.reflect.Method;
 

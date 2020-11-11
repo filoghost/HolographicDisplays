@@ -11,7 +11,7 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Serializer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
-import me.filoghost.holographicdisplays.util.NMSVersion;
+import me.filoghost.holographicdisplays.common.NMSVersion;
 
 import java.util.List;
 import java.util.Optional;

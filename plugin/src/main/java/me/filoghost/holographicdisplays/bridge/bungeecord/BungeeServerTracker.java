@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.PingRespo
 import me.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerPinger;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.ServerAddress;
-import me.filoghost.holographicdisplays.util.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.ConsoleLogger;
 import org.bukkit.Bukkit;
 
 import java.io.IOException;

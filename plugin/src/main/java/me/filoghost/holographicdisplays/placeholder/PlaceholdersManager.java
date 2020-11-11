@@ -10,8 +10,8 @@ import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
 import me.filoghost.holographicdisplays.object.line.CraftTextLine;
 import me.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
-import me.filoghost.holographicdisplays.util.ConsoleLogger;
-import me.filoghost.holographicdisplays.util.Utils;
+import me.filoghost.holographicdisplays.common.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 

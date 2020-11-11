@@ -3,9 +3,15 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+
+/*
+ * Copyright (C) filoghost and contributors
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 package me.filoghost.holographicdisplays.disk;
 
-import me.filoghost.holographicdisplays.util.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.ConsoleLogger;
 import me.filoghost.holographicdisplays.util.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.plugin.Plugin;

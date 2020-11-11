@@ -7,10 +7,10 @@ package me.filoghost.holographicdisplays.nms.v1_8_R2;
 
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.util.ConsoleLogger;
-import me.filoghost.holographicdisplays.util.Utils;
-import me.filoghost.holographicdisplays.util.reflection.ReflectField;
-import me.filoghost.holographicdisplays.util.reflection.ReflectMethod;
+import me.filoghost.holographicdisplays.common.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.Utils;
+import me.filoghost.holographicdisplays.common.reflection.ReflectField;
+import me.filoghost.holographicdisplays.common.reflection.ReflectMethod;
 import net.minecraft.server.v1_8_R2.AxisAlignedBB;
 import net.minecraft.server.v1_8_R2.DamageSource;
 import net.minecraft.server.v1_8_R2.EntityArmorStand;

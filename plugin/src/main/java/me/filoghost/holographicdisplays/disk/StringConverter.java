@@ -3,9 +3,15 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+
+/*
+ * Copyright (C) filoghost and contributors
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 package me.filoghost.holographicdisplays.disk;
 
-import me.filoghost.holographicdisplays.util.Utils;
+import me.filoghost.holographicdisplays.common.Utils;
 import org.bukkit.ChatColor;
 
 public class StringConverter {

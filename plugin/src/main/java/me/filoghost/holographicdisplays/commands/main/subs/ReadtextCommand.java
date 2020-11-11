@@ -18,7 +18,7 @@ import me.filoghost.holographicdisplays.exception.HologramLineParseException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import me.filoghost.holographicdisplays.util.FileUtils;
-import me.filoghost.holographicdisplays.util.Utils;
+import me.filoghost.holographicdisplays.common.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

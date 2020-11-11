@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.placeholder;
 
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.disk.StringConverter;
-import me.filoghost.holographicdisplays.util.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.ConsoleLogger;
 import me.filoghost.holographicdisplays.util.FileUtils;
 import org.bukkit.plugin.Plugin;
 

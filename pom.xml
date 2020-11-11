@@ -29,8 +29,8 @@
     </distributionManagement>
 
     <modules>
+        <module>common</module>
         <module>api</module>
-        <module>utils</module>
         <module>legacy-v1</module>
         <module>legacy-v2</module>
         <module>nms</module>
@@ -48,7 +48,7 @@
     
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>holographicdisplays-utils</artifactId>
+                <artifactId>holographicdisplays-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
     

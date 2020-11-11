@@ -13,7 +13,7 @@ import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
 import me.filoghost.holographicdisplays.object.CraftHologram;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
-import me.filoghost.holographicdisplays.util.Offsets;
+import me.filoghost.holographicdisplays.common.Offsets;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;
 import org.bukkit.World;

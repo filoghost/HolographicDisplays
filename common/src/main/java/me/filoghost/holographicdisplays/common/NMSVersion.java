@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.util;
+package me.filoghost.holographicdisplays.common;
 
 /**
  * The NMS version is the name of the main package under net.minecraft.server.

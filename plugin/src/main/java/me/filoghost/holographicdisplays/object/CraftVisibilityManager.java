@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.object;
 
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.api.VisibilityManager;
-import me.filoghost.holographicdisplays.util.Validator;
+import me.filoghost.holographicdisplays.common.Validator;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

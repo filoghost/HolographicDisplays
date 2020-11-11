@@ -11,7 +11,7 @@ import me.filoghost.holographicdisplays.api.internal.BackendAPI;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.placeholder.Placeholder;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersRegister;
-import me.filoghost.holographicdisplays.util.Validator;
+import me.filoghost.holographicdisplays.common.Validator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

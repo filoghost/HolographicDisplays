@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.util;
+package me.filoghost.holographicdisplays.common;
 
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 

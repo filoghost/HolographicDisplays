@@ -18,7 +18,7 @@ import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
-import me.filoghost.holographicdisplays.util.NMSVersion;
+import me.filoghost.holographicdisplays.common.NMSVersion;
 import org.bukkit.entity.Player;
 
 import java.util.List;

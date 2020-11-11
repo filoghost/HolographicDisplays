@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.object;
 
-import me.filoghost.holographicdisplays.util.Validator;
+import me.filoghost.holographicdisplays.common.Validator;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 

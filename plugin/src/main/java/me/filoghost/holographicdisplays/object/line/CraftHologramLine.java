@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.object.line;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.object.CraftHologram;
 import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
-import me.filoghost.holographicdisplays.util.Validator;
+import me.filoghost.holographicdisplays.common.Validator;
 import org.bukkit.World;
 
 import java.util.Collection;

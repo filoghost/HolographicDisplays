@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.task;
 
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerInfo;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
-import me.filoghost.holographicdisplays.util.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.ConsoleLogger;
 
 import java.util.Iterator;
 import java.util.Map.Entry;

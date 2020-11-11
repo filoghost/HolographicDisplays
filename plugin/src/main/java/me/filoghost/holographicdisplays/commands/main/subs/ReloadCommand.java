@@ -24,7 +24,7 @@ import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.NamedHologramManager;
 import me.filoghost.holographicdisplays.placeholder.AnimationsRegister;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
-import me.filoghost.holographicdisplays.util.Utils;
+import me.filoghost.holographicdisplays.common.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
