@@ -165,27 +165,35 @@
         
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
                     <!-- Appends build number to plugin version on SNAPSHOT builds. -->
                     <execution>
                         <id>set-plugin-version</id>
                         <phase>validate</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>bsh-property</goal>
                         </goals>
                         <configuration>
-                            <exportAntProperties>true</exportAntProperties>
-                            <target>
-                                <property environment="env" />
-                                <condition property="project.pluginVersion"    value="${project.version}-b${env.BUILD_NUMBER}"    else="${project.version}">
-                                    <and>
-                                        <isset property="env.BUILD_NUMBER" />
-                                        <contains string="${project.version}" substring="SNAPSHOT" />
-                                    </and>
-                                </condition>
-                            </target>
+                            <properties>
+                                <property>pluginVersion</property>
+                            </properties>
+                            <source>
+                                projectVersion = project.version;
+                                buildNumber = System.getenv("BUILD_NUMBER");
+
+                                String pluginVersion;
+                                if (buildNumber != null @and projectVersion.contains("SNAPSHOT")) {
+                                    pluginVersion = projectVersion + "-b" + buildNumber;
+                                } else {
+                                    pluginVersion = projectVersion;
+                                }
+
+                                print("Project version: " + projectVersion);
+                                print("Build number: " + buildNumber);
+                                print("Computed plugin version: " + pluginVersion);
+                            </source>
                         </configuration>
                     </execution>
                 </executions>
@@ -200,7 +208,7 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                         <manifestEntries>
-                            <Implementation-Version>${project.pluginVersion}</Implementation-Version>
+                            <Implementation-Version>${pluginVersion}</Implementation-Version>
                         </manifestEntries>
                     </archive>
                 </configuration>

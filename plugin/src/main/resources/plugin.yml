@@ -1,7 +1,7 @@
 name: HolographicDisplays
 main: me.filoghost.holographicdisplays.HolographicDisplays
 author: filoghost
-version: ${project.pluginVersion}
+version: ${pluginVersion}
 api-version: 1.13
 
 softdepend: [ProtocolLib]
