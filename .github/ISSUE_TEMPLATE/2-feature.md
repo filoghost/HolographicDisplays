@@ -5,7 +5,7 @@ labels: Enhancement
 ---
 <!--
 
-⚠️ READ BELOW BEFOR SUBMITTING ⚠️
+⚠️ READ BELOW BEFORE SUBMITTING ⚠️
 
 Please only suggest changes that would benefit many users, not just a specific situation.
 

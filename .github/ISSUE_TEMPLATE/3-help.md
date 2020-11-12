@@ -5,7 +5,7 @@ labels: Help
 ---
 <!--
 
-⚠️ READ BELOW BEFOR SUBMITTING ⚠️
+⚠️ READ BELOW BEFORE SUBMITTING ⚠️
 
 Before asking for help:
  * Read the documentation: https://filoghost.me/docs/holographic-displays

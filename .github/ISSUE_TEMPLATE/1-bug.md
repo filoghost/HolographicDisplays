@@ -5,7 +5,7 @@ labels: Bug
 ---
 <!--
 
-⚠️ READ BELOW BEFOR SUBMITTING ⚠️
+⚠️ READ BELOW BEFORE SUBMITTING ⚠️
 
 Before opening a bug report:
  * Read the FAQ: https://filoghost.me/docs/holographic-displays/faq

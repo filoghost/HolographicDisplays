@@ -1,11 +1,11 @@
 ---
 name: 📚 Documentation improvement
-about: "Request an improvement for the official documention."
+about: "Request an improvement for the official documentation."
 labels: Documentation
 ---
 <!--
 
-⚠️ READ BELOW BEFOR SUBMITTING ⚠️
+⚠️ READ BELOW BEFORE SUBMITTING ⚠️
 
 You MUST fill out the template below, without modifying or deleting the existing text, otherwise the issue will be automatically closed.
 
