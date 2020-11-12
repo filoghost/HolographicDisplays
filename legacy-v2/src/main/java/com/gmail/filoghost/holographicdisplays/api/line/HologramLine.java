@@ -14,9 +14,9 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 public interface HologramLine {
 
     @Deprecated
-    public Hologram getParent();
+    Hologram getParent();
     
     @Deprecated
-    public void removeLine();
+    void removeLine();
 
 }

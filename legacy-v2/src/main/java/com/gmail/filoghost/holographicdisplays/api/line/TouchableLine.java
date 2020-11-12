@@ -14,9 +14,9 @@ import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 public interface TouchableLine extends HologramLine {
 
     @Deprecated
-    public void setTouchHandler(TouchHandler touchHandler);
+    void setTouchHandler(TouchHandler touchHandler);
     
     @Deprecated
-    public TouchHandler getTouchHandler();
+    TouchHandler getTouchHandler();
     
 }

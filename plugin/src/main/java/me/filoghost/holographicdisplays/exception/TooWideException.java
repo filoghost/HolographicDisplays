@@ -6,8 +6,6 @@
 package me.filoghost.holographicdisplays.exception;
 
 public class TooWideException extends Exception {
-
-    private static final long serialVersionUID = 1L;
     
     private int width;
     

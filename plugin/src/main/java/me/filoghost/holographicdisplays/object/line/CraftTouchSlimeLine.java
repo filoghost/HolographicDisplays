@@ -10,7 +10,6 @@ import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
 import me.filoghost.holographicdisplays.object.CraftHologram;
-import me.filoghost.holographicdisplays.common.Offsets;
 import org.bukkit.World;
 
 /**

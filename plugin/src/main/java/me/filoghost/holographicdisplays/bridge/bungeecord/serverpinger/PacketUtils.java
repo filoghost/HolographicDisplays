@@ -10,13 +10,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 class PacketUtils {
-    
-    public static final Charset UTF8 = Charset.forName("UTF-8");
 
     public static void writeString(final DataOutputStream out, final String s, final Charset charset) throws IOException {
-        if (charset == PacketUtils.UTF8) {
+        if (charset == StandardCharsets.UTF_8) {
             writeVarInt(out, s.length());
         } else {
             out.writeShort(s.length());
@@ -52,7 +51,7 @@ class PacketUtils {
             if (closeable != null) {
                 closeable.close();
             }
-        } catch (IOException e) {}
+        } catch (IOException ignored) {}
     }
 
 }

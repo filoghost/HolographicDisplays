@@ -5,13 +5,9 @@
  */
 package me.filoghost.holographicdisplays.nbt.parser;
 
-import org.bukkit.ChatColor;
-
 import java.io.IOException;
 
 public class MojangsonParseException extends IOException {
-
-    private static final long serialVersionUID = 1L;
 
     public MojangsonParseException(String msg, String content, int index) {
         super(msg + " at character " + index + ": " + printErrorLoc(content, index));
@@ -23,8 +19,8 @@ public class MojangsonParseException extends IOException {
         if (i > 35) {
             builder.append("...");
         }
-        builder.append(content.substring(Math.max(0, i - 35), i));
-        builder.append(ChatColor.GOLD + "<--[HERE]");
+        builder.append(content, Math.max(0, i - 35), i);
+        builder.append("<--[HERE]");
 
         return builder.toString();
     }

@@ -71,11 +71,11 @@ public abstract class AbstractPacket {
      * @param sender - the sender.
      * @throws RuntimeException If the packet cannot be received.
      */
-    public void recievePacket(Player sender) {
+    public void receivePacket(Player sender) {
         try {
             ProtocolLibrary.getProtocolManager().recieveClientPacket(sender, getHandle());
         } catch (Exception e) {
-            throw new RuntimeException("Cannot recieve packet.", e);
+            throw new RuntimeException("Cannot receive packet.", e);
         }
     }
 }

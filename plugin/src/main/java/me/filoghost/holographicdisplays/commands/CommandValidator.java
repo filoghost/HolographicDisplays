@@ -50,15 +50,6 @@ public class CommandValidator {
         }
     }
     
-    public static boolean isInteger(String integer) {
-        try {
-            Integer.parseInt(integer);
-            return true;
-        } catch (NumberFormatException ex) {
-            return false;
-        }
-    }
-    
     public static Player getPlayerSender(CommandSender sender) throws CommandException {
         if (sender instanceof Player) {
             return (Player) sender;

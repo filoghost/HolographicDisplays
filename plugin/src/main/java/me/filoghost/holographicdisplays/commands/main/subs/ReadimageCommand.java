@@ -58,12 +58,12 @@ public class ReadimageCommand extends HologramSubCommand {
         boolean append = false;
         
         List<String> newArgs = new ArrayList<>();
-        
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equalsIgnoreCase("-a") || args[i].equalsIgnoreCase("-append")) {
+
+        for (String arg : args) {
+            if (arg.equalsIgnoreCase("-a") || arg.equalsIgnoreCase("-append")) {
                 append = true;
             } else {
-                newArgs.add(args[i]);
+                newArgs.add(arg);
             }
         }
         
@@ -79,7 +79,7 @@ public class ReadimageCommand extends HologramSubCommand {
         
         try {
             String fileName = args[1];
-            BufferedImage image = null;
+            BufferedImage image;
             
             if (fileName.startsWith("http://") || fileName.startsWith("https://")) {
                 isUrl = true;
@@ -103,9 +103,9 @@ public class ReadimageCommand extends HologramSubCommand {
             
             ImageMessage imageMessage = new ImageMessage(image, width);
             String[] newLines = imageMessage.getLines();
-            for (int i = 0; i < newLines.length; i++) {
-                CraftTextLine line = new CraftTextLine(hologram, newLines[i]);
-                line.setSerializedConfigValue(newLines[i]);
+            for (String newLine : newLines) {
+                CraftTextLine line = new CraftTextLine(hologram, newLine);
+                line.setSerializedConfigValue(newLine);
                 hologram.getLinesUnsafe().add(line);
             }
             

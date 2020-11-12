@@ -17,12 +17,12 @@ public interface HologramLine {
      * 
      * @return the parent Hologram.
      */
-    public Hologram getParent();
+    Hologram getParent();
     
     /**
      * Removes this line from the parent Hologram. Since: v2.0.1
      * Do not call if the Hologram has been deleted, an exception will be thrown.
      */
-    public void removeLine();
+    void removeLine();
 
 }

@@ -28,7 +28,7 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 
 /**
- * Just a bunch of static varibles to hold the settings.
+ * Just a bunch of static variables to hold the settings.
  * Useful for fast access.
  */
 public class Configuration {

@@ -10,7 +10,6 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.EquivalentConverter;
 import com.comphenix.protocol.reflect.PrettyPrinter;
-import com.comphenix.protocol.reflect.PrettyPrinter.ObjectPrinter;
 import com.comphenix.protocol.utility.HexDumper;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.BukkitConverters;
@@ -54,29 +53,26 @@ public class DebugHelper {
             clazz = clazz.getSuperclass();
         }
         
-        return PrettyPrinter.printObject(packet, clazz, MinecraftReflection.getPacketClass(), PrettyPrinter.RECURSE_DEPTH, new ObjectPrinter() {
-            @Override
-            public boolean print(StringBuilder output, Object value) {
-                // Special case
-                if (value instanceof byte[]) {
-                    byte[] data = (byte[]) value;
-                    
-                    if (data.length > HEX_DUMP_THRESHOLD) {
-                        output.append("[");
-                        HexDumper.defaultDumper().appendTo(output, data);
-                        output.append("]");
-                        return true;
-                    }
-                } else if (value != null) {
-                    EquivalentConverter<Object> converter = findConverter(value.getClass());
-
-                    if (converter != null) {
-                        output.append(converter.getSpecific(value));
-                        return true;
-                    }
+        return PrettyPrinter.printObject(packet, clazz, MinecraftReflection.getPacketClass(), PrettyPrinter.RECURSE_DEPTH, (StringBuilder output, Object value) -> {
+            // Special case
+            if (value instanceof byte[]) {
+                byte[] data = (byte[]) value;
+                
+                if (data.length > HEX_DUMP_THRESHOLD) {
+                    output.append("[");
+                    HexDumper.defaultDumper().appendTo(output, data);
+                    output.append("]");
+                    return true;
                 }
-                return false;
+            } else if (value != null) {
+                EquivalentConverter<Object> converter = findConverter(value.getClass());
+
+                if (converter != null) {
+                    output.append(converter.getSpecific(value));
+                    return true;
+                }
             }
+            return false;
         });
     }
     

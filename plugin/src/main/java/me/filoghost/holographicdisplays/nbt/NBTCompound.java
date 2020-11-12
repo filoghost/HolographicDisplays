@@ -25,11 +25,11 @@ public final class NBTCompound extends NBTTag {
     private final Map<String, NBTTag> value;
 
     public NBTCompound(Map<String, NBTTag> value) {
-        this.value = new LinkedHashMap<String, NBTTag>(value);
+        this.value = new LinkedHashMap<>(value);
     }
 
     public NBTCompound() {
-        this.value = new LinkedHashMap<String, NBTTag>();
+        this.value = new LinkedHashMap<>();
     }
 
     // GETTERS
@@ -361,7 +361,7 @@ public final class NBTCompound extends NBTTag {
      * Put the given key and value into the compound tag.
      *
      * @param key   they key
-     * @param value the valu
+     * @param value the value
      */
     public void putInt(String key, int value) {
         put(key, new NBTInt(value));

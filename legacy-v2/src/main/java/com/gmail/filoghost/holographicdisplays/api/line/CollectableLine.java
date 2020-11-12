@@ -14,9 +14,9 @@ import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
 public interface CollectableLine extends HologramLine {
 
     @Deprecated
-    public void setPickupHandler(PickupHandler pickupHandler);
+    void setPickupHandler(PickupHandler pickupHandler);
     
     @Deprecated
-    public PickupHandler getPickupHandler();
+    PickupHandler getPickupHandler();
     
 }

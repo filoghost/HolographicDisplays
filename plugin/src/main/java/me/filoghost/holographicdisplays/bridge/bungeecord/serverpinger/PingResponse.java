@@ -18,13 +18,6 @@ public class PingResponse
     private String motd;
     private int onlinePlayers;
     private int maxPlayers;
-    
-    public PingResponse(boolean isOnline, String motd, int onlinePlayers, int maxPlayers) {
-        this.isOnline = isOnline;
-        this.motd = motd;
-        this.onlinePlayers = onlinePlayers;
-        this.maxPlayers = maxPlayers;
-    }
 
     public PingResponse(String jsonString, ServerAddress address) {
         

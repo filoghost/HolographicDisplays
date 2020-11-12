@@ -76,12 +76,4 @@ public class VersionUtils {
         return compare(reference, thanWhat) >= 0;
     }
     
-    public static boolean isVersionLessEqual(String reference, String thanWhat) {
-        return compare(reference, thanWhat) <= 0;
-    }
-    
-    public static boolean isVersionBetweenEqual(String reference, String lowest, String highest) {
-        return isVersionGreaterEqual(reference, lowest) && isVersionLessEqual(reference, highest);
-    }
-    
 }

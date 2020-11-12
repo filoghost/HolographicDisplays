@@ -57,22 +57,5 @@ public class PluginHologramManager {
             }
         }
     }
-    
-    public static void onChunkUnload(Chunk chunk) {
-         // Hide the holograms in that chunk.
-        for (PluginHologram hologram : pluginHolograms) {
-            if (hologram.isInChunk(chunk)) {
-                hologram.despawnEntities();
-            }
-        }
-    }
-    
-    public static void clearAll() {
-        List<PluginHologram> oldHolograms = new ArrayList<>(pluginHolograms);
-        pluginHolograms.clear();
-        
-        for (PluginHologram hologram : oldHolograms) {
-            hologram.delete();
-        }
-    }
+
 }

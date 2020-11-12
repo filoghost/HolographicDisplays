@@ -48,7 +48,7 @@ public class NmsManagerImpl implements NMSManager {
     
     public void registerCustomEntity(Class<?> entityClass, String name, int id) throws Exception {
         ENTITY_NAMES_BY_CLASS_FIELD.getStatic().put(entityClass, name);
-        ENTITY_IDS_BY_CLASS_FIELD.getStatic().put(entityClass, Integer.valueOf(id));
+        ENTITY_IDS_BY_CLASS_FIELD.getStatic().put(entityClass, id);
     }
     
     @Override

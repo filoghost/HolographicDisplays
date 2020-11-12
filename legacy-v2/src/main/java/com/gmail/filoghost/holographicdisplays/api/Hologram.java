@@ -19,69 +19,69 @@ import org.bukkit.inventory.ItemStack;
 public interface Hologram {
 
     @Deprecated
-    public TextLine appendTextLine(String text);
+    TextLine appendTextLine(String text);
 
     @Deprecated
-    public ItemLine appendItemLine(ItemStack itemStack);
+    ItemLine appendItemLine(ItemStack itemStack);
     
     @Deprecated
-    public TextLine insertTextLine(int index, String text);
+    TextLine insertTextLine(int index, String text);
 
     @Deprecated
-    public ItemLine insertItemLine(int index, ItemStack itemStack);
+    ItemLine insertItemLine(int index, ItemStack itemStack);
 
     @Deprecated
-    public HologramLine getLine(int index);
+    HologramLine getLine(int index);
     
     @Deprecated
-    public void removeLine(int index);
+    void removeLine(int index);
 
     @Deprecated
-    public void clearLines();
+    void clearLines();
 
     @Deprecated
-    public int size();
+    int size();
 
     @Deprecated
-    public double getHeight();
+    double getHeight();
 
     @Deprecated
-    public void teleport(Location location);
+    void teleport(Location location);
     
     @Deprecated
-    public void teleport(World world, double x, double y, double z);
+    void teleport(World world, double x, double y, double z);
     
     @Deprecated
-    public Location getLocation();
+    Location getLocation();
     
     @Deprecated
-    public double getX();
+    double getX();
 
     @Deprecated
-    public double getY();
+    double getY();
 
     @Deprecated
-    public double getZ();
+    double getZ();
     
     @Deprecated
-    public World getWorld();
+    World getWorld();
 
     @Deprecated
-    public VisibilityManager getVisibilityManager();
+    VisibilityManager getVisibilityManager();
 
     @Deprecated
-    public long getCreationTimestamp();
+    long getCreationTimestamp();
 
     @Deprecated
-    public boolean isAllowPlaceholders();
+    boolean isAllowPlaceholders();
 
     @Deprecated
-    public void setAllowPlaceholders(boolean allowPlaceholders);
+    void setAllowPlaceholders(boolean allowPlaceholders);
     
     @Deprecated
-    public void delete();
+    void delete();
     
     @Deprecated
-    public boolean isDeleted();
+    boolean isDeleted();
     
 }

@@ -11,6 +11,6 @@ import org.bukkit.entity.Player;
 
 public interface ItemPickupManager {
 
-    public void handleItemLinePickup(Player player, PickupHandler pickupHandler, Hologram hologram);
+    void handleItemLinePickup(Player player, PickupHandler pickupHandler, Hologram hologram);
     
 }

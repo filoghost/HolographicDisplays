@@ -13,7 +13,6 @@ import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import me.filoghost.holographicdisplays.object.CraftHologram;
-import me.filoghost.holographicdisplays.common.Offsets;
 import me.filoghost.holographicdisplays.common.Validator;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;

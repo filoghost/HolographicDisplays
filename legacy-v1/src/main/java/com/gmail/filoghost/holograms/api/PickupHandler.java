@@ -14,6 +14,6 @@ import org.bukkit.entity.Player;
 public interface PickupHandler {
 
     @Deprecated
-    public void onPickup(FloatingItem floatingItem, Player player);
+    void onPickup(FloatingItem floatingItem, Player player);
     
 }

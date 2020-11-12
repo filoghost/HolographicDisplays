@@ -54,7 +54,7 @@ public class AnimationsRegister {
                     try {
                         speed = Double.parseDouble(firstLine);
                         validSpeedFound = true;
-                    } catch (NumberFormatException e) {    }
+                    } catch (NumberFormatException ignored) {}
                 }
                 
                 if (!validSpeedFound) {
@@ -71,7 +71,7 @@ public class AnimationsRegister {
                     lines.set(i, StringConverter.toReadableFormat(lines.get(i)));
                 }
                 
-                animations.put(file.getName(), new Placeholder(HolographicDisplays.getInstance(), file.getName(), speed, new CyclicPlaceholderReplacer(lines.toArray(new String[lines.size()]))));
+                animations.put(file.getName(), new Placeholder(HolographicDisplays.getInstance(), file.getName(), speed, new CyclicPlaceholderReplacer(lines.toArray(new String[0]))));
                 ConsoleLogger.logDebug(Level.INFO, "Successfully loaded animation '"  + file.getName() + "', speed = " + speed + ".");
                 
             } catch (Exception e) {

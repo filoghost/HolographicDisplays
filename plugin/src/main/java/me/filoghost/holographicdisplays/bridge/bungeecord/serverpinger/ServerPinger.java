@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 public class ServerPinger {
 
@@ -32,7 +33,7 @@ public class ServerPinger {
             final DataOutputStream handshake = new DataOutputStream(byteOut);
             handshake.write(0);
             PacketUtils.writeVarInt(handshake, 4);
-            PacketUtils.writeString(handshake, serverAddress.getAddress(), PacketUtils.UTF8);
+            PacketUtils.writeString(handshake, serverAddress.getAddress(), StandardCharsets.UTF_8);
             handshake.writeShort(serverAddress.getPort());
             PacketUtils.writeVarInt(handshake, 1);
             byte[] bytes = byteOut.toByteArray();
@@ -45,7 +46,7 @@ public class ServerPinger {
             PacketUtils.readVarInt(dataIn);
             final byte[] responseData = new byte[PacketUtils.readVarInt(dataIn)];
             dataIn.readFully(responseData);
-            final String jsonString = new String(responseData, PacketUtils.UTF8);
+            final String jsonString = new String(responseData, StandardCharsets.UTF_8);
             return new PingResponse(jsonString, serverAddress);
         }
         finally {

@@ -13,18 +13,18 @@ import me.filoghost.holographicdisplays.api.line.HologramLine;
 public interface NMSEntityBase {
     
     // Returns the linked CraftHologramLine, all the entities are part of a piece. Should never be null.
-    public HologramLine getHologramLine();
+    HologramLine getHologramLine();
     
     // Returns if the entity is dead through NMS.
-    public boolean isDeadNMS();
+    boolean isDeadNMS();
     
     // Kills the entity through NMS.
-    public void killEntityNMS();
+    void killEntityNMS();
     
     // The entity ID.
-    public int getIdNMS();
+    int getIdNMS();
     
     // Returns the bukkit entity.
-    public org.bukkit.entity.Entity getBukkitEntityNMS();
+    org.bukkit.entity.Entity getBukkitEntityNMS();
 
 }

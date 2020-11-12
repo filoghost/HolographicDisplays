@@ -26,7 +26,7 @@ public class HologramLineParser {
         CraftHologramLine hologramLine;
         
         if (serializedLine.toLowerCase().startsWith("icon:")) {
-            String serializedIcon = serializedLine.substring("icon:".length(), serializedLine.length());
+            String serializedIcon = serializedLine.substring("icon:".length());
             ItemStack icon = parseItemStack(serializedIcon, checkMaterialValidity);
             hologramLine = new CraftItemLine(hologram, icon);
             
@@ -56,7 +56,7 @@ public class HologramLineParser {
         
         if (nbtStart > 0 && nbtEnd > 0 && nbtEnd > nbtStart) {
             nbtString = serializedItem.substring(nbtStart, nbtEnd + 1);
-            basicItemData = serializedItem.substring(0, nbtStart) + serializedItem.substring(nbtEnd + 1, serializedItem.length());
+            basicItemData = serializedItem.substring(0, nbtStart) + serializedItem.substring(nbtEnd + 1);
         } else {
             basicItemData = serializedItem;
         }

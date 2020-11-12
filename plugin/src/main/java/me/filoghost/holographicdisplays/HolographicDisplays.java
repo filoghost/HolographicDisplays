@@ -132,7 +132,7 @@ public class HolographicDisplays extends JavaPlugin {
             ConsoleLogger.log(Level.WARNING, "Failed to load animation files!", ex);
         }
         
-        // Initalize other static classes.
+        // Initialize other static classes.
         HologramDatabase.loadYamlFile(this);
         BungeeServerTracker.startTask(Configuration.bungeeRefreshSeconds);
         
@@ -200,7 +200,7 @@ public class HolographicDisplays extends JavaPlugin {
         
         try {
             Thread.sleep(5000);
-        } catch (InterruptedException ex) { }
+        } catch (InterruptedException ignored) {}
         instance.setEnabled(false);
     }
 

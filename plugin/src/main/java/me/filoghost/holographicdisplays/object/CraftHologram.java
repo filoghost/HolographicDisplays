@@ -342,10 +342,10 @@ public class CraftHologram implements Hologram {
         return "CraftHologram [world=" + world + ", x=" + x + ", y=" + y + ", z=" + z + ", lines=" + lines + ", deleted=" + deleted + "]";
     }
 
-    /**
-     * About: equals() and hashcode()
+    /*
+     * About equals() and hashcode()
      * Two holograms can never be equal. Even if they have the same position and the same elements, they are still two different objects.
-     * The equals and hashcode methods are not overriden, two holograms are equal only if they have the same memory address.
+     * The equals and hashcode methods are not overridden, two holograms are equal only if they have the same memory address.
      */
     
 }

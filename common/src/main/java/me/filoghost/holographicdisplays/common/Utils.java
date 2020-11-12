@@ -71,9 +71,9 @@ public class Utils {
         if (objects == null) {
             return false;
         }
-        
-        for (int i = 0; i < objects.length; i++) {
-            if (objects[i] != null) {
+
+        for (Object object : objects) {
+            if (object != null) {
                 return true;
             }
         }
@@ -96,10 +96,7 @@ public class Utils {
             return str;
         }
         
-        return new StringBuilder(str.length())
-                .append(Character.toLowerCase(str.charAt(0)))
-                .append(str.substring(1))
-                .toString();
+        return Character.toLowerCase(str.charAt(0)) + str.substring(1);
     }
     
 }

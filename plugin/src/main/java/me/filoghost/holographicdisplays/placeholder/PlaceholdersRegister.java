@@ -83,9 +83,7 @@ public class PlaceholdersRegister {
                 iter.remove();
             
                 for (DynamicLineData data : PlaceholdersManager.linesToUpdate) {
-                    if (data.getPlaceholders().contains(placeholder)) {
-                        data.getPlaceholders().remove(placeholder);
-                    }
+                    data.getPlaceholders().remove(placeholder);
                 }
                 
                 return true;

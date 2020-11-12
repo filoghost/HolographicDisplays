@@ -89,10 +89,6 @@ public class HologramDatabase {
         return config.getKeys(false);
     }
     
-    public static boolean isExistingHologram(String name) {
-        return config.isConfigurationSection(name);
-    }
-    
     private static ConfigurationSection getOrCreateSection(String name) {
         if (config.isConfigurationSection(name)) {
             return config.getConfigurationSection(name);

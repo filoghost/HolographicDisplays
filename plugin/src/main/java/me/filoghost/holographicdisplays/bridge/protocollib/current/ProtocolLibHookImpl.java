@@ -211,23 +211,6 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
     
     
     @Override
-    public void sendDestroyEntitiesPacket(Player player, CraftHologramLine line) {
-        if (!line.isSpawned()) {
-            return;
-        }
-        
-        List<Integer> ids = new ArrayList<>();
-        for (int id : line.getEntitiesIDs()) {
-            ids.add(id);
-        }
-        
-        if (!ids.isEmpty()) {
-            packetHelper.sendDestroyEntitiesPacket(player, ids);
-        }
-    }
-    
-    
-    @Override
     public void sendCreateEntitiesPacket(Player player, CraftHologram hologram) {
         for (CraftHologramLine line : hologram.getLinesUnsafe()) {
             sendCreateEntitiesPacket(player, line);
@@ -235,8 +218,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
     }
     
     
-    @Override
-    public void sendCreateEntitiesPacket(Player player, CraftHologramLine line) {
+    private void sendCreateEntitiesPacket(Player player, CraftHologramLine line) {
         if (!line.isSpawned()) {
             return;
         }
@@ -246,26 +228,23 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
         if (line instanceof CraftTextLine) {
             CraftTextLine textLine = (CraftTextLine) line;
             touchableLine = textLine;
-            
-            if (textLine.isSpawned()) {
-                packetHelper.sendSpawnArmorStandPacket(player, (NMSArmorStand) textLine.getNmsNameable());
-            }
-            
+
+            packetHelper.sendSpawnArmorStandPacket(player, (NMSArmorStand) textLine.getNmsNameable());
+
         } else if (line instanceof CraftItemLine) {
             CraftItemLine itemLine = (CraftItemLine) line;
             touchableLine = itemLine;
+
+            packetHelper.sendSpawnArmorStandPacket(player, (NMSArmorStand) itemLine.getNmsVehicle());
+            packetHelper.sendSpawnItemPacket(player, itemLine.getNmsItem());
+            packetHelper.sendVehicleAttachPacket(player, itemLine.getNmsVehicle(), itemLine.getNmsItem());
+            packetHelper.sendItemMetadataPacket(player, itemLine.getNmsItem());
             
-            if (itemLine.isSpawned()) {
-                packetHelper.sendSpawnArmorStandPacket(player, (NMSArmorStand) itemLine.getNmsVehicle());
-                packetHelper.sendSpawnItemPacket(player, itemLine.getNmsItem());
-                packetHelper.sendVehicleAttachPacket(player, itemLine.getNmsVehicle(), itemLine.getNmsItem());
-                packetHelper.sendItemMetadataPacket(player, itemLine.getNmsItem());
-            }
         } else {
             throw new IllegalArgumentException("Unexpected hologram line type: " + line.getClass().getName());
         }
         
-        if (touchableLine != null && touchableLine.isSpawned() && touchableLine.getTouchSlime() != null) {
+        if (touchableLine.getTouchSlime() != null) {
             CraftTouchSlimeLine touchSlime = touchableLine.getTouchSlime();
             
             if (touchSlime.isSpawned()) {

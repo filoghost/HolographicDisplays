@@ -59,11 +59,5 @@ public enum NMSVersion {
     public static boolean isGreaterEqualThan(NMSVersion other) {
         return getCurrent().ordinal() >= other.ordinal();
     }
-    
-    
-    public static boolean isBetween(NMSVersion from, NMSVersion to) {
-        return from.ordinal() <= getCurrent().ordinal() && getCurrent().ordinal() <= to.ordinal();
-    }
-    
-    
+
 }

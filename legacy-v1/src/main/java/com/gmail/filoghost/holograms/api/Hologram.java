@@ -15,69 +15,69 @@ import org.bukkit.World;
 public interface Hologram {
 
     @Deprecated
-    public boolean update();
+    boolean update();
 
     @Deprecated
-    public void hide();
+    void hide();
     
     @Deprecated
-    public void addLine(String text);
+    void addLine(String text);
 
     @Deprecated
-    public void removeLine(int index);
+    void removeLine(int index);
 
     @Deprecated
-    public void setLine(int index, String text);
+    void setLine(int index, String text);
 
     @Deprecated
-    public void insertLine(int index, String text);
+    void insertLine(int index, String text);
 
     @Deprecated
-    public String[] getLines();
+    String[] getLines();
     
     @Deprecated
-    public int getLinesLength();
+    int getLinesLength();
     
     @Deprecated
-    public void clearLines();
+    void clearLines();
     
     @Deprecated
-    public Location getLocation();
+    Location getLocation();
     
     @Deprecated
-    public double getX();
+    double getX();
     
     @Deprecated
-    public double getY();
+    double getY();
     
     @Deprecated
-    public double getZ();
+    double getZ();
     
     @Deprecated
-    public World getWorld();
+    World getWorld();
 
     @Deprecated
-    public void setLocation(Location location);
+    void setLocation(Location location);
     
     @Deprecated
-    public void teleport(Location location);
+    void teleport(Location location);
     
     @Deprecated
-    public void setTouchHandler(TouchHandler handler);
+    void setTouchHandler(TouchHandler handler);
 
     @Deprecated
-    public TouchHandler getTouchHandler();
+    TouchHandler getTouchHandler();
     
     @Deprecated
-    public boolean hasTouchHandler();
+    boolean hasTouchHandler();
 
     @Deprecated
-    public long getCreationTimestamp();
+    long getCreationTimestamp();
 
     @Deprecated
-    public void delete();
+    void delete();
 
     @Deprecated
-    public boolean isDeleted();
+    boolean isDeleted();
     
 }

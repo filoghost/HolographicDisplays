@@ -63,7 +63,7 @@ public class UnicodeSymbols {
                 
             int indexOf = line.indexOf(':');
             String placeholder = unquote(line.substring(0, indexOf).trim());
-            String replacement = StringEscapeUtils.unescapeJava(unquote(line.substring(indexOf + 1, line.length()).trim()));
+            String replacement = StringEscapeUtils.unescapeJava(unquote(line.substring(indexOf + 1).trim()));
 
             if (placeholder.isEmpty() || replacement.isEmpty()) {
                 ConsoleLogger.log(Level.WARNING, "Unable to parse a line(" + line + ") from symbols.yml: the placeholder and the replacement must have both at least 1 character.");

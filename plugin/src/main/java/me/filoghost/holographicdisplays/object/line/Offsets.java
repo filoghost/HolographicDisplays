@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.common;
+package me.filoghost.holographicdisplays.object.line;
 
 /**
  *  When spawning a hologram at a location, the top part of the first line should be exactly on that location.

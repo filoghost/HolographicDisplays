@@ -85,9 +85,7 @@ public class MetadataHelper {
     
     
     public WrappedWatchableObject getCustomNameWatchableObject(List<WrappedWatchableObject> dataWatcherValues) {
-        for (int i = 0; i < dataWatcherValues.size(); i++) {
-            WrappedWatchableObject watchableObject = dataWatcherValues.get(i);
-            
+        for (WrappedWatchableObject watchableObject : dataWatcherValues) {
             if (watchableObject.getIndex() == customNameIndex) {
                 return watchableObject;
             }
@@ -115,7 +113,7 @@ public class MetadataHelper {
                 throw new IllegalArgumentException("Expected custom name of type " + String.class);
             }
             
-            return (String) customNameNMSObject;
+            return customNameNMSObject;
         }
     }
     

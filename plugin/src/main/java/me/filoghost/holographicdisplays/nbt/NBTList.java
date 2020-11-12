@@ -19,7 +19,7 @@ public final class NBTList extends NBTTag implements Iterable<NBTTag>, Cloneable
 
     private NBTType type;
 
-    private final List<NBTTag> list = new ArrayList<NBTTag>();
+    private final List<NBTTag> list = new ArrayList<>();
 
     /**
      * Creates the list with a type and a series of elements.

@@ -189,16 +189,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     public ItemLine getHologramLine() {
         return parentPiece;
     }
-    
-    @Override
-    public void allowPickup(boolean pickup) {
-        if (pickup) {
-            super.pickupDelay = 0;
-        } else {
-            super.pickupDelay = 32767;
-        }
-    }
-    
+
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
@@ -206,7 +197,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     
     @Override
     public void setPassengerOfNMS(NMSEntityBase vehicleBase) {
-        if (vehicleBase == null || !(vehicleBase instanceof Entity)) {
+        if (!(vehicleBase instanceof Entity)) {
             // It should never dismount
             return;
         }

@@ -14,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
 public interface ItemLine extends CollectableLine, TouchableLine {
 
     @Deprecated
-    public ItemStack getItemStack();
+    ItemStack getItemStack();
 
     @Deprecated
-    public void setItemStack(ItemStack itemStack);
+    void setItemStack(ItemStack itemStack);
     
 }

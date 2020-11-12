@@ -86,7 +86,7 @@ public class ImageMessage {
         
         for (int y = 0; y < colors[0].length; y++) {
             
-            StringBuffer line = new StringBuffer();
+            StringBuilder line = new StringBuilder();
             
             ChatColor previous = ChatColor.RESET;
             
@@ -96,7 +96,7 @@ public class ImageMessage {
                 
                 if (currentColor == null) {
                     
-                    // Use the trasparent char
+                    // Use the transparent char
                     if (previous != transparencyColor) {
                         
                         // Change the previous chat color and append the newer

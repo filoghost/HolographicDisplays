@@ -12,9 +12,9 @@ package com.gmail.filoghost.holographicdisplays.api.line;
 public interface TextLine extends TouchableLine {
 
     @Deprecated
-    public String getText();
+    String getText();
     
     @Deprecated
-    public void setText(String text);
+    void setText(String text);
     
 }

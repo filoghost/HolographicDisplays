@@ -42,10 +42,6 @@ public class BungeeServerTracker {
         }
     }
     
-    public static void untrack(String server) {
-        trackedServers.remove(server);
-    }
-    
     protected static BungeeServerInfo getOrCreateServerInfo(String server) {
         BungeeServerInfo info = trackedServers.get(server);
         if (info == null) {

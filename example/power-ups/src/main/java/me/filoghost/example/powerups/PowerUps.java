@@ -7,7 +7,6 @@ package me.filoghost.example.powerups;
 
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.HologramsAPI;
-import me.filoghost.holographicdisplays.api.handler.PickupHandler;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -54,21 +53,17 @@ public class PowerUps extends JavaPlugin implements Listener {
             hologram.appendTextLine(ChatColor.AQUA  + "" + ChatColor.BOLD + "Speed PowerUp");
             ItemLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
             
-            icon.setPickupHandler(new PickupHandler() {
+            icon.setPickupHandler((Player player) -> {
                 
-                @Override
-                public void onPickup(Player player) {
-                    
-                    // Play an effect.
-                    player.playEffect(hologram.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
-                    
-                    // 30 seconds of speed II.
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * 20, 1), true);
-                    
-                    // Delete the hologram.
-                    hologram.delete();
-                    
-                }
+                // Play an effect.
+                player.playEffect(hologram.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
+                
+                // 30 seconds of speed II.
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * 20, 1), true);
+                
+                // Delete the hologram.
+                hologram.delete();
+                
             });
             
         }

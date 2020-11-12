@@ -137,7 +137,7 @@ public class MainListener implements Listener, ItemPickupManager {
         }
         
         Long lastClick = anticlickSpam.get(clicker);
-        if (lastClick != null && System.currentTimeMillis() - lastClick.longValue() < 100) {
+        if (lastClick != null && System.currentTimeMillis() - lastClick < 100) {
             return;
         }
         

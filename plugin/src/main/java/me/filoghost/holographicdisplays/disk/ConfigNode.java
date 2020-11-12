@@ -31,7 +31,7 @@ public enum ConfigNode {
     private final String path;
     private final Object value;
     
-    private ConfigNode(String path, Object defaultValue) {
+    ConfigNode(String path, Object defaultValue) {
         this.path = path;
         value = defaultValue;
     }

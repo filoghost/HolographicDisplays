@@ -187,7 +187,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     @Override
     public void setPassengerOfNMS(NMSEntityBase vehicleBase) {
-        if (vehicleBase == null || !(vehicleBase instanceof Entity)) {
+        if (!(vehicleBase instanceof Entity)) {
             // It should never dismount
             return;
         }

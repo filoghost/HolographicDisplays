@@ -14,6 +14,6 @@ import org.bukkit.entity.Player;
 public interface ItemTouchHandler {
 
     @Deprecated
-    public void onTouch(FloatingItem floatingItem, Player player);
+    void onTouch(FloatingItem floatingItem, Player player);
     
 }

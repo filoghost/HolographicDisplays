@@ -39,10 +39,6 @@ public class Placeholder {
     public int getTenthsToRefresh() {
         return tenthsToRefresh;
     }
-    
-    public void setTenthsToRefresh(int tenthsToRefresh) {
-        this.tenthsToRefresh = tenthsToRefresh;
-    }
 
     public String getTextPlaceholder() {
         return textPlaceholder;
@@ -54,14 +50,6 @@ public class Placeholder {
     
     public void setCurrentReplacement(String replacement) {
         this.currentReplacement = replacement != null ? replacement : "null";
-    }
-    
-    public PlaceholderReplacer getReplacer() {
-        return replacer;
-    }
-    
-    public void setReplacer(PlaceholderReplacer replacer) {
-        this.replacer = replacer;
     }
 
     public void update() {

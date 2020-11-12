@@ -16,59 +16,59 @@ import org.bukkit.inventory.ItemStack;
 public interface FloatingItem {
 
     @Deprecated
-    public boolean update();
+    boolean update();
 
     @Deprecated
-    public void hide();
+    void hide();
 
     @Deprecated
-    public void setItemStack(ItemStack itemstack);
+    void setItemStack(ItemStack itemstack);
 
     @Deprecated
-    public ItemStack getItemStack();
+    ItemStack getItemStack();
 
     @Deprecated
-    public Location getLocation();
+    Location getLocation();
 
     @Deprecated
-    public double getX();
+    double getX();
 
     @Deprecated
-    public double getY();
+    double getY();
 
     @Deprecated
-    public double getZ();
+    double getZ();
 
     @Deprecated
-    public World getWorld();
+    World getWorld();
 
     @Deprecated
-    public void teleport(Location location);
+    void teleport(Location location);
 
     @Deprecated
-    public void setTouchHandler(ItemTouchHandler handler);
+    void setTouchHandler(ItemTouchHandler handler);
 
     @Deprecated
-    public ItemTouchHandler getTouchHandler();
+    ItemTouchHandler getTouchHandler();
 
     @Deprecated
-    public boolean hasTouchHandler();
+    boolean hasTouchHandler();
     
     @Deprecated
-    public void setPickupHandler(PickupHandler handler);
+    void setPickupHandler(PickupHandler handler);
 
     @Deprecated
-    public PickupHandler getPickupHandler();
+    PickupHandler getPickupHandler();
 
     @Deprecated
-    public boolean hasPickupHandler();
+    boolean hasPickupHandler();
 
     @Deprecated
-    public long getCreationTimestamp();
+    long getCreationTimestamp();
 
     @Deprecated
-    public void delete();
+    void delete();
 
     @Deprecated
-    public boolean isDeleted();
+    boolean isDeleted();
 }

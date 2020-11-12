@@ -44,7 +44,7 @@ public class ConsoleLogger {
     }
     
     public static void handleSpawnFail(HologramLine parentPiece) {
-        logDebug(Level.WARNING, "Coulnd't spawn entity for this hologram: " + parentPiece.getParent().toString());
+        logDebug(Level.WARNING, "Couldn't spawn entity for this hologram: " + parentPiece.getParent().toString());
     }
     
 }

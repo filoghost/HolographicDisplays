@@ -7,6 +7,6 @@ package me.filoghost.holographicdisplays.bridge.protocollib.current.packet;
 
 public interface EntityRelatedPacketWrapper {
 
-    public int getEntityID();
+    int getEntityID();
     
 }
