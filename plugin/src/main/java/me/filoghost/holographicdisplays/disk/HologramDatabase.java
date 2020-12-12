@@ -5,13 +5,13 @@
  */
 package me.filoghost.holographicdisplays.disk;
 
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.exception.HologramLineParseException;
 import me.filoghost.holographicdisplays.exception.HologramNotFoundException;
 import me.filoghost.holographicdisplays.exception.InvalidFormatException;
 import me.filoghost.holographicdisplays.exception.WorldNotFoundException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
 public class HologramDatabase {
     
@@ -107,7 +106,7 @@ public class HologramDatabase {
         try {
             saveToDisk();
         } catch (IOException ex) {
-            ConsoleLogger.log(Level.SEVERE, "Unable to save database.yml to disk!", ex);
+            Log.severe("Unable to save database.yml to disk!", ex);
         }
     }
 }

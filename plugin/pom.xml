@@ -146,6 +146,11 @@
             <groupId>me.filoghost.updatechecker</groupId>
             <artifactId>updatechecker</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>me.filoghost.fcommons</groupId>
+            <artifactId>fcommons</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -225,6 +230,7 @@
                             <include>${project.groupId}:*</include>
                             <include>org.bstats</include>
                             <include>me.filoghost.updatechecker</include>
+                            <include>me.filoghost.fcommons</include>
                         </includes>
                     </artifactSet>
                     <filters>
@@ -243,6 +249,10 @@
                         <relocation>
                             <pattern>me.filoghost.updatechecker</pattern>
                             <shadedPattern>me.filoghost.holographicdisplays.updater</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>me.filoghost.fcommons</pattern>
+                            <shadedPattern>me.filoghost.holographicdisplays.fcommons</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

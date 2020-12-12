@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.object.line;
 
+import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
@@ -13,7 +14,6 @@ import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import me.filoghost.holographicdisplays.object.CraftHologram;
-import me.filoghost.holographicdisplays.common.Validator;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -39,8 +39,8 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 
     @Override
     public void setItemStack(ItemStack itemStack) {
-        Validator.notNull(itemStack, "itemStack");
-        Validator.isTrue(0 < itemStack.getAmount() && itemStack.getAmount() <= 64, "Item must have amount between 1 and 64");
+        Preconditions.notNull(itemStack, "itemStack");
+        Preconditions.checkArgument(0 < itemStack.getAmount() && itemStack.getAmount() <= 64, "Item must have amount between 1 and 64");
         this.itemStack = itemStack;
         
         if (nmsItem != null) {

@@ -9,10 +9,10 @@ import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.common.ItemUtils;
 import me.filoghost.holographicdisplays.common.Utils;
-import me.filoghost.holographicdisplays.common.reflection.ReflectField;
+import me.filoghost.fcommons.reflection.ReflectField;
 import net.minecraft.server.v1_9_R2.Blocks;
 import net.minecraft.server.v1_9_R2.DamageSource;
 import net.minecraft.server.v1_9_R2.Entity;
@@ -29,11 +29,9 @@ import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Level;
-
 public class EntityNMSItem extends EntityItem implements NMSItem {
     
-    private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<>(Entity.class, "at");
+    private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "at");
     
     private ItemLine parentPiece;
     private ItemPickupManager itemPickupManager;
@@ -241,7 +239,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
             entity.passengers.add(this);
 
         } catch (Throwable t) {
-            ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set passenger", t);
+            DebugLogger.severe("Couldn't set passenger", t);
         }
     }
 

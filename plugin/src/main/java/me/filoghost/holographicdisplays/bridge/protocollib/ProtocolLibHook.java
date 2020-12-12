@@ -7,7 +7,6 @@ package me.filoghost.holographicdisplays.bridge.protocollib;
 
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import me.filoghost.holographicdisplays.object.CraftHologram;
-import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 

@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.bridge.bungeecord;
 
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -20,7 +20,6 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.logging.Level;
 
 public class BungeeChannel implements PluginMessageListener {
     
@@ -89,7 +88,7 @@ public class BungeeChannel implements PluginMessageListener {
             out.writeUTF(server);
         } catch (IOException e) {
             // It should not happen.
-            ConsoleLogger.log(Level.WARNING, "I/O Exception while asking for player count on server '" + server + "'.", e);
+            Log.warning("I/O Exception while asking for player count on server '" + server + "'.", e);
         }
 
         // OR, if you don't need to send it to a specific player

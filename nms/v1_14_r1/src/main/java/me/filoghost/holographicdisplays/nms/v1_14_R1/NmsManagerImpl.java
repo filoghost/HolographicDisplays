@@ -5,8 +5,13 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_14_R1;
 
+import me.filoghost.fcommons.Preconditions;
+import me.filoghost.fcommons.reflection.ClassToken;
+import me.filoghost.fcommons.reflection.ReflectField;
+import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.nms.interfaces.ChatComponentAdapter;
 import me.filoghost.holographicdisplays.nms.interfaces.CustomNameHelper;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
@@ -14,10 +19,6 @@ import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
-import me.filoghost.holographicdisplays.common.Validator;
-import me.filoghost.holographicdisplays.common.reflection.ReflectField;
-import me.filoghost.holographicdisplays.common.reflection.ReflectMethod;
 import net.minecraft.server.v1_14_R1.ChatBaseComponent;
 import net.minecraft.server.v1_14_R1.ChatComponentText;
 import net.minecraft.server.v1_14_R1.Entity;
@@ -38,9 +39,9 @@ import java.util.List;
 
 public class NmsManagerImpl implements NMSManager {
     
-    private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = new ReflectField<>(RegistryMaterials.class, "b");
-    private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = new ReflectField<>(RegistryID.class, "d");
-    private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD = new ReflectMethod<>(WorldServer.class, "registerEntity", Entity.class);
+    private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = ReflectField.lookup(new ClassToken<RegistryID<EntityTypes<?>>>(){}, RegistryMaterials.class, "b");
+    private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = ReflectField.lookup(Object[].class, RegistryID.class, "d");
+    private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD = ReflectMethod.lookup(void.class, WorldServer.class, "registerEntity", Entity.class);
     
     @Override
     public void setup() throws Exception {        
@@ -69,7 +70,7 @@ public class NmsManagerImpl implements NMSManager {
         customItem.setLocationNMS(x, y, z);
         customItem.setItemStackNMS(stack);
         if (!addEntityToWorld(nmsWorld, customItem)) {
-            ConsoleLogger.handleSpawnFail(parentPiece);
+            DebugLogger.handleSpawnFail(parentPiece);
         }
         return customItem;
     }
@@ -80,7 +81,7 @@ public class NmsManagerImpl implements NMSManager {
         EntityNMSSlime touchSlime = new EntityNMSSlime(nmsWorld, parentPiece);
         touchSlime.setLocationNMS(x, y, z);
         if (!addEntityToWorld(nmsWorld, touchSlime)) {
-            ConsoleLogger.handleSpawnFail(parentPiece);
+            DebugLogger.handleSpawnFail(parentPiece);
         }
         return touchSlime;
     }
@@ -91,13 +92,13 @@ public class NmsManagerImpl implements NMSManager {
         EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece);
         invisibleArmorStand.setLocationNMS(x, y, z, broadcastLocationPacket);
         if (!addEntityToWorld(nmsWorld, invisibleArmorStand)) {
-            ConsoleLogger.handleSpawnFail(parentPiece);
+            DebugLogger.handleSpawnFail(parentPiece);
         }
         return invisibleArmorStand;
     }
     
     private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
-        Validator.isTrue(Bukkit.isPrimaryThread(), "Async entity add");
+        Preconditions.checkState(Bukkit.isPrimaryThread(), "Async entity add");
         
         final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
         final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
@@ -156,7 +157,7 @@ public class NmsManagerImpl implements NMSManager {
         INSTANCE {
             
             private boolean useNewGetSiblingsMethod = true;
-            private final ReflectField<List<IChatBaseComponent>> OLD_SIBLINGS_FIELD = new ReflectField<>(ChatBaseComponent.class, "a");
+            private final ReflectField<List<IChatBaseComponent>> OLD_SIBLINGS_FIELD = ReflectField.lookup(new ClassToken<List<IChatBaseComponent>>(){}, ChatBaseComponent.class, "a");
             
             public ChatComponentText cast(Object chatComponentObject) {
                 return (ChatComponentText) chatComponentObject;

@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.object;
 
-import me.filoghost.holographicdisplays.common.Validator;
+import me.filoghost.fcommons.Preconditions;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -18,7 +18,7 @@ public class PluginHologram extends CraftHologram {
 
     public PluginHologram(Location source, Plugin plugin) {
         super(source);
-        Validator.notNull(plugin, "plugin");
+        Preconditions.notNull(plugin, "plugin");
         this.plugin = plugin;
     }
     

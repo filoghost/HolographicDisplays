@@ -5,9 +5,10 @@
  */
 package me.filoghost.holographicdisplays.placeholder;
 
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.HolographicDisplays;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.disk.StringConverter;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
 import me.filoghost.holographicdisplays.util.FileUtils;
 import org.bukkit.plugin.Plugin;
 
@@ -15,7 +16,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 public class AnimationsRegister {
     
@@ -58,12 +58,12 @@ public class AnimationsRegister {
                 }
                 
                 if (!validSpeedFound) {
-                    ConsoleLogger.log(Level.WARNING, "Could not find a valid 'speed: <number>' in the first line of the file '" + file.getName() + "'. Default speed of 0.5 seconds will be used.");
+                    Log.warning("Could not find a valid 'speed: <number>' in the first line of the file '" + file.getName() + "'. Default speed of 0.5 seconds will be used.");
                 }
                 
                 if (lines.isEmpty()) {
                     lines.add("[No lines: " + file.getName() + "]");
-                    ConsoleLogger.log(Level.WARNING, "Could not find any line in '" + file.getName() + "' (excluding the speed). You should add at least one more line.");
+                    Log.warning("Could not find any line in '" + file.getName() + "' (excluding the speed). You should add at least one more line.");
                 }
                 
                 // Replace placeholders.
@@ -72,10 +72,10 @@ public class AnimationsRegister {
                 }
                 
                 animations.put(file.getName(), new Placeholder(HolographicDisplays.getInstance(), file.getName(), speed, new CyclicPlaceholderReplacer(lines.toArray(new String[0]))));
-                ConsoleLogger.logDebug(Level.INFO, "Successfully loaded animation '"  + file.getName() + "', speed = " + speed + ".");
+                DebugLogger.info("Successfully loaded animation '"  + file.getName() + "', speed = " + speed + ".");
                 
             } catch (Exception e) {
-                ConsoleLogger.log(Level.SEVERE, "Couldn't load the file '" + file.getName() + "'!", e);
+                Log.severe("Couldn't load the file '" + file.getName() + "'!", e);
             }
         }
     }

@@ -185,6 +185,12 @@
                 <artifactId>updatechecker</artifactId>
                 <version>1.0.0</version>
             </dependency>
+
+            <dependency>
+                <groupId>me.filoghost.fcommons</groupId>
+                <artifactId>fcommons</artifactId>
+                <version>1.2.6-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

@@ -5,10 +5,10 @@
  */
 package me.filoghost.holographicdisplays.object.line;
 
+import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.object.CraftHologram;
 import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
-import me.filoghost.holographicdisplays.common.Validator;
 import org.bukkit.World;
 
 import java.util.Collection;
@@ -25,7 +25,7 @@ public abstract class CraftHologramLine implements HologramLine {
     private String serializedConfigValue;
     
     protected CraftHologramLine(double height, CraftHologram parent) {
-        Validator.notNull(parent, "parent hologram");
+        Preconditions.notNull(parent, "parent hologram");
         this.height = height;
         this.parent = parent;
     }
@@ -44,7 +44,7 @@ public abstract class CraftHologramLine implements HologramLine {
     }
 
     public void spawn(World world, double x, double y, double z) {
-        Validator.notNull(world, "world");
+        Preconditions.notNull(world, "world");
         
         // Remove the old entities when spawning the new ones.
         despawn();

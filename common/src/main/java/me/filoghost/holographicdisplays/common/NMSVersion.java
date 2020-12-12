@@ -5,6 +5,8 @@
  */
 package me.filoghost.holographicdisplays.common;
 
+import me.filoghost.fcommons.Preconditions;
+
 /**
  * The NMS version is the name of the main package under net.minecraft.server.
  */
@@ -49,9 +51,7 @@ public enum NMSVersion {
 
     
     public static NMSVersion getCurrent() {
-        if (CURRENT_VERSION == null) {
-            throw new IllegalStateException("Current version not set");
-        }
+        Preconditions.checkState(CURRENT_VERSION != null, "Current version not set");
         return CURRENT_VERSION;
     }
     

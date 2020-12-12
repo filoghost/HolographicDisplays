@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.placeholder;
 
+import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
-import me.filoghost.holographicdisplays.common.Validator;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,7 +24,7 @@ public class DynamicLineData {
     private final Map<String, PlaceholderReplacer> replacers;
     
     public DynamicLineData(NMSNameable entity, String originalName) {
-        Validator.notNull(entity, "entity");
+        Preconditions.notNull(entity, "entity");
         
         this.entity = entity;
         this.originalName = originalName;

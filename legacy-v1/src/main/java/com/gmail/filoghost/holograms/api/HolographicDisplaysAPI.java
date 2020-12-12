@@ -7,9 +7,9 @@ package com.gmail.filoghost.holograms.api;
 
 import com.gmail.filoghost.holograms.api.adapter.FloatingItemAdapter;
 import com.gmail.filoghost.holograms.api.adapter.HologramAdapter;
+import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.HologramsAPI;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.common.Validator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -35,7 +35,7 @@ public class HolographicDisplaysAPI {
     private static Set<String> notifiedPlugins = new HashSet<>();
     
     private static void notifyOldAPI(Plugin plugin) {
-        Validator.notNull(plugin, "plugin");
+        Preconditions.notNull(plugin, "plugin");
         
         if (notifiedPlugins.add(plugin.getName())) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Holographic Displays] The plugin \"" + plugin.getName() + "\" is still using the old API of Holographic Displays. "
@@ -146,13 +146,13 @@ public class HolographicDisplaysAPI {
     }
     
     private static void validateLocation(Location loc) {
-        Validator.notNull(loc, "location");
-        Validator.notNull(loc.getWorld(), "location's world");
+        Preconditions.notNull(loc, "location");
+        Preconditions.notNull(loc.getWorld(), "location's world");
     }
     
     private static void validateItem(ItemStack itemstack) {
-        Validator.notNull(itemstack, "itemstack");
-        Validator.isTrue(itemstack.getType() != Material.AIR, "itemstack cannot be AIR");
+        Preconditions.notNull(itemstack, "itemstack");
+        Preconditions.checkArgument(itemstack.getType() != Material.AIR, "itemstack cannot be AIR");
     }
 
 }

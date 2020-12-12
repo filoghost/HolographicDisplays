@@ -7,12 +7,11 @@ package me.filoghost.holographicdisplays.task;
 
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerInfo;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 /**
  * A task to remove unused server data in the server tracker.
@@ -34,7 +33,7 @@ public class BungeeCleanupTask implements Runnable {
             if (lastRequest != 0 && now - lastRequest > MAX_INACTIVITY) {
                 // Don't track that server anymore.
                 iter.remove();
-                ConsoleLogger.logDebug(Level.INFO, "Removed bungee server \"" + next.getKey() + "\" from tracking due to inactivity.");
+                DebugLogger.info("Removed bungee server \"" + next.getKey() + "\" from tracking due to inactivity.");
             }
         }
     }

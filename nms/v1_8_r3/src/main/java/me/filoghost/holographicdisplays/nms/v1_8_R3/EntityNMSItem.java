@@ -9,9 +9,9 @@ import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.common.ItemUtils;
-import me.filoghost.holographicdisplays.common.reflection.ReflectField;
+import me.filoghost.fcommons.reflection.ReflectField;
 import net.minecraft.server.v1_8_R3.Blocks;
 import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.Entity;
@@ -27,12 +27,10 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Level;
-
 public class EntityNMSItem extends EntityItem implements NMSItem {
     
-    private static final ReflectField<Double> RIDER_PITCH_DELTA = new ReflectField<>(Entity.class, "ar");
-    private static final ReflectField<Double> RIDER_YAW_DELTA = new ReflectField<>(Entity.class, "as");
+    private static final ReflectField<Double> RIDER_PITCH_DELTA = ReflectField.lookup(double.class, Entity.class, "ar");
+    private static final ReflectField<Double> RIDER_YAW_DELTA = ReflectField.lookup(double.class, Entity.class, "as");
     
     private ItemLine parentPiece;
     private ItemPickupManager itemPickupManager;
@@ -194,7 +192,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
             RIDER_PITCH_DELTA.set(this, 0.0);
             RIDER_YAW_DELTA.set(this, 0.0);
         } catch (Throwable t) {
-            ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set rider pitch and yaw", t);
+            DebugLogger.severe("Couldn't set rider pitch and yaw", t);
         }
 
         if (this.vehicle != null) {

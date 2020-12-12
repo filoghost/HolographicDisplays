@@ -5,11 +5,11 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_8_R2;
 
+import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
-import me.filoghost.holographicdisplays.common.reflection.ReflectField;
 import net.minecraft.server.v1_8_R2.AxisAlignedBB;
 import net.minecraft.server.v1_8_R2.DamageSource;
 import net.minecraft.server.v1_8_R2.Entity;
@@ -22,12 +22,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-import java.util.logging.Level;
-
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
-    private static final ReflectField<Double> RIDER_PITCH_DELTA = new ReflectField<>(Entity.class, "ar");
-    private static final ReflectField<Double> RIDER_YAW_DELTA = new ReflectField<>(Entity.class, "as");
+    private static final ReflectField<Double> RIDER_PITCH_DELTA = ReflectField.lookup(double.class, Entity.class, "ar");
+    private static final ReflectField<Double> RIDER_YAW_DELTA = ReflectField.lookup(double.class, Entity.class, "as");
 
     private HologramLine parentPiece;
     
@@ -185,7 +183,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
             RIDER_PITCH_DELTA.set(this, 0.0);
             RIDER_YAW_DELTA.set(this, 0.0);
         } catch (Throwable t) {
-            ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set rider pitch and yaw", t);
+            DebugLogger.severe("Couldn't set rider pitch and yaw", t);
         }
 
         if (this.vehicle != null) {

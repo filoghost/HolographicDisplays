@@ -11,7 +11,7 @@
  */
 package me.filoghost.holographicdisplays.disk;
 
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.util.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.plugin.Plugin;
@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 public class UnicodeSymbols {
 
@@ -42,10 +41,10 @@ public class UnicodeSymbols {
         try {
             lines = FileUtils.readLines(file);
         } catch (IOException e) {
-            ConsoleLogger.log(Level.WARNING, "I/O error while reading symbols.yml. Was the file in use?", e);
+            Log.warning("I/O error while reading symbols.yml. Was the file in use?", e);
             return;
         } catch (Exception e) {
-            ConsoleLogger.log(Level.WARNING, "Unhandled exception while reading symbols.yml!", e);
+            Log.warning("Unhandled exception while reading symbols.yml!", e);
             return;
         }
         
@@ -57,7 +56,7 @@ public class UnicodeSymbols {
             }
             
             if (!line.contains(":")) {
-                ConsoleLogger.log(Level.WARNING, "Unable to parse a line(" + line + ") from symbols.yml: it must contain ':' to separate the placeholder and the replacement.");
+                Log.warning("Unable to parse a line(" + line + ") from symbols.yml: it must contain ':' to separate the placeholder and the replacement.");
                 continue;
             }
                 
@@ -66,12 +65,12 @@ public class UnicodeSymbols {
             String replacement = StringEscapeUtils.unescapeJava(unquote(line.substring(indexOf + 1).trim()));
 
             if (placeholder.isEmpty() || replacement.isEmpty()) {
-                ConsoleLogger.log(Level.WARNING, "Unable to parse a line(" + line + ") from symbols.yml: the placeholder and the replacement must have both at least 1 character.");
+                Log.warning("Unable to parse a line(" + line + ") from symbols.yml: the placeholder and the replacement must have both at least 1 character.");
                 continue;
             }
             
             if (placeholder.length() > 30) {
-                ConsoleLogger.log(Level.WARNING, "Unable to parse a line(" + line + ") from symbols.yml: the placeholder cannot be longer than 30 characters.");
+                Log.warning("Unable to parse a line(" + line + ") from symbols.yml: the placeholder cannot be longer than 30 characters.");
                 continue;
             }
             

@@ -8,9 +8,9 @@ package me.filoghost.holographicdisplays.nms.v1_9_R2;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.common.Utils;
-import me.filoghost.holographicdisplays.common.reflection.ReflectField;
+import me.filoghost.fcommons.reflection.ReflectField;
 import net.minecraft.server.v1_9_R2.AxisAlignedBB;
 import net.minecraft.server.v1_9_R2.DamageSource;
 import net.minecraft.server.v1_9_R2.Entity;
@@ -25,11 +25,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-import java.util.logging.Level;
-
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
-    private static final ReflectField<Entity> VEHICLE_FIELD = new ReflectField<>(Entity.class, "at");
+    private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "at");
 
     private HologramLine parentPiece;
     
@@ -228,7 +226,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
             entity.passengers.add(this);
 
         } catch (Throwable t) {
-            ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set passenger", t);
+            DebugLogger.severe("Couldn't set passenger", t);
         }
     }
 }

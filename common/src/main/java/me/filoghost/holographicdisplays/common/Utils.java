@@ -5,6 +5,8 @@
  */
 package me.filoghost.holographicdisplays.common;
 
+import me.filoghost.fcommons.Preconditions;
+
 public class Utils {
 
     /**
@@ -42,9 +44,9 @@ public class Utils {
     
     
     public static String join(String[] elements, String separator, int startIndex, int endIndex) {
-        Validator.isTrue(startIndex >= 0 && startIndex < elements.length, "startIndex out of bounds");
-        Validator.isTrue(endIndex >= 0 && endIndex <= elements.length, "endIndex out of bounds");
-        Validator.isTrue(startIndex <= endIndex, "startIndex lower than endIndex");
+        Preconditions.checkArgument(startIndex >= 0 && startIndex < elements.length, "startIndex out of bounds");
+        Preconditions.checkArgument(endIndex >= 0 && endIndex <= elements.length, "endIndex out of bounds");
+        Preconditions.checkArgument(startIndex <= endIndex, "startIndex lower than endIndex");
         
         StringBuilder result = new StringBuilder();
         
@@ -81,15 +83,6 @@ public class Utils {
         return false;
     }
     
-    
-    public static boolean classExists(String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (Throwable t) {
-            return false;
-        }
-    }
     
     public static String uncapitalize(String str) {
         if (str == null || str.isEmpty()) {

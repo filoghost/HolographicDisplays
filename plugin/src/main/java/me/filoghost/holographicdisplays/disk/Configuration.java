@@ -11,7 +11,8 @@
  */
 package me.filoghost.holographicdisplays.disk;
 
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
+import me.filoghost.fcommons.logging.Log;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.logging.Level;
 
 /**
  * Just a bunch of static variables to hold the settings.
@@ -66,15 +66,15 @@ public class Configuration {
             config.load(configFile);
         } catch (InvalidConfigurationException e) {
             e.printStackTrace();
-            ConsoleLogger.log(Level.WARNING, "The configuration is not a valid YAML file! Please check it with a tool like http://yaml-online-parser.appspot.com/");
+            Log.warning("The configuration is not a valid YAML file! Please check it with a tool like http://yaml-online-parser.appspot.com/");
             return;
         } catch (IOException e) {
             e.printStackTrace();
-            ConsoleLogger.log(Level.WARNING, "I/O error while reading the configuration. Was the file in use?");
+            Log.warning("I/O error while reading the configuration. Was the file in use?");
             return;
         } catch (Exception e) {
             e.printStackTrace();
-            ConsoleLogger.log(Level.WARNING, "Unhandled exception while reading the configuration!");
+            Log.warning("Unhandled exception while reading the configuration!");
             return;
         }
         
@@ -119,7 +119,7 @@ public class Configuration {
                 config.save(configFile);
             } catch (IOException e) {
                 e.printStackTrace();
-                ConsoleLogger.log(Level.WARNING, "I/O error while saving the configuration. Was the file in use?");
+                Log.warning("I/O error while saving the configuration. Was the file in use?");
             }
         }
         
@@ -153,7 +153,7 @@ public class Configuration {
             for (String singleServer : config.getStringList(ConfigNode.BUNGEE_PINGER_SERVERS.getPath())) {
                 String[] nameAndAddress = singleServer.split(":", 2);
                 if (nameAndAddress.length < 2) {
-                    ConsoleLogger.log(Level.WARNING, "The server info \"" + singleServer + "\" is not valid. There should be a name and an address, separated by a colon.");
+                    Log.warning("The server info \"" + singleServer + "\" is not valid. There should be a name and an address, separated by a colon.");
                     continue;
                 }
                 
@@ -169,7 +169,7 @@ public class Configuration {
                     try {
                         port = Integer.parseInt(ipAndPort[1]);
                     } catch (NumberFormatException e) {
-                        ConsoleLogger.log(Level.WARNING, "Invalid port number in the server info \"" + singleServer + "\".");
+                        Log.warning("Invalid port number in the server info \"" + singleServer + "\".");
                         continue;
                     }
                 } else {
@@ -181,7 +181,7 @@ public class Configuration {
             }
         }
         
-        ConsoleLogger.setDebugEnabled(config.getBoolean(ConfigNode.DEBUG.getPath()));
+        DebugLogger.setDebugEnabled(config.getBoolean(ConfigNode.DEBUG.getPath()));
         
         String tempColor = config.getString(ConfigNode.TRANSPARENCY_COLOR.getPath()).replace('&', ChatColor.COLOR_CHAR);
         boolean foundColor = false;
@@ -193,7 +193,7 @@ public class Configuration {
         }
         if (!foundColor) {
             Configuration.transparencyColor = ChatColor.GRAY;
-            ConsoleLogger.log(Level.WARNING, "You didn't set a valid chat color for transparency in the configuration, light gray (&7) will be used.");
+            Log.warning("You didn't set a valid chat color for transparency in the configuration, light gray (&7) will be used.");
         }
         
         try {
@@ -201,16 +201,16 @@ public class Configuration {
             timeFormat.setTimeZone(TimeZone.getTimeZone(config.getString(ConfigNode.TIME_ZONE.getPath())));
         } catch (IllegalArgumentException ex) {
             timeFormat = new SimpleDateFormat("H:mm");
-            ConsoleLogger.log(Level.WARNING, "Time format not valid in the configuration, using the default.");
+            Log.warning("Time format not valid in the configuration, using the default.");
         }
         
         if (bungeeRefreshSeconds < 1) {
-            ConsoleLogger.log(Level.WARNING, "The minimum interval for pinging BungeeCord's servers is 1 second. It has been automatically set.");
+            Log.warning("The minimum interval for pinging BungeeCord's servers is 1 second. It has been automatically set.");
             bungeeRefreshSeconds = 1;
         }
         
         if (bungeeRefreshSeconds > 60) {
-            ConsoleLogger.log(Level.WARNING, "The maximum interval for pinging BungeeCord's servers is 60 seconds. It has been automatically set.");
+            Log.warning("The maximum interval for pinging BungeeCord's servers is 60 seconds. It has been automatically set.");
             bungeeRefreshSeconds = 60;
         }
     }

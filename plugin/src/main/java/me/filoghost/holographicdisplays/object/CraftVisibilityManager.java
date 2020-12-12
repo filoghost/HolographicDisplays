@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.object;
 
+import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.api.VisibilityManager;
-import me.filoghost.holographicdisplays.common.Validator;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -25,7 +25,7 @@ public class CraftVisibilityManager implements VisibilityManager {
     private static final int VISIBILITY_DISTANCE_SQUARED = 64 * 64;
     
     public CraftVisibilityManager(CraftHologram hologram) {
-        Validator.notNull(hologram, "hologram");
+        Preconditions.notNull(hologram, "hologram");
         this.hologram = hologram;
         this.visibleByDefault = true;
     }
@@ -62,7 +62,7 @@ public class CraftVisibilityManager implements VisibilityManager {
     
     @Override
     public void showTo(Player player) {
-        Validator.notNull(player, "player");
+        Preconditions.notNull(player, "player");
         
         boolean wasVisible = isVisibleTo(player);
         
@@ -81,7 +81,7 @@ public class CraftVisibilityManager implements VisibilityManager {
     
     @Override
     public void hideTo(Player player) {
-        Validator.notNull(player, "player");
+        Preconditions.notNull(player, "player");
         
         boolean wasVisible = isVisibleTo(player);
         
@@ -99,7 +99,7 @@ public class CraftVisibilityManager implements VisibilityManager {
     
     @Override
     public boolean isVisibleTo(Player player) {
-        Validator.notNull(player, "player");
+        Preconditions.notNull(player, "player");
         
         if (playersVisibilityMap != null) {
 
@@ -114,7 +114,7 @@ public class CraftVisibilityManager implements VisibilityManager {
 
     @Override
     public void resetVisibility(Player player) {
-        Validator.notNull(player, "player");
+        Preconditions.notNull(player, "player");
         
         if (playersVisibilityMap == null) {
             return;

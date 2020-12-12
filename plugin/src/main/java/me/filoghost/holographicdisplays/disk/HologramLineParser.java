@@ -5,6 +5,9 @@
  */
 package me.filoghost.holographicdisplays.disk;
 
+import me.filoghost.fcommons.MaterialsHelper;
+import me.filoghost.fcommons.Strings;
+import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.exception.HologramLineParseException;
 import me.filoghost.holographicdisplays.nbt.parser.MojangsonParseException;
 import me.filoghost.holographicdisplays.nbt.parser.MojangsonParser;
@@ -12,8 +15,6 @@ import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import me.filoghost.holographicdisplays.object.line.CraftItemLine;
 import me.filoghost.holographicdisplays.object.line.CraftTextLine;
-import me.filoghost.holographicdisplays.common.ItemUtils;
-import me.filoghost.holographicdisplays.common.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -61,13 +62,13 @@ public class HologramLineParser {
             basicItemData = serializedItem;
         }
         
-        basicItemData = ItemUtils.stripSpacingChars(basicItemData);
+        basicItemData = Strings.stripChars(basicItemData, ' ');
 
         String materialName;
         short dataValue = 0;
         
         if (basicItemData.contains(":")) {
-            String[] materialAndDataValue = basicItemData.split(":", -1);
+            String[] materialAndDataValue = Strings.split(basicItemData, ":", 2);
             try {
                 dataValue = (short) Integer.parseInt(materialAndDataValue[1]);
             } catch (NumberFormatException e) {
@@ -78,7 +79,7 @@ public class HologramLineParser {
             materialName = basicItemData;
         }
         
-        Material material = ItemUtils.matchMaterial(materialName);
+        Material material = MaterialsHelper.matchMaterial(materialName);
         if (material == null) {
             if (checkMaterialValidity) {
                 throw new HologramLineParseException("\"" + materialName + "\" is not a valid material.");

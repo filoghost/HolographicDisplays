@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.listener;
 
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
@@ -19,7 +20,6 @@ import me.filoghost.holographicdisplays.object.NamedHologramManager;
 import me.filoghost.holographicdisplays.object.PluginHologram;
 import me.filoghost.holographicdisplays.object.PluginHologramManager;
 import me.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
@@ -41,7 +41,6 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 public class MainListener implements Listener, ItemPickupManager {
     
@@ -147,7 +146,7 @@ public class MainListener implements Listener, ItemPickupManager {
             touchSlime.getTouchablePiece().getTouchHandler().onTouch(event.getPlayer());
         } catch (Throwable t) {
             Plugin plugin = touchSlime.getParent() instanceof PluginHologram ? ((PluginHologram) touchSlime.getParent()).getOwner() : HolographicDisplays.getInstance();
-            ConsoleLogger.log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", t);
+            Log.warning("The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", t);
         }
     }
     
@@ -159,7 +158,7 @@ public class MainListener implements Listener, ItemPickupManager {
             }
         } catch (Throwable t) {
             Plugin plugin = hologram instanceof PluginHologram ? ((PluginHologram) hologram).getOwner() : HolographicDisplays.getInstance();
-            ConsoleLogger.log(Level.WARNING, "The plugin " + plugin.getName() + " generated an exception when the player " + player.getName() + " picked up an item from a hologram.", t);
+            Log.warning("The plugin " + plugin.getName() + " generated an exception when the player " + player.getName() + " picked up an item from a hologram.", t);
         }
     }
     

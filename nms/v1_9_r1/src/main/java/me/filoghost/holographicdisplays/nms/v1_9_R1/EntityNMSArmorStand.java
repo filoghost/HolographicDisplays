@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.nms.v1_9_R1;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.common.Utils;
-import me.filoghost.holographicdisplays.common.reflection.ReflectField;
+import me.filoghost.fcommons.reflection.ReflectField;
 import net.minecraft.server.v1_9_R1.AxisAlignedBB;
 import net.minecraft.server.v1_9_R1.DamageSource;
 import net.minecraft.server.v1_9_R1.EntityArmorStand;
@@ -27,7 +27,7 @@ import org.bukkit.craftbukkit.v1_9_R1.entity.CraftEntity;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
     
-    private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = new ReflectField<>(EntityArmorStand.class, "bz");
+    private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = ReflectField.lookup(int.class, EntityArmorStand.class, "bz");
 
     private HologramLine parentPiece;
 

@@ -5,14 +5,14 @@
  */
 package me.filoghost.holographicdisplays.object;
 
+import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.Hologram;
+import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import me.filoghost.holographicdisplays.object.line.CraftItemLine;
 import me.filoghost.holographicdisplays.object.line.CraftTextLine;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
-import me.filoghost.holographicdisplays.common.Utils;
-import me.filoghost.holographicdisplays.common.Validator;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -40,7 +40,7 @@ public class CraftHologram implements Hologram {
     private boolean deleted;
     
     public CraftHologram(Location location) {
-        Validator.notNull(location, "location");
+        Preconditions.notNull(location, "location");
         updateLocation(location.getWorld(), location.getX(), location.getY(), location.getZ());
         
         lines = new ArrayList<>();
@@ -79,7 +79,7 @@ public class CraftHologram implements Hologram {
     }
     
     private void updateLocation(World world, double x, double y, double z) {
-        Validator.notNull(world, "world");
+        Preconditions.notNull(world, "world");
         
         this.world = world;
         this.x = x;
@@ -113,7 +113,7 @@ public class CraftHologram implements Hologram {
     
     @Override
     public CraftTextLine appendTextLine(String text) {
-        Validator.isTrue(!deleted, "hologram already deleted");
+        Preconditions.checkState(!deleted, "hologram already deleted");
         
         CraftTextLine line = new CraftTextLine(this, text);
         lines.add(line);
@@ -123,8 +123,8 @@ public class CraftHologram implements Hologram {
     
     @Override
     public CraftItemLine appendItemLine(ItemStack itemStack) {
-        Validator.isTrue(!deleted, "hologram already deleted");
-        Validator.notNull(itemStack, "itemStack");
+        Preconditions.checkState(!deleted, "hologram already deleted");
+        Preconditions.notNull(itemStack, "itemStack");
         
         CraftItemLine line = new CraftItemLine(this, itemStack);
         lines.add(line);
@@ -134,7 +134,7 @@ public class CraftHologram implements Hologram {
     
     @Override
     public CraftTextLine insertTextLine(int index, String text) {
-        Validator.isTrue(!deleted, "hologram already deleted");
+        Preconditions.checkState(!deleted, "hologram already deleted");
         
         CraftTextLine line = new CraftTextLine(this, text);
         lines.add(index, line);
@@ -144,8 +144,8 @@ public class CraftHologram implements Hologram {
     
     @Override
     public CraftItemLine insertItemLine(int index, ItemStack itemStack) {
-        Validator.isTrue(!deleted, "hologram already deleted");
-        Validator.notNull(itemStack, "itemStack");
+        Preconditions.checkState(!deleted, "hologram already deleted");
+        Preconditions.notNull(itemStack, "itemStack");
         
         CraftItemLine line = new CraftItemLine(this, itemStack);
         lines.add(index, line);
@@ -155,14 +155,14 @@ public class CraftHologram implements Hologram {
     
     @Override
     public void removeLine(int index) {
-        Validator.isTrue(!deleted, "hologram already deleted");
+        Preconditions.checkState(!deleted, "hologram already deleted");
         
         lines.remove(index).despawn();
         refreshSingleLines();
     }
     
     public void removeLine(CraftHologramLine line) {
-        Validator.isTrue(!deleted, "hologram already deleted");
+        Preconditions.checkState(!deleted, "hologram already deleted");
         
         lines.remove(line);
         line.despawn();
@@ -264,7 +264,7 @@ public class CraftHologram implements Hologram {
      * Forces the entities to spawn, without checking if the chunk is loaded.
      */
     public void spawnEntities() {
-        Validator.isTrue(!deleted, "hologram already deleted");
+        Preconditions.checkState(!deleted, "hologram already deleted");
         
         despawnEntities();
 
@@ -299,14 +299,14 @@ public class CraftHologram implements Hologram {
     
     @Override
     public void teleport(Location location) {
-        Validator.notNull(location, "location");
+        Preconditions.notNull(location, "location");
         teleport(location.getWorld(), location.getX(), location.getY(), location.getZ());
     }
     
     @Override
     public void teleport(World world, double x, double y, double z) {
-        Validator.isTrue(!deleted, "hologram already deleted");
-        Validator.notNull(world, "world");
+        Preconditions.checkState(!deleted, "hologram already deleted");
+        Preconditions.notNull(world, "world");
         
         updateLocation(world, x, y, z);
         

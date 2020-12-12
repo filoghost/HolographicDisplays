@@ -34,6 +34,11 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>me.filoghost.fcommons</groupId>
+            <artifactId>fcommons</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

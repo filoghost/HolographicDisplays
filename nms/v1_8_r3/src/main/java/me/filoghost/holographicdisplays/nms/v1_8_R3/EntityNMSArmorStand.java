@@ -5,12 +5,12 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_8_R3;
 
+import me.filoghost.fcommons.reflection.ReflectField;
+import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.common.Utils;
-import me.filoghost.holographicdisplays.common.reflection.ReflectField;
-import me.filoghost.holographicdisplays.common.reflection.ReflectMethod;
+import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import net.minecraft.server.v1_8_R3.AxisAlignedBB;
 import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
@@ -23,12 +23,10 @@ import net.minecraft.server.v1_8_R3.Vec3D;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 
-import java.util.logging.Level;
-
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
     
-    private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = new ReflectField<>(EntityArmorStand.class, "bi");
-    private static final ReflectMethod<Void> SET_MARKER_METHOD = new ReflectMethod<>(EntityArmorStand.class, "n", boolean.class);
+    private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = ReflectField.lookup(int.class, EntityArmorStand.class, "bi");
+    private static final ReflectMethod<Void> SET_MARKER_METHOD = ReflectMethod.lookup(void.class, EntityArmorStand.class, "n", boolean.class);
 
     private HologramLine parentPiece;
     private String customName;
@@ -43,7 +41,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         try {
             SET_MARKER_METHOD.invoke(this, true);
         } catch (Throwable t) {
-            ConsoleLogger.logDebug(Level.SEVERE, "Couldn't set armor stand as marker", t);
+            DebugLogger.severe("Couldn't set armor stand as marker", t);
             // It will still work, but the offset will be wrong.
         }
         this.parentPiece = parentPiece;

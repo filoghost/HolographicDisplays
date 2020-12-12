@@ -5,17 +5,19 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_8_R2;
 
+import me.filoghost.fcommons.Preconditions;
+import me.filoghost.fcommons.reflection.ClassToken;
+import me.filoghost.fcommons.reflection.ReflectField;
+import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.nms.interfaces.CustomNameHelper;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import me.filoghost.holographicdisplays.common.ConsoleLogger;
-import me.filoghost.holographicdisplays.common.Validator;
-import me.filoghost.holographicdisplays.common.reflection.ReflectField;
 import net.minecraft.server.v1_8_R2.Entity;
 import net.minecraft.server.v1_8_R2.EntityTypes;
 import net.minecraft.server.v1_8_R2.MathHelper;
@@ -27,24 +29,20 @@ import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 public class NmsManagerImpl implements NMSManager {
     
-    private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD = new ReflectField<>(EntityTypes.class, "d");
-    private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD = new ReflectField<>(EntityTypes.class, "f");
+    private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD = ReflectField.lookup(new ClassToken<Map<Class<?>, String>>(){}, EntityTypes.class, "d");
+    private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD = ReflectField.lookup(new ClassToken<Map<Class<?>, Integer>>(){}, EntityTypes.class, "f");
 
-    private Method validateEntityMethod;
+    private static final ReflectMethod<?> VALIDATE_ENTITY_METHOD = ReflectMethod.lookup(Object.class, World.class, "a", Entity.class);
     
     @Override
     public void setup() throws Exception {
         registerCustomEntity(EntityNMSArmorStand.class, "ArmorStand", 30);
         registerCustomEntity(EntityNMSItem.class, "Item", 1);
         registerCustomEntity(EntityNMSSlime.class, "Slime", 55);
-        
-        validateEntityMethod = World.class.getDeclaredMethod("a", Entity.class);
-        validateEntityMethod.setAccessible(true);
     }
     
     public void registerCustomEntity(Class<?> entityClass, String name, int id) throws Exception {
@@ -59,7 +57,7 @@ public class NmsManagerImpl implements NMSManager {
         customItem.setLocationNMS(x, y, z);
         customItem.setItemStackNMS(stack);
         if (!addEntityToWorld(nmsWorld, customItem)) {
-            ConsoleLogger.handleSpawnFail(parentPiece);
+            DebugLogger.handleSpawnFail(parentPiece);
         }
         return customItem;
     }
@@ -70,7 +68,7 @@ public class NmsManagerImpl implements NMSManager {
         EntityNMSSlime touchSlime = new EntityNMSSlime(nmsWorld, parentPiece);
         touchSlime.setLocationNMS(x, y, z);
         if (!addEntityToWorld(nmsWorld, touchSlime)) {
-            ConsoleLogger.handleSpawnFail(parentPiece);
+            DebugLogger.handleSpawnFail(parentPiece);
         }
         return touchSlime;
     }
@@ -81,15 +79,15 @@ public class NmsManagerImpl implements NMSManager {
         EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece);
         invisibleArmorStand.setLocationNMS(x, y, z, broadcastLocationPacket);
         if (!addEntityToWorld(nmsWorld, invisibleArmorStand)) {
-            ConsoleLogger.handleSpawnFail(parentPiece);
+            DebugLogger.handleSpawnFail(parentPiece);
         }
         return invisibleArmorStand;
     }
     
     private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
-        Validator.isTrue(Bukkit.isPrimaryThread(), "Async entity add");
+        Preconditions.checkState(Bukkit.isPrimaryThread(), "Async entity add");
         
-        if (validateEntityMethod == null) {
+        if (!VALIDATE_ENTITY_METHOD.isValid()) {
             return nmsWorld.addEntity(nmsEntity, SpawnReason.CUSTOM);
         }
         
@@ -106,7 +104,7 @@ public class NmsManagerImpl implements NMSManager {
         nmsWorld.entityList.add(nmsEntity);
         
         try {
-            validateEntityMethod.invoke(nmsWorld, nmsEntity);
+            VALIDATE_ENTITY_METHOD.invoke(nmsWorld, nmsEntity);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
