@@ -50,5 +50,17 @@ public class DebugLogger {
     public static void handleSpawnFail(HologramLine parentPiece) {
         warning("Couldn't spawn entity for this hologram: " + parentPiece.getParent().toString());
     }
-    
+
+    public static void cannotSetPassenger(Throwable t) {
+        severe("Couldn't set passenger", t);
+    }
+
+    public static void cannotSetArmorStandAsMarker(Throwable t) {
+        severe("Couldn't set armor stand as marker", t);
+    }
+
+    public static void cannotSetRiderPitchYaw(Throwable t) {
+        severe("Couldn't set rider pitch and yaw", t);
+    }
+
 }

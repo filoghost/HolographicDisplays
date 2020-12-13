@@ -206,7 +206,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
             entity.passengers.add(this);
 
         } catch (Throwable t) {
-            DebugLogger.severe("Couldn't set passenger", t);
+            DebugLogger.cannotSetPassenger(t);
         }
     }
 }

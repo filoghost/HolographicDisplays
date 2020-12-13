@@ -239,7 +239,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
             entity.passengers.add(this);
 
         } catch (Throwable t) {
-            DebugLogger.severe("Couldn't set passenger", t);
+            DebugLogger.cannotSetPassenger(t);
         }
     }
 

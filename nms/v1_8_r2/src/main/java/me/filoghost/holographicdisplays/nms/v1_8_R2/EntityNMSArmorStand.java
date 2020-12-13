@@ -41,7 +41,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         try {
             SET_MARKER_METHOD.invoke(this, true);
         } catch (Throwable t) {
-            DebugLogger.severe("Couldn't set armor stand as marker", t);
+            DebugLogger.cannotSetArmorStandAsMarker(t);
             // It will still work, but the offset will be wrong.
         }
         this.parentPiece = parentPiece;

@@ -192,7 +192,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
             RIDER_PITCH_DELTA.set(this, 0.0);
             RIDER_YAW_DELTA.set(this, 0.0);
         } catch (Throwable t) {
-            DebugLogger.severe("Couldn't set rider pitch and yaw", t);
+            DebugLogger.cannotSetRiderPitchYaw(t);
         }
 
         if (this.vehicle != null) {
