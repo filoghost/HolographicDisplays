@@ -32,7 +32,7 @@ import org.bukkit.plugin.Plugin;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 
 /**
- * Just a bunch of static varibles to hold the settings.
+ * Just a bunch of static variables to hold the settings.
  * Useful for fast access.
  */
 public class Configuration {

@@ -48,6 +48,7 @@ public class CraftHologram implements Hologram {
 	private boolean allowPlaceholders;
 	private long creationTimestamp;
 	private boolean deleted;
+	private double lineSpacing;
 	
 	public CraftHologram(Location location) {
 		Validator.notNull(location, "location");
@@ -57,6 +58,7 @@ public class CraftHologram implements Hologram {
 		allowPlaceholders = false;
 		creationTimestamp = System.currentTimeMillis();
 		visibilityManager = new CraftVisibilityManager(this);
+		lineSpacing = Configuration.spaceBetweenLines;
 	}
 	
 	public boolean isInChunk(Chunk chunk) {
@@ -103,7 +105,17 @@ public class CraftHologram implements Hologram {
 	public boolean isDeleted() {
 		return deleted;
 	}
-	
+
+	@Override
+	public double getLineSpacing() {
+		return lineSpacing;
+	}
+
+	@Override
+	public void setLineSpacing(double spacing) {
+		this.lineSpacing = spacing;
+	}
+
 	@Override
 	public void delete() {
 		if (!deleted) {
@@ -205,7 +217,7 @@ public class CraftHologram implements Hologram {
 			height += line.getHeight();
 		}
 		
-		height += Configuration.spaceBetweenLines * (lines.size() - 1);
+		height += lineSpacing * (lines.size() - 1);
 		return height;
 	}
 	
@@ -255,7 +267,7 @@ public class CraftHologram implements Hologram {
 				if (first) {
 					first = false;
 				} else {
-					currentY -= Configuration.spaceBetweenLines;
+					currentY -= lineSpacing;
 				}
 				
 				if (line.isSpawned()) {
@@ -288,7 +300,7 @@ public class CraftHologram implements Hologram {
 			if (first) {
 				first = false;
 			} else {
-				currentY -= Configuration.spaceBetweenLines;
+				currentY -= lineSpacing;
 			}
 			
 			line.spawn(world, x, currentY, z);
@@ -340,7 +352,7 @@ public class CraftHologram implements Hologram {
 			if (first) {
 				first = false;
 			} else {
-				currentY -= Configuration.spaceBetweenLines;
+				currentY -= lineSpacing;
 			}
 			
 			line.teleport(x, currentY, z);

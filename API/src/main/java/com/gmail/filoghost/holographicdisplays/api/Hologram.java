@@ -216,5 +216,19 @@ public interface Hologram {
 	 * @return true if this hologram was deleted
 	 */
 	public boolean isDeleted();
-	
+
+	/**
+	 * Returns the line spacing for this hologram. By default, this is imported from the plugin configuration.
+	 * Default is 0.02, a good one for a bit more spacing can be 0.1.
+	 *
+	 * @return the line spacing
+	 */
+	double getLineSpacing();
+
+	/**
+	 * Sets the line spacing for this hologram.
+	 *
+	 * @param spacing the new line spacing
+	 */
+	void setLineSpacing(double spacing);
 }
