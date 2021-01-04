@@ -22,7 +22,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -30,6 +29,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketAdapter.AdapterParameteters;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.utility.ByteBuddyGenerated;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
@@ -84,7 +84,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					PacketContainer packet = event.getPacket();
 					Player player = event.getPlayer();
 					
-					if (player instanceof Factory) {
+					if (player instanceof ByteBuddyGenerated) {
 						return; // Ignore temporary players (reference: https://github.com/dmulloy2/ProtocolLib/issues/349)
 					}
 

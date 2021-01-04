@@ -16,12 +16,12 @@ package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 
 import java.util.Map;
 
-import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.EquivalentConverter;
 import com.comphenix.protocol.reflect.PrettyPrinter;
 import com.comphenix.protocol.reflect.PrettyPrinter.ObjectPrinter;
+import com.comphenix.protocol.utility.ByteBuddyGenerated;
 import com.comphenix.protocol.utility.HexDumper;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.BukkitConverters;
@@ -59,7 +59,7 @@ public class DebugHelper {
 		// Get the first Minecraft super class
 		while (clazz != null && clazz != Object.class &&
 				(!MinecraftReflection.isMinecraftClass(clazz) || 
-				 Factory.class.isAssignableFrom(clazz))) {
+				 ByteBuddyGenerated.class.isAssignableFrom(clazz))) {
 			clazz = clazz.getSuperclass();
 		}
 		
