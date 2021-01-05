@@ -29,7 +29,6 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketAdapter.AdapterParameteters;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.utility.ByteBuddyGenerated;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
@@ -81,12 +80,12 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					  
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					PacketContainer packet = event.getPacket();
-					Player player = event.getPlayer();
-					
-					if (player instanceof ByteBuddyGenerated) {
+					if (event.isPlayerTemporary()) {
 						return; // Ignore temporary players (reference: https://github.com/dmulloy2/ProtocolLib/issues/349)
 					}
+
+					PacketContainer packet = event.getPacket();
+					Player player = event.getPlayer();
 
 					// Spawn entity packet
 					if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
