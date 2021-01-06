@@ -239,8 +239,8 @@ public class HolographicDisplays extends JavaPlugin {
 			
 			String versionNumbers = versionNumbersMatcher.group();
 			
-			if (!VersionUtils.isVersionGreaterEqual(versionNumbers, "4.1")) {
-				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Holographic Displays] Detected old version of ProtocolLib, support disabled. You must use ProtocolLib 4.1 or higher.");
+			if (!VersionUtils.isVersionGreaterEqual(versionNumbers, "4.4")) {
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Holographic Displays] Detected old unsupported version of ProtocolLib, support disabled. You must use ProtocolLib 4.4.0 or higher.");
 				return;
 			}
 			

@@ -81,12 +81,12 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					  
 				@Override
 				public void onPacketSending(PacketEvent event) {
+					if (event.isPlayerTemporary()) {
+						return;
+					}
+
 					PacketContainer packet = event.getPacket();
 					Player player = event.getPlayer();
-					
-					if (player instanceof Factory) {
-						return; // Ignore temporary players (reference: https://github.com/dmulloy2/ProtocolLib/issues/349)
-					}
 
 					// Spawn entity packet
 					if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
