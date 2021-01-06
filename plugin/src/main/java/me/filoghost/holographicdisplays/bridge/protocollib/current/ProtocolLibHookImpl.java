@@ -30,7 +30,7 @@ import me.filoghost.holographicdisplays.object.line.CraftTextLine;
 import me.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
 import me.filoghost.holographicdisplays.object.line.CraftTouchableLine;
 import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
-import me.filoghost.holographicdisplays.common.NMSVersion;
+import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;

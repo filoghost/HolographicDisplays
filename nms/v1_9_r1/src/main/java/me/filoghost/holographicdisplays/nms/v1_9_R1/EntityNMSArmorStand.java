@@ -44,7 +44,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         this.parentPiece = parentPiece;
         try {
             DISABLED_SLOTS_FIELD.set(this, Integer.MAX_VALUE);
-        } catch (Exception e) {
+        } catch (ReflectiveOperationException e) {
             // There's still the overridden method.
         }
         forceSetBoundingBox(new NullBoundingBox());

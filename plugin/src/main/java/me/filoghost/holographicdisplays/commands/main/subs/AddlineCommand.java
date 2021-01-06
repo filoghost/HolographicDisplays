@@ -5,10 +5,10 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
-import me.filoghost.holographicdisplays.commands.Colors;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
@@ -25,7 +25,7 @@ public class AddlineCommand extends HologramSubCommand {
 
     public AddlineCommand() {
         super("addline");
-        setPermission(Strings.BASE_PERM + "addline");
+        setPermission(Permissions.COMMAND_BASE + "addline");
     }
 
     @Override

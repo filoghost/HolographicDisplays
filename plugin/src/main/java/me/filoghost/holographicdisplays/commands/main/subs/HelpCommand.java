@@ -5,12 +5,11 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.commands.Colors;
-import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
+import me.filoghost.holographicdisplays.Permissions;
+import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
-import me.filoghost.holographicdisplays.exception.CommandException;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -27,7 +26,7 @@ public class HelpCommand extends HologramSubCommand {
 
     public HelpCommand() {
         super("help");
-        setPermission(Strings.BASE_PERM + "help");
+        setPermission(Permissions.COMMAND_BASE + "help");
     }
 
     @Override
@@ -42,14 +41,14 @@ public class HelpCommand extends HologramSubCommand {
 
 
     @Override
-    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+    public void execute(CommandSender sender, String label, String[] args) {
         sender.sendMessage("");
-        sender.sendMessage(Strings.formatTitle("Holographic Displays Commands"));
+        Messages.sendTitle(sender, "Holographic Displays Commands");
         for (HologramSubCommand subCommand : HolographicDisplays.getCommandHandler().getSubCommands()) {
             if (subCommand.getType() == SubCommandType.GENERIC) {
                 String usage = "/" + label + " " + subCommand.getName() + (subCommand.getPossibleArguments().length() > 0 ? " " + subCommand.getPossibleArguments() : "");
-                
-                if (CommandValidator.isPlayerSender(sender)) {
+
+                if (sender instanceof Player) {
                     
                     List<String> help = new ArrayList<>();
                     help.add(Colors.PRIMARY + usage);
@@ -68,8 +67,8 @@ public class HelpCommand extends HologramSubCommand {
                 }
             }
         }
-        
-        if (CommandValidator.isPlayerSender(sender)) {
+
+        if (sender instanceof Player) {
             sendHoverTip((Player) sender);
         }
     }

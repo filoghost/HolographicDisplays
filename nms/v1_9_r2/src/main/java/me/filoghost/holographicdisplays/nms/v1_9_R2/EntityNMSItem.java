@@ -7,10 +7,10 @@ package me.filoghost.holographicdisplays.nms.v1_9_R2;
 
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
+import me.filoghost.holographicdisplays.nms.interfaces.NMSCommons;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import me.filoghost.holographicdisplays.common.DebugLogger;
-import me.filoghost.holographicdisplays.common.ItemUtils;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.fcommons.reflection.ReflectField;
 import net.minecraft.server.v1_9_R2.Blocks;
@@ -54,10 +54,11 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         
         if (resendMountPacketTicks++ > 20) {
             resendMountPacketTicks = 0;
-            
-            if (bz() != null) {
+
+            Entity vehicle = bz();
+            if (vehicle != null) {
                 // Send a packet near to "remind" players that the item is riding the armor stand (Spigot bug or client bug)
-                PacketPlayOutMount mountPacket = new PacketPlayOutMount(bz());
+                PacketPlayOutMount mountPacket = new PacketPlayOutMount(vehicle);
     
                 for (Object obj : super.world.players) {
                     if (obj instanceof EntityPlayer) {
@@ -197,7 +198,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         }
         
         NBTTagList tagList = new NBTTagList();
-        tagList.add(new NBTTagString(ItemUtils.ANTISTACK_LORE)); // Antistack lore
+        tagList.add(new NBTTagString(NMSCommons.ANTISTACK_LORE)); // Antistack lore
         display.set("Lore", tagList);
         
         setItemStack(newItem);

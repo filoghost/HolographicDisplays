@@ -5,10 +5,11 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
-import me.filoghost.holographicdisplays.commands.Colors;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
+import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import me.filoghost.holographicdisplays.exception.CommandException;
@@ -26,7 +27,7 @@ public class InsertlineCommand extends HologramSubCommand {
 
     public InsertlineCommand() {
         super("insertline");
-        setPermission(Strings.BASE_PERM + "insertline");
+        setPermission(Permissions.COMMAND_BASE + "insertline");
     }
 
     @Override
@@ -63,7 +64,7 @@ public class InsertlineCommand extends HologramSubCommand {
             sender.sendMessage(Colors.PRIMARY + "Line inserted before line n.1!");
         } else if (insertAfter == oldLinesAmount) {
             sender.sendMessage(Colors.PRIMARY + "Line appended at the end!");
-            sender.sendMessage(Strings.TIP_PREFIX + "Next time use \"/" + label + " addline\" to add a line at the end.");
+            Messages.sendTip(sender, "You can use \"/" + label + " addline\" to add a line at the end.");
         } else {
             sender.sendMessage(Colors.PRIMARY + "Line inserted between lines " + insertAfter + " and " + (insertAfter + 1) + "!");
         }

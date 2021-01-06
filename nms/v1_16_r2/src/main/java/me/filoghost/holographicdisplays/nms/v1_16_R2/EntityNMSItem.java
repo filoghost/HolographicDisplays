@@ -7,10 +7,10 @@ package me.filoghost.holographicdisplays.nms.v1_16_R2;
 
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
+import me.filoghost.holographicdisplays.nms.interfaces.NMSCommons;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import me.filoghost.holographicdisplays.common.DebugLogger;
-import me.filoghost.holographicdisplays.common.ItemUtils;
 import me.filoghost.fcommons.reflection.ReflectField;
 import net.minecraft.server.v1_16_R2.Blocks;
 import net.minecraft.server.v1_16_R2.DamageSource;
@@ -174,7 +174,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         }
 
         NBTTagList tagList = new NBTTagList();
-        tagList.add(NBTTagString.a(ItemUtils.ANTISTACK_LORE)); // Antistack lore
+        tagList.add(NBTTagString.a(NMSCommons.ANTISTACK_LORE)); // Antistack lore
         display.set("Lore", tagList);
 
         setItemStack(newItem);

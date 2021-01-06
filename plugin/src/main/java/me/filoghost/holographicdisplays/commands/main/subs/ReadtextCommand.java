@@ -5,11 +5,12 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
-import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.commands.Colors;
+import me.filoghost.holographicdisplays.Colors;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
+import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.disk.HologramLineParser;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
@@ -18,7 +19,6 @@ import me.filoghost.holographicdisplays.exception.HologramLineParseException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import me.filoghost.holographicdisplays.util.FileUtils;
-import me.filoghost.holographicdisplays.common.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -34,7 +34,7 @@ public class ReadtextCommand extends HologramSubCommand {
 
     public ReadtextCommand() {
         super("readtext", "readlines");
-        setPermission(Strings.BASE_PERM + "readtext");
+        setPermission(Permissions.COMMAND_BASE + "readtext");
     }
 
     @Override
@@ -53,15 +53,12 @@ public class ReadtextCommand extends HologramSubCommand {
         String fileName = args[1];
         
         try {
-            File targetFile = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
-            CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetFile), "The file must be inside HolographicDisplays' folder.");
-            CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetFile), "Cannot read default configuration files.");
-            
+            File targetFile = CommandValidator.getUserReadableFile(fileName);
             List<String> serializedLines = FileUtils.readLines(targetFile);
             
             int linesAmount = serializedLines.size();
             if (linesAmount > 40) {
-                Strings.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
+                Messages.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
                 linesAmount = 40;
             }
             
@@ -84,22 +81,17 @@ public class ReadtextCommand extends HologramSubCommand {
             
             if (args[1].contains(".")) {
                 if (isImageExtension(args[1].substring(args[1].lastIndexOf('.') + 1))) {
-                    Strings.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + label + " readimage.");
+                    Messages.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + label + " readimage.");
                 }
             }
             
             sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram!");
             Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
             
-        } catch (CommandException e) {
-            throw e;
         } catch (FileNotFoundException e) {
             throw new CommandException("A file named '" + args[1] + "' doesn't exist in the plugin's folder.");
         } catch (IOException e) {
             throw new CommandException("I/O exception while reading the file. Is it in use?");
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new CommandException("Unhandled exception while reading the file! Please look the console.");
         }
     }
     

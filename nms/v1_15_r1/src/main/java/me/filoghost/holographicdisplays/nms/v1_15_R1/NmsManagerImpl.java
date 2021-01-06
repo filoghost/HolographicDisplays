@@ -112,7 +112,7 @@ public class NmsManagerImpl implements NMSManager {
         try {
             REGISTER_ENTITY_METHOD.invoke(nmsWorld, nmsEntity);
             return true;
-        } catch (Exception e) {
+        } catch (ReflectiveOperationException e) {
             e.printStackTrace();
             return false;
         }

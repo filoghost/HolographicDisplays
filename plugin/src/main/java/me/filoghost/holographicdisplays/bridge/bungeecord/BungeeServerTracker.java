@@ -136,7 +136,7 @@ public class BungeeServerTracker {
         return trackedServers;
     }
     
-    public static void startTask(int refreshSeconds) {
+    public static void restartTask(int refreshSeconds) {
         if (taskID != -1) {
             Bukkit.getScheduler().cancelTask(taskID);
         }

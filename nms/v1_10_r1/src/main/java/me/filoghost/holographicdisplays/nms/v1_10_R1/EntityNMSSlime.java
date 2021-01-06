@@ -54,9 +54,10 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
         if (resendMountPacketTicks++ > 20) {
             resendMountPacketTicks = 0;
 
-            if (bB() != null) {
+            Entity vehicle = bB();
+            if (vehicle != null) {
                 // Send a packet near to "remind" players that the slime is riding the armor stand (Spigot bug or client bug)
-                PacketPlayOutMount mountPacket = new PacketPlayOutMount(bB());
+                PacketPlayOutMount mountPacket = new PacketPlayOutMount(vehicle);
     
                 for (Object obj : super.world.players) {
                     if (obj instanceof EntityPlayer) {

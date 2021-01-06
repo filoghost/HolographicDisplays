@@ -5,11 +5,11 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
-import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.commands.Colors;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
+import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import me.filoghost.holographicdisplays.exception.CommandException;
@@ -38,7 +38,7 @@ public class ReadimageCommand extends HologramSubCommand {
 
     public ReadimageCommand() {
         super("readimage", "image");
-        setPermission(Strings.BASE_PERM + "readimage");
+        setPermission(Permissions.COMMAND_BASE + "readimage");
     }
 
     @Override
@@ -87,13 +87,10 @@ public class ReadimageCommand extends HologramSubCommand {
             } else {
                 
                 if (fileName.matches(".*[a-zA-Z0-9\\-]+\\.[a-zA-Z0-9\\-]{1,4}\\/.+")) {
-                    Strings.sendWarning(sender, "The image path seems to be an URL. If so, please use http:// or https:// in the path.");
+                    Messages.sendWarning(sender, "The image path seems to be an URL. If so, please use http:// or https:// in the path.");
                 }
-                
-                File targetImage = new File(HolographicDisplays.getInstance().getDataFolder(), fileName);
-                CommandValidator.isTrue(FileUtils.isParentFolder(HolographicDisplays.getInstance().getDataFolder(), targetImage), "The image must be inside HolographicDisplays' folder.");
-                CommandValidator.isTrue(!HolographicDisplays.isConfigFile(targetImage), "Cannot read default configuration files.");
-                
+
+                File targetImage = CommandValidator.getUserReadableFile(fileName);
                 image = FileUtils.readImage(targetImage);
             }
             
@@ -112,7 +109,7 @@ public class ReadimageCommand extends HologramSubCommand {
             hologram.refreshAll();
             
             if (newLines.length < 5) {
-                sender.sendMessage(Strings.TIP_PREFIX + "The image has a very low height. You can increase it by increasing the width, it will scale automatically.");
+                Messages.sendTip(sender, "The image has a very low height. You can increase it by increasing the width, it will scale automatically.");
             }
             
             HologramDatabase.saveHologram(hologram);
@@ -125,8 +122,6 @@ public class ReadimageCommand extends HologramSubCommand {
             }
             Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
             
-        } catch (CommandException e) {
-            throw e;
         } catch (MalformedURLException e) {
             throw new CommandException("The provided URL was not valid.");
         } catch (TooWideException e) {
@@ -138,9 +133,6 @@ public class ReadimageCommand extends HologramSubCommand {
         } catch (IOException e) {
             e.printStackTrace();
             throw new CommandException("I/O exception while reading the image. " + (isUrl ? "Is the URL valid?" : "Is it in use?"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new CommandException("Unhandled exception while reading the image! Please look the console.");
         }
     }
     

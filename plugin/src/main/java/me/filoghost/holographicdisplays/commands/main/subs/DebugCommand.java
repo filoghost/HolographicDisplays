@@ -5,12 +5,11 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.HolographicDisplays;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.api.Hologram;
-import me.filoghost.holographicdisplays.commands.Colors;
-import me.filoghost.holographicdisplays.commands.Strings;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
-import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.PluginHologram;
@@ -30,7 +29,7 @@ public class DebugCommand extends HologramSubCommand {
 
     public DebugCommand() {
         super("debug");
-        setPermission(Strings.BASE_PERM + "debug");
+        setPermission(Permissions.COMMAND_BASE + "debug");
     }
 
     @Override
@@ -44,7 +43,7 @@ public class DebugCommand extends HologramSubCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+    public void execute(CommandSender sender, String label, String[] args) {
         boolean foundAnyHologram = false;
         
         for (World world : Bukkit.getWorlds()) {

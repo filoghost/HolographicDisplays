@@ -192,8 +192,8 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
         Entity entity = (Entity) vehicleBase;
         
         try {
-            if (super.bJ() != null) {
-                Entity oldVehicle = super.bJ();
+            Entity oldVehicle = super.bJ();
+            if (oldVehicle != null) {
                 VEHICLE_FIELD.set(this, null);
                 oldVehicle.passengers.remove(this);
             }

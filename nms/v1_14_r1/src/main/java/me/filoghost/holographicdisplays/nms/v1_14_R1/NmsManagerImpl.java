@@ -113,7 +113,7 @@ public class NmsManagerImpl implements NMSManager {
         try {
             REGISTER_ENTITY_METHOD.invoke(nmsWorld, nmsEntity);
             return true;
-        } catch (Exception e) {
+        } catch (ReflectiveOperationException e) {
             e.printStackTrace();
             return false;
         }
@@ -182,7 +182,7 @@ public class NmsManagerImpl implements NMSManager {
                 // Access siblings field directly in older 1.14 versions.
                 try {
                     return OLD_SIBLINGS_FIELD.get(chatComponent);
-                } catch (Exception e) {
+                } catch (ReflectiveOperationException e) {
                     throw new RuntimeException(e);
                 }
             }

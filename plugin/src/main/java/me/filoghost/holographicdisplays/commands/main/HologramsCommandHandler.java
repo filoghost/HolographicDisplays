@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.commands.main;
 
 import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.commands.Colors;
-import me.filoghost.holographicdisplays.commands.Strings;
+import me.filoghost.holographicdisplays.Permissions;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.main.subs.AddlineCommand;
 import me.filoghost.holographicdisplays.commands.main.subs.AlignCommand;
 import me.filoghost.holographicdisplays.commands.main.subs.CopyCommand;
@@ -85,10 +85,9 @@ public class HologramsCommandHandler implements CommandExecutor {
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        
         if (args.length == 0) {
             sender.sendMessage(Colors.PRIMARY_SHADOW + "Server is running " + Colors.PRIMARY + "Holographic Displays " + Colors.PRIMARY_SHADOW + "v" + HolographicDisplays.getInstance().getDescription().getVersion() + " by " + Colors.PRIMARY + "filoghost");
-            if (sender.hasPermission(Strings.BASE_PERM + "help")) {
+            if (sender.hasPermission(Permissions.COMMAND_BASE + "help")) {
                 sender.sendMessage(Colors.PRIMARY_SHADOW + "Commands: " + Colors.PRIMARY + "/" + label + " help");
             }
             return true;
@@ -107,6 +106,9 @@ public class HologramsCommandHandler implements CommandExecutor {
                         subCommand.execute(sender, label, Arrays.copyOfRange(args, 1, args.length));
                     } catch (CommandException e) {
                         sender.sendMessage(Colors.ERROR + e.getMessage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        sender.sendMessage(Colors.ERROR + "Unhandled exception while executing command. Please look on the console for more details.");
                     }
                 } else {
                     sender.sendMessage(Colors.ERROR + "Usage: /" + label + " " + subCommand.getName() + " " + subCommand.getPossibleArguments());

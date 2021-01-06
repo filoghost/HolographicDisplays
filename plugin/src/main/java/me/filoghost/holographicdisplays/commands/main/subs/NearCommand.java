@@ -5,10 +5,11 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
-import me.filoghost.holographicdisplays.commands.Colors;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
+import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.NamedHologramManager;
@@ -24,7 +25,7 @@ public class NearCommand extends HologramSubCommand {
 
     public NearCommand() {
         super("near");
-        setPermission(Strings.BASE_PERM + "near");
+        setPermission(Permissions.COMMAND_BASE + "near");
     }
 
     @Override
@@ -55,7 +56,7 @@ public class NearCommand extends HologramSubCommand {
         
         CommandValidator.isTrue(!nearHolograms.isEmpty(), "There are no holograms in the given radius.");
         
-        player.sendMessage(Strings.formatTitle("Near holograms"));
+        Messages.sendTitle(player, "Near holograms");
         for (NamedHologram nearHologram : nearHolograms) {
             player.sendMessage(Colors.SECONDARY_SHADOW + "- " + Colors.SECONDARY + Colors.BOLD + nearHologram.getName() + " " + Colors.SECONDARY_SHADOW + "at x: " + (int) nearHologram.getX() + ", y: " + (int) nearHologram.getY() + ", z: " + (int) nearHologram.getZ() + " (lines: " + nearHologram.size() + ")");
         }

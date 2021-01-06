@@ -13,8 +13,6 @@ import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl;
 import me.filoghost.holographicdisplays.commands.main.HologramsCommandHandler;
-import me.filoghost.holographicdisplays.common.NMSVersion;
-import me.filoghost.holographicdisplays.common.VersionUtils;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.disk.UnicodeSymbols;
@@ -30,12 +28,13 @@ import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import me.filoghost.holographicdisplays.task.BungeeCleanupTask;
 import me.filoghost.holographicdisplays.task.StartupLoadHologramsTask;
 import me.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
+import me.filoghost.holographicdisplays.util.NMSVersion;
+import me.filoghost.holographicdisplays.util.VersionUtils;
 import me.filoghost.updatechecker.UpdateChecker;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -98,15 +97,10 @@ public class HolographicDisplays extends BaseJavaPlugin {
         }
         
         try {
-            nmsManager = (NMSManager) Class.forName("me.filoghost.holographicdisplays.nms." + NMSVersion.getCurrent() + ".NmsManagerImpl").getConstructor().newInstance();
-        } catch (Throwable t) {
-            throw new PluginEnableException(t, "Couldn't initialize the NMS manager.");
-        }
-
-        try {
+            nmsManager = NMSVersion.createNMSManager();
             nmsManager.setup();
         } catch (Exception e) {
-            throw new PluginEnableException(e, "Holographic Displays was unable to register custom entities.");
+            throw new PluginEnableException(e, "Couldn't initialize the NMS manager.");
         }
         
         // ProtocolLib check.
@@ -116,13 +110,13 @@ public class HolographicDisplays extends BaseJavaPlugin {
         PlaceholdersManager.load(this);
         try {
             AnimationsRegister.loadAnimations(this);
-        } catch (Exception ex) {
-            Log.warning("Failed to load animation files!", ex);
+        } catch (Exception e) {
+            Log.warning("Failed to load animation files!", e);
         }
         
         // Initialize other static classes.
         HologramDatabase.loadYamlFile(this);
-        BungeeServerTracker.startTask(Configuration.bungeeRefreshSeconds);
+        BungeeServerTracker.restartTask(Configuration.bungeeRefreshSeconds);
         
         // Start repeating tasks.
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new BungeeCleanupTask(), 5 * 60 * 20, 5 * 60 * 20);
@@ -225,11 +219,6 @@ public class HolographicDisplays extends BaseJavaPlugin {
     
     public static ProtocolLibHook getProtocolLibHook() {
         return protocolLibHook;
-    }
-    
-    
-    public static boolean isConfigFile(File file) {
-        return file.getName().toLowerCase().endsWith(".yml");
     }
     
 }

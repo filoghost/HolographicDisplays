@@ -12,10 +12,10 @@ import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.common.DebugLogger;
-import me.filoghost.holographicdisplays.common.VersionUtils;
 import me.filoghost.holographicdisplays.nms.interfaces.ChatComponentAdapter;
 import me.filoghost.holographicdisplays.nms.interfaces.CustomNameHelper;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
+import me.filoghost.holographicdisplays.nms.interfaces.NMSCommons;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
@@ -112,11 +112,11 @@ public class NmsManagerImpl implements NMSManager {
         }
         
         nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
-        if (VersionUtils.isPaperServer()) {
+        if (NMSCommons.isPaperServer()) {
             try {
                 // Workaround because nmsWorld.entityList is a different class in Paper, if used without reflection it throws NoSuchFieldError.
                 ENTITY_LIST_FIELD.get(nmsWorld).add(nmsEntity);
-            } catch (Exception e) {
+            } catch (ReflectiveOperationException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -126,7 +126,7 @@ public class NmsManagerImpl implements NMSManager {
         
         try {
             VALIDATE_ENTITY_METHOD.invoke(nmsWorld, nmsEntity);
-        } catch (Exception e) {
+        } catch (ReflectiveOperationException e) {
             e.printStackTrace();
             return false;
         }

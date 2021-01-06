@@ -7,10 +7,11 @@ package me.filoghost.holographicdisplays.commands.main.subs;
 
 import com.google.common.collect.Lists;
 import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.commands.Colors;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
+import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
@@ -39,7 +40,7 @@ public class EditCommand extends HologramSubCommand {
     
     public EditCommand() {
         super("edit");
-        setPermission(Strings.BASE_PERM + "edit");
+        setPermission(Permissions.COMMAND_BASE + "edit");
     }
 
     @Override
@@ -58,12 +59,12 @@ public class EditCommand extends HologramSubCommand {
         NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
         
         sender.sendMessage("");
-        sender.sendMessage(Strings.formatTitle("How to edit the hologram '" + hologram.getName() + "'"));
+        Messages.sendTitle(sender, "How to edit the hologram '" + hologram.getName() + "'");
         for (HologramSubCommand subCommand : HolographicDisplays.getCommandHandler().getSubCommands()) {
             if (subCommand.getType() == SubCommandType.EDIT_LINES) {
                 String usage = "/" + label + " " + subCommand.getName() + (subCommand.getPossibleArguments().length() > 0 ? " " + subCommand.getPossibleArguments().replace("<hologramName>", hologram.getName()).replace("<hologram>", hologram.getName()) : "");
-                
-                if (CommandValidator.isPlayerSender(sender)) {
+
+                if (sender instanceof Player) {
                     
                     List<String> help = new ArrayList<>();
                     help.add(Colors.PRIMARY + usage);
@@ -82,8 +83,8 @@ public class EditCommand extends HologramSubCommand {
                 }
             }
         }
-        
-        if (CommandValidator.isPlayerSender(sender)) {
+
+        if (sender instanceof Player) {
             HelpCommand.sendHoverTip((Player) sender);
         }
     }

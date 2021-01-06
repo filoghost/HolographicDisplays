@@ -6,11 +6,11 @@
 package me.filoghost.holographicdisplays.listener;
 
 import me.filoghost.fcommons.logging.Log;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.HolographicDisplays;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
-import me.filoghost.holographicdisplays.commands.Colors;
-import me.filoghost.holographicdisplays.commands.Strings;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
@@ -20,7 +20,7 @@ import me.filoghost.holographicdisplays.object.NamedHologramManager;
 import me.filoghost.holographicdisplays.object.PluginHologram;
 import me.filoghost.holographicdisplays.object.PluginHologramManager;
 import me.filoghost.holographicdisplays.object.line.CraftTouchSlimeLine;
-import org.bukkit.Bukkit;
+import me.filoghost.holographicdisplays.util.SchedulerUtils;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
@@ -70,23 +70,17 @@ public class MainListener implements Listener, ItemPickupManager {
         Chunk chunk = event.getChunk();
         
         // Other plugins could call this event wrongly, check if the chunk is actually loaded.
-        if (chunk.isLoaded()) {
-            
-            // In case another plugin loads the chunk asynchronously always make sure to load the holograms on the main thread.
-            if (Bukkit.isPrimaryThread()) {
-                processChunkLoad(chunk);
-            } else {
-                Bukkit.getScheduler().runTask(HolographicDisplays.getInstance(), () -> processChunkLoad(chunk));
-            }
+        if (!chunk.isLoaded()) {
+            return;
         }
+
+        // In case another plugin loads the chunk asynchronously, always make sure to load the holograms on the main thread.
+        SchedulerUtils.runOnMainThread(() -> {
+            NamedHologramManager.onChunkLoad(chunk);
+            PluginHologramManager.onChunkLoad(chunk);
+        });
     }
-    
-    // This method should be always called synchronously.
-    public void processChunkLoad(Chunk chunk) {
-        NamedHologramManager.onChunkLoad(chunk);
-        PluginHologramManager.onChunkLoad(chunk);
-    }
-    
+
     @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = false)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         if (nmsManager.isNMSEntityBase(event.getEntity())) {
@@ -165,7 +159,7 @@ public class MainListener implements Listener, ItemPickupManager {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         if (Configuration.updateNotification && HolographicDisplays.getNewVersion() != null) {
-            if (event.getPlayer().hasPermission(Strings.BASE_PERM + "update")) {
+            if (event.getPlayer().hasPermission(Permissions.COMMAND_BASE + "update")) {
                 event.getPlayer().sendMessage(Colors.PRIMARY_SHADOW + "[HolographicDisplays] " + Colors.PRIMARY + "Found an update: " + HolographicDisplays.getNewVersion() + ". Download:");
                 event.getPlayer().sendMessage(Colors.PRIMARY_SHADOW + ">> " + Colors.PRIMARY + "http://dev.bukkit.org/bukkit-plugins/holographic-displays");
             }

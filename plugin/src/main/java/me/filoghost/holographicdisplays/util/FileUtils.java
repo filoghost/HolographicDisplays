@@ -21,8 +21,7 @@ import java.util.List;
 
 public class FileUtils {
     
-    public static List<String> readLines(File file) throws IOException, Exception {
-
+    public static List<String> readLines(File file) throws IOException {
         if (!file.isFile()) {
             throw new FileNotFoundException(file.getName());
         }
@@ -56,8 +55,7 @@ public class FileUtils {
         }
     }
     
-    public static BufferedImage readImage(File file) throws UnreadableImageException, IOException, Exception {
-        
+    public static BufferedImage readImage(File file) throws UnreadableImageException, IOException {
         if (!file.isFile()) {
             throw new FileNotFoundException(file.getName());
         }
@@ -71,8 +69,7 @@ public class FileUtils {
         return image;
     }
     
-    public static BufferedImage readImage(URL url) throws UnreadableImageException, IOException, Exception {
-        
+    public static BufferedImage readImage(URL url) throws UnreadableImageException, IOException {
         BufferedImage image = ImageIO.read(url);
         
         if (image == null) {

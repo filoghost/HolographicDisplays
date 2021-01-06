@@ -5,10 +5,11 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
-import me.filoghost.holographicdisplays.commands.Colors;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
+import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.NamedHologramManager;
@@ -23,7 +24,7 @@ public class ListCommand extends HologramSubCommand {
 
     public ListCommand() {
         super("list");
-        setPermission(Strings.BASE_PERM + "list");
+        setPermission(Permissions.COMMAND_BASE + "list");
     }
 
     @Override
@@ -56,7 +57,7 @@ public class ListCommand extends HologramSubCommand {
         }
 
         sender.sendMessage("");
-        sender.sendMessage(Strings.formatTitle("Holograms list " + Colors.SECONDARY + "(Page " + page + " of " + totalPages + ")"));
+        Messages.sendTitle(sender, "Holograms list " + Colors.SECONDARY + "(Page " + page + " of " + totalPages + ")");
         int fromIndex = (page - 1) * HOLOGRAMS_PER_PAGE;
         int toIndex = fromIndex + HOLOGRAMS_PER_PAGE;
 
@@ -67,7 +68,7 @@ public class ListCommand extends HologramSubCommand {
             }
         }
         if (page < totalPages) {
-            sender.sendMessage(Strings.TIP_PREFIX + "See the next page with /" + label + " list " + (page + 1));
+            Messages.sendTip(sender, "See the next page with /" + label + " list " + (page + 1));
         }
 
     }

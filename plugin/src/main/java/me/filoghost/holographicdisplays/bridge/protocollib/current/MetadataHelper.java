@@ -11,28 +11,28 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Serializer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
-import me.filoghost.holographicdisplays.common.NMSVersion;
+import me.filoghost.holographicdisplays.util.NMSVersion;
 
 import java.util.List;
 import java.util.Optional;
 
 public class MetadataHelper {
-    
+
+    private final int itemSlotIndex;
+    private final int entityStatusIndex;
+    private final int airLevelWatcherIndex;
+    private final int customNameIndex;
+    private final int customNameVisibleIndex;
+    private final int noGravityIndex;
+    private final int armorStandStatusIndex;
+    private final int slimeSizeIndex;
+
     private Serializer itemSerializer;
     private Serializer intSerializer;
     private Serializer byteSerializer;
     private Serializer stringSerializer;
     private Serializer booleanSerializer;
     private Serializer chatComponentSerializer;
-
-    private int itemSlotIndex;
-    private int entityStatusIndex;
-    private int airLevelWatcherIndex;
-    private int customNameIndex;
-    private int customNameVisibleIndex;
-    private int noGravityIndex;
-    private int armorStandStatusIndex;
-    private int slimeSizeIndex;
     
     
     public MetadataHelper() {

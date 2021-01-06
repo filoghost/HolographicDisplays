@@ -18,8 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ServerPinger {
 
-    public static PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException, Exception {
-        
+    public static PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException {
         Socket socket = null;
         DataOutputStream dataOut = null;
         DataInputStream dataIn = null;
@@ -48,8 +47,7 @@ public class ServerPinger {
             dataIn.readFully(responseData);
             final String jsonString = new String(responseData, StandardCharsets.UTF_8);
             return new PingResponse(jsonString, serverAddress);
-        }
-        finally {
+        } finally {
             PacketUtils.closeQuietly(dataOut);
             PacketUtils.closeQuietly(dataIn);
             PacketUtils.closeQuietly(socket);

@@ -3,41 +3,10 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.common;
-
-import org.bukkit.Bukkit;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+package me.filoghost.holographicdisplays.util;
 
 public class VersionUtils {
-    
-    private static final boolean IS_PAPER_SERVER = Bukkit.getName().equals("Paper");
-    
-    
-    /**
-     * Paper contains some code changes compared to Spigot.
-     */
-    public static boolean isPaperServer() {
-        return IS_PAPER_SERVER;
-    }
-    
-    
-    /**
-     * This method uses a regex to get the NMS package part that changes with every update.
-     * Example: v1_13_R2
-     * @return the NMS package part or null if not found.
-     */
-    public static String extractNMSVersion() {
-        Matcher matcher = Pattern.compile("v\\d+_\\d+_R\\d+").matcher(Bukkit.getServer().getClass().getPackage().getName());
-        if (matcher.find()) {
-            return matcher.group();
-        } else {
-            return null;
-        }
-    }
-    
-    
+
     /**
      * @return 1 if reference > comparison, 0 if reference == comparison, -1 if reference < comparison
      */

@@ -5,10 +5,11 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
-import me.filoghost.holographicdisplays.commands.Colors;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
+import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
@@ -22,7 +23,7 @@ public class InfoCommand extends HologramSubCommand {
 
     public InfoCommand() {
         super("info", "details");
-        setPermission(Strings.BASE_PERM + "info");
+        setPermission(Permissions.COMMAND_BASE + "info");
     }
 
     @Override
@@ -41,7 +42,7 @@ public class InfoCommand extends HologramSubCommand {
         NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
         
         sender.sendMessage("");
-        sender.sendMessage(Strings.formatTitle("Lines of the hologram '" + hologram.getName() + "'"));
+        Messages.sendTitle(sender, "Lines of the hologram '" + hologram.getName() + "'");
         int index = 0;
         
         for (CraftHologramLine line : hologram.getLinesUnsafe()) {

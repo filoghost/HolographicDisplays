@@ -5,10 +5,10 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
-import me.filoghost.holographicdisplays.commands.Colors;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import org.bukkit.Location;
@@ -24,7 +24,7 @@ public class TeleportCommand extends HologramSubCommand {
     
     public TeleportCommand() {
         super("teleport", "tp");
-        setPermission(Strings.BASE_PERM + "teleport");
+        setPermission(Permissions.COMMAND_BASE + "teleport");
     }
 
     @Override

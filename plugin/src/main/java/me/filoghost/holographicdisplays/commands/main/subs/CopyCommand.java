@@ -5,10 +5,10 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
-import me.filoghost.holographicdisplays.commands.Colors;
+import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.Strings;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
@@ -22,7 +22,7 @@ public class CopyCommand extends HologramSubCommand {
     
     public CopyCommand() {
         super("copy");
-        setPermission(Strings.BASE_PERM + "copy");
+        setPermission(Permissions.COMMAND_BASE + "copy");
     }
 
     @Override

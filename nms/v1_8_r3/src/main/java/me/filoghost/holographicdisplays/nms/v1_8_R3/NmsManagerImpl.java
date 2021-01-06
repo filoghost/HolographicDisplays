@@ -105,7 +105,7 @@ public class NmsManagerImpl implements NMSManager {
         
         try {
             VALIDATE_ENTITY_METHOD.invoke(nmsWorld, nmsEntity);
-        } catch (Exception e) {
+        } catch (ReflectiveOperationException e) {
             e.printStackTrace();
             return false;
         }
