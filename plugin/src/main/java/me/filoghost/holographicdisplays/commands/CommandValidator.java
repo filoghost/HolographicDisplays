@@ -16,8 +16,9 @@ import me.filoghost.holographicdisplays.util.FileUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class CommandValidator {
     
@@ -63,16 +64,18 @@ public class CommandValidator {
         }
     }
 
-    public static File getUserReadableFile(String fileName) throws CommandException, IOException {
-        File dataFolder = HolographicDisplays.getInstance().getDataFolder();
-        File targetFile = new File(dataFolder, fileName);
-        CommandValidator.isTrue(FileUtils.isParentFolder(dataFolder, targetFile), "The file must be inside HolographicDisplays' folder.");
-        CommandValidator.isTrue(!isConfigFile(targetFile), "Cannot read default configuration files.");
+    public static Path getUserReadableFile(String fileName) throws CommandException, IOException {
+        Path dataFolder = HolographicDisplays.getDataFolderPath();
+        Path targetFile = dataFolder.resolve(fileName);
+        CommandValidator.isTrue(FileUtils.isInsideDirectory(targetFile, dataFolder), "The specified file must be inside HolographicDisplays' folder.");
+        CommandValidator.isTrue(Files.exists(targetFile), "The specified file \"" + fileName + "\" does not exist inside HolographicDisplays' folder.");
+        CommandValidator.isTrue(!Files.isDirectory(targetFile), "The file cannot be a folder.");
+        CommandValidator.isTrue(!isConfigFile(targetFile), "Cannot read YML configuration files.");
         return targetFile;
     }
 
-    private static boolean isConfigFile(File file) {
-        return file.getName().toLowerCase().endsWith(".yml");
+    private static boolean isConfigFile(Path file) {
+        return Files.isRegularFile(file) && file.getFileName().toString().toLowerCase().endsWith(".yml");
     }
 
 }

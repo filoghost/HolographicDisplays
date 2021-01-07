@@ -18,14 +18,13 @@ import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.exception.HologramLineParseException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
-import me.filoghost.holographicdisplays.util.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,8 +52,8 @@ public class ReadtextCommand extends HologramSubCommand {
         String fileName = args[1];
         
         try {
-            File targetFile = CommandValidator.getUserReadableFile(fileName);
-            List<String> serializedLines = FileUtils.readLines(targetFile);
+            Path targetFile = CommandValidator.getUserReadableFile(fileName);
+            List<String> serializedLines = Files.readAllLines(targetFile);
             
             int linesAmount = serializedLines.size();
             if (linesAmount > 40) {
@@ -88,8 +87,6 @@ public class ReadtextCommand extends HologramSubCommand {
             sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram!");
             Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
             
-        } catch (FileNotFoundException e) {
-            throw new CommandException("A file named '" + args[1] + "' doesn't exist in the plugin's folder.");
         } catch (IOException e) {
             throw new CommandException("I/O exception while reading the file. Is it in use?");
         }

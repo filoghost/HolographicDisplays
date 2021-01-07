@@ -6,10 +6,10 @@
 package me.filoghost.holographicdisplays.commands.main.subs;
 
 import me.filoghost.holographicdisplays.Colors;
+import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.commands.CommandValidator;
 import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
-import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import me.filoghost.holographicdisplays.exception.CommandException;
@@ -24,11 +24,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -90,7 +89,7 @@ public class ReadimageCommand extends HologramSubCommand {
                     Messages.sendWarning(sender, "The image path seems to be an URL. If so, please use http:// or https:// in the path.");
                 }
 
-                File targetImage = CommandValidator.getUserReadableFile(fileName);
+                Path targetImage = CommandValidator.getUserReadableFile(fileName);
                 image = FileUtils.readImage(targetImage);
             }
             
@@ -128,8 +127,6 @@ public class ReadimageCommand extends HologramSubCommand {
             throw new CommandException("The image is too large. Max width allowed is " + ImageMessage.MAX_WIDTH + " pixels.");
         } catch (UnreadableImageException e) {
             throw new CommandException("The plugin was unable to read the image. Be sure that the format is supported.");
-        } catch (FileNotFoundException e) {
-            throw new CommandException("The image \"" + args[1] + "\" doesn't exist in the plugin's folder.");
         } catch (IOException e) {
             e.printStackTrace();
             throw new CommandException("I/O exception while reading the image. " + (isUrl ? "Is the URL valid?" : "Is it in use?"));

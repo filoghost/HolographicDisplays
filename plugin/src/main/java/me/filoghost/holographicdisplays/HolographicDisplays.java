@@ -35,6 +35,7 @@ import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,6 +59,8 @@ public class HolographicDisplays extends BaseJavaPlugin {
     // Not null if ProtocolLib is installed and successfully loaded.
     private static ProtocolLibHook protocolLibHook;
     
+    private static Path dataFolderPath;
+
     @Override
     public void onCheckedEnable() throws PluginEnableException {
         // Warn about plugin reloaders and the /reload command.
@@ -67,6 +70,7 @@ public class HolographicDisplays extends BaseJavaPlugin {
         
         System.setProperty("HolographicDisplaysLoaded", "true");
         instance = this;
+        dataFolderPath = getDataFolder().toPath();
         
         // Load placeholders.yml.
         UnicodeSymbols.load(this);
@@ -219,6 +223,10 @@ public class HolographicDisplays extends BaseJavaPlugin {
     
     public static ProtocolLibHook getProtocolLibHook() {
         return protocolLibHook;
+    }
+
+    public static Path getDataFolderPath() {
+        return dataFolderPath;
     }
     
 }

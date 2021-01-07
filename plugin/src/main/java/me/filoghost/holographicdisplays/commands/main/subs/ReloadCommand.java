@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.commands.main.subs;
 
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.Permissions;
@@ -60,7 +61,11 @@ public class ReloadCommand extends HologramSubCommand {
         BungeeServerTracker.restartTask(Configuration.bungeeRefreshSeconds);
         
         HologramDatabase.loadYamlFile(HolographicDisplays.getInstance());
-        AnimationsRegister.loadAnimations(HolographicDisplays.getInstance());
+        try {
+            AnimationsRegister.loadAnimations(HolographicDisplays.getInstance());
+        } catch (Exception e) {
+            Log.warning("Failed to load animation files!", e);
+        }
         
         PlaceholdersManager.untrackAll();
         NamedHologramManager.clearAll();

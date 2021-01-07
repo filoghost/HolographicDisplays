@@ -12,12 +12,13 @@
 package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.util.FileUtils;
+import me.filoghost.holographicdisplays.HolographicDisplays;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,16 +31,15 @@ public class UnicodeSymbols {
     public static void load(Plugin plugin) {
         placeholders.clear();
         
-        File file = new File(plugin.getDataFolder(), "symbols.yml");
+        Path file = HolographicDisplays.getDataFolderPath().resolve("symbols.yml");
         
-        if (!file.exists()) {
-            plugin.getDataFolder().mkdirs();
+        if (!Files.isRegularFile(file)) {
             plugin.saveResource("symbols.yml", true);
         }
         
         List<String> lines;
         try {
-            lines = FileUtils.readLines(file);
+            lines = Files.readAllLines(file);
         } catch (IOException e) {
             Log.warning("I/O error while reading symbols.yml. Was the file in use?", e);
             return;
