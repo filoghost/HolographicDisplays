@@ -20,12 +20,13 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 /**
  * Just a bunch of static variables to hold the settings.
@@ -40,7 +41,7 @@ public class Configuration {
     public static boolean updateNotification;
     public static ChatColor transparencyColor;
     
-    public static SimpleDateFormat timeFormat;
+    public static DateTimeFormatter timeFormat;
     
     public static int bungeeRefreshSeconds;
     public static boolean useRedisBungee;
@@ -197,11 +198,16 @@ public class Configuration {
         }
         
         try {
-            timeFormat = new SimpleDateFormat(config.getString(ConfigNode.TIME_FORMAT.getPath()));
-            timeFormat.setTimeZone(TimeZone.getTimeZone(config.getString(ConfigNode.TIME_ZONE.getPath())));
+            timeFormat = DateTimeFormatter.ofPattern(config.getString(ConfigNode.TIME_FORMAT.getPath()));
         } catch (IllegalArgumentException ex) {
-            timeFormat = new SimpleDateFormat("H:mm");
+            timeFormat = DateTimeFormatter.ofPattern("H:mm");
             Log.warning("Time format not valid in the configuration, using the default.");
+        }
+        
+        try {
+            timeFormat = timeFormat.withZone(ZoneId.of(config.getString(ConfigNode.TIME_ZONE.getPath())));
+        } catch (DateTimeException e) {
+            Log.warning("Time zone not valid in the configuration, using the default.");
         }
         
         if (bungeeRefreshSeconds < 1) {

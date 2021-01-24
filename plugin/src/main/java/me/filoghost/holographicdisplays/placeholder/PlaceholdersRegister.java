@@ -12,7 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -37,7 +37,7 @@ public class PlaceholdersRegister {
         }));
         
         register(new Placeholder(HolographicDisplays.getInstance(), "{time}", 0.9, () -> {
-            return Configuration.timeFormat.format(new Date());
+            return Configuration.timeFormat.format(Instant.now());
         }));
         
         register(new Placeholder(HolographicDisplays.getInstance(), "&u", 0.2, new CyclicPlaceholderReplacer(Utils.toStringList(

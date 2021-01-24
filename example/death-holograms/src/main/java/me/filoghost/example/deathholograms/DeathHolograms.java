@@ -14,8 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 
 public class DeathHolograms extends JavaPlugin implements Listener {
     
@@ -39,7 +39,7 @@ public class DeathHolograms extends JavaPlugin implements Listener {
         Hologram hologram = HologramsAPI.createHologram(this, event.getEntity().getEyeLocation());
         
         hologram.appendTextLine(ChatColor.RED + "Player " + ChatColor.GOLD + event.getEntity().getName() + ChatColor.RED + " died here!");
-        hologram.appendTextLine(ChatColor.GRAY + "Time of death: " + new SimpleDateFormat("H:m").format(new Date()));
+        hologram.appendTextLine(ChatColor.GRAY + "Time of death: " + DateTimeFormatter.ofPattern("H:mm").format(Instant.now()));
         
     }
 }
