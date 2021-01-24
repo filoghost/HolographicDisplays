@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.placeholder;
 
 import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.common.Utils;
+import me.filoghost.holographicdisplays.disk.Configuration;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
@@ -40,7 +40,7 @@ public class PlaceholdersRegister {
             return Configuration.timeFormat.format(new Date());
         }));
         
-        register(new Placeholder(HolographicDisplays.getInstance(), "&u", 0.2, new CyclicPlaceholderReplacer(Utils.arrayToStrings(
+        register(new Placeholder(HolographicDisplays.getInstance(), "&u", 0.2, new CyclicPlaceholderReplacer(Utils.toStringList(
                 ChatColor.RED,
                 ChatColor.GOLD,
                 ChatColor.YELLOW,

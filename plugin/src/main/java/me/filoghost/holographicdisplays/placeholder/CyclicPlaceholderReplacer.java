@@ -7,22 +7,24 @@ package me.filoghost.holographicdisplays.placeholder;
 
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 
+import java.util.List;
+
 public class CyclicPlaceholderReplacer implements PlaceholderReplacer {
 
-    String[] frames;
+    List<String> frames;
     private int index;
     
-    public CyclicPlaceholderReplacer(String[] frames) {
+    public CyclicPlaceholderReplacer(List<String> frames) {
         this.frames = frames;
         index = 0;
     }
 
     @Override
     public String update() {
-        String result = frames[index];
+        String result = frames.get(index);
         
         index++;
-        if (index >= frames.length) {
+        if (index >= frames.size()) {
             index = 0;
         }
         

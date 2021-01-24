@@ -77,7 +77,7 @@ public class AnimationsRegister {
                 lines.set(i, StringConverter.toReadableFormat(lines.get(i)));
             }
 
-            animations.put(file.getFileName().toString(), new Placeholder(HolographicDisplays.getInstance(), file.getFileName().toString(), speed, new CyclicPlaceholderReplacer(lines.toArray(new String[0]))));
+            animations.put(file.getFileName().toString(), new Placeholder(HolographicDisplays.getInstance(), file.getFileName().toString(), speed, new CyclicPlaceholderReplacer(lines)));
             DebugLogger.info("Successfully loaded animation '" + file.getFileName() + "', speed = " + speed + ".");
 
         } catch (Exception e) {

@@ -7,19 +7,20 @@ package me.filoghost.holographicdisplays.common;
 
 import me.filoghost.fcommons.Preconditions;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class Utils {
 
     /**
-     * Converts a generic array to an array of Strings using the method toString().
-     * @param array the array to convert
-     * @return the new generated array of Strings
+     * Converts a generic array to a list of Strings using the method toString().
      */
-    public static String[] arrayToStrings(Object... array) {
-        String[] result = new String[array.length];
-        for (int i = 0; i < array.length; i++) {
-            result[i] = array[i] != null ? array[i].toString() : null;
+    public static List<String> toStringList(Object... array) {
+        List<String> result = new ArrayList<>(array.length);
+        for (Object obj : array) {
+            result.add(Objects.toString(obj));
         }
-        
         return result;
     }
     
