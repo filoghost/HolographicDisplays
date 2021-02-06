@@ -3,20 +3,17 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.commands.main.subs;
+package me.filoghost.holographicdisplays.commands.subs;
 
+import me.filoghost.fcommons.command.sub.SubCommandContext;
+import me.filoghost.fcommons.command.validation.CommandException;
+import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.Colors;
-import me.filoghost.holographicdisplays.commands.CommandValidator;
+import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
-import me.filoghost.holographicdisplays.Permissions;
-import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.NamedHologramManager;
 import org.bukkit.command.CommandSender;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ListCommand extends HologramSubCommand {
 
@@ -24,23 +21,15 @@ public class ListCommand extends HologramSubCommand {
 
     public ListCommand() {
         super("list");
-        setPermission(Permissions.COMMAND_BASE + "list");
+        setMinArgs(0);
+        setUsageArgs("[page]");
+        setDescription("Lists all the existing holograms.");
     }
 
     @Override
-    public String getPossibleArguments() {
-        return "[page]";
-    }
+    public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
 
-    @Override
-    public int getMinimumArguments() {
-        return 0;
-    }
-
-    @Override
-    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-
-        int page = args.length > 0 ? CommandValidator.getInteger(args[0]) : 1;
+        int page = args.length > 0 ? CommandValidate.parseInteger(args[0]) : 1;
 
         if (page < 1) {
             throw new CommandException("Page number must be 1 or greater.");
@@ -51,9 +40,8 @@ public class ListCommand extends HologramSubCommand {
             totalPages++;
         }
         
-        
         if (NamedHologramManager.size() == 0) {
-            throw new CommandException("There are no holograms yet. Create one with /" + label + " create.");
+            throw new CommandException("There are no holograms yet. Create one with /" + context.getRootLabel() + " create.");
         }
 
         sender.sendMessage("");
@@ -68,19 +56,9 @@ public class ListCommand extends HologramSubCommand {
             }
         }
         if (page < totalPages) {
-            Messages.sendTip(sender, "See the next page with /" + label + " list " + (page + 1));
+            Messages.sendTip(sender, "See the next page with /" + context.getRootLabel() + " list " + (page + 1));
         }
 
-    }
-
-    @Override
-    public List<String> getTutorial() {
-        return Arrays.asList("Lists all the existing holograms.");
-    }
-    
-    @Override
-    public SubCommandType getType() {
-        return SubCommandType.GENERIC;
     }
 
 }

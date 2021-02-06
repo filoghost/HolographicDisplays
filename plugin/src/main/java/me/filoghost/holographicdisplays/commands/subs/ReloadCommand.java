@@ -3,15 +3,15 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.commands.main.subs;
+package me.filoghost.holographicdisplays.commands.subs;
 
+import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
+import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
@@ -29,29 +29,17 @@ import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 public class ReloadCommand extends HologramSubCommand {
 
     public ReloadCommand() {
         super("reload");
-        setPermission(Permissions.COMMAND_BASE + "reload");
+        setDescription("Reloads the holograms from the database.");
     }
-
+    
     @Override
-    public String getPossibleArguments() {
-        return "";
-    }
-
-    @Override
-    public int getMinimumArguments() {
-        return 0;
-    }
-
-    @Override
-    public void execute(CommandSender sender, String label, String[] args) {            
+    public void execute(CommandSender sender, String[] args, SubCommandContext context) {            
         long startMillis = System.currentTimeMillis();
 
         UnicodeSymbols.load(HolographicDisplays.getInstance());
@@ -97,16 +85,6 @@ public class ReloadCommand extends HologramSubCommand {
         sender.sendMessage(Colors.PRIMARY + "Configuration reloaded successfully in " + (endMillis - startMillis) + "ms!");
         
         Bukkit.getPluginManager().callEvent(new HolographicDisplaysReloadEvent());
-    }
-    
-    @Override
-    public List<String> getTutorial() {
-        return Arrays.asList("Reloads the holograms from the database.");
-    }
-    
-    @Override
-    public SubCommandType getType() {
-        return SubCommandType.GENERIC;
     }
 
 }

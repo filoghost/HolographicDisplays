@@ -3,18 +3,18 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.commands.main.subs;
+package me.filoghost.holographicdisplays.commands.subs;
 
+import me.filoghost.fcommons.command.CommandContext;
+import me.filoghost.fcommons.command.sub.SubCommandContext;
+import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.holographicdisplays.Colors;
-import me.filoghost.holographicdisplays.Permissions;
-import me.filoghost.holographicdisplays.commands.CommandValidator;
+import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.disk.HologramLineParser;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
-import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.exception.HologramLineParseException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
@@ -29,30 +29,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ReadtextCommand extends HologramSubCommand {
+public class ReadtextCommand extends LineEditingCommand {
 
     public ReadtextCommand() {
         super("readtext", "readlines");
-        setPermission(Permissions.COMMAND_BASE + "readtext");
+        setMinArgs(2);
+        setUsageArgs("<hologram> <fileWithExtension>");
     }
 
     @Override
-    public String getPossibleArguments() {
-        return "<hologramName> <fileWithExtension>";
+    public List<String> getDescription(CommandContext context) {
+        return Arrays.asList(
+                "Reads the lines from a text file. Tutorial:",
+                "1) Create a new text file in the plugin's folder",
+                "2) Do not use spaces in the name",
+                "3) Each line will be a line in the hologram",
+                "4) Do " + getFullUsageText(context),
+                "",
+                "Example: you have a file named 'info.txt', and you want",
+                "to paste it in the hologram named 'test'. In this case you",
+                "would execute " + ChatColor.YELLOW + "/" + context.getRootLabel() + " " + getName() + " test info.txt");
     }
-
+    
     @Override
-    public int getMinimumArguments() {
-        return 2;
-    }
-
-    @Override
-    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-        NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+    public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
+        NamedHologram hologram = HologramCommandValidate.getNamedHologram(args[0]);
         String fileName = args[1];
         
         try {
-            Path targetFile = CommandValidator.getUserReadableFile(fileName);
+            Path targetFile = HologramCommandValidate.getUserReadableFile(fileName);
             List<String> serializedLines = Files.readAllLines(targetFile);
             
             int linesAmount = serializedLines.size();
@@ -78,9 +83,9 @@ public class ReadtextCommand extends HologramSubCommand {
             HologramDatabase.saveHologram(hologram);
             HologramDatabase.trySaveToDisk();
             
-            if (args[1].contains(".")) {
-                if (isImageExtension(args[1].substring(args[1].lastIndexOf('.') + 1))) {
-                    Messages.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + label + " readimage.");
+            if (fileName.contains(".")) {
+                if (isImageExtension(fileName.substring(fileName.lastIndexOf('.') + 1))) {
+                    Messages.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + context.getRootLabel() + " readimage.");
                 }
             }
             
@@ -92,24 +97,6 @@ public class ReadtextCommand extends HologramSubCommand {
         }
     }
     
-    @Override
-    public List<String> getTutorial() {
-        return Arrays.asList("Reads the lines from a text file. Tutorial:",
-            "1) Create a new text file in the plugin's folder",
-            "2) Do not use spaces in the name",
-            "3) Each line will be a line in the hologram",
-            "4) Do /holograms readlines <hologramName> <fileWithExtension>",
-            "",
-            "Example: you have a file named 'info.txt', and you want",
-            "to paste it in the hologram named 'test'. In this case you",
-            "would execute "+ ChatColor.YELLOW + "/holograms readlines test info.txt");
-    }
-    
-    @Override
-    public SubCommandType getType() {
-        return SubCommandType.EDIT_LINES;
-    }
-
     private boolean isImageExtension(String input) {
         return Arrays.asList("jpg", "png", "jpeg", "gif").contains(input.toLowerCase());
     }

@@ -3,13 +3,13 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.commands.main.subs;
+package me.filoghost.holographicdisplays.commands.subs;
 
+import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.Permissions;
+import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -26,33 +26,23 @@ public class HelpCommand extends HologramSubCommand {
 
     public HelpCommand() {
         super("help");
-        setPermission(Permissions.COMMAND_BASE + "help");
+        setShowInHelpCommand(false);
+        setDescription("Show the list of commands.");
     }
 
     @Override
-    public String getPossibleArguments() {
-        return "";
-    }
-
-    @Override
-    public int getMinimumArguments() {
-        return 0;
-    }
-
-
-    @Override
-    public void execute(CommandSender sender, String label, String[] args) {
+    public void execute(CommandSender sender, String[] args, SubCommandContext context) {
         sender.sendMessage("");
         Messages.sendTitle(sender, "Holographic Displays Commands");
-        for (HologramSubCommand subCommand : HolographicDisplays.getCommandHandler().getSubCommands()) {
-            if (subCommand.getType() == SubCommandType.GENERIC) {
-                String usage = "/" + label + " " + subCommand.getName() + (subCommand.getPossibleArguments().length() > 0 ? " " + subCommand.getPossibleArguments() : "");
+        for (HologramSubCommand subCommand : HolographicDisplays.getCommandManager().getSubCommands()) {
+            if (subCommand.isShowInHelpCommand()) {
+                String usage = subCommand.getFullUsageText(context);
 
                 if (sender instanceof Player) {
                     
                     List<String> help = new ArrayList<>();
                     help.add(Colors.PRIMARY + usage);
-                    for (String tutLine : subCommand.getTutorial()) {
+                    for (String tutLine : subCommand.getDescription(context)) {
                         help.add(Colors.SECONDARY_SHADOW + tutLine);
                     }
                     
@@ -72,7 +62,7 @@ public class HelpCommand extends HologramSubCommand {
             sendHoverTip((Player) sender);
         }
     }
-    
+
     public static void sendHoverTip(Player player) {
         player.sendMessage("");
         player.spigot().sendMessage(new ComponentBuilder("TIP:").color(ChatColor.YELLOW).bold(true)
@@ -85,16 +75,5 @@ public class HelpCommand extends HologramSubCommand {
             .append(" on the commands!", FormatRetention.NONE).color(ChatColor.GRAY)
             .create());
     }
-
-    @Override
-    public List<String> getTutorial() {
-        return null;
-    }
-
-    @Override
-    public SubCommandType getType() {
-        return SubCommandType.HIDDEN;
-    }
-
 
 }

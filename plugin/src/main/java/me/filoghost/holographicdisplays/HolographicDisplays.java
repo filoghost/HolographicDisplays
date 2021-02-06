@@ -12,7 +12,7 @@ import me.filoghost.holographicdisplays.api.internal.BackendAPI;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl;
-import me.filoghost.holographicdisplays.commands.main.HologramsCommandHandler;
+import me.filoghost.holographicdisplays.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.disk.UnicodeSymbols;
@@ -51,7 +51,7 @@ public class HolographicDisplays extends BaseJavaPlugin {
     private static MainListener mainListener;
     
     // The command handler, just in case a plugin wants to register more commands.
-    private static HologramsCommandHandler commandHandler;
+    private static HologramCommandManager commandManager;
     
     // The new version found by the updater, null if there is no new version.
     private static String newVersion;
@@ -132,8 +132,11 @@ public class HolographicDisplays extends BaseJavaPlugin {
                 "This can be caused by edits to plugin.yml or other plugins.");
         }
         
-        getCommand("holograms").setExecutor(commandHandler = new HologramsCommandHandler());
-        Bukkit.getPluginManager().registerEvents(mainListener = new MainListener(nmsManager), this);
+        commandManager = new HologramCommandManager();
+        commandManager.register(this);
+
+        mainListener = new MainListener(nmsManager);
+        Bukkit.getPluginManager().registerEvents(mainListener, this);
 
         // Register bStats metrics
         int pluginID = 3123;
@@ -165,8 +168,8 @@ public class HolographicDisplays extends BaseJavaPlugin {
         return mainListener;
     }
 
-    public static HologramsCommandHandler getCommandHandler() {
-        return commandHandler;
+    public static HologramCommandManager getCommandManager() {
+        return commandManager;
     }
 
     public static HolographicDisplays getInstance() {

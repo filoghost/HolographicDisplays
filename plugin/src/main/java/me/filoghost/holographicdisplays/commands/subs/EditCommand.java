@@ -3,17 +3,17 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.commands.main.subs;
+package me.filoghost.holographicdisplays.commands.subs;
 
 import com.google.common.collect.Lists;
-import me.filoghost.holographicdisplays.HolographicDisplays;
+import me.filoghost.fcommons.command.sub.SubCommandContext;
+import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.holographicdisplays.Colors;
-import me.filoghost.holographicdisplays.commands.CommandValidator;
+import me.filoghost.holographicdisplays.HolographicDisplays;
+import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
+import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
-import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -25,7 +25,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class EditCommand extends HologramSubCommand {
@@ -40,35 +39,25 @@ public class EditCommand extends HologramSubCommand {
     
     public EditCommand() {
         super("edit");
-        setPermission(Permissions.COMMAND_BASE + "edit");
+        setMinArgs(1);
+        setUsageArgs("<hologram>");
+        setDescription("Shows the commands to manipulate an existing hologram.");
     }
 
     @Override
-    public String getPossibleArguments() {
-        return "<hologramName>";
-    }
-
-    @Override
-    public int getMinimumArguments() {
-        return 1;
-    }
-
-
-    @Override
-    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-        NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+    public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
+        NamedHologram hologram = HologramCommandValidate.getNamedHologram(args[0]);
         
         sender.sendMessage("");
         Messages.sendTitle(sender, "How to edit the hologram '" + hologram.getName() + "'");
-        for (HologramSubCommand subCommand : HolographicDisplays.getCommandHandler().getSubCommands()) {
-            if (subCommand.getType() == SubCommandType.EDIT_LINES) {
-                String usage = "/" + label + " " + subCommand.getName() + (subCommand.getPossibleArguments().length() > 0 ? " " + subCommand.getPossibleArguments().replace("<hologramName>", hologram.getName()).replace("<hologram>", hologram.getName()) : "");
+        for (HologramSubCommand subCommand : HolographicDisplays.getCommandManager().getSubCommands()) {
+            if (subCommand instanceof LineEditingCommand) {
+                String usage = subCommand.getFullUsageText(context).replace("<hologram>", hologram.getName());
 
                 if (sender instanceof Player) {
-                    
                     List<String> help = new ArrayList<>();
                     help.add(Colors.PRIMARY + usage);
-                    for (String tutLine : subCommand.getTutorial()) {
+                    for (String tutLine : subCommand.getDescription(context)) {
                         help.add(Colors.SECONDARY_SHADOW + tutLine);
                     }
                     
@@ -88,50 +77,39 @@ public class EditCommand extends HologramSubCommand {
             HelpCommand.sendHoverTip((Player) sender);
         }
     }
-    
-    public static void sendQuickEditCommands(CommandSender sender, String label, String hologramName) {
+
+    public static void sendQuickEditCommands(SubCommandContext commandContext, NamedHologram hologram) {
         if (!Configuration.quickEditCommands) {
             return;
         }
-        if (!(sender instanceof Player)) {
+        if (!(commandContext.getSender() instanceof Player)) {
             return;
         }
         
         ComponentBuilder message = new ComponentBuilder("EDIT LINES:").color(ChatColor.GRAY).bold(true).append("  ", FormatRetention.NONE);
         
         for (QuickCommandInfo quickEditCommand : QUICK_EDIT_COMMANDS) {
-            HologramSubCommand subCommand = HolographicDisplays.getCommandHandler().getSubCommand(quickEditCommand.commandClass);
+            HologramSubCommand subCommand = HolographicDisplays.getCommandManager().getSubCommand(quickEditCommand.commandClass);
                 
-                // Assume first argument is always "<hologram>" and remove it
-                String arguments = subCommand.getPossibleArguments();
-                if (arguments.contains(" ")) {
-                    arguments = arguments.substring(arguments.indexOf(" ") + 1);
-                } else {
-                    arguments = "";
-                }
-                
-                String usage = "/" + label + " " + subCommand.getName() + " " + hologramName + " ";
-                message.append("[" + quickEditCommand.chatName + "]").color(ChatColor.DARK_AQUA)
-                    .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
-                    .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(
-                        ChatColor.GRAY + "Click to insert in chat the highlighted part of the command:\n" +
-                        ChatColor.YELLOW + usage + ChatColor.DARK_GRAY + arguments)));
-                message.append("  ", FormatRetention.NONE);
+            // Assume first argument is always "<hologram>" and remove it
+            String usageArgs = subCommand.getUsageArgs();
+            if (usageArgs != null && usageArgs.contains(" ")) {
+                usageArgs = usageArgs.substring(usageArgs.indexOf(" ") + 1);
+            } else {
+                usageArgs = "";
+            }
+            
+            String usage = "/" + commandContext.getRootLabel() + " " + subCommand.getName() + " " + hologram + " ";
+            message.append("[" + quickEditCommand.chatName + "]").color(ChatColor.DARK_AQUA)
+                .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(
+                    ChatColor.GRAY + "Click to insert in chat the highlighted part of the command:\n" +
+                    ChatColor.YELLOW + usage + ChatColor.DARK_GRAY + usageArgs)));
+            message.append("  ", FormatRetention.NONE);
         }
         
-        ((Player) sender).spigot().sendMessage(message.create());
+        ((Player) commandContext.getSender()).spigot().sendMessage(message.create());
     }
-
-    @Override
-    public List<String> getTutorial() {
-        return Arrays.asList("Shows the commands to manipulate an existing hologram.");
-    }
-    
-    @Override
-    public SubCommandType getType() {
-        return SubCommandType.GENERIC;
-    }
-    
     
     
     private static class QuickCommandInfo {

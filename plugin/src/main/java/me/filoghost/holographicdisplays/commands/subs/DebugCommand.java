@@ -3,13 +3,13 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.commands.main.subs;
+package me.filoghost.holographicdisplays.commands.subs;
 
+import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.Permissions;
 import me.filoghost.holographicdisplays.api.Hologram;
-import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
+import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.PluginHologram;
@@ -19,9 +19,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -29,21 +27,12 @@ public class DebugCommand extends HologramSubCommand {
 
     public DebugCommand() {
         super("debug");
-        setPermission(Permissions.COMMAND_BASE + "debug");
+        setShowInHelpCommand(false);
+        setDescription("Displays information useful for debugging.");
     }
 
     @Override
-    public String getPossibleArguments() {
-        return "";
-    }
-
-    @Override
-    public int getMinimumArguments() {
-        return 0;
-    }
-
-    @Override
-    public void execute(CommandSender sender, String label, String[] args) {
+    public void execute(CommandSender sender, String[] args, SubCommandContext context) {
         boolean foundAnyHologram = false;
         
         for (World world : Bukkit.getWorlds()) {
@@ -97,17 +86,6 @@ public class DebugCommand extends HologramSubCommand {
             return hologram.toString();
         }
     }
-
-    @Override
-    public List<String> getTutorial() {
-        return Arrays.asList("Displays information useful for debugging.");
-    }
-    
-    @Override
-    public SubCommandType getType() {
-        return SubCommandType.HIDDEN;
-    }
-    
     
     private static class HologramDebugInfo {
         

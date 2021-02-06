@@ -3,46 +3,35 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.commands.main.subs;
+package me.filoghost.holographicdisplays.commands.subs;
 
+import me.filoghost.fcommons.command.sub.SubCommandContext;
+import me.filoghost.fcommons.command.validation.CommandException;
+import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.Colors;
-import me.filoghost.holographicdisplays.commands.CommandValidator;
-import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
-import me.filoghost.holographicdisplays.Permissions;
+import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
+import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
-import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class MovehereCommand extends HologramSubCommand {
 
 
     public MovehereCommand() {
         super("movehere");
-        setPermission(Permissions.COMMAND_BASE + "movehere");
+        setMinArgs(1);
+        setUsageArgs("<hologram>");
+        setDescription("Moves a hologram to your location.");
     }
 
     @Override
-    public String getPossibleArguments() {
-        return "<hologramName>";
-    }
-
-    @Override
-    public int getMinimumArguments() {
-        return 1;
-    }
-
-
-    @Override
-    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
-        Player player = CommandValidator.getPlayerSender(sender);
-        NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+    public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
+        Player player = CommandValidate.getPlayerSender(sender);
+        NamedHologram hologram = HologramCommandValidate.getNamedHologram(args[0]);
         
         hologram.teleport(player.getWorld(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
         hologram.despawnEntities();
@@ -55,15 +44,5 @@ public class MovehereCommand extends HologramSubCommand {
         player.teleport(to, TeleportCause.PLUGIN);
         player.sendMessage(Colors.PRIMARY + "You moved the hologram '" + hologram.getName() + "' near to you.");
     }
-
-    @Override
-    public List<String> getTutorial() {
-        return Arrays.asList("Moves a hologram to your location.");
-    }
     
-    @Override
-    public SubCommandType getType() {
-        return SubCommandType.GENERIC;
-    }
-
 }

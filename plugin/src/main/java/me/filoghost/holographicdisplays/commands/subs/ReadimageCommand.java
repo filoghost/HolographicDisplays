@@ -3,16 +3,17 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.commands.main.subs;
+package me.filoghost.holographicdisplays.commands.subs;
 
+import me.filoghost.fcommons.command.CommandContext;
+import me.filoghost.fcommons.command.sub.SubCommandContext;
+import me.filoghost.fcommons.command.validation.CommandException;
+import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.Colors;
-import me.filoghost.holographicdisplays.Permissions;
-import me.filoghost.holographicdisplays.commands.CommandValidator;
+import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.commands.main.HologramSubCommand;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
-import me.filoghost.holographicdisplays.exception.CommandException;
 import me.filoghost.holographicdisplays.exception.TooWideException;
 import me.filoghost.holographicdisplays.exception.UnreadableImageException;
 import me.filoghost.holographicdisplays.image.ImageMessage;
@@ -32,27 +33,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ReadimageCommand extends HologramSubCommand {
-
-
+public class ReadimageCommand extends LineEditingCommand {
+    
     public ReadimageCommand() {
         super("readimage", "image");
-        setPermission(Permissions.COMMAND_BASE + "readimage");
+        setMinArgs(3);
+        setUsageArgs("<hologram> <imageWithExtension> <width>");
     }
 
     @Override
-    public String getPossibleArguments() {
-        return "<hologram> <imageWithExtension> <width>";
+    public List<String> getDescription(CommandContext context) {
+        return Arrays.asList(
+                "Reads an image from a file. Tutorial:",
+                "1) Move the image in the plugin's folder",
+                "2) Do not use spaces in the name",
+                "3) Do " + getFullUsageText(context),
+                "4) Choose <width> to automatically resize the image",
+                "5) (Optional) Use the flag '-a' if you only want to append",
+                "   the image to the hologram without clearing the lines",
+                "",
+                "Example: you have an image named 'logo.png', you want to append",
+                "it to the lines of the hologram named 'test', with a width of",
+                "50 pixels. In this case you would execute the following command:",
+                ChatColor.YELLOW + "/" + context.getRootLabel() + " " + getName() + " test logo.png 50 -a",
+                "",
+                "The symbols used to create the image are taken from the config.yml.");
     }
-
+    
     @Override
-    public int getMinimumArguments() {
-        return 3;
-    }
-
-
-    @Override
-    public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+    public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         
         boolean append = false;
         
@@ -68,11 +77,11 @@ public class ReadimageCommand extends HologramSubCommand {
         
         args = newArgs.toArray(new String[0]);
         
-        NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
+        NamedHologram hologram = HologramCommandValidate.getNamedHologram(args[0]);
         
-        int width = CommandValidator.getInteger(args[2]);
+        int width = CommandValidate.parseInteger(args[2]);
         
-        CommandValidator.isTrue(width >= 2, "The width of the image must be 2 or greater.");
+        CommandValidate.check(width >= 2, "The width of the image must be 2 or greater.");
 
         boolean isUrl = false;
         
@@ -89,7 +98,7 @@ public class ReadimageCommand extends HologramSubCommand {
                     Messages.sendWarning(sender, "The image path seems to be an URL. If so, please use http:// or https:// in the path.");
                 }
 
-                Path targetImage = CommandValidator.getUserReadableFile(fileName);
+                Path targetImage = HologramCommandValidate.getUserReadableFile(fileName);
                 image = FileUtils.readImage(targetImage);
             }
             
@@ -131,29 +140,6 @@ public class ReadimageCommand extends HologramSubCommand {
             e.printStackTrace();
             throw new CommandException("I/O exception while reading the image. " + (isUrl ? "Is the URL valid?" : "Is it in use?"));
         }
-    }
-    
-    @Override
-    public List<String> getTutorial() {
-        return Arrays.asList("Reads an image from a file. Tutorial:",
-                "1) Move the image in the plugin's folder",
-                "2) Do not use spaces in the name",
-                "3) Do /holograms read <hologram> <image> <width>",
-                "4) Choose <width> to automatically resize the image",
-                "5) (Optional) Use the flag '-a' if you only want to append",
-                "   the image to the hologram without clearing the lines",
-                "",
-                "Example: you have an image named 'logo.png', you want to append",
-                "it to the lines of the hologram named 'test', with a width of",
-                "50 pixels. In this case you would execute the following command:",
-                ChatColor.YELLOW + "/holograms readimage test logo.png 50 -a",
-                "",
-                "The symbols used to create the image are taken from the config.yml.");
-    }
-    
-    @Override
-    public SubCommandType getType() {
-        return SubCommandType.EDIT_LINES;
     }
 
 }
