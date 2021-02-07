@@ -7,8 +7,6 @@ package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.MaterialsHelper;
 import me.filoghost.fcommons.Strings;
-import me.filoghost.holographicdisplays.common.Utils;
-import me.filoghost.holographicdisplays.exception.HologramLineParseException;
 import me.filoghost.holographicdisplays.nbt.parser.MojangsonParseException;
 import me.filoghost.holographicdisplays.nbt.parser.MojangsonParser;
 import me.filoghost.holographicdisplays.object.NamedHologram;
@@ -16,7 +14,6 @@ import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import me.filoghost.holographicdisplays.object.line.CraftItemLine;
 import me.filoghost.holographicdisplays.object.line.CraftTextLine;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -72,7 +69,7 @@ public class HologramLineParser {
             try {
                 dataValue = (short) Integer.parseInt(materialAndDataValue[1]);
             } catch (NumberFormatException e) {
-                throw new HologramLineParseException("Data value \"" + materialAndDataValue[1] + "\" is not a valid number.");
+                throw new HologramLineParseException("data value \"" + materialAndDataValue[1] + "\" is not a valid number");
             }
             materialName = materialAndDataValue[0];
         } else {
@@ -82,7 +79,7 @@ public class HologramLineParser {
         Material material = MaterialsHelper.matchMaterial(materialName);
         if (material == null) {
             if (checkMaterialValidity) {
-                throw new HologramLineParseException("\"" + materialName + "\" is not a valid material.");
+                throw new HologramLineParseException("\"" + materialName + "\" is not a valid material");
             }
             material = Material.BEDROCK;
         }
@@ -95,9 +92,9 @@ public class HologramLineParser {
                 MojangsonParser.parse(nbtString);
                 Bukkit.getUnsafe().modifyItemStack(itemStack, nbtString);
             } catch (MojangsonParseException e) {
-                throw new HologramLineParseException("Invalid NBT data, " + Utils.uncapitalize(ChatColor.stripColor(e.getMessage())));
+                throw new HologramLineParseException("invalid NBT data, " + e.getMessage());
             } catch (Throwable t) {
-                throw new HologramLineParseException("Unexpected exception while parsing NBT data.", t);
+                throw new HologramLineParseException("unexpected exception while parsing NBT data", t);
             }
         }
         

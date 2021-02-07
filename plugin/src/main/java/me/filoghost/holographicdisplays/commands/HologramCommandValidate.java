@@ -8,8 +8,9 @@ package me.filoghost.holographicdisplays.commands;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.HolographicDisplays;
+import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.HologramLineParser;
-import me.filoghost.holographicdisplays.exception.HologramLineParseException;
+import me.filoghost.holographicdisplays.disk.HologramLineParseException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.NamedHologramManager;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
@@ -24,10 +25,10 @@ public class HologramCommandValidate {
         try {
             return HologramLineParser.parseLine(hologram, serializedLine, validateMaterial);
         } catch (HologramLineParseException e) {
-            throw new CommandException(e.getMessage());
+            throw new CommandException(Utils.formatExceptionMessage(e));
         }
     }
-    
+
     public static NamedHologram getNamedHologram(String hologramName) throws CommandException {
         NamedHologram hologram = NamedHologramManager.getHologram(hologramName);
         CommandValidate.notNull(hologram, "Cannot find a hologram named \"" + hologramName + "\".");

@@ -14,12 +14,12 @@ import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
-import me.filoghost.holographicdisplays.exception.TooWideException;
-import me.filoghost.holographicdisplays.exception.UnreadableImageException;
+import me.filoghost.holographicdisplays.image.ImageReader;
+import me.filoghost.holographicdisplays.image.ImageTooWideException;
+import me.filoghost.holographicdisplays.image.ImageReadException;
 import me.filoghost.holographicdisplays.image.ImageMessage;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftTextLine;
-import me.filoghost.holographicdisplays.util.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -91,7 +91,7 @@ public class ReadimageCommand extends LineEditingCommand {
             
             if (fileName.startsWith("http://") || fileName.startsWith("https://")) {
                 isUrl = true;
-                image = FileUtils.readImage(new URL(fileName));
+                image = ImageReader.readImage(new URL(fileName));
             } else {
                 
                 if (fileName.matches(".*[a-zA-Z0-9\\-]+\\.[a-zA-Z0-9\\-]{1,4}\\/.+")) {
@@ -99,7 +99,7 @@ public class ReadimageCommand extends LineEditingCommand {
                 }
 
                 Path targetImage = HologramCommandValidate.getUserReadableFile(fileName);
-                image = FileUtils.readImage(targetImage);
+                image = ImageReader.readImage(targetImage);
             }
             
             if (!append) {
@@ -132,9 +132,9 @@ public class ReadimageCommand extends LineEditingCommand {
             
         } catch (MalformedURLException e) {
             throw new CommandException("The provided URL was not valid.");
-        } catch (TooWideException e) {
+        } catch (ImageTooWideException e) {
             throw new CommandException("The image is too large. Max width allowed is " + ImageMessage.MAX_WIDTH + " pixels.");
-        } catch (UnreadableImageException e) {
+        } catch (ImageReadException e) {
             throw new CommandException("The plugin was unable to read the image. Be sure that the format is supported.");
         } catch (IOException e) {
             e.printStackTrace();

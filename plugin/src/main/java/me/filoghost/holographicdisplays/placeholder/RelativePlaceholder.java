@@ -30,7 +30,7 @@ public abstract class RelativePlaceholder {
     public static void register(RelativePlaceholder relativePlaceholder) {
         for (RelativePlaceholder existingPlaceholder : registry) {
             if (existingPlaceholder.getTextPlaceholder().equals(relativePlaceholder.getTextPlaceholder())) {
-                throw new IllegalArgumentException("Relative placeholder already registered.");
+                throw new IllegalArgumentException("Relative placeholder already registered");
             }
         }
         

@@ -30,6 +30,7 @@ import me.filoghost.holographicdisplays.commands.subs.ReloadCommand;
 import me.filoghost.holographicdisplays.commands.subs.RemovelineCommand;
 import me.filoghost.holographicdisplays.commands.subs.SetlineCommand;
 import me.filoghost.holographicdisplays.commands.subs.TeleportCommand;
+import me.filoghost.holographicdisplays.common.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -131,6 +132,11 @@ public class HologramCommandManager extends SubCommandManager {
     protected void sendSubCommandUsage(SubCommandContext context) {
         context.getSender().sendMessage(Colors.ERROR + "Usage: /" + context.getRootLabel() + " " 
                 + context.getSubLabel() + " " + context.getSubCommand().getUsageArgs());
+    }
+
+    @Override
+    protected void sendExecutionErrorMessage(CommandContext context, String errorMessage) {
+        context.getSender().sendMessage(Colors.ERROR + Utils.formatExceptionMessage(errorMessage));
     }
 
     @Override

@@ -15,12 +15,9 @@ import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.HologramLoadException;
 import me.filoghost.holographicdisplays.disk.UnicodeSymbols;
 import me.filoghost.holographicdisplays.event.HolographicDisplaysReloadEvent;
-import me.filoghost.holographicdisplays.exception.HologramLineParseException;
-import me.filoghost.holographicdisplays.exception.HologramNotFoundException;
-import me.filoghost.holographicdisplays.exception.InvalidFormatException;
-import me.filoghost.holographicdisplays.exception.WorldNotFoundException;
 import me.filoghost.holographicdisplays.object.CraftHologram;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.NamedHologramManager;
@@ -64,14 +61,8 @@ public class ReloadCommand extends HologramSubCommand {
                 try {
                     NamedHologram singleHologramEntity = HologramDatabase.loadHologram(singleSavedHologram);
                     NamedHologramManager.addHologram(singleHologramEntity);
-                } catch (HologramNotFoundException e) {
-                    Messages.sendWarning(sender, "Hologram '" + singleSavedHologram + "' not found, skipping it.");
-                } catch (InvalidFormatException e) {
-                    Messages.sendWarning(sender, "Hologram '" + singleSavedHologram + "' has an invalid location format.");
-                } catch (HologramLineParseException e) {
-                    Messages.sendWarning(sender, "Hologram '" + singleSavedHologram + "' has an invalid line: " + Utils.uncapitalize(e.getMessage()));
-                } catch (WorldNotFoundException e) {
-                    Messages.sendWarning(sender, "Hologram '" + singleSavedHologram + "' was in the world '" + e.getMessage() + "' but it wasn't loaded.");
+                } catch (HologramLoadException e) {
+                    Messages.sendWarning(sender, Utils.formatExceptionMessage(e));
                 }
             }
         }

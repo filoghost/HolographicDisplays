@@ -5,8 +5,7 @@
  */
 package me.filoghost.holographicdisplays.disk;
 
-import me.filoghost.holographicdisplays.exception.InvalidFormatException;
-import me.filoghost.holographicdisplays.exception.WorldNotFoundException;
+import me.filoghost.fcommons.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -19,31 +18,35 @@ public class LocationSerializer {
     
     private static DecimalFormat numberFormat = new DecimalFormat("0.000", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
-    public static Location locationFromString(String input) throws WorldNotFoundException, InvalidFormatException {
-        if (input == null) {
-            throw new InvalidFormatException();
+    public static Location locationFromString(String hologramName, String serializedLocation) throws LocationWorldNotLoadedException, LocationFormatException {
+        if (serializedLocation == null) {
+            throw new LocationFormatException("hologram \"" + hologramName + "\" doesn't have a location set");
         }
-        
-        String[] parts = input.split(",");
-        
+
+        String[] parts = Strings.splitAndTrim(serializedLocation, ",");
+
         if (parts.length != 4) {
-            throw new InvalidFormatException();
+            throw new LocationFormatException("hologram \"" + hologramName + "\" has an invalid location format:" 
+                    + " it must be \"world, x, y, z\"");
         }
         
         try {
-            double x = Double.parseDouble(parts[1].replace(" ", ""));
-            double y = Double.parseDouble(parts[2].replace(" ", ""));
-            double z = Double.parseDouble(parts[3].replace(" ", ""));
-        
-            World world = Bukkit.getWorld(parts[0].trim());
+            String worldName = parts[0];
+            double x = Double.parseDouble(parts[1]);
+            double y = Double.parseDouble(parts[2]);
+            double z = Double.parseDouble(parts[3]);
+
+            World world = Bukkit.getWorld(worldName);
             if (world == null) {
-                throw new WorldNotFoundException(parts[0].trim());
+                throw new LocationWorldNotLoadedException("hologram \"" + hologramName + "\"" 
+                        + " was in the world \"" + worldName + "\" but it wasn't loaded");
             }
             
             return new Location(world, x, y, z);
             
         } catch (NumberFormatException ex) {
-            throw new InvalidFormatException();
+            throw new LocationFormatException("hologram \"" + hologramName + "\"" 
+                    + " has an invalid location format: invalid number");
         }
     }
     

@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.common;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.fcommons.Strings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,13 +85,18 @@ public class Utils {
         return false;
     }
     
-    
-    public static String uncapitalize(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        }
-        
-        return Character.toLowerCase(str.charAt(0)) + str.substring(1);
+
+    public static String formatExceptionMessage(Throwable t) {
+        return formatExceptionMessage(t.getMessage());
     }
     
+    public static String formatExceptionMessage(String message) {
+        message = Strings.capitalizeFirst(message);
+        char lastChar = message.charAt(message.length() - 1);
+        if (Character.isLetterOrDigit(lastChar)) {
+            message = message + ".";
+        }
+        return message;
+    }
+
 }

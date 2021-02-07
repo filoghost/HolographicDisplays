@@ -6,10 +6,6 @@
 package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.exception.HologramLineParseException;
-import me.filoghost.holographicdisplays.exception.HologramNotFoundException;
-import me.filoghost.holographicdisplays.exception.InvalidFormatException;
-import me.filoghost.holographicdisplays.exception.WorldNotFoundException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import org.bukkit.Location;
@@ -40,26 +36,30 @@ public class HologramDatabase {
         config = YamlConfiguration.loadConfiguration(file);
     }
     
-    public static NamedHologram loadHologram(String name) throws HologramNotFoundException, InvalidFormatException, WorldNotFoundException, HologramLineParseException {
+    public static NamedHologram loadHologram(String name) throws HologramNotFoundException, LocationFormatException, LocationWorldNotLoadedException, HologramLineParseException {
         ConfigurationSection configSection = config.getConfigurationSection(name);
         
         if (configSection == null) {
-            throw new HologramNotFoundException();
+            throw new HologramNotFoundException("hologram \"" + name + "\" not found, skipping it");
         }
         
         List<String> lines = configSection.getStringList("lines");
         String locationString = configSection.getString("location");
         
         if (lines == null || locationString == null || lines.size() == 0) {
-            throw new HologramNotFoundException();
+            throw new HologramNotFoundException("hologram \"" + name + "\" was found, but it contained no lines");
         }
         
-        Location loc = LocationSerializer.locationFromString(locationString);
+        Location loc = LocationSerializer.locationFromString(name, locationString);
         
         NamedHologram hologram = new NamedHologram(loc, name);
 
         for (String line : lines) {
-            hologram.getLinesUnsafe().add(HologramLineParser.parseLine(hologram, line, false));
+            try {
+                hologram.getLinesUnsafe().add(HologramLineParser.parseLine(hologram, line, false));
+            } catch (HologramLineParseException e) {
+                throw new HologramLineParseException("hologram \"" + hologram.getName() + "\" has an invalid line: " + e.getMessage(), e.getCause());
+            }
         }
         
         return hologram;

@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.image;
 
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.exception.TooWideException;
 import org.bukkit.ChatColor;
 
 import java.awt.*;
@@ -49,12 +48,12 @@ public class ImageMessage {
 
     private String[] lines;
 
-    public ImageMessage(BufferedImage image, int width) throws TooWideException {
+    public ImageMessage(BufferedImage image, int width) throws ImageTooWideException {
         ChatColor[][] chatColors = toChatColorArray(image, width);
         lines = toImgMessage(chatColors);
     }
 
-    private ChatColor[][] toChatColorArray(BufferedImage image, int width) throws TooWideException {
+    private ChatColor[][] toChatColorArray(BufferedImage image, int width) throws ImageTooWideException {
         double ratio = (double) image.getHeight() / image.getWidth();
         int height = (int) ((width) * ratio);
         if (height == 0) {
@@ -62,7 +61,7 @@ public class ImageMessage {
         }
         
         if (width > MAX_WIDTH) {
-            throw new TooWideException(width);
+            throw new ImageTooWideException();
         }
 
         BufferedImage resized = resizeImage(image, width, height);

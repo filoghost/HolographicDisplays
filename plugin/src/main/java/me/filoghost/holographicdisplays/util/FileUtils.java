@@ -5,36 +5,18 @@
  */
 package me.filoghost.holographicdisplays.util;
 
-import me.filoghost.holographicdisplays.exception.UnreadableImageException;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 
 public class FileUtils {
     
-    public static BufferedImage readImage(Path file) throws UnreadableImageException, IOException {
-        BufferedImage image = ImageIO.read(Files.newInputStream(file));
-        
-        if (image == null) {
-            throw new UnreadableImageException();
+    public static String getExtension(String fileName) {
+        int lastFullStop = fileName.lastIndexOf('.');
+        if (lastFullStop >= 0) {
+            return fileName.substring(lastFullStop + 1);
+        } else {
+            return "";
         }
-            
-        return image;
-    }
-    
-    public static BufferedImage readImage(URL url) throws UnreadableImageException, IOException {
-        BufferedImage image = ImageIO.read(url);
-        
-        if (image == null) {
-            throw new UnreadableImageException();
-        }
-            
-        return image;
     }
 
     public static boolean isInsideDirectory(Path file, Path directory) {

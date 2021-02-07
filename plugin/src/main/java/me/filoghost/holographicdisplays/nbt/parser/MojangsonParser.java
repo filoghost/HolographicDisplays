@@ -59,7 +59,7 @@ public final class MojangsonParser {
     private String parseCompoundKey() throws MojangsonParseException {
         skipWhitespace();
         if (!hasNext()) {
-            throw parseException("Expected key");
+            throw parseException("expected key");
         }
         return currentChar() == '"' ? parseQuotedString() : parseSimpleString();
     }
@@ -70,7 +70,7 @@ public final class MojangsonParser {
             return new NBTString(parseQuotedString());
         String str = parseSimpleString();
         if (str.isEmpty())
-            throw parseException("Expected value");
+            throw parseException("expected value");
         return parseLiteral(str);
     }
 
@@ -118,7 +118,7 @@ public final class MojangsonParser {
             char c = nextChar();
             if (escape) {
                 if ((c != '\\') && (c != '"')) {
-                    throw parseException("Invalid escape of '" + c + "'");
+                    throw parseException("invalid escape of '" + c + "'");
                 }
                 escape = false;
             } else {
@@ -138,7 +138,7 @@ public final class MojangsonParser {
                 builder.append(c);
             }
         }
-        throw parseException("Missing termination quote");
+        throw parseException("missing termination quote");
     }
 
     private String parseSimpleString() {
@@ -152,7 +152,7 @@ public final class MojangsonParser {
     private NBTTag parseAnything() throws MojangsonParseException {
         skipWhitespace();
         if (!hasNext())
-            throw parseException("Expected value");
+            throw parseException("expected value");
 
         int c = currentChar();
         if (c == '{')
@@ -179,7 +179,7 @@ public final class MojangsonParser {
         while ((hasNext()) && (currentChar() != '}')) {
             String str = parseCompoundKey();
             if (str.isEmpty()) {
-                throw parseException("Expected non-empty key");
+                throw parseException("expected non-empty key");
             }
             expectChar(':');
 
@@ -188,7 +188,7 @@ public final class MojangsonParser {
                 break;
             }
             if (!hasNext()) {
-                throw parseException("Expected key");
+                throw parseException("expected key");
             }
         }
         expectChar('}');
@@ -201,7 +201,7 @@ public final class MojangsonParser {
 
         skipWhitespace();
         if (!hasNext()) {
-            throw parseException("Expected value");
+            throw parseException("expected value");
         }
         NBTList list = new NBTList();
         NBTType listType = null;
@@ -213,14 +213,14 @@ public final class MojangsonParser {
             if (listType == null) {
                 listType = elementType;
             } else if (elementType != listType) {
-                throw parseException("Unable to insert " + elementType + " into ListTag of type " + listType);
+                throw parseException("unable to insert " + elementType + " into ListTag of type " + listType);
             }
             list.add(element);
             if (!advanceToNextArrayElement()) {
                 break;
             }
             if (!hasNext()) {
-                throw parseException("Expected value");
+                throw parseException("expected value");
             }
         }
         expectChar(']');
@@ -236,7 +236,7 @@ public final class MojangsonParser {
 
         skipWhitespace();
         if (!hasNext()) {
-            throw parseException("Expected value");
+            throw parseException("expected value");
         }
         if (arrayType == 'B')
             return new NBTByteArray(parseNumArray(NBTType.BYTE_ARRAY, NBTType.BYTE));
@@ -244,7 +244,7 @@ public final class MojangsonParser {
             return new NBTLongArray(parseNumArray(NBTType.LONG_ARRAY, NBTType.LONG));
         else if (arrayType == 'I')
             return new NBTIntArray(parseNumArray(NBTType.INT_ARRAY, NBTType.INT));
-        throw parseException("Invalid array type '" + arrayType + "' found");
+        throw parseException("invalid array type '" + arrayType + "' found");
     }
 
     private Number[] parseNumArray(NBTType arrayType, NBTType primType) throws MojangsonParseException {
@@ -254,7 +254,7 @@ public final class MojangsonParser {
             NBTType elementType = element.getType();
 
             if (elementType != primType) {
-                throw parseException("Unable to insert " + elementType + " into " + arrayType);
+                throw parseException("unable to insert " + elementType + " into " + arrayType);
             }
             if (primType == NBTType.BYTE) {
                 result.add(((NBTByte) element).getValue());
@@ -267,7 +267,7 @@ public final class MojangsonParser {
                 break;
             }
             if (!hasNext()) {
-                throw parseException("Expected value");
+                throw parseException("expected value");
             }
         }
         expectChar(']');
@@ -347,7 +347,7 @@ public final class MojangsonParser {
             this.index += 1;
             return;
         }
-        throw new MojangsonParseException("Expected '" + c + "' but got '" + (hasNext ? Character.valueOf(currentChar()) : "<End of string>") + "'", this.str, this.index + 1);
+        throw new MojangsonParseException("expected '" + c + "' but got '" + (hasNext ? Character.valueOf(currentChar()) : "<End of string>") + "'", this.str, this.index + 1);
     }
 
     /**
@@ -359,7 +359,7 @@ public final class MojangsonParser {
         skipWhitespace();
         if (hasNext()) {
             this.index++;
-            throw parseException("Trailing data found");
+            throw parseException("trailing data found");
         }
     }
 

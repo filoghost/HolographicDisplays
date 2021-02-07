@@ -11,13 +11,13 @@ import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.HologramLineParseException;
 import me.filoghost.holographicdisplays.disk.HologramLineParser;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
-import me.filoghost.holographicdisplays.exception.HologramLineParseException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
+import me.filoghost.holographicdisplays.util.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -72,7 +72,7 @@ public class ReadtextCommand extends LineEditingCommand {
                     CraftHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i), true);
                     linesToAdd.add(line);
                 } catch (HologramLineParseException e) {
-                    throw new CommandException("Error at line " + (i + 1) + ": " + Utils.uncapitalize(e.getMessage()));
+                    throw new CommandException("Error at line " + (i + 1) + ": " + e.getMessage());
                 }
             }
             
@@ -83,10 +83,8 @@ public class ReadtextCommand extends LineEditingCommand {
             HologramDatabase.saveHologram(hologram);
             HologramDatabase.trySaveToDisk();
             
-            if (fileName.contains(".")) {
-                if (isImageExtension(fileName.substring(fileName.lastIndexOf('.') + 1))) {
-                    Messages.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + context.getRootLabel() + " readimage.");
-                }
+            if (isImageExtension(FileUtils.getExtension(fileName))) {
+                Messages.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + context.getRootLabel() + " readimage.");
             }
             
             sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram!");
@@ -97,8 +95,8 @@ public class ReadtextCommand extends LineEditingCommand {
         }
     }
     
-    private boolean isImageExtension(String input) {
-        return Arrays.asList("jpg", "png", "jpeg", "gif").contains(input.toLowerCase());
+    private boolean isImageExtension(String extension) {
+        return Arrays.asList("jpg", "png", "jpeg", "gif").contains(extension.toLowerCase());
     }
     
 }
