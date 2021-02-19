@@ -13,10 +13,10 @@ import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.common.Utils;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.HologramConfig;
 import me.filoghost.holographicdisplays.disk.HologramLoadException;
-import me.filoghost.holographicdisplays.disk.UnicodeSymbols;
 import me.filoghost.holographicdisplays.event.HolographicDisplaysReloadEvent;
 import me.filoghost.holographicdisplays.object.CraftHologram;
 import me.filoghost.holographicdisplays.object.NamedHologram;
@@ -26,26 +26,28 @@ import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import java.util.Set;
-
 public class ReloadCommand extends HologramSubCommand {
 
-    public ReloadCommand() {
+    private final ConfigManager configManager;
+
+    public ReloadCommand(ConfigManager configManager) {
         super("reload");
         setDescription("Reloads the holograms from the database.");
+        
+        this.configManager = configManager;
     }
     
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) {            
         long startMillis = System.currentTimeMillis();
 
-        UnicodeSymbols.load(HolographicDisplays.getInstance());
-        Configuration.load(HolographicDisplays.getInstance());
+        configManager.reloadCustomPlaceholders();
+        configManager.reloadMainConfig();
         
         BungeeServerTracker.resetTrackedServers();
         BungeeServerTracker.restartTask(Configuration.bungeeRefreshSeconds);
         
-        HologramDatabase.loadYamlFile(HolographicDisplays.getInstance());
+        configManager.reloadHologramDatabase();
         try {
             AnimationsRegister.loadAnimations(HolographicDisplays.getInstance());
         } catch (Exception e) {
@@ -55,15 +57,12 @@ public class ReloadCommand extends HologramSubCommand {
         PlaceholdersManager.untrackAll();
         NamedHologramManager.clearAll();
         
-        Set<String> savedHolograms = HologramDatabase.getHolograms();
-        if (savedHolograms != null && savedHolograms.size() > 0) {
-            for (String singleSavedHologram : savedHolograms) {
-                try {
-                    NamedHologram singleHologramEntity = HologramDatabase.loadHologram(singleSavedHologram);
-                    NamedHologramManager.addHologram(singleHologramEntity);
-                } catch (HologramLoadException e) {
-                    Messages.sendWarning(sender, Utils.formatExceptionMessage(e));
-                }
+        for (HologramConfig hologramConfig :  configManager.getHologramDatabase().getHolograms()) {
+            try {
+                NamedHologram hologram = hologramConfig.createHologram();
+                NamedHologramManager.addHologram(hologram);
+            } catch (HologramLoadException e) {
+                Messages.sendWarning(sender, Utils.formatExceptionMessage(e));
             }
         }
         

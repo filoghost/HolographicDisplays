@@ -1,0 +1,14 @@
+#
+# This is the configuration file for custom placeholders.
+# Dynamic placeholders are {online}, {max_players}...
+#
+# You can use these to avoid repeating text multiple times,
+# and edit it from a single location.
+#
+# Another use would be for defining colors, symbols, or text decorations.
+#
+placeholders:
+  '{custom_placeholder}': 'This is a custom placeholder.'
+  '{primary_color}': '&b'
+  '{secondary_color}': '&7'
+  '{separator}': '&8&m          '

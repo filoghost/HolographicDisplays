@@ -11,9 +11,9 @@ import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
-import me.filoghost.holographicdisplays.disk.HologramLineParseException;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.HologramLineParser;
+import me.filoghost.holographicdisplays.disk.HologramLoadException;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
@@ -31,10 +31,14 @@ import java.util.List;
 
 public class ReadtextCommand extends LineEditingCommand {
 
-    public ReadtextCommand() {
+    private final ConfigManager configManager;
+    
+    public ReadtextCommand(ConfigManager configManager) {
         super("readtext", "readlines");
         setMinArgs(2);
         setUsageArgs("<hologram> <fileWithExtension>");
+        
+        this.configManager = configManager;
     }
 
     @Override
@@ -71,7 +75,7 @@ public class ReadtextCommand extends LineEditingCommand {
                 try {
                     CraftHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i), true);
                     linesToAdd.add(line);
-                } catch (HologramLineParseException e) {
+                } catch (HologramLoadException e) {
                     throw new CommandException("Error at line " + (i + 1) + ": " + e.getMessage());
                 }
             }
@@ -80,8 +84,8 @@ public class ReadtextCommand extends LineEditingCommand {
             hologram.getLinesUnsafe().addAll(linesToAdd);
             hologram.refreshAll();
 
-            HologramDatabase.saveHologram(hologram);
-            HologramDatabase.trySaveToDisk();
+            configManager.getHologramDatabase().addOrUpdate(hologram);
+            configManager.saveHologramDatabase();
             
             if (isImageExtension(FileUtils.getExtension(fileName))) {
                 Messages.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + context.getRootLabel() + " readimage.");

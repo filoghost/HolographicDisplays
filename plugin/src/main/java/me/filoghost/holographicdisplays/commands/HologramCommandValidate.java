@@ -10,7 +10,7 @@ import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.HologramLineParser;
-import me.filoghost.holographicdisplays.disk.HologramLineParseException;
+import me.filoghost.holographicdisplays.disk.HologramLoadException;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.NamedHologramManager;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
@@ -24,7 +24,7 @@ public class HologramCommandValidate {
     public static CraftHologramLine parseHologramLine(NamedHologram hologram, String serializedLine, boolean validateMaterial) throws CommandException {
         try {
             return HologramLineParser.parseLine(hologram, serializedLine, validateMaterial);
-        } catch (HologramLineParseException e) {
+        } catch (HologramLoadException e) {
             throw new CommandException(Utils.formatExceptionMessage(e));
         }
     }

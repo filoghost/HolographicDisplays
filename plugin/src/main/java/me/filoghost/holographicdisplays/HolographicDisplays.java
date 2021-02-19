@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays;
 
 import me.filoghost.fcommons.BaseJavaPlugin;
+import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.fcommons.reflection.ReflectUtils;
 import me.filoghost.holographicdisplays.api.internal.BackendAPI;
@@ -13,9 +14,9 @@ import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.bridge.protocollib.current.ProtocolLibHookImpl;
 import me.filoghost.holographicdisplays.commands.HologramCommandManager;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
-import me.filoghost.holographicdisplays.disk.UnicodeSymbols;
+import me.filoghost.holographicdisplays.disk.upgrade.LegacySymbolsUpgrader;
 import me.filoghost.holographicdisplays.listener.MainListener;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import me.filoghost.holographicdisplays.object.DefaultBackendAPI;
@@ -55,7 +56,7 @@ public class HolographicDisplays extends BaseJavaPlugin {
     
     // The new version found by the updater, null if there is no new version.
     private static String newVersion;
-    
+
     // Not null if ProtocolLib is installed and successfully loaded.
     private static ProtocolLibHook protocolLibHook;
     
@@ -71,12 +72,20 @@ public class HolographicDisplays extends BaseJavaPlugin {
         System.setProperty("HolographicDisplaysLoaded", "true");
         instance = this;
         dataFolderPath = getDataFolder().toPath();
-        
+        ConfigManager configManager = new ConfigManager(dataFolderPath);
+
+        // Run only once at startup, before anything else.
+        try {
+            LegacySymbolsUpgrader.run(configManager);
+        } catch (ConfigException e) {
+            Log.warning("Couldn't convert symbols file", e);
+        }
+
         // Load placeholders.yml.
-        UnicodeSymbols.load(this);
+        configManager.reloadCustomPlaceholders();
 
         // Load the configuration.
-        Configuration.load(this);
+        configManager.reloadMainConfig();
         
         if (Configuration.updateNotification) {
             UpdateChecker.run(this, 75097, (String newVersion) -> {
@@ -119,7 +128,7 @@ public class HolographicDisplays extends BaseJavaPlugin {
         }
         
         // Initialize other static classes.
-        HologramDatabase.loadYamlFile(this);
+        configManager.reloadHologramDatabase();
         BungeeServerTracker.restartTask(Configuration.bungeeRefreshSeconds);
         
         // Start repeating tasks.
@@ -132,7 +141,7 @@ public class HolographicDisplays extends BaseJavaPlugin {
                 "This can be caused by edits to plugin.yml or other plugins.");
         }
         
-        commandManager = new HologramCommandManager();
+        commandManager = new HologramCommandManager(configManager);
         commandManager.register(this);
 
         mainListener = new MainListener(nmsManager);
@@ -143,7 +152,8 @@ public class HolographicDisplays extends BaseJavaPlugin {
         new MetricsLite(this, pluginID);
         
         // Holograms are loaded later, when the worlds are ready.
-        Bukkit.getScheduler().runTask(this, new StartupLoadHologramsTask());
+        Bukkit.getScheduler().runTask(this, 
+                new StartupLoadHologramsTask(configManager.getHologramDatabase().getHolograms()));
         
         // Enable the API.
         BackendAPI.setImplementation(new DefaultBackendAPI());

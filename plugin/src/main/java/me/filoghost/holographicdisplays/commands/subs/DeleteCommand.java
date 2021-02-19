@@ -10,18 +10,22 @@ import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.NamedHologramManager;
 import org.bukkit.command.CommandSender;
 
 public class DeleteCommand extends HologramSubCommand {
 
-    public DeleteCommand() {
+    private final ConfigManager configManager;
+
+    public DeleteCommand(ConfigManager configManager) {
         super("delete", "remove");
         setMinArgs(1);
         setUsageArgs("<hologram>");
         setDescription("Deletes a hologram. Cannot be undone.");
+        
+        this.configManager = configManager;
     }
 
     @Override
@@ -30,9 +34,10 @@ public class DeleteCommand extends HologramSubCommand {
         
         hologram.delete();
         NamedHologramManager.removeHologram(hologram);
-        HologramDatabase.deleteHologram(hologram.getName());
+
+        configManager.getHologramDatabase().removeHologram(hologram);
+        configManager.saveHologramDatabase();
         
-        HologramDatabase.trySaveToDisk();
         sender.sendMessage(Colors.PRIMARY + "You deleted the hologram '" + hologram.getName() + "'.");
     }
 

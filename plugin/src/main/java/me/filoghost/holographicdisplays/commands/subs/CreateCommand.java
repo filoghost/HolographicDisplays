@@ -12,7 +12,7 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.common.Utils;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.NamedHologramManager;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
@@ -22,8 +22,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 public class CreateCommand extends HologramSubCommand {
+
+    private final ConfigManager configManager;
     
-    public CreateCommand() {
+    public CreateCommand(ConfigManager configManager) {
         super("create");
         setMinArgs(1);
         setUsageArgs("<hologramName> [text]");
@@ -31,6 +33,8 @@ public class CreateCommand extends HologramSubCommand {
                 "Creates a new hologram with the given name, that must",
                 "be alphanumeric. The name will be used as reference to",
                 "that hologram for editing commands.");
+        
+        this.configManager = configManager;
     }
 
     @SuppressWarnings("deprecation")
@@ -68,8 +72,8 @@ public class CreateCommand extends HologramSubCommand {
         NamedHologramManager.addHologram(hologram);
         hologram.refreshAll();
 
-        HologramDatabase.saveHologram(hologram);
-        HologramDatabase.trySaveToDisk();
+        configManager.getHologramDatabase().addOrUpdate(hologram);
+        configManager.saveHologramDatabase();
         Location look = player.getLocation();
         look.setPitch(90);
         player.teleport(look, TeleportCause.PLUGIN);

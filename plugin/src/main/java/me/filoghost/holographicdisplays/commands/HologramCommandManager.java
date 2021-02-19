@@ -31,6 +31,7 @@ import me.filoghost.holographicdisplays.commands.subs.RemovelineCommand;
 import me.filoghost.holographicdisplays.commands.subs.SetlineCommand;
 import me.filoghost.holographicdisplays.commands.subs.TeleportCommand;
 import me.filoghost.holographicdisplays.common.Utils;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -47,28 +48,28 @@ public class HologramCommandManager extends SubCommandManager {
     
     private final HelpCommand helpCommand;
 
-    public HologramCommandManager() {
+    public HologramCommandManager(ConfigManager configManager) {
         setName("holograms");
         subCommands = new ArrayList<>();
         subCommandsByClass = new HashMap<>();
         
-        registerSubCommand(new AddlineCommand());
-        registerSubCommand(new CreateCommand());
-        registerSubCommand(new DeleteCommand());
+        registerSubCommand(new AddlineCommand(configManager));
+        registerSubCommand(new CreateCommand(configManager));
+        registerSubCommand(new DeleteCommand(configManager));
         registerSubCommand(new EditCommand());
         registerSubCommand(new ListCommand());
         registerSubCommand(new NearCommand());
         registerSubCommand(new TeleportCommand());
-        registerSubCommand(new MovehereCommand());
-        registerSubCommand(new AlignCommand());
-        registerSubCommand(new CopyCommand());
-        registerSubCommand(new ReloadCommand());
+        registerSubCommand(new MovehereCommand(configManager));
+        registerSubCommand(new AlignCommand(configManager));
+        registerSubCommand(new CopyCommand(configManager));
+        registerSubCommand(new ReloadCommand(configManager));
         
-        registerSubCommand(new RemovelineCommand());
-        registerSubCommand(new SetlineCommand());
-        registerSubCommand(new InsertlineCommand());
-        registerSubCommand(new ReadtextCommand());
-        registerSubCommand(new ReadimageCommand());
+        registerSubCommand(new RemovelineCommand(configManager));
+        registerSubCommand(new SetlineCommand(configManager));
+        registerSubCommand(new InsertlineCommand(configManager));
+        registerSubCommand(new ReadtextCommand(configManager));
+        registerSubCommand(new ReadimageCommand(configManager));
         registerSubCommand(new InfoCommand());
         
         registerSubCommand(new DebugCommand());

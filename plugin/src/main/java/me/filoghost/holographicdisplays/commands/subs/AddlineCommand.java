@@ -10,7 +10,7 @@ import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.common.Utils;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
@@ -19,11 +19,15 @@ import org.bukkit.command.CommandSender;
 
 public class AddlineCommand extends LineEditingCommand {
 
-    public AddlineCommand() {
+    private final ConfigManager configManager;
+
+    public AddlineCommand(ConfigManager configManager) {
         super("addline");
         setMinArgs(2);
         setUsageArgs("<hologram> <text>");
         setDescription("Adds a line to an existing hologram.");
+        
+        this.configManager = configManager;
     }
 
     @Override
@@ -34,9 +38,9 @@ public class AddlineCommand extends LineEditingCommand {
         CraftHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine, true);
         hologram.getLinesUnsafe().add(line);
         hologram.refreshAll();
-            
-        HologramDatabase.saveHologram(hologram);
-        HologramDatabase.trySaveToDisk();
+
+        configManager.getHologramDatabase().addOrUpdate(hologram);
+        configManager.saveHologramDatabase();
         Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
         
         sender.sendMessage(Colors.PRIMARY + "Line added!");

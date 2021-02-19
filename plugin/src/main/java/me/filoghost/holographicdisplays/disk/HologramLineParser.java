@@ -18,13 +18,14 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class HologramLineParser {
-    
-    
-    public static CraftHologramLine parseLine(NamedHologram hologram, String serializedLine, boolean checkMaterialValidity) throws HologramLineParseException {
+
+    private static final String ICON_PREFIX = "icon:";
+
+    public static CraftHologramLine parseLine(NamedHologram hologram, String serializedLine, boolean checkMaterialValidity) throws HologramLoadException {
         CraftHologramLine hologramLine;
         
-        if (serializedLine.toLowerCase().startsWith("icon:")) {
-            String serializedIcon = serializedLine.substring("icon:".length());
+        if (serializedLine.toLowerCase().startsWith(ICON_PREFIX)) {
+            String serializedIcon = serializedLine.substring(ICON_PREFIX.length());
             ItemStack icon = parseItemStack(serializedIcon, checkMaterialValidity);
             hologramLine = new CraftItemLine(hologram, icon);
             
@@ -42,7 +43,7 @@ public class HologramLineParser {
     
     
     @SuppressWarnings("deprecation")
-    private static ItemStack parseItemStack(String serializedItem, boolean checkMaterialValidity) throws HologramLineParseException {
+    private static ItemStack parseItemStack(String serializedItem, boolean checkMaterialValidity) throws HologramLoadException {
         serializedItem = serializedItem.trim();
         
         // Parse json
@@ -69,7 +70,7 @@ public class HologramLineParser {
             try {
                 dataValue = (short) Integer.parseInt(materialAndDataValue[1]);
             } catch (NumberFormatException e) {
-                throw new HologramLineParseException("data value \"" + materialAndDataValue[1] + "\" is not a valid number");
+                throw new HologramLoadException("data value \"" + materialAndDataValue[1] + "\" is not a valid number");
             }
             materialName = materialAndDataValue[0];
         } else {
@@ -79,7 +80,7 @@ public class HologramLineParser {
         Material material = MaterialsHelper.matchMaterial(materialName);
         if (material == null) {
             if (checkMaterialValidity) {
-                throw new HologramLineParseException("\"" + materialName + "\" is not a valid material");
+                throw new HologramLoadException("\"" + materialName + "\" is not a valid material");
             }
             material = Material.BEDROCK;
         }
@@ -92,9 +93,9 @@ public class HologramLineParser {
                 MojangsonParser.parse(nbtString);
                 Bukkit.getUnsafe().modifyItemStack(itemStack, nbtString);
             } catch (MojangsonParseException e) {
-                throw new HologramLineParseException("invalid NBT data, " + e.getMessage());
+                throw new HologramLoadException("invalid NBT data, " + e.getMessage());
             } catch (Throwable t) {
-                throw new HologramLineParseException("unexpected exception while parsing NBT data", t);
+                throw new HologramLoadException("unexpected exception while parsing NBT data", t);
             }
         }
         

@@ -20,7 +20,7 @@ public class StringConverter {
             return null;
         }
 
-        input = UnicodeSymbols.placeholdersToSymbols(input);
+        input = CustomPlaceholders.replaceStaticPlaceholders(input);
         input = Colors.addColors(input);
         return input;
     }

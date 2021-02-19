@@ -12,7 +12,7 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.common.Utils;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
@@ -20,8 +20,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class InsertlineCommand extends LineEditingCommand {
+
+    private final ConfigManager configManager;
     
-    public InsertlineCommand() {
+    public InsertlineCommand(ConfigManager configManager) {
         super("insertline");
         setMinArgs(3);
         setUsageArgs("<hologram> <lineNumber> <text>");
@@ -29,6 +31,8 @@ public class InsertlineCommand extends LineEditingCommand {
                 "Inserts a line after the specified index.",
                 "If the index is 0, the line will be put before",
                 "the first line of the hologram.");
+        
+        this.configManager = configManager;
     }
 
     @Override
@@ -45,8 +49,8 @@ public class InsertlineCommand extends LineEditingCommand {
         hologram.getLinesUnsafe().add(insertAfter, line);
         hologram.refreshAll();
             
-        HologramDatabase.saveHologram(hologram);
-        HologramDatabase.trySaveToDisk();
+        configManager.getHologramDatabase().addOrUpdate(hologram);
+        configManager.saveHologramDatabase();
         
         Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
         

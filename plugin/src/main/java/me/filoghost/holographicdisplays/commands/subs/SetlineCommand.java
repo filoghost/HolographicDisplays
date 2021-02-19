@@ -11,7 +11,7 @@ import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.common.Utils;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
@@ -20,11 +20,15 @@ import org.bukkit.command.CommandSender;
 
 public class SetlineCommand extends LineEditingCommand {
 
-    public SetlineCommand() {
+    private final ConfigManager configManager;
+
+    public SetlineCommand(ConfigManager configManager) {
         super("setline");
         setMinArgs(3);
         setUsageArgs("<hologram> <lineNumber> <newText>");
         setDescription("Changes a line of a hologram.");
+        
+        this.configManager = configManager;
     }
 
     @Override
@@ -42,8 +46,8 @@ public class SetlineCommand extends LineEditingCommand {
         hologram.getLinesUnsafe().set(index, line);
         hologram.refreshAll();
 
-        HologramDatabase.saveHologram(hologram);
-        HologramDatabase.trySaveToDisk();
+        configManager.getHologramDatabase().addOrUpdate(hologram);
+        configManager.saveHologramDatabase();
         Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
         
         sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " changed!");

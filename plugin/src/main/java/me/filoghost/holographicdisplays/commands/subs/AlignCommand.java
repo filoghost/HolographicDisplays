@@ -11,18 +11,22 @@ import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
 public class AlignCommand extends HologramSubCommand {
 
-    public AlignCommand() {
+    private final ConfigManager configManager;
+
+    public AlignCommand(ConfigManager configManager) {
         super("align");
         setMinArgs(3);
         setUsageArgs("<X | Y | Z | XZ> <hologram> <referenceHologram>");
         setDescription("Aligns the first hologram to the second, in the specified axis.");
+        
+        this.configManager = configManager;
     }
 
     @Override
@@ -52,8 +56,8 @@ public class AlignCommand extends HologramSubCommand {
         hologram.despawnEntities();
         hologram.refreshAll();
             
-        HologramDatabase.saveHologram(hologram);
-        HologramDatabase.trySaveToDisk();
+        configManager.getHologramDatabase().addOrUpdate(hologram);
+        configManager.saveHologramDatabase();
         sender.sendMessage(Colors.PRIMARY + "Hologram \"" + hologram.getName() + "\" aligned to the hologram \"" + referenceHologram.getName() + "\" on the " + axis.toUpperCase() + " axis.");
     }
     

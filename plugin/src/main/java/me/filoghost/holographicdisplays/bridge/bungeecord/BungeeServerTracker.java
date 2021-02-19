@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BungeeServerTracker {
@@ -146,12 +145,12 @@ public class BungeeServerTracker {
             if (Configuration.pingerEnable) {
                 Bukkit.getScheduler().runTaskAsynchronously(HolographicDisplays.getInstance(), () -> {
                     
-                    for (Entry<String, ServerAddress> entry : Configuration.pingerServers.entrySet()) {
-                        BungeeServerInfo serverInfo = getOrCreateServerInfo(entry.getKey());
+                    for (ServerAddress serverAddress : Configuration.pingerServers) {
+                        BungeeServerInfo serverInfo = getOrCreateServerInfo(serverAddress.getName());
                         boolean displayOffline = false;
                         
                         try {
-                            PingResponse data = ServerPinger.fetchData(entry.getValue(), Configuration.pingerTimeout);
+                            PingResponse data = ServerPinger.fetchData(serverAddress, Configuration.pingerTimeout);
                             
                             if (data.isOnline()) {
                                 serverInfo.setOnline(true);
@@ -164,13 +163,13 @@ public class BungeeServerTracker {
                         } catch (SocketTimeoutException e) {
                             displayOffline = true;
                         } catch (UnknownHostException e) {
-                            Log.warning("Couldn't fetch data from " + entry.getKey() + "(" + entry.getValue().toString() + "): unknown host address.");
+                            Log.warning("Couldn't fetch data from " + serverAddress + ": unknown host address.");
                             displayOffline = true;
                         } catch (IOException e) {
                             displayOffline = true;
                         } catch (Throwable t) {
                             displayOffline = true;
-                            Log.warning("Couldn't fetch data from " + entry.getKey() + "(" + entry.getValue().toString() + ")", t);
+                            Log.warning("Couldn't fetch data from " + serverAddress, t);
                         }
                         
                         if (displayOffline) {

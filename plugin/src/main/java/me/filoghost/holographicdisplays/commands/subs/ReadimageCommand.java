@@ -12,12 +12,12 @@ import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
+import me.filoghost.holographicdisplays.image.ImageMessage;
+import me.filoghost.holographicdisplays.image.ImageReadException;
 import me.filoghost.holographicdisplays.image.ImageReader;
 import me.filoghost.holographicdisplays.image.ImageTooWideException;
-import me.filoghost.holographicdisplays.image.ImageReadException;
-import me.filoghost.holographicdisplays.image.ImageMessage;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftTextLine;
 import org.bukkit.Bukkit;
@@ -34,11 +34,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ReadimageCommand extends LineEditingCommand {
+
+    private final ConfigManager configManager;
     
-    public ReadimageCommand() {
+    public ReadimageCommand(ConfigManager configManager) {
         super("readimage", "image");
         setMinArgs(3);
         setUsageArgs("<hologram> <imageWithExtension> <width>");
+        
+        this.configManager = configManager;
     }
 
     @Override
@@ -120,8 +124,8 @@ public class ReadimageCommand extends LineEditingCommand {
                 Messages.sendTip(sender, "The image has a very low height. You can increase it by increasing the width, it will scale automatically.");
             }
             
-            HologramDatabase.saveHologram(hologram);
-            HologramDatabase.trySaveToDisk();
+            configManager.getHologramDatabase().addOrUpdate(hologram);
+            configManager.saveHologramDatabase();
             
             if (append) {
                 sender.sendMessage(Colors.PRIMARY + "The image was appended int the end of the hologram!");

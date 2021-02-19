@@ -10,18 +10,22 @@ import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
-import me.filoghost.holographicdisplays.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.object.NamedHologram;
 import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import org.bukkit.command.CommandSender;
 
 public class CopyCommand extends HologramSubCommand {
+
+    private final ConfigManager configManager;
     
-    public CopyCommand() {
+    public CopyCommand(ConfigManager configManager) {
         super("copy");
         setMinArgs(2);
         setUsageArgs("<fromHologram> <toHologram>");
         setDescription("Copies the contents of a hologram into another one.");
+        
+        this.configManager = configManager;
     }
     
     @Override
@@ -31,14 +35,14 @@ public class CopyCommand extends HologramSubCommand {
         
         toHologram.clearLines();
         for (CraftHologramLine line : fromHologram.getLinesUnsafe()) {
-            CraftHologramLine clonedLine = HologramCommandValidate.parseHologramLine(toHologram, HologramDatabase.serializeHologramLine(line), false);
+            CraftHologramLine clonedLine = HologramCommandValidate.parseHologramLine(toHologram, line.getSerializedConfigValue(), false);
             toHologram.getLinesUnsafe().add(clonedLine);
         }
         
         toHologram.refreshAll();
-        
-        HologramDatabase.saveHologram(toHologram);
-        HologramDatabase.trySaveToDisk();
+
+        configManager.getHologramDatabase().addOrUpdate(toHologram);
+        configManager.saveHologramDatabase();
         
         sender.sendMessage(Colors.PRIMARY + "Hologram \"" + fromHologram.getName() + "\" copied into hologram \"" + toHologram.getName() + "\"!");
     }
