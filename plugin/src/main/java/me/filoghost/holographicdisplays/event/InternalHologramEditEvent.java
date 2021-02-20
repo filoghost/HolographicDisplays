@@ -5,22 +5,22 @@
  */
 package me.filoghost.holographicdisplays.event;
 
-import me.filoghost.holographicdisplays.object.NamedHologram;
+import me.filoghost.holographicdisplays.object.InternalHologram;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class NamedHologramEditedEvent extends Event {
+public class InternalHologramEditEvent extends Event {
     
     private static final HandlerList handlers = new HandlerList();
     
-    private NamedHologram namedHologram;
+    private final InternalHologram internalHologram;
     
-    public NamedHologramEditedEvent(NamedHologram namedHologram) {
-        this.namedHologram = namedHologram;
+    public InternalHologramEditEvent(InternalHologram internalHologram) {
+        this.internalHologram = internalHologram;
     }
 
-    public NamedHologram getNamedHologram() {
-        return namedHologram;
+    public InternalHologram getInternalHologram() {
+        return internalHologram;
     }
 
     @Override

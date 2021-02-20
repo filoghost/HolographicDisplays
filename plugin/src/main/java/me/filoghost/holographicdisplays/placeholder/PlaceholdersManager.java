@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
-import me.filoghost.holographicdisplays.object.line.CraftTextLine;
+import me.filoghost.holographicdisplays.object.line.TextLineImpl;
 import me.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 public class PlaceholdersManager {
     
     private static long elapsedTenthsOfSecond;
-    protected static Set<DynamicLineData> linesToUpdate = new HashSet<>();
+    protected static final Set<DynamicLineData> linesToUpdate = new HashSet<>();
     
     private static final Pattern BUNGEE_ONLINE_PATTERN = makePlaceholderWithArgsPattern("online");
     private static final Pattern BUNGEE_MAX_PATTERN = makePlaceholderWithArgsPattern("max_players");
@@ -88,7 +88,7 @@ public class PlaceholdersManager {
         linesToUpdate.clear();
     }
     
-    public static void untrack(CraftTextLine line) {
+    public static void untrack(TextLineImpl line) {
         if (line == null || !line.isSpawned()) {
             return;
         }
@@ -103,7 +103,7 @@ public class PlaceholdersManager {
         }
     }
     
-    public static void trackIfNecessary(CraftTextLine line) {
+    public static void trackIfNecessary(TextLineImpl line) {
         NMSNameable nameableEntity = line.getNmsNameable();
         if (nameableEntity == null) {
             return;
@@ -125,13 +125,10 @@ public class PlaceholdersManager {
         Matcher matcher;
         
         for (Placeholder placeholder : PlaceholdersRegister.getPlaceholders()) {
-            
             if (name.contains(placeholder.getTextPlaceholder())) {
-                
                 if (normalPlaceholders == null) {
                     normalPlaceholders = new HashSet<>();
                 }
-                
                 normalPlaceholders.add(placeholder);
             }
         }
@@ -140,7 +137,6 @@ public class PlaceholdersManager {
         // Players in a world count pattern.
         matcher = WORLD_PATTERN.matcher(name);
         while (matcher.find()) {
-                            
             if (worldsOnlinePlayersReplacers == null) {
                 worldsOnlinePlayersReplacers = new HashMap<>();
             }
@@ -148,7 +144,6 @@ public class PlaceholdersManager {
             final String worldsNames = extractArgumentFromPlaceholder(matcher);
             
             if (worldsNames.contains(",")) {
-                
                 String[] split = worldsNames.split(",");
                 for (int i = 0; i < split.length; i++) {
                     split[i] = split[i].trim();
@@ -171,7 +166,6 @@ public class PlaceholdersManager {
         // BungeeCord online pattern.
         matcher = BUNGEE_ONLINE_PATTERN.matcher(name);
         while (matcher.find()) {
-            
             if (bungeeReplacers == null) {
                 bungeeReplacers = new HashMap<>();
             }
@@ -180,7 +174,6 @@ public class PlaceholdersManager {
             BungeeServerTracker.track(serverName); // Track this server.
             
             if (serverName.contains(",")) {
-                
                 String[] split = serverName.split(",");
                 for (int i = 0; i < split.length; i++) {
                     split[i] = split[i].trim();
@@ -207,7 +200,6 @@ public class PlaceholdersManager {
         // BungeeCord max players pattern.
         matcher = BUNGEE_MAX_PATTERN.matcher(name);
         while (matcher.find()) {
-            
             if (bungeeReplacers == null) {
                 bungeeReplacers = new HashMap<>();
             }
@@ -224,7 +216,6 @@ public class PlaceholdersManager {
         // BungeeCord motd pattern.
         matcher = BUNGEE_MOTD_PATTERN.matcher(name);
         while (matcher.find()) {
-            
             if (bungeeReplacers == null) {
                 bungeeReplacers = new HashMap<>();
             }
@@ -241,7 +232,6 @@ public class PlaceholdersManager {
         // BungeeCord motd (line 2) pattern.
         matcher = BUNGEE_MOTD_2_PATTERN.matcher(name);
         while (matcher.find()) {
-            
             if (bungeeReplacers == null) {
                 bungeeReplacers = new HashMap<>();
             }
@@ -258,7 +248,6 @@ public class PlaceholdersManager {
         // BungeeCord status pattern.
         matcher = BUNGEE_STATUS_PATTERN.matcher(name);
         while (matcher.find()) {
-            
             if (bungeeReplacers == null) {
                 bungeeReplacers = new HashMap<>();
             }
@@ -276,13 +265,11 @@ public class PlaceholdersManager {
         // Animation pattern.
         matcher = ANIMATION_PATTERN.matcher(name);
         while (matcher.find()) {
-
             String fileName = extractArgumentFromPlaceholder(matcher);
             Placeholder animation = AnimationsRegister.getAnimation(fileName);
             
             // If exists...
             if (animation != null) {
-                
                 if (animationsPlaceholders == null) {
                     animationsPlaceholders = new HashMap<>();
                 }
@@ -296,7 +283,6 @@ public class PlaceholdersManager {
         }
         
         if (Utils.isThereNonNull(normalPlaceholders, bungeeReplacers, worldsOnlinePlayersReplacers, animationsPlaceholders)) {
-            
             DynamicLineData lineData = new DynamicLineData(nameableEntity, name);
             
             if (normalPlaceholders != null) {

@@ -6,8 +6,9 @@
 package me.filoghost.holographicdisplays.object;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.HolographicDisplays;
+import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.VisibilityManager;
+import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,15 +17,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CraftVisibilityManager implements VisibilityManager {
+public class VisibilityManagerImpl implements VisibilityManager {
 
-    private final CraftHologram hologram;
+    private final BaseHologram hologram;
     private Map<String, Boolean> playersVisibilityMap;
     private boolean visibleByDefault;
 
     private static final int VISIBILITY_DISTANCE_SQUARED = 64 * 64;
     
-    public CraftVisibilityManager(CraftHologram hologram) {
+    public VisibilityManagerImpl(BaseHologram hologram) {
         Preconditions.notNull(hologram, "hologram");
         this.hologram = hologram;
         this.visibleByDefault = true;
@@ -37,25 +38,24 @@ public class CraftVisibilityManager implements VisibilityManager {
     
     @Override
     public void setVisibleByDefault(boolean visibleByDefault) {
-        if (this.visibleByDefault != visibleByDefault) {
-            
-            boolean oldVisibleByDefault = this.visibleByDefault;
-            this.visibleByDefault = visibleByDefault;
-            
-            for (Player player : Bukkit.getOnlinePlayers()) {
+        if (this.visibleByDefault == visibleByDefault) {
+            return;
+        }
+        
+        this.visibleByDefault = visibleByDefault;
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (playersVisibilityMap != null && playersVisibilityMap.containsKey(player.getName().toLowerCase())) {
+                // Has a specific value set
+                continue;
+            }
                 
-                if (playersVisibilityMap != null && playersVisibilityMap.containsKey(player.getName().toLowerCase())) {
-                    // Has a specific value set
-                    continue;
-                }
-                    
-                if (oldVisibleByDefault) {
-                    // If previously was visible, now is NOT visible by default, because the value has changed
-                    sendDestroyPacketIfNear(player, hologram);
-                } else {
-                    // Opposite case
-                    sendCreatePacketIfNear(player, hologram);
-                }
+            if (visibleByDefault) {
+                // Now it's visible, and it previously wasn't because the value has changed
+                sendCreatePacketIfNear(player, hologram);
+            } else {
+                // Opposite case: now it's not visible
+                sendDestroyPacketIfNear(player, hologram);
             }
         }
     }
@@ -102,7 +102,6 @@ public class CraftVisibilityManager implements VisibilityManager {
         Preconditions.notNull(player, "player");
         
         if (playersVisibilityMap != null) {
-
             Boolean value = playersVisibilityMap.get(player.getName().toLowerCase());
             if (value != null) {
                 return value;
@@ -135,7 +134,6 @@ public class CraftVisibilityManager implements VisibilityManager {
     @Override
     public void resetVisibilityAll() {
         if (playersVisibilityMap != null) {
-            
             // We need to refresh all the players
             Set<String> playerNames = new HashSet<>(playersVisibilityMap.keySet());
             
@@ -151,25 +149,27 @@ public class CraftVisibilityManager implements VisibilityManager {
         }
     }
     
-    private static void sendCreatePacketIfNear(Player player, CraftHologram hologram) {
-        if (HolographicDisplays.hasProtocolLibHook() && isNear(player, hologram)) {
-            HolographicDisplays.getProtocolLibHook().sendCreateEntitiesPacket(player, hologram);
+    private void sendCreatePacketIfNear(Player player, BaseHologram hologram) {
+        if (ProtocolLibHook.isEnabled() && isNear(player, hologram)) {
+            ProtocolLibHook.sendCreateEntitiesPacket(player, hologram);
         }
     }
     
-    private static void sendDestroyPacketIfNear(Player player, CraftHologram hologram) {
-        if (HolographicDisplays.hasProtocolLibHook() && isNear(player, hologram)) {
-            HolographicDisplays.getProtocolLibHook().sendDestroyEntitiesPacket(player, hologram);
+    private void sendDestroyPacketIfNear(Player player, BaseHologram hologram) {
+        if (ProtocolLibHook.isEnabled() && isNear(player, hologram)) {
+            ProtocolLibHook.sendDestroyEntitiesPacket(player, hologram);
         }
     }
     
-    private static boolean isNear(Player player, CraftHologram hologram) {
-        return player.isOnline() && player.getWorld().equals(hologram.getWorld()) && player.getLocation().distanceSquared(hologram.getLocation()) < VISIBILITY_DISTANCE_SQUARED;
+    private boolean isNear(Player player, Hologram hologram) {
+        return player.isOnline() 
+                && player.getWorld().equals(hologram.getWorld()) 
+                && player.getLocation().distanceSquared(hologram.getLocation()) < VISIBILITY_DISTANCE_SQUARED;
     }
 
     @Override
     public String toString() {
-        return "CraftVisibilityManager [playersMap=" + playersVisibilityMap + ", visibleByDefault=" + visibleByDefault + "]";
+        return "VisibilityManager [playersMap=" + playersVisibilityMap + ", visibleByDefault=" + visibleByDefault + "]";
     }
     
 }

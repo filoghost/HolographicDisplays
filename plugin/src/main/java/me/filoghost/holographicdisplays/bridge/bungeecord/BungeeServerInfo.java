@@ -59,7 +59,6 @@ public class BungeeServerInfo {
     }
 
     public void setMotd(String motd) {
-
         if (motd == null) {
             this.motd1 = "";
             this.motd2 = "";

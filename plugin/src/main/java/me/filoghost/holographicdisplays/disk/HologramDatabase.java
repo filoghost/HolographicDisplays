@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.config.Config;
 import me.filoghost.fcommons.config.ConfigSection;
-import me.filoghost.holographicdisplays.object.NamedHologram;
+import me.filoghost.holographicdisplays.object.InternalHologram;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -55,13 +55,13 @@ public class HologramDatabase {
         return hologramConfigs.values();
     }
     
-    public void addOrUpdate(NamedHologram hologram) {
+    public void addOrUpdate(InternalHologram hologram) {
         HologramConfig hologramConfig = new HologramConfig(hologram);
         
         hologramConfigs.put(hologram.getName(), hologramConfig);
     }
 
-    public void removeHologram(NamedHologram hologram) {
+    public void removeHologram(InternalHologram hologram) {
         hologramConfigs.remove(hologram.getName());
     }
 

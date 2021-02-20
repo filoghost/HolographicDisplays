@@ -32,8 +32,8 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     
     private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "vehicle");
     
-    private ItemLine parentPiece;
-    private ItemPickupManager itemPickupManager;
+    private final ItemLine parentPiece;
+    private final ItemPickupManager itemPickupManager;
     private CraftEntity customBukkitEntity;
     
     public EntityNMSItem(World world, ItemLine piece, ItemPickupManager itemPickupManager) {
@@ -62,14 +62,13 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     // Method called when a player is near.
     @Override
     public void pickup(EntityHuman human) {
-        
         if (human.locY < super.locY - 1.5 || human.locY > super.locY + 1.0) {
             // Too low or too high, it's a bit weird.
             return;
         }
         
         if (parentPiece.getPickupHandler() != null && human instanceof EntityPlayer) {
-            itemPickupManager.handleItemLinePickup((Player) human.getBukkitEntity(), parentPiece.getPickupHandler(), parentPiece.getParent());
+            itemPickupManager.handleItemLinePickup((Player) human.getBukkitEntity(), parentPiece);
             // It is never added to the inventory.
         }
     }

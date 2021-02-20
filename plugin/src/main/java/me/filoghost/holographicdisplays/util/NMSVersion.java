@@ -6,10 +6,11 @@
 package me.filoghost.holographicdisplays.util;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
 import org.bukkit.Bukkit;
 
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,12 +36,15 @@ public enum NMSVersion {
     
     private static final NMSVersion CURRENT_VERSION = extractCurrentVersion();
     
-    private final Supplier<NMSManager> nmsManagerConstructor;
+    private final NMSManagerConstructor nmsManagerConstructor;
 
-    NMSVersion(Supplier<NMSManager> nmsManagerConstructor) {
+    NMSVersion(NMSManagerConstructor nmsManagerConstructor) {
         this.nmsManagerConstructor = nmsManagerConstructor;
     }
 
+    public NMSManager createNMSManager(ItemPickupManager itemPickupManager, PacketController packetController) {
+        return nmsManagerConstructor.create(itemPickupManager, packetController);
+    }
 
     private static NMSVersion extractCurrentVersion() {
         Matcher matcher = Pattern.compile("v\\d+_\\d+_R\\d+").matcher(Bukkit.getServer().getClass().getPackage().getName());
@@ -55,27 +59,25 @@ public enum NMSVersion {
             return null; // Unknown version
         }
     }
-
-
+    
     public static boolean isValid() {
         return CURRENT_VERSION != null;
     }
-
 
     public static NMSVersion get() {
         Preconditions.checkState(isValid(), "Current version is not valid");
         return CURRENT_VERSION;
     }
 
-
-    public static NMSManager createNMSManager() {
-        return get().nmsManagerConstructor.get();
-    }
-
-
     public static boolean isGreaterEqualThan(NMSVersion other) {
         return get().ordinal() >= other.ordinal();
     }
 
 
+    private interface NMSManagerConstructor {
+
+        NMSManager create(ItemPickupManager itemPickupManager, PacketController packetController);
+        
+    }
+    
 }

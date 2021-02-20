@@ -24,6 +24,7 @@ import me.filoghost.holographicdisplays.commands.subs.InsertlineCommand;
 import me.filoghost.holographicdisplays.commands.subs.ListCommand;
 import me.filoghost.holographicdisplays.commands.subs.MovehereCommand;
 import me.filoghost.holographicdisplays.commands.subs.NearCommand;
+import me.filoghost.holographicdisplays.commands.subs.QuickEditCommand;
 import me.filoghost.holographicdisplays.commands.subs.ReadimageCommand;
 import me.filoghost.holographicdisplays.commands.subs.ReadtextCommand;
 import me.filoghost.holographicdisplays.commands.subs.ReloadCommand;
@@ -32,48 +33,55 @@ import me.filoghost.holographicdisplays.commands.subs.SetlineCommand;
 import me.filoghost.holographicdisplays.commands.subs.TeleportCommand;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
+import me.filoghost.holographicdisplays.disk.Configuration;
+import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.object.InternalHologram;
+import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 public class HologramCommandManager extends SubCommandManager {
 
     private final List<HologramSubCommand> subCommands;
-    private final Map<Class<? extends HologramSubCommand>, HologramSubCommand> subCommandsByClass;
     
     private final HelpCommand helpCommand;
 
-    public HologramCommandManager(ConfigManager configManager) {
+    public HologramCommandManager(ConfigManager configManager, InternalHologramManager internalHologramManager, NMSManager nmsManager) {
         setName("holograms");
         subCommands = new ArrayList<>();
-        subCommandsByClass = new HashMap<>();
-        
-        registerSubCommand(new AddlineCommand(configManager));
-        registerSubCommand(new CreateCommand(configManager));
-        registerSubCommand(new DeleteCommand(configManager));
-        registerSubCommand(new EditCommand());
-        registerSubCommand(new ListCommand());
-        registerSubCommand(new NearCommand());
-        registerSubCommand(new TeleportCommand());
-        registerSubCommand(new MovehereCommand(configManager));
-        registerSubCommand(new AlignCommand(configManager));
-        registerSubCommand(new CopyCommand(configManager));
-        registerSubCommand(new ReloadCommand(configManager));
-        
-        registerSubCommand(new RemovelineCommand(configManager));
-        registerSubCommand(new SetlineCommand(configManager));
-        registerSubCommand(new InsertlineCommand(configManager));
-        registerSubCommand(new ReadtextCommand(configManager));
-        registerSubCommand(new ReadimageCommand(configManager));
-        registerSubCommand(new InfoCommand());
-        
-        registerSubCommand(new DebugCommand());
-        registerSubCommand(helpCommand = new HelpCommand());
+
+        subCommands.add(new AddlineCommand(this, internalHologramManager, configManager));
+        subCommands.add(new CreateCommand(internalHologramManager, configManager));
+        subCommands.add(new DeleteCommand(internalHologramManager, configManager));
+        subCommands.add(new EditCommand(this, internalHologramManager));
+        subCommands.add(new ListCommand(internalHologramManager));
+        subCommands.add(new NearCommand(internalHologramManager));
+        subCommands.add(new TeleportCommand(internalHologramManager));
+        subCommands.add(new MovehereCommand(internalHologramManager, configManager));
+        subCommands.add(new AlignCommand(internalHologramManager, configManager));
+        subCommands.add(new CopyCommand(internalHologramManager, configManager));
+        subCommands.add(new ReloadCommand(configManager, internalHologramManager));
+
+        subCommands.add(new RemovelineCommand(this, internalHologramManager, configManager));
+        subCommands.add(new SetlineCommand(this, internalHologramManager, configManager));
+        subCommands.add(new InsertlineCommand(this, internalHologramManager, configManager));
+        subCommands.add(new ReadtextCommand(internalHologramManager, configManager));
+        subCommands.add(new ReadimageCommand(internalHologramManager, configManager));
+        subCommands.add(new InfoCommand(this, internalHologramManager));
+
+        subCommands.add(new DebugCommand(nmsManager));
+        subCommands.add(helpCommand = new HelpCommand(this));
     }
 
     @Override
@@ -95,18 +103,46 @@ public class HologramCommandManager extends SubCommandManager {
         return null;
     }
 
+    public void sendQuickEditCommands(SubCommandContext commandContext, InternalHologram hologram) {
+        if (!Configuration.quickEditCommands) {
+            return;
+        }
+        if (!(commandContext.getSender() instanceof Player)) {
+            return;
+        }
+
+        ComponentBuilder message = new ComponentBuilder("EDIT LINES:").color(ChatColor.GRAY).bold(true).append("  ", FormatRetention.NONE);
+
+        for (HologramSubCommand subCommand : subCommands) {
+            if (!(subCommand instanceof QuickEditCommand)) {
+                continue;
+            }
+            
+            QuickEditCommand quickEditCommand = (QuickEditCommand) subCommand;
+
+            // Assume first argument is always "<hologram>" and remove it
+            String usageArgs = subCommand.getUsageArgs();
+            if (usageArgs != null && usageArgs.contains(" ")) {
+                usageArgs = usageArgs.substring(usageArgs.indexOf(" ") + 1);
+            } else {
+                usageArgs = "";
+            }
+
+            String usage = "/" + commandContext.getRootLabel() + " " + subCommand.getName() + " " + hologram + " ";
+            message.append("[" + quickEditCommand.getActionName() + "]").color(ChatColor.DARK_AQUA)
+                    .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
+                    .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(
+                            ChatColor.GRAY + "Click to insert in chat the highlighted part of the command:\n" +
+                                    ChatColor.YELLOW + usage + ChatColor.DARK_GRAY + usageArgs)));
+            message.append("  ", FormatRetention.NONE);
+        }
+
+        ((Player) commandContext.getSender()).spigot().sendMessage(message.create());
+    }
+
     @Override
     public Iterable<HologramSubCommand> getSubCommands() {
         return subCommands;
-    }
-
-    public void registerSubCommand(HologramSubCommand subCommand) {
-        subCommands.add(subCommand);
-        subCommandsByClass.put(subCommand.getClass(), subCommand);
-    }
-    
-    public HologramSubCommand getSubCommand(Class<? extends HologramSubCommand> subCommandClass) {
-        return subCommandsByClass.get(subCommandClass);
     }
 
     @Override
@@ -145,6 +181,6 @@ public class HologramCommandManager extends SubCommandManager {
         Bukkit.getLogger().log(Level.SEVERE, "Unhandled exception while executing /" + context.getRootLabel(), t);
         context.getSender().sendMessage(Colors.ERROR + "Internal error while executing command." 
                 + " Please look on the console for more details.");
-    }    
+    }
     
 }

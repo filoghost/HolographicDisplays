@@ -22,7 +22,6 @@ public class BungeeCleanupTask implements Runnable {
 
     @Override
     public void run() {
-        
         long now = System.currentTimeMillis();
         Iterator<Entry<String, BungeeServerInfo>> iter = BungeeServerTracker.getTrackedServers().entrySet().iterator();
         

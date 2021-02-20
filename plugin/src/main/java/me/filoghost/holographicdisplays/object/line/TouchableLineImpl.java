@@ -6,21 +6,21 @@
 package me.filoghost.holographicdisplays.object.line;
 
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
-import me.filoghost.holographicdisplays.object.CraftHologram;
+import me.filoghost.holographicdisplays.object.BaseHologram;
 import org.bukkit.World;
 
 /**
  * Useful class that implements TouchablePiece. The downside is that subclasses must extend this, and cannot extend other classes.
  * But all the current items are touchable.
  */
-public abstract class CraftTouchableLine extends CraftHologramLine {
+public abstract class TouchableLineImpl extends HologramLineImpl {
 
-    protected CraftTouchSlimeLine touchSlime;
+    protected TouchSlimeLineImpl touchSlime;
     private TouchHandler touchHandler;
 
     
-    protected CraftTouchableLine(double height, CraftHologram parent) {
-        super(height, parent);
+    protected TouchableLineImpl(BaseHologram parent) {
+        super(parent);
     }
     
     
@@ -29,7 +29,7 @@ public abstract class CraftTouchableLine extends CraftHologramLine {
         
         if (touchHandler != null && touchSlime == null && world != null) {
             // If the touch handler was null before and no entity has been spawned, spawn it now.
-            touchSlime = new CraftTouchSlimeLine(getParent(), this);
+            touchSlime = new TouchSlimeLineImpl(getParent(), this);
             touchSlime.spawn(world, x, y + (getHeight() / 2.0 - touchSlime.getHeight() / 2.0), z);
             
         } else if (touchHandler == null && touchSlime != null) {
@@ -46,20 +46,16 @@ public abstract class CraftTouchableLine extends CraftHologramLine {
 
 
     @Override
-    public void spawn(World world, double x, double y, double z) {
-        super.spawn(world, x, y, z);
-        
+    public void spawnEntities(World world, double x, double y, double z) {
         if (touchHandler != null) {
-            touchSlime = new CraftTouchSlimeLine(getParent(), this);
+            touchSlime = new TouchSlimeLineImpl(getParent(), this);
             touchSlime.spawn(world, x, y + (getHeight() / 2.0 - touchSlime.getHeight() / 2.0), z);
         }
     }
 
 
     @Override
-    public void despawn() {
-        super.despawn();
-        
+    public void despawnEntities() {
         if (touchSlime != null) {
             touchSlime.despawn();
             touchSlime = null;
@@ -75,7 +71,7 @@ public abstract class CraftTouchableLine extends CraftHologramLine {
     }
 
 
-    public CraftTouchSlimeLine getTouchSlime() {
+    public TouchSlimeLineImpl getTouchSlime() {
         return touchSlime;
     }
     

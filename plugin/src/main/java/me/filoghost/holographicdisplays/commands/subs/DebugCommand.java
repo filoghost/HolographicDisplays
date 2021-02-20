@@ -7,12 +7,12 @@ package me.filoghost.holographicdisplays.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.holographicdisplays.Colors;
-import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
+import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.object.NamedHologram;
-import me.filoghost.holographicdisplays.object.PluginHologram;
+import me.filoghost.holographicdisplays.object.APIHologram;
+import me.filoghost.holographicdisplays.object.InternalHologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -25,10 +25,14 @@ import java.util.Map.Entry;
 
 public class DebugCommand extends HologramSubCommand {
 
-    public DebugCommand() {
+    private final NMSManager nmsManager;
+    
+    public DebugCommand(NMSManager nmsManager) {
         super("debug");
         setShowInHelpCommand(false);
         setDescription("Displays information useful for debugging.");
+        
+        this.nmsManager = nmsManager;
     }
 
     @Override
@@ -40,7 +44,7 @@ public class DebugCommand extends HologramSubCommand {
             
             for (Chunk chunk : world.getLoadedChunks()) {
                 for (Entity entity : chunk.getEntities()) {
-                    NMSEntityBase nmsEntity = HolographicDisplays.getNMSManager().getNMSEntityBase(entity);
+                    NMSEntityBase nmsEntity = nmsManager.getNMSEntityBase(entity);
                     
                     if (nmsEntity == null) {
                         continue;
@@ -78,10 +82,10 @@ public class DebugCommand extends HologramSubCommand {
     }
 
     private String getHologramDisplayName(Hologram hologram) {
-        if (hologram instanceof NamedHologram) {
-            return ((NamedHologram) hologram).getName();
-        } else if (hologram instanceof PluginHologram) {
-            return ((PluginHologram) hologram).getOwner().getName() + "@" + Integer.toHexString(hologram.hashCode());
+        if (hologram instanceof InternalHologram) {
+            return ((InternalHologram) hologram).getName();
+        } else if (hologram instanceof APIHologram) {
+            return ((APIHologram) hologram).getOwner().getName() + "@" + Integer.toHexString(hologram.hashCode());
         } else {
             return hologram.toString();
         }

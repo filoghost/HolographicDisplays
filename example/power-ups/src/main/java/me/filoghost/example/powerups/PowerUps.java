@@ -26,7 +26,6 @@ public class PowerUps extends JavaPlugin implements Listener {
     
     @Override
     public void onEnable() {
-        
         if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
             getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
             getLogger().severe("*** This plugin will be disabled. ***");
@@ -35,26 +34,22 @@ public class PowerUps extends JavaPlugin implements Listener {
         }
         
         Bukkit.getPluginManager().registerEvents(this, this);
-        
     }
     
     
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        
         if (event.getEntityType() == EntityType.ZOMBIE) {
-
             // Remove normal drops and exp.
             event.getDrops().clear();
             event.setDroppedExp(0);
             
             // Spawn the floating item with a label.
-            final Hologram hologram = HologramsAPI.createHologram(this, event.getEntity().getLocation().add(0.0, 0.9, 0.0));
+            Hologram hologram = HologramsAPI.createHologram(this, event.getEntity().getLocation().add(0.0, 0.9, 0.0));
             hologram.appendTextLine(ChatColor.AQUA  + "" + ChatColor.BOLD + "Speed PowerUp");
             ItemLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
             
             icon.setPickupHandler((Player player) -> {
-                
                 // Play an effect.
                 player.playEffect(hologram.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
                 
@@ -63,9 +58,7 @@ public class PowerUps extends JavaPlugin implements Listener {
                 
                 // Delete the hologram.
                 hologram.delete();
-                
             });
-            
         }
     }
 }

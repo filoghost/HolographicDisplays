@@ -13,15 +13,16 @@ import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.ServerAddress;
 import org.bukkit.Bukkit;
 
-import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BungeeServerTracker {
+
+    private static final String PINGER_NOT_ENABLED_ERROR = "[Please enable pinger]";
     
-    private static Map<String, BungeeServerInfo> trackedServers = new ConcurrentHashMap<>();
+    private static final Map<String, BungeeServerInfo> trackedServers = new ConcurrentHashMap<>();
     private static int taskID = -1;
     
     public static void resetTrackedServers() {
@@ -34,7 +35,7 @@ public class BungeeServerTracker {
             info.setMotd(Configuration.pingerOfflineMotd);
             trackedServers.put(server, info);
             
-            if (!Configuration.pingerEnable) {
+            if (!Configuration.pingerEnabled) {
                 BungeeChannel.getInstance().askPlayerCount(server);
             }
         }
@@ -64,9 +65,8 @@ public class BungeeServerTracker {
     }
     
     public static String getMaxPlayers(String server) {
-        
-        if (!Configuration.pingerEnable) {
-            return "[Please enable pinger]";
+        if (!Configuration.pingerEnabled) {
+            return PINGER_NOT_ENABLED_ERROR;
         }
         
         BungeeServerInfo info = trackedServers.get(server);
@@ -81,9 +81,8 @@ public class BungeeServerTracker {
     }
     
     public static String getMotd1(String server) {
-        
-        if (!Configuration.pingerEnable) {
-            return "[Please enable pinger]";
+        if (!Configuration.pingerEnabled) {
+            return PINGER_NOT_ENABLED_ERROR;
         }
         
         BungeeServerInfo info = trackedServers.get(server);
@@ -98,9 +97,8 @@ public class BungeeServerTracker {
     }
     
     public static String getMotd2(String server) {
-        
-        if (!Configuration.pingerEnable) {
-            return "[Please enable pinger]";
+        if (!Configuration.pingerEnabled) {
+            return PINGER_NOT_ENABLED_ERROR;
         }
         
         BungeeServerInfo info = trackedServers.get(server);
@@ -115,9 +113,8 @@ public class BungeeServerTracker {
     }
     
     public static String getOnlineStatus(String server) {
-        
-        if (!Configuration.pingerEnable) {
-            return "[Please enable pinger]";
+        if (!Configuration.pingerEnabled) {
+            return PINGER_NOT_ENABLED_ERROR;
         }
         
         BungeeServerInfo info = trackedServers.get(server);
@@ -127,7 +124,7 @@ public class BungeeServerTracker {
         } else {
             // It was not tracked, add it.
             track(server);
-            return "0";
+            return Configuration.pingerStatusOffline;
         }
     }
 
@@ -141,52 +138,53 @@ public class BungeeServerTracker {
         }
         
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(HolographicDisplays.getInstance(), () -> {
-                
-            if (Configuration.pingerEnable) {
-                Bukkit.getScheduler().runTaskAsynchronously(HolographicDisplays.getInstance(), () -> {
-                    
-                    for (ServerAddress serverAddress : Configuration.pingerServers) {
-                        BungeeServerInfo serverInfo = getOrCreateServerInfo(serverAddress.getName());
-                        boolean displayOffline = false;
-                        
-                        try {
-                            PingResponse data = ServerPinger.fetchData(serverAddress, Configuration.pingerTimeout);
-                            
-                            if (data.isOnline()) {
-                                serverInfo.setOnline(true);
-                                serverInfo.setOnlinePlayers(data.getOnlinePlayers());
-                                serverInfo.setMaxPlayers(data.getMaxPlayers());
-                                serverInfo.setMotd(data.getMotd());
-                            } else {
-                                displayOffline = true;
-                            }
-                        } catch (SocketTimeoutException e) {
-                            displayOffline = true;
-                        } catch (UnknownHostException e) {
-                            Log.warning("Couldn't fetch data from " + serverAddress + ": unknown host address.");
-                            displayOffline = true;
-                        } catch (IOException e) {
-                            displayOffline = true;
-                        } catch (Throwable t) {
-                            displayOffline = true;
-                            Log.warning("Couldn't fetch data from " + serverAddress, t);
-                        }
-                        
-                        if (displayOffline) {
-                            serverInfo.setOnline(false);
-                            serverInfo.setOnlinePlayers(0);
-                            serverInfo.setMaxPlayers(0);
-                            serverInfo.setMotd(Configuration.pingerOfflineMotd);
-                        }
-                    }
-                });
-                
+            if (Configuration.pingerEnabled) {
+                runAsyncPinger();
             } else {
                 for (String server : trackedServers.keySet()) {
                     BungeeChannel.getInstance().askPlayerCount(server);
                 }
             }
 
-        }, 1, refreshSeconds * 20);
+        }, 1, refreshSeconds * 20L);
     }
+
+    private static void runAsyncPinger() {
+        Bukkit.getScheduler().runTaskAsynchronously(HolographicDisplays.getInstance(), () -> {
+            for (ServerAddress serverAddress : Configuration.pingerServers) {
+                BungeeServerInfo serverInfo = getOrCreateServerInfo(serverAddress.getName());
+                boolean displayOffline = false;
+                
+                try {
+                    PingResponse data = ServerPinger.fetchData(serverAddress, Configuration.pingerTimeout);
+                    
+                    if (data.isOnline()) {
+                        serverInfo.setOnline(true);
+                        serverInfo.setOnlinePlayers(data.getOnlinePlayers());
+                        serverInfo.setMaxPlayers(data.getMaxPlayers());
+                        serverInfo.setMotd(data.getMotd());
+                    } else {
+                        displayOffline = true;
+                    }
+                } catch (SocketTimeoutException e) {
+                    // Common error, avoid logging
+                    displayOffline = true;
+                } catch (UnknownHostException e) {
+                    Log.warning("Couldn't fetch data from " + serverAddress + ": unknown host address.");
+                    displayOffline = true;
+                } catch (Throwable t) {
+                    Log.warning("Couldn't fetch data from " + serverAddress + ".", t);
+                    displayOffline = true;
+                }
+                
+                if (displayOffline) {
+                    serverInfo.setOnline(false);
+                    serverInfo.setOnlinePlayers(0);
+                    serverInfo.setMaxPlayers(0);
+                    serverInfo.setMotd(Configuration.pingerOfflineMotd);
+                }
+            }
+        });
+    }
+
 }

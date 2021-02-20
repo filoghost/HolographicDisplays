@@ -12,13 +12,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
 public class ServerPinger {
 
-    public static PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws SocketTimeoutException, UnknownHostException, IOException {
+    public static PingResponse fetchData(final ServerAddress serverAddress, int timeout) throws IOException {
         Socket socket = null;
         DataOutputStream dataOut = null;
         DataInputStream dataIn = null;

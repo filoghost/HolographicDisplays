@@ -17,12 +17,12 @@ public class Placeholder {
     private final String textPlaceholder;
     
     // How many tenths of second between each refresh.
-    private int tenthsToRefresh;
+    private final int tenthsToRefresh;
     
     // This is the current replacement for this placeholder.
     private String currentReplacement;
     
-    private PlaceholderReplacer replacer;
+    private final PlaceholderReplacer replacer;
     
     public Placeholder(Plugin owner, String textPlaceholder, double refreshRate, PlaceholderReplacer replacer) {
         this.owner = owner;

@@ -35,7 +35,7 @@ public class Configuration {
 
     public static int bungeeRefreshSeconds;
     public static boolean useRedisBungee;
-    public static boolean pingerEnable;
+    public static boolean pingerEnabled;
     public static int pingerTimeout;
     public static String pingerOfflineMotd;
     public static String pingerStatusOnline;
@@ -55,7 +55,7 @@ public class Configuration {
         
         bungeeRefreshSeconds = parseBungeeRefreshInterval(config.bungeeRefreshSeconds);
         useRedisBungee = config.useRedisBungee;
-        pingerEnable = config.pingerEnable;
+        pingerEnabled = config.pingerEnable;
         pingerTimeout = parsePingerTimeout(config.pingerTimeout);
         pingerOfflineMotd = StringConverter.toReadableFormat(config.pingerOfflineMotd);
         pingerStatusOnline = StringConverter.toReadableFormat(config.pingerStatusOnline);
@@ -63,7 +63,7 @@ public class Configuration {
         pingerTrimMotd = config.pingerTrimMotd;
         
         pingerServers = new ArrayList<>();
-        if (pingerEnable) {
+        if (pingerEnabled) {
             for (String singleServer : config.pingerServers) {
                 ServerAddress serverAddress = parseServerAddress(singleServer);
                 if (serverAddress != null) {

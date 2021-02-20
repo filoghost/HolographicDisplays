@@ -10,6 +10,7 @@ import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.common.Utils;
+import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import net.minecraft.server.v1_8_R3.AxisAlignedBB;
 import net.minecraft.server.v1_8_R3.DamageSource;
@@ -28,30 +29,32 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = ReflectField.lookup(int.class, EntityArmorStand.class, "bi");
     private static final ReflectMethod<Void> SET_MARKER_METHOD = ReflectMethod.lookup(void.class, EntityArmorStand.class, "n", boolean.class);
 
-    private HologramLine parentPiece;
+    private final HologramLine parentPiece;
+    private final PacketController packetController;
     private String customName;
     
-    public EntityNMSArmorStand(World world, HologramLine parentPiece) {
+    public EntityNMSArmorStand(World world, HologramLine parentPiece, PacketController packetController) {
         super(world);
-        setInvisible(true);
-        setSmall(true);
-        setArms(false);
-        setGravity(true);
-        setBasePlate(true);
+        super.setInvisible(true);
+        super.setSmall(true);
+        super.setArms(false);
+        super.setGravity(true);
+        super.setBasePlate(true);
         try {
             SET_MARKER_METHOD.invoke(this, true);
         } catch (Throwable t) {
             DebugLogger.cannotSetArmorStandAsMarker(t);
             // It will still work, but the offset will be wrong.
         }
-        this.parentPiece = parentPiece;
         try {
             DISABLED_SLOTS_FIELD.set(this, Integer.MAX_VALUE);
         } catch (ReflectiveOperationException e) {
             // There's still the overridden method.
         }
-        forceSetBoundingBox(new NullBoundingBox());
         
+        this.parentPiece = parentPiece;
+        this.packetController = packetController;
+        forceSetBoundingBox(new NullBoundingBox());
         this.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet.
     }
     
@@ -185,9 +188,9 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
     
     @Override
-    public void setLocationNMS(double x, double y, double z, boolean broadcastLocationPacket) {
+    public void setLocationNMS(double x, double y, double z) {
         super.setPosition(x, y, z);
-        if (broadcastLocationPacket) {
+        if (packetController.shouldBroadcastLocationPacket()) {
             broadcastLocationPacketNMS();
         }
     }

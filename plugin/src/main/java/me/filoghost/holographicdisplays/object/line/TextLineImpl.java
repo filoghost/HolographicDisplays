@@ -5,12 +5,11 @@
  */
 package me.filoghost.holographicdisplays.object.line;
 
-import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import me.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
-import me.filoghost.holographicdisplays.object.CraftHologram;
+import me.filoghost.holographicdisplays.object.BaseHologram;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import org.apache.commons.lang.ArrayUtils;
@@ -21,18 +20,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class CraftTextLine extends CraftTouchableLine implements TextLine {
+public class TextLineImpl extends TouchableLineImpl implements TextLine {
 
     private String text;
     private List<RelativePlaceholder> relativePlaceholders;
     private NMSArmorStand nmsNameable;
     
     
-    public CraftTextLine(CraftHologram parent, String text) {
-        super(0.23, parent);
+    public TextLineImpl(BaseHologram parent, String text) {
+        super(parent);
         setText(text);
     }
-    
     
     @Override
     public String getText() {
@@ -85,10 +83,10 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
     }
 
     @Override
-    public void spawn(World world, double x, double y, double z) {
-        super.spawn(world, x, y, z);
+    public void spawnEntities(World world, double x, double y, double z) {
+        super.spawnEntities(world, x, y, z);
             
-        nmsNameable = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this, HolographicDisplays.hasProtocolLibHook());
+        nmsNameable = getNMSManager().spawnNMSArmorStand(world, x, y + getTextOffset(), z, this);
 
         if (text != null && !text.isEmpty()) {
             nmsNameable.setCustomNameNMS(text);
@@ -97,8 +95,8 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 
     
     @Override
-    public void despawn() {
-        super.despawn();
+    public void despawnEntities() {
+        super.despawnEntities();
         
         if (nmsNameable != null) {
             nmsNameable.killEntityNMS();
@@ -106,19 +104,25 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
         }
     }
     
-    
-    @Override
     public Collection<RelativePlaceholder> getRelativePlaceholders() {
         return relativePlaceholders;
     }
 
-    
+    public boolean hasRelativePlaceholders() {
+        return getRelativePlaceholders() != null && !getRelativePlaceholders().isEmpty();
+    }
+
+    @Override
+    public double getHeight() {
+        return 0.23;
+    }
+
     @Override
     public void teleport(double x, double y, double z) {
         super.teleport(x, y, z);
         
         if (nmsNameable != null) {
-            nmsNameable.setLocationNMS(x, y + getTextOffset(), z, HolographicDisplays.hasProtocolLibHook());
+            nmsNameable.setLocationNMS(x, y + getTextOffset(), z);
         }
     }
     
@@ -145,7 +149,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 
     @Override
     public String toString() {
-        return "CraftTextLine [text=" + text + "]";
+        return "TextLine [text=" + text + "]";
     }
     
 }

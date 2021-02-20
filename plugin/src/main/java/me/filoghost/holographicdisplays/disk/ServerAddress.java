@@ -7,9 +7,9 @@ package me.filoghost.holographicdisplays.disk;
 
 public class ServerAddress {
     
-    private String name;
-    private String ip;
-    private int port;
+    private final String name;
+    private final String ip;
+    private final int port;
     
     public ServerAddress(String name, String ip, int port) {
         this.name = name;

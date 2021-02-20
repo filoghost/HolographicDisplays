@@ -14,9 +14,10 @@ import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.HologramLineParser;
 import me.filoghost.holographicdisplays.disk.HologramLoadException;
-import me.filoghost.holographicdisplays.event.NamedHologramEditedEvent;
-import me.filoghost.holographicdisplays.object.NamedHologram;
-import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
+import me.filoghost.holographicdisplays.event.InternalHologramEditEvent;
+import me.filoghost.holographicdisplays.object.InternalHologram;
+import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
 import me.filoghost.holographicdisplays.util.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,13 +32,15 @@ import java.util.List;
 
 public class ReadtextCommand extends LineEditingCommand {
 
+    private final InternalHologramManager internalHologramManager;
     private final ConfigManager configManager;
     
-    public ReadtextCommand(ConfigManager configManager) {
+    public ReadtextCommand(InternalHologramManager internalHologramManager, ConfigManager configManager) {
         super("readtext", "readlines");
         setMinArgs(2);
         setUsageArgs("<hologram> <fileWithExtension>");
-        
+
+        this.internalHologramManager = internalHologramManager;
         this.configManager = configManager;
     }
 
@@ -57,11 +60,11 @@ public class ReadtextCommand extends LineEditingCommand {
     
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        NamedHologram hologram = HologramCommandValidate.getNamedHologram(args[0]);
+        InternalHologram hologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[0]);
         String fileName = args[1];
         
         try {
-            Path targetFile = HologramCommandValidate.getUserReadableFile(fileName);
+            Path targetFile = HologramCommandValidate.getUserReadableFile(configManager.getRootDataFolder(), fileName);
             List<String> serializedLines = Files.readAllLines(targetFile);
             
             int linesAmount = serializedLines.size();
@@ -70,10 +73,10 @@ public class ReadtextCommand extends LineEditingCommand {
                 linesAmount = 40;
             }
             
-            List<CraftHologramLine> linesToAdd = new ArrayList<>();
+            List<HologramLineImpl> linesToAdd = new ArrayList<>();
             for (int i = 0; i < linesAmount; i++) {
                 try {
-                    CraftHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i), true);
+                    HologramLineImpl line = HologramLineParser.parseLine(hologram, serializedLines.get(i), true);
                     linesToAdd.add(line);
                 } catch (HologramLoadException e) {
                     throw new CommandException("Error at line " + (i + 1) + ": " + e.getMessage());
@@ -91,8 +94,8 @@ public class ReadtextCommand extends LineEditingCommand {
                 Messages.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + context.getRootLabel() + " readimage.");
             }
             
-            sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram!");
-            Bukkit.getPluginManager().callEvent(new NamedHologramEditedEvent(hologram));
+            sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram.");
+            Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
             
         } catch (IOException e) {
             throw new CommandException("I/O exception while reading the file. Is it in use?");

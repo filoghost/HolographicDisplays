@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 public class HologramTouchHandlerAdapter implements me.filoghost.holographicdisplays.api.handler.TouchHandler {
 
-    protected TouchHandler oldHandler;
-    private Hologram hologram;
+    private final TouchHandler oldHandler;
+    private final Hologram hologram;
     
     public HologramTouchHandlerAdapter(Hologram hologram, TouchHandler oldHandler) {
         this.hologram = hologram;

@@ -3,35 +3,100 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.bridge.protocollib.current;
+package me.filoghost.holographicdisplays.bridge.protocollib;
 
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import me.filoghost.holographicdisplays.bridge.protocollib.current.packet.AbstractPacket;
-import me.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerAttachEntity;
-import me.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerEntityDestroy;
-import me.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerEntityMetadata;
-import me.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerMount;
-import me.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerSpawnEntity;
-import me.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerSpawnEntity.ObjectTypes;
-import me.filoghost.holographicdisplays.bridge.protocollib.current.packet.WrapperPlayServerSpawnEntityLiving;
+import me.filoghost.holographicdisplays.bridge.protocollib.packet.AbstractPacket;
+import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerAttachEntity;
+import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerEntityDestroy;
+import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerEntityMetadata;
+import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerMount;
+import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntity;
+import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntity.ObjectTypes;
+import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntityLiving;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
+import me.filoghost.holographicdisplays.object.BaseHologram;
+import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
+import me.filoghost.holographicdisplays.object.line.ItemLineImpl;
+import me.filoghost.holographicdisplays.object.line.TextLineImpl;
+import me.filoghost.holographicdisplays.object.line.TouchSlimeLineImpl;
+import me.filoghost.holographicdisplays.object.line.TouchableLineImpl;
 import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PacketHelper {
+class PacketSender {
     
-    private MetadataHelper metadataHelper;
+    private final MetadataHelper metadataHelper;
     
-    public PacketHelper(MetadataHelper metadataHelper) {
+    public PacketSender(MetadataHelper metadataHelper) {
         this.metadataHelper = metadataHelper;
     }
+
+    public void sendDestroyEntitiesPacket(Player player, BaseHologram hologram) {
+        List<Integer> ids = new ArrayList<>();
+        for (HologramLineImpl line : hologram.getLinesUnsafe()) {
+            if (line.isSpawned()) {
+                for (int id : line.getEntitiesIDs()) {
+                    ids.add(id);
+                }
+            }
+        }
+
+        if (!ids.isEmpty()) {
+            sendDestroyEntitiesPacket(player, ids);
+        }
+    }
+
+    public void sendCreateEntitiesPacket(Player player, BaseHologram hologram) {
+        for (HologramLineImpl line : hologram.getLinesUnsafe()) {
+            sendCreateEntitiesPacket(player, line);
+        }
+    }
+
+    private void sendCreateEntitiesPacket(Player player, HologramLineImpl line) {
+        if (!line.isSpawned()) {
+            return;
+        }
+
+        TouchableLineImpl touchableLine;
+
+        if (line instanceof TextLineImpl) {
+            TextLineImpl textLine = (TextLineImpl) line;
+            touchableLine = textLine;
+
+            sendSpawnArmorStandPacket(player, (NMSArmorStand) textLine.getNmsNameable());
+
+        } else if (line instanceof ItemLineImpl) {
+            ItemLineImpl itemLine = (ItemLineImpl) line;
+            touchableLine = itemLine;
+
+            sendSpawnArmorStandPacket(player, (NMSArmorStand) itemLine.getNmsVehicle());
+            sendSpawnItemPacket(player, itemLine.getNmsItem());
+            sendVehicleAttachPacket(player, itemLine.getNmsVehicle(), itemLine.getNmsItem());
+            sendItemMetadataPacket(player, itemLine.getNmsItem());
+
+        } else {
+            throw new IllegalArgumentException("Unexpected hologram line type: " + line.getClass().getName());
+        }
+
+        if (touchableLine.getTouchSlime() != null) {
+            TouchSlimeLineImpl touchSlime = touchableLine.getTouchSlime();
+
+            if (touchSlime.isSpawned()) {
+                sendSpawnArmorStandPacket(player, (NMSArmorStand) touchSlime.getNmsVehicle());
+                sendSpawnSlimePacket(player, touchSlime.getNmsSlime());
+                sendVehicleAttachPacket(player, touchSlime.getNmsVehicle(), touchSlime.getNmsSlime());
+            }
+        }
+    }
     
-    public void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {        
+    private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {        
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1)) {
             AbstractPacket spawnPacket;
             if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_14_R1)) {
@@ -66,13 +131,13 @@ public class PacketHelper {
     }
     
     
-    public void sendSpawnItemPacket(Player receiver, NMSItem item) {
+    private void sendSpawnItemPacket(Player receiver, NMSItem item) {
         AbstractPacket packet = new WrapperPlayServerSpawnEntity(item.getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
         packet.sendPacket(receiver);
     }
     
     
-    public void sendSpawnSlimePacket(Player receiver, NMSSlime slime) {
+    private void sendSpawnSlimePacket(Player receiver, NMSSlime slime) {
         AbstractPacket spawnPacket = new WrapperPlayServerSpawnEntityLiving(slime.getBukkitEntityNMS());
         spawnPacket.sendPacket(receiver);
         
@@ -90,7 +155,7 @@ public class PacketHelper {
     }
     
     
-    public void sendItemMetadataPacket(Player receiver, NMSItem item) {
+    private void sendItemMetadataPacket(Player receiver, NMSItem item) {
         WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata();
         
         WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
@@ -102,7 +167,7 @@ public class PacketHelper {
     }
     
     
-    public void sendVehicleAttachPacket(Player receiver, NMSEntityBase vehicle, NMSEntityBase passenger) {        
+    private void sendVehicleAttachPacket(Player receiver, NMSEntityBase vehicle, NMSEntityBase passenger) {        
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
             WrapperPlayServerMount packet = new WrapperPlayServerMount();
             packet.setVehicleId(vehicle.getIdNMS());
@@ -117,7 +182,7 @@ public class PacketHelper {
     }
     
     
-    public void sendDestroyEntitiesPacket(Player player, List<Integer> ids) {
+    private void sendDestroyEntitiesPacket(Player player, List<Integer> ids) {
         WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
         packet.setEntities(ids);
         packet.sendPacket(player);

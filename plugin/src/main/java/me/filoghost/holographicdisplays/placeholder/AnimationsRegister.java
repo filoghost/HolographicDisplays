@@ -5,11 +5,12 @@
  */
 package me.filoghost.holographicdisplays.placeholder;
 
+import me.filoghost.fcommons.config.exception.ConfigSaveException;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.common.DebugLogger;
+import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.StringConverter;
-import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,13 +25,13 @@ public class AnimationsRegister {
     // <fileName, lines>
     private final static Map<String, Placeholder> animations = new HashMap<>();
     
-    public static void loadAnimations(Plugin plugin) throws IOException {
+    public static void loadAnimations(ConfigManager configManager) throws IOException, ConfigSaveException {
         animations.clear();
-        
-        Path animationFolder = HolographicDisplays.getDataFolderPath().resolve("animations");
+        Path animationFolder = configManager.getAnimationsFolder();
+
         if (!Files.isDirectory(animationFolder)) {
             Files.createDirectories(animationFolder);
-            plugin.saveResource("animations/example.txt", false);
+            configManager.getExampleAnimationLoader().createDefault();
             return;
         }
         
@@ -51,7 +52,6 @@ public class AnimationsRegister {
 
             String firstLine = lines.get(0).trim();
             if (firstLine.toLowerCase().startsWith("speed:")) {
-
                 // Do not consider it.
                 lines.remove(0);
 

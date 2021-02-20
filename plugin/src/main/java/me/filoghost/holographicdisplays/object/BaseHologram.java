@@ -7,11 +7,16 @@ package me.filoghost.holographicdisplays.object;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.Hologram;
+import me.filoghost.holographicdisplays.api.VisibilityManager;
+import me.filoghost.holographicdisplays.api.line.HologramLine;
+import me.filoghost.holographicdisplays.api.line.ItemLine;
+import me.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
-import me.filoghost.holographicdisplays.object.line.CraftItemLine;
-import me.filoghost.holographicdisplays.object.line.CraftTextLine;
+import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
+import me.filoghost.holographicdisplays.object.line.ItemLineImpl;
+import me.filoghost.holographicdisplays.object.line.TextLineImpl;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -21,10 +26,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * This class is only used by the plugin itself. Do not attempt to use it.
- */
-public class CraftHologram implements Hologram {
+public abstract class BaseHologram implements Hologram {
+    
+    private final NMSManager nmsManager;
     
     // Position variables.
     private World world;
@@ -32,21 +36,23 @@ public class CraftHologram implements Hologram {
     private int chunkX, chunkZ;
     
     // The entities that represent lines.
-    private final List<CraftHologramLine> lines;
+    private final List<HologramLineImpl> lines;
     
-    private CraftVisibilityManager visibilityManager;
+    private final VisibilityManager visibilityManager;
     private boolean allowPlaceholders;
-    private long creationTimestamp;
+    private final long creationTimestamp;
     private boolean deleted;
     
-    public CraftHologram(Location location) {
+    public BaseHologram(Location location, NMSManager nmsManager) {
         Preconditions.notNull(location, "location");
-        updateLocation(location.getWorld(), location.getX(), location.getY(), location.getZ());
+        setLocation(location.getWorld(), location.getX(), location.getY(), location.getZ());
+
+        this.nmsManager = nmsManager;
+        this.lines = new ArrayList<>();
+        this.creationTimestamp = System.currentTimeMillis();
+        this.visibilityManager = new VisibilityManagerImpl(this);
         
-        lines = new ArrayList<>();
-        allowPlaceholders = false;
-        creationTimestamp = System.currentTimeMillis();
-        visibilityManager = new CraftVisibilityManager(this);
+        this.allowPlaceholders = false;
     }
     
     public boolean isInChunk(Chunk chunk) {
@@ -78,7 +84,7 @@ public class CraftHologram implements Hologram {
         return new Location(world, x, y, z);
     }
     
-    private void updateLocation(World world, double x, double y, double z) {
+    private void setLocation(World world, double x, double y, double z) {
         Preconditions.notNull(world, "world");
         
         this.world = world;
@@ -94,60 +100,59 @@ public class CraftHologram implements Hologram {
         return deleted;
     }
     
-    @Override
-    public void delete() {
+    public void setDeleted() {
         if (!deleted) {
             deleted = true;
             clearLines();
         }
     }
     
-    public List<CraftHologramLine> getLinesUnsafe() {
+    public List<HologramLineImpl> getLinesUnsafe() {
         return lines;
     }
     
     @Override
-    public CraftHologramLine getLine(int index) {
+    public HologramLine getLine(int index) {
         return lines.get(index);
     }
     
     @Override
-    public CraftTextLine appendTextLine(String text) {
-        Preconditions.checkState(!deleted, "hologram already deleted");
-        
-        CraftTextLine line = new CraftTextLine(this, text);
+    public TextLine appendTextLine(String text) {
+        checkState();
+
+        TextLineImpl line = new TextLineImpl(this, text);
         lines.add(line);
         refreshSingleLines();
         return line;
     }
     
     @Override
-    public CraftItemLine appendItemLine(ItemStack itemStack) {
-        Preconditions.checkState(!deleted, "hologram already deleted");
+    public ItemLine appendItemLine(ItemStack itemStack) {
+        checkState();
         Preconditions.notNull(itemStack, "itemStack");
         
-        CraftItemLine line = new CraftItemLine(this, itemStack);
+        ItemLineImpl line = new ItemLineImpl(this, itemStack);
         lines.add(line);
         refreshSingleLines();
         return line;
     }
     
     @Override
-    public CraftTextLine insertTextLine(int index, String text) {
-        Preconditions.checkState(!deleted, "hologram already deleted");
-        
-        CraftTextLine line = new CraftTextLine(this, text);
+    public TextLine insertTextLine(int index, String text) {
+        checkState();
+
+        TextLineImpl line = new TextLineImpl(this, text);
         lines.add(index, line);
         refreshSingleLines();
         return line;
     }
     
     @Override
-    public CraftItemLine insertItemLine(int index, ItemStack itemStack) {
-        Preconditions.checkState(!deleted, "hologram already deleted");
+    public ItemLine insertItemLine(int index, ItemStack itemStack) {
+        checkState();
         Preconditions.notNull(itemStack, "itemStack");
         
-        CraftItemLine line = new CraftItemLine(this, itemStack);
+        ItemLineImpl line = new ItemLineImpl(this, itemStack);
         lines.add(index, line);
         refreshSingleLines();
         return line;
@@ -155,15 +160,15 @@ public class CraftHologram implements Hologram {
     
     @Override
     public void removeLine(int index) {
-        Preconditions.checkState(!deleted, "hologram already deleted");
-        
+        checkState();
+
         lines.remove(index).despawn();
         refreshSingleLines();
     }
     
-    public void removeLine(CraftHologramLine line) {
-        Preconditions.checkState(!deleted, "hologram already deleted");
-        
+    public void removeLine(HologramLineImpl line) {
+        checkState();
+
         lines.remove(line);
         line.despawn();
         refreshSingleLines();
@@ -171,7 +176,7 @@ public class CraftHologram implements Hologram {
     
     @Override
     public void clearLines() {
-        for (CraftHologramLine line : lines) {
+        for (HologramLineImpl line : lines) {
             line.despawn();
         }
         
@@ -191,7 +196,7 @@ public class CraftHologram implements Hologram {
         
         double height = 0.0;
         
-        for (CraftHologramLine line : lines) {
+        for (HologramLineImpl line : lines) {
             height += line.getHeight();
         }
         
@@ -200,10 +205,9 @@ public class CraftHologram implements Hologram {
     }
     
     @Override
-    public CraftVisibilityManager getVisibilityManager() {
+    public VisibilityManager getVisibilityManager() {
         return visibilityManager;
     }
-    
     
     @Override
     public long getCreationTimestamp() {
@@ -224,7 +228,10 @@ public class CraftHologram implements Hologram {
         this.allowPlaceholders = allowPlaceholders;
         refreshAll();
     }
-    
+
+    public NMSManager getNMSManager() {
+        return nmsManager;
+    }
 
     public void refreshAll() {
         if (world.isChunkLoaded(chunkX, chunkZ)) {
@@ -234,12 +241,10 @@ public class CraftHologram implements Hologram {
     
     public void refreshSingleLines() {
         if (world.isChunkLoaded(chunkX, chunkZ)) {
-            
             double currentY = this.y;
             boolean first = true;
             
-            for (CraftHologramLine line : lines) {
-                
+            for (HologramLineImpl line : lines) {
                 currentY -= line.getHeight();
                 
                 if (first) {
@@ -252,8 +257,8 @@ public class CraftHologram implements Hologram {
                     line.teleport(x, currentY, z);
                 } else {
                     line.spawn(world, x, currentY, z);
-                    if (allowPlaceholders && line instanceof CraftTextLine) {
-                        PlaceholdersManager.trackIfNecessary((CraftTextLine) line);
+                    if (allowPlaceholders && line instanceof TextLineImpl) {
+                        PlaceholdersManager.trackIfNecessary((TextLineImpl) line);
                     }
                 }
             }
@@ -261,18 +266,17 @@ public class CraftHologram implements Hologram {
     }
     
     /**
-     * Forces the entities to spawn, without checking if the chunk is loaded.
+     * Forces the entities to (re)spawn, without checking if the chunk is loaded.
      */
     public void spawnEntities() {
-        Preconditions.checkState(!deleted, "hologram already deleted");
-        
+        checkState();
+
         despawnEntities();
 
         double currentY = this.y;
         boolean first = true;
         
-        for (CraftHologramLine line : lines) {
-            
+        for (HologramLineImpl line : lines) {
             currentY -= line.getHeight();
             
             if (first) {
@@ -282,17 +286,14 @@ public class CraftHologram implements Hologram {
             }
             
             line.spawn(world, x, currentY, z);
-            if (allowPlaceholders && line instanceof CraftTextLine) {
-                PlaceholdersManager.trackIfNecessary((CraftTextLine) line);
+            if (allowPlaceholders && line instanceof TextLineImpl) {
+                PlaceholdersManager.trackIfNecessary((TextLineImpl) line);
             }
         }
     }
     
-    /**
-     * Called by the PluginHologramManager when the chunk is unloaded.
-     */
     public void despawnEntities() {
-        for (CraftHologramLine piece : lines) {
+        for (HologramLineImpl piece : lines) {
             piece.despawn();
         }
     }
@@ -305,10 +306,10 @@ public class CraftHologram implements Hologram {
     
     @Override
     public void teleport(World world, double x, double y, double z) {
-        Preconditions.checkState(!deleted, "hologram already deleted");
+        checkState();
         Preconditions.notNull(world, "world");
         
-        updateLocation(world, x, y, z);
+        setLocation(world, x, y, z);
         
         if (this.world != world) {
             despawnEntities();
@@ -319,8 +320,7 @@ public class CraftHologram implements Hologram {
         double currentY = y;
         boolean first = true;
         
-        for (CraftHologramLine line : lines) {
-            
+        for (HologramLineImpl line : lines) {
             if (!line.isSpawned()) {
                 continue;
             }
@@ -337,15 +337,18 @@ public class CraftHologram implements Hologram {
         }
     }
 
+    private void checkState() {
+        Preconditions.checkState(!deleted, "hologram already deleted");
+    }
+
     @Override
     public String toString() {
-        return "CraftHologram [world=" + world + ", x=" + x + ", y=" + y + ", z=" + z + ", lines=" + lines + ", deleted=" + deleted + "]";
+        return "BaseHologram [world=" + world + ", x=" + x + ", y=" + y + ", z=" + z + ", lines=" + lines + ", deleted=" + deleted + "]";
     }
 
     /*
-     * About equals() and hashcode()
-     * Two holograms can never be equal. Even if they have the same position and the same elements, they are still two different objects.
-     * The equals and hashcode methods are not overridden, two holograms are equal only if they have the same memory address.
+     * Object.equals() and Object.hashCode() are not overridden:
+     * two holograms are equal only if they are the same exact instance.
      */
     
 }

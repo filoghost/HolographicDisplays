@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.bridge.protocollib.current;
+package me.filoghost.holographicdisplays.bridge.protocollib;
 
 import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.events.PacketContainer;
@@ -16,7 +16,7 @@ import com.comphenix.protocol.wrappers.BukkitConverters;
 
 import java.util.Map;
 
-public class DebugHelper {
+class DebugHelper {
     
     private static final int HEX_DUMP_THRESHOLD = 256;
     

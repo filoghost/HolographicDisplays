@@ -18,10 +18,9 @@ public class PingResponse
     private int maxPlayers;
 
     public PingResponse(String jsonString, ServerAddress address) {
-        
         if (jsonString == null || jsonString.isEmpty()) {
             motd = "Invalid ping response";
-            DebugLogger.warning("Received empty Json response from IP \"" + address.toString() + "\"!");
+            DebugLogger.warning("Received empty Json response from IP \"" + address.toString() + "\".");
             return;
         }
         

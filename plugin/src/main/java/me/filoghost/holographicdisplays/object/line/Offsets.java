@@ -11,15 +11,13 @@ package me.filoghost.holographicdisplays.object.line;
  */
 public class Offsets {
     
-    public static final double
+    // A single armor stand.
+    public static final double ARMOR_STAND_ALONE = -0.29;
         
-        // A single armor stand.
-        ARMOR_STAND_ALONE = -0.29,
-        
-        // An armor stand holding an item.
-        ARMOR_STAND_WITH_ITEM = 0,
+    // An armor stand holding an item.
+    public static final double ARMOR_STAND_WITH_ITEM = 0;
     
-        // An armor stand holding a slime.
-        ARMOR_STAND_WITH_SLIME = 0;    
+    // An armor stand holding a slime.
+    public static final double ARMOR_STAND_WITH_SLIME = 0;    
 
 }

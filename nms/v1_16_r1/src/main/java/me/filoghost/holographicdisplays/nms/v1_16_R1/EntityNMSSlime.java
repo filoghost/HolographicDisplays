@@ -29,7 +29,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "vehicle");
 
-    private HologramLine parentPiece;
+    private final HologramLine parentPiece;
     private CraftEntity customBukkitEntity;
     
     public EntityNMSSlime(World world, HologramLine parentPiece) {

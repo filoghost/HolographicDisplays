@@ -6,29 +6,28 @@
 package me.filoghost.holographicdisplays.object.line;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import me.filoghost.holographicdisplays.object.CraftHologram;
+import me.filoghost.holographicdisplays.object.BaseHologram;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
-public class CraftItemLine extends CraftTouchableLine implements ItemLine {
-
+public class ItemLineImpl extends TouchableLineImpl implements ItemLine {
+    
     private ItemStack itemStack;
     private PickupHandler pickupHandler;
     
     private NMSItem nmsItem;
     private NMSArmorStand nmsVehicle;
     
-    public CraftItemLine(CraftHologram parent, ItemStack itemStack) {
-        super(0.7, parent);
+    public ItemLineImpl(BaseHologram parent, ItemStack itemStack) {
+        super(parent);
         setItemStack(itemStack);
     }
     
@@ -69,14 +68,12 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
     }
 
     @Override
-    public void spawn(World world, double x, double y, double z) {
-        super.spawn(world, x, y, z);
+    public void spawnEntities(World world, double x, double y, double z) {
+        super.spawnEntities(world, x, y, z);
         
         if (itemStack != null) {
-            double offset = getItemOffset();
-            
-            nmsItem = HolographicDisplays.getNMSManager().spawnNMSItem(world, x, y + offset, z, this, itemStack, HolographicDisplays.getMainListener());
-            nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this, HolographicDisplays.hasProtocolLibHook());
+            nmsItem = getNMSManager().spawnNMSItem(world, x, y + getItemOffset(), z, this, itemStack);
+            nmsVehicle = getNMSManager().spawnNMSArmorStand(world, x, y + getItemOffset(), z, this);
 
             nmsItem.setPassengerOfNMS(nmsVehicle);
         }
@@ -84,8 +81,8 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 
     
     @Override
-    public void despawn() {
-        super.despawn();
+    public void despawnEntities() {
+        super.despawnEntities();
         
         if (nmsVehicle != null) {
             nmsVehicle.killEntityNMS();
@@ -99,17 +96,19 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
     }
 
     @Override
+    public double getHeight() {
+        return 0.7;
+    }
+
+    @Override
     public void teleport(double x, double y, double z) {
         super.teleport(x, y, z);
-        
-        double offset = getItemOffset();
-        
+
         if (nmsVehicle != null) {
-            nmsVehicle.setLocationNMS(x, y + offset, z, HolographicDisplays.hasProtocolLibHook());
+            nmsVehicle.setLocationNMS(x, y + getItemOffset(), z);
         }
-        
         if (nmsItem != null) {
-            nmsItem.setLocationNMS(x, y + offset, z);
+            nmsItem.setLocationNMS(x, y + getItemOffset(), z);
         }
     }
 
@@ -140,7 +139,7 @@ public class CraftItemLine extends CraftTouchableLine implements ItemLine {
 
     @Override
     public String toString() {
-        return "CraftItemLine [itemStack=" + itemStack + ", pickupHandler=" + pickupHandler + "]";
+        return "ItemLine [itemStack=" + itemStack + ", pickupHandler=" + pickupHandler + "]";
     }
     
 }

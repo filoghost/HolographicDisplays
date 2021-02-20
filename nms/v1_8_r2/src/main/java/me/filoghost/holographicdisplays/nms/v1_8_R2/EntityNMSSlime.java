@@ -27,7 +27,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     private static final ReflectField<Double> RIDER_PITCH_DELTA = ReflectField.lookup(double.class, Entity.class, "ar");
     private static final ReflectField<Double> RIDER_YAW_DELTA = ReflectField.lookup(double.class, Entity.class, "as");
 
-    private HologramLine parentPiece;
+    private final HologramLine parentPiece;
     
     public EntityNMSSlime(World world, HologramLine parentPiece) {
         super(world);

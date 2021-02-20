@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.nms.v1_16_R2;
 
 import me.filoghost.holographicdisplays.api.line.HologramLine;
+import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.common.Utils;
 import net.minecraft.server.v1_16_R2.AxisAlignedBB;
@@ -29,11 +30,12 @@ import org.bukkit.craftbukkit.v1_16_R2.util.CraftChatMessage;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
 
-    private HologramLine parentPiece;
+    private final HologramLine parentPiece;
+    private final PacketController packetController;
     private CraftEntity customBukkitEntity;
     private String customName;
 
-    public EntityNMSArmorStand(World world, HologramLine parentPiece) {
+    public EntityNMSArmorStand(World world, HologramLine parentPiece, PacketController packetController) {
         super(EntityTypes.ARMOR_STAND, world);
         super.setInvisible(true);
         super.setSmall(true);
@@ -42,9 +44,10 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         super.setBasePlate(true);
         super.setMarker(true);
         super.collides = false;
-        this.parentPiece = parentPiece;
-        forceSetBoundingBox(new NullBoundingBox());
         
+        this.parentPiece = parentPiece;
+        this.packetController = packetController;
+        forceSetBoundingBox(new NullBoundingBox());
         this.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet.
     }
     
@@ -193,9 +196,9 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
 
     @Override
-    public void setLocationNMS(double x, double y, double z, boolean broadcastLocationPacket) {
+    public void setLocationNMS(double x, double y, double z) {
         super.setPosition(x, y, z);
-        if (broadcastLocationPacket) {
+        if (packetController.shouldBroadcastLocationPacket()) {
             broadcastLocationPacketNMS();
         }
     }

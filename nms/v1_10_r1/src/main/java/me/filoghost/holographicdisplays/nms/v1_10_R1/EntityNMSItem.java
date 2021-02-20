@@ -33,8 +33,8 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     
     private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "au");
     
-    private ItemLine parentPiece;
-    private ItemPickupManager itemPickupManager;
+    private final ItemLine parentPiece;
+    private final ItemPickupManager itemPickupManager;
     
     private int resendMountPacketTicks;
     
@@ -54,10 +54,11 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         
         if (resendMountPacketTicks++ > 20) {
             resendMountPacketTicks = 0;
-            
-            if (bB() != null) {
+
+            Entity vehicle = bB();
+            if (vehicle != null) {
                 // Send a packet near to "remind" players that the item is riding the armor stand (Spigot bug or client bug)
-                PacketPlayOutMount mountPacket = new PacketPlayOutMount(bB());
+                PacketPlayOutMount mountPacket = new PacketPlayOutMount(vehicle);
     
                 for (Object obj : super.world.players) {
                     if (obj instanceof EntityPlayer) {
@@ -84,14 +85,13 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     // Method called when a player is near.
     @Override
     public void d(EntityHuman human) {
-        
         if (human.locY < super.locY - 1.5 || human.locY > super.locY + 1.0) {
             // Too low or too high, it's a bit weird.
             return;
         }
         
         if (parentPiece.getPickupHandler() != null && human instanceof EntityPlayer) {
-            itemPickupManager.handleItemLinePickup((Player) human.getBukkitEntity(), parentPiece.getPickupHandler(), parentPiece.getParent());
+            itemPickupManager.handleItemLinePickup((Player) human.getBukkitEntity(), parentPiece);
             // It is never added to the inventory.
         }
     }

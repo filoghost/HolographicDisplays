@@ -6,20 +6,20 @@
 package me.filoghost.holographicdisplays.object;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
-/**
- * This class is only used by the plugin itself. Do not attempt to use it.
- */
-public class PluginHologram extends CraftHologram {
+public class APIHologram extends BaseHologram {
     
-    private Plugin plugin;
+    private final Plugin plugin;
+    private final APIHologramManager apiHologramManager;
 
-    public PluginHologram(Location source, Plugin plugin) {
-        super(source);
+    protected APIHologram(Location source, Plugin plugin, NMSManager nmsManager, APIHologramManager apiHologramManager) {
+        super(source, nmsManager);
         Preconditions.notNull(plugin, "plugin");
         this.plugin = plugin;
+        this.apiHologramManager = apiHologramManager;
     }
     
     public Plugin getOwner() {
@@ -28,8 +28,7 @@ public class PluginHologram extends CraftHologram {
     
     @Override
     public void delete() {
-        super.delete();
-        PluginHologramManager.removeHologram(this);
+        apiHologramManager.deleteHologram(this);
     }
     
 }

@@ -12,29 +12,32 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
-import me.filoghost.holographicdisplays.object.NamedHologram;
+import me.filoghost.holographicdisplays.object.InternalHologram;
+import me.filoghost.holographicdisplays.object.InternalHologramManager;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
 public class AlignCommand extends HologramSubCommand {
 
+    private final InternalHologramManager internalHologramManager;
     private final ConfigManager configManager;
 
-    public AlignCommand(ConfigManager configManager) {
+    public AlignCommand(InternalHologramManager internalHologramManager, ConfigManager configManager) {
         super("align");
         setMinArgs(3);
         setUsageArgs("<X | Y | Z | XZ> <hologram> <referenceHologram>");
         setDescription("Aligns the first hologram to the second, in the specified axis.");
-        
+
+        this.internalHologramManager = internalHologramManager;
         this.configManager = configManager;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        NamedHologram hologram = HologramCommandValidate.getNamedHologram(args[1]);
-        NamedHologram referenceHologram = HologramCommandValidate.getNamedHologram(args[2]);
+        InternalHologram hologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[1]);
+        InternalHologram referenceHologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[2]);
         
-        CommandValidate.check(hologram != referenceHologram, "The hologram must not be the same!");
+        CommandValidate.check(hologram != referenceHologram, "The holograms must not be the same.");
 
         Location loc = hologram.getLocation();
 

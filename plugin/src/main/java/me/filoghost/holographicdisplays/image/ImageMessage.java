@@ -46,11 +46,11 @@ public class ImageMessage {
     }
     
 
-    private String[] lines;
+    private final String[] lines;
 
     public ImageMessage(BufferedImage image, int width) throws ImageTooWideException {
         ChatColor[][] chatColors = toChatColorArray(image, width);
-        lines = toImgMessage(chatColors);
+        this.lines = toImgMessage(chatColors);
     }
 
     private ChatColor[][] toChatColorArray(BufferedImage image, int width) throws ImageTooWideException {
@@ -77,36 +77,28 @@ public class ImageMessage {
     }
 
     private String[] toImgMessage(ChatColor[][] colors) {
-        
         String[] lines = new String[colors[0].length];
         ChatColor transparencyColor = Configuration.transparencyColor;
         String transparencySymbol = Configuration.transparencySymbol;
         String imageSymbol = Configuration.imageSymbol;
         
         for (int y = 0; y < colors[0].length; y++) {
-            
             StringBuilder line = new StringBuilder();
-            
             ChatColor previous = ChatColor.RESET;
             
             for (int x = 0; x < colors.length; x++) {
-                
                 ChatColor currentColor = colors[x][y];
                 
                 if (currentColor == null) {
-                    
                     // Use the transparent char
                     if (previous != transparencyColor) {
-                        
                         // Change the previous chat color and append the newer
                         line.append(transparencyColor);
                         previous = transparencyColor;
-                        
                     }
                     line.append(transparencySymbol);
                     
                 } else {
-                    
                     if (previous != currentColor) {
                         line.append(currentColor.toString());
                         previous = currentColor;
@@ -127,7 +119,6 @@ public class ImageMessage {
     }
     
     private BufferedImage toBufferedImage(Image img) {
-
         // Creates a buffered image with transparency.
         BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 

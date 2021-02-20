@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.bridge.protocollib.current;
+package me.filoghost.holographicdisplays.bridge.protocollib;
 
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
@@ -16,7 +16,7 @@ import me.filoghost.holographicdisplays.util.NMSVersion;
 import java.util.List;
 import java.util.Optional;
 
-public class MetadataHelper {
+class MetadataHelper {
 
     private final int itemSlotIndex;
     private final int entityStatusIndex;

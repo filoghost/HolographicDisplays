@@ -7,8 +7,9 @@ package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.config.ConfigSection;
-import me.filoghost.holographicdisplays.object.NamedHologram;
-import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
+import me.filoghost.holographicdisplays.object.InternalHologram;
+import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -34,10 +35,10 @@ public class HologramConfig {
         this.serializedLocation = configSection.getString("location");
     }
 
-    public HologramConfig(NamedHologram hologram) {
+    public HologramConfig(InternalHologram hologram) {
         this.name = hologram.getName();
         this.serializedLines = new ArrayList<>();
-        for (CraftHologramLine line : hologram.getLinesUnsafe()) {
+        for (HologramLineImpl line : hologram.getLinesUnsafe()) {
             serializedLines.add(line.getSerializedConfigValue());
         }
 
@@ -51,7 +52,7 @@ public class HologramConfig {
         return configSection;
     }
 
-    public NamedHologram createHologram() throws HologramLoadException {
+    public InternalHologram createHologram(InternalHologramManager internalHologramManager) throws HologramLoadException {
         if (serializedLines == null || serializedLines.size() == 0) {
             throw new HologramLoadException("hologram \"" + name + "\" was found, but it contained no lines");
         }
@@ -60,11 +61,11 @@ public class HologramConfig {
         }
 
         Location location = deserializeLocation(serializedLocation);
-        NamedHologram hologram = new NamedHologram(location, name);
+        InternalHologram hologram = internalHologramManager.createHologram(location, name);
 
         for (String serializedLine : serializedLines) {
             try {
-                CraftHologramLine line = HologramLineParser.parseLine(hologram, serializedLine, false);
+                HologramLineImpl line = HologramLineParser.parseLine(hologram, serializedLine, false);
                 hologram.getLinesUnsafe().add(line);
             } catch (HologramLoadException e) {
                 // Rethrow with more details

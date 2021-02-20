@@ -73,7 +73,6 @@ public class PlaceholdersRegister {
     }
     
     public static boolean unregister(Plugin plugin, String textPlaceholder) {
-        
         Iterator<Placeholder> iter = placeholders.iterator();
         
         while (iter.hasNext()) {

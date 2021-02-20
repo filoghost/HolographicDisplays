@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class WorldPlayerCounterTask implements Runnable {
 
-    private static Map<String, Integer> worlds = new HashMap<>();
+    private static final Map<String, Integer> worlds = new HashMap<>();
     
     @Override
     public void run() {

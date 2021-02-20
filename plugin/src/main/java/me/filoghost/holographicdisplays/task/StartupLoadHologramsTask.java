@@ -9,16 +9,18 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.HologramConfig;
 import me.filoghost.holographicdisplays.disk.HologramLoadException;
-import me.filoghost.holographicdisplays.object.NamedHologram;
-import me.filoghost.holographicdisplays.object.NamedHologramManager;
+import me.filoghost.holographicdisplays.object.InternalHologram;
+import me.filoghost.holographicdisplays.object.InternalHologramManager;
 
 import java.util.Collection;
 
 public class StartupLoadHologramsTask implements Runnable {
 
-    private Collection<HologramConfig> hologramConfigsToLoad;
+    private final InternalHologramManager internalHologramManager;
+    private final Collection<HologramConfig> hologramConfigsToLoad;
 
-    public StartupLoadHologramsTask(Collection<HologramConfig> hologramConfigsToLoad) {
+    public StartupLoadHologramsTask(InternalHologramManager internalHologramManager, Collection<HologramConfig> hologramConfigsToLoad) {
+        this.internalHologramManager = internalHologramManager;
         this.hologramConfigsToLoad = hologramConfigsToLoad;
     }
 
@@ -26,8 +28,7 @@ public class StartupLoadHologramsTask implements Runnable {
     public void run() {
         for (HologramConfig hologramConfig : hologramConfigsToLoad) {
             try {
-                NamedHologram hologram = hologramConfig.createHologram();
-                NamedHologramManager.addHologram(hologram);
+                InternalHologram hologram = hologramConfig.createHologram(internalHologramManager);
                 hologram.refreshAll();
             } catch (HologramLoadException e) {
                 Log.warning(Utils.formatExceptionMessage(e));

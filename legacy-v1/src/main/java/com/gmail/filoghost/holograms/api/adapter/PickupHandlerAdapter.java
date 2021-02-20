@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 public class PickupHandlerAdapter implements me.filoghost.holographicdisplays.api.handler.PickupHandler {
 
-    private PickupHandler oldHandler;
-    private FloatingItem item;
+    private final PickupHandler oldHandler;
+    private final FloatingItem item;
     
     public PickupHandlerAdapter(FloatingItem item, PickupHandler oldPickupHandler) {
         this.item = item;

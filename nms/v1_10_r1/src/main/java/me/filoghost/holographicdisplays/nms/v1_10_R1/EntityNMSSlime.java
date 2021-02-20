@@ -29,7 +29,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "au");
 
-    private HologramLine parentPiece;
+    private final HologramLine parentPiece;
     
     private int resendMountPacketTicks;
     
@@ -217,8 +217,8 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
         Entity entity = (Entity) vehicleBase;
         
         try {
-            if (super.bB() != null) {
-                Entity oldVehicle = super.bB();
+            Entity oldVehicle = super.bB();
+            if (oldVehicle != null) {
                 VEHICLE_FIELD.set(this, null);
                 oldVehicle.passengers.remove(this);
             }

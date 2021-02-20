@@ -7,16 +7,13 @@ package me.filoghost.holographicdisplays.object.line;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
-import me.filoghost.holographicdisplays.object.CraftHologram;
-import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
+import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.object.BaseHologram;
 import org.bukkit.World;
 
-import java.util.Collection;
-
-public abstract class CraftHologramLine implements HologramLine {
+public abstract class HologramLineImpl implements HologramLine {
     
-    private final double height;
-    private final CraftHologram parent;
+    private final BaseHologram parent;
     
     // This field is necessary for teleport.
     private boolean isSpawned;
@@ -24,21 +21,21 @@ public abstract class CraftHologramLine implements HologramLine {
     // Useful for saving to disk.
     private String serializedConfigValue;
     
-    protected CraftHologramLine(double height, CraftHologram parent) {
+    protected HologramLineImpl(BaseHologram parent) {
         Preconditions.notNull(parent, "parent hologram");
-        this.height = height;
         this.parent = parent;
     }
     
-    public final double getHeight() {
-        return height;
-    }
-
     @Override
-    public final CraftHologram getParent() {
+    public final BaseHologram getParent() {
         return parent;
     }
     
+    protected final NMSManager getNMSManager() {
+        return parent.getNMSManager();
+    }
+    
+    @Override
     public void removeLine() {
         parent.removeLine(this);
     }
@@ -50,17 +47,14 @@ public abstract class CraftHologramLine implements HologramLine {
         despawn();
         isSpawned = true;
         
-        // Do nothing, there are no entities in this class.
+        spawnEntities(world, x, y, z);
     }
     
-    public void despawn() {
+    public final void despawn() {
         isSpawned = false;
+        despawnEntities();
     }
-    
-    public final boolean isSpawned() {
-        return isSpawned;
-    }
-    
+
     public String getSerializedConfigValue() {
         return serializedConfigValue;
     }
@@ -69,16 +63,18 @@ public abstract class CraftHologramLine implements HologramLine {
         this.serializedConfigValue = serializedConfigValue;
     }
 
-    public Collection<RelativePlaceholder> getRelativePlaceholders() {
-        return null;
+    public final boolean isSpawned() {
+        return isSpawned;
     }
-    
-    public boolean hasRelativePlaceholders() {
-        return getRelativePlaceholders() != null && !getRelativePlaceholders().isEmpty();
-    }
+
+    protected abstract void spawnEntities(World world, double x, double y, double z);
+
+    protected abstract void despawnEntities();
+
+    public abstract void teleport(double x, double y, double z);
+
+    public abstract double getHeight();
     
     public abstract int[] getEntitiesIDs();
-    
-    public abstract void teleport(double x, double y, double z);
 
 }

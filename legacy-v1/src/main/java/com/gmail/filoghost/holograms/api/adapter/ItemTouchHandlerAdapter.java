@@ -13,8 +13,8 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 public class ItemTouchHandlerAdapter implements TouchHandler {
 
-    protected ItemTouchHandler oldHandler;
-    private FloatingItem item;
+    private final ItemTouchHandler oldHandler;
+    private final FloatingItem item;
     
     public ItemTouchHandlerAdapter(FloatingItem item, ItemTouchHandler oldHandler) {
         this.item = item;

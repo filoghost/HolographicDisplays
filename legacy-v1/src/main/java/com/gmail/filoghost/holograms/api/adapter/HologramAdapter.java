@@ -22,10 +22,10 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public class HologramAdapter implements Hologram {
     
-    public static Map<Plugin, Collection<HologramAdapter>> activeHolograms = new HashMap<>();
+    public static final Map<Plugin, Collection<HologramAdapter>> activeHolograms = new HashMap<>();
     
-    private Plugin plugin;
-    private me.filoghost.holographicdisplays.api.Hologram hologram;
+    private final Plugin plugin;
+    private final me.filoghost.holographicdisplays.api.Hologram hologram;
     private TouchHandler touchHandler;
     
     public HologramAdapter(Plugin plugin, me.filoghost.holographicdisplays.api.Hologram delegate) {

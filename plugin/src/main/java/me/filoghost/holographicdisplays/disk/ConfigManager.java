@@ -82,6 +82,14 @@ public class ConfigManager extends BaseConfigManager {
         CustomPlaceholders.load(placeholdersConfig);
     }
 
+    public Path getAnimationsFolder() {
+        return getRootDataFolder().resolve("animations");
+    }
+    
+    public ConfigLoader getExampleAnimationLoader() {
+        return getConfigLoader(getAnimationsFolder().resolve("example.txt"));
+    }
+
     private void logConfigInitException(Path file, ConfigException e) {
         Log.severe("error while initializing config file \"" + formatPath(file) + "\"", e);
     }

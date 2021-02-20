@@ -13,9 +13,9 @@ import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
-import me.filoghost.holographicdisplays.object.NamedHologram;
-import me.filoghost.holographicdisplays.object.NamedHologramManager;
-import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
+import me.filoghost.holographicdisplays.object.InternalHologram;
+import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,9 +23,10 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 public class CreateCommand extends HologramSubCommand {
 
+    private final InternalHologramManager internalHologramManager;
     private final ConfigManager configManager;
-    
-    public CreateCommand(ConfigManager configManager) {
+
+    public CreateCommand(InternalHologramManager internalHologramManager, ConfigManager configManager) {
         super("create");
         setMinArgs(1);
         setUsageArgs("<hologramName> [text]");
@@ -33,7 +34,8 @@ public class CreateCommand extends HologramSubCommand {
                 "Creates a new hologram with the given name, that must",
                 "be alphanumeric. The name will be used as reference to",
                 "that hologram for editing commands.");
-        
+
+        this.internalHologramManager = internalHologramManager;
         this.configManager = configManager;
     }
 
@@ -43,11 +45,10 @@ public class CreateCommand extends HologramSubCommand {
         Player player = CommandValidate.getPlayerSender(sender);
         String hologramName = args[0];
 
-        if (!hologramName.matches("[a-zA-Z0-9_\\-]+")) {
-            throw new CommandException("The name must contain only alphanumeric chars, underscores and hyphens.");
-        }
-
-        CommandValidate.check(!NamedHologramManager.isExistingHologram(hologramName), "A hologram with that name already exists.");
+        CommandValidate.check(hologramName.matches("[a-zA-Z0-9_\\-]+"), 
+                "The name must contain only alphanumeric chars, underscores and hyphens.");
+        CommandValidate.check(!internalHologramManager.isExistingHologram(hologramName), 
+                "A hologram with that name already exists.");
 
         Location spawnLoc = player.getLocation();
         boolean moveUp = player.isOnGround();
@@ -55,21 +56,20 @@ public class CreateCommand extends HologramSubCommand {
         if (moveUp) {
             spawnLoc.add(0.0, 1.2, 0.0);
         }
-
-        NamedHologram hologram = new NamedHologram(spawnLoc, hologramName);
+        
+        InternalHologram hologram = internalHologramManager.createHologram(spawnLoc, hologramName);
 
         if (args.length > 1) {
             String text = Utils.join(args, " ", 1, args.length);
             CommandValidate.check(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
             
-            CraftHologramLine line = HologramCommandValidate.parseHologramLine(hologram, text, true);
+            HologramLineImpl line = HologramCommandValidate.parseHologramLine(hologram, text, true);
             hologram.getLinesUnsafe().add(line);
             player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + context.getRootLabel() + " edit " + hologram.getName() + ")");
         } else {
             hologram.appendTextLine("Default hologram. Change it with " + Colors.PRIMARY + "/" + context.getRootLabel() + " edit " + hologram.getName());
         }
-
-        NamedHologramManager.addHologram(hologram);
+        
         hologram.refreshAll();
 
         configManager.getHologramDatabase().addOrUpdate(hologram);

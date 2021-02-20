@@ -32,7 +32,7 @@ import java.util.Set;
 @Deprecated
 public class HolographicDisplaysAPI {
     
-    private static Set<String> notifiedPlugins = new HashSet<>();
+    private static final Set<String> notifiedPlugins = new HashSet<>();
     
     private static void notifyOldAPI(Plugin plugin) {
         Preconditions.notNull(plugin, "plugin");

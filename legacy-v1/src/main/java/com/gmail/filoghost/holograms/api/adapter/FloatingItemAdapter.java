@@ -23,11 +23,11 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public class FloatingItemAdapter implements FloatingItem {
     
-    public static Map<Plugin, Collection<FloatingItemAdapter>> activeFloatingItems = new HashMap<>();
+    public static final Map<Plugin, Collection<FloatingItemAdapter>> activeFloatingItems = new HashMap<>();
     
-    private Plugin plugin;
-    public Hologram hologram;
-    private ItemLine itemLine;
+    private final Plugin plugin;
+    private final Hologram hologram;
+    private final ItemLine itemLine;
     private ItemTouchHandler touchHandler;
     private PickupHandler pickupHandler;
     

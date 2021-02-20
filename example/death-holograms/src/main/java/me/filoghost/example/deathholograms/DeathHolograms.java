@@ -18,9 +18,11 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
 public class DeathHolograms extends JavaPlugin implements Listener {
-    
+
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("H:mm");
+
+    @Override
     public void onEnable() {
-        
         if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
             getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
             getLogger().severe("*** This plugin will be disabled. ***");
@@ -29,17 +31,14 @@ public class DeathHolograms extends JavaPlugin implements Listener {
         }
         
         Bukkit.getPluginManager().registerEvents(this, this);
-        
     }
     
     
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        
         Hologram hologram = HologramsAPI.createHologram(this, event.getEntity().getEyeLocation());
         
         hologram.appendTextLine(ChatColor.RED + "Player " + ChatColor.GOLD + event.getEntity().getName() + ChatColor.RED + " died here!");
-        hologram.appendTextLine(ChatColor.GRAY + "Time of death: " + DateTimeFormatter.ofPattern("H:mm").format(Instant.now()));
-        
+        hologram.appendTextLine(ChatColor.GRAY + "Time of death: " + TIME_FORMATTER.format(Instant.now()));
     }
 }

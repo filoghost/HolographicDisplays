@@ -14,8 +14,7 @@
  *  if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 
  *  02111-1307 USA
  */
-
-package me.filoghost.holographicdisplays.bridge.protocollib.current.packet;
+package me.filoghost.holographicdisplays.bridge.protocollib.packet;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
@@ -43,6 +42,7 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket implements E
      * Retrieve unique entity ID to update.
      * @return The current Entity ID
     */
+    @Override
     public int getEntityID() {
         return handle.getIntegers().read(0);
     }

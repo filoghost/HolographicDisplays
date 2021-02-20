@@ -16,6 +16,7 @@ import me.filoghost.holographicdisplays.nms.interfaces.ChatComponentAdapter;
 import me.filoghost.holographicdisplays.nms.interfaces.CustomNameHelper;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
@@ -29,6 +30,7 @@ import net.minecraft.server.v1_16_R3.MathHelper;
 import net.minecraft.server.v1_16_R3.RegistryMaterials;
 import net.minecraft.server.v1_16_R3.WorldServer;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
@@ -40,6 +42,14 @@ public class NmsManagerImpl implements NMSManager {
     
     private static final ReflectField<Map<EntityTypes<?>, Integer>> REGISTRY_TO_ID_FIELD = ReflectField.lookup(new ClassToken<Map<EntityTypes<?>, Integer>>(){}, RegistryMaterials.class, "bg");
     private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD = ReflectMethod.lookup(void.class, WorldServer.class, "registerEntity", Entity.class);
+
+    private final ItemPickupManager itemPickupManager;
+    private final PacketController packetController;
+
+    public NmsManagerImpl(ItemPickupManager itemPickupManager, PacketController packetController) {
+        this.itemPickupManager = itemPickupManager;
+        this.packetController = packetController;
+    }
     
     @Override
     public void setup() throws Exception {        
@@ -54,7 +64,7 @@ public class NmsManagerImpl implements NMSManager {
     }
     
     @Override
-    public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack, ItemPickupManager itemPickupManager) {
+    public NMSItem spawnNMSItem(World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack) {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         EntityNMSItem customItem = new EntityNMSItem(nmsWorld, parentPiece, itemPickupManager);
         customItem.setLocationNMS(x, y, z);
@@ -77,10 +87,10 @@ public class NmsManagerImpl implements NMSManager {
     }
     
     @Override
-    public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece, boolean broadcastLocationPacket) {
+    public NMSArmorStand spawnNMSArmorStand(World world, double x, double y, double z, HologramLine parentPiece) {
         WorldServer nmsWorld = ((CraftWorld) world).getHandle();
-        EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece);
-        invisibleArmorStand.setLocationNMS(x, y, z, broadcastLocationPacket);
+        EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece, packetController);
+        invisibleArmorStand.setLocationNMS(x, y, z);
         if (!addEntityToWorld(nmsWorld, invisibleArmorStand)) {
             DebugLogger.handleSpawnFail(parentPiece);
         }
@@ -146,6 +156,7 @@ public class NmsManagerImpl implements NMSManager {
 
         INSTANCE {
             
+            @Override
             public ChatComponentText cast(Object chatComponentObject) {
                 return (ChatComponentText) chatComponentObject;
             }

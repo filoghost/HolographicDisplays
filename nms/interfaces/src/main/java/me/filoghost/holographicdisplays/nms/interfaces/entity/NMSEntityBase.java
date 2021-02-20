@@ -14,6 +14,9 @@ public interface NMSEntityBase {
     
     // Returns the linked CraftHologramLine, all the entities are part of a piece. Should never be null.
     HologramLine getHologramLine();
+
+    // Sets the location through NMS.
+    void setLocationNMS(double x, double y, double z);
     
     // Returns if the entity is dead through NMS.
     boolean isDeadNMS();

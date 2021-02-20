@@ -5,12 +5,11 @@
  */
 package me.filoghost.holographicdisplays.nms.interfaces;
 
-import me.filoghost.holographicdisplays.api.Hologram;
-import me.filoghost.holographicdisplays.api.handler.PickupHandler;
+import me.filoghost.holographicdisplays.api.line.ItemLine;
 import org.bukkit.entity.Player;
 
 public interface ItemPickupManager {
 
-    void handleItemLinePickup(Player player, PickupHandler pickupHandler, Hologram hologram);
+    void handleItemLinePickup(Player player, ItemLine itemLine);
     
 }

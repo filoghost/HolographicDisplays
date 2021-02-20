@@ -5,52 +5,45 @@
  */
 package me.filoghost.holographicdisplays.object.line;
 
-import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
-import me.filoghost.holographicdisplays.object.CraftHologram;
+import me.filoghost.holographicdisplays.object.BaseHologram;
 import org.bukkit.World;
 
 /**
  * A touch slime that can be applied to a line.
  */
-public class CraftTouchSlimeLine extends CraftHologramLine {
+public class TouchSlimeLineImpl extends HologramLineImpl {
     
     // The touchable piece associated with this piece
-    private CraftTouchableLine touchablePiece;
+    private final TouchableLineImpl touchablePiece;
     
     private NMSSlime nmsSlime;
     private NMSArmorStand nmsVehicle;
 
     
-    protected CraftTouchSlimeLine(CraftHologram parent, CraftTouchableLine touchablePiece) {
-        super(0.5, parent);
+    protected TouchSlimeLineImpl(BaseHologram parent, TouchableLineImpl touchablePiece) {
+        super(parent);
         this.touchablePiece = touchablePiece;
     }
 
-    public CraftTouchableLine getTouchablePiece() {
+    public TouchableLineImpl getTouchablePiece() {
         return touchablePiece;
     }
 
 
     @Override
-    public void spawn(World world, double x, double y, double z) {
-        super.spawn(world, x, y, z);
-        
-        double offset = getSlimeOffset();
-        
-        nmsSlime = HolographicDisplays.getNMSManager().spawnNMSSlime(world, x, y + offset, z, this);
-        nmsVehicle = HolographicDisplays.getNMSManager().spawnNMSArmorStand(world, x, y + offset, z, this, HolographicDisplays.hasProtocolLibHook());
+    public void spawnEntities(World world, double x, double y, double z) {
+        nmsSlime = getNMSManager().spawnNMSSlime(world, x, y + getSlimeOffset(), z, this);
+        nmsVehicle = getNMSManager().spawnNMSArmorStand(world, x, y + getSlimeOffset(), z, this);
         
         nmsSlime.setPassengerOfNMS(nmsVehicle);
     }
 
     
     @Override
-    public void despawn() {
-        super.despawn();
-        
+    public void despawnEntities() {
         if (nmsSlime != null) {
             nmsSlime.killEntityNMS();
             nmsSlime = null;
@@ -62,18 +55,18 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
         }
     }
 
-    
+    @Override
+    public double getHeight() {
+        return 0.5;
+    }
+
     @Override
     public void teleport(double x, double y, double z) {
-        
-        double offset = getSlimeOffset();
-        
         if (nmsVehicle != null) {
-            nmsVehicle.setLocationNMS(x, y + offset, z, HolographicDisplays.hasProtocolLibHook());
+            nmsVehicle.setLocationNMS(x, y + getSlimeOffset(), z);
         }
-        
         if (nmsSlime != null) {
-            nmsSlime.setLocationNMS(x, y + offset, z);
+            nmsSlime.setLocationNMS(x, y + getSlimeOffset(), z);
         }
     }
 
@@ -100,7 +93,7 @@ public class CraftTouchSlimeLine extends CraftHologramLine {
 
     @Override
     public String toString() {
-        return "CraftTouchSlimeLine [touchablePiece=" + touchablePiece + "]";
+        return "TouchSlimeLine [touchablePiece=" + touchablePiece + "]";
     }
     
 }

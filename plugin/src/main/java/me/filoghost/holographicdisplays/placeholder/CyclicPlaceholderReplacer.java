@@ -11,21 +11,21 @@ import java.util.List;
 
 public class CyclicPlaceholderReplacer implements PlaceholderReplacer {
 
-    List<String> frames;
-    private int index;
+    private final List<String> frames;
+    private int currentIndex;
     
     public CyclicPlaceholderReplacer(List<String> frames) {
         this.frames = frames;
-        index = 0;
+        currentIndex = 0;
     }
 
     @Override
     public String update() {
-        String result = frames.get(index);
+        String result = frames.get(currentIndex);
         
-        index++;
-        if (index >= frames.size()) {
-            index = 0;
+        currentIndex++;
+        if (currentIndex >= frames.size()) {
+            currentIndex = 0;
         }
         
         return result;

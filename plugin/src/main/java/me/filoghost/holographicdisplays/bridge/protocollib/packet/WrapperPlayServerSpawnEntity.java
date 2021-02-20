@@ -14,8 +14,7 @@
  *  if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307 USA
  */
-
-package me.filoghost.holographicdisplays.bridge.protocollib.current.packet;
+package me.filoghost.holographicdisplays.bridge.protocollib.packet;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -65,7 +64,7 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket implements Enti
         /**
          * The singleton instance. Can also be retrieved from the parent class.
          */
-        private static ObjectTypes INSTANCE = new ObjectTypes();
+        private static final ObjectTypes INSTANCE = new ObjectTypes();
         
         /**
          * Retrieve an instance of the object types enum.
@@ -110,6 +109,7 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket implements Enti
      * Retrieve entity ID of the Object.
      * @return The current EID
     */
+    @Override
     public int getEntityID() {
         return handle.getIntegers().read(0);
     }

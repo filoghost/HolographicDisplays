@@ -9,10 +9,10 @@ import me.filoghost.fcommons.MaterialsHelper;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.holographicdisplays.nbt.parser.MojangsonParseException;
 import me.filoghost.holographicdisplays.nbt.parser.MojangsonParser;
-import me.filoghost.holographicdisplays.object.NamedHologram;
-import me.filoghost.holographicdisplays.object.line.CraftHologramLine;
-import me.filoghost.holographicdisplays.object.line.CraftItemLine;
-import me.filoghost.holographicdisplays.object.line.CraftTextLine;
+import me.filoghost.holographicdisplays.object.InternalHologram;
+import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
+import me.filoghost.holographicdisplays.object.line.ItemLineImpl;
+import me.filoghost.holographicdisplays.object.line.TextLineImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -21,19 +21,19 @@ public class HologramLineParser {
 
     private static final String ICON_PREFIX = "icon:";
 
-    public static CraftHologramLine parseLine(NamedHologram hologram, String serializedLine, boolean checkMaterialValidity) throws HologramLoadException {
-        CraftHologramLine hologramLine;
+    public static HologramLineImpl parseLine(InternalHologram hologram, String serializedLine, boolean checkMaterialValidity) throws HologramLoadException {
+        HologramLineImpl hologramLine;
         
         if (serializedLine.toLowerCase().startsWith(ICON_PREFIX)) {
             String serializedIcon = serializedLine.substring(ICON_PREFIX.length());
             ItemStack icon = parseItemStack(serializedIcon, checkMaterialValidity);
-            hologramLine = new CraftItemLine(hologram, icon);
+            hologramLine = new ItemLineImpl(hologram, icon);
             
         } else {
             if (serializedLine.trim().equalsIgnoreCase("{empty}")) {
-                hologramLine = new CraftTextLine(hologram, "");
+                hologramLine = new TextLineImpl(hologram, "");
             } else {
-                hologramLine = new CraftTextLine(hologram, StringConverter.toReadableFormat(serializedLine));
+                hologramLine = new TextLineImpl(hologram, StringConverter.toReadableFormat(serializedLine));
             }
         }
         
