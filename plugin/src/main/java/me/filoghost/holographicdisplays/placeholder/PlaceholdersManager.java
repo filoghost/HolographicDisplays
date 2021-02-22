@@ -46,7 +46,7 @@ public class PlaceholdersManager {
     }
     
     
-    public static void load(Plugin plugin) {
+    public static void startRefreshTask(Plugin plugin) {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             
             for (Placeholder placeholder : PlaceholdersRegister.getPlaceholders()) {

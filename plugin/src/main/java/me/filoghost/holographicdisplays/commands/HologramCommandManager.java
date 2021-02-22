@@ -71,7 +71,7 @@ public class HologramCommandManager extends SubCommandManager {
         subCommands.add(new MovehereCommand(internalHologramManager, configManager));
         subCommands.add(new AlignCommand(internalHologramManager, configManager));
         subCommands.add(new CopyCommand(internalHologramManager, configManager));
-        subCommands.add(new ReloadCommand(configManager, internalHologramManager));
+        subCommands.add(new ReloadCommand());
 
         subCommands.add(new RemovelineCommand(this, internalHologramManager, configManager));
         subCommands.add(new SetlineCommand(this, internalHologramManager, configManager));
