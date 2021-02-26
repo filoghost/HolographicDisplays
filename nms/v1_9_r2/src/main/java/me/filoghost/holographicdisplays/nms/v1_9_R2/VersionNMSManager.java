@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.nms.v1_12_R1;
+package me.filoghost.holographicdisplays.nms.v1_9_R2;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.reflection.ClassToken;
@@ -19,51 +19,43 @@ import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import net.minecraft.server.v1_12_R1.Entity;
-import net.minecraft.server.v1_12_R1.EntityTypes;
-import net.minecraft.server.v1_12_R1.MathHelper;
-import net.minecraft.server.v1_12_R1.RegistryID;
-import net.minecraft.server.v1_12_R1.RegistryMaterials;
-import net.minecraft.server.v1_12_R1.World;
-import net.minecraft.server.v1_12_R1.WorldServer;
+import net.minecraft.server.v1_9_R2.Entity;
+import net.minecraft.server.v1_9_R2.EntityTypes;
+import net.minecraft.server.v1_9_R2.MathHelper;
+import net.minecraft.server.v1_9_R2.World;
+import net.minecraft.server.v1_9_R2.WorldServer;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
 
-public class NmsManagerImpl implements NMSManager {
-    
-    private static final ReflectField<RegistryID<Class<? extends Entity>>> REGISTRY_ID_FIELD = ReflectField.lookup(new ClassToken<RegistryID<Class<? extends Entity>>>(){}, RegistryMaterials.class, "a");
-    private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = ReflectField.lookup(Object[].class, RegistryID.class, "d");
+import java.util.Map;
 
+public class VersionNMSManager implements NMSManager {
+
+    private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD = ReflectField.lookup(new ClassToken<Map<Class<?>, String>>(){}, EntityTypes.class, "d");
+    private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD = ReflectField.lookup(new ClassToken<Map<Class<?>, Integer>>(){}, EntityTypes.class, "f");
+    
     private static final ReflectMethod<?> VALIDATE_ENTITY_METHOD = ReflectMethod.lookup(Object.class, World.class, "b", Entity.class);
 
     private final ItemPickupManager itemPickupManager;
     private final PacketController packetController;
 
-    public NmsManagerImpl(ItemPickupManager itemPickupManager, PacketController packetController) {
+    public VersionNMSManager(ItemPickupManager itemPickupManager, PacketController packetController) {
         this.itemPickupManager = itemPickupManager;
         this.packetController = packetController;
     }
     
     @Override
     public void setup() throws Exception {
-        registerCustomEntity(EntityNMSSlime.class, 55);
+        registerCustomEntity(EntityNMSArmorStand.class, "ArmorStand", 30);
+        registerCustomEntity(EntityNMSItem.class, "Item", 1);
+        registerCustomEntity(EntityNMSSlime.class, "Slime", 55);
     }
     
-    public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
-        // Use reflection to get the RegistryID of entities.
-        RegistryID<Class<? extends Entity>> registryID = REGISTRY_ID_FIELD.get(EntityTypes.b);
-        Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
-        
-        // Save the the ID -> entity class mapping before the registration.
-        Object oldValue = idToClassMap[id];
-
-        // Register the entity class.
-        registryID.a(entityClass, id);
-
-        // Restore the ID -> entity class mapping.
-        idToClassMap[id] = oldValue;
+    public void registerCustomEntity(Class<?> entityClass, String name, int id) throws Exception {
+        ENTITY_NAMES_BY_CLASS_FIELD.getStatic().put(entityClass, name);
+        ENTITY_IDS_BY_CLASS_FIELD.getStatic().put(entityClass, id);
     }
     
     @Override

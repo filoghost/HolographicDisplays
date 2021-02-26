@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.nms.v1_14_R1;
+package me.filoghost.holographicdisplays.nms.v1_16_R1;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.reflection.ClassToken;
@@ -20,26 +20,25 @@ import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import net.minecraft.server.v1_14_R1.ChatBaseComponent;
-import net.minecraft.server.v1_14_R1.ChatComponentText;
-import net.minecraft.server.v1_14_R1.Entity;
-import net.minecraft.server.v1_14_R1.EntityTypes;
-import net.minecraft.server.v1_14_R1.EnumCreatureType;
-import net.minecraft.server.v1_14_R1.IChatBaseComponent;
-import net.minecraft.server.v1_14_R1.IRegistry;
-import net.minecraft.server.v1_14_R1.MathHelper;
-import net.minecraft.server.v1_14_R1.RegistryID;
-import net.minecraft.server.v1_14_R1.RegistryMaterials;
-import net.minecraft.server.v1_14_R1.WorldServer;
+import net.minecraft.server.v1_16_R1.ChatComponentText;
+import net.minecraft.server.v1_16_R1.Entity;
+import net.minecraft.server.v1_16_R1.EntityTypes;
+import net.minecraft.server.v1_16_R1.EnumCreatureType;
+import net.minecraft.server.v1_16_R1.IChatBaseComponent;
+import net.minecraft.server.v1_16_R1.IRegistry;
+import net.minecraft.server.v1_16_R1.MathHelper;
+import net.minecraft.server.v1_16_R1.RegistryID;
+import net.minecraft.server.v1_16_R1.RegistryMaterials;
+import net.minecraft.server.v1_16_R1.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R1.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class NmsManagerImpl implements NMSManager {
+public class VersionNMSManager implements NMSManager {
     
     private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = ReflectField.lookup(new ClassToken<RegistryID<EntityTypes<?>>>(){}, RegistryMaterials.class, "b");
     private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = ReflectField.lookup(Object[].class, RegistryID.class, "d");
@@ -48,7 +47,7 @@ public class NmsManagerImpl implements NMSManager {
     private final ItemPickupManager itemPickupManager;
     private final PacketController packetController;
 
-    public NmsManagerImpl(ItemPickupManager itemPickupManager, PacketController packetController) {
+    public VersionNMSManager(ItemPickupManager itemPickupManager, PacketController packetController) {
         this.itemPickupManager = itemPickupManager;
         this.packetController = packetController;
     }
@@ -67,7 +66,7 @@ public class NmsManagerImpl implements NMSManager {
         Object oldValue = idToClassMap[id];
 
         // Register the EntityTypes object.
-        registryID.a(EntityTypes.a.a(EnumCreatureType.MONSTER).a(sizeWidth, sizeHeight).b().a((String) null), id);
+        registryID.a(EntityTypes.Builder.a(EnumCreatureType.MONSTER).a(sizeWidth, sizeHeight).b().a((String) null), id);
 
         // Restore the ID -> EntityTypes mapping.
         idToClassMap[id] = oldValue;
@@ -110,8 +109,8 @@ public class NmsManagerImpl implements NMSManager {
     private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
         Preconditions.checkState(Bukkit.isPrimaryThread(), "Async entity add");
         
-        final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
-        final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
+        final int chunkX = MathHelper.floor(nmsEntity.locX() / 16.0);
+        final int chunkZ = MathHelper.floor(nmsEntity.locZ() / 16.0);
         
         if (!nmsWorld.isChunkLoaded(chunkX, chunkZ)) {
             // This should never happen
@@ -166,9 +165,6 @@ public class NmsManagerImpl implements NMSManager {
 
         INSTANCE {
             
-            private boolean useNewGetSiblingsMethod = true;
-            private final ReflectField<List<IChatBaseComponent>> OLD_SIBLINGS_FIELD = ReflectField.lookup(new ClassToken<List<IChatBaseComponent>>(){}, ChatBaseComponent.class, "a");
-            
             @Override
             public ChatComponentText cast(Object chatComponentObject) {
                 return (ChatComponentText) chatComponentObject;
@@ -181,32 +177,19 @@ public class NmsManagerImpl implements NMSManager {
     
             @Override
             public List<IChatBaseComponent> getSiblings(IChatBaseComponent chatComponent) {
-                if (useNewGetSiblingsMethod) {
-                    try {
-                        return chatComponent.getSiblings();
-                    } catch (NoSuchMethodError e) {
-                        // The method was named differently in older 1.14 versions, use workaround.
-                        useNewGetSiblingsMethod = false;
-                    }
-                }
-                
-                // Access siblings field directly in older 1.14 versions.
-                try {
-                    return OLD_SIBLINGS_FIELD.get(chatComponent);
-                } catch (ReflectiveOperationException e) {
-                    throw new RuntimeException(e);
-                }
+                return chatComponent.getSiblings();
             }
     
             @Override
             public void addSibling(IChatBaseComponent chatComponent, IChatBaseComponent newSibling) {
-                chatComponent.addSibling(newSibling);
+                newSibling.getChatModifier().setChatModifier(chatComponent.getChatModifier());
+                chatComponent.getSiblings().add(newSibling);
             }
     
             @Override
             public ChatComponentText cloneComponent(IChatBaseComponent chatComponent, String newText) {
                 ChatComponentText clonedChatComponent = new ChatComponentText(newText);
-                clonedChatComponent.setChatModifier(chatComponent.getChatModifier().clone());
+                clonedChatComponent.setChatModifier(chatComponent.getChatModifier().a());
                 return clonedChatComponent;
             }
             

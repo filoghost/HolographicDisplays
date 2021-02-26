@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.nms.v1_13_R1;
+package me.filoghost.holographicdisplays.nms.v1_13_R2;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.reflection.ClassToken;
@@ -21,25 +21,26 @@ import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import net.minecraft.server.v1_13_R1.ChatComponentText;
-import net.minecraft.server.v1_13_R1.Entity;
-import net.minecraft.server.v1_13_R1.EntityTypes;
-import net.minecraft.server.v1_13_R1.IChatBaseComponent;
-import net.minecraft.server.v1_13_R1.MathHelper;
-import net.minecraft.server.v1_13_R1.RegistryID;
-import net.minecraft.server.v1_13_R1.RegistryMaterials;
-import net.minecraft.server.v1_13_R1.World;
-import net.minecraft.server.v1_13_R1.WorldServer;
+import net.minecraft.server.v1_13_R2.ChatComponentText;
+import net.minecraft.server.v1_13_R2.Entity;
+import net.minecraft.server.v1_13_R2.EntityTypes;
+import net.minecraft.server.v1_13_R2.IChatBaseComponent;
+import net.minecraft.server.v1_13_R2.IRegistry;
+import net.minecraft.server.v1_13_R2.MathHelper;
+import net.minecraft.server.v1_13_R2.RegistryID;
+import net.minecraft.server.v1_13_R2.RegistryMaterials;
+import net.minecraft.server.v1_13_R2.World;
+import net.minecraft.server.v1_13_R2.WorldServer;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class NmsManagerImpl implements NMSManager {
+public class VersionNMSManager implements NMSManager {
     
-    private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = ReflectField.lookup(new ClassToken<RegistryID<EntityTypes<?>>>(){}, RegistryMaterials.class, "a");
+    private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = ReflectField.lookup(new ClassToken<RegistryID<EntityTypes<?>>>(){}, RegistryMaterials.class, "b");
     private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = ReflectField.lookup(Object[].class, RegistryID.class, "d");
     private static final ReflectField<List<Entity>> ENTITY_LIST_FIELD = ReflectField.lookup(new ClassToken<List<Entity>>(){}, World.class, "entityList");
 
@@ -48,7 +49,7 @@ public class NmsManagerImpl implements NMSManager {
     private final ItemPickupManager itemPickupManager;
     private final PacketController packetController;
 
-    public NmsManagerImpl(ItemPickupManager itemPickupManager, PacketController packetController) {
+    public VersionNMSManager(ItemPickupManager itemPickupManager, PacketController packetController) {
         this.itemPickupManager = itemPickupManager;
         this.packetController = packetController;
     }
@@ -60,7 +61,7 @@ public class NmsManagerImpl implements NMSManager {
     
     public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
         // Use reflection to get the RegistryID of entities.
-        RegistryID<EntityTypes<?>> registryID = REGISTRY_ID_FIELD.get(EntityTypes.REGISTRY);
+        RegistryID<EntityTypes<?>> registryID = REGISTRY_ID_FIELD.get(IRegistry.ENTITY_TYPE);
         Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
         
         // Save the the ID -> EntityTypes mapping before the registration.
@@ -113,7 +114,7 @@ public class NmsManagerImpl implements NMSManager {
         final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
         final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
         
-        if (!nmsWorld.getChunkProviderServer().isLoaded(chunkX, chunkZ)) {
+        if (!nmsWorld.isChunkLoaded(chunkX, chunkZ, true)) { // The boolean "true" is currently unused
             // This should never happen
             nmsEntity.dead = true;
             return false;

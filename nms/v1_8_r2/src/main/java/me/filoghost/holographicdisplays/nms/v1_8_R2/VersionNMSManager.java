@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.nms.v1_9_R2;
+package me.filoghost.holographicdisplays.nms.v1_8_R2;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.reflection.ClassToken;
@@ -19,29 +19,30 @@ import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import net.minecraft.server.v1_9_R2.Entity;
-import net.minecraft.server.v1_9_R2.EntityTypes;
-import net.minecraft.server.v1_9_R2.MathHelper;
-import net.minecraft.server.v1_9_R2.World;
-import net.minecraft.server.v1_9_R2.WorldServer;
+import net.minecraft.server.v1_8_R2.Entity;
+import net.minecraft.server.v1_8_R2.EntityTypes;
+import net.minecraft.server.v1_8_R2.MathHelper;
+import net.minecraft.server.v1_8_R2.World;
+import net.minecraft.server.v1_8_R2.WorldServer;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
-public class NmsManagerImpl implements NMSManager {
-
+public class VersionNMSManager implements NMSManager {
+    
     private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD = ReflectField.lookup(new ClassToken<Map<Class<?>, String>>(){}, EntityTypes.class, "d");
     private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD = ReflectField.lookup(new ClassToken<Map<Class<?>, Integer>>(){}, EntityTypes.class, "f");
-    
-    private static final ReflectMethod<?> VALIDATE_ENTITY_METHOD = ReflectMethod.lookup(Object.class, World.class, "b", Entity.class);
+
+    private static final ReflectMethod<?> VALIDATE_ENTITY_METHOD = ReflectMethod.lookup(Object.class, World.class, "a", Entity.class);
 
     private final ItemPickupManager itemPickupManager;
     private final PacketController packetController;
 
-    public NmsManagerImpl(ItemPickupManager itemPickupManager, PacketController packetController) {
+    public VersionNMSManager(ItemPickupManager itemPickupManager, PacketController packetController) {
         this.itemPickupManager = itemPickupManager;
         this.packetController = packetController;
     }
@@ -95,10 +96,14 @@ public class NmsManagerImpl implements NMSManager {
     private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
         Preconditions.checkState(Bukkit.isPrimaryThread(), "Async entity add");
         
+        if (!VALIDATE_ENTITY_METHOD.isValid()) {
+            return nmsWorld.addEntity(nmsEntity, SpawnReason.CUSTOM);
+        }
+        
         final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
         final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
         
-        if (!nmsWorld.getChunkProviderServer().isLoaded(chunkX, chunkZ)) {
+        if (!nmsWorld.chunkProviderServer.isChunkLoaded(chunkX, chunkZ)) {
             // This should never happen
             nmsEntity.dead = true;
             return false;
@@ -135,7 +140,7 @@ public class NmsManagerImpl implements NMSManager {
     @Override
     public NMSEntityBase getNMSEntityBaseFromID(org.bukkit.World bukkitWorld, int entityID) {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-        Entity nmsEntity = nmsWorld.getEntity(entityID);
+        Entity nmsEntity = nmsWorld.a(entityID);
         
         if (nmsEntity instanceof NMSEntityBase) {
             return ((NMSEntityBase) nmsEntity);

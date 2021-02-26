@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.nms.v1_16_R1;
+package me.filoghost.holographicdisplays.nms.v1_16_R2;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.reflection.ClassToken;
@@ -20,34 +20,33 @@ import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
-import net.minecraft.server.v1_16_R1.ChatComponentText;
-import net.minecraft.server.v1_16_R1.Entity;
-import net.minecraft.server.v1_16_R1.EntityTypes;
-import net.minecraft.server.v1_16_R1.EnumCreatureType;
-import net.minecraft.server.v1_16_R1.IChatBaseComponent;
-import net.minecraft.server.v1_16_R1.IRegistry;
-import net.minecraft.server.v1_16_R1.MathHelper;
-import net.minecraft.server.v1_16_R1.RegistryID;
-import net.minecraft.server.v1_16_R1.RegistryMaterials;
-import net.minecraft.server.v1_16_R1.WorldServer;
+import net.minecraft.server.v1_16_R2.ChatComponentText;
+import net.minecraft.server.v1_16_R2.Entity;
+import net.minecraft.server.v1_16_R2.EntityTypes;
+import net.minecraft.server.v1_16_R2.EnumCreatureType;
+import net.minecraft.server.v1_16_R2.IChatBaseComponent;
+import net.minecraft.server.v1_16_R2.IRegistry;
+import net.minecraft.server.v1_16_R2.MathHelper;
+import net.minecraft.server.v1_16_R2.RegistryMaterials;
+import net.minecraft.server.v1_16_R2.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Map;
 
-public class NmsManagerImpl implements NMSManager {
+public class VersionNMSManager implements NMSManager {
     
-    private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = ReflectField.lookup(new ClassToken<RegistryID<EntityTypes<?>>>(){}, RegistryMaterials.class, "b");
-    private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = ReflectField.lookup(Object[].class, RegistryID.class, "d");
+    private static final ReflectField<Map<EntityTypes<?>, Integer>> REGISTRY_TO_ID_FIELD = ReflectField.lookup(new ClassToken<Map<EntityTypes<?>, Integer>>(){}, RegistryMaterials.class, "bg");
     private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD = ReflectMethod.lookup(void.class, WorldServer.class, "registerEntity", Entity.class);
 
     private final ItemPickupManager itemPickupManager;
     private final PacketController packetController;
 
-    public NmsManagerImpl(ItemPickupManager itemPickupManager, PacketController packetController) {
+    public VersionNMSManager(ItemPickupManager itemPickupManager, PacketController packetController) {
         this.itemPickupManager = itemPickupManager;
         this.packetController = packetController;
     }
@@ -58,18 +57,10 @@ public class NmsManagerImpl implements NMSManager {
     }
     
     public void registerCustomEntity(Class<? extends Entity> entityClass, int id, float sizeWidth, float sizeHeight) throws Exception {
-        // Use reflection to get the RegistryID of entities.
-        RegistryID<EntityTypes<?>> registryID = REGISTRY_ID_FIELD.get(IRegistry.ENTITY_TYPE);
-        Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
-        
-        // Save the the ID -> EntityTypes mapping before the registration.
-        Object oldValue = idToClassMap[id];
-
-        // Register the EntityTypes object.
-        registryID.a(EntityTypes.Builder.a(EnumCreatureType.MONSTER).a(sizeWidth, sizeHeight).b().a((String) null), id);
-
-        // Restore the ID -> EntityTypes mapping.
-        idToClassMap[id] = oldValue;
+        // Use reflection to map the custom entity to the correct ID
+        Map<EntityTypes<?>, Integer> entityTypesToId = REGISTRY_TO_ID_FIELD.get(IRegistry.ENTITY_TYPE);
+        EntityTypes<?> customEntityTypes = EntityTypes.Builder.a(EnumCreatureType.MONSTER).a(sizeWidth, sizeHeight).b().a((String) null);
+        entityTypesToId.put(customEntityTypes, id);
     }
     
     @Override

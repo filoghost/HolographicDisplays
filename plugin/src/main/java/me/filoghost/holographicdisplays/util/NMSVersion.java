@@ -19,20 +19,20 @@ import java.util.regex.Pattern;
  */
 public enum NMSVersion {
     
-    v1_8_R2(me.filoghost.holographicdisplays.nms.v1_8_R2.NmsManagerImpl::new),
-    v1_8_R3(me.filoghost.holographicdisplays.nms.v1_8_R3.NmsManagerImpl::new),
-    v1_9_R1(me.filoghost.holographicdisplays.nms.v1_9_R1.NmsManagerImpl::new),
-    v1_9_R2(me.filoghost.holographicdisplays.nms.v1_9_R2.NmsManagerImpl::new),
-    v1_10_R1(me.filoghost.holographicdisplays.nms.v1_10_R1.NmsManagerImpl::new),
-    v1_11_R1(me.filoghost.holographicdisplays.nms.v1_11_R1.NmsManagerImpl::new),
-    v1_12_R1(me.filoghost.holographicdisplays.nms.v1_12_R1.NmsManagerImpl::new),
-    v1_13_R1(me.filoghost.holographicdisplays.nms.v1_13_R1.NmsManagerImpl::new),
-    v1_13_R2(me.filoghost.holographicdisplays.nms.v1_13_R2.NmsManagerImpl::new),
-    v1_14_R1(me.filoghost.holographicdisplays.nms.v1_14_R1.NmsManagerImpl::new),
-    v1_15_R1(me.filoghost.holographicdisplays.nms.v1_15_R1.NmsManagerImpl::new),
-    v1_16_R1(me.filoghost.holographicdisplays.nms.v1_16_R1.NmsManagerImpl::new),
-    v1_16_R2(me.filoghost.holographicdisplays.nms.v1_16_R2.NmsManagerImpl::new),
-    v1_16_R3(me.filoghost.holographicdisplays.nms.v1_16_R3.NmsManagerImpl::new);
+    v1_8_R2(me.filoghost.holographicdisplays.nms.v1_8_R2.VersionNMSManager::new),
+    v1_8_R3(me.filoghost.holographicdisplays.nms.v1_8_R3.VersionNMSManager::new),
+    v1_9_R1(me.filoghost.holographicdisplays.nms.v1_9_R1.VersionNMSManager::new),
+    v1_9_R2(me.filoghost.holographicdisplays.nms.v1_9_R2.VersionNMSManager::new),
+    v1_10_R1(me.filoghost.holographicdisplays.nms.v1_10_R1.VersionNMSManager::new),
+    v1_11_R1(me.filoghost.holographicdisplays.nms.v1_11_R1.VersionNMSManager::new),
+    v1_12_R1(me.filoghost.holographicdisplays.nms.v1_12_R1.VersionNMSManager::new),
+    v1_13_R1(me.filoghost.holographicdisplays.nms.v1_13_R1.VersionNMSManager::new),
+    v1_13_R2(me.filoghost.holographicdisplays.nms.v1_13_R2.VersionNMSManager::new),
+    v1_14_R1(me.filoghost.holographicdisplays.nms.v1_14_R1.VersionNMSManager::new),
+    v1_15_R1(me.filoghost.holographicdisplays.nms.v1_15_R1.VersionNMSManager::new),
+    v1_16_R1(me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager::new),
+    v1_16_R2(me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager::new),
+    v1_16_R3(me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager::new);
     
     private static final NMSVersion CURRENT_VERSION = extractCurrentVersion();
     
@@ -42,8 +42,8 @@ public enum NMSVersion {
         this.nmsManagerConstructor = nmsManagerConstructor;
     }
 
-    public NMSManager createNMSManager(ItemPickupManager itemPickupManager, PacketController packetController) {
-        return nmsManagerConstructor.create(itemPickupManager, packetController);
+    public static NMSManager createNMSManager(ItemPickupManager itemPickupManager, PacketController packetController) {
+        return getValid().nmsManagerConstructor.create(itemPickupManager, packetController);
     }
 
     private static NMSVersion extractCurrentVersion() {
@@ -64,13 +64,13 @@ public enum NMSVersion {
         return CURRENT_VERSION != null;
     }
 
-    public static NMSVersion get() {
+    private static NMSVersion getValid() {
         Preconditions.checkState(isValid(), "Current version is not valid");
         return CURRENT_VERSION;
     }
 
     public static boolean isGreaterEqualThan(NMSVersion other) {
-        return get().ordinal() >= other.ordinal();
+        return getValid().ordinal() >= other.ordinal();
     }
 
 

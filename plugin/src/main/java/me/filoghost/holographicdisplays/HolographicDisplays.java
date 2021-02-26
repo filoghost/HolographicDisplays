@@ -88,7 +88,7 @@ public class HolographicDisplays extends FCommonsPlugin implements PacketControl
         
         NMSManager nmsManager;
         try {
-            nmsManager = NMSVersion.get().createNMSManager(this, this);
+            nmsManager = NMSVersion.createNMSManager(this, this);
             nmsManager.setup();
         } catch (Exception e) {
             throw new PluginEnableException(e, "Couldn't initialize the NMS manager.");
