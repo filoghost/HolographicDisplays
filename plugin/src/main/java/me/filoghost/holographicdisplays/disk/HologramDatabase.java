@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.config.Config;
 import me.filoghost.fcommons.config.ConfigSection;
-import me.filoghost.holographicdisplays.object.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

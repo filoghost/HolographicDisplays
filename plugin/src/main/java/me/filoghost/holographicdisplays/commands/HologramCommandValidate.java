@@ -10,9 +10,9 @@ import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.HologramLineParser;
 import me.filoghost.holographicdisplays.disk.HologramLoadException;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
-import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.util.FileUtils;
 
 import java.nio.file.Files;
@@ -20,7 +20,7 @@ import java.nio.file.Path;
 
 public class HologramCommandValidate {
     
-    public static HologramLineImpl parseHologramLine(InternalHologram hologram, String serializedLine, boolean validateMaterial) throws CommandException {
+    public static InternalHologramLine parseHologramLine(InternalHologram hologram, String serializedLine, boolean validateMaterial) throws CommandException {
         try {
             return HologramLineParser.parseLine(hologram, serializedLine, validateMaterial);
         } catch (HologramLoadException e) {

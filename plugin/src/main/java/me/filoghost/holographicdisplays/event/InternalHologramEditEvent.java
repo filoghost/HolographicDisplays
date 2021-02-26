@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.event;
 
-import me.filoghost.holographicdisplays.object.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 

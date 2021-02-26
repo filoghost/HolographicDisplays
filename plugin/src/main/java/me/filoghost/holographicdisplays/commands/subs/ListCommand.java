@@ -11,8 +11,8 @@ import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

@@ -13,9 +13,9 @@ import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.event.InternalHologramEditEvent;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
-import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -41,9 +41,9 @@ public class AddlineCommand extends LineEditingCommand implements QuickEditComma
         InternalHologram hologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[0]);
         String serializedLine = Utils.join(args, " ", 1, args.length);
         
-        HologramLineImpl line = HologramCommandValidate.parseHologramLine(hologram, serializedLine, true);
+        InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine, true);
         hologram.getLinesUnsafe().add(line);
-        hologram.refreshAll();
+        hologram.refresh();
 
         configManager.getHologramDatabase().addOrUpdate(hologram);
         configManager.saveHologramDatabase();

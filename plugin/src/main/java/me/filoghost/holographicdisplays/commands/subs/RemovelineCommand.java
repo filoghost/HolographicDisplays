@@ -13,8 +13,8 @@ import me.filoghost.holographicdisplays.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.event.InternalHologramEditEvent;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -47,7 +47,7 @@ public class RemovelineCommand extends LineEditingCommand implements QuickEditCo
         CommandValidate.check(hologram.size() > 1, "The hologram should have at least 1 line. If you want to delete it, use /" + context.getRootLabel() + " delete.");
 
         hologram.removeLine(index);
-        hologram.refreshAll();
+        hologram.refresh();
         
         configManager.getHologramDatabase().addOrUpdate(hologram);
         configManager.saveHologramDatabase();

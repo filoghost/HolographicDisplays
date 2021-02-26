@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.object;
+package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
 import org.bukkit.Chunk;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HologramManager<H extends BaseHologram> {
+public class BaseHologramManager<H extends BaseHologram> {
 
     private final List<H> holograms = new ArrayList<>();
     private final List<H> unmodifiableHologramsView = Collections.unmodifiableList(holograms);
@@ -21,7 +21,7 @@ public class HologramManager<H extends BaseHologram> {
         holograms.add(hologram);
     }
 
-    protected void deleteHologram(H hologram) {
+    public void deleteHologram(H hologram) {
         Preconditions.checkArgument(hologram.isDeleted(), "hologram must be deleted first");
         holograms.remove(hologram);
         hologram.setDeleted();
@@ -36,7 +36,7 @@ public class HologramManager<H extends BaseHologram> {
         holograms.clear();
 
         for (H hologram : oldHolograms) {
-            hologram.delete();
+            hologram.setDeleted();
         }
     }
     
@@ -44,7 +44,7 @@ public class HologramManager<H extends BaseHologram> {
         // Load the holograms in that chunk.
         for (H hologram : holograms) {
             if (hologram.isInChunk(chunk)) {
-                hologram.spawnEntities();
+                hologram.refresh(false, true);
             }
         }
     }

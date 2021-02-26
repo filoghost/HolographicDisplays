@@ -19,9 +19,9 @@ import me.filoghost.holographicdisplays.image.ImageMessage;
 import me.filoghost.holographicdisplays.image.ImageReadException;
 import me.filoghost.holographicdisplays.image.ImageReader;
 import me.filoghost.holographicdisplays.image.ImageTooWideException;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
-import me.filoghost.holographicdisplays.object.line.TextLineImpl;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.internal.InternalTextLine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -114,11 +114,10 @@ public class ReadimageCommand extends LineEditingCommand {
                 hologram.clearLines();
             }
             for (String newLine : newLines) {
-                TextLineImpl line = new TextLineImpl(hologram, newLine);
-                line.setSerializedConfigValue(newLine);
+                InternalTextLine line = new InternalTextLine(hologram, newLine, newLine);
                 hologram.getLinesUnsafe().add(line);
             }
-            hologram.refreshAll();
+            hologram.refresh();
             
             if (newLines.length < 5) {
                 Messages.sendTip(sender, "The image has a very low height. You can increase it by increasing the width, it will scale automatically.");

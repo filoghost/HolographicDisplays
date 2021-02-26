@@ -20,8 +20,8 @@ import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlaySer
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
-import me.filoghost.holographicdisplays.object.line.TextLineImpl;
+import me.filoghost.holographicdisplays.object.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.object.base.BaseTextLine;
 import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bukkit.World;
@@ -67,7 +67,7 @@ class PacketListener extends PacketAdapter {
         // Spawn entity packet
         if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
             WrapperPlayServerSpawnEntityLiving spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet);
-            HologramLineImpl hologramLine = getHologramLine(event, spawnEntityPacket);
+            BaseHologramLine hologramLine = getHologramLine(event, spawnEntityPacket);
 
             if (hologramLine == null) {
                 return;
@@ -83,10 +83,10 @@ class PacketListener extends PacketAdapter {
                 return;
             }
 
-            if (!(hologramLine instanceof TextLineImpl)) {
+            if (!(hologramLine instanceof BaseTextLine)) {
                 return;
             }
-            TextLineImpl textLine = (TextLineImpl) hologramLine;
+            BaseTextLine textLine = (BaseTextLine) hologramLine;
 
             if (!hologramLine.getParent().isAllowPlaceholders() || !textLine.hasRelativePlaceholders()) {
                 return;
@@ -104,7 +104,7 @@ class PacketListener extends PacketAdapter {
 
         } else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
             WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
-            HologramLineImpl hologramLine = getHologramLine(event, spawnEntityPacket);
+            BaseHologramLine hologramLine = getHologramLine(event, spawnEntityPacket);
 
             if (hologramLine == null) {
                 return;
@@ -117,7 +117,7 @@ class PacketListener extends PacketAdapter {
 
         } else if (packet.getType() == PacketType.Play.Server.ENTITY_METADATA) {
             WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
-            HologramLineImpl hologramLine = getHologramLine(event, entityMetadataPacket);
+            BaseHologramLine hologramLine = getHologramLine(event, entityMetadataPacket);
 
             if (hologramLine == null) {
                 return;
@@ -128,10 +128,10 @@ class PacketListener extends PacketAdapter {
                 return;
             }
             
-            if (!(hologramLine instanceof TextLineImpl)) {
+            if (!(hologramLine instanceof BaseTextLine)) {
                 return;
             }
-            TextLineImpl textLine = (TextLineImpl) hologramLine;
+            BaseTextLine textLine = (BaseTextLine) hologramLine;
 
             if (!hologramLine.getParent().isAllowPlaceholders() || !textLine.hasRelativePlaceholders()) {
                 return;
@@ -183,11 +183,11 @@ class PacketListener extends PacketAdapter {
         return true;
     }    
     
-    private HologramLineImpl getHologramLine(PacketEvent packetEvent, EntityRelatedPacketWrapper packetWrapper) {
+    private BaseHologramLine getHologramLine(PacketEvent packetEvent, EntityRelatedPacketWrapper packetWrapper) {
         return getHologramLine(packetEvent.getPlayer().getWorld(), packetWrapper.getEntityID());
     }
     
-    private HologramLineImpl getHologramLine(World world, int entityID) {
+    private BaseHologramLine getHologramLine(World world, int entityID) {
         if (entityID < 0) {
             return null;
         }
@@ -197,7 +197,7 @@ class PacketListener extends PacketAdapter {
             return null; // Entity not existing or not related to holograms.
         }
         
-        return (HologramLineImpl) nmsEntity.getHologramLine();
+        return (BaseHologramLine) nmsEntity.getHologramLine();
     }
 
 }

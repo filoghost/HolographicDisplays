@@ -9,8 +9,8 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.HologramConfig;
 import me.filoghost.holographicdisplays.disk.HologramLoadException;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 
 import java.util.Collection;
 
@@ -29,7 +29,7 @@ public class StartupLoadHologramsTask implements Runnable {
         for (HologramConfig hologramConfig : hologramConfigsToLoad) {
             try {
                 InternalHologram hologram = hologramConfig.createHologram(internalHologramManager);
-                hologram.refreshAll();
+                hologram.refresh();
             } catch (HologramLoadException e) {
                 Log.warning(Utils.formatExceptionMessage(e));
             } catch (Exception e) {

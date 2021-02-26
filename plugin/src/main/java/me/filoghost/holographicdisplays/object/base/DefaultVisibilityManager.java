@@ -3,10 +3,9 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.object;
+package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.VisibilityManager;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import org.bukkit.Bukkit;
@@ -17,15 +16,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class VisibilityManagerImpl implements VisibilityManager {
-
-    private final BaseHologram hologram;
-    private Map<String, Boolean> playersVisibilityMap;
-    private boolean visibleByDefault;
+public class DefaultVisibilityManager implements VisibilityManager {
 
     private static final int VISIBILITY_DISTANCE_SQUARED = 64 * 64;
     
-    public VisibilityManagerImpl(BaseHologram hologram) {
+    private final BaseHologram hologram;
+    private Map<String, Boolean> playersVisibilityMap;
+    private boolean visibleByDefault;
+    
+    public DefaultVisibilityManager(BaseHologram hologram) {
         Preconditions.notNull(hologram, "hologram");
         this.hologram = hologram;
         this.visibleByDefault = true;
@@ -161,7 +160,7 @@ public class VisibilityManagerImpl implements VisibilityManager {
         }
     }
     
-    private boolean isNear(Player player, Hologram hologram) {
+    private boolean isNear(Player player, BaseHologram hologram) {
         return player.isOnline() 
                 && player.getWorld().equals(hologram.getWorld()) 
                 && player.getLocation().distanceSquared(hologram.getLocation()) < VISIBILITY_DISTANCE_SQUARED;

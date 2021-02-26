@@ -9,10 +9,10 @@ import me.filoghost.fcommons.MaterialsHelper;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.holographicdisplays.nbt.parser.MojangsonParseException;
 import me.filoghost.holographicdisplays.nbt.parser.MojangsonParser;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
-import me.filoghost.holographicdisplays.object.line.ItemLineImpl;
-import me.filoghost.holographicdisplays.object.line.TextLineImpl;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.object.internal.InternalItemLine;
+import me.filoghost.holographicdisplays.object.internal.InternalTextLine;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -21,23 +21,22 @@ public class HologramLineParser {
 
     private static final String ICON_PREFIX = "icon:";
 
-    public static HologramLineImpl parseLine(InternalHologram hologram, String serializedLine, boolean checkMaterialValidity) throws HologramLoadException {
-        HologramLineImpl hologramLine;
+    public static InternalHologramLine parseLine(InternalHologram hologram, String serializedLine, boolean checkMaterialValidity) throws HologramLoadException {
+        InternalHologramLine hologramLine;
         
         if (serializedLine.toLowerCase().startsWith(ICON_PREFIX)) {
             String serializedIcon = serializedLine.substring(ICON_PREFIX.length());
             ItemStack icon = parseItemStack(serializedIcon, checkMaterialValidity);
-            hologramLine = new ItemLineImpl(hologram, icon);
+            hologramLine = new InternalItemLine(hologram, icon, serializedLine);
             
         } else {
             if (serializedLine.trim().equalsIgnoreCase("{empty}")) {
-                hologramLine = new TextLineImpl(hologram, "");
+                hologramLine = new InternalTextLine(hologram, "", serializedLine);
             } else {
-                hologramLine = new TextLineImpl(hologram, StringConverter.toReadableFormat(serializedLine));
+                hologramLine = new InternalTextLine(hologram, StringConverter.toReadableFormat(serializedLine), serializedLine);
             }
         }
         
-        hologramLine.setSerializedConfigValue(serializedLine);
         return hologramLine;
     }
     

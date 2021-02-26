@@ -11,8 +11,8 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.command.CommandSender;
 
 public class DeleteCommand extends HologramSubCommand {
@@ -34,7 +34,7 @@ public class DeleteCommand extends HologramSubCommand {
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram hologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[0]);
         
-        hologram.delete();
+        internalHologramManager.deleteHologram(hologram);
 
         configManager.getHologramDatabase().removeHologram(hologram);
         configManager.saveHologramDatabase();

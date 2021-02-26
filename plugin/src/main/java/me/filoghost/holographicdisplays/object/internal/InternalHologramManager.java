@@ -3,12 +3,13 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.object;
+package me.filoghost.holographicdisplays.object.internal;
 
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.object.base.BaseHologramManager;
 import org.bukkit.Location;
 
-public class InternalHologramManager extends HologramManager<InternalHologram> {
+public class InternalHologramManager extends BaseHologramManager<InternalHologram> {
     
     private final NMSManager nmsManager;
 
@@ -17,7 +18,7 @@ public class InternalHologramManager extends HologramManager<InternalHologram> {
     }
 
     public InternalHologram createHologram(Location source, String name) {
-        InternalHologram hologram = new InternalHologram(source, name, nmsManager, this);
+        InternalHologram hologram = new InternalHologram(source, name, nmsManager);
         super.addHologram(hologram);
         return hologram;
     }

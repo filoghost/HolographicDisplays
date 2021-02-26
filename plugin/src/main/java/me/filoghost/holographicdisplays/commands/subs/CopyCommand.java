@@ -11,9 +11,9 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
-import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.command.CommandSender;
 
 public class CopyCommand extends HologramSubCommand {
@@ -37,12 +37,12 @@ public class CopyCommand extends HologramSubCommand {
         InternalHologram toHologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[1]);
         
         toHologram.clearLines();
-        for (HologramLineImpl line : fromHologram.getLinesUnsafe()) {
-            HologramLineImpl clonedLine = HologramCommandValidate.parseHologramLine(toHologram, line.getSerializedConfigValue(), false);
+        for (InternalHologramLine line : fromHologram.getLinesUnsafe()) {
+            InternalHologramLine clonedLine = HologramCommandValidate.parseHologramLine(toHologram, line.getSerializedConfigValue(), false);
             toHologram.getLinesUnsafe().add(clonedLine);
         }
         
-        toHologram.refreshAll();
+        toHologram.refresh();
 
         configManager.getHologramDatabase().addOrUpdate(toHologram);
         configManager.saveHologramDatabase();

@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.bridge.protocollib;
 import com.google.common.base.Preconditions;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
-import me.filoghost.holographicdisplays.object.BaseHologram;
+import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import me.filoghost.holographicdisplays.util.VersionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

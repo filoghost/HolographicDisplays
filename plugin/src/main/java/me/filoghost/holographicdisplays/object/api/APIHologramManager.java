@@ -3,18 +3,20 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.object;
+package me.filoghost.holographicdisplays.object.api;
 
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.object.base.BaseHologramManager;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
-public class APIHologramManager extends HologramManager<APIHologram> {
+public class APIHologramManager extends BaseHologramManager<APIHologram> {
 
     private final NMSManager nmsManager;
 
@@ -28,8 +30,8 @@ public class APIHologramManager extends HologramManager<APIHologram> {
         return hologram;
     }
 
-    public Set<Hologram> getHologramsByPlugin(Plugin plugin) {
-        Set<Hologram> ownedHolograms = new HashSet<>();
+    public Collection<Hologram> getHologramsByPlugin(Plugin plugin) {
+        List<Hologram> ownedHolograms = new LinkedList<>();
         
         for (APIHologram hologram : getHolograms()) {
             if (hologram.getOwner().equals(plugin)) {
@@ -37,7 +39,7 @@ public class APIHologramManager extends HologramManager<APIHologram> {
             }
         }
         
-        return Collections.unmodifiableSet(ownedHolograms);
+        return Collections.unmodifiableList(ownedHolograms);
     }
 
 }

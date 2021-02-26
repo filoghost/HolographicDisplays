@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
-import me.filoghost.holographicdisplays.object.line.TextLineImpl;
+import me.filoghost.holographicdisplays.object.base.BaseTextLine;
 import me.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -88,33 +88,29 @@ public class PlaceholdersManager {
         linesToUpdate.clear();
     }
     
-    public static void untrack(TextLineImpl line) {
-        if (line == null || !line.isSpawned()) {
-            return;
-        }
-        
+    public static void untrack(BaseTextLine line) {
         Iterator<DynamicLineData> iter = linesToUpdate.iterator();
         while (iter.hasNext()) {
             DynamicLineData data = iter.next();
-            if (data.getEntity() == line.getNmsNameable()) {
+            if (data.getEntity() == line.getNMSNameable()) {
                 iter.remove();
                 data.getEntity().setCustomNameNMS(data.getOriginalName());
             }
         }
     }
     
-    public static void trackIfNecessary(TextLineImpl line) {
-        NMSNameable nameableEntity = line.getNmsNameable();
+    public static void trackIfNecessary(BaseTextLine line) {        
+        String text = line.getText();
+        if (text == null || text.isEmpty()) {
+            return;
+        }
+        
+        NMSNameable nameableEntity = line.getNMSNameable();
         if (nameableEntity == null) {
             return;
-        }
+        }        
         
-        String name = line.getText();
-        if (name == null || name.isEmpty()) {
-            return;
-        }
-        
-        boolean updateName = false;
+        boolean updateText = false;
 
         // Lazy initialization.
         Set<Placeholder> normalPlaceholders = null;
@@ -125,7 +121,7 @@ public class PlaceholdersManager {
         Matcher matcher;
         
         for (Placeholder placeholder : PlaceholdersRegister.getPlaceholders()) {
-            if (name.contains(placeholder.getTextPlaceholder())) {
+            if (text.contains(placeholder.getTextPlaceholder())) {
                 if (normalPlaceholders == null) {
                     normalPlaceholders = new HashSet<>();
                 }
@@ -135,7 +131,7 @@ public class PlaceholdersManager {
         
         
         // Players in a world count pattern.
-        matcher = WORLD_PATTERN.matcher(name);
+        matcher = WORLD_PATTERN.matcher(text);
         while (matcher.find()) {
             if (worldsOnlinePlayersReplacers == null) {
                 worldsOnlinePlayersReplacers = new HashMap<>();
@@ -164,7 +160,7 @@ public class PlaceholdersManager {
         }
         
         // BungeeCord online pattern.
-        matcher = BUNGEE_ONLINE_PATTERN.matcher(name);
+        matcher = BUNGEE_ONLINE_PATTERN.matcher(text);
         while (matcher.find()) {
             if (bungeeReplacers == null) {
                 bungeeReplacers = new HashMap<>();
@@ -198,7 +194,7 @@ public class PlaceholdersManager {
         }
         
         // BungeeCord max players pattern.
-        matcher = BUNGEE_MAX_PATTERN.matcher(name);
+        matcher = BUNGEE_MAX_PATTERN.matcher(text);
         while (matcher.find()) {
             if (bungeeReplacers == null) {
                 bungeeReplacers = new HashMap<>();
@@ -214,7 +210,7 @@ public class PlaceholdersManager {
         }
         
         // BungeeCord motd pattern.
-        matcher = BUNGEE_MOTD_PATTERN.matcher(name);
+        matcher = BUNGEE_MOTD_PATTERN.matcher(text);
         while (matcher.find()) {
             if (bungeeReplacers == null) {
                 bungeeReplacers = new HashMap<>();
@@ -230,7 +226,7 @@ public class PlaceholdersManager {
         }
         
         // BungeeCord motd (line 2) pattern.
-        matcher = BUNGEE_MOTD_2_PATTERN.matcher(name);
+        matcher = BUNGEE_MOTD_2_PATTERN.matcher(text);
         while (matcher.find()) {
             if (bungeeReplacers == null) {
                 bungeeReplacers = new HashMap<>();
@@ -246,7 +242,7 @@ public class PlaceholdersManager {
         }
         
         // BungeeCord status pattern.
-        matcher = BUNGEE_STATUS_PATTERN.matcher(name);
+        matcher = BUNGEE_STATUS_PATTERN.matcher(text);
         while (matcher.find()) {
             if (bungeeReplacers == null) {
                 bungeeReplacers = new HashMap<>();
@@ -263,7 +259,7 @@ public class PlaceholdersManager {
         
         
         // Animation pattern.
-        matcher = ANIMATION_PATTERN.matcher(name);
+        matcher = ANIMATION_PATTERN.matcher(text);
         while (matcher.find()) {
             String fileName = extractArgumentFromPlaceholder(matcher);
             Placeholder animation = AnimationsRegister.getAnimation(fileName);
@@ -277,13 +273,13 @@ public class PlaceholdersManager {
                 animationsPlaceholders.put(matcher.group(), animation);
                 
             } else {
-                name = name.replace(matcher.group(), "[Animation not found: " + fileName + "]");
-                updateName = true;
+                text = text.replace(matcher.group(), "[Animation not found: " + fileName + "]");
+                updateText = true;
             }
         }
         
         if (Utils.isThereNonNull(normalPlaceholders, bungeeReplacers, worldsOnlinePlayersReplacers, animationsPlaceholders)) {
-            DynamicLineData lineData = new DynamicLineData(nameableEntity, name);
+            DynamicLineData lineData = new DynamicLineData(nameableEntity, text);
             
             if (normalPlaceholders != null) {
                 lineData.setPlaceholders(normalPlaceholders);
@@ -312,8 +308,8 @@ public class PlaceholdersManager {
         } else {
             
             // The name needs to be updated anyways.
-            if (updateName) {
-                nameableEntity.setCustomNameNMS(name);
+            if (updateText) {
+                nameableEntity.setCustomNameNMS(text);
             }
         }
     }

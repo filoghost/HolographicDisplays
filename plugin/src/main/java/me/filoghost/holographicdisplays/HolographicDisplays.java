@@ -29,11 +29,11 @@ import me.filoghost.holographicdisplays.listener.UpdateNotificationListener;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
-import me.filoghost.holographicdisplays.object.APIHologram;
-import me.filoghost.holographicdisplays.object.APIHologramManager;
-import me.filoghost.holographicdisplays.object.BaseHologram;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.api.APIHologram;
+import me.filoghost.holographicdisplays.object.api.APIHologramManager;
+import me.filoghost.holographicdisplays.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.placeholder.AnimationsRegister;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import me.filoghost.holographicdisplays.task.BungeeCleanupTask;
@@ -175,7 +175,7 @@ public class HolographicDisplays extends FCommonsPlugin implements PacketControl
 
         // Then trigger a refresh for all of them
         for (BaseHologram hologram : internalHologramManager.getHolograms()) {
-            hologram.refreshAll();
+            hologram.refresh();
         }
     }
 

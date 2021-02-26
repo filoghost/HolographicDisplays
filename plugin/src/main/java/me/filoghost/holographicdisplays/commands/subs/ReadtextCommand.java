@@ -15,9 +15,9 @@ import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.HologramLineParser;
 import me.filoghost.holographicdisplays.disk.HologramLoadException;
 import me.filoghost.holographicdisplays.event.InternalHologramEditEvent;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
-import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.util.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -73,10 +73,10 @@ public class ReadtextCommand extends LineEditingCommand {
                 linesAmount = 40;
             }
             
-            List<HologramLineImpl> linesToAdd = new ArrayList<>();
+            List<InternalHologramLine> linesToAdd = new ArrayList<>();
             for (int i = 0; i < linesAmount; i++) {
                 try {
-                    HologramLineImpl line = HologramLineParser.parseLine(hologram, serializedLines.get(i), true);
+                    InternalHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i), true);
                     linesToAdd.add(line);
                 } catch (HologramLoadException e) {
                     throw new CommandException("Error at line " + (i + 1) + ": " + e.getMessage());
@@ -85,7 +85,7 @@ public class ReadtextCommand extends LineEditingCommand {
             
             hologram.clearLines();
             hologram.getLinesUnsafe().addAll(linesToAdd);
-            hologram.refreshAll();
+            hologram.refresh();
 
             configManager.getHologramDatabase().addOrUpdate(hologram);
             configManager.saveHologramDatabase();

@@ -9,8 +9,8 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.object.APIHologram;
-import me.filoghost.holographicdisplays.object.line.TouchSlimeLineImpl;
+import me.filoghost.holographicdisplays.object.api.APIHologram;
+import me.filoghost.holographicdisplays.object.base.BaseTouchableLine;
 import org.bukkit.GameMode;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -46,12 +46,12 @@ public class MainListener implements Listener {
         }
         
         NMSEntityBase entityBase = nmsManager.getNMSEntityBase(event.getRightClicked());
-        if (entityBase == null || !(entityBase.getHologramLine() instanceof TouchSlimeLineImpl)) {
+        if (entityBase == null || !(entityBase.getHologramLine() instanceof BaseTouchableLine)) {
             return;
         }
         
-        TouchSlimeLineImpl touchSlime = (TouchSlimeLineImpl) entityBase.getHologramLine();
-        if (touchSlime.getTouchablePiece().getTouchHandler() == null || !touchSlime.getParent().getVisibilityManager().isVisibleTo(clicker)) {
+        BaseTouchableLine touchableLine = (BaseTouchableLine) entityBase.getHologramLine();
+        if (touchableLine.getTouchHandler() == null || !touchableLine.getParent().getVisibilityManager().isVisibleTo(clicker)) {
             return;
         }
         
@@ -63,9 +63,9 @@ public class MainListener implements Listener {
         anticlickSpam.put(event.getPlayer(), System.currentTimeMillis());
         
         try {
-            touchSlime.getTouchablePiece().getTouchHandler().onTouch(event.getPlayer());
+            touchableLine.getTouchHandler().onTouch(event.getPlayer());
         } catch (Throwable t) {
-            Plugin plugin = touchSlime.getParent() instanceof APIHologram ? ((APIHologram) touchSlime.getParent()).getOwner() : HolographicDisplays.getInstance();
+            Plugin plugin = touchableLine.getParent() instanceof APIHologram ? ((APIHologram) touchableLine.getParent()).getOwner() : HolographicDisplays.getInstance();
             Log.warning("The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", t);
         }
     }

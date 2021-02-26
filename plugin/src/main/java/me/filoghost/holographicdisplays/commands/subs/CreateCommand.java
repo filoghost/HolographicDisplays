@@ -13,9 +13,9 @@ import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
-import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -63,14 +63,14 @@ public class CreateCommand extends HologramSubCommand {
             String text = Utils.join(args, " ", 1, args.length);
             CommandValidate.check(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
             
-            HologramLineImpl line = HologramCommandValidate.parseHologramLine(hologram, text, true);
+            InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, text, true);
             hologram.getLinesUnsafe().add(line);
             player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + context.getRootLabel() + " edit " + hologram.getName() + ")");
         } else {
             hologram.appendTextLine("Default hologram. Change it with " + Colors.PRIMARY + "/" + context.getRootLabel() + " edit " + hologram.getName());
         }
         
-        hologram.refreshAll();
+        hologram.refresh();
 
         configManager.getHologramDatabase().addOrUpdate(hologram);
         configManager.saveHologramDatabase();

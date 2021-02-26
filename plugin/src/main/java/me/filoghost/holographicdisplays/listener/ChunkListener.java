@@ -2,9 +2,9 @@ package me.filoghost.holographicdisplays.listener;
 
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.object.APIHologramManager;
-import me.filoghost.holographicdisplays.object.BaseHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.api.APIHologramManager;
+import me.filoghost.holographicdisplays.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.util.SchedulerUtils;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;

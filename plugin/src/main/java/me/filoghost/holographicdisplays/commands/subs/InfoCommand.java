@@ -11,9 +11,9 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
-import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.command.CommandSender;
 
 public class InfoCommand extends LineEditingCommand implements QuickEditCommand {
@@ -39,7 +39,7 @@ public class InfoCommand extends LineEditingCommand implements QuickEditCommand 
         Messages.sendTitle(sender, "Lines of the hologram '" + hologram.getName() + "'");
         int index = 0;
         
-        for (HologramLineImpl line : hologram.getLinesUnsafe()) {
+        for (InternalHologramLine line : hologram.getLinesUnsafe()) {
             sender.sendMessage(Colors.SECONDARY + Colors.BOLD + (++index) + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + line.getSerializedConfigValue());
         }
         commandManager.sendQuickEditCommands(context, hologram);

@@ -7,9 +7,9 @@ package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.config.ConfigSection;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
-import me.filoghost.holographicdisplays.object.line.HologramLineImpl;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -38,7 +38,7 @@ public class HologramConfig {
     public HologramConfig(InternalHologram hologram) {
         this.name = hologram.getName();
         this.serializedLines = new ArrayList<>();
-        for (HologramLineImpl line : hologram.getLinesUnsafe()) {
+        for (InternalHologramLine line : hologram.getLinesUnsafe()) {
             serializedLines.add(line.getSerializedConfigValue());
         }
 
@@ -65,7 +65,7 @@ public class HologramConfig {
 
         for (String serializedLine : serializedLines) {
             try {
-                HologramLineImpl line = HologramLineParser.parseLine(hologram, serializedLine, false);
+                InternalHologramLine line = HologramLineParser.parseLine(hologram, serializedLine, false);
                 hologram.getLinesUnsafe().add(line);
             } catch (HologramLoadException e) {
                 // Rethrow with more details

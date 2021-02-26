@@ -12,8 +12,8 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -39,9 +39,7 @@ public class MovehereCommand extends HologramSubCommand {
         Player player = CommandValidate.getPlayerSender(sender);
         InternalHologram hologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[0]);
         
-        hologram.teleport(player.getWorld(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
-        hologram.despawnEntities();
-        hologram.refreshAll();
+        hologram.teleport(player.getLocation());
         
         configManager.getHologramDatabase().addOrUpdate(hologram);
         configManager.saveHologramDatabase();

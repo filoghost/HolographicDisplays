@@ -12,8 +12,8 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
-import me.filoghost.holographicdisplays.object.InternalHologram;
-import me.filoghost.holographicdisplays.object.InternalHologramManager;
+import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
@@ -55,9 +55,7 @@ public class AlignCommand extends HologramSubCommand {
             throw new CommandException("You must specify either X, Y, Z or XZ, " + axis + " is not a valid axis.");
         }
 
-        hologram.teleport(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ());
-        hologram.despawnEntities();
-        hologram.refreshAll();
+        hologram.teleport(loc);
             
         configManager.getHologramDatabase().addOrUpdate(hologram);
         configManager.saveHologramDatabase();
