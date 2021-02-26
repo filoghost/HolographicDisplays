@@ -5,8 +5,8 @@
  */
 package com.gmail.filoghost.holographicdisplays.api.internal;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;

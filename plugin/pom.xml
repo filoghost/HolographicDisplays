@@ -42,13 +42,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>holographicdisplays-legacy-v1</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>holographicdisplays-legacy-v2</artifactId>
+            <artifactId>holographicdisplays-legacy-api</artifactId>
             <scope>runtime</scope>
         </dependency>
         
