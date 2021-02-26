@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.object;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.common.Utils;
+import me.filoghost.holographicdisplays.core.Utils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;

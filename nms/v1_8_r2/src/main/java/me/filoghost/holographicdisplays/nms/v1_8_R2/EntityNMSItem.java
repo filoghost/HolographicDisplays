@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.nms.v1_8_R2;
 
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.common.DebugLogger;
+import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSCommons;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;

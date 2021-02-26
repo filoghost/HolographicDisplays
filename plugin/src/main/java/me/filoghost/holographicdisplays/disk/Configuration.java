@@ -13,7 +13,7 @@ package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.common.DebugLogger;
+import me.filoghost.holographicdisplays.core.DebugLogger;
 import org.bukkit.ChatColor;
 
 import java.time.DateTimeException;

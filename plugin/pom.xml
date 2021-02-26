@@ -37,7 +37,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>holographicdisplays-common</artifactId>
+            <artifactId>holographicdisplays-core</artifactId>
         </dependency>
 
         <dependency>

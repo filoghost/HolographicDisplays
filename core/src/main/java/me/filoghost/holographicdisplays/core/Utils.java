@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.common;
+package me.filoghost.holographicdisplays.core;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.Strings;

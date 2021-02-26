@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.placeholder;
 
 import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.common.Utils;
+import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

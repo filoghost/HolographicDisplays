@@ -9,8 +9,8 @@
         <version>3.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>holographicdisplays-common</artifactId>
-    <name>HolographicDisplays Common</name>
+    <artifactId>holographicdisplays-core</artifactId>
+    <name>HolographicDisplays Core</name>
 
     <repositories>
         <repository>

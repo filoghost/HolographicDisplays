@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.bridge.bungeecord.serverpinger;
 
 import me.filoghost.holographicdisplays.disk.ServerAddress;
-import me.filoghost.holographicdisplays.common.DebugLogger;
+import me.filoghost.holographicdisplays.core.DebugLogger;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 

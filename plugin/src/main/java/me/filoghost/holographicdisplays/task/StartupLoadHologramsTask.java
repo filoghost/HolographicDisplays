@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.task;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.common.Utils;
+import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.disk.HologramConfig;
 import me.filoghost.holographicdisplays.disk.HologramLoadException;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;

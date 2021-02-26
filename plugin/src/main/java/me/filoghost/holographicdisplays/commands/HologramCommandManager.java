@@ -31,7 +31,7 @@ import me.filoghost.holographicdisplays.commands.subs.ReloadCommand;
 import me.filoghost.holographicdisplays.commands.subs.RemovelineCommand;
 import me.filoghost.holographicdisplays.commands.subs.SetlineCommand;
 import me.filoghost.holographicdisplays.commands.subs.TeleportCommand;
-import me.filoghost.holographicdisplays.common.Utils;
+import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;

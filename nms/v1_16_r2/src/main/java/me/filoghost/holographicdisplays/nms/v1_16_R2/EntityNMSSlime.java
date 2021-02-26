@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.nms.v1_16_R2;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
-import me.filoghost.holographicdisplays.common.DebugLogger;
+import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.fcommons.reflection.ReflectField;
 import net.minecraft.server.v1_16_R2.AxisAlignedBB;
 import net.minecraft.server.v1_16_R2.DamageSource;
