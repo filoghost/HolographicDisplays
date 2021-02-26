@@ -7,8 +7,8 @@ package me.filoghost.holographicdisplays.nms.v1_13_R1;
 
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.core.Utils;
-import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.core.nms.PacketController;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import net.minecraft.server.v1_13_R1.AxisAlignedBB;
 import net.minecraft.server.v1_13_R1.DamageSource;
 import net.minecraft.server.v1_13_R1.EntityArmorStand;

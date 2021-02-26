@@ -7,8 +7,8 @@ package me.filoghost.holographicdisplays.listener;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.object.api.APIHologram;
 import me.filoghost.holographicdisplays.object.base.BaseTouchableLine;
 import org.bukkit.GameMode;

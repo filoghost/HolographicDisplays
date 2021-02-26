@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.holographicdisplays.api.line.TextLine;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import org.bukkit.World;

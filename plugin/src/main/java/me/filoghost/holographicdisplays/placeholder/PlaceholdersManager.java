@@ -9,7 +9,7 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.core.Utils;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSNameable;
 import me.filoghost.holographicdisplays.object.base.BaseTextLine;
 import me.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import org.bukkit.Bukkit;

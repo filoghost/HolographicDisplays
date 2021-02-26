@@ -14,7 +14,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>interfaces</module>
         <module>v1_8_r2</module>
         <module>v1_8_r3</module>
         <module>v1_9_r1</module>

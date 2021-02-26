@@ -1,4 +1,4 @@
-package me.filoghost.holographicdisplays.nms.interfaces;
+package me.filoghost.holographicdisplays.core.nms;
 
 public interface PacketController {
 

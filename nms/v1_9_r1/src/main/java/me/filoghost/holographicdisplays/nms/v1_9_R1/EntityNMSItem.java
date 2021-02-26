@@ -6,10 +6,10 @@
 package me.filoghost.holographicdisplays.nms.v1_9_R1;
 
 import me.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
-import me.filoghost.holographicdisplays.nms.interfaces.NMSCommons;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
+import me.filoghost.holographicdisplays.core.nms.ItemPickupManager;
+import me.filoghost.holographicdisplays.core.nms.NMSCommons;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.fcommons.reflection.ReflectField;

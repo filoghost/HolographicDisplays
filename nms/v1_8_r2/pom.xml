@@ -19,12 +19,7 @@
         </repository>
     </repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>holographicdisplays-nms-interfaces</artifactId>
-        </dependency>
-        
+    <dependencies>        
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>holographicdisplays-core</artifactId>

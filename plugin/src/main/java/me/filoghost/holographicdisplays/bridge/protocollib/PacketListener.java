@@ -17,9 +17,9 @@ import me.filoghost.holographicdisplays.bridge.protocollib.packet.EntityRelatedP
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerEntityMetadata;
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntity;
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntityLiving;
-import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.object.base.BaseHologramLine;
 import me.filoghost.holographicdisplays.object.base.BaseTextLine;
 import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;

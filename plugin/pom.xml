@@ -48,11 +48,6 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>holographicdisplays-nms-interfaces</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>holographicdisplays-nms-v1_8_r2</artifactId>
         </dependency>
         

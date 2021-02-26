@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.object.internal;
 
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.api.line.TextLine;
-import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;

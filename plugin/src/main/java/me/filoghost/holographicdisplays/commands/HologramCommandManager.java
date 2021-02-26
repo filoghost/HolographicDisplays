@@ -34,7 +34,7 @@ import me.filoghost.holographicdisplays.commands.subs.TeleportCommand;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import net.md_5.bungee.api.ChatColor;

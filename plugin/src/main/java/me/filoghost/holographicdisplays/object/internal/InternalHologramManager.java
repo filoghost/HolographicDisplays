@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.object.internal;
 
-import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseHologramManager;
 import org.bukkit.Location;
 

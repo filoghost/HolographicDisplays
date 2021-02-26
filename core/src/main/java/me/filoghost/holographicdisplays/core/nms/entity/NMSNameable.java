@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.nms.interfaces.entity;
+package me.filoghost.holographicdisplays.core.nms.entity;
 
 public interface NMSNameable extends NMSEntityBase {
     

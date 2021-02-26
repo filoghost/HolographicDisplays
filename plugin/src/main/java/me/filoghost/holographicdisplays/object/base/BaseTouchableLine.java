@@ -7,8 +7,8 @@ package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import me.filoghost.holographicdisplays.api.line.TouchableLine;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import org.bukkit.World;
 
 import java.util.Collection;

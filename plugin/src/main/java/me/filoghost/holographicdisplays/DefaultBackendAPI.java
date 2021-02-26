@@ -9,7 +9,7 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.internal.BackendAPI;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
-import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.api.APIHologramManager;
 import me.filoghost.holographicdisplays.placeholder.Placeholder;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersRegister;

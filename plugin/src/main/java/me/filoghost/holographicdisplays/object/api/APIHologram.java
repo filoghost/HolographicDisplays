@@ -9,7 +9,7 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.api.line.TextLine;
-import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import me.filoghost.holographicdisplays.object.base.BaseHologramLine;
 import me.filoghost.holographicdisplays.object.base.BaseItemLine;

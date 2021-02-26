@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.HologramComponent;
 import org.bukkit.World;
 

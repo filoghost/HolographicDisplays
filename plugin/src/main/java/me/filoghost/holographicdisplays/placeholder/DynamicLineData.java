@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.placeholder;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSNameable;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSNameable;
 
 import java.util.HashMap;
 import java.util.HashSet;

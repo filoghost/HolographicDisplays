@@ -6,9 +6,9 @@
 package me.filoghost.holographicdisplays.util;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.nms.interfaces.ItemPickupManager;
-import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
-import me.filoghost.holographicdisplays.nms.interfaces.PacketController;
+import me.filoghost.holographicdisplays.core.nms.ItemPickupManager;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.PacketController;
 import org.bukkit.Bukkit;
 
 import java.util.regex.Matcher;

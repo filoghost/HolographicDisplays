@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.VisibilityManager;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.nms.interfaces.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.HologramComponent;
 import org.bukkit.Location;
 import org.bukkit.World;

@@ -8,8 +8,8 @@ package me.filoghost.holographicdisplays.object.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 

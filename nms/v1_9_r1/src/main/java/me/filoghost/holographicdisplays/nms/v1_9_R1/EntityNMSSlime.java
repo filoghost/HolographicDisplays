@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.nms.v1_9_R1;
 
 import me.filoghost.holographicdisplays.api.line.HologramLine;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.nms.interfaces.entity.NMSSlime;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.fcommons.reflection.ReflectField;
