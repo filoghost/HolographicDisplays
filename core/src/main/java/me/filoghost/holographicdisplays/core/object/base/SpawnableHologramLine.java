@@ -3,14 +3,13 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.object.base;
+package me.filoghost.holographicdisplays.core.object.base;
 
-import me.filoghost.holographicdisplays.api.line.HologramLine;
 import org.bukkit.World;
 
 import java.util.Collection;
 
-public interface SpawnableHologramLine extends HologramLine {
+public interface SpawnableHologramLine {
 
     void respawn(World world, double x, double y, double z);
 

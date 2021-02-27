@@ -7,12 +7,10 @@ package me.filoghost.holographicdisplays.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.holographicdisplays.Colors;
-import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.object.api.APIHologram;
-import me.filoghost.holographicdisplays.object.internal.InternalHologram;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -38,21 +36,21 @@ public class DebugCommand extends HologramSubCommand {
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) {
         boolean foundAnyHologram = false;
-        
+
         for (World world : Bukkit.getWorlds()) {
-            Map<Hologram, HologramDebugInfo> hologramsDebugInfo = new HashMap<>();
-            
+            Map<BaseHologram, HologramDebugInfo> hologramsDebugInfo = new HashMap<>();
+
             for (Chunk chunk : world.getLoadedChunks()) {
                 for (Entity entity : chunk.getEntities()) {
                     NMSEntityBase nmsEntity = nmsManager.getNMSEntityBase(entity);
-                    
+
                     if (nmsEntity == null) {
                         continue;
                     }
-                    
-                    Hologram ownerHologram = nmsEntity.getHologramLine().getParent();
+
+                    BaseHologram ownerHologram = nmsEntity.getHologramLine().getBaseParent();
                     HologramDebugInfo hologramDebugInfo = hologramsDebugInfo.computeIfAbsent(ownerHologram, mapKey -> new HologramDebugInfo());
-                    
+
                     if (nmsEntity.isDeadNMS()) {
                         hologramDebugInfo.deadEntities++;
                     } else {
@@ -60,34 +58,22 @@ public class DebugCommand extends HologramSubCommand {
                     }
                 }
             }
-            
+
             if (!hologramsDebugInfo.isEmpty()) {
                 foundAnyHologram = true;
                 sender.sendMessage(Colors.PRIMARY + "Holograms in world '" + world.getName() + "':");
-                
-                for (Entry<Hologram, HologramDebugInfo> entry : hologramsDebugInfo.entrySet()) {
-                    Hologram hologram = entry.getKey();
-                    String displayName = getHologramDisplayName(hologram);
+
+                for (Entry<BaseHologram, HologramDebugInfo> entry : hologramsDebugInfo.entrySet()) {
+                    BaseHologram hologram = entry.getKey();
                     HologramDebugInfo debugInfo = entry.getValue();
-                    sender.sendMessage(Colors.PRIMARY_SHADOW + "- '" + displayName + "': " + hologram.size() + " lines, "
+                    sender.sendMessage(Colors.PRIMARY_SHADOW + "- '" + hologram.toFormattedString() + "': " + hologram.size() + " lines, "
                             + debugInfo.getTotalEntities() + " entities (" + debugInfo.aliveEntities + " alive, " + debugInfo.deadEntities + " dead)");
                 }
             }
         }
-        
+
         if (!foundAnyHologram) {
             sender.sendMessage(Colors.ERROR + "Couldn't find any loaded hologram (holograms may be in unloaded chunks).");
-        }
-        
-    }
-
-    private String getHologramDisplayName(Hologram hologram) {
-        if (hologram instanceof InternalHologram) {
-            return ((InternalHologram) hologram).getName();
-        } else if (hologram instanceof APIHologram) {
-            return ((APIHologram) hologram).getOwner().getName() + "@" + Integer.toHexString(hologram.hashCode());
-        } else {
-            return hologram.toString();
         }
     }
     

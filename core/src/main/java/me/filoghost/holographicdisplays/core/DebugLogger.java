@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.core;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.api.line.HologramLine;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
 
 public class DebugLogger {
     
@@ -47,8 +47,8 @@ public class DebugLogger {
         }
     }
     
-    public static void handleSpawnFail(HologramLine parentPiece) {
-        warning("Couldn't spawn entity for this hologram: " + parentPiece.getParent().toString());
+    public static void handleSpawnFail(BaseHologramLine parentPiece) {
+        warning("Couldn't spawn entity for this hologram: " + parentPiece.getBaseParent().toString());
     }
 
     public static void cannotSetPassenger(Throwable t) {

@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.object.internal;
 
-import me.filoghost.holographicdisplays.object.base.SpawnableHologramLine;
+import me.filoghost.holographicdisplays.core.object.base.SpawnableHologramLine;
 
 public interface InternalHologramLine extends SpawnableHologramLine {
     

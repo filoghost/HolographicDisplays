@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.object.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.VisibilityManager;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

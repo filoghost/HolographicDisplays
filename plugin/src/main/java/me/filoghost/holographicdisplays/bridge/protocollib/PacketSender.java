@@ -18,11 +18,11 @@ import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
-import me.filoghost.holographicdisplays.object.base.BaseHologram;
-import me.filoghost.holographicdisplays.object.base.BaseItemLine;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
+import me.filoghost.holographicdisplays.core.object.base.BaseTouchableLine;
+import me.filoghost.holographicdisplays.core.object.base.SpawnableHologramLine;
 import me.filoghost.holographicdisplays.object.base.BaseTextLine;
-import me.filoghost.holographicdisplays.object.base.BaseTouchableLine;
-import me.filoghost.holographicdisplays.object.base.SpawnableHologramLine;
 import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bukkit.entity.Player;
 

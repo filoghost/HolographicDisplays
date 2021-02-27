@@ -9,16 +9,15 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.reflection.ClassToken;
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.fcommons.reflection.ReflectMethod;
-import me.filoghost.holographicdisplays.api.line.HologramLine;
-import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.nms.CustomNameHelper;
-import me.filoghost.holographicdisplays.core.nms.ItemPickupManager;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
 import net.minecraft.server.v1_9_R1.Entity;
 import net.minecraft.server.v1_9_R1.EntityTypes;
 import net.minecraft.server.v1_9_R1.MathHelper;
@@ -38,11 +37,9 @@ public class VersionNMSManager implements NMSManager {
 
     private static final ReflectMethod<?> VALIDATE_ENTITY_METHOD = ReflectMethod.lookup(Object.class, World.class, "b", Entity.class);
 
-    private final ItemPickupManager itemPickupManager;
     private final PacketController packetController;
 
-    public VersionNMSManager(ItemPickupManager itemPickupManager, PacketController packetController) {
-        this.itemPickupManager = itemPickupManager;
+    public VersionNMSManager(PacketController packetController) {
         this.packetController = packetController;
     }
     
@@ -59,9 +56,9 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack) {
+    public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, BaseItemLine parentPiece, ItemStack stack) {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-        EntityNMSItem customItem = new EntityNMSItem(nmsWorld, parentPiece, itemPickupManager);
+        EntityNMSItem customItem = new EntityNMSItem(nmsWorld, parentPiece);
         customItem.setLocationNMS(x, y, z);
         customItem.setItemStackNMS(stack);
         if (!addEntityToWorld(nmsWorld, customItem)) {
@@ -71,7 +68,7 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public EntityNMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece) {
+    public EntityNMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, BaseHologramLine parentPiece) {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         EntityNMSSlime touchSlime = new EntityNMSSlime(nmsWorld, parentPiece);
         touchSlime.setLocationNMS(x, y, z);
@@ -82,7 +79,7 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece) {
+    public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, BaseHologramLine parentPiece) {
         WorldServer nmsWorld = ((CraftWorld) world).getHandle();
         EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece, packetController);
         invisibleArmorStand.setLocationNMS(x, y, z);

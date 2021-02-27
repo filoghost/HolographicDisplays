@@ -5,12 +5,13 @@
  */
 package me.filoghost.holographicdisplays.object.internal;
 
-import me.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.api.line.TextLine;
+import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.disk.Configuration;
 import org.bukkit.Location;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,6 @@ public class InternalHologram extends BaseHologram {
 
     protected InternalHologram(Location source, String name, NMSManager nmsManager) {
         super(source, nmsManager);
-        super.setAllowPlaceholders(true);
         this.name = name;
         this.lines = new ArrayList<>();
     }
@@ -30,40 +30,40 @@ public class InternalHologram extends BaseHologram {
     public String getName() {
         return name;
     }
-    
+
+    @Override
+    public Plugin getOwner() {
+        return HolographicDisplays.getInstance();
+    }
+
     @Override
     public List<InternalHologramLine> getLinesUnsafe() {
         return lines;
     }
-    
+
+    @Override
+    public boolean isAllowPlaceholders() {
+        return true;
+    }
+
+    @Override
+    public boolean isVisibleTo(Player player) {
+        return true;
+    }
+
+    @Override
+    protected double getSpaceBetweenLines() {
+        return Configuration.spaceBetweenLines;
+    }
+
+    @Override
+    public String toFormattedString() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "InternalHologram [name=" + name + ", super=" + super.toString() + "]";
-    }
-
-    @Override
-    public TextLine appendTextLine(String text) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public ItemLine appendItemLine(ItemStack itemStack) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public TextLine insertTextLine(int index, String text) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public ItemLine insertItemLine(int index, ItemStack itemStack) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void delete() {
-        throw new UnsupportedOperationException();
     }
 
 }

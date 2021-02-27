@@ -20,7 +20,7 @@ import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlaySer
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.object.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
 import me.filoghost.holographicdisplays.object.base.BaseTextLine;
 import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import me.filoghost.holographicdisplays.util.NMSVersion;
@@ -73,7 +73,7 @@ class PacketListener extends PacketAdapter {
                 return;
             }
 
-            if (!hologramLine.getParent().getVisibilityManager().isVisibleTo(player)) {
+            if (!hologramLine.getBaseParent().isVisibleTo(player)) {
                 event.setCancelled(true);
                 return;
             }
@@ -88,7 +88,7 @@ class PacketListener extends PacketAdapter {
             }
             BaseTextLine textLine = (BaseTextLine) hologramLine;
 
-            if (!hologramLine.getParent().isAllowPlaceholders() || !textLine.hasRelativePlaceholders()) {
+            if (!hologramLine.getBaseParent().isAllowPlaceholders() || !textLine.hasRelativePlaceholders()) {
                 return;
             }
 
@@ -110,7 +110,7 @@ class PacketListener extends PacketAdapter {
                 return;
             }
 
-            if (!hologramLine.getParent().getVisibilityManager().isVisibleTo(player)) {
+            if (!hologramLine.getBaseParent().isVisibleTo(player)) {
                 event.setCancelled(true);
                 return;
             }
@@ -123,7 +123,7 @@ class PacketListener extends PacketAdapter {
                 return;
             }
 
-            if (!hologramLine.getParent().getVisibilityManager().isVisibleTo(player)) {
+            if (!hologramLine.getBaseParent().isVisibleTo(player)) {
                 event.setCancelled(true);
                 return;
             }
@@ -133,7 +133,7 @@ class PacketListener extends PacketAdapter {
             }
             BaseTextLine textLine = (BaseTextLine) hologramLine;
 
-            if (!hologramLine.getParent().isAllowPlaceholders() || !textLine.hasRelativePlaceholders()) {
+            if (!hologramLine.getBaseParent().isAllowPlaceholders() || !textLine.hasRelativePlaceholders()) {
                 return;
             }
 
@@ -197,7 +197,7 @@ class PacketListener extends PacketAdapter {
             return null; // Entity not existing or not related to holograms.
         }
         
-        return (BaseHologramLine) nmsEntity.getHologramLine();
+        return nmsEntity.getHologramLine();
     }
 
 }

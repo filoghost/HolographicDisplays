@@ -3,7 +3,6 @@ package me.filoghost.holographicdisplays.listener;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.object.api.APIHologramManager;
-import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.util.SchedulerUtils;
 import org.bukkit.Chunk;
@@ -33,7 +32,7 @@ public class ChunkListener implements Listener {
                 NMSEntityBase entityBase = nmsManager.getNMSEntityBase(entity);
 
                 if (entityBase != null) {
-                    ((BaseHologram) entityBase.getHologramLine().getParent()).despawnEntities();
+                    entityBase.getHologramLine().getBaseParent().despawnEntities();
                 }
             }
         }

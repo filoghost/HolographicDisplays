@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.util;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.core.nms.ItemPickupManager;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
 import org.bukkit.Bukkit;
@@ -42,8 +41,8 @@ public enum NMSVersion {
         this.nmsManagerConstructor = nmsManagerConstructor;
     }
 
-    public static NMSManager createNMSManager(ItemPickupManager itemPickupManager, PacketController packetController) {
-        return getValid().nmsManagerConstructor.create(itemPickupManager, packetController);
+    public static NMSManager createNMSManager(PacketController packetController) {
+        return getValid().nmsManagerConstructor.create(packetController);
     }
 
     private static NMSVersion extractCurrentVersion() {
@@ -76,7 +75,7 @@ public enum NMSVersion {
 
     private interface NMSManagerConstructor {
 
-        NMSManager create(ItemPickupManager itemPickupManager, PacketController packetController);
+        NMSManager create(PacketController packetController);
         
     }
     

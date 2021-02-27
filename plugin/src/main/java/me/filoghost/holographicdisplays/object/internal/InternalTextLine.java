@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.object.internal;
 
-import me.filoghost.holographicdisplays.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
 import me.filoghost.holographicdisplays.object.base.BaseTextLine;
 
 public class InternalTextLine extends BaseTextLine implements InternalHologramLine {

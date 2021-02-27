@@ -5,14 +5,14 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_9_R2;
 
-import me.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.core.nms.ItemPickupManager;
+import me.filoghost.fcommons.reflection.ReflectField;
+import me.filoghost.holographicdisplays.core.DebugLogger;
+import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.nms.NMSCommons;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
-import me.filoghost.holographicdisplays.core.DebugLogger;
-import me.filoghost.holographicdisplays.core.Utils;
-import me.filoghost.fcommons.reflection.ReflectField;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
 import net.minecraft.server.v1_9_R2.Blocks;
 import net.minecraft.server.v1_9_R2.DamageSource;
 import net.minecraft.server.v1_9_R2.Entity;
@@ -27,22 +27,19 @@ import net.minecraft.server.v1_9_R2.PacketPlayOutMount;
 import net.minecraft.server.v1_9_R2.World;
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
-import org.bukkit.entity.Player;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
     
     private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "at");
     
-    private final ItemLine parentPiece;
-    private final ItemPickupManager itemPickupManager;
+    private final BaseItemLine parentPiece;
     
     private int resendMountPacketTicks;
     
-    public EntityNMSItem(World world, ItemLine piece, ItemPickupManager itemPickupManager) {
+    public EntityNMSItem(World world, BaseItemLine piece) {
         super(world);
         super.pickupDelay = Integer.MAX_VALUE;
         this.parentPiece = piece;
-        this.itemPickupManager = itemPickupManager;
     }
     
     @Override
@@ -90,8 +87,8 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
             return;
         }
         
-        if (parentPiece.getPickupHandler() != null && human instanceof EntityPlayer) {
-            itemPickupManager.handleItemLinePickup((Player) human.getBukkitEntity(), parentPiece);
+        if (human instanceof EntityPlayer) {
+            parentPiece.onPickup(((EntityPlayer) human).getBukkitEntity());
             // It is never added to the inventory.
         }
     }
@@ -209,7 +206,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     }
     
     @Override
-    public ItemLine getHologramLine() {
+    public BaseHologramLine getHologramLine() {
         return parentPiece;
     }
 

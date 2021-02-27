@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
 import org.bukkit.Chunk;
 
 import java.util.ArrayList;

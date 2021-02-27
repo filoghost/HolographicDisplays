@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.object.internal;
 
-import me.filoghost.holographicdisplays.object.base.BaseHologram;
-import me.filoghost.holographicdisplays.object.base.BaseItemLine;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
 
 public class InternalItemLine extends BaseItemLine implements InternalHologramLine {

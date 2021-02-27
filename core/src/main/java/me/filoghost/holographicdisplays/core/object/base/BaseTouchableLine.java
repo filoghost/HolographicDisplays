@@ -3,34 +3,52 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.object.base;
+package me.filoghost.holographicdisplays.core.object.base;
 
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
-import me.filoghost.holographicdisplays.api.line.TouchableLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Useful class that implements TouchablePiece. The downside is that subclasses must extend this, and cannot extend other classes.
  * But all the current items are touchable.
  */
-public abstract class BaseTouchableLine extends BaseHologramLine implements TouchableLine {
+public abstract class BaseTouchableLine extends BaseHologramLine {
 
     private static final double SLIME_HEIGHT = 0.5;
     
+    private static final Map<Player, Long> anticlickSpam = new WeakHashMap<>();
+
     private TouchHandler touchHandler;
 
     private NMSSlime slimeEntity;
     private NMSArmorStand vehicleEntity;
     
+
     protected BaseTouchableLine(BaseHologram parent) {
         super(parent);
     }
-    
-    @Override
+
+    public void onTouch(Player player) {
+        if (touchHandler == null || !getBaseParent().isVisibleTo(player)) {
+            return;
+        }
+
+        Long lastClick = anticlickSpam.get(player);
+        if (lastClick != null && System.currentTimeMillis() - lastClick < 100) {
+            return;
+        }
+
+        anticlickSpam.put(player, System.currentTimeMillis());
+        touchHandler.onTouch(player);
+    }
+
     public void setTouchHandler(TouchHandler touchHandler) {
         this.touchHandler = touchHandler;
         
@@ -43,12 +61,11 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Touc
             despawnSlime();
         }
     }
-    
-    @Override
+
     public TouchHandler getTouchHandler() {
         return this.touchHandler;
     }
-    
+
     @Override
     public void spawnEntities(World world, double x, double y, double z) {
         if (touchHandler != null) {
@@ -97,7 +114,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Touc
     private double getSlimeSpawnY(double y) {
         return y + ((getHeight() - SLIME_HEIGHT) / 2) + getSlimeSpawnOffset();
     }
-    
+
     private double getSlimeSpawnOffset() {
         return 0;
     }

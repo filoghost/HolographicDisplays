@@ -3,37 +3,57 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.object.base;
+package me.filoghost.holographicdisplays.core.object.base;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
-import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 
-public class BaseItemLine extends BaseTouchableLine implements ItemLine {
+public abstract class BaseItemLine extends BaseTouchableLine {
     
     private ItemStack itemStack;
-    private PickupHandler pickupHandler;
-    
+
     private NMSItem itemEntity;
     private NMSArmorStand vehicleEntity;
-    
+    private PickupHandler pickupHandler;
+
     public BaseItemLine(BaseHologram parent, ItemStack itemStack) {
         super(parent);
         setItemStack(itemStack);
     }
     
-    @Override
+    public void onPickup(Player player) {
+        if (pickupHandler == null || !getBaseParent().isVisibleTo(player)) {
+            return;
+        }
+        
+        try {
+            pickupHandler.onPickup(player);
+        } catch (Throwable t) {
+            Log.warning("The plugin " + getBaseParent().getOwner().getName() + " generated an exception" 
+                    + " when the player " + player.getName() + " picked up an item from a hologram.", t);
+        }
+    }
+    
+    public PickupHandler getPickupHandler() {
+        return pickupHandler;
+    }
+    
+    public void setPickupHandler(PickupHandler pickupHandler) {
+        this.pickupHandler = pickupHandler;
+    }
+    
     public ItemStack getItemStack() {
         return itemStack;
     }
-
-    @Override
+    
     public void setItemStack(ItemStack itemStack) {
         Preconditions.notNull(itemStack, "itemStack");
         Preconditions.checkArgument(0 < itemStack.getAmount() && itemStack.getAmount() <= 64, "Item must have amount between 1 and 64");
@@ -42,16 +62,6 @@ public class BaseItemLine extends BaseTouchableLine implements ItemLine {
         if (itemEntity != null) {
             itemEntity.setItemStackNMS(itemStack);
         }
-    }
-
-    @Override
-    public PickupHandler getPickupHandler() {
-        return pickupHandler;
-    }
-
-    @Override
-    public void setPickupHandler(PickupHandler pickupHandler) {
-        this.pickupHandler = pickupHandler;
     }
 
     @Override
@@ -124,7 +134,7 @@ public class BaseItemLine extends BaseTouchableLine implements ItemLine {
 
     @Override
     public String toString() {
-        return "ItemLine [itemStack=" + itemStack + ", pickupHandler=" + pickupHandler + "]";
+        return "ItemLine [itemStack=" + itemStack + "]";
     }
-    
+
 }

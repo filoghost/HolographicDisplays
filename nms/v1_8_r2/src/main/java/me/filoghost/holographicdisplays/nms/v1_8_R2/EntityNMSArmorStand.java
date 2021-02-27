@@ -7,11 +7,11 @@ package me.filoghost.holographicdisplays.nms.v1_8_R2;
 
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.fcommons.reflection.ReflectMethod;
-import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
 import net.minecraft.server.v1_8_R2.AxisAlignedBB;
 import net.minecraft.server.v1_8_R2.DamageSource;
 import net.minecraft.server.v1_8_R2.EntityArmorStand;
@@ -29,11 +29,11 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = ReflectField.lookup(int.class, EntityArmorStand.class, "bi");
     private static final ReflectMethod<Void> SET_MARKER_METHOD = ReflectMethod.lookup(void.class, EntityArmorStand.class, "n", boolean.class);
 
-    private final HologramLine parentPiece;
+    private final BaseHologramLine parentPiece;
     private final PacketController packetController;
     private String customName;
     
-    public EntityNMSArmorStand(World world, HologramLine parentPiece, PacketController packetController) {
+    public EntityNMSArmorStand(World world, BaseHologramLine parentPiece, PacketController packetController) {
         super(world);
         super.setInvisible(true);
         super.setSmall(true);
@@ -221,7 +221,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
 
     @Override
-    public HologramLine getHologramLine() {
+    public BaseHologramLine getHologramLine() {
         return parentPiece;
     }
     

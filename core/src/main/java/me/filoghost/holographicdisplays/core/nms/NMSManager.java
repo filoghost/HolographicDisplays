@@ -5,12 +5,12 @@
  */
 package me.filoghost.holographicdisplays.core.nms;
 
-import me.filoghost.holographicdisplays.api.line.HologramLine;
-import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
 
 public interface NMSManager {
@@ -18,11 +18,11 @@ public interface NMSManager {
     // A method to register all the custom entities of the plugin, it may fail.
     void setup() throws Exception;
     
-    NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, HologramLine parentPiece);
+    NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, BaseHologramLine parentPiece);
     
-    NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack);
+    NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, BaseItemLine parentPiece, ItemStack stack);
     
-    NMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, HologramLine parentPiece);
+    NMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z,BaseHologramLine parentPiece);
     
     boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity);
 

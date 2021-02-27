@@ -5,8 +5,9 @@
  */
 package me.filoghost.holographicdisplays.object.base;
 
-import me.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.core.object.base.BaseTouchableLine;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import org.bukkit.World;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BaseTextLine extends BaseTouchableLine implements TextLine {
+public abstract class BaseTextLine extends BaseTouchableLine {
 
     private String text;
     private List<RelativePlaceholder> relativePlaceholders;
@@ -37,12 +38,12 @@ public class BaseTextLine extends BaseTouchableLine implements TextLine {
         if (nameableEntity != null) {
             if (text != null && !text.isEmpty()) {
                 nameableEntity.setCustomNameNMS(text);
-                if (getParent().isAllowPlaceholders()) {
+                if (getBaseParent().isAllowPlaceholders()) {
                     PlaceholdersManager.trackIfNecessary(this);
                 }
             } else {
                 nameableEntity.setCustomNameNMS(""); // It will not appear
-                if (getParent().isAllowPlaceholders()) {
+                if (getBaseParent().isAllowPlaceholders()) {
                     PlaceholdersManager.untrack(this);
                 }
             }
@@ -75,7 +76,7 @@ public class BaseTextLine extends BaseTouchableLine implements TextLine {
             nameableEntity.setCustomNameNMS(text);
         }
 
-        if (getParent().isAllowPlaceholders()) {
+        if (getBaseParent().isAllowPlaceholders()) {
             PlaceholdersManager.trackIfNecessary(this);
         }
     }

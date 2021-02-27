@@ -9,14 +9,15 @@ import me.filoghost.fcommons.FCommonsPlugin;
 import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.internal.BackendAPI;
-import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.core.Utils;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.PacketController;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.HologramConfig;
@@ -26,12 +27,8 @@ import me.filoghost.holographicdisplays.listener.ChunkListener;
 import me.filoghost.holographicdisplays.listener.MainListener;
 import me.filoghost.holographicdisplays.listener.SpawnListener;
 import me.filoghost.holographicdisplays.listener.UpdateNotificationListener;
-import me.filoghost.holographicdisplays.core.nms.ItemPickupManager;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.PacketController;
 import me.filoghost.holographicdisplays.object.api.APIHologram;
 import me.filoghost.holographicdisplays.object.api.APIHologramManager;
-import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.placeholder.AnimationsRegister;
@@ -43,10 +40,8 @@ import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-public class HolographicDisplays extends FCommonsPlugin implements PacketController, ItemPickupManager {
+public class HolographicDisplays extends FCommonsPlugin implements PacketController {
     
     private static HolographicDisplays instance;
 
@@ -88,7 +83,7 @@ public class HolographicDisplays extends FCommonsPlugin implements PacketControl
         
         NMSManager nmsManager;
         try {
-            nmsManager = NMSVersion.createNMSManager(this, this);
+            nmsManager = NMSVersion.createNMSManager(this);
             nmsManager.setup();
         } catch (Exception e) {
             throw new PluginEnableException(e, "Couldn't initialize the NMS manager.");
@@ -196,20 +191,7 @@ public class HolographicDisplays extends FCommonsPlugin implements PacketControl
     public static HolographicDisplays getInstance() {
         return instance;
     }
-
-    @Override
-    public void handleItemLinePickup(Player player, ItemLine itemLine) {
-        Hologram hologram = itemLine.getParent();
-        try {
-            if (hologram.getVisibilityManager().isVisibleTo(player)) {
-                itemLine.getPickupHandler().onPickup(player);
-            }
-        } catch (Throwable t) {
-            Plugin plugin = hologram instanceof APIHologram ? ((APIHologram) hologram).getOwner() : HolographicDisplays.getInstance();
-            Log.warning("The plugin " + plugin.getName() + " generated an exception when the player " + player.getName() + " picked up an item from a hologram.", t);
-        }
-    }
-
+    
     @Override
     public boolean shouldBroadcastLocationPacket() {
         return ProtocolLibHook.isEnabled();

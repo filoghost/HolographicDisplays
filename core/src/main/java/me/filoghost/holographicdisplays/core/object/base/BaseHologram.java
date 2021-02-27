@@ -3,41 +3,41 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.object.base;
+package me.filoghost.holographicdisplays.core.object.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.api.Hologram;
-import me.filoghost.holographicdisplays.api.VisibilityManager;
-import me.filoghost.holographicdisplays.api.line.HologramLine;
-import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.object.HologramComponent;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
-public abstract class BaseHologram extends HologramComponent implements Hologram {
+public abstract class BaseHologram extends HologramComponent {
     
     private final NMSManager nmsManager;
-    private final VisibilityManager visibilityManager;
-    private final long creationTimestamp;
-
-    private boolean allowPlaceholders;
+    
     private boolean deleted;
 
     public BaseHologram(Location location, NMSManager nmsManager) {
         Preconditions.notNull(location, "location");
         this.setLocation(location);
         this.nmsManager = nmsManager;
-        this.visibilityManager = new DefaultVisibilityManager(this);
-        this.creationTimestamp = System.currentTimeMillis();
-        this.allowPlaceholders = false;
     }
+
+    public abstract Plugin getOwner();
 
     public abstract List<? extends SpawnableHologramLine> getLinesUnsafe();
     
-    @Override
+    public abstract boolean isAllowPlaceholders();
+
+    public abstract boolean isVisibleTo(Player player);
+
+    protected abstract double getSpaceBetweenLines();
+    
+    public abstract String toFormattedString();
+    
     public boolean isDeleted() {
         return deleted;
     }
@@ -49,36 +49,10 @@ public abstract class BaseHologram extends HologramComponent implements Hologram
         }
     }
 
-    @Override
-    public long getCreationTimestamp() {
-        return creationTimestamp;
-    }
-
-    @Override
-    public void setAllowPlaceholders(boolean allowPlaceholders) {
-        if (this.allowPlaceholders == allowPlaceholders) {
-            return;
-        }
-
-        this.allowPlaceholders = allowPlaceholders;
-        refresh(true);
-    }
-    
-    @Override
-    public boolean isAllowPlaceholders() {
-        return allowPlaceholders;
-    }
-
     public NMSManager getNMSManager() {
         return nmsManager;
     }
-
-    @Override
-    public HologramLine getLine(int index) {
-        return getLinesUnsafe().get(index);
-    }
-
-    @Override
+    
     public void removeLine(int index) {
         checkState();
 
@@ -86,15 +60,14 @@ public abstract class BaseHologram extends HologramComponent implements Hologram
         refresh();
     }
 
-    public void removeLine(SpawnableHologramLine line) {
+    public void removeLine(BaseHologramLine line) {
         checkState();
 
         getLinesUnsafe().remove(line);
         line.despawn();
         refresh();
     }
-
-    @Override
+    
     public void clearLines() {
         for (SpawnableHologramLine line : getLinesUnsafe()) {
             line.despawn();
@@ -102,19 +75,16 @@ public abstract class BaseHologram extends HologramComponent implements Hologram
         
         getLinesUnsafe().clear();
     }
-
-    @Override
+    
     public int size() {
         return getLinesUnsafe().size();
     }
-
-    @Override
+    
     public void teleport(Location location) {
         Preconditions.notNull(location, "location");
         teleport(location.getWorld(), location.getX(), location.getY(), location.getZ());
     }
-
-    @Override
+    
     public void teleport(World world, double x, double y, double z) {
         checkState();
         Preconditions.notNull(world, "world");
@@ -141,22 +111,6 @@ public abstract class BaseHologram extends HologramComponent implements Hologram
         }
     }
 
-    @Override
-    public double getHeight() {
-        if (getLinesUnsafe().isEmpty()) {
-            return 0;
-        }
-
-        double height = 0.0;
-
-        for (SpawnableHologramLine line : getLinesUnsafe()) {
-            height += line.getHeight();
-        }
-
-        height += Configuration.spaceBetweenLines * (getLinesUnsafe().size() - 1);
-        return height;
-    }
-
     /*
      * When spawning at a location, the top part of the first line should be exactly on that location.
      * The second line is below the first, and so on.
@@ -169,7 +123,7 @@ public abstract class BaseHologram extends HologramComponent implements Hologram
             
             currentLineY -= line.getHeight();
             if (i > 0) {
-                currentLineY -= Configuration.spaceBetweenLines;
+                currentLineY -= getSpaceBetweenLines();
             }
 
             if (forceRespawn) {
@@ -183,11 +137,6 @@ public abstract class BaseHologram extends HologramComponent implements Hologram
         for (SpawnableHologramLine line : getLinesUnsafe()) {
             line.despawn();
         }
-    }
-
-    @Override
-    public VisibilityManager getVisibilityManager() {
-        return visibilityManager;
     }
 
     protected void checkState() {

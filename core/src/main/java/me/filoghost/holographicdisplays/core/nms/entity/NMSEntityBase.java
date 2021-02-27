@@ -5,15 +5,15 @@
  */
 package me.filoghost.holographicdisplays.core.nms.entity;
 
-import me.filoghost.holographicdisplays.api.line.HologramLine;
+import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
 
 /**
  * An interface to represent a custom NMS entity being part of a hologram.
  */
 public interface NMSEntityBase {
     
-    // Returns the linked CraftHologramLine, all the entities are part of a piece. Should never be null.
-    HologramLine getHologramLine();
+    // Returns the linked line, all the entities are part of a piece. Should never be null.
+    BaseHologramLine getHologramLine();
 
     // Sets the location through NMS.
     void setLocationNMS(double x, double y, double z);
