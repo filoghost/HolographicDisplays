@@ -5,12 +5,10 @@
  */
 package me.filoghost.holographicdisplays.listener;
 
-import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.core.object.base.BaseTouchableLine;
-import me.filoghost.holographicdisplays.object.api.APIHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardTouchableLine;
 import org.bukkit.GameMode;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -18,13 +16,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.plugin.Plugin;
 
-public class MainListener implements Listener {
+public class InteractListener implements Listener {
     
     private final NMSManager nmsManager;
     
-    public MainListener(NMSManager nmsManager) {
+    public InteractListener(NMSManager nmsManager) {
         this.nmsManager = nmsManager;
     }
     
@@ -40,18 +37,16 @@ public class MainListener implements Listener {
         }
         
         NMSEntityBase entityBase = nmsManager.getNMSEntityBase(event.getRightClicked());
-        if (entityBase == null || !(entityBase.getHologramLine() instanceof BaseTouchableLine)) {
+        if (entityBase == null) {
             return;
         }
-        
-        BaseTouchableLine touchableLine = (BaseTouchableLine) entityBase.getHologramLine();
-        
-        try {
-            touchableLine.onTouch(event.getPlayer());
-        } catch (Throwable t) {
-            Plugin plugin = touchableLine.getBaseParent() instanceof APIHologram ? ((APIHologram) touchableLine.getBaseParent()).getOwner() : HolographicDisplays.getInstance();
-            Log.warning("The plugin " + plugin.getName() + " generated an exception when the player " + event.getPlayer().getName() + " touched a hologram.", t);
+
+        StandardHologramLine line = entityBase.getHologramLine();
+        if (!(line instanceof StandardTouchableLine)) {
+            return;
         }
+
+        ((StandardTouchableLine) line).onTouch(clicker);
     }
     
 }

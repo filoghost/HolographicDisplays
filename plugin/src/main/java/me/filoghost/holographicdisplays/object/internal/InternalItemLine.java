@@ -5,15 +5,15 @@
  */
 package me.filoghost.holographicdisplays.object.internal;
 
-import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
-import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.object.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
 
 public class InternalItemLine extends BaseItemLine implements InternalHologramLine {
 
     private final String serializedConfigValue;
 
-    public InternalItemLine(BaseHologram parent, ItemStack itemStack, String serializedConfigValue) {
+    public InternalItemLine(StandardHologram parent, ItemStack itemStack, String serializedConfigValue) {
         super(parent, itemStack);
         this.serializedConfigValue = serializedConfigValue;
     }

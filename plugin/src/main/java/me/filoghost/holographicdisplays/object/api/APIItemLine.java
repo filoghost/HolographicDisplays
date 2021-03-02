@@ -2,7 +2,7 @@ package me.filoghost.holographicdisplays.object.api;
 
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
+import me.filoghost.holographicdisplays.object.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
 
 public class APIItemLine extends BaseItemLine implements ItemLine, APIHologramLine {

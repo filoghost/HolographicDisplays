@@ -20,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 public class HologramLineParser {
 
     private static final String ICON_PREFIX = "icon:";
+    private static final String EMPTY_LINE_PLACEHOLDER = "{empty}";
 
     public static InternalHologramLine parseLine(InternalHologram hologram, String serializedLine, boolean checkMaterialValidity) throws HologramLoadException {
         InternalHologramLine hologramLine;
@@ -30,11 +31,14 @@ public class HologramLineParser {
             hologramLine = new InternalItemLine(hologram, icon, serializedLine);
             
         } else {
-            if (serializedLine.trim().equalsIgnoreCase("{empty}")) {
-                hologramLine = new InternalTextLine(hologram, "", serializedLine);
+            String displayText;
+            if (serializedLine.trim().equalsIgnoreCase(EMPTY_LINE_PLACEHOLDER)) {
+                displayText = "";
             } else {
-                hologramLine = new InternalTextLine(hologram, StringConverter.toReadableFormat(serializedLine), serializedLine);
+                displayText = StringConverter.toReadableFormat(serializedLine);
             }
+            
+            hologramLine = new InternalTextLine(hologram, displayText, serializedLine);
         }
         
         return hologramLine;

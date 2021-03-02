@@ -43,7 +43,7 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[0]);
+        InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
         int insertAfter = CommandValidate.parseInteger(args[1]);
         String serializedLine = Utils.join(args, " ", 2, args.length);
         

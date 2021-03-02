@@ -32,7 +32,7 @@ public class ChunkListener implements Listener {
                 NMSEntityBase entityBase = nmsManager.getNMSEntityBase(entity);
 
                 if (entityBase != null) {
-                    entityBase.getHologramLine().getBaseParent().despawnEntities();
+                    entityBase.getHologramLine().getHologram().despawnEntities();
                 }
             }
         }

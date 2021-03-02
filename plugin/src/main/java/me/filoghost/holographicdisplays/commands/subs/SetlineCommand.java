@@ -39,7 +39,7 @@ public class SetlineCommand extends LineEditingCommand implements QuickEditComma
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[0]);
+        InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
         String serializedLine = Utils.join(args, " ", 2, args.length);
         
         int lineNumber = CommandValidate.parseInteger(args[1]);

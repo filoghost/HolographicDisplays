@@ -35,7 +35,7 @@ public class TeleportCommand extends HologramSubCommand {
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         Player player = CommandValidate.getPlayerSender(sender);
-        InternalHologram hologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[0]);
+        InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
         
         Location loc = hologram.getLocation();
         loc.setPitch(90);

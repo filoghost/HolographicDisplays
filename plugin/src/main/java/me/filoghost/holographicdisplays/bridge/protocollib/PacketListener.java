@@ -17,12 +17,12 @@ import me.filoghost.holographicdisplays.bridge.protocollib.packet.EntityRelatedP
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerEntityMetadata;
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntity;
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntityLiving;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
-import me.filoghost.holographicdisplays.object.base.BaseTextLine;
-import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
+import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
 import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -67,13 +67,13 @@ class PacketListener extends PacketAdapter {
         // Spawn entity packet
         if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
             WrapperPlayServerSpawnEntityLiving spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet);
-            BaseHologramLine hologramLine = getHologramLine(event, spawnEntityPacket);
+            StandardHologramLine hologramLine = getHologramLine(event, spawnEntityPacket);
 
             if (hologramLine == null) {
                 return;
             }
 
-            if (!hologramLine.getBaseParent().isVisibleTo(player)) {
+            if (!hologramLine.getHologram().isVisibleTo(player)) {
                 event.setCancelled(true);
                 return;
             }
@@ -83,12 +83,14 @@ class PacketListener extends PacketAdapter {
                 return;
             }
 
-            if (!(hologramLine instanceof BaseTextLine)) {
+            if (!(hologramLine instanceof StandardTextLine)) {
                 return;
             }
-            BaseTextLine textLine = (BaseTextLine) hologramLine;
-
-            if (!hologramLine.getBaseParent().isAllowPlaceholders() || !textLine.hasRelativePlaceholders()) {
+            
+            StandardTextLine textLine = (StandardTextLine) hologramLine;
+            Collection<RelativePlaceholder> relativePlaceholders = textLine.getRelativePlaceholders();
+            
+            if (relativePlaceholders == null || relativePlaceholders.isEmpty()) {
                 return;
             }
 
@@ -99,41 +101,42 @@ class PacketListener extends PacketAdapter {
                 return;
             }
 
-            replaceRelativePlaceholders(customNameWatchableObject, player, textLine.getRelativePlaceholders());
+            replaceRelativePlaceholders(customNameWatchableObject, player, relativePlaceholders);
             event.setPacket(spawnEntityPacket.getHandle());
 
         } else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
             WrapperPlayServerSpawnEntity spawnEntityPacket = new WrapperPlayServerSpawnEntity(packet);
-            BaseHologramLine hologramLine = getHologramLine(event, spawnEntityPacket);
+            StandardHologramLine hologramLine = getHologramLine(event, spawnEntityPacket);
 
             if (hologramLine == null) {
                 return;
             }
 
-            if (!hologramLine.getBaseParent().isVisibleTo(player)) {
+            if (!hologramLine.getHologram().isVisibleTo(player)) {
                 event.setCancelled(true);
                 return;
             }
 
         } else if (packet.getType() == PacketType.Play.Server.ENTITY_METADATA) {
             WrapperPlayServerEntityMetadata entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
-            BaseHologramLine hologramLine = getHologramLine(event, entityMetadataPacket);
+            StandardHologramLine hologramLine = getHologramLine(event, entityMetadataPacket);
 
             if (hologramLine == null) {
                 return;
             }
 
-            if (!hologramLine.getBaseParent().isVisibleTo(player)) {
+            if (!hologramLine.getHologram().isVisibleTo(player)) {
                 event.setCancelled(true);
                 return;
             }
             
-            if (!(hologramLine instanceof BaseTextLine)) {
+            if (!(hologramLine instanceof StandardTextLine)) {
                 return;
             }
-            BaseTextLine textLine = (BaseTextLine) hologramLine;
+            StandardTextLine textLine = (StandardTextLine) hologramLine;
+            Collection<RelativePlaceholder> relativePlaceholders = textLine.getRelativePlaceholders();
 
-            if (!hologramLine.getBaseParent().isAllowPlaceholders() || !textLine.hasRelativePlaceholders()) {
+            if (relativePlaceholders == null || relativePlaceholders.isEmpty()) {
                 return;
             }
 
@@ -144,7 +147,7 @@ class PacketListener extends PacketAdapter {
                 return;
             }
 
-            boolean modified = replaceRelativePlaceholders(customNameWatchableObject, player, textLine.getRelativePlaceholders());
+            boolean modified = replaceRelativePlaceholders(customNameWatchableObject, player, relativePlaceholders);
             if (modified) {
                 event.setPacket(entityMetadataPacket.getHandle());
             }
@@ -183,11 +186,11 @@ class PacketListener extends PacketAdapter {
         return true;
     }    
     
-    private BaseHologramLine getHologramLine(PacketEvent packetEvent, EntityRelatedPacketWrapper packetWrapper) {
+    private StandardHologramLine getHologramLine(PacketEvent packetEvent, EntityRelatedPacketWrapper packetWrapper) {
         return getHologramLine(packetEvent.getPlayer().getWorld(), packetWrapper.getEntityID());
     }
     
-    private BaseHologramLine getHologramLine(World world, int entityID) {
+    private StandardHologramLine getHologramLine(World world, int entityID) {
         if (entityID < 0) {
             return null;
         }

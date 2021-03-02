@@ -3,33 +3,32 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.object.base;
+package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import org.bukkit.World;
 
-public abstract class BaseHologramLine extends HologramComponent implements SpawnableHologramLine {
+public abstract class BaseHologramLine extends BaseHologramComponent implements StandardHologramLine {
     
-    private final BaseHologram parent;
+    private final StandardHologram parent;
     
     private boolean isSpawned;
 
-    protected BaseHologramLine(BaseHologram parent) {
+    protected BaseHologramLine(StandardHologram parent) {
         Preconditions.notNull(parent, "parent hologram");
         this.parent = parent;
     }
     
-    public final BaseHologram getBaseParent() {
+    @Override
+    public final StandardHologram getHologram() {
         return parent;
     }
 
     protected final NMSManager getNMSManager() {
         return parent.getNMSManager();
-    }
-    
-    public final void removeLine() {
-        parent.removeLine(this);
     }
 
     @Override

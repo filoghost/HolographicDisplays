@@ -28,7 +28,7 @@ public class HologramCommandValidate {
         }
     }
 
-    public static InternalHologram getNamedHologram(InternalHologramManager internalHologramManager, String hologramName) throws CommandException {
+    public static InternalHologram getInternalHologram(InternalHologramManager internalHologramManager, String hologramName) throws CommandException {
         InternalHologram hologram = internalHologramManager.getHologramByName(hologramName);
         CommandValidate.notNull(hologram, "Cannot find a hologram named \"" + hologramName + "\".");
         return hologram;

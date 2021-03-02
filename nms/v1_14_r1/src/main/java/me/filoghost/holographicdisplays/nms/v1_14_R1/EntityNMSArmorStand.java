@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_14_R1;
 
-import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
@@ -30,12 +30,12 @@ import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
     
-    private final BaseHologramLine parentPiece;
+    private final StandardHologramLine parentPiece;
     private final PacketController packetController;
     private CraftEntity customBukkitEntity;
     private String customName;
     
-    public EntityNMSArmorStand(World world, BaseHologramLine parentPiece, PacketController packetController) {
+    public EntityNMSArmorStand(World world, StandardHologramLine parentPiece, PacketController packetController) {
         super(EntityTypes.ARMOR_STAND, world);
         super.setInvisible(true);
         super.setSmall(true);
@@ -229,7 +229,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
 
     @Override
-    public BaseHologramLine getHologramLine() {
+    public StandardHologramLine getHologramLine() {
         return parentPiece;
     }
     

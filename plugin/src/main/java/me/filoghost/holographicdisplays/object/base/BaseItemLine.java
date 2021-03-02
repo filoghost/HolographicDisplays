@@ -3,11 +3,13 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.object.base;
+package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import org.bukkit.World;
@@ -16,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 
-public abstract class BaseItemLine extends BaseTouchableLine {
+public abstract class BaseItemLine extends BaseTouchableLine implements StandardItemLine {
     
     private ItemStack itemStack;
 
@@ -24,20 +26,21 @@ public abstract class BaseItemLine extends BaseTouchableLine {
     private NMSArmorStand vehicleEntity;
     private PickupHandler pickupHandler;
 
-    public BaseItemLine(BaseHologram parent, ItemStack itemStack) {
+    public BaseItemLine(StandardHologram parent, ItemStack itemStack) {
         super(parent);
         setItemStack(itemStack);
     }
     
+    @Override
     public void onPickup(Player player) {
-        if (pickupHandler == null || !getBaseParent().isVisibleTo(player)) {
+        if (pickupHandler == null || !getHologram().isVisibleTo(player)) {
             return;
         }
         
         try {
             pickupHandler.onPickup(player);
         } catch (Throwable t) {
-            Log.warning("The plugin " + getBaseParent().getOwner().getName() + " generated an exception" 
+            Log.warning("The plugin " + getHologram().getOwnerPlugin().getName() + " generated an exception" 
                     + " when the player " + player.getName() + " picked up an item from a hologram.", t);
         }
     }
@@ -120,11 +123,13 @@ public abstract class BaseItemLine extends BaseTouchableLine {
         }
     }
 
+    @Override
     public NMSItem getNMSItem() {
         return itemEntity;
     }
 
-    public NMSArmorStand getNMSVehicle() {
+    @Override
+    public NMSArmorStand getNMSItemVehicle() {
         return vehicleEntity;
     }
     

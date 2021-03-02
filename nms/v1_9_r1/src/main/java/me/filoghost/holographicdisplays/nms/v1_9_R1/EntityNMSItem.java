@@ -11,8 +11,8 @@ import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.nms.NMSCommons;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
-import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
 import net.minecraft.server.v1_9_R1.Blocks;
 import net.minecraft.server.v1_9_R1.DamageSource;
 import net.minecraft.server.v1_9_R1.Entity;
@@ -32,11 +32,11 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     
     private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "as");
     
-    private final BaseItemLine parentPiece;
+    private final StandardItemLine parentPiece;
     
     private int resendMountPacketTicks;
     
-    public EntityNMSItem(World world, BaseItemLine piece) {
+    public EntityNMSItem(World world, StandardItemLine piece) {
         super(world);
         super.pickupDelay = Integer.MAX_VALUE;
         this.parentPiece = piece;
@@ -204,7 +204,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     }
     
     @Override
-    public BaseHologramLine getHologramLine() {
+    public StandardHologramLine getHologramLine() {
         return parentPiece;
     }
 

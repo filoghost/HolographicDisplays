@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.placeholder;
+package me.filoghost.holographicdisplays.core.placeholder;
 
 import org.bukkit.entity.Player;
 

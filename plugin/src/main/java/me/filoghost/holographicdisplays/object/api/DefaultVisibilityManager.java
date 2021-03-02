@@ -3,13 +3,14 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.object.base;
+package me.filoghost.holographicdisplays.object.api;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.VisibilityManager;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -21,11 +22,11 @@ public class DefaultVisibilityManager implements VisibilityManager {
 
     private static final int VISIBILITY_DISTANCE_SQUARED = 64 * 64;
     
-    private final BaseHologram hologram;
+    private final StandardHologram hologram;
     private Map<String, Boolean> playersVisibilityMap;
     private boolean visibleByDefault;
     
-    public DefaultVisibilityManager(BaseHologram hologram) {
+    public DefaultVisibilityManager(StandardHologram hologram) {
         Preconditions.notNull(hologram, "hologram");
         this.hologram = hologram;
         this.visibleByDefault = true;
@@ -149,22 +150,25 @@ public class DefaultVisibilityManager implements VisibilityManager {
         }
     }
     
-    private void sendCreatePacketIfNear(Player player, BaseHologram hologram) {
+    private void sendCreatePacketIfNear(Player player, StandardHologram hologram) {
         if (ProtocolLibHook.isEnabled() && isNear(player, hologram)) {
             ProtocolLibHook.sendCreateEntitiesPacket(player, hologram);
         }
     }
     
-    private void sendDestroyPacketIfNear(Player player, BaseHologram hologram) {
+    private void sendDestroyPacketIfNear(Player player, StandardHologram hologram) {
         if (ProtocolLibHook.isEnabled() && isNear(player, hologram)) {
             ProtocolLibHook.sendDestroyEntitiesPacket(player, hologram);
         }
     }
     
-    private boolean isNear(Player player, BaseHologram hologram) {
+    private boolean isNear(Player player, StandardHologram hologram) {
+        Location playerLocation = player.getLocation();
+        Location hologramLocation = hologram.getLocation();
+        
         return player.isOnline() 
-                && player.getWorld().equals(hologram.getWorld()) 
-                && player.getLocation().distanceSquared(hologram.getLocation()) < VISIBILITY_DISTANCE_SQUARED;
+                && playerLocation.getWorld().equals(hologramLocation.getWorld()) 
+                && playerLocation.distanceSquared(hologramLocation) < VISIBILITY_DISTANCE_SQUARED;
     }
 
     @Override

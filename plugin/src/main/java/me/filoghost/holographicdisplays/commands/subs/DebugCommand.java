@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -38,7 +38,7 @@ public class DebugCommand extends HologramSubCommand {
         boolean foundAnyHologram = false;
 
         for (World world : Bukkit.getWorlds()) {
-            Map<BaseHologram, HologramDebugInfo> hologramsDebugInfo = new HashMap<>();
+            Map<StandardHologram, HologramDebugInfo> hologramsDebugInfo = new HashMap<>();
 
             for (Chunk chunk : world.getLoadedChunks()) {
                 for (Entity entity : chunk.getEntities()) {
@@ -48,7 +48,7 @@ public class DebugCommand extends HologramSubCommand {
                         continue;
                     }
 
-                    BaseHologram ownerHologram = nmsEntity.getHologramLine().getBaseParent();
+                    StandardHologram ownerHologram = nmsEntity.getHologramLine().getHologram();
                     HologramDebugInfo hologramDebugInfo = hologramsDebugInfo.computeIfAbsent(ownerHologram, mapKey -> new HologramDebugInfo());
 
                     if (nmsEntity.isDeadNMS()) {
@@ -63,8 +63,8 @@ public class DebugCommand extends HologramSubCommand {
                 foundAnyHologram = true;
                 sender.sendMessage(Colors.PRIMARY + "Holograms in world '" + world.getName() + "':");
 
-                for (Entry<BaseHologram, HologramDebugInfo> entry : hologramsDebugInfo.entrySet()) {
-                    BaseHologram hologram = entry.getKey();
+                for (Entry<StandardHologram, HologramDebugInfo> entry : hologramsDebugInfo.entrySet()) {
+                    StandardHologram hologram = entry.getKey();
                     HologramDebugInfo debugInfo = entry.getValue();
                     sender.sendMessage(Colors.PRIMARY_SHADOW + "- '" + hologram.toFormattedString() + "': " + hologram.size() + " lines, "
                             + debugInfo.getTotalEntities() + " entities (" + debugInfo.aliveEntities + " alive, " + debugInfo.deadEntities + " dead)");

@@ -5,64 +5,59 @@
  */
 package me.filoghost.holographicdisplays.object.base;
 
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
-import me.filoghost.holographicdisplays.core.object.base.BaseTouchableLine;
+import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
-import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-public abstract class BaseTextLine extends BaseTouchableLine {
+public abstract class BaseTextLine extends BaseTouchableLine implements StandardTextLine {
 
+    private final ArrayList<RelativePlaceholder> relativePlaceholders;
     private String text;
-    private List<RelativePlaceholder> relativePlaceholders;
     private NMSArmorStand nameableEntity;
     
-    
-    public BaseTextLine(BaseHologram parent, String text) {
+    public BaseTextLine(StandardHologram parent, String text) {
         super(parent);
+        this.relativePlaceholders = new ArrayList<>();
         setText(text);
     }
     
+    protected abstract boolean isAllowPlaceholders();
+    
+    @Override
     public String getText() {
         return text;
     }
     
-    public void setText(String text) {
+    protected void setText(String text) {
         this.text = text;
         
         if (nameableEntity != null) {
             if (text != null && !text.isEmpty()) {
                 nameableEntity.setCustomNameNMS(text);
-                if (getBaseParent().isAllowPlaceholders()) {
+                if (isAllowPlaceholders()) {
                     PlaceholdersManager.trackIfNecessary(this);
                 }
             } else {
                 nameableEntity.setCustomNameNMS(""); // It will not appear
-                if (getBaseParent().isAllowPlaceholders()) {
+                if (isAllowPlaceholders()) {
                     PlaceholdersManager.untrack(this);
                 }
             }
         }
         
+        relativePlaceholders.clear();
         if (text != null) {
             for (RelativePlaceholder relativePlaceholder : RelativePlaceholder.getRegistry()) {
                 if (text.contains(relativePlaceholder.getTextPlaceholder())) {
-                    if (relativePlaceholders == null) {
-                        relativePlaceholders = new ArrayList<>();
-                    }
                     relativePlaceholders.add(relativePlaceholder);
                 }
             }
-        }
-        
-        // Deallocate the list if unused
-        if (relativePlaceholders != null && relativePlaceholders.isEmpty()) {
-            relativePlaceholders = null;
         }
     }
 
@@ -76,7 +71,7 @@ public abstract class BaseTextLine extends BaseTouchableLine {
             nameableEntity.setCustomNameNMS(text);
         }
 
-        if (getBaseParent().isAllowPlaceholders()) {
+        if (isAllowPlaceholders()) {
             PlaceholdersManager.trackIfNecessary(this);
         }
     }
@@ -100,12 +95,13 @@ public abstract class BaseTextLine extends BaseTouchableLine {
         }
     }
 
+    @Override
     public Collection<RelativePlaceholder> getRelativePlaceholders() {
+        if (!isAllowPlaceholders()) {
+            return null;
+        }
+        
         return relativePlaceholders;
-    }
-
-    public boolean hasRelativePlaceholders() {
-        return getRelativePlaceholders() != null && !getRelativePlaceholders().isEmpty();
     }
 
     @Override
@@ -122,7 +118,8 @@ public abstract class BaseTextLine extends BaseTouchableLine {
         }
     }
 
-    public NMSArmorStand getNMSNameable() {
+    @Override
+    public NMSArmorStand getNMSArmorStand() {
         return nameableEntity;
     }
 

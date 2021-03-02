@@ -6,8 +6,13 @@
 package me.filoghost.holographicdisplays.object.api;
 
 import me.filoghost.holographicdisplays.api.line.HologramLine;
-import me.filoghost.holographicdisplays.core.object.base.SpawnableHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 
-public interface APIHologramLine extends HologramLine, SpawnableHologramLine {
+public interface APIHologramLine extends HologramLine, StandardHologramLine {
+
+    @Override
+    default void removeLine() {
+        getHologram().removeLine(this);
+    }
 
 }

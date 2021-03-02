@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.object.internal;
 
-import me.filoghost.holographicdisplays.core.object.base.SpawnableHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 
-public interface InternalHologramLine extends SpawnableHologramLine {
+public interface InternalHologramLine extends StandardHologramLine {
     
     String getSerializedConfigValue();
 

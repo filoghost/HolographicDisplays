@@ -12,10 +12,8 @@ import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.object.base.DefaultVisibilityManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -46,7 +44,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     }
     
     @Override
-    public Plugin getOwner() {
+    public Plugin getOwnerPlugin() {
         return plugin;
     }
 
@@ -121,12 +119,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     public boolean isVisibleTo(Player player) {
         return visibilityManager.isVisibleTo(player);
     }
-
-    @Override
-    protected double getSpaceBetweenLines() {
-        return Configuration.spaceBetweenLines;
-    }
-
+    
     @Override
     public double getHeight() {
         if (lines.isEmpty()) {

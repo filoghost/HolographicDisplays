@@ -3,9 +3,12 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.object.base;
+package me.filoghost.holographicdisplays.object.base;
 
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardTouchableLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import org.bukkit.World;
@@ -19,7 +22,7 @@ import java.util.WeakHashMap;
  * Useful class that implements TouchablePiece. The downside is that subclasses must extend this, and cannot extend other classes.
  * But all the current items are touchable.
  */
-public abstract class BaseTouchableLine extends BaseHologramLine {
+public abstract class BaseTouchableLine extends BaseHologramLine implements StandardTouchableLine {
 
     private static final double SLIME_HEIGHT = 0.5;
     
@@ -31,12 +34,13 @@ public abstract class BaseTouchableLine extends BaseHologramLine {
     private NMSArmorStand vehicleEntity;
     
 
-    protected BaseTouchableLine(BaseHologram parent) {
+    protected BaseTouchableLine(StandardHologram parent) {
         super(parent);
     }
 
+    @Override
     public void onTouch(Player player) {
-        if (touchHandler == null || !getBaseParent().isVisibleTo(player)) {
+        if (touchHandler == null || !getHologram().isVisibleTo(player)) {
             return;
         }
 
@@ -46,7 +50,13 @@ public abstract class BaseTouchableLine extends BaseHologramLine {
         }
 
         anticlickSpam.put(player, System.currentTimeMillis());
-        touchHandler.onTouch(player);
+
+        try {
+            touchHandler.onTouch(player);
+        } catch (Throwable t) {
+            Log.warning("The plugin " + getHologram().getOwnerPlugin().getName() + " generated an exception" 
+                    + " when the player " + player.getName() + " touched a hologram.", t);
+        }
     }
 
     public void setTouchHandler(TouchHandler touchHandler) {
@@ -129,10 +139,12 @@ public abstract class BaseTouchableLine extends BaseHologramLine {
         }
     }
 
-    public NMSArmorStand getNMSVehicle() {
+    @Override
+    public NMSArmorStand getNMSSlimeVehicle() {
         return vehicleEntity;
     }
 
+    @Override
     public NMSSlime getNMSSlime() {
         return slimeEntity;
     }

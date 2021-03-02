@@ -14,15 +14,15 @@ import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlaySer
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntity;
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntity.ObjectTypes;
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntityLiving;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardTouchableLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
-import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
-import me.filoghost.holographicdisplays.core.object.base.BaseTouchableLine;
-import me.filoghost.holographicdisplays.core.object.base.SpawnableHologramLine;
-import me.filoghost.holographicdisplays.object.base.BaseTextLine;
 import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bukkit.entity.Player;
 
@@ -37,9 +37,9 @@ class PacketSender {
         this.metadataHelper = metadataHelper;
     }
 
-    public void sendDestroyEntitiesPacket(Player player, BaseHologram hologram) {
+    public void sendDestroyEntitiesPacket(Player player, StandardHologram hologram) {
         List<Integer> ids = new ArrayList<>();
-        for (SpawnableHologramLine line : hologram.getLinesUnsafe()) { 
+        for (StandardHologramLine line : hologram.getLinesUnsafe()) { 
             line.collectEntityIDs(ids);
         }
 
@@ -48,27 +48,27 @@ class PacketSender {
         }
     }
 
-    public void sendCreateEntitiesPacket(Player player, BaseHologram hologram) {
-        for (SpawnableHologramLine line : hologram.getLinesUnsafe()) {
+    public void sendCreateEntitiesPacket(Player player, StandardHologram hologram) {
+        for (StandardHologramLine line : hologram.getLinesUnsafe()) {
             sendCreateEntitiesPacket(player, line);
         }
     }
 
-    private void sendCreateEntitiesPacket(Player player, SpawnableHologramLine line) {
-        if (line instanceof BaseTextLine) {
-            BaseTextLine textLine = (BaseTextLine) line;
+    private void sendCreateEntitiesPacket(Player player, StandardHologramLine line) {
+        if (line instanceof StandardTextLine) {
+            StandardTextLine textLine = (StandardTextLine) line;
             
-            if (textLine.getNMSNameable() != null) {
-                sendSpawnArmorStandPacket(player, textLine.getNMSNameable());
+            if (textLine.getNMSArmorStand() != null) {
+                sendSpawnArmorStandPacket(player, textLine.getNMSArmorStand());
             }
 
-        } else if (line instanceof BaseItemLine) {
-            BaseItemLine itemLine = (BaseItemLine) line;
+        } else if (line instanceof StandardItemLine) {
+            StandardItemLine itemLine = (StandardItemLine) line;
 
-            if (itemLine.getNMSItem() != null && itemLine.getNMSVehicle() != null) {
-                sendSpawnArmorStandPacket(player, itemLine.getNMSVehicle());
+            if (itemLine.getNMSItem() != null && itemLine.getNMSItemVehicle() != null) {
+                sendSpawnArmorStandPacket(player, itemLine.getNMSItemVehicle());
                 sendSpawnItemPacket(player, itemLine.getNMSItem());
-                sendVehicleAttachPacket(player, itemLine.getNMSVehicle(), itemLine.getNMSItem());
+                sendVehicleAttachPacket(player, itemLine.getNMSItemVehicle(), itemLine.getNMSItem());
                 sendItemMetadataPacket(player, itemLine.getNMSItem());
             }
         } else {
@@ -76,12 +76,12 @@ class PacketSender {
         }
 
         // All sub-types of lines are touchable, no need to check instance type
-        BaseTouchableLine touchableLine = (BaseTouchableLine) line;
+        StandardTouchableLine touchableLine = (StandardTouchableLine) line;
 
-        if (touchableLine.getNMSSlime() != null && touchableLine.getNMSVehicle() != null) {
-            sendSpawnArmorStandPacket(player, touchableLine.getNMSVehicle());
+        if (touchableLine.getNMSSlime() != null && touchableLine.getNMSSlimeVehicle() != null) {
+            sendSpawnArmorStandPacket(player, touchableLine.getNMSSlimeVehicle());
             sendSpawnSlimePacket(player, touchableLine.getNMSSlime());
-            sendVehicleAttachPacket(player, touchableLine.getNMSVehicle(), touchableLine.getNMSSlime());
+            sendVehicleAttachPacket(player, touchableLine.getNMSSlimeVehicle(), touchableLine.getNMSSlime());
         }
     }
     

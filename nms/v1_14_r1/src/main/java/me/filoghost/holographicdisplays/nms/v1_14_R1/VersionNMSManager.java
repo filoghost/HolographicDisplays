@@ -17,8 +17,8 @@ import me.filoghost.holographicdisplays.core.nms.PacketController;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
-import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import net.minecraft.server.v1_14_R1.ChatBaseComponent;
 import net.minecraft.server.v1_14_R1.ChatComponentText;
 import net.minecraft.server.v1_14_R1.Entity;
@@ -71,7 +71,7 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public NMSItem spawnNMSItem(World bukkitWorld, double x, double y, double z, BaseItemLine parentPiece, ItemStack stack) {
+    public NMSItem spawnNMSItem(World bukkitWorld, double x, double y, double z, StandardItemLine parentPiece, ItemStack stack) {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         EntityNMSItem customItem = new EntityNMSItem(nmsWorld, parentPiece);
         customItem.setLocationNMS(x, y, z);
@@ -83,7 +83,7 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public EntityNMSSlime spawnNMSSlime(World bukkitWorld, double x, double y, double z, BaseHologramLine parentPiece) {
+    public EntityNMSSlime spawnNMSSlime(World bukkitWorld, double x, double y, double z, StandardHologramLine parentPiece) {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         EntityNMSSlime touchSlime = new EntityNMSSlime(nmsWorld, parentPiece);
         touchSlime.setLocationNMS(x, y, z);
@@ -94,7 +94,7 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public NMSArmorStand spawnNMSArmorStand(World world, double x, double y, double z, BaseHologramLine parentPiece) {
+    public NMSArmorStand spawnNMSArmorStand(World world, double x, double y, double z, StandardHologramLine parentPiece) {
         WorldServer nmsWorld = ((CraftWorld) world).getHandle();
         EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece, packetController);
         invisibleArmorStand.setLocationNMS(x, y, z);

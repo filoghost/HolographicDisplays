@@ -34,8 +34,8 @@ public class AlignCommand extends HologramSubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[1]);
-        InternalHologram referenceHologram = HologramCommandValidate.getNamedHologram(internalHologramManager, args[2]);
+        InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[1]);
+        InternalHologram referenceHologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[2]);
         
         CommandValidate.check(hologram != referenceHologram, "The holograms must not be the same.");
 

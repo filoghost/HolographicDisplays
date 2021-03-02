@@ -3,18 +3,19 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.object.base;
+package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.disk.Configuration;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-import java.util.List;
+import java.util.Iterator;
 
-public abstract class BaseHologram extends HologramComponent {
+public abstract class BaseHologram extends BaseHologramComponent implements StandardHologram {
     
     private final NMSManager nmsManager;
     
@@ -26,22 +27,12 @@ public abstract class BaseHologram extends HologramComponent {
         this.nmsManager = nmsManager;
     }
 
-    public abstract Plugin getOwner();
-
-    public abstract List<? extends SpawnableHologramLine> getLinesUnsafe();
-    
-    public abstract boolean isAllowPlaceholders();
-
-    public abstract boolean isVisibleTo(Player player);
-
-    protected abstract double getSpaceBetweenLines();
-    
-    public abstract String toFormattedString();
-    
+    @Override
     public boolean isDeleted() {
         return deleted;
     }
 
+    @Override
     public void setDeleted() {
         if (!deleted) {
             deleted = true;
@@ -49,6 +40,7 @@ public abstract class BaseHologram extends HologramComponent {
         }
     }
 
+    @Override
     public NMSManager getNMSManager() {
         return nmsManager;
     }
@@ -60,7 +52,8 @@ public abstract class BaseHologram extends HologramComponent {
         refresh();
     }
 
-    public void removeLine(BaseHologramLine line) {
+    @Override
+    public void removeLine(StandardHologramLine line) {
         checkState();
 
         getLinesUnsafe().remove(line);
@@ -69,19 +62,23 @@ public abstract class BaseHologram extends HologramComponent {
     }
     
     public void clearLines() {
-        for (SpawnableHologramLine line : getLinesUnsafe()) {
+        Iterator<? extends StandardHologramLine> iterator = getLinesUnsafe().iterator();
+        while (iterator.hasNext()) {
+            StandardHologramLine line = iterator.next();
+            iterator.remove();
             line.despawn();
         }
-        
-        getLinesUnsafe().clear();
     }
     
+    @Override
     public int size() {
         return getLinesUnsafe().size();
     }
     
     public void teleport(Location location) {
+        checkState();
         Preconditions.notNull(location, "location");
+
         teleport(location.getWorld(), location.getX(), location.getY(), location.getZ());
     }
     
@@ -93,14 +90,17 @@ public abstract class BaseHologram extends HologramComponent {
         refresh();
     }
 
+    @Override
     public void refresh() {
         refresh(false);
     }
 
+    @Override
     public void refresh(boolean forceRespawn) {
         refresh(forceRespawn, isInLoadedChunk());
     }
 
+    @Override
     public void refresh(boolean forceRespawn, boolean isChunkLoaded) {
         checkState();
         
@@ -119,11 +119,11 @@ public abstract class BaseHologram extends HologramComponent {
         double currentLineY = getY();
 
         for (int i = 0; i < getLinesUnsafe().size(); i++) {
-            SpawnableHologramLine line = getLinesUnsafe().get(i);
+            StandardHologramLine line = getLinesUnsafe().get(i);
             
             currentLineY -= line.getHeight();
             if (i > 0) {
-                currentLineY -= getSpaceBetweenLines();
+                currentLineY -= Configuration.spaceBetweenLines;
             }
 
             if (forceRespawn) {
@@ -133,8 +133,9 @@ public abstract class BaseHologram extends HologramComponent {
         }
     }
 
+    @Override
     public void despawnEntities() {
-        for (SpawnableHologramLine line : getLinesUnsafe()) {
+        for (StandardHologramLine line : getLinesUnsafe()) {
             line.despawn();
         }
     }

@@ -34,7 +34,7 @@ public class APIHologramManager extends BaseHologramManager<APIHologram> {
         List<Hologram> ownedHolograms = new LinkedList<>();
         
         for (APIHologram hologram : getHolograms()) {
-            if (hologram.getOwner().equals(plugin)) {
+            if (hologram.getOwnerPlugin().equals(plugin)) {
                 ownedHolograms.add(hologram);
             }
         }

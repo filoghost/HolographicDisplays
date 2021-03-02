@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.nms.v1_9_R1;
 
 import me.filoghost.fcommons.reflection.ReflectField;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
@@ -30,12 +30,12 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     
     private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = ReflectField.lookup(int.class, EntityArmorStand.class, "bz");
 
-    private final BaseHologramLine parentPiece;
+    private final StandardHologramLine parentPiece;
     private final PacketController packetController;
 
     private String customName;
     
-    public EntityNMSArmorStand(World world, BaseHologramLine parentPiece, PacketController packetController) {
+    public EntityNMSArmorStand(World world, StandardHologramLine parentPiece, PacketController packetController) {
         super(world);
         super.setInvisible(true);
         super.setSmall(true);
@@ -233,7 +233,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
 
     @Override
-    public BaseHologramLine getHologramLine() {
+    public StandardHologramLine getHologramLine() {
         return parentPiece;
     }
     

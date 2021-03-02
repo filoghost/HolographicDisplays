@@ -10,8 +10,8 @@ import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.nms.NMSCommons;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
-import me.filoghost.holographicdisplays.core.object.base.BaseItemLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
 import net.minecraft.server.v1_8_R3.Blocks;
 import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.Entity;
@@ -31,9 +31,9 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     private static final ReflectField<Double> RIDER_PITCH_DELTA = ReflectField.lookup(double.class, Entity.class, "ar");
     private static final ReflectField<Double> RIDER_YAW_DELTA = ReflectField.lookup(double.class, Entity.class, "as");
     
-    private final BaseItemLine parentPiece;
+    private final StandardItemLine parentPiece;
     
-    public EntityNMSItem(World world, BaseItemLine piece) {
+    public EntityNMSItem(World world, StandardItemLine piece) {
         super(world);
         super.pickupDelay = Integer.MAX_VALUE;
         this.parentPiece = piece;
@@ -166,7 +166,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     }
     
     @Override
-    public BaseHologramLine getHologramLine() {
+    public StandardHologramLine getHologramLine() {
         return parentPiece;
     }
 

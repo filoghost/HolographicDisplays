@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import net.minecraft.server.v1_10_R1.AxisAlignedBB;
 import net.minecraft.server.v1_10_R1.DamageSource;
 import net.minecraft.server.v1_10_R1.Entity;
@@ -29,11 +29,11 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "au");
 
-    private final BaseHologramLine parentPiece;
+    private final StandardHologramLine parentPiece;
     
     private int resendMountPacketTicks;
     
-    public EntityNMSSlime(World world, BaseHologramLine parentPiece) {
+    public EntityNMSSlime(World world, StandardHologramLine parentPiece) {
         super(world);
         super.persistent = true;
         super.collides = false;
@@ -198,7 +198,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     }
     
     @Override
-    public BaseHologramLine getHologramLine() {
+    public StandardHologramLine getHologramLine() {
         return parentPiece;
     }
 

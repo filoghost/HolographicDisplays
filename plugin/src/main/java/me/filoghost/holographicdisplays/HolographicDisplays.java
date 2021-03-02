@@ -17,14 +17,13 @@ import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.HologramConfig;
 import me.filoghost.holographicdisplays.disk.HologramLoadException;
 import me.filoghost.holographicdisplays.disk.upgrade.LegacySymbolsUpgrader;
 import me.filoghost.holographicdisplays.listener.ChunkListener;
-import me.filoghost.holographicdisplays.listener.MainListener;
+import me.filoghost.holographicdisplays.listener.InteractListener;
 import me.filoghost.holographicdisplays.listener.SpawnListener;
 import me.filoghost.holographicdisplays.listener.UpdateNotificationListener;
 import me.filoghost.holographicdisplays.object.api.APIHologram;
@@ -112,7 +111,7 @@ public class HolographicDisplays extends FCommonsPlugin implements PacketControl
         HologramCommandManager commandManager = new HologramCommandManager(configManager, internalHologramManager, nmsManager);
         commandManager.register(this);
         
-        registerListener(new MainListener(nmsManager));
+        registerListener(new InteractListener(nmsManager));
         registerListener(new SpawnListener(nmsManager));
         registerListener(new ChunkListener(nmsManager, internalHologramManager, apiHologramManager));
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
@@ -169,7 +168,7 @@ public class HolographicDisplays extends FCommonsPlugin implements PacketControl
         }
 
         // Then trigger a refresh for all of them
-        for (BaseHologram hologram : internalHologramManager.getHolograms()) {
+        for (InternalHologram hologram : internalHologramManager.getHolograms()) {
             hologram.refresh();
         }
     }

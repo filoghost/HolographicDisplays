@@ -18,4 +18,14 @@ public class APITextLine extends BaseTextLine implements TextLine, APIHologramLi
         return parent;
     }
 
+    @Override
+    public void setText(String text) {
+        super.setText(text);
+    }
+
+    @Override
+    protected boolean isAllowPlaceholders() {
+        return parent.isAllowPlaceholders();
+    }
+
 }

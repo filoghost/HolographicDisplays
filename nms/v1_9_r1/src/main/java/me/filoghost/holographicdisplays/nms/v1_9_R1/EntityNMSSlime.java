@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_9_R1;
 
-import me.filoghost.holographicdisplays.core.object.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import me.filoghost.holographicdisplays.core.DebugLogger;
@@ -29,11 +29,11 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "as");
 
-    private final BaseHologramLine parentPiece;
+    private final StandardHologramLine parentPiece;
     
     private int resendMountPacketTicks;
     
-    public EntityNMSSlime(World world, BaseHologramLine parentPiece) {
+    public EntityNMSSlime(World world, StandardHologramLine parentPiece) {
         super(world);
         super.persistent = true;
         a(0.0F, 0.0F);
@@ -195,7 +195,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     }
     
     @Override
-    public BaseHologramLine getHologramLine() {
+    public StandardHologramLine getHologramLine() {
         return parentPiece;
     }
 

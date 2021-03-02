@@ -7,8 +7,7 @@ package me.filoghost.holographicdisplays.object.internal;
 
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
-import me.filoghost.holographicdisplays.disk.Configuration;
+import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -32,7 +31,7 @@ public class InternalHologram extends BaseHologram {
     }
 
     @Override
-    public Plugin getOwner() {
+    public Plugin getOwnerPlugin() {
         return HolographicDisplays.getInstance();
     }
 
@@ -42,18 +41,8 @@ public class InternalHologram extends BaseHologram {
     }
 
     @Override
-    public boolean isAllowPlaceholders() {
-        return true;
-    }
-
-    @Override
     public boolean isVisibleTo(Player player) {
         return true;
-    }
-
-    @Override
-    protected double getSpaceBetweenLines() {
-        return Configuration.spaceBetweenLines;
     }
 
     @Override

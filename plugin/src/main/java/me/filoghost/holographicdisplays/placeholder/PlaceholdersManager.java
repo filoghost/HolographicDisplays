@@ -9,8 +9,8 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.core.Utils;
+import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSNameable;
-import me.filoghost.holographicdisplays.object.base.BaseTextLine;
 import me.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -88,24 +88,24 @@ public class PlaceholdersManager {
         linesToUpdate.clear();
     }
     
-    public static void untrack(BaseTextLine line) {
+    public static void untrack(StandardTextLine line) {
         Iterator<DynamicLineData> iter = linesToUpdate.iterator();
         while (iter.hasNext()) {
             DynamicLineData data = iter.next();
-            if (data.getEntity() == line.getNMSNameable()) {
+            if (data.getEntity() == line.getNMSArmorStand()) {
                 iter.remove();
                 data.getEntity().setCustomNameNMS(data.getOriginalName());
             }
         }
     }
     
-    public static void trackIfNecessary(BaseTextLine line) {        
+    public static void trackIfNecessary(StandardTextLine line) {        
         String text = line.getText();
         if (text == null || text.isEmpty()) {
             return;
         }
         
-        NMSNameable nameableEntity = line.getNMSNameable();
+        NMSNameable nameableEntity = line.getNMSArmorStand();
         if (nameableEntity == null) {
             return;
         }        

@@ -13,14 +13,14 @@ public class InternalHologramEditEvent extends Event {
     
     private static final HandlerList handlers = new HandlerList();
     
-    private final InternalHologram internalHologram;
+    private final InternalHologram hologram;
     
-    public InternalHologramEditEvent(InternalHologram internalHologram) {
-        this.internalHologram = internalHologram;
+    public InternalHologramEditEvent(InternalHologram hologram) {
+        this.hologram = hologram;
     }
 
-    public InternalHologram getInternalHologram() {
-        return internalHologram;
+    public InternalHologram getHologram() {
+        return hologram;
     }
 
     @Override
@@ -31,4 +31,5 @@ public class InternalHologramEditEvent extends Event {
     public static HandlerList getHandlerList() {
         return handlers;
     }
+    
 }

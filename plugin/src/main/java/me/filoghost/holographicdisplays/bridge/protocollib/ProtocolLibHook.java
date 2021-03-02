@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.bridge.protocollib;
 import com.google.common.base.Preconditions;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.util.VersionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -60,12 +60,12 @@ public class ProtocolLibHook {
         enabled = true;
     }
 
-    public static void sendDestroyEntitiesPacket(Player player, BaseHologram hologram) {
+    public static void sendDestroyEntitiesPacket(Player player, StandardHologram hologram) {
         checkState();
         packetSender.sendDestroyEntitiesPacket(player, hologram);
     }
 
-    public static void sendCreateEntitiesPacket(Player player, BaseHologram hologram) {
+    public static void sendCreateEntitiesPacket(Player player, StandardHologram hologram) {
         checkState();
         packetSender.sendCreateEntitiesPacket(player, hologram);
     }

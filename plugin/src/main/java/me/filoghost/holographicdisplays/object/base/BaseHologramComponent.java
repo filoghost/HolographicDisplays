@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.object.base;
+package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.core.Utils;
@@ -11,7 +11,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public abstract class HologramComponent {
+public abstract class BaseHologramComponent {
 
     private World world;
     private double x, y, z;

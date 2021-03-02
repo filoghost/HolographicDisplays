@@ -6,14 +6,15 @@
 package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.core.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import org.bukkit.Chunk;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
-public class BaseHologramManager<H extends BaseHologram> {
+public abstract class BaseHologramManager<H extends StandardHologram> {
 
     private final List<H> holograms = new ArrayList<>();
     private final List<H> unmodifiableHologramsView = Collections.unmodifiableList(holograms);
@@ -33,10 +34,10 @@ public class BaseHologramManager<H extends BaseHologram> {
     }
 
     public void clearAll() {
-        List<H> oldHolograms = new ArrayList<>(holograms);
-        holograms.clear();
-
-        for (H hologram : oldHolograms) {
+        Iterator<H> iterator = holograms.iterator();
+        while (iterator.hasNext()) {
+            H hologram = iterator.next();
+            iterator.remove();
             hologram.setDeleted();
         }
     }
