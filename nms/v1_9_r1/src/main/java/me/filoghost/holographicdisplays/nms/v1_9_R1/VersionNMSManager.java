@@ -10,14 +10,15 @@ import me.filoghost.fcommons.reflection.ClassToken;
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.core.DebugLogger;
-import me.filoghost.holographicdisplays.core.nms.CustomNameHelper;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
+import me.filoghost.holographicdisplays.core.nms.CustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
+import me.filoghost.holographicdisplays.core.nms.StringCustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
-import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
-import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import net.minecraft.server.v1_9_R1.Entity;
 import net.minecraft.server.v1_9_R1.EntityTypes;
 import net.minecraft.server.v1_9_R1.MathHelper;
@@ -142,8 +143,8 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public Object replaceCustomNameText(Object customNameObject, String target, String replacement) {
-        return CustomNameHelper.replaceCustomNameString(customNameObject, target, replacement);
+    public CustomNameEditor getCustomNameChatComponentEditor() {
+        return StringCustomNameEditor.INSTANCE;
     }
     
 }

@@ -11,7 +11,7 @@ import org.bukkit.ChatColor;
 public class NMSCommons {
 
     // This is used on hologram icons, to prevent vanilla items from merging with them.
-    public static final String ANTISTACK_LORE = ChatColor.BLACK.toString() + Math.random();
+    public static final String ANTI_STACK_LORE = ChatColor.BLACK.toString() + Math.random();
 
     private static final boolean IS_PAPER_SERVER = Bukkit.getName().equals("Paper");
 

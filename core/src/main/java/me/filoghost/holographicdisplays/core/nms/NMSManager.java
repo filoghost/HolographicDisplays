@@ -30,6 +30,6 @@ public interface NMSManager {
 
     NMSEntityBase getNMSEntityBaseFromID(org.bukkit.World bukkitWorld, int entityID);
 
-    Object replaceCustomNameText(Object customNameObject, String target, String replacement);
+    CustomNameEditor getCustomNameChatComponentEditor();
 
 }

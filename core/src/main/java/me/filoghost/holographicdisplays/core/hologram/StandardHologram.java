@@ -5,7 +5,6 @@
  */
 package me.filoghost.holographicdisplays.core.hologram;
 
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -42,7 +41,5 @@ public interface StandardHologram {
     boolean isDeleted();
 
     void setDeleted();
-
-    NMSManager getNMSManager();
 
 }

@@ -10,8 +10,8 @@ import me.filoghost.fcommons.reflection.ClassToken;
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.core.DebugLogger;
-import me.filoghost.holographicdisplays.core.nms.ChatComponentAdapter;
-import me.filoghost.holographicdisplays.core.nms.CustomNameHelper;
+import me.filoghost.holographicdisplays.core.nms.CustomNameEditor;
+import me.filoghost.holographicdisplays.core.nms.ChatComponentCustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
@@ -145,42 +145,35 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public Object replaceCustomNameText(Object customNameObject, String target, String replacement) {
-        return CustomNameHelper.replaceCustomNameChatComponent(NMSChatComponentAdapter.INSTANCE, customNameObject, target, replacement);
+    public CustomNameEditor getCustomNameChatComponentEditor() {
+        return VersionChatComponentCustomNameEditor.INSTANCE;
     }
     
-    private enum NMSChatComponentAdapter implements ChatComponentAdapter<IChatBaseComponent> {
+    private enum VersionChatComponentCustomNameEditor implements ChatComponentCustomNameEditor<IChatBaseComponent> {
 
-        INSTANCE {
-            
-            @Override
-            public ChatComponentText cast(Object chatComponentObject) {
-                return (ChatComponentText) chatComponentObject;
-            }
-            
-            @Override
-            public String getText(IChatBaseComponent chatComponent) {
-                return chatComponent.getText();
-            }
-    
-            @Override
-            public List<IChatBaseComponent> getSiblings(IChatBaseComponent chatComponent) {
-                return chatComponent.getSiblings();
-            }
-    
-            @Override
-            public void addSibling(IChatBaseComponent chatComponent, IChatBaseComponent newSibling) {
-                newSibling.getChatModifier().setChatModifier(chatComponent.getChatModifier());
-                chatComponent.getSiblings().add(newSibling);
-            }
-    
-            @Override
-            public ChatComponentText cloneComponent(IChatBaseComponent chatComponent, String newText) {
-                ChatComponentText clonedChatComponent = new ChatComponentText(newText);
-                clonedChatComponent.setChatModifier(chatComponent.getChatModifier().a());
-                return clonedChatComponent;
-            }
-            
+        INSTANCE;
+
+        @Override
+        public String getText(IChatBaseComponent chatComponent) {
+            return chatComponent.getText();
+        }
+
+        @Override
+        public List<IChatBaseComponent> getSiblings(IChatBaseComponent chatComponent) {
+            return chatComponent.getSiblings();
+        }
+
+        @Override
+        public void addSibling(IChatBaseComponent chatComponent, IChatBaseComponent newSibling) {
+            newSibling.getChatModifier().setChatModifier(chatComponent.getChatModifier());
+            chatComponent.getSiblings().add(newSibling);
+        }
+
+        @Override
+        public ChatComponentText cloneComponent(IChatBaseComponent chatComponent, String newText) {
+            ChatComponentText clonedChatComponent = new ChatComponentText(newText);
+            clonedChatComponent.setChatModifier(chatComponent.getChatModifier().a());
+            return clonedChatComponent;
         }
         
     }

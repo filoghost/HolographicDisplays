@@ -10,6 +10,7 @@ import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -28,6 +29,14 @@ public class InternalHologram extends BaseHologram {
 
     public String getName() {
         return name;
+    }
+
+    public InternalTextLine createTextLine(String text, String serializedConfigValue) {
+        return new InternalTextLine(this, getNMSManager(), text, serializedConfigValue);
+    }
+
+    public InternalItemLine createItemLine(ItemStack icon, String serializedConfigValue) {
+        return new InternalItemLine(this, getNMSManager(), icon, serializedConfigValue);
     }
 
     @Override

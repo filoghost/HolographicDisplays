@@ -57,7 +57,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     public TextLine appendTextLine(String text) {
         checkState();
 
-        APITextLine line = new APITextLine(this, text);
+        APITextLine line = createTextLine(text);
         lines.add(line);
         refresh();
         return line;
@@ -68,7 +68,7 @@ public class APIHologram extends BaseHologram implements Hologram {
         checkState();
         Preconditions.notNull(itemStack, "itemStack");
 
-        APIItemLine line = new APIItemLine(this, itemStack);
+        APIItemLine line = createItemLine(itemStack);
         lines.add(line);
         refresh();
         return line;
@@ -78,7 +78,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     public TextLine insertTextLine(int index, String text) {
         checkState();
 
-        APITextLine line = new APITextLine(this, text);
+        APITextLine line = createTextLine(text);
         lines.add(index, line);
         refresh();
         return line;
@@ -89,10 +89,18 @@ public class APIHologram extends BaseHologram implements Hologram {
         checkState();
         Preconditions.notNull(itemStack, "itemStack");
 
-        APIItemLine line = new APIItemLine(this, itemStack);
+        APIItemLine line = createItemLine(itemStack);
         lines.add(index, line);
         refresh();
         return line;
+    }
+
+    private APITextLine createTextLine(String text) {
+        return new APITextLine(this, getNMSManager(), text);
+    }
+
+    private APIItemLine createItemLine(ItemStack itemStack) {
+        return new APIItemLine(this, getNMSManager(), itemStack);
     }
 
     @Override

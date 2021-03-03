@@ -11,8 +11,6 @@ import me.filoghost.holographicdisplays.nbt.parser.MojangsonParseException;
 import me.filoghost.holographicdisplays.nbt.parser.MojangsonParser;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
-import me.filoghost.holographicdisplays.object.internal.InternalItemLine;
-import me.filoghost.holographicdisplays.object.internal.InternalTextLine;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +26,7 @@ public class HologramLineParser {
         if (serializedLine.toLowerCase().startsWith(ICON_PREFIX)) {
             String serializedIcon = serializedLine.substring(ICON_PREFIX.length());
             ItemStack icon = parseItemStack(serializedIcon, checkMaterialValidity);
-            hologramLine = new InternalItemLine(hologram, icon, serializedLine);
+            hologramLine = hologram.createItemLine(icon, serializedLine);
             
         } else {
             String displayText;
@@ -38,7 +36,7 @@ public class HologramLineParser {
                 displayText = StringConverter.toReadableFormat(serializedLine);
             }
             
-            hologramLine = new InternalTextLine(hologram, displayText, serializedLine);
+            hologramLine = hologram.createTextLine(displayText, serializedLine);
         }
         
         return hologramLine;

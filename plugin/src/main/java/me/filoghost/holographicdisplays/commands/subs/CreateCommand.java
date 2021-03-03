@@ -16,7 +16,6 @@ import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
-import me.filoghost.holographicdisplays.object.internal.InternalTextLine;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -71,7 +70,7 @@ public class CreateCommand extends HologramSubCommand {
         } else {
             String defaultText = "Default hologram. Change it with " 
                     + Colors.PRIMARY + "/" + context.getRootLabel() + " edit " + hologram.getName();
-            line = new InternalTextLine(hologram, defaultText, defaultText.replace(ChatColor.COLOR_CHAR, '&'));
+            line = hologram.createTextLine(defaultText, defaultText.replace(ChatColor.COLOR_CHAR, '&'));
         }
 
         hologram.getLinesUnsafe().add(line);

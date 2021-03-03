@@ -39,9 +39,8 @@ public abstract class BaseHologram extends BaseHologramComponent implements Stan
             clearLines();
         }
     }
-
-    @Override
-    public NMSManager getNMSManager() {
+    
+    protected final NMSManager getNMSManager() {
         return nmsManager;
     }
     

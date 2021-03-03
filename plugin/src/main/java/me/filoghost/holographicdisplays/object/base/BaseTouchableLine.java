@@ -9,6 +9,7 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardTouchableLine;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import org.bukkit.World;
@@ -26,7 +27,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
 
     private static final double SLIME_HEIGHT = 0.5;
     
-    private static final Map<Player, Long> anticlickSpam = new WeakHashMap<>();
+    private static final Map<Player, Long> lastClickByPlayer = new WeakHashMap<>();
 
     private TouchHandler touchHandler;
 
@@ -34,8 +35,8 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
     private NMSArmorStand vehicleEntity;
     
 
-    protected BaseTouchableLine(StandardHologram parent) {
-        super(parent);
+    protected BaseTouchableLine(StandardHologram hologram, NMSManager nmsManager) {
+        super(hologram, nmsManager);
     }
 
     @Override
@@ -44,12 +45,13 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
             return;
         }
 
-        Long lastClick = anticlickSpam.get(player);
-        if (lastClick != null && System.currentTimeMillis() - lastClick < 100) {
+        Long lastClick = lastClickByPlayer.get(player);
+        long now = System.currentTimeMillis();
+        if (lastClick != null && now - lastClick < 100) {
             return;
         }
 
-        anticlickSpam.put(player, System.currentTimeMillis());
+        lastClickByPlayer.put(player, now);
 
         try {
             touchHandler.onTouch(player);

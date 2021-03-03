@@ -17,15 +17,17 @@ import java.util.List;
 import java.util.Optional;
 
 class MetadataHelper {
-
+    
     private final int itemSlotIndex;
     private final int entityStatusIndex;
-    private final int airLevelWatcherIndex;
+    private final int airLevelIndex;
     private final int customNameIndex;
     private final int customNameVisibleIndex;
     private final int noGravityIndex;
     private final int armorStandStatusIndex;
     private final int slimeSizeIndex;
+
+    private final boolean customNameUsesChatComponents;
 
     private Serializer itemSerializer;
     private Serializer intSerializer;
@@ -33,9 +35,9 @@ class MetadataHelper {
     private Serializer stringSerializer;
     private Serializer booleanSerializer;
     private Serializer chatComponentSerializer;
-    
-    
-    public MetadataHelper() {
+
+
+    public MetadataHelper() {        
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_14_R1)) {
             itemSlotIndex = 7;
         } else if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_10_R1)) {
@@ -53,7 +55,7 @@ class MetadataHelper {
         }
         
         entityStatusIndex = 0;
-        airLevelWatcherIndex = 1;
+        airLevelIndex = 1;
         customNameIndex = 2;
         customNameVisibleIndex = 3;
         noGravityIndex = 5;
@@ -68,7 +70,10 @@ class MetadataHelper {
         }
         
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
+            customNameUsesChatComponents = true;
             chatComponentSerializer = Registry.get(MinecraftReflection.getIChatBaseComponentClass(), true);
+        } else {
+            customNameUsesChatComponents = false;
         }
     }
     
@@ -101,7 +106,7 @@ class MetadataHelper {
             return null;
         }
         
-        if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
+        if (customNameUsesChatComponents) {
             if (!(customNameNMSObject instanceof Optional)) {
                 throw new IllegalArgumentException("Expected custom name of type " + Optional.class);
             }
@@ -119,7 +124,7 @@ class MetadataHelper {
     
     
     public void setCustomNameNMSObject(WrappedWatchableObject customNameWatchableObject, Object customNameNMSObject) {
-        if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
+        if (customNameUsesChatComponents) {
             customNameWatchableObject.setValue(Optional.ofNullable(customNameNMSObject));
         } else {
             customNameWatchableObject.setValue(customNameNMSObject);
@@ -130,32 +135,31 @@ class MetadataHelper {
     public void setCustomNameNMSObject(WrappedDataWatcher dataWatcher, Object customNameNMSObject) {
         requireMinimumVersion(NMSVersion.v1_9_R1);
         
-        if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
+        if (customNameUsesChatComponents) {
             dataWatcher.setObject(new WrappedDataWatcherObject(customNameIndex, chatComponentSerializer), Optional.ofNullable(customNameNMSObject));
         } else {
             dataWatcher.setObject(new WrappedDataWatcherObject(customNameIndex, stringSerializer), customNameNMSObject);
         }
     }
 
-    
     public void setCustomNameVisible(WrappedDataWatcher dataWatcher, boolean customNameVisible) {
         requireMinimumVersion(NMSVersion.v1_9_R1);
         dataWatcher.setObject(new WrappedDataWatcherObject(customNameVisibleIndex, booleanSerializer), customNameVisible);
     }
 
-    
+
     public void setNoGravity(WrappedDataWatcher dataWatcher, boolean noGravity) {
         requireMinimumVersion(NMSVersion.v1_9_R1);
         dataWatcher.setObject(new WrappedDataWatcherObject(noGravityIndex, booleanSerializer), noGravity);
     }
 
-    
+
     public void setArmorStandStatus(WrappedDataWatcher dataWatcher, byte statusBitmask) {
         requireMinimumVersion(NMSVersion.v1_9_R1);
         dataWatcher.setObject(new WrappedDataWatcherObject(armorStandStatusIndex, byteSerializer), statusBitmask);
     }
 
-    
+
     public void setItemMetadata(WrappedDataWatcher dataWatcher, Object nmsItemStack) {
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
             if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1)) {
@@ -163,26 +167,26 @@ class MetadataHelper {
             } else {
                 dataWatcher.setObject(new WrappedDataWatcherObject(itemSlotIndex, itemSerializer), com.google.common.base.Optional.of(nmsItemStack));
             }
-            dataWatcher.setObject(new WrappedDataWatcherObject(airLevelWatcherIndex, intSerializer), 300);
+            dataWatcher.setObject(new WrappedDataWatcherObject(airLevelIndex, intSerializer), 300);
             dataWatcher.setObject(new WrappedDataWatcherObject(entityStatusIndex, byteSerializer), (byte) 0);
         } else {
             dataWatcher.setObject(itemSlotIndex, nmsItemStack);
-            dataWatcher.setObject(airLevelWatcherIndex, 300);
+            dataWatcher.setObject(airLevelIndex, 300);
             dataWatcher.setObject(entityStatusIndex, (byte) 0);
         }
     }
-    
-    
+
+
     public void setSlimeSize(WrappedDataWatcher dataWatcher, int size) {
         requireMinimumVersion(NMSVersion.v1_15_R1);
         dataWatcher.setObject(new WrappedDataWatcherObject(slimeSizeIndex, intSerializer), size);
     }
-    
-    
+
+
     private static void requireMinimumVersion(NMSVersion minimumVersion) {
         if (!NMSVersion.isGreaterEqualThan(minimumVersion)) {
             throw new UnsupportedOperationException("Method only available from NMS version " + minimumVersion);
         }
     }
-    
+
 }

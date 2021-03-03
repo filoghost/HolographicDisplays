@@ -10,6 +10,7 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import org.bukkit.World;
@@ -26,8 +27,8 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
     private NMSArmorStand vehicleEntity;
     private PickupHandler pickupHandler;
 
-    public BaseItemLine(StandardHologram parent, ItemStack itemStack) {
-        super(parent);
+    public BaseItemLine(StandardHologram hologram, NMSManager nmsManager, ItemStack itemStack) {
+        super(hologram, nmsManager);
         setItemStack(itemStack);
     }
     

@@ -10,8 +10,8 @@ import me.filoghost.fcommons.reflection.ClassToken;
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.core.DebugLogger;
-import me.filoghost.holographicdisplays.core.nms.ChatComponentAdapter;
-import me.filoghost.holographicdisplays.core.nms.CustomNameHelper;
+import me.filoghost.holographicdisplays.core.nms.CustomNameEditor;
+import me.filoghost.holographicdisplays.core.nms.ChatComponentCustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
@@ -155,58 +155,51 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public Object replaceCustomNameText(Object customNameObject, String target, String replacement) {
-        return CustomNameHelper.replaceCustomNameChatComponent(NMSChatComponentAdapter.INSTANCE, customNameObject, target, replacement);
+    public CustomNameEditor getCustomNameChatComponentEditor() {
+        return VersionChatComponentCustomNameEditor.INSTANCE;
     }
     
-    private enum NMSChatComponentAdapter implements ChatComponentAdapter<IChatBaseComponent> {
+    private enum VersionChatComponentCustomNameEditor implements ChatComponentCustomNameEditor<IChatBaseComponent> {
 
-        INSTANCE {
+        INSTANCE;
             
-            private boolean useNewGetSiblingsMethod = true;
-            private final ReflectField<List<IChatBaseComponent>> OLD_SIBLINGS_FIELD = ReflectField.lookup(new ClassToken<List<IChatBaseComponent>>(){}, ChatBaseComponent.class, "a");
-            
-            @Override
-            public ChatComponentText cast(Object chatComponentObject) {
-                return (ChatComponentText) chatComponentObject;
-            }
-            
-            @Override
-            public String getText(IChatBaseComponent chatComponent) {
-                return chatComponent.getText();
-            }
-    
-            @Override
-            public List<IChatBaseComponent> getSiblings(IChatBaseComponent chatComponent) {
-                if (useNewGetSiblingsMethod) {
-                    try {
-                        return chatComponent.getSiblings();
-                    } catch (NoSuchMethodError e) {
-                        // The method was named differently in older 1.14 versions, use workaround.
-                        useNewGetSiblingsMethod = false;
-                    }
-                }
-                
-                // Access siblings field directly in older 1.14 versions.
+        private boolean useNewGetSiblingsMethod = true;
+        private final ReflectField<List<IChatBaseComponent>> OLD_SIBLINGS_FIELD = ReflectField.lookup(new ClassToken<List<IChatBaseComponent>>(){}, ChatBaseComponent.class, "a");
+
+        @Override
+        public String getText(IChatBaseComponent chatComponent) {
+            return chatComponent.getText();
+        }
+
+        @Override
+        public List<IChatBaseComponent> getSiblings(IChatBaseComponent chatComponent) {
+            if (useNewGetSiblingsMethod) {
                 try {
-                    return OLD_SIBLINGS_FIELD.get(chatComponent);
-                } catch (ReflectiveOperationException e) {
-                    throw new RuntimeException(e);
+                    return chatComponent.getSiblings();
+                } catch (NoSuchMethodError e) {
+                    // The method was named differently in older 1.14 versions, use workaround.
+                    useNewGetSiblingsMethod = false;
                 }
             }
-    
-            @Override
-            public void addSibling(IChatBaseComponent chatComponent, IChatBaseComponent newSibling) {
-                chatComponent.addSibling(newSibling);
-            }
-    
-            @Override
-            public ChatComponentText cloneComponent(IChatBaseComponent chatComponent, String newText) {
-                ChatComponentText clonedChatComponent = new ChatComponentText(newText);
-                clonedChatComponent.setChatModifier(chatComponent.getChatModifier().clone());
-                return clonedChatComponent;
-            }
             
+            // Access siblings field directly in older 1.14 versions.
+            try {
+                return OLD_SIBLINGS_FIELD.get(chatComponent);
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public void addSibling(IChatBaseComponent chatComponent, IChatBaseComponent newSibling) {
+            chatComponent.addSibling(newSibling);
+        }
+
+        @Override
+        public ChatComponentText cloneComponent(IChatBaseComponent chatComponent, String newText) {
+            ChatComponentText clonedChatComponent = new ChatComponentText(newText);
+            clonedChatComponent.setChatModifier(chatComponent.getChatModifier().clone());
+            return clonedChatComponent;
         }
         
     }

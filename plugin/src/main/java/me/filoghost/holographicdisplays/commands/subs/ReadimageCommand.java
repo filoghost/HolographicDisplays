@@ -114,7 +114,7 @@ public class ReadimageCommand extends LineEditingCommand {
                 hologram.clearLines();
             }
             for (String newLine : newLines) {
-                InternalTextLine line = new InternalTextLine(hologram, newLine, newLine);
+                InternalTextLine line = hologram.createTextLine(newLine, newLine);
                 hologram.getLinesUnsafe().add(line);
             }
             hologram.refresh();

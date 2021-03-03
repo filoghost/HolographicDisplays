@@ -174,7 +174,10 @@ class PacketListener extends PacketAdapter {
         
         Object replacedCustomNameNMSObject = originalCustomNameNMSObject;
         for (RelativePlaceholder relativePlaceholder : relativePlaceholders) {
-            replacedCustomNameNMSObject = nmsManager.replaceCustomNameText(replacedCustomNameNMSObject, relativePlaceholder.getTextPlaceholder(), relativePlaceholder.getReplacement(player));
+            replacedCustomNameNMSObject = nmsManager.getCustomNameChatComponentEditor().replaceCustomName(
+                    replacedCustomNameNMSObject, 
+                    relativePlaceholder.getTextPlaceholder(), 
+                    relativePlaceholder.getReplacement(player));
         }
         
         if (replacedCustomNameNMSObject == originalCustomNameNMSObject) {
