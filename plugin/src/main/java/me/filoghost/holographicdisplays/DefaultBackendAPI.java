@@ -12,7 +12,7 @@ import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.api.APIHologramManager;
 import me.filoghost.holographicdisplays.placeholder.Placeholder;
-import me.filoghost.holographicdisplays.placeholder.PlaceholdersRegister;
+import me.filoghost.holographicdisplays.placeholder.PlaceholdersRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -46,7 +46,7 @@ public class DefaultBackendAPI extends BackendAPI {
         Preconditions.checkArgument(refreshRate >= 0, "refreshRate should be positive");
         Preconditions.notNull(replacer, "replacer");
         
-        return PlaceholdersRegister.register(new Placeholder(plugin, textPlaceholder, refreshRate, replacer));
+        return PlaceholdersRegistry.register(new Placeholder(plugin, textPlaceholder, refreshRate, replacer));
     }
 
     @Override
@@ -64,14 +64,14 @@ public class DefaultBackendAPI extends BackendAPI {
     @Override
     public Collection<String> getRegisteredPlaceholders(Plugin plugin) {
         Preconditions.notNull(plugin, "plugin");
-        return PlaceholdersRegister.getTextPlaceholdersByPlugin(plugin);
+        return PlaceholdersRegistry.getTextPlaceholdersByPlugin(plugin);
     }
 
     @Override
     public boolean unregisterPlaceholder(Plugin plugin, String textPlaceholder) {
         Preconditions.notNull(plugin, "plugin");
         Preconditions.notNull(textPlaceholder, "textPlaceholder");
-        return PlaceholdersRegister.unregister(plugin, textPlaceholder);
+        return PlaceholdersRegistry.unregister(plugin, textPlaceholder);
     }
 
     @Override

@@ -16,7 +16,7 @@ import me.filoghost.holographicdisplays.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.PacketController;
+import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.HologramConfig;
@@ -30,7 +30,7 @@ import me.filoghost.holographicdisplays.object.api.APIHologram;
 import me.filoghost.holographicdisplays.object.api.APIHologramManager;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
-import me.filoghost.holographicdisplays.placeholder.AnimationsRegister;
+import me.filoghost.holographicdisplays.placeholder.AnimationsRegistry;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import me.filoghost.holographicdisplays.task.BungeeCleanupTask;
 import me.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
@@ -40,7 +40,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class HolographicDisplays extends FCommonsPlugin implements PacketController {
+public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacketSettings {
     
     private static HolographicDisplays instance;
 
@@ -101,7 +101,7 @@ public class HolographicDisplays extends FCommonsPlugin implements PacketControl
         
         load(null, true);
         
-        ProtocolLibHook.setup(this, nmsManager);
+        ProtocolLibHook.setup(this, nmsManager, this);
         
         // Start repeating tasks.
         PlaceholdersManager.startRefreshTask(this);
@@ -132,7 +132,7 @@ public class HolographicDisplays extends FCommonsPlugin implements PacketControl
         configManager.reloadMainConfig();
         configManager.reloadHologramDatabase();
         try {
-            AnimationsRegister.loadAnimations(configManager);
+            AnimationsRegistry.loadAnimations(configManager);
         } catch (Exception e) {
             Log.warning("Failed to load animation files!", e);
         }
@@ -192,7 +192,7 @@ public class HolographicDisplays extends FCommonsPlugin implements PacketControl
     }
     
     @Override
-    public boolean shouldBroadcastLocationPacket() {
+    public boolean sendAccurateLocationPackets() {
         return ProtocolLibHook.isEnabled();
     }
 

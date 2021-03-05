@@ -51,5 +51,26 @@ public class CustomPlaceholders {
         }
         return text;
     }
+    
+
+    private static class StaticPlaceholder {
+    
+        private final String identifier;
+        private final String replacement;
+    
+        public StaticPlaceholder(String identifier, String replacement) {
+            this.identifier = identifier;
+            this.replacement = replacement;
+        }
+    
+        public String getIdentifier() {
+            return identifier;
+        }
+    
+        public String getReplacement() {
+            return replacement;
+        }
+    
+    }
 
 }

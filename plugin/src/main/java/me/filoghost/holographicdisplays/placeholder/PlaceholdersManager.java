@@ -49,7 +49,7 @@ public class PlaceholdersManager {
     public static void startRefreshTask(Plugin plugin) {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             
-            for (Placeholder placeholder : PlaceholdersRegister.getPlaceholders()) {
+            for (Placeholder placeholder : PlaceholdersRegistry.getPlaceholders()) {
                 if (elapsedTenthsOfSecond % placeholder.getTenthsToRefresh() == 0) {
                     try {
                         placeholder.update();
@@ -59,7 +59,7 @@ public class PlaceholdersManager {
                 }
             }
             
-            for (Placeholder placeholder : AnimationsRegister.getAnimations().values()) {
+            for (Placeholder placeholder : AnimationsRegistry.getAnimationsByFilename().values()) {
                 if (elapsedTenthsOfSecond % placeholder.getTenthsToRefresh() == 0) {
                     placeholder.update();
                 }
@@ -120,7 +120,7 @@ public class PlaceholdersManager {
         
         Matcher matcher;
         
-        for (Placeholder placeholder : PlaceholdersRegister.getPlaceholders()) {
+        for (Placeholder placeholder : PlaceholdersRegistry.getPlaceholders()) {
             if (text.contains(placeholder.getTextPlaceholder())) {
                 if (normalPlaceholders == null) {
                     normalPlaceholders = new HashSet<>();
@@ -262,7 +262,7 @@ public class PlaceholdersManager {
         matcher = ANIMATION_PATTERN.matcher(text);
         while (matcher.find()) {
             String fileName = extractArgumentFromPlaceholder(matcher);
-            Placeholder animation = AnimationsRegister.getAnimation(fileName);
+            Placeholder animation = AnimationsRegistry.getAnimation(fileName);
             
             // If exists...
             if (animation != null) {

@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.util;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.PacketController;
+import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import org.bukkit.Bukkit;
 
 import java.util.regex.Matcher;
@@ -41,8 +41,8 @@ public enum NMSVersion {
         this.nmsManagerConstructor = nmsManagerConstructor;
     }
 
-    public static NMSManager createNMSManager(PacketController packetController) {
-        return getValid().nmsManagerConstructor.create(packetController);
+    public static NMSManager createNMSManager(ProtocolPacketSettings protocolPacketSettings) {
+        return getValid().nmsManagerConstructor.create(protocolPacketSettings);
     }
 
     private static NMSVersion extractCurrentVersion() {
@@ -75,7 +75,7 @@ public enum NMSVersion {
 
     private interface NMSManagerConstructor {
 
-        NMSManager create(PacketController packetController);
+        NMSManager create(ProtocolPacketSettings protocolPacketSettings);
         
     }
     

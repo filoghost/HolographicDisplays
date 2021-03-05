@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class PlaceholdersRegister {
+public class PlaceholdersRegistry {
     
     private static final Set<Placeholder> placeholders = new HashSet<>();
     

@@ -20,13 +20,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class AnimationsRegister {
+public class AnimationsRegistry {
+
+    private static final String SPEED_PREFIX = "speed:";
     
-    // <fileName, lines>
-    private final static Map<String, Placeholder> animations = new HashMap<>();
-    
+    private static final Map<String, Placeholder> animationsByFilename = new HashMap<>();
+
     public static void loadAnimations(ConfigManager configManager) throws IOException, ConfigSaveException {
-        animations.clear();
+        animationsByFilename.clear();
         Path animationFolder = configManager.getAnimationsFolder();
 
         if (!Files.isDirectory(animationFolder)) {
@@ -36,11 +37,13 @@ public class AnimationsRegister {
         }
         
         try (Stream<Path> animationFiles = Files.list(animationFolder)) {
-            animationFiles.forEach(AnimationsRegister::readAnimationFile);
+            animationFiles.forEach(AnimationsRegistry::readAnimationFile);
         }
     }
 
     private static void readAnimationFile(Path file) {
+        String fileName = file.getFileName().toString();
+        
         try {
             List<String> lines = Files.readAllLines(file);
             if (lines.size() == 0) {
@@ -51,11 +54,11 @@ public class AnimationsRegister {
             boolean validSpeedFound = false;
 
             String firstLine = lines.get(0).trim();
-            if (firstLine.toLowerCase().startsWith("speed:")) {
+            if (firstLine.toLowerCase().startsWith(SPEED_PREFIX)) {
                 // Do not consider it.
                 lines.remove(0);
 
-                firstLine = firstLine.substring("speed:".length()).trim();
+                firstLine = firstLine.substring(SPEED_PREFIX.length()).trim();
 
                 try {
                     speed = Double.parseDouble(firstLine);
@@ -64,12 +67,12 @@ public class AnimationsRegister {
             }
 
             if (!validSpeedFound) {
-                Log.warning("Could not find a valid 'speed: <number>' in the first line of the file '" + file.getFileName() + "'. Default speed of 0.5 seconds will be used.");
+                Log.warning("Could not find a valid '" + SPEED_PREFIX + " <number>' in the first line of the file '" + fileName + "'. Default speed of 0.5 seconds will be used.");
             }
 
             if (lines.isEmpty()) {
-                lines.add("[No lines: " + file.getFileName() + "]");
-                Log.warning("Could not find any line in '" + file.getFileName() + "' (excluding the speed). You should add at least one more line.");
+                lines.add("[No lines: " + fileName + "]");
+                Log.warning("Could not find any line in '" + fileName + "' (excluding the speed). You should add at least one more line.");
             }
 
             // Replace placeholders.
@@ -77,21 +80,21 @@ public class AnimationsRegister {
                 lines.set(i, StringConverter.toReadableFormat(lines.get(i)));
             }
 
-            animations.put(file.getFileName().toString(), new Placeholder(HolographicDisplays.getInstance(), file.getFileName().toString(), speed, new CyclicPlaceholderReplacer(lines)));
-            DebugLogger.info("Successfully loaded animation '" + file.getFileName() + "', speed = " + speed + ".");
+            animationsByFilename.put(fileName, new Placeholder(HolographicDisplays.getInstance(), fileName, speed, new CyclicPlaceholderReplacer(lines)));
+            DebugLogger.info("Successfully loaded animation '" + fileName + "', speed = " + speed + ".");
 
         } catch (Exception e) {
-            Log.severe("Couldn't load the file '" + file.getFileName() + "'!", e);
+            Log.severe("Couldn't load the file '" + fileName + "'!", e);
         }
     }
 
 
-    public static Map<String, Placeholder> getAnimations() {
-        return animations;
+    public static Map<String, Placeholder> getAnimationsByFilename() {
+        return animationsByFilename;
     }
 
     public static Placeholder getAnimation(String name) {
-        return animations.get(name);
+        return animationsByFilename.get(name);
     }
     
 }

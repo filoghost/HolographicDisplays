@@ -20,6 +20,7 @@ import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlaySer
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
@@ -34,8 +35,9 @@ class PacketListener extends PacketAdapter {
     
     private final NMSManager nmsManager;
     private final MetadataHelper metadataHelper;
+    private final ProtocolPacketSettings packetSettings;
 
-    public PacketListener(Plugin plugin, NMSManager nmsManager, MetadataHelper metadataHelper) {
+    public PacketListener(Plugin plugin, NMSManager nmsManager, MetadataHelper metadataHelper, ProtocolPacketSettings packetSettings) {
         super(PacketAdapter.params()
                 .plugin(plugin)
                 .types(
@@ -49,6 +51,7 @@ class PacketListener extends PacketAdapter {
 
         this.nmsManager = nmsManager;
         this.metadataHelper = metadataHelper;
+        this.packetSettings = packetSettings;
     }
 
     public void registerListener() {
@@ -156,7 +159,7 @@ class PacketListener extends PacketAdapter {
             int entityID = packet.getIntegers().read(0);
             NMSEntity nmsEntity = nmsManager.getNMSEntityBaseFromID(event.getPlayer().getWorld(), entityID);
 
-            if (nmsEntity instanceof NMSArmorStand) {
+            if (nmsEntity instanceof NMSArmorStand && packetSettings.sendAccurateLocationPackets()) {
                 event.setCancelled(true); // Don't send relative movement packets for armor stands, only keep precise teleport packets.
             }
         }

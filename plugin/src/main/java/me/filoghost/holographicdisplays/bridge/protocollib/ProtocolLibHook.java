@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.util.VersionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,7 +24,7 @@ public class ProtocolLibHook {
     private static boolean enabled;
     private static PacketSender packetSender;
 
-    public static void setup(Plugin plugin, NMSManager nmsManager) {
+    public static void setup(Plugin plugin, NMSManager nmsManager, ProtocolPacketSettings packetSettings) {
         if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             return;
         }
@@ -49,7 +50,7 @@ public class ProtocolLibHook {
 
         try {
             MetadataHelper metadataHelper = new MetadataHelper();
-            new PacketListener(plugin, nmsManager, metadataHelper).registerListener();
+            new PacketListener(plugin, nmsManager, metadataHelper, packetSettings).registerListener();
             packetSender = new PacketSender(metadataHelper);
             Log.info("Enabled player relative placeholders with ProtocolLib.");
         } catch (Exception e) {

@@ -11,7 +11,7 @@ import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.core.nms.PacketController;
+import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import net.minecraft.server.v1_8_R2.AxisAlignedBB;
@@ -34,13 +34,13 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     private static final ReflectField<Double> PASSENGER_YAW_DELTA = ReflectField.lookup(double.class, Entity.class, "as");
 
     private final StandardHologramLine parentHologramLine;
-    private final PacketController packetController;
+    private final ProtocolPacketSettings protocolPacketSettings;
     private String customName;
     
-    public EntityNMSArmorStand(World world, StandardHologramLine parentHologramLine, PacketController packetController) {
+    public EntityNMSArmorStand(World world, StandardHologramLine parentHologramLine, ProtocolPacketSettings protocolPacketSettings) {
         super(world);
         this.parentHologramLine = parentHologramLine;
-        this.packetController = packetController;
+        this.protocolPacketSettings = protocolPacketSettings;
         
         super.setInvisible(true);
         super.setSmall(true);
@@ -190,7 +190,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     @Override
     public void setLocationNMS(double x, double y, double z) {
         super.setPosition(x, y, z);
-        if (packetController.shouldBroadcastLocationPacket()) {
+        if (protocolPacketSettings.sendAccurateLocationPackets()) {
             broadcastLocationPacketNMS();
         }
     }

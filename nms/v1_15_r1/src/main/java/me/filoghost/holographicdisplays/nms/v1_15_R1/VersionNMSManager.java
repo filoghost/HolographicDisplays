@@ -14,7 +14,7 @@ import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.core.nms.ChatComponentCustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.CustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.PacketController;
+import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
@@ -43,10 +43,10 @@ public class VersionNMSManager implements NMSManager {
     private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = ReflectField.lookup(Object[].class, RegistryID.class, "d");
     private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD = ReflectMethod.lookup(void.class, WorldServer.class, "registerEntity", Entity.class);
 
-    private final PacketController packetController;
+    private final ProtocolPacketSettings protocolPacketSettings;
 
-    public VersionNMSManager(PacketController packetController) {
-        this.packetController = packetController;
+    public VersionNMSManager(ProtocolPacketSettings protocolPacketSettings) {
+        this.protocolPacketSettings = protocolPacketSettings;
     }
     
     @Override
@@ -91,7 +91,7 @@ public class VersionNMSManager implements NMSManager {
     @Override
     public NMSArmorStand spawnNMSArmorStand(World world, double x, double y, double z, StandardHologramLine parentPiece) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) world).getHandle();
-        EntityNMSArmorStand armorStand = new EntityNMSArmorStand(nmsWorld, parentPiece, packetController);
+        EntityNMSArmorStand armorStand = new EntityNMSArmorStand(nmsWorld, parentPiece, protocolPacketSettings);
         armorStand.setLocationNMS(x, y, z);
         addEntityToWorld(nmsWorld, armorStand);
         return armorStand;

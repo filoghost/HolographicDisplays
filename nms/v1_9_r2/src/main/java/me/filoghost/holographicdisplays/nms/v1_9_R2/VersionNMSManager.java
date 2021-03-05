@@ -13,7 +13,7 @@ import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.core.nms.CustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.PacketController;
+import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.StringCustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
@@ -38,10 +38,10 @@ public class VersionNMSManager implements NMSManager {
     
     private static final ReflectMethod<?> REGISTER_ENTITY_METHOD = ReflectMethod.lookup(Object.class, World.class, "b", Entity.class);
 
-    private final PacketController packetController;
+    private final ProtocolPacketSettings protocolPacketSettings;
 
-    public VersionNMSManager(PacketController packetController) {
-        this.packetController = packetController;
+    public VersionNMSManager(ProtocolPacketSettings protocolPacketSettings) {
+        this.protocolPacketSettings = protocolPacketSettings;
     }
     
     @Override
@@ -78,7 +78,7 @@ public class VersionNMSManager implements NMSManager {
     @Override
     public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, StandardHologramLine parentPiece) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) world).getHandle();
-        EntityNMSArmorStand armorStand = new EntityNMSArmorStand(nmsWorld, parentPiece, packetController);
+        EntityNMSArmorStand armorStand = new EntityNMSArmorStand(nmsWorld, parentPiece, protocolPacketSettings);
         armorStand.setLocationNMS(x, y, z);
         addEntityToWorld(nmsWorld, armorStand);
         return armorStand;
