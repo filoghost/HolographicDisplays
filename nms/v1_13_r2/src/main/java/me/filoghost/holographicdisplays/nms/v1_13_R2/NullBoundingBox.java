@@ -116,8 +116,5 @@ public class NullBoundingBox extends AxisAlignedBB {
     public AxisAlignedBB f(double arg0, double arg1, double arg2) {
         return this;
     }
-    
-    
-    
 
 }

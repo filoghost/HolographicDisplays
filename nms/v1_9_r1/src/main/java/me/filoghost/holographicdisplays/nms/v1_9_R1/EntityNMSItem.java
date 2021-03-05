@@ -5,14 +5,11 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_9_R1;
 
-import me.filoghost.fcommons.reflection.ReflectField;
-import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.Utils;
-import me.filoghost.holographicdisplays.core.nms.NMSCommons;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
+import me.filoghost.holographicdisplays.core.nms.NMSCommons;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import net.minecraft.server.v1_9_R1.Blocks;
 import net.minecraft.server.v1_9_R1.DamageSource;
 import net.minecraft.server.v1_9_R1.Entity;
@@ -30,16 +27,15 @@ import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
     
-    private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "as");
-    
-    private final StandardItemLine parentPiece;
+    private final StandardItemLine parentHologramLine;
     
     private int resendMountPacketTicks;
     
-    public EntityNMSItem(World world, StandardItemLine piece) {
+    public EntityNMSItem(World world, StandardItemLine parentHologramLine) {
         super(world);
+        this.parentHologramLine = parentHologramLine;
+        
         super.pickupDelay = Integer.MAX_VALUE;
-        this.parentPiece = piece;
     }
     
     @Override
@@ -51,14 +47,15 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         
         if (resendMountPacketTicks++ > 20) {
             resendMountPacketTicks = 0;
-            
-            if (by() != null) {
+
+            Entity vehicle = by();
+            if (vehicle != null) {
                 // Send a packet near to "remind" players that the item is riding the armor stand (Spigot bug or client bug)
-                PacketPlayOutMount mountPacket = new PacketPlayOutMount(by());
+                PacketPlayOutMount mountPacket = new PacketPlayOutMount(vehicle);
     
-                for (Object obj : super.world.players) {
-                    if (obj instanceof EntityPlayer) {
-                        EntityPlayer nmsPlayer = (EntityPlayer) obj;
+                for (Object humanEntity : super.world.players) {
+                    if (humanEntity instanceof EntityPlayer) {
+                        EntityPlayer nmsPlayer = (EntityPlayer) humanEntity;
     
                         double distanceSquared = Utils.square(nmsPlayer.locX - super.locX) + Utils.square(nmsPlayer.locZ - super.locZ);
                         if (distanceSquared < 1024 && nmsPlayer.playerConnection != null) {
@@ -87,7 +84,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         }
         
         if (human instanceof EntityPlayer) {
-            parentPiece.onPickup(((EntityPlayer) human).getBukkitEntity());
+            parentHologramLine.onPickup(((EntityPlayer) human).getBukkitEntity());
             // It is never added to the inventory.
         }
     }
@@ -192,10 +189,10 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         }
         
         NBTTagList tagList = new NBTTagList();
-        tagList.add(new NBTTagString(NMSCommons.ANTI_STACK_LORE)); // Antistack lore
+        tagList.add(new NBTTagString(NMSCommons.ANTI_STACK_LORE));
         display.set("Lore", tagList);
         
-        setItemStack(newItem);
+        super.setItemStack(newItem);
     }
     
     @Override
@@ -205,41 +202,17 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     
     @Override
     public StandardHologramLine getHologramLine() {
-        return parentPiece;
+        return parentHologramLine;
     }
 
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
     }
-    
-    @Override
-    public void setPassengerOfNMS(NMSEntityBase vehicleBase) {
-        if (!(vehicleBase instanceof Entity)) {
-            // It should never dismount
-            return;
-        }
-        
-        Entity entity = (Entity) vehicleBase;
-
-        try {
-            if (super.by() != null) {
-                Entity oldVehicle = super.by();
-                VEHICLE_FIELD.set(this, null);
-                oldVehicle.passengers.remove(this);
-            }
-
-            VEHICLE_FIELD.set(this, entity);
-            entity.passengers.clear();
-            entity.passengers.add(this);
-
-        } catch (Throwable t) {
-            DebugLogger.cannotSetPassenger(t);
-        }
-    }
 
     @Override
     public Object getRawItemStack() {
         return super.getItemStack();
     }
+    
 }

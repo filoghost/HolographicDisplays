@@ -21,7 +21,7 @@ import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
 import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bukkit.World;
@@ -154,9 +154,9 @@ class PacketListener extends PacketAdapter {
 
         } else if (packet.getType() == PacketType.Play.Server.REL_ENTITY_MOVE || packet.getType() == PacketType.Play.Server.REL_ENTITY_MOVE_LOOK) {
             int entityID = packet.getIntegers().read(0);
-            NMSEntityBase nmsEntityBase = nmsManager.getNMSEntityBaseFromID(event.getPlayer().getWorld(), entityID);
+            NMSEntity nmsEntity = nmsManager.getNMSEntityBaseFromID(event.getPlayer().getWorld(), entityID);
 
-            if (nmsEntityBase instanceof NMSArmorStand) {
+            if (nmsEntity instanceof NMSArmorStand) {
                 event.setCancelled(true); // Don't send relative movement packets for armor stands, only keep precise teleport packets.
             }
         }
@@ -174,7 +174,7 @@ class PacketListener extends PacketAdapter {
         
         Object replacedCustomNameNMSObject = originalCustomNameNMSObject;
         for (RelativePlaceholder relativePlaceholder : relativePlaceholders) {
-            replacedCustomNameNMSObject = nmsManager.getCustomNameChatComponentEditor().replaceCustomName(
+            replacedCustomNameNMSObject = nmsManager.getCustomNameEditor().replaceCustomName(
                     replacedCustomNameNMSObject, 
                     relativePlaceholder.getTextPlaceholder(), 
                     relativePlaceholder.getReplacement(player));
@@ -198,7 +198,7 @@ class PacketListener extends PacketAdapter {
             return null;
         }
 
-        NMSEntityBase nmsEntity = nmsManager.getNMSEntityBaseFromID(world, entityID);
+        NMSEntity nmsEntity = nmsManager.getNMSEntityBaseFromID(world, entityID);
         if (nmsEntity == null) {
             return null; // Entity not existing or not related to holograms.
         }

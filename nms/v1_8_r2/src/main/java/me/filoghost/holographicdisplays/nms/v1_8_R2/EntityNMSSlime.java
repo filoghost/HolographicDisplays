@@ -5,14 +5,10 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_8_R2;
 
-import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.core.DebugLogger;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import net.minecraft.server.v1_8_R2.AxisAlignedBB;
 import net.minecraft.server.v1_8_R2.DamageSource;
-import net.minecraft.server.v1_8_R2.Entity;
 import net.minecraft.server.v1_8_R2.EntityDamageSource;
 import net.minecraft.server.v1_8_R2.EntityPlayer;
 import net.minecraft.server.v1_8_R2.EntitySlime;
@@ -24,18 +20,17 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
-    private static final ReflectField<Double> RIDER_PITCH_DELTA = ReflectField.lookup(double.class, Entity.class, "ar");
-    private static final ReflectField<Double> RIDER_YAW_DELTA = ReflectField.lookup(double.class, Entity.class, "as");
-
-    private final StandardHologramLine parentPiece;
+    private final StandardHologramLine parentHologramLine;
     
-    public EntityNMSSlime(World world, StandardHologramLine parentPiece) {
+    public EntityNMSSlime(World world, StandardHologramLine parentHologramLine) {
         super(world);
+        this.parentHologramLine = parentHologramLine;
+        
         super.persistent = true;
-        a(0.0F, 0.0F);
-        setSize(1);
-        setInvisible(true);
-        this.parentPiece = parentPiece;
+        super.noclip = true;
+        super.a(0.0F, 0.0F);
+        super.setSize(1);
+        super.setInvisible(true);
         forceSetBoundingBox(new NullBoundingBox());
     }
     
@@ -47,7 +42,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
         ticksLived = 0;
 
         // The slime dies without a vehicle.
-        if (this.vehicle == null) {
+        if (super.vehicle == null) {
             killEntityNMS();
         }
     }
@@ -62,7 +57,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     @Override
     public void a(AxisAlignedBB boundingBox) {
-        // Do not change it!
+        // Prevent bounding box from being changed
     }
     
     public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
@@ -135,9 +130,9 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     @Override
     public CraftEntity getBukkitEntity() {
         if (super.bukkitEntity == null) {
-            this.bukkitEntity = new CraftNMSSlime(this.world.getServer(), this);
+            super.bukkitEntity = new CraftNMSSlime(super.world.getServer(), this);
         }
-        return this.bukkitEntity;
+        return super.bukkitEntity;
     }
 
     @Override
@@ -157,12 +152,12 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     @Override
     public int getIdNMS() {
-        return this.getId();
+        return super.getId();
     }
     
     @Override
     public StandardHologramLine getHologramLine() {
-        return parentPiece;
+        return parentHologramLine;
     }
 
     @Override
@@ -170,27 +165,4 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
         return getBukkitEntity();
     }
     
-    @Override
-    public void setPassengerOfNMS(NMSEntityBase vehicleBase) {
-        if (!(vehicleBase instanceof Entity)) {
-            // It should never dismount
-            return;
-        }
-        
-        Entity entity = (Entity) vehicleBase;
-        
-        try {
-            RIDER_PITCH_DELTA.set(this, 0.0);
-            RIDER_YAW_DELTA.set(this, 0.0);
-        } catch (Throwable t) {
-            DebugLogger.cannotSetRiderPitchYaw(t);
-        }
-
-        if (this.vehicle != null) {
-            this.vehicle.passenger = null;
-        }
-        
-        this.vehicle = entity;
-        entity.passenger = this;
-    }
 }

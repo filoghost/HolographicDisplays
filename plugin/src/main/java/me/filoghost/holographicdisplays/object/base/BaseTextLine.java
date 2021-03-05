@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.object.base;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
@@ -20,7 +21,7 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
 
     private final ArrayList<RelativePlaceholder> relativePlaceholders;
     private String text;
-    private NMSArmorStand nameableEntity;
+    private NMSArmorStand textEntity;
     
     public BaseTextLine(StandardHologram hologram, NMSManager nmsManager, String text) {
         super(hologram, nmsManager);
@@ -38,14 +39,14 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     protected void setText(String text) {
         this.text = text;
         
-        if (nameableEntity != null) {
+        if (textEntity != null) {
             if (text != null && !text.isEmpty()) {
-                nameableEntity.setCustomNameNMS(text);
+                textEntity.setCustomNameNMS(text);
                 if (isAllowPlaceholders()) {
                     PlaceholdersManager.trackIfNecessary(this);
                 }
             } else {
-                nameableEntity.setCustomNameNMS(""); // It will not appear
+                textEntity.setCustomNameNMS(""); // It will not appear
                 if (isAllowPlaceholders()) {
                     PlaceholdersManager.untrack(this);
                 }
@@ -63,13 +64,13 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     }
 
     @Override
-    public void spawnEntities(World world, double x, double y, double z) {
+    public void spawnEntities(World world, double x, double y, double z) throws SpawnFailedException {
         super.spawnEntities(world, x, y, z);
-            
-        nameableEntity = getNMSManager().spawnNMSArmorStand(world, x, y + getTextSpawnOffset(), z, this);
+
+        textEntity = getNMSManager().spawnNMSArmorStand(world, x, y + getTextSpawnOffset(), z, this);
 
         if (text != null && !text.isEmpty()) {
-            nameableEntity.setCustomNameNMS(text);
+            textEntity.setCustomNameNMS(text);
         }
 
         if (isAllowPlaceholders()) {
@@ -81,8 +82,8 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     public void teleportEntities(double x, double y, double z) {
         super.teleportEntities(x, y, z);
 
-        if (nameableEntity != null) {
-            nameableEntity.setLocationNMS(x, y + getTextSpawnOffset(), z);
+        if (textEntity != null) {
+            textEntity.setLocationNMS(x, y + getTextSpawnOffset(), z);
         }
     }
 
@@ -90,9 +91,9 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     public void despawnEntities() {
         super.despawnEntities();
         
-        if (nameableEntity != null) {
-            nameableEntity.killEntityNMS();
-            nameableEntity = null;
+        if (textEntity != null) {
+            textEntity.killEntityNMS();
+            textEntity = null;
         }
     }
 
@@ -114,14 +115,14 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     public void collectEntityIDs(Collection<Integer> collector) {
         super.collectEntityIDs(collector);
         
-        if (nameableEntity != null) {
-            collector.add(nameableEntity.getIdNMS());
+        if (textEntity != null) {
+            collector.add(textEntity.getIdNMS());
         }
     }
 
     @Override
     public NMSArmorStand getNMSArmorStand() {
-        return nameableEntity;
+        return textEntity;
     }
 
     private double getTextSpawnOffset() {

@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSNameable;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -105,8 +105,8 @@ public class PlaceholdersManager {
             return;
         }
         
-        NMSNameable nameableEntity = line.getNMSArmorStand();
-        if (nameableEntity == null) {
+        NMSArmorStand entity = line.getNMSArmorStand();
+        if (entity == null) {
             return;
         }        
         
@@ -279,7 +279,7 @@ public class PlaceholdersManager {
         }
         
         if (Utils.isThereNonNull(normalPlaceholders, bungeeReplacers, worldsOnlinePlayersReplacers, animationsPlaceholders)) {
-            DynamicLineData lineData = new DynamicLineData(nameableEntity, text);
+            DynamicLineData lineData = new DynamicLineData(entity, text);
             
             if (normalPlaceholders != null) {
                 lineData.setPlaceholders(normalPlaceholders);
@@ -309,7 +309,7 @@ public class PlaceholdersManager {
             
             // The name needs to be updated anyways.
             if (updateText) {
-                nameableEntity.setCustomNameNMS(text);
+                entity.setCustomNameNMS(text);
             }
         }
     }

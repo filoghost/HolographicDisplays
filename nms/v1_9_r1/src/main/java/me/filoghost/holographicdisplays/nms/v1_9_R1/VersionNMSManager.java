@@ -9,15 +9,15 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.reflection.ClassToken;
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.fcommons.reflection.ReflectMethod;
-import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.core.nms.CustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
+import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.StringCustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import net.minecraft.server.v1_9_R1.Entity;
 import net.minecraft.server.v1_9_R1.EntityTypes;
@@ -36,7 +36,7 @@ public class VersionNMSManager implements NMSManager {
     private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD = ReflectField.lookup(new ClassToken<Map<Class<?>, String>>(){}, EntityTypes.class, "d");
     private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD = ReflectField.lookup(new ClassToken<Map<Class<?>, Integer>>(){}, EntityTypes.class, "f");
 
-    private static final ReflectMethod<?> VALIDATE_ENTITY_METHOD = ReflectMethod.lookup(Object.class, World.class, "b", Entity.class);
+    private static final ReflectMethod<?> REGISTER_ENTITY_METHOD = ReflectMethod.lookup(Object.class, World.class, "b", Entity.class);
 
     private final PacketController packetController;
 
@@ -57,40 +57,34 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, StandardItemLine parentPiece, ItemStack stack) {
+    public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, StandardItemLine parentPiece, ItemStack stack) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-        EntityNMSItem customItem = new EntityNMSItem(nmsWorld, parentPiece);
-        customItem.setLocationNMS(x, y, z);
-        customItem.setItemStackNMS(stack);
-        if (!addEntityToWorld(nmsWorld, customItem)) {
-            DebugLogger.handleSpawnFail(parentPiece);
-        }
-        return customItem;
+        EntityNMSItem item = new EntityNMSItem(nmsWorld, parentPiece);
+        item.setLocationNMS(x, y, z);
+        item.setItemStackNMS(stack);
+        addEntityToWorld(nmsWorld, item);
+        return item;
     }
     
     @Override
-    public EntityNMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, StandardHologramLine parentPiece) {
+    public EntityNMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, StandardHologramLine parentPiece) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-        EntityNMSSlime touchSlime = new EntityNMSSlime(nmsWorld, parentPiece);
-        touchSlime.setLocationNMS(x, y, z);
-        if (!addEntityToWorld(nmsWorld, touchSlime)) {
-            DebugLogger.handleSpawnFail(parentPiece);
-        }
-        return touchSlime;
+        EntityNMSSlime slime = new EntityNMSSlime(nmsWorld, parentPiece);
+        slime.setLocationNMS(x, y, z);
+        addEntityToWorld(nmsWorld, slime);
+        return slime;
     }
     
     @Override
-    public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, StandardHologramLine parentPiece) {
+    public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, StandardHologramLine parentPiece) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) world).getHandle();
-        EntityNMSArmorStand invisibleArmorStand = new EntityNMSArmorStand(nmsWorld, parentPiece, packetController);
-        invisibleArmorStand.setLocationNMS(x, y, z);
-        if (!addEntityToWorld(nmsWorld, invisibleArmorStand)) {
-            DebugLogger.handleSpawnFail(parentPiece);
-        }
-        return invisibleArmorStand;
+        EntityNMSArmorStand armorStand = new EntityNMSArmorStand(nmsWorld, parentPiece, packetController);
+        armorStand.setLocationNMS(x, y, z);
+        addEntityToWorld(nmsWorld, armorStand);
+        return armorStand;
     }
     
-    private boolean addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) {
+    private void addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) throws SpawnFailedException {
         Preconditions.checkState(Bukkit.isPrimaryThread(), "Async entity add");
         
         final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
@@ -99,51 +93,50 @@ public class VersionNMSManager implements NMSManager {
         if (!nmsWorld.getChunkProviderServer().isChunkLoaded(chunkX, chunkZ)) {
             // This should never happen
             nmsEntity.dead = true;
-            return false;
+            throw new SpawnFailedException(SpawnFailedException.CHUNK_NOT_LOADED);
         }
         
         nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
         nmsWorld.entityList.add(nmsEntity);
         
         try {
-            VALIDATE_ENTITY_METHOD.invoke(nmsWorld, nmsEntity);
+            REGISTER_ENTITY_METHOD.invoke(nmsWorld, nmsEntity);
         } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
-            return false;
+            nmsEntity.dead = true;
+            throw new SpawnFailedException(SpawnFailedException.REGISTER_ENTITY_FAIL, e);
         }
-        return true;
     }
     
     @Override
     public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
-        return ((CraftEntity) bukkitEntity).getHandle() instanceof NMSEntityBase;
+        return ((CraftEntity) bukkitEntity).getHandle() instanceof NMSEntity;
     }
 
     @Override
-    public NMSEntityBase getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
+    public NMSEntity getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
         Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
         
-        if (nmsEntity instanceof NMSEntityBase) {
-            return ((NMSEntityBase) nmsEntity);
+        if (nmsEntity instanceof NMSEntity) {
+            return ((NMSEntity) nmsEntity);
         } else {
             return null;
         }
     }
     
     @Override
-    public NMSEntityBase getNMSEntityBaseFromID(org.bukkit.World bukkitWorld, int entityID) {
+    public NMSEntity getNMSEntityBaseFromID(org.bukkit.World bukkitWorld, int entityID) {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         Entity nmsEntity = nmsWorld.getEntity(entityID);
         
-        if (nmsEntity instanceof NMSEntityBase) {
-            return ((NMSEntityBase) nmsEntity);
+        if (nmsEntity instanceof NMSEntity) {
+            return ((NMSEntity) nmsEntity);
         } else {
             return null;
         }
     }
     
     @Override
-    public CustomNameEditor getCustomNameChatComponentEditor() {
+    public CustomNameEditor getCustomNameEditor() {
         return StringCustomNameEditor.INSTANCE;
     }
     

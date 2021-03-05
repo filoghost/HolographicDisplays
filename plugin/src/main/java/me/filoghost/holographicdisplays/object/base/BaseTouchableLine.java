@@ -7,9 +7,11 @@ package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
+import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardTouchableLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import org.bukkit.World;
@@ -32,7 +34,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
     private TouchHandler touchHandler;
 
     private NMSSlime slimeEntity;
-    private NMSArmorStand vehicleEntity;
+    private NMSArmorStand slimeVehicleEntity;
     
 
     protected BaseTouchableLine(StandardHologram hologram, NMSManager nmsManager) {
@@ -67,7 +69,6 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
         if (touchHandler != null && slimeEntity == null && super.isSpawned()) {
             // If the touch handler was null before and no entity has been spawned, spawn it now.
             spawnSlime(getWorld(), getX(), getY(), getZ());
-            
         } else if (touchHandler == null) {
             // Opposite case, the touch handler was not null and an entity was spawned, but now it's useless.
             despawnSlime();
@@ -79,7 +80,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
     }
 
     @Override
-    public void spawnEntities(World world, double x, double y, double z) {
+    public void spawnEntities(World world, double x, double y, double z) throws SpawnFailedException {
         if (touchHandler != null) {
             spawnSlime(world, x, y, z);
         }
@@ -87,8 +88,8 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
 
     @Override
     public void teleportEntities(double x, double y, double z) {
-        if (vehicleEntity != null) {
-            vehicleEntity.setLocationNMS(x, getSlimeSpawnY(y), z);
+        if (slimeVehicleEntity != null) {
+            slimeVehicleEntity.setLocationNMS(x, getSlimeSpawnY(y), z);
         }
         if (slimeEntity != null) {
             slimeEntity.setLocationNMS(x, getSlimeSpawnY(y), z);
@@ -104,10 +105,13 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
         despawnSlime();
         
         if (world != null) {
-            slimeEntity = getNMSManager().spawnNMSSlime(world, x, getSlimeSpawnY(y), z, this);
-            vehicleEntity = getNMSManager().spawnNMSArmorStand(world, x, getSlimeSpawnY(y), z, this);
-
-            slimeEntity.setPassengerOfNMS(vehicleEntity);
+            try {
+                slimeEntity = getNMSManager().spawnNMSSlime(world, x, getSlimeSpawnY(y), z, this);
+                slimeVehicleEntity = getNMSManager().spawnNMSArmorStand(world, x, getSlimeSpawnY(y), z, this);
+                slimeVehicleEntity.setPassengerNMS(slimeEntity);
+            } catch (SpawnFailedException e) {
+                DebugLogger.handleSpawnFail(e, this);
+            }
         }
     }
 
@@ -117,9 +121,9 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
             slimeEntity = null;
         }
 
-        if (vehicleEntity != null) {
-            vehicleEntity.killEntityNMS();
-            vehicleEntity = null;
+        if (slimeVehicleEntity != null) {
+            slimeVehicleEntity.killEntityNMS();
+            slimeVehicleEntity = null;
         }
     }
 
@@ -133,8 +137,8 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
 
     @Override
     public void collectEntityIDs(Collection<Integer> collector) {
-        if (vehicleEntity != null) {
-            collector.add(vehicleEntity.getIdNMS());
+        if (slimeVehicleEntity != null) {
+            collector.add(slimeVehicleEntity.getIdNMS());
         }
         if (slimeEntity != null) {
             collector.add(slimeEntity.getIdNMS());
@@ -143,7 +147,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
 
     @Override
     public NMSArmorStand getNMSSlimeVehicle() {
-        return vehicleEntity;
+        return slimeVehicleEntity;
     }
 
     @Override

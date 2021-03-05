@@ -33,23 +33,23 @@ public class CraftNMSSlime extends CraftSlime {
     @Override public boolean addPotionEffect(PotionEffect effect) { return false; }
     @Override public boolean addPotionEffect(PotionEffect effect, boolean param) { return false; }
     @Override public boolean addPotionEffects(Collection<PotionEffect> effects) { return false; }
-    @Override public void setRemoveWhenFarAway(boolean remove) { }
+    @Override public void setRemoveWhenFarAway(boolean remove) {}
     
     // Methods from Entity
-    @Override public void setVelocity(Vector vel) { }
+    @Override public void setVelocity(Vector vel) {}
     @Override public boolean teleport(Location loc) { return false; }
     @Override public boolean teleport(Entity entity) { return false; }
     @Override public boolean teleport(Location loc, TeleportCause cause) { return false; }
     @Override public boolean teleport(Entity entity, TeleportCause cause) { return false; }
-    @Override public void setFireTicks(int ticks) { }
+    @Override public void setFireTicks(int ticks) {}
     @Override public boolean setPassenger(Entity entity) { return false; }
     @Override public boolean eject() { return false; }
     @Override public boolean leaveVehicle() { return false; }
-    @Override public void playEffect(EntityEffect effect) { }
-    @Override public void setCustomName(String name) { }
-    @Override public void setCustomNameVisible(boolean flag) { }
+    @Override public void playEffect(EntityEffect effect) {}
+    @Override public void setCustomName(String name) {}
+    @Override public void setCustomNameVisible(boolean flag) {}
     
     // Methods from Slime
-    @Override public void setSize(int size) { }
+    @Override public void setSize(int size) {}
     
 }

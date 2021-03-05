@@ -11,6 +11,7 @@ import me.filoghost.holographicdisplays.api.handler.PickupHandler;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import org.bukkit.World;
@@ -24,7 +25,7 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
     private ItemStack itemStack;
 
     private NMSItem itemEntity;
-    private NMSArmorStand vehicleEntity;
+    private NMSArmorStand itemVehicleEntity;
     private PickupHandler pickupHandler;
 
     public BaseItemLine(StandardHologram hologram, NMSManager nmsManager, ItemStack itemStack) {
@@ -69,14 +70,13 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
     }
 
     @Override
-    public void spawnEntities(World world, double x, double y, double z) {
+    public void spawnEntities(World world, double x, double y, double z) throws SpawnFailedException {
         super.spawnEntities(world, x, y, z);
         
         if (itemStack != null) {
             itemEntity = getNMSManager().spawnNMSItem(world, x, y + getItemSpawnOffset(), z, this, itemStack);
-            vehicleEntity = getNMSManager().spawnNMSArmorStand(world, x, y + getItemSpawnOffset(), z, this);
-
-            itemEntity.setPassengerOfNMS(vehicleEntity);
+            itemVehicleEntity = getNMSManager().spawnNMSArmorStand(world, x, y + getItemSpawnOffset(), z, this);
+            itemVehicleEntity.setPassengerNMS(itemEntity);
         }
     }
     
@@ -84,8 +84,8 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
     public void teleportEntities(double x, double y, double z) {
         super.teleportEntities(x, y, z);
 
-        if (vehicleEntity != null) {
-            vehicleEntity.setLocationNMS(x, y + getItemSpawnOffset(), z);
+        if (itemVehicleEntity != null) {
+            itemVehicleEntity.setLocationNMS(x, y + getItemSpawnOffset(), z);
         }
         if (itemEntity != null) {
             itemEntity.setLocationNMS(x, y + getItemSpawnOffset(), z);
@@ -96,9 +96,9 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
     public void despawnEntities() {
         super.despawnEntities();
         
-        if (vehicleEntity != null) {
-            vehicleEntity.killEntityNMS();
-            vehicleEntity = null;
+        if (itemVehicleEntity != null) {
+            itemVehicleEntity.killEntityNMS();
+            itemVehicleEntity = null;
         }
         
         if (itemEntity != null) {
@@ -116,8 +116,8 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
     public void collectEntityIDs(Collection<Integer> collector) {
         super.collectEntityIDs(collector);
         
-        if (vehicleEntity != null) {
-            collector.add(vehicleEntity.getIdNMS());
+        if (itemVehicleEntity != null) {
+            collector.add(itemVehicleEntity.getIdNMS());
         }
         if (itemEntity != null) {
             collector.add(itemEntity.getIdNMS());
@@ -131,7 +131,7 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
 
     @Override
     public NMSArmorStand getNMSItemVehicle() {
-        return vehicleEntity;
+        return itemVehicleEntity;
     }
     
     private double getItemSpawnOffset() {

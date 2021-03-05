@@ -5,6 +5,8 @@
  */
 package me.filoghost.holographicdisplays.core.nms.entity;
 
-public interface NMSSlime extends NMSEntity {
+public interface NMSVehicle extends NMSEntity {
+
+    void setPassengerNMS(NMSEntity passenger);
     
 }

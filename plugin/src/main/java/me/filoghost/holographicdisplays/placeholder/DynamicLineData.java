@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.placeholder;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSNameable;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,14 +16,14 @@ import java.util.Set;
 
 public class DynamicLineData {
     
-    private final NMSNameable entity;
+    private final NMSArmorStand entity;
     private final String originalName;
     
     private Set<Placeholder> placeholders;
     private final Map<String, Placeholder> animations;
     private final Map<String, PlaceholderReplacer> replacers;
     
-    public DynamicLineData(NMSNameable entity, String originalName) {
+    public DynamicLineData(NMSArmorStand entity, String originalName) {
         Preconditions.notNull(entity, "entity");
         
         this.entity = entity;
@@ -33,7 +33,7 @@ public class DynamicLineData {
         replacers = new HashMap<>();
     }
 
-    public NMSNameable getEntity() {
+    public NMSArmorStand getEntity() {
         return entity;
     }    
 

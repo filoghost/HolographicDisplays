@@ -1,7 +1,7 @@
 package me.filoghost.holographicdisplays.listener;
 
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.object.api.APIHologramManager;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.util.SchedulerUtils;
@@ -29,7 +29,7 @@ public class ChunkListener implements Listener {
     public void onChunkUnload(ChunkUnloadEvent event) {
         for (Entity entity : event.getChunk().getEntities()) {
             if (!entity.isDead()) {
-                NMSEntityBase entityBase = nmsManager.getNMSEntityBase(entity);
+                NMSEntity entityBase = nmsManager.getNMSEntityBase(entity);
 
                 if (entityBase != null) {
                     entityBase.getHologramLine().getHologram().despawnEntities();

@@ -6,9 +6,11 @@
 package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import org.bukkit.World;
 
 public abstract class BaseHologramLine extends BaseHologramComponent implements StandardHologramLine {
@@ -40,18 +42,22 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
         boolean changedWorld = world != getWorld();
         setLocation(world, x, y, z);
         
-        if (changedWorld) {
-            // World has changed, entities must be fully respawned
-            despawnEntities();
-            spawnEntities(world, x, y, z);
-            
-        } else if (isSpawned) {
-            // Line is already spawned, respawn can be avoided
-            teleportEntities(x, y, z);
-            
-        } else {
-            // Line is not spawned, entities must be spawned
-            spawnEntities(world, x, y, z);
+        try {
+            if (changedWorld) {
+                // World has changed, entities must be fully respawned
+                despawnEntities();
+                spawnEntities(world, x, y, z);
+
+            } else if (isSpawned) {
+                // Line is already spawned, respawn can be avoided
+                teleportEntities(x, y, z);
+
+            } else {
+                // Line is not spawned, entities must be spawned
+                spawnEntities(world, x, y, z);
+            }
+        } catch (SpawnFailedException e) {
+            DebugLogger.handleSpawnFail(e, this);
         }
 
         isSpawned = true;
@@ -67,7 +73,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
         return isSpawned;
     }
 
-    protected abstract void spawnEntities(World world, double x, double y, double z);
+    protected abstract void spawnEntities(World world, double x, double y, double z) throws SpawnFailedException;
 
     protected abstract void teleportEntities(double x, double y, double z);
 

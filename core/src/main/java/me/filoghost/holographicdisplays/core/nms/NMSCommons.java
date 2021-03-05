@@ -10,16 +10,14 @@ import org.bukkit.ChatColor;
 
 public class NMSCommons {
 
-    // This is used on hologram icons, to prevent vanilla items from merging with them.
+    /**
+     * Lore is used on hologram icons, to prevent vanilla items from merging with them.
+     */
     public static final String ANTI_STACK_LORE = ChatColor.BLACK.toString() + Math.random();
-
-    private static final boolean IS_PAPER_SERVER = Bukkit.getName().equals("Paper");
 
     /**
      * Paper contains some code changes compared to Spigot.
      */
-    public static boolean isPaperServer() {
-        return IS_PAPER_SERVER;
-    }
+    public static final boolean IS_PAPER_SERVER = Bukkit.getName().equals("Paper");
 
 }

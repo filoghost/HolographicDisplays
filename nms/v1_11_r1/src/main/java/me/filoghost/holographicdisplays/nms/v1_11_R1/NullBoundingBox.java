@@ -125,8 +125,5 @@ public class NullBoundingBox extends AxisAlignedBB {
     public boolean e(Vec3D arg0) {
         return false;
     }
-    
-    
-    
 
 }

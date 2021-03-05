@@ -5,13 +5,17 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_9_R1;
 
+import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.reflection.ReflectField;
-import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.Utils;
+import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.nms.PacketController;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import net.minecraft.server.v1_9_R1.AxisAlignedBB;
 import net.minecraft.server.v1_9_R1.DamageSource;
+import net.minecraft.server.v1_9_R1.Entity;
 import net.minecraft.server.v1_9_R1.EntityArmorStand;
 import net.minecraft.server.v1_9_R1.EntityHuman;
 import net.minecraft.server.v1_9_R1.EntityPlayer;
@@ -28,31 +32,27 @@ import org.bukkit.craftbukkit.v1_9_R1.entity.CraftEntity;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
     
-    private static final ReflectField<Integer> DISABLED_SLOTS_FIELD = ReflectField.lookup(int.class, EntityArmorStand.class, "bz");
+    private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "as");
 
-    private final StandardHologramLine parentPiece;
+    private final StandardHologramLine parentHologramLine;
     private final PacketController packetController;
 
     private String customName;
     
-    public EntityNMSArmorStand(World world, StandardHologramLine parentPiece, PacketController packetController) {
+    public EntityNMSArmorStand(World world, StandardHologramLine parentHologramLine, PacketController packetController) {
         super(world);
+        this.parentHologramLine = parentHologramLine;
+        this.packetController = packetController;
+        
         super.setInvisible(true);
         super.setSmall(true);
         super.setArms(false);
         super.setGravity(true);
         super.setBasePlate(true);
         super.setMarker(true);
-        try {
-            DISABLED_SLOTS_FIELD.set(this, Integer.MAX_VALUE);
-        } catch (ReflectiveOperationException e) {
-            // There's still the overridden method.
-        }
-        
-        this.parentPiece = parentPiece;
-        this.packetController = packetController;
+        super.collides = false;
+        super.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet.
         forceSetBoundingBox(new NullBoundingBox());
-        this.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet.
     }
     
     @Override
@@ -60,8 +60,8 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         // Disable normal ticking for this entity.
         
         // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
-        if (this.onGround) {
-            this.onGround = false;
+        if (super.onGround) {
+            super.onGround = false;
         }
     }
     
@@ -70,8 +70,8 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         // Disable normal ticking for this entity.
         
         // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
-        if (this.onGround) {
-            this.onGround = false;
+        if (super.onGround) {
+            super.onGround = false;
         }
     }    
     
@@ -152,7 +152,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     
     @Override
     public void a(AxisAlignedBB boundingBox) {
-        // Do not change it!
+        // Prevent bounding box from being changed
     }
     
     public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
@@ -210,15 +210,30 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     private void broadcastLocationPacketNMS() {
         PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
         
-        for (Object obj : super.world.players) {
-            if (obj instanceof EntityPlayer) {
-                EntityPlayer nmsPlayer = (EntityPlayer) obj;
+        for (Object humanEntity : super.world.players) {
+            if (humanEntity instanceof EntityPlayer) {
+                EntityPlayer nmsPlayer = (EntityPlayer) humanEntity;
 
                 double distanceSquared = Utils.square(nmsPlayer.locX - super.locX) + Utils.square(nmsPlayer.locZ - super.locZ);
                 if (distanceSquared < 8192 && nmsPlayer.playerConnection != null) {
                     nmsPlayer.playerConnection.sendPacket(teleportPacket);
                 }
             }
+        }
+    }
+
+    @Override
+    public void setPassengerNMS(NMSEntity passenger) {
+        Preconditions.checkArgument(passenger instanceof Entity);
+        Entity passengerEntity = (Entity) passenger;
+        Preconditions.checkArgument(passengerEntity.by() == null);
+        Preconditions.checkState(super.passengers.isEmpty());
+
+        try {
+            VEHICLE_FIELD.set(passenger, this);
+            this.passengers.add(this);
+        } catch (ReflectiveOperationException e) {
+            DebugLogger.cannotSetPassenger(e);
         }
     }
 
@@ -234,11 +249,12 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 
     @Override
     public StandardHologramLine getHologramLine() {
-        return parentPiece;
+        return parentHologramLine;
     }
     
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
     }
+    
 }

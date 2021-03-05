@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 /**
  * An interface to represent a custom NMS entity being part of a hologram.
  */
-public interface NMSEntityBase {
+public interface NMSEntity {
     
     // Returns the linked line, all the entities are part of a piece. Should never be null.
     StandardHologramLine getHologramLine();

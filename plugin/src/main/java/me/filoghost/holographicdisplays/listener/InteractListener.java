@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.listener;
 
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardTouchableLine;
 import org.bukkit.GameMode;
@@ -36,7 +36,7 @@ public class InteractListener implements Listener {
             return;
         }
         
-        NMSEntityBase entityBase = nmsManager.getNMSEntityBase(event.getRightClicked());
+        NMSEntity entityBase = nmsManager.getNMSEntityBase(event.getRightClicked());
         if (entityBase == null) {
             return;
         }

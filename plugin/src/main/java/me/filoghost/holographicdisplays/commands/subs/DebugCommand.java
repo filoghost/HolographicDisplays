@@ -9,7 +9,7 @@ import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -42,7 +42,7 @@ public class DebugCommand extends HologramSubCommand {
 
             for (Chunk chunk : world.getLoadedChunks()) {
                 for (Entity entity : chunk.getEntities()) {
-                    NMSEntityBase nmsEntity = nmsManager.getNMSEntityBase(entity);
+                    NMSEntity nmsEntity = nmsManager.getNMSEntityBase(entity);
 
                     if (nmsEntity == null) {
                         continue;

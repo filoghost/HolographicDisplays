@@ -111,6 +111,4 @@ public class NullBoundingBox extends AxisAlignedBB {
         return this;
     }
 
-    
-
 }

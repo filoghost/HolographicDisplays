@@ -20,7 +20,7 @@ import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardTouchableLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import me.filoghost.holographicdisplays.util.NMSVersion;
@@ -156,7 +156,7 @@ class PacketSender {
     }
     
     
-    private void sendVehicleAttachPacket(Player receiver, NMSEntityBase vehicle, NMSEntityBase passenger) {        
+    private void sendVehicleAttachPacket(Player receiver, NMSEntity vehicle, NMSEntity passenger) {        
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
             WrapperPlayServerMount packet = new WrapperPlayServerMount();
             packet.setVehicleId(vehicle.getIdNMS());

@@ -5,16 +5,12 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_12_R1;
 
-import me.filoghost.fcommons.reflection.ReflectField;
-import me.filoghost.holographicdisplays.core.DebugLogger;
-import me.filoghost.holographicdisplays.core.nms.NMSCommons;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityBase;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
+import me.filoghost.holographicdisplays.core.nms.NMSCommons;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import net.minecraft.server.v1_12_R1.Blocks;
 import net.minecraft.server.v1_12_R1.DamageSource;
-import net.minecraft.server.v1_12_R1.Entity;
 import net.minecraft.server.v1_12_R1.EntityHuman;
 import net.minecraft.server.v1_12_R1.EntityItem;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
@@ -28,14 +24,13 @@ import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
     
-    private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "au");
+    private final StandardItemLine parentHologramLine;
     
-    private final StandardItemLine parentPiece;
-    
-    public EntityNMSItem(World world, StandardItemLine piece) {
+    public EntityNMSItem(World world, StandardItemLine parentHologramLine) {
         super(world);
+        this.parentHologramLine = parentHologramLine;
+        
         super.pickupDelay = 32767; // Lock the item pickup delay, also prevents entities from picking up the item
-        this.parentPiece = piece;
     }
     
     @Override
@@ -63,7 +58,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         }
         
         if (human instanceof EntityPlayer) {
-            parentPiece.onPickup(((EntityPlayer) human).getBukkitEntity());
+            parentHologramLine.onPickup(((EntityPlayer) human).getBukkitEntity());
             // It is never added to the inventory.
         }
     }
@@ -153,7 +148,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 
     @Override
     public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
-        ItemStack newItem = CraftItemStack.asNMSCopy(stack); // ItemStack.a is returned if the stack is null, invalid or the material is not an Item
+        ItemStack newItem = CraftItemStack.asNMSCopy(stack); // ItemStack.a is returned if the stack is not valid
         
         if (newItem == null || newItem == ItemStack.a) {
             newItem = new ItemStack(Blocks.BEDROCK);
@@ -168,10 +163,10 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         }
 
         NBTTagList tagList = new NBTTagList();
-        tagList.add(new NBTTagString(NMSCommons.ANTI_STACK_LORE)); // Antistack lore
+        tagList.add(new NBTTagString(NMSCommons.ANTI_STACK_LORE));
         display.set("Lore", tagList);
         
-        setItemStack(newItem);
+        super.setItemStack(newItem);
     }
     
     @Override
@@ -181,41 +176,17 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     
     @Override
     public StandardHologramLine getHologramLine() {
-        return parentPiece;
+        return parentHologramLine;
     }
 
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
     }
-    
-    @Override
-    public void setPassengerOfNMS(NMSEntityBase vehicleBase) {
-        if (!(vehicleBase instanceof Entity)) {
-            // It should never dismount
-            return;
-        }
-        
-        Entity entity = (Entity) vehicleBase;
-
-        try {
-            Entity oldVehicle = super.bJ();
-            if (oldVehicle != null) {
-                VEHICLE_FIELD.set(this, null);
-                oldVehicle.passengers.remove(this);
-            }
-
-            VEHICLE_FIELD.set(this, entity);
-            entity.passengers.clear();
-            entity.passengers.add(this);
-
-        } catch (Throwable t) {
-            DebugLogger.cannotSetPassenger(t);
-        }
-    }
 
     @Override
     public Object getRawItemStack() {
         return super.getItemStack();
     }
+    
 }
