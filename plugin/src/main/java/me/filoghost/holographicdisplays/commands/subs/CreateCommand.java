@@ -75,9 +75,8 @@ public class CreateCommand extends HologramSubCommand {
 
         hologram.getLinesUnsafe().add(line);
         hologram.refresh();
-
-        configManager.getHologramDatabase().addOrUpdate(hologram);
-        configManager.saveHologramDatabase();
+        
+        configManager.saveHologramDatabase(internalHologramManager);
         Location look = player.getLocation();
         look.setPitch(90);
         player.teleport(look, TeleportCause.PLUGIN);

@@ -45,8 +45,7 @@ public class AddlineCommand extends LineEditingCommand implements QuickEditComma
         hologram.getLinesUnsafe().add(line);
         hologram.refresh();
 
-        configManager.getHologramDatabase().addOrUpdate(hologram);
-        configManager.saveHologramDatabase();
+        configManager.saveHologramDatabase(internalHologramManager);
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
         
         sender.sendMessage(Colors.PRIMARY + "Line added.");

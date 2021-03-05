@@ -41,8 +41,7 @@ public class MovehereCommand extends HologramSubCommand {
         
         hologram.teleport(player.getLocation());
         
-        configManager.getHologramDatabase().addOrUpdate(hologram);
-        configManager.saveHologramDatabase();
+        configManager.saveHologramDatabase(internalHologramManager);
         Location to = player.getLocation();
         to.setPitch(90);
         player.teleport(to, TeleportCause.PLUGIN);

@@ -13,6 +13,7 @@ import me.filoghost.fcommons.config.FileConfig;
 import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.config.mapped.MappedConfigLoader;
 import me.filoghost.fcommons.logging.Log;
+import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 
 import java.nio.file.Path;
 
@@ -21,14 +22,12 @@ public class ConfigManager extends BaseConfigManager {
     private final MappedConfigLoader<MainConfigModel> mainConfigLoader;
     private final ConfigLoader databaseConfigLoader;
     private final ConfigLoader placeholdersConfigLoader;
-    private final HologramDatabase hologramDatabase;
 
     public ConfigManager(Path rootDataFolder) {
         super(rootDataFolder);
         this.mainConfigLoader = getMappedConfigLoader("config.yml", MainConfigModel.class);
         this.databaseConfigLoader = getConfigLoader("database.yml");
         this.placeholdersConfigLoader = getConfigLoader("custom-placeholders.yml");
-        this.hologramDatabase = new HologramDatabase();
     }
 
     public void reloadMainConfig() {
@@ -44,7 +43,7 @@ public class ConfigManager extends BaseConfigManager {
         Configuration.load(mainConfig);
     }
 
-    public void reloadHologramDatabase() {
+    public HologramDatabase loadHologramDatabase() {
         Config databaseConfig;
 
         try {
@@ -53,20 +52,18 @@ public class ConfigManager extends BaseConfigManager {
             logConfigInitException(databaseConfigLoader.getFile(), e);
             databaseConfig = new Config(); // Fallback: empty config
         }
-        
-        hologramDatabase.reloadFromConfig(databaseConfig);
+
+        HologramDatabase hologramDatabase = new HologramDatabase();
+        hologramDatabase.loadFromConfig(databaseConfig);
+        return hologramDatabase;
     }
 
-    public void saveHologramDatabase() {
+    public void saveHologramDatabase(InternalHologramManager hologramManager) {
         try {
-            databaseConfigLoader.save(hologramDatabase.saveToConfig());
+            databaseConfigLoader.save(HologramDatabase.exportToConfig(hologramManager));
         } catch (ConfigException e) {
             logConfigSaveException(databaseConfigLoader.getFile(), e);
         }
-    }
-
-    public HologramDatabase getHologramDatabase() {
-        return hologramDatabase;
     }
 
     public void reloadCustomPlaceholders() {

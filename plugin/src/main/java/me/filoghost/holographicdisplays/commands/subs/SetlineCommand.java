@@ -52,8 +52,7 @@ public class SetlineCommand extends LineEditingCommand implements QuickEditComma
         prevLine.despawn();
         hologram.refresh();
 
-        configManager.getHologramDatabase().addOrUpdate(hologram);
-        configManager.saveHologramDatabase();
+        configManager.saveHologramDatabase(internalHologramManager);
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
         
         sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " changed.");

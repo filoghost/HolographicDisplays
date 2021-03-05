@@ -13,14 +13,11 @@ import me.filoghost.holographicdisplays.api.internal.BackendAPI;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.commands.HologramCommandManager;
-import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.disk.HologramConfig;
-import me.filoghost.holographicdisplays.disk.HologramLoadException;
+import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.disk.upgrade.LegacySymbolsUpgrader;
 import me.filoghost.holographicdisplays.listener.ChunkListener;
 import me.filoghost.holographicdisplays.listener.InteractListener;
@@ -127,49 +124,27 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         updateNotificationListener.runAsyncUpdateCheck();
     }
     
-    public void load(CommandSender sender, boolean deferHologramLoad) {
+    public void load(CommandSender sender, boolean deferHologramsCreation) {
+        PlaceholdersManager.untrackAll();
+        internalHologramManager.clearAll();
+        BungeeServerTracker.resetTrackedServers();
+        
         configManager.reloadCustomPlaceholders();
         configManager.reloadMainConfig();
-        configManager.reloadHologramDatabase();
+        HologramDatabase hologramDatabase = configManager.loadHologramDatabase();
         try {
             AnimationsRegistry.loadAnimations(configManager);
         } catch (Exception e) {
             Log.warning("Failed to load animation files!", e);
         }
         
-        BungeeServerTracker.resetTrackedServers();
         BungeeServerTracker.restartTask(Configuration.bungeeRefreshSeconds);
-
-        PlaceholdersManager.untrackAll();
-        internalHologramManager.clearAll();
         
-        if (deferHologramLoad) {
+        if (deferHologramsCreation) {
             // For the initial load: holograms are loaded later, when the worlds are ready
-            Bukkit.getScheduler().runTask(this, () -> createHolograms(sender));
+            Bukkit.getScheduler().runTask(this, () -> hologramDatabase.createHolograms(sender, internalHologramManager));
         } else {
-            createHolograms(sender);
-        }
-    }
-    
-    private void createHolograms(CommandSender sender) {
-        // Create all the holograms
-        for (HologramConfig hologramConfig : configManager.getHologramDatabase().getHolograms()) {
-            try {
-                hologramConfig.createHologram(internalHologramManager);
-            } catch (HologramLoadException e) {
-                if (sender != null) {
-                    Messages.sendWarning(sender, Utils.formatExceptionMessage(e));
-                } else {
-                    Log.warning(Utils.formatExceptionMessage(e));
-                }
-            } catch (Exception e) {
-                Log.warning("Unexpected exception while loading the hologram \"" + hologramConfig.getName() + "\".", e);
-            }
-        }
-
-        // Then trigger a refresh for all of them
-        for (InternalHologram hologram : internalHologramManager.getHolograms()) {
-            hologram.refresh();
+            hologramDatabase.createHolograms(sender, internalHologramManager);
         }
     }
 

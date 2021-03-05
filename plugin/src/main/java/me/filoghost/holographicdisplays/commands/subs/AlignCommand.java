@@ -57,8 +57,7 @@ public class AlignCommand extends HologramSubCommand {
 
         hologram.teleport(loc);
             
-        configManager.getHologramDatabase().addOrUpdate(hologram);
-        configManager.saveHologramDatabase();
+        configManager.saveHologramDatabase(internalHologramManager);
         sender.sendMessage(Colors.PRIMARY + "Hologram \"" + hologram.getName() + "\" aligned to the hologram \"" + referenceHologram.getName() + "\" on the " + axis.toUpperCase() + " axis.");
     }
     

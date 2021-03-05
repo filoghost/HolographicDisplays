@@ -49,8 +49,7 @@ public class RemovelineCommand extends LineEditingCommand implements QuickEditCo
         hologram.removeLine(index);
         hologram.refresh();
         
-        configManager.getHologramDatabase().addOrUpdate(hologram);
-        configManager.saveHologramDatabase();
+        configManager.saveHologramDatabase(internalHologramManager);
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
         
         sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " removed.");

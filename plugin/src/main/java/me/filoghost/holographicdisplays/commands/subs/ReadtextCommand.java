@@ -87,8 +87,7 @@ public class ReadtextCommand extends LineEditingCommand {
             hologram.getLinesUnsafe().addAll(linesToAdd);
             hologram.refresh();
 
-            configManager.getHologramDatabase().addOrUpdate(hologram);
-            configManager.saveHologramDatabase();
+            configManager.saveHologramDatabase(internalHologramManager);
             
             if (isImageExtension(FileUtils.getExtension(fileName))) {
                 Messages.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + context.getRootLabel() + " readimage.");

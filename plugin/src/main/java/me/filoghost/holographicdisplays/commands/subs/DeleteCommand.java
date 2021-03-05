@@ -35,9 +35,8 @@ public class DeleteCommand extends HologramSubCommand {
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
         
         internalHologramManager.deleteHologram(hologram);
-
-        configManager.getHologramDatabase().removeHologram(hologram);
-        configManager.saveHologramDatabase();
+        
+        configManager.saveHologramDatabase(internalHologramManager);
         
         sender.sendMessage(Colors.PRIMARY + "You deleted the hologram '" + hologram.getName() + "'.");
     }

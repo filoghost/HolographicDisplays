@@ -55,8 +55,7 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
         hologram.getLinesUnsafe().add(insertAfter, line);
         hologram.refresh();
             
-        configManager.getHologramDatabase().addOrUpdate(hologram);
-        configManager.saveHologramDatabase();
+        configManager.saveHologramDatabase(internalHologramManager);
         
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
         

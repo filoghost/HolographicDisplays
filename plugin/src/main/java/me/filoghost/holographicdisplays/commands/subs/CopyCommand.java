@@ -43,9 +43,8 @@ public class CopyCommand extends HologramSubCommand {
         }
         
         toHologram.refresh();
-
-        configManager.getHologramDatabase().addOrUpdate(toHologram);
-        configManager.saveHologramDatabase();
+        
+        configManager.saveHologramDatabase(internalHologramManager);
         
         sender.sendMessage(Colors.PRIMARY + "Hologram \"" + fromHologram.getName() + "\" copied into hologram \"" + toHologram.getName() + "\".");
     }
