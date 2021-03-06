@@ -189,9 +189,9 @@ public class ImageMessage {
         // Minecraft has 15 colors
         return bestColorMatch;
     }
-
-
+    
     public String[] getLines() {
         return lines;
     }
+    
 }

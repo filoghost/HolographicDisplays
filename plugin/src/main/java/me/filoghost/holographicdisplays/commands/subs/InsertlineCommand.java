@@ -44,28 +44,27 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
-        int insertAfter = CommandValidate.parseInteger(args[1]);
+        int insertAfterIndex = CommandValidate.parseInteger(args[1]);
         String serializedLine = Utils.join(args, " ", 2, args.length);
         
-        int oldLinesAmount = hologram.size();
+        int oldLinesAmount = hologram.getLinesAmount();
         
-        CommandValidate.check(insertAfter >= 0 && insertAfter <= oldLinesAmount, "The number must be between 0 and " + hologram.size() + "(amount of lines of the hologram).");
+        CommandValidate.check(insertAfterIndex >= 0 && insertAfterIndex <= oldLinesAmount, "The number must be between 0 and " + hologram.getLinesAmount() + "(amount of lines of the hologram).");
 
-        InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine, true);
-        hologram.getLinesUnsafe().add(insertAfter, line);
-        hologram.refresh();
+        InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine);
+        hologram.insertLine(insertAfterIndex, line);
             
         configManager.saveHologramDatabase(internalHologramManager);
         
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
         
-        if (insertAfter == 0) {
+        if (insertAfterIndex == 0) {
             sender.sendMessage(Colors.PRIMARY + "Line inserted before first line.");
-        } else if (insertAfter == oldLinesAmount) {
+        } else if (insertAfterIndex == oldLinesAmount) {
             sender.sendMessage(Colors.PRIMARY + "Line appended at the end.");
             Messages.sendTip(sender, "You can use \"/" + context.getRootLabel() + " addline\" to append a line at the end.");
         } else {
-            sender.sendMessage(Colors.PRIMARY + "Line inserted between lines " + insertAfter + " and " + (insertAfter + 1) + ".");
+            sender.sendMessage(Colors.PRIMARY + "Line inserted between lines " + insertAfterIndex + " and " + (insertAfterIndex + 1) + ".");
         }
         commandManager.sendQuickEditCommands(context, hologram);
     }

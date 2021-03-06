@@ -108,18 +108,17 @@ public class ReadimageCommand extends LineEditingCommand {
             }
 
             ImageMessage imageMessage = new ImageMessage(image, width);
-            String[] newLines = imageMessage.getLines();
+            List<InternalTextLine> newLines = new ArrayList<>();
+            for (String newLine : imageMessage.getLines()) {
+                newLines.add(hologram.createTextLine(newLine, newLine));
+            }
             
             if (!append) {
                 hologram.clearLines();
             }
-            for (String newLine : newLines) {
-                InternalTextLine line = hologram.createTextLine(newLine, newLine);
-                hologram.getLinesUnsafe().add(line);
-            }
-            hologram.refresh();
+            hologram.addLines(newLines);
             
-            if (newLines.length < 5) {
+            if (newLines.size() < 5) {
                 Messages.sendTip(sender, "The image has a very low height. You can increase it by increasing the width, it will scale automatically.");
             }
             

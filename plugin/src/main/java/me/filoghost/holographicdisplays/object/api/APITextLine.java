@@ -1,6 +1,5 @@
 package me.filoghost.holographicdisplays.object.api;
 
-import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseTextLine;
@@ -15,7 +14,7 @@ public class APITextLine extends BaseTextLine implements TextLine, APIHologramLi
     }
 
     @Override
-    public Hologram getParent() {
+    public APIHologram getParent() {
         return parent;
     }
 

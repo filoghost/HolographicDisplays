@@ -20,12 +20,12 @@ public class HologramLineParser {
     private static final String ICON_PREFIX = "icon:";
     private static final String EMPTY_LINE_PLACEHOLDER = "{empty}";
 
-    public static InternalHologramLine parseLine(InternalHologram hologram, String serializedLine, boolean checkMaterialValidity) throws HologramLoadException {
+    public static InternalHologramLine parseLine(InternalHologram hologram, String serializedLine) throws HologramLoadException {
         InternalHologramLine hologramLine;
         
         if (serializedLine.toLowerCase().startsWith(ICON_PREFIX)) {
             String serializedIcon = serializedLine.substring(ICON_PREFIX.length());
-            ItemStack icon = parseItemStack(serializedIcon, checkMaterialValidity);
+            ItemStack icon = parseItemStack(serializedIcon);
             hologramLine = hologram.createItemLine(icon, serializedLine);
             
         } else {
@@ -44,7 +44,7 @@ public class HologramLineParser {
     
     
     @SuppressWarnings("deprecation")
-    private static ItemStack parseItemStack(String serializedItem, boolean checkMaterialValidity) throws HologramLoadException {
+    private static ItemStack parseItemStack(String serializedItem) throws HologramLoadException {
         serializedItem = serializedItem.trim();
         
         // Parse json
@@ -80,10 +80,7 @@ public class HologramLineParser {
         
         Material material = MaterialsHelper.matchMaterial(materialName);
         if (material == null) {
-            if (checkMaterialValidity) {
-                throw new HologramLoadException("\"" + materialName + "\" is not a valid material");
-            }
-            material = Material.BEDROCK;
+            throw new HologramLoadException("\"" + materialName + "\" is not a valid material");
         }
         
         ItemStack itemStack = new ItemStack(material, 1, dataValue);

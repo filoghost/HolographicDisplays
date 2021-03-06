@@ -16,6 +16,9 @@ import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CopyCommand extends HologramSubCommand {
 
     private final InternalHologramManager internalHologramManager;
@@ -35,14 +38,13 @@ public class CopyCommand extends HologramSubCommand {
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram fromHologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
         InternalHologram toHologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[1]);
-        
-        toHologram.clearLines();
-        for (InternalHologramLine line : fromHologram.getLinesUnsafe()) {
-            InternalHologramLine clonedLine = HologramCommandValidate.parseHologramLine(toHologram, line.getSerializedConfigValue(), false);
-            toHologram.getLinesUnsafe().add(clonedLine);
+
+        List<InternalHologramLine> clonedLines = new ArrayList<>();
+        for (InternalHologramLine line : fromHologram.getLines()) {
+            clonedLines.add(HologramCommandValidate.parseHologramLine(toHologram, line.getSerializedConfigValue()));
         }
         
-        toHologram.refresh();
+        toHologram.setLines(clonedLines);
         
         configManager.saveHologramDatabase(internalHologramManager);
         

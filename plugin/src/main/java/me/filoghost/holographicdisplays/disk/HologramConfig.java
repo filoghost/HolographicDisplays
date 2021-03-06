@@ -38,7 +38,7 @@ public class HologramConfig {
     public HologramConfig(InternalHologram hologram) {
         this.name = hologram.getName();
         this.serializedLines = new ArrayList<>();
-        for (InternalHologramLine line : hologram.getLinesUnsafe()) {
+        for (InternalHologramLine line : hologram.getLines()) {
             serializedLines.add(line.getSerializedConfigValue());
         }
 
@@ -62,17 +62,18 @@ public class HologramConfig {
 
         Location location = deserializeLocation(serializedLocation);
         InternalHologram hologram = internalHologramManager.createHologram(location, name);
+        List<InternalHologramLine> lines = new ArrayList<>();
 
         for (String serializedLine : serializedLines) {
             try {
-                InternalHologramLine line = HologramLineParser.parseLine(hologram, serializedLine, false);
-                hologram.getLinesUnsafe().add(line);
+                lines.add(HologramLineParser.parseLine(hologram, serializedLine));
             } catch (HologramLoadException e) {
                 // Rethrow with more details
                 throw new HologramLoadException("hologram \"" + hologram.getName() + "\" has an invalid line: " + e.getMessage(), e);
             }
         }
-
+        
+        hologram.setLines(lines);
         return hologram;
     }
 

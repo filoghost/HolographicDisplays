@@ -18,13 +18,13 @@ public interface StandardHologram {
 
     boolean isInChunk(Chunk chunk);
 
+    List<? extends StandardHologramLine> getLines();
+
+    int getLinesAmount();
+
     Plugin getOwnerPlugin();
 
-    List<? extends StandardHologramLine> getLinesUnsafe();
-
     boolean isVisibleTo(Player player);
-
-    String toFormattedString();
 
     void refresh();
 
@@ -34,12 +34,10 @@ public interface StandardHologram {
 
     void despawnEntities();
 
-    void removeLine(StandardHologramLine line);
-
-    int size();
-
     boolean isDeleted();
 
     void setDeleted();
+
+    String toFormattedString();
 
 }

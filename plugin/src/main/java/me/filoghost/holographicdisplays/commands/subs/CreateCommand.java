@@ -65,16 +65,15 @@ public class CreateCommand extends HologramSubCommand {
             String text = Utils.join(args, " ", 1, args.length);
             CommandValidate.check(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
             
-            line = HologramCommandValidate.parseHologramLine(hologram, text, true);
+            line = HologramCommandValidate.parseHologramLine(hologram, text);
             player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + context.getRootLabel() + " edit " + hologram.getName() + ")");
         } else {
             String defaultText = "Default hologram. Change it with " 
                     + Colors.PRIMARY + "/" + context.getRootLabel() + " edit " + hologram.getName();
             line = hologram.createTextLine(defaultText, defaultText.replace(ChatColor.COLOR_CHAR, '&'));
         }
-
-        hologram.getLinesUnsafe().add(line);
-        hologram.refresh();
+        
+        hologram.addLine(line);
         
         configManager.saveHologramDatabase(internalHologramManager);
         Location look = player.getLocation();

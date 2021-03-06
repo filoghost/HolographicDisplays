@@ -66,7 +66,7 @@ public class DebugCommand extends HologramSubCommand {
                 for (Entry<StandardHologram, HologramDebugInfo> entry : hologramsDebugInfo.entrySet()) {
                     StandardHologram hologram = entry.getKey();
                     HologramDebugInfo debugInfo = entry.getValue();
-                    sender.sendMessage(Colors.PRIMARY_SHADOW + "- '" + hologram.toFormattedString() + "': " + hologram.size() + " lines, "
+                    sender.sendMessage(Colors.PRIMARY_SHADOW + "- '" + hologram.toFormattedString() + "': " + hologram.getLinesAmount() + " lines, "
                             + debugInfo.getTotalEntities() + " entities (" + debugInfo.aliveEntities + " alive, " + debugInfo.deadEntities + " dead)");
                 }
             }

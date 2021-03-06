@@ -76,16 +76,14 @@ public class ReadtextCommand extends LineEditingCommand {
             List<InternalHologramLine> linesToAdd = new ArrayList<>();
             for (int i = 0; i < linesAmount; i++) {
                 try {
-                    InternalHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i), true);
+                    InternalHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i));
                     linesToAdd.add(line);
                 } catch (HologramLoadException e) {
                     throw new CommandException("Error at line " + (i + 1) + ": " + e.getMessage());
                 }
             }
             
-            hologram.clearLines();
-            hologram.getLinesUnsafe().addAll(linesToAdd);
-            hologram.refresh();
+            hologram.setLines(linesToAdd);
 
             configManager.saveHologramDatabase(internalHologramManager);
             

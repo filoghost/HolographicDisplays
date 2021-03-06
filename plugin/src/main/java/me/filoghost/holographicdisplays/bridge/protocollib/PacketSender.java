@@ -39,7 +39,7 @@ class PacketSender {
 
     public void sendDestroyEntitiesPacket(Player player, StandardHologram hologram) {
         List<Integer> ids = new ArrayList<>();
-        for (StandardHologramLine line : hologram.getLinesUnsafe()) { 
+        for (StandardHologramLine line : hologram.getLines()) { 
             line.collectEntityIDs(ids);
         }
 
@@ -49,7 +49,7 @@ class PacketSender {
     }
 
     public void sendCreateEntitiesPacket(Player player, StandardHologram hologram) {
-        for (StandardHologramLine line : hologram.getLinesUnsafe()) {
+        for (StandardHologramLine line : hologram.getLines()) {
             sendCreateEntitiesPacket(player, line);
         }
     }

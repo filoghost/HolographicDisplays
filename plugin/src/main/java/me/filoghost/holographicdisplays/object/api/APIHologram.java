@@ -12,23 +12,21 @@ import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import me.filoghost.holographicdisplays.disk.Configuration;
+import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class APIHologram extends BaseHologram implements Hologram {
+public class APIHologram extends BaseHologram<APIHologramLine> implements Hologram {
     
     private final Plugin plugin;
     private final APIHologramManager apiHologramManager;
     private final VisibilityManager visibilityManager;
     private final long creationTimestamp;
-    private final List<APIHologramLine> lines;
 
     private boolean allowPlaceholders;
 
@@ -39,59 +37,42 @@ public class APIHologram extends BaseHologram implements Hologram {
         this.apiHologramManager = apiHologramManager;
         this.visibilityManager = new DefaultVisibilityManager(this);
         this.creationTimestamp = System.currentTimeMillis();
-        this.lines = new ArrayList<>();
-
     }
     
     @Override
     public Plugin getOwnerPlugin() {
         return plugin;
     }
-
-    @Override
-    public List<APIHologramLine> getLinesUnsafe() {
-        return lines;
-    }
-
+    
     @Override
     public TextLine appendTextLine(String text) {
-        checkState();
-
         APITextLine line = createTextLine(text);
-        lines.add(line);
-        refresh();
+        addLine(line);
         return line;
     }
 
     @Override
     public ItemLine appendItemLine(ItemStack itemStack) {
-        checkState();
         Preconditions.notNull(itemStack, "itemStack");
 
         APIItemLine line = createItemLine(itemStack);
-        lines.add(line);
-        refresh();
+        addLine(line);
         return line;
     }
 
     @Override
     public TextLine insertTextLine(int index, String text) {
-        checkState();
-
         APITextLine line = createTextLine(text);
-        lines.add(index, line);
-        refresh();
+        addLine(line);
         return line;
     }
 
     @Override
     public ItemLine insertItemLine(int index, ItemStack itemStack) {
-        checkState();
         Preconditions.notNull(itemStack, "itemStack");
 
         APIItemLine line = createItemLine(itemStack);
-        lines.add(index, line);
-        refresh();
+        addLine(line);
         return line;
     }
 
@@ -105,7 +86,12 @@ public class APIHologram extends BaseHologram implements Hologram {
 
     @Override
     public HologramLine getLine(int index) {
-        return lines.get(index);
+        return getLines().get(index);
+    }
+
+    @Override
+    public int size() {
+        return getLinesAmount();
     }
 
     @Override
@@ -130,6 +116,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     
     @Override
     public double getHeight() {
+        List<APIHologramLine> lines = getLines();
         if (lines.isEmpty()) {
             return 0;
         }

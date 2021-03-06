@@ -36,7 +36,6 @@ public class HologramDatabase {
     }
 
     public void createHolograms(CommandSender sender, InternalHologramManager internalHologramManager) {
-        // Create all the holograms
         for (HologramConfig hologramConfig : hologramConfigs) {
             try {
                 hologramConfig.createHologram(internalHologramManager);
@@ -49,11 +48,6 @@ public class HologramDatabase {
             } catch (Exception e) {
                 Log.warning("Unexpected exception while loading the hologram \"" + hologramConfig.getName() + "\".", e);
             }
-        }
-
-        // Then trigger a refresh for all of them
-        for (InternalHologram hologram : internalHologramManager.getHolograms()) {
-            hologram.refresh();
         }
     }
 

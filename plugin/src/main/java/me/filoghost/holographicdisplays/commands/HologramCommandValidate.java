@@ -20,9 +20,9 @@ import java.nio.file.Path;
 
 public class HologramCommandValidate {
     
-    public static InternalHologramLine parseHologramLine(InternalHologram hologram, String serializedLine, boolean validateMaterial) throws CommandException {
+    public static InternalHologramLine parseHologramLine(InternalHologram hologram, String serializedLine) throws CommandException {
         try {
-            return HologramLineParser.parseLine(hologram, serializedLine, validateMaterial);
+            return HologramLineParser.parseLine(hologram, serializedLine);
         } catch (HologramLoadException e) {
             throw new CommandException(Utils.formatExceptionMessage(e));
         }

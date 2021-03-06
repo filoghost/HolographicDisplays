@@ -1,6 +1,5 @@
 package me.filoghost.holographicdisplays.object.api;
 
-import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseItemLine;
@@ -16,7 +15,7 @@ public class APIItemLine extends BaseItemLine implements ItemLine, APIHologramLi
     }
 
     @Override
-    public Hologram getParent() {
+    public APIHologram getParent() {
         return parent;
     }
 

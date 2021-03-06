@@ -11,8 +11,11 @@ import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 public interface APIHologramLine extends HologramLine, StandardHologramLine {
 
     @Override
+    APIHologram getParent();
+    
+    @Override
     default void removeLine() {
-        getHologram().removeLine(this);
+        getParent().removeLine(this);
     }
 
 }

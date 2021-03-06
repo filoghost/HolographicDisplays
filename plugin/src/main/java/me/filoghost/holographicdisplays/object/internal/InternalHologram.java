@@ -13,22 +13,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class InternalHologram extends BaseHologram {
+public class InternalHologram extends BaseHologram<InternalHologramLine> {
 
     private final String name;
-    private final List<InternalHologramLine> lines;
 
     protected InternalHologram(Location source, String name, NMSManager nmsManager) {
         super(source, nmsManager);
         this.name = name;
-        this.lines = new ArrayList<>();
-    }
-
-    public String getName() {
-        return name;
     }
 
     public InternalTextLine createTextLine(String text, String serializedConfigValue) {
@@ -39,16 +30,15 @@ public class InternalHologram extends BaseHologram {
         return new InternalItemLine(this, getNMSManager(), icon, serializedConfigValue);
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public Plugin getOwnerPlugin() {
         return HolographicDisplays.getInstance();
     }
-
-    @Override
-    public List<InternalHologramLine> getLinesUnsafe() {
-        return lines;
-    }
-
+    
     @Override
     public boolean isVisibleTo(Player player) {
         return true;

@@ -41,9 +41,8 @@ public class AddlineCommand extends LineEditingCommand implements QuickEditComma
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
         String serializedLine = Utils.join(args, " ", 1, args.length);
         
-        InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine, true);
-        hologram.getLinesUnsafe().add(line);
-        hologram.refresh();
+        InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine);
+        hologram.addLine(line);
 
         configManager.saveHologramDatabase(internalHologramManager);
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));

@@ -41,13 +41,12 @@ public class RemovelineCommand extends LineEditingCommand implements QuickEditCo
         
         int lineNumber = CommandValidate.parseInteger(args[1]);
 
-        CommandValidate.check(lineNumber >= 1 && lineNumber <= hologram.size(), "The line number must be between 1 and " + hologram.size() + ".");
+        CommandValidate.check(lineNumber >= 1 && lineNumber <= hologram.getLinesAmount(), "The line number must be between 1 and " + hologram.getLinesAmount() + ".");
         int index = lineNumber - 1;
         
-        CommandValidate.check(hologram.size() > 1, "The hologram should have at least 1 line. If you want to delete it, use /" + context.getRootLabel() + " delete.");
+        CommandValidate.check(hologram.getLinesAmount() > 1, "The hologram should have at least 1 line. If you want to delete it, use /" + context.getRootLabel() + " delete.");
 
         hologram.removeLine(index);
-        hologram.refresh();
         
         configManager.saveHologramDatabase(internalHologramManager);
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));

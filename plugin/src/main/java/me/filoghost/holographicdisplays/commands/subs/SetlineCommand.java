@@ -43,14 +43,12 @@ public class SetlineCommand extends LineEditingCommand implements QuickEditComma
         String serializedLine = Utils.join(args, " ", 2, args.length);
         
         int lineNumber = CommandValidate.parseInteger(args[1]);
-        CommandValidate.check(lineNumber >= 1 && lineNumber <= hologram.size(), "The line number must be between 1 and " + hologram.size() + ".");
+        CommandValidate.check(lineNumber >= 1 && lineNumber <= hologram.getLinesAmount(), "The line number must be between 1 and " + hologram.getLinesAmount() + ".");
         int index = lineNumber - 1;
         
-        InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine, true);
+        InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine);
 
-        InternalHologramLine prevLine = hologram.getLinesUnsafe().set(index, line);
-        prevLine.despawn();
-        hologram.refresh();
+        hologram.setLine(index, line);
 
         configManager.saveHologramDatabase(internalHologramManager);
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));

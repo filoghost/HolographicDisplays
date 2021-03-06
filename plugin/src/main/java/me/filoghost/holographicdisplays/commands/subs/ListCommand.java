@@ -58,7 +58,7 @@ public class ListCommand extends HologramSubCommand {
                         + " " + Colors.SECONDARY_SHADOW + "at x: " + (int) hologram.getX() 
                         + ", y: " + (int) hologram.getY() 
                         + ", z: " + (int) hologram.getZ() 
-                        + " (lines: " + hologram.size() + ", world: \"" + hologram.getWorld().getName() + "\")");
+                        + " (lines: " + hologram.getLinesAmount() + ", world: \"" + hologram.getWorld().getName() + "\")");
             }
         }
         
