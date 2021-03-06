@@ -26,7 +26,7 @@ import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
-public class WrapperPlayServerSpawnEntity extends AbstractPacket implements EntityRelatedPacketWrapper {
+public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     public static final PacketType TYPE = PacketType.Play.Server.SPAWN_ENTITY;
         
     private static PacketConstructor entityConstructor;
@@ -109,7 +109,6 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket implements Enti
      * Retrieve entity ID of the Object.
      * @return The current EID
     */
-    @Override
     public int getEntityID() {
         return handle.getIntegers().read(0);
     }

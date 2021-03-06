@@ -26,7 +26,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
-public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket implements EntityRelatedPacketWrapper {
+public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
     public static final PacketType TYPE = PacketType.Play.Server.SPAWN_ENTITY_LIVING;
     
     private static PacketConstructor entityConstructor;
@@ -55,7 +55,6 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket implement
      * Retrieve entity ID.
      * @return The current EID
     */
-    @Override
     public int getEntityID() {
         return handle.getIntegers().read(0);
     }

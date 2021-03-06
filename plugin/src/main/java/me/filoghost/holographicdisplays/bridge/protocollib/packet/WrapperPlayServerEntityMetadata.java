@@ -26,7 +26,7 @@ import org.bukkit.entity.Entity;
 
 import java.util.List;
 
-public class WrapperPlayServerEntityMetadata extends AbstractPacket implements EntityRelatedPacketWrapper {
+public class WrapperPlayServerEntityMetadata extends AbstractPacket {
     public static final PacketType TYPE = PacketType.Play.Server.ENTITY_METADATA;
     
     public WrapperPlayServerEntityMetadata() {
@@ -42,7 +42,6 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket implements E
      * Retrieve unique entity ID to update.
      * @return The current Entity ID
     */
-    @Override
     public int getEntityID() {
         return handle.getIntegers().read(0);
     }
