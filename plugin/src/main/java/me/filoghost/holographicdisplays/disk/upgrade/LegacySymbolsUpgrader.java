@@ -9,6 +9,8 @@ import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.config.Config;
 import me.filoghost.fcommons.config.ConfigErrors;
 import me.filoghost.fcommons.config.ConfigLoader;
+import me.filoghost.fcommons.config.ConfigPath;
+import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.exception.ConfigLoadException;
 import me.filoghost.fcommons.config.exception.ConfigSaveException;
 import me.filoghost.fcommons.logging.Log;
@@ -36,6 +38,8 @@ public class LegacySymbolsUpgrader {
         }
 
         Config newConfig = new Config();
+        ConfigSection placeholdersSection = newConfig.getOrCreateSection("placeholders");
+        
         List<String> lines;
         try {
             lines = Files.readAllLines(oldFile);
@@ -59,7 +63,7 @@ public class LegacySymbolsUpgrader {
             String placeholder = unquote(parts[0]);
             String replacement = StringEscapeUtils.unescapeJava(unquote(parts[1]));
 
-            newConfig.setString("placeholders." + placeholder, replacement);
+            placeholdersSection.setString(ConfigPath.literal(placeholder), replacement);
         }
 
         try {

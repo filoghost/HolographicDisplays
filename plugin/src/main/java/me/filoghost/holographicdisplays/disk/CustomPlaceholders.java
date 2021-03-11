@@ -6,12 +6,15 @@
 package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.Colors;
+import me.filoghost.fcommons.config.ConfigPath;
 import me.filoghost.fcommons.config.ConfigSection;
+import me.filoghost.fcommons.config.ConfigType;
 import me.filoghost.fcommons.config.FileConfig;
 import me.filoghost.fcommons.logging.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class CustomPlaceholders {
 
@@ -25,11 +28,9 @@ public class CustomPlaceholders {
             return;
         }
 
-        for (String placeholder : placeholdersSection.getKeys()) {
-            String replacement = Colors.addColors(placeholdersSection.getString(placeholder));
-            if (replacement == null) {
-                return;
-            }
+        for (Entry<ConfigPath, String> entry : placeholdersSection.toMap(ConfigType.STRING).entrySet()) {
+            String placeholder = entry.getKey().asRawKey();
+            String replacement = Colors.addColors(entry.getValue());
 
             if (placeholder.length() == 0) {
                 Log.warning("Error in \"" + config.getSourceFile() + "\": placeholder cannot be empty (skipped).");
