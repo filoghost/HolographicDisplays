@@ -6,7 +6,9 @@
 package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.config.Config;
+import me.filoghost.fcommons.config.ConfigPath;
 import me.filoghost.fcommons.config.ConfigSection;
+import me.filoghost.fcommons.config.ConfigType;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.commands.Messages;
 import me.filoghost.holographicdisplays.core.Utils;
@@ -16,6 +18,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class HologramDatabase {
 
@@ -24,11 +27,9 @@ public class HologramDatabase {
     public void loadFromConfig(Config config) {
         hologramConfigs = new ArrayList<>();
 
-        for (String hologramName : config.getKeys()) {
-            ConfigSection hologramSection = config.getConfigSection(hologramName);
-            if (hologramSection == null) {
-                continue;
-            }
+        for (Entry<ConfigPath, ConfigSection> entry : config.toMap(ConfigType.SECTION).entrySet()) {
+            String hologramName = entry.getKey().asRawKey();
+            ConfigSection hologramSection = entry.getValue();
 
             HologramConfig hologramConfig = new HologramConfig(hologramName, hologramSection);
             hologramConfigs.add(hologramConfig);

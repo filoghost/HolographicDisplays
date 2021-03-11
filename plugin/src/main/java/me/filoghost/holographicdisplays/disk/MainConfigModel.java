@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.config.Config;
-import me.filoghost.fcommons.config.mapped.ConfigPath;
+import me.filoghost.fcommons.config.mapped.Path;
 import me.filoghost.fcommons.config.mapped.MappedConfig;
 
 import java.util.Arrays;
@@ -14,58 +14,58 @@ import java.util.List;
 
 public class MainConfigModel implements MappedConfig {
     
-    @ConfigPath("space-between-lines")
+    @Path("space-between-lines")
     double spaceBetweenLines = 0.02;
     
-    @ConfigPath("quick-edit-commands")
+    @Path("quick-edit-commands")
     boolean quickEditCommands = true;
     
-    @ConfigPath("images.symbol")
+    @Path("images.symbol")
     String imageSymbol = "[x]";
     
-    @ConfigPath("images.transparency.space")
+    @Path("images.transparency.space")
     String transparencySymbol = " [|] ";
     
-    @ConfigPath("images.transparency.color")
+    @Path("images.transparency.color")
     String transparencyColor = "&7";
 
-    @ConfigPath("bungee.refresh-seconds")
+    @Path("bungee.refresh-seconds")
     int bungeeRefreshSeconds = 3;
 
-    @ConfigPath("bungee.use-RedisBungee")
+    @Path("bungee.use-RedisBungee")
     boolean useRedisBungee = false;
 
-    @ConfigPath("bungee.pinger.enable")
+    @Path("bungee.pinger.enable")
     boolean pingerEnable = false;
 
-    @ConfigPath("bungee.pinger.timeout")
+    @Path("bungee.pinger.timeout")
     int pingerTimeout = 500;
 
-    @ConfigPath("bungee.pinger.offline-motd")
+    @Path("bungee.pinger.offline-motd")
     String pingerOfflineMotd = "&cOffline, couldn't get the MOTD";
 
-    @ConfigPath("bungee.pinger.status.online")
+    @Path("bungee.pinger.status.online")
     String pingerStatusOnline = "&aOnline";
 
-    @ConfigPath("bungee.pinger.status.offline")
+    @Path("bungee.pinger.status.offline")
     String pingerStatusOffline = "&cOffline";
 
-    @ConfigPath("bungee.pinger.motd-remove-leading-trailing-spaces")
+    @Path("bungee.pinger.motd-remove-leading-trailing-spaces")
     boolean pingerTrimMotd = true;
 
-    @ConfigPath("bungee.pinger.servers")
+    @Path("bungee.pinger.servers")
     List<String> pingerServers = Arrays.asList("hub: 127.0.0.1:25565", "games: 127.0.0.1:25566");
 
-    @ConfigPath("time.format")
+    @Path("time.format")
     String timeFormat = "H:mm";
 
-    @ConfigPath("time.zone")
+    @Path("time.zone")
     String timeZone = "GMT+1";
     
-    @ConfigPath("update-notification")
+    @Path("update-notification")
     boolean updateNotification = true;
 
-    @ConfigPath("debug")
+    @Path("debug")
     boolean debug = false;
     
     @Override
