@@ -18,20 +18,21 @@ import java.util.regex.Pattern;
  */
 public enum NMSVersion {
     
-    v1_8_R2(me.filoghost.holographicdisplays.nms.v1_8_R2.VersionNMSManager::new),
-    v1_8_R3(me.filoghost.holographicdisplays.nms.v1_8_R3.VersionNMSManager::new),
-    v1_9_R1(me.filoghost.holographicdisplays.nms.v1_9_R1.VersionNMSManager::new),
-    v1_9_R2(me.filoghost.holographicdisplays.nms.v1_9_R2.VersionNMSManager::new),
-    v1_10_R1(me.filoghost.holographicdisplays.nms.v1_10_R1.VersionNMSManager::new),
-    v1_11_R1(me.filoghost.holographicdisplays.nms.v1_11_R1.VersionNMSManager::new),
-    v1_12_R1(me.filoghost.holographicdisplays.nms.v1_12_R1.VersionNMSManager::new),
-    v1_13_R1(me.filoghost.holographicdisplays.nms.v1_13_R1.VersionNMSManager::new),
-    v1_13_R2(me.filoghost.holographicdisplays.nms.v1_13_R2.VersionNMSManager::new),
-    v1_14_R1(me.filoghost.holographicdisplays.nms.v1_14_R1.VersionNMSManager::new),
-    v1_15_R1(me.filoghost.holographicdisplays.nms.v1_15_R1.VersionNMSManager::new),
-    v1_16_R1(me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager::new),
-    v1_16_R2(me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager::new),
-    v1_16_R3(me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager::new);
+    // Not using shorter method reference syntax here because it initializes the class, causing a ClassNotFoundException
+    v1_8_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_8_R2.VersionNMSManager(packetSettings)),
+    v1_8_R3(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_8_R3.VersionNMSManager(packetSettings)),
+    v1_9_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_9_R1.VersionNMSManager(packetSettings)),
+    v1_9_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_9_R2.VersionNMSManager(packetSettings)),
+    v1_10_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_10_R1.VersionNMSManager(packetSettings)),
+    v1_11_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_11_R1.VersionNMSManager(packetSettings)),
+    v1_12_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_12_R1.VersionNMSManager(packetSettings)),
+    v1_13_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_13_R1.VersionNMSManager(packetSettings)),
+    v1_13_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_13_R2.VersionNMSManager(packetSettings)),
+    v1_14_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_14_R1.VersionNMSManager(packetSettings)),
+    v1_15_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_15_R1.VersionNMSManager(packetSettings)),
+    v1_16_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager(packetSettings)),
+    v1_16_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager(packetSettings)),
+    v1_16_R3(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager(packetSettings));
     
     private static final NMSVersion CURRENT_VERSION = extractCurrentVersion();
     
