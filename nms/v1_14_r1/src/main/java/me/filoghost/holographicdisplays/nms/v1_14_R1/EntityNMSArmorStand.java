@@ -234,7 +234,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 
         try {
             VEHICLE_FIELD.set(passenger, this);
-            this.passengers.add(this);
+            this.passengers.add(passengerEntity);
         } catch (ReflectiveOperationException e) {
             DebugLogger.cannotSetPassenger(e);
         }
