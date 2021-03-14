@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.placeholder;
 
 import me.filoghost.fcommons.config.exception.ConfigSaveException;
-import me.filoghost.fcommons.logging.Log;
+import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
@@ -26,7 +26,7 @@ public class AnimationsRegistry {
     
     private static final Map<String, Placeholder> animationsByFilename = new HashMap<>();
 
-    public static void loadAnimations(ConfigManager configManager) throws IOException, ConfigSaveException {
+    public static void loadAnimations(ConfigManager configManager, ErrorCollector errorCollector) throws IOException, ConfigSaveException {
         animationsByFilename.clear();
         Path animationFolder = configManager.getAnimationsFolder();
 
@@ -37,11 +37,11 @@ public class AnimationsRegistry {
         }
         
         try (Stream<Path> animationFiles = Files.list(animationFolder)) {
-            animationFiles.forEach(AnimationsRegistry::readAnimationFile);
+            animationFiles.forEach(file -> readAnimationFile(file, errorCollector));
         }
     }
 
-    private static void readAnimationFile(Path file) {
+    private static void readAnimationFile(Path file, ErrorCollector errorCollector) {
         String fileName = file.getFileName().toString();
         
         try {
@@ -67,12 +67,12 @@ public class AnimationsRegistry {
             }
 
             if (!validSpeedFound) {
-                Log.warning("Could not find a valid '" + SPEED_PREFIX + " <number>' in the first line of the file '" + fileName + "'. Default speed of 0.5 seconds will be used.");
+                errorCollector.add("could not find a valid \"" + SPEED_PREFIX + " <number>\" in the first line of the file \"" + fileName + "\", default speed of 0.5 seconds will be used");
             }
 
             if (lines.isEmpty()) {
                 lines.add("[No lines: " + fileName + "]");
-                Log.warning("Could not find any line in '" + fileName + "' (excluding the speed). You should add at least one more line.");
+                errorCollector.add("could not find any line in \"" + fileName + "\" (excluding the speed), you should add at least one more line");
             }
 
             // Replace placeholders.
@@ -81,10 +81,10 @@ public class AnimationsRegistry {
             }
 
             animationsByFilename.put(fileName, new Placeholder(HolographicDisplays.getInstance(), fileName, speed, new CyclicPlaceholderReplacer(lines)));
-            DebugLogger.info("Successfully loaded animation '" + fileName + "', speed = " + speed + ".");
+            DebugLogger.info("Successfully loaded animation \"" + fileName + "\", speed = " + speed + ".");
 
         } catch (Exception e) {
-            Log.severe("Couldn't load the file '" + fileName + "'!", e);
+            errorCollector.add(e, "couldn't load the animation file \"" + fileName + "\"");
         }
     }
 

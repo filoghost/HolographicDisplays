@@ -9,12 +9,9 @@ import me.filoghost.fcommons.config.Config;
 import me.filoghost.fcommons.config.ConfigPath;
 import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.ConfigType;
-import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.core.Utils;
+import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
-import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,18 +33,14 @@ public class HologramDatabase {
         }
     }
 
-    public void createHolograms(CommandSender sender, InternalHologramManager internalHologramManager) {
+    public void createHolograms(InternalHologramManager internalHologramManager, ErrorCollector errorCollector) {
         for (HologramConfig hologramConfig : hologramConfigs) {
             try {
                 hologramConfig.createHologram(internalHologramManager);
             } catch (HologramLoadException e) {
-                if (sender != null) {
-                    Messages.sendWarning(sender, Utils.formatExceptionMessage(e));
-                } else {
-                    Log.warning(Utils.formatExceptionMessage(e));
-                }
+                errorCollector.add(e, "error while loading hologram \"" + hologramConfig.getName() + "\"");
             } catch (Exception e) {
-                Log.warning("Unexpected exception while loading the hologram \"" + hologramConfig.getName() + "\".", e);
+                errorCollector.add(e, "unexpected exception while loading hologram \"" + hologramConfig.getName() + "\"");
             }
         }
     }

@@ -12,6 +12,7 @@ import me.filoghost.fcommons.config.ConfigLoader;
 import me.filoghost.fcommons.config.FileConfig;
 import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.config.mapped.MappedConfigLoader;
+import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 
@@ -30,26 +31,26 @@ public class ConfigManager extends BaseConfigManager {
         this.placeholdersConfigLoader = getConfigLoader("custom-placeholders.yml");
     }
 
-    public void reloadMainConfig() {
+    public void reloadMainConfig(ErrorCollector errorCollector) {
         MainConfigModel mainConfig;
 
         try {
             mainConfig = mainConfigLoader.init();
         } catch (ConfigException e) {
-            logConfigInitException(mainConfigLoader.getFile(), e);
+            logConfigInitException(errorCollector, mainConfigLoader.getFile(), e);
             mainConfig = new MainConfigModel(); // Fallback: use default values
         }
         
-        Configuration.load(mainConfig);
+        Configuration.load(mainConfig, errorCollector);
     }
 
-    public HologramDatabase loadHologramDatabase() {
+    public HologramDatabase loadHologramDatabase(ErrorCollector errorCollector) {
         Config databaseConfig;
 
         try {
             databaseConfig = databaseConfigLoader.init();
         } catch (ConfigException e) {
-            logConfigInitException(databaseConfigLoader.getFile(), e);
+            logConfigInitException(errorCollector, databaseConfigLoader.getFile(), e);
             databaseConfig = new Config(); // Fallback: empty config
         }
 
@@ -62,21 +63,21 @@ public class ConfigManager extends BaseConfigManager {
         try {
             databaseConfigLoader.save(HologramDatabase.exportToConfig(hologramManager));
         } catch (ConfigException e) {
-            logConfigSaveException(databaseConfigLoader.getFile(), e);
+            Log.severe("Error while saving holograms database file \"" + formatPath(databaseConfigLoader.getFile()) + "\"", e);
         }
     }
 
-    public void reloadCustomPlaceholders() {
+    public void reloadCustomPlaceholders(ErrorCollector errorCollector) {
         FileConfig placeholdersConfig;
         
         try {
             placeholdersConfig = placeholdersConfigLoader.init();
         } catch (ConfigException e) {
-            logConfigInitException(placeholdersConfigLoader.getFile(), e);
+            logConfigInitException(errorCollector, placeholdersConfigLoader.getFile(), e);
             placeholdersConfig = new FileConfig(placeholdersConfigLoader.getFile()); // Fallback: empty config
         }
         
-        CustomPlaceholders.load(placeholdersConfig);
+        CustomPlaceholders.load(placeholdersConfig, errorCollector);
     }
 
     public Path getAnimationsFolder() {
@@ -87,12 +88,8 @@ public class ConfigManager extends BaseConfigManager {
         return getConfigLoader(getAnimationsFolder().resolve("example.txt"));
     }
 
-    private void logConfigInitException(Path file, ConfigException e) {
-        Log.severe("error while initializing config file \"" + formatPath(file) + "\"", e);
-    }
-
-    private void logConfigSaveException(Path file, ConfigException e) {
-        Log.severe("error while saving config file \"" + formatPath(file) + "\"", e);
+    private void logConfigInitException(ErrorCollector errorCollector, Path file, ConfigException e) {
+        errorCollector.add(e, "error while initializing config file \"" + formatPath(file) + "\"");
     }
 
     private String formatPath(Path path) {

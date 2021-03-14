@@ -13,6 +13,7 @@ import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.ServerAddress;
 import org.bukkit.Bukkit;
 
+import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Map;
@@ -172,8 +173,8 @@ public class BungeeServerTracker {
                 } catch (UnknownHostException e) {
                     Log.warning("Couldn't fetch data from " + serverAddress + ": unknown host address.");
                     displayOffline = true;
-                } catch (Throwable t) {
-                    Log.warning("Couldn't fetch data from " + serverAddress + ".", t);
+                } catch (IOException e) {
+                    Log.warning("Couldn't fetch data from " + serverAddress + ".", e);
                     displayOffline = true;
                 }
                 

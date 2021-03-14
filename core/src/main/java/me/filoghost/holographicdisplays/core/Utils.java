@@ -91,6 +91,10 @@ public class Utils {
     }
     
     public static String formatExceptionMessage(String message) {
+        if (Strings.isEmpty(message)) {
+            return message;
+        }
+        
         message = Strings.capitalizeFirst(message);
         char lastChar = message.charAt(message.length() - 1);
         if (Character.isLetterOrDigit(lastChar)) {

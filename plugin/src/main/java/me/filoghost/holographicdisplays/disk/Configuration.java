@@ -12,7 +12,7 @@
 package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.Strings;
-import me.filoghost.fcommons.logging.Log;
+import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.core.DebugLogger;
 import org.bukkit.ChatColor;
 
@@ -43,20 +43,20 @@ public class Configuration {
     public static boolean pingerTrimMotd;
     public static List<ServerAddress> pingerServers;
     
-    public static void load(MainConfigModel config) {
+    public static void load(MainConfigModel config, ErrorCollector errorCollector) {
         spaceBetweenLines = config.spaceBetweenLines;
         quickEditCommands = config.quickEditCommands;
-        timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone);        
+        timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone, errorCollector);        
         updateNotification = config.updateNotification;
         
         imageSymbol = StringConverter.toReadableFormat(config.imageSymbol);
         transparencySymbol = StringConverter.toReadableFormat(config.transparencySymbol);
-        transparencyColor = parseTransparencyColor(config.transparencyColor);
+        transparencyColor = parseTransparencyColor(config.transparencyColor, errorCollector);
         
-        bungeeRefreshSeconds = parseBungeeRefreshInterval(config.bungeeRefreshSeconds);
+        bungeeRefreshSeconds = parseBungeeRefreshInterval(config.bungeeRefreshSeconds, errorCollector);
         useRedisBungee = config.useRedisBungee;
         pingerEnabled = config.pingerEnable;
-        pingerTimeout = parsePingerTimeout(config.pingerTimeout);
+        pingerTimeout = parsePingerTimeout(config.pingerTimeout, errorCollector);
         pingerOfflineMotd = StringConverter.toReadableFormat(config.pingerOfflineMotd);
         pingerStatusOnline = StringConverter.toReadableFormat(config.pingerStatusOnline);
         pingerStatusOffline = StringConverter.toReadableFormat(config.pingerStatusOffline);
@@ -65,7 +65,7 @@ public class Configuration {
         pingerServers = new ArrayList<>();
         if (pingerEnabled) {
             for (String singleServer : config.pingerServers) {
-                ServerAddress serverAddress = parseServerAddress(singleServer);
+                ServerAddress serverAddress = parseServerAddress(singleServer, errorCollector);
                 if (serverAddress != null) {
                     pingerServers.add(serverAddress);
                 }
@@ -75,26 +75,26 @@ public class Configuration {
         DebugLogger.setDebugEnabled(config.debug);
     }
 
-    private static DateTimeFormatter parseTimeFormatter(String pattern, String timeZone) {
+    private static DateTimeFormatter parseTimeFormatter(String pattern, String timeZone, ErrorCollector errorCollector) {
         DateTimeFormatter timeFormat;
 
         try {
             timeFormat = DateTimeFormatter.ofPattern(pattern);
         } catch (IllegalArgumentException ex) {
             timeFormat = DateTimeFormatter.ofPattern("H:mm");
-            Log.warning("Time format not valid in the configuration, using the default.");
+            errorCollector.add("time format not valid in the configuration, using the default");
         }
 
         try {
             timeFormat = timeFormat.withZone(ZoneId.of(timeZone));
         } catch (DateTimeException e) {
-            Log.warning("Time zone not valid in the configuration, using the default.");
+            errorCollector.add("time zone not valid in the configuration, using the default");
         }
 
         return timeFormat;
     }
 
-    private static ChatColor parseTransparencyColor(String transparencyColor) {
+    private static ChatColor parseTransparencyColor(String transparencyColor, ErrorCollector errorCollector) {
         transparencyColor = transparencyColor.replace('&', ChatColor.COLOR_CHAR);
 
         for (ChatColor chatColor : ChatColor.values()) {
@@ -103,38 +103,38 @@ public class Configuration {
             }
         }
 
-        Log.warning("You didn't set a valid chat color for transparency in the configuration, light gray (&7) will be used.");
+        errorCollector.add("chat color for transparency in the configuration is not valid, light gray (&7) will be used");
         return ChatColor.GRAY;
     }
 
-    private static int parseBungeeRefreshInterval(int interval) {
+    private static int parseBungeeRefreshInterval(int interval, ErrorCollector errorCollector) {
         if (interval < 1) {
-            Log.warning("The minimum interval for pinging BungeeCord's servers is 1 second. It has been automatically set.");
+            errorCollector.add("the minimum interval for pinging BungeeCord's servers is 1 second. It has been automatically set");
             return 1;
         } else if (interval > 60) {
-            Log.warning("The maximum interval for pinging BungeeCord's servers is 60 seconds. It has been automatically set.");
+            errorCollector.add("the maximum interval for pinging BungeeCord's servers is 60 seconds. It has been automatically set");
             return 60;
         } else {
             return interval;
         }
     }
 
-    private static int parsePingerTimeout(int timeout) {
+    private static int parsePingerTimeout(int timeout, ErrorCollector errorCollector) {
         if (timeout < 100) {
-            Log.warning("The minimum timeout for pinging BungeeCord's servers is 100 milliseconds. It has been automatically set.");
+            errorCollector.add("the minimum timeout for pinging BungeeCord's servers is 100 milliseconds. It has been automatically set");
             return 100;
         } else if (timeout > 10000) {
-            Log.warning("The maximum timeout for pinging BungeeCord's servers is 10000 milliseconds. It has been automatically set.");
+            errorCollector.add("the maximum timeout for pinging BungeeCord's servers is 10000 milliseconds. It has been automatically set");
             return 10000;
         } else {
             return timeout;
         }
     }
 
-    private static ServerAddress parseServerAddress(String singleServer) {
+    private static ServerAddress parseServerAddress(String singleServer, ErrorCollector errorCollector) {
         String[] nameAndAddress = Strings.splitAndTrim(singleServer, ":", 2);
         if (nameAndAddress.length < 2) {
-            Log.warning("The server info \"" + singleServer + "\" is not valid. There should be a name and an address, separated by a colon.");
+            errorCollector.add("the server info \"" + singleServer + "\" is not valid. There should be a name and an address, separated by a colon");
             return null;
         }
 
@@ -150,7 +150,7 @@ public class Configuration {
             try {
                 port = Integer.parseInt(ipAndPort[1]);
             } catch (NumberFormatException e) {
-                Log.warning("Invalid port number in the server info \"" + singleServer + "\".");
+                errorCollector.add("invalid port number in the server info \"" + singleServer + "\"");
                 return null;
             }
         } else {

@@ -6,13 +6,13 @@
 package me.filoghost.holographicdisplays.bridge.protocollib;
 
 import com.google.common.base.Preconditions;
+import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.util.VersionUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -24,7 +24,7 @@ public class ProtocolLibHook {
     private static boolean enabled;
     private static PacketSender packetSender;
 
-    public static void setup(Plugin plugin, NMSManager nmsManager, ProtocolPacketSettings packetSettings) {
+    public static void setup(Plugin plugin, NMSManager nmsManager, ProtocolPacketSettings packetSettings, ErrorCollector errorCollector) {
         if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             return;
         }
@@ -40,12 +40,12 @@ public class ProtocolLibHook {
             String versionNumbers = versionNumbersMatcher.group();
 
             if (!VersionUtils.isVersionGreaterEqual(versionNumbers, "4.1")) {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Holographic Displays] Detected old version of ProtocolLib, support disabled. You must use ProtocolLib 4.1 or higher.");
+                errorCollector.add("detected old version of ProtocolLib, support disabled. You must use ProtocolLib 4.1 or higher");
                 return;
             }
 
         } catch (Exception e) {
-            Log.warning("Could not detect ProtocolLib version (" + e.getMessage() + "), enabling support anyway and hoping for the best.", e);
+            errorCollector.add(e, "could not detect ProtocolLib version (" + e.getMessage() + "), enabling support anyway and hoping for the best");
         }
 
         try {
@@ -54,7 +54,7 @@ public class ProtocolLibHook {
             packetSender = new PacketSender(metadataHelper);
             Log.info("Enabled player relative placeholders with ProtocolLib.");
         } catch (Exception e) {
-            Log.warning("Failed to load ProtocolLib support. Is it updated?", e);
+            errorCollector.add(e, "failed to load ProtocolLib support, is it updated?");
             return;
         }
         

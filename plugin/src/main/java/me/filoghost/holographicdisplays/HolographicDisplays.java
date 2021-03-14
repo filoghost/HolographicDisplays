@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays;
 import me.filoghost.fcommons.FCommonsPlugin;
 import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.config.exception.ConfigException;
-import me.filoghost.fcommons.logging.Log;
+import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.api.internal.BackendAPI;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
@@ -23,6 +23,7 @@ import me.filoghost.holographicdisplays.listener.ChunkListener;
 import me.filoghost.holographicdisplays.listener.InteractListener;
 import me.filoghost.holographicdisplays.listener.SpawnListener;
 import me.filoghost.holographicdisplays.listener.UpdateNotificationListener;
+import me.filoghost.holographicdisplays.log.PrintableErrorCollector;
 import me.filoghost.holographicdisplays.object.api.APIHologram;
 import me.filoghost.holographicdisplays.object.api.APIHologramManager;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
@@ -35,7 +36,8 @@ import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
+
+import java.io.IOException;
 
 public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacketSettings {
     
@@ -89,16 +91,18 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         internalHologramManager = new InternalHologramManager(nmsManager);
         apiHologramManager = new APIHologramManager(nmsManager);
 
+        PrintableErrorCollector errorCollector = new PrintableErrorCollector();
+
         // Run only once at startup, before anything else.
         try {
-            LegacySymbolsUpgrader.run(configManager);
+            LegacySymbolsUpgrader.run(configManager, errorCollector);
         } catch (ConfigException e) {
-            Log.warning("Couldn't convert symbols file", e);
+            errorCollector.add(e, "couldn't convert symbols file");
         }
         
-        load(null, true);
+        load(true, errorCollector);
         
-        ProtocolLibHook.setup(this, nmsManager, this);
+        ProtocolLibHook.setup(this, nmsManager, this, errorCollector);
         
         // Start repeating tasks.
         PlaceholdersManager.startRefreshTask(this);
@@ -122,29 +126,34 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         new MetricsLite(this, pluginID);
         
         updateNotificationListener.runAsyncUpdateCheck();
+
+        if (errorCollector.hasErrors()) {
+            errorCollector.logToConsole();
+            Bukkit.getScheduler().runTaskLater(this, errorCollector::logErrorCount, 10L);
+        }
     }
     
-    public void load(CommandSender sender, boolean deferHologramsCreation) {
+    public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
         PlaceholdersManager.untrackAll();
         internalHologramManager.clearAll();
         BungeeServerTracker.resetTrackedServers();
         
-        configManager.reloadCustomPlaceholders();
-        configManager.reloadMainConfig();
-        HologramDatabase hologramDatabase = configManager.loadHologramDatabase();
+        configManager.reloadCustomPlaceholders(errorCollector);
+        configManager.reloadMainConfig(errorCollector);
+        HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
         try {
-            AnimationsRegistry.loadAnimations(configManager);
-        } catch (Exception e) {
-            Log.warning("Failed to load animation files!", e);
+            AnimationsRegistry.loadAnimations(configManager, errorCollector);
+        } catch (IOException | ConfigException e) {
+            errorCollector.add(e, "failed to load animation files");
         }
         
         BungeeServerTracker.restartTask(Configuration.bungeeRefreshSeconds);
         
         if (deferHologramsCreation) {
             // For the initial load: holograms are loaded later, when the worlds are ready
-            Bukkit.getScheduler().runTask(this, () -> hologramDatabase.createHolograms(sender, internalHologramManager));
+            Bukkit.getScheduler().runTask(this, () -> hologramDatabase.createHolograms(internalHologramManager, errorCollector));
         } else {
-            hologramDatabase.createHolograms(sender, internalHologramManager);
+            hologramDatabase.createHolograms(internalHologramManager, errorCollector);
         }
     }
 

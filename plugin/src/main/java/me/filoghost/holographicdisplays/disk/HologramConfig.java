@@ -54,10 +54,10 @@ public class HologramConfig {
 
     public InternalHologram createHologram(InternalHologramManager internalHologramManager) throws HologramLoadException {
         if (serializedLines == null || serializedLines.size() == 0) {
-            throw new HologramLoadException("hologram \"" + name + "\" was found, but it contained no lines");
+            throw new HologramLoadException("at least one line is required");
         }
         if (serializedLocation == null) {
-            throw new HologramLoadException("hologram \"" + name + "\" doesn't have a location set");
+            throw new HologramLoadException("no location set");
         }
 
         Location location = deserializeLocation(serializedLocation);
@@ -69,7 +69,7 @@ public class HologramConfig {
                 lines.add(HologramLineParser.parseLine(hologram, serializedLine));
             } catch (HologramLoadException e) {
                 // Rethrow with more details
-                throw new HologramLoadException("hologram \"" + hologram.getName() + "\" has an invalid line: " + e.getMessage(), e);
+                throw new HologramLoadException("invalid line: " + e.getMessage(), e);
             }
         }
         

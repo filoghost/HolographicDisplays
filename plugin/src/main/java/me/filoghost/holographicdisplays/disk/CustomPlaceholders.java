@@ -10,7 +10,7 @@ import me.filoghost.fcommons.config.ConfigPath;
 import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.ConfigType;
 import me.filoghost.fcommons.config.FileConfig;
-import me.filoghost.fcommons.logging.Log;
+import me.filoghost.fcommons.logging.ErrorCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class CustomPlaceholders {
 
     private static final List<StaticPlaceholder> placeholders = new ArrayList<>();
 
-    public static void load(FileConfig config) {
+    public static void load(FileConfig config, ErrorCollector errorCollector) {
         placeholders.clear();
 
         ConfigSection placeholdersSection = config.getConfigSection("placeholders");
@@ -33,12 +33,12 @@ public class CustomPlaceholders {
             String replacement = Colors.addColors(entry.getValue());
 
             if (placeholder.length() == 0) {
-                Log.warning("Error in \"" + config.getSourceFile() + "\": placeholder cannot be empty (skipped).");
+                errorCollector.add("error in \"" + config.getSourceFile() + "\": placeholder cannot be empty (skipped)");
                 continue;
             }
 
             if (placeholder.length() > 100) {
-                Log.warning("Error in \"" + config.getSourceFile() + "\": placeholder cannot be longer than 100 character (" + placeholder + ").");
+                errorCollector.add("error in \"" + config.getSourceFile() + "\": placeholder cannot be longer than 100 character (" + placeholder + ")");
                 continue;
             }
 

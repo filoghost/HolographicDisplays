@@ -10,8 +10,10 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.event.HolographicDisplaysReloadEvent;
+import me.filoghost.holographicdisplays.log.PrintableErrorCollector;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 
 public class ReloadCommand extends HologramSubCommand {
 
@@ -22,9 +24,19 @@ public class ReloadCommand extends HologramSubCommand {
     
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) {
-        HolographicDisplays.getInstance().load(sender, false);
+        PrintableErrorCollector errorCollector = new PrintableErrorCollector();
+        HolographicDisplays.getInstance().load(false, errorCollector);
+
+        if (!errorCollector.hasErrors()) {
+            sender.sendMessage(Colors.PRIMARY + "Configuration reloaded successfully.");
+        } else {
+            errorCollector.logToConsole();
+            sender.sendMessage(Colors.ERROR + "Plugin reloaded with " + errorCollector.getErrorsCount() + " error(s).");
+            if (!(sender instanceof ConsoleCommandSender)) {
+                sender.sendMessage(Colors.ERROR + "Check the console for the details.");
+            }
+        }
         
-        sender.sendMessage(Colors.PRIMARY + "Configuration reloaded successfully.");
         Bukkit.getPluginManager().callEvent(new HolographicDisplaysReloadEvent());
     }
 

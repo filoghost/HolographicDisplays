@@ -13,7 +13,7 @@ import me.filoghost.fcommons.config.ConfigPath;
 import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.exception.ConfigLoadException;
 import me.filoghost.fcommons.config.exception.ConfigSaveException;
-import me.filoghost.fcommons.logging.Log;
+import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import org.apache.commons.lang.StringEscapeUtils;
 
@@ -24,7 +24,7 @@ import java.util.List;
 
 public class LegacySymbolsUpgrader {
     
-    public static void run(ConfigManager configManager) throws ConfigLoadException, ConfigSaveException {
+    public static void run(ConfigManager configManager, ErrorCollector errorCollector) throws ConfigLoadException, ConfigSaveException {
         Path oldFile = configManager.getRootDataFolder().resolve("symbols.yml");
         ConfigLoader newConfigLoader = configManager.getConfigLoader("custom-placeholders.yml");
         Path newFile = newConfigLoader.getFile();
@@ -55,7 +55,7 @@ public class LegacySymbolsUpgrader {
 
             // Ignore bad line
             if (!line.contains(":")) {
-                Log.warning("Couldn't convert invalid line in " + oldFile.getFileName() + ": " + line);
+                errorCollector.add("couldn't convert invalid line in " + oldFile.getFileName() + ": " + line);
                 continue;
             }
 
@@ -69,7 +69,7 @@ public class LegacySymbolsUpgrader {
         try {
             Files.move(oldFile, oldFile.resolveSibling("symbols.yml.backup"));
         } catch (IOException e) {
-            Log.warning("Couldn't rename " + oldFile.getFileName(), e);
+            errorCollector.add(e, "couldn't rename " + oldFile.getFileName());
         }
         newConfigLoader.save(newConfig);
     }

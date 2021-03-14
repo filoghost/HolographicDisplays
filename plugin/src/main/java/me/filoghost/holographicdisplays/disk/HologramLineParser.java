@@ -92,8 +92,8 @@ public class HologramLineParser {
                 Bukkit.getUnsafe().modifyItemStack(itemStack, nbtString);
             } catch (MojangsonParseException e) {
                 throw new HologramLoadException("invalid NBT data, " + e.getMessage());
-            } catch (Throwable t) {
-                throw new HologramLoadException("unexpected exception while parsing NBT data", t);
+            } catch (Exception e) {
+                throw new HologramLoadException("unexpected exception while parsing NBT data", e);
             }
         }
         
