@@ -18,11 +18,11 @@ public interface NMSManager {
     // A method to register all the custom entities of the plugin, it may fail.
     void setup() throws Exception;
     
-    NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, StandardHologramLine parentPiece) throws SpawnFailedException;
+    NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, StandardHologramLine parentHologramLine) throws SpawnFailedException;
     
-    NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, StandardItemLine parentPiece, ItemStack stack) throws SpawnFailedException;
+    NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, StandardItemLine parentHologramLine, ItemStack stack) throws SpawnFailedException;
     
-    NMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, StandardHologramLine parentPiece) throws SpawnFailedException;
+    NMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, StandardHologramLine parentHologramLine) throws SpawnFailedException;
     
     boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity);
 

@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * Useful class that implements TouchablePiece. The downside is that subclasses must extend this, and cannot extend other classes.
+ * Useful class that implements StandardTouchableLine. The downside is that subclasses must extend this, and cannot extend other classes.
  * But all the current items are touchable.
  */
 public abstract class BaseTouchableLine extends BaseHologramLine implements StandardTouchableLine {

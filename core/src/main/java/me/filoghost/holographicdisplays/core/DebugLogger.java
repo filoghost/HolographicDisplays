@@ -48,8 +48,8 @@ public class DebugLogger {
         }
     }
     
-    public static void handleSpawnFail(SpawnFailedException exception, StandardHologramLine parentPiece) {
-        severe("Couldn't spawn entity for this hologram: " + parentPiece.getHologram(), exception);
+    public static void handleSpawnFail(SpawnFailedException exception, StandardHologramLine parentHologramLine) {
+        severe("Couldn't spawn entity for this hologram: " + parentHologramLine.getHologram(), exception);
     }
 
     public static void cannotSetPassenger(Throwable t) {

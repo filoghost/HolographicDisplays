@@ -12,7 +12,7 @@ import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
  */
 public interface NMSEntity {
     
-    // Returns the linked line, all the entities are part of a piece. Should never be null.
+    // Returns the linked line, all the entities are part of a line. Should never be null.
     StandardHologramLine getHologramLine();
 
     // Sets the location through NMS.

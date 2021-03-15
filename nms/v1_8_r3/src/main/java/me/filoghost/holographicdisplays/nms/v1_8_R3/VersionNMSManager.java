@@ -58,9 +58,9 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, StandardItemLine parentPiece, ItemStack stack) throws SpawnFailedException {
+    public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, StandardItemLine parentHologramLine, ItemStack stack) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-        EntityNMSItem item = new EntityNMSItem(nmsWorld, parentPiece);
+        EntityNMSItem item = new EntityNMSItem(nmsWorld, parentHologramLine);
         item.setLocationNMS(x, y, z);
         item.setItemStackNMS(stack);
         addEntityToWorld(nmsWorld, item);
@@ -68,18 +68,18 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public EntityNMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, StandardHologramLine parentPiece) throws SpawnFailedException {
+    public EntityNMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, StandardHologramLine parentHologramLine) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-        EntityNMSSlime slime = new EntityNMSSlime(nmsWorld, parentPiece);
+        EntityNMSSlime slime = new EntityNMSSlime(nmsWorld, parentHologramLine);
         slime.setLocationNMS(x, y, z);
         addEntityToWorld(nmsWorld, slime);
         return slime;
     }
     
     @Override
-    public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, StandardHologramLine parentPiece) throws SpawnFailedException {
+    public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, StandardHologramLine parentHologramLine) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) world).getHandle();
-        EntityNMSArmorStand armorStand = new EntityNMSArmorStand(nmsWorld, parentPiece, protocolPacketSettings);
+        EntityNMSArmorStand armorStand = new EntityNMSArmorStand(nmsWorld, parentHologramLine, protocolPacketSettings);
         armorStand.setLocationNMS(x, y, z);
         addEntityToWorld(nmsWorld, armorStand);
         return armorStand;
