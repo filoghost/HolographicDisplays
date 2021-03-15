@@ -24,10 +24,12 @@ public class DefaultBackendAPI extends BackendAPI {
 
     private final APIHologramManager apiHologramManager;
     private final NMSManager nmsManager;
+    private final PlaceholdersRegistry placeholderRegistry;
 
-    public DefaultBackendAPI(APIHologramManager apiHologramManager, NMSManager nmsManager) {
+    public DefaultBackendAPI(APIHologramManager apiHologramManager, NMSManager nmsManager, PlaceholdersRegistry placeholderRegistry) {
         this.apiHologramManager = apiHologramManager;
         this.nmsManager = nmsManager;
+        this.placeholderRegistry = placeholderRegistry;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class DefaultBackendAPI extends BackendAPI {
         Preconditions.checkArgument(refreshRate >= 0, "refreshRate should be positive");
         Preconditions.notNull(replacer, "replacer");
         
-        return PlaceholdersRegistry.register(new Placeholder(plugin, textPlaceholder, refreshRate, replacer));
+        return placeholderRegistry.register(new Placeholder(plugin, textPlaceholder, refreshRate, replacer));
     }
 
     @Override
@@ -64,14 +66,14 @@ public class DefaultBackendAPI extends BackendAPI {
     @Override
     public Collection<String> getRegisteredPlaceholders(Plugin plugin) {
         Preconditions.notNull(plugin, "plugin");
-        return PlaceholdersRegistry.getTextPlaceholdersByPlugin(plugin);
+        return placeholderRegistry.getTextPlaceholdersByPlugin(plugin);
     }
 
     @Override
     public boolean unregisterPlaceholder(Plugin plugin, String textPlaceholder) {
         Preconditions.notNull(plugin, "plugin");
         Preconditions.notNull(textPlaceholder, "textPlaceholder");
-        return PlaceholdersRegistry.unregister(plugin, textPlaceholder);
+        return placeholderRegistry.unregister(plugin, textPlaceholder);
     }
 
     @Override

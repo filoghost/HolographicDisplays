@@ -18,40 +18,17 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class PlaceholdersRegistry {
+
+    private final PlaceholdersManager placeholderManager;
+    private final Set<Placeholder> placeholders;
     
-    private static final Set<Placeholder> placeholders = new HashSet<>();
-    
-    // Register the default placeholders statically.
-    static {
-        
-        register(new Placeholder(HolographicDisplays.getInstance(), "{online}", 1.0, () -> {
-            return String.valueOf(Bukkit.getOnlinePlayers().size());
-        }));
-        
-        register(new Placeholder(HolographicDisplays.getInstance(), "{max_players}", 10.0, () -> {
-            return String.valueOf(Bukkit.getMaxPlayers());
-        }));
-        
-        register(new Placeholder(HolographicDisplays.getInstance(), "{motd}", 60.0, () -> {
-            return Bukkit.getMotd();
-        }));
-        
-        register(new Placeholder(HolographicDisplays.getInstance(), "{time}", 0.9, () -> {
-            return Configuration.timeFormat.format(Instant.now());
-        }));
-        
-        register(new Placeholder(HolographicDisplays.getInstance(), "&u", 0.2, new CyclicPlaceholderReplacer(Utils.toStringList(
-                ChatColor.RED,
-                ChatColor.GOLD,
-                ChatColor.YELLOW,
-                ChatColor.GREEN,
-                ChatColor.AQUA,
-                ChatColor.LIGHT_PURPLE
-        ))));
+    public PlaceholdersRegistry(PlaceholdersManager placeholderManager) {
+        this.placeholderManager = placeholderManager;
+        this.placeholders = new HashSet<>();
     }
-    
-    
-    public static boolean register(Placeholder placeholder) {
+
+
+    public boolean register(Placeholder placeholder) {
         if (placeholders.contains(placeholder)) {
             return false;
         }
@@ -60,7 +37,7 @@ public class PlaceholdersRegistry {
         return true;
     }
     
-    public static Set<String> getTextPlaceholdersByPlugin(Plugin plugin) {
+    public Set<String> getTextPlaceholdersByPlugin(Plugin plugin) {
         Set<String> found = new HashSet<>();
         
         for (Placeholder placeholder : placeholders) {
@@ -72,7 +49,7 @@ public class PlaceholdersRegistry {
         return found;
     }
     
-    public static boolean unregister(Plugin plugin, String textPlaceholder) {
+    public boolean unregister(Plugin plugin, String textPlaceholder) {
         Iterator<Placeholder> iter = placeholders.iterator();
         
         while (iter.hasNext()) {
@@ -81,7 +58,7 @@ public class PlaceholdersRegistry {
             if (placeholder.getOwner().equals(plugin) && placeholder.getTextPlaceholder().equals(textPlaceholder)) {
                 iter.remove();
             
-                for (DynamicLineData data : PlaceholdersManager.linesToUpdate) {
+                for (DynamicLineData data : placeholderManager.linesToUpdate) {
                     data.getPlaceholders().remove(placeholder);
                 }
                 
@@ -92,8 +69,35 @@ public class PlaceholdersRegistry {
         return false;
     }
     
-    protected static Set<Placeholder> getPlaceholders() {
+    protected Set<Placeholder> getPlaceholders() {
         return placeholders;
+    }
+
+    public void addDefaultPlaceholders() {
+        register(new Placeholder(HolographicDisplays.getInstance(), "{online}", 1.0, () -> {
+            return String.valueOf(Bukkit.getOnlinePlayers().size());
+        }));
+
+        register(new Placeholder(HolographicDisplays.getInstance(), "{max_players}", 10.0, () -> {
+            return String.valueOf(Bukkit.getMaxPlayers());
+        }));
+
+        register(new Placeholder(HolographicDisplays.getInstance(), "{motd}", 60.0, () -> {
+            return Bukkit.getMotd();
+        }));
+
+        register(new Placeholder(HolographicDisplays.getInstance(), "{time}", 0.9, () -> {
+            return Configuration.timeFormat.format(Instant.now());
+        }));
+
+        register(new Placeholder(HolographicDisplays.getInstance(), "&u", 0.2, new CyclicPlaceholderReplacer(Utils.toStringList(
+                ChatColor.RED,
+                ChatColor.GOLD,
+                ChatColor.YELLOW,
+                ChatColor.GREEN,
+                ChatColor.AQUA,
+                ChatColor.LIGHT_PURPLE
+        ))));
     }
 
 }

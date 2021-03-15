@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.object.internal;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseHologram;
+import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +18,8 @@ public class InternalHologram extends BaseHologram<InternalHologramLine> {
 
     private final String name;
 
-    protected InternalHologram(Location source, String name, NMSManager nmsManager) {
-        super(source, nmsManager);
+    protected InternalHologram(Location source, String name, NMSManager nmsManager, PlaceholdersManager placeholderManager) {
+        super(source, nmsManager, placeholderManager);
         this.name = name;
     }
 

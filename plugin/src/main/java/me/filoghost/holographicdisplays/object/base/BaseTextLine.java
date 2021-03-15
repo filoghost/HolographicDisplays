@@ -9,7 +9,6 @@ import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
-import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import org.bukkit.World;
 
 import java.util.ArrayList;
@@ -41,12 +40,12 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
             if (text != null && !text.isEmpty()) {
                 textEntity.setCustomNameNMS(text);
                 if (isAllowPlaceholders()) {
-                    PlaceholdersManager.trackIfNecessary(this);
+                    getPlaceholderManager().trackIfNecessary(this);
                 }
             } else {
                 textEntity.setCustomNameNMS(""); // It will not appear
                 if (isAllowPlaceholders()) {
-                    PlaceholdersManager.untrack(this);
+                    getPlaceholderManager().untrack(this);
                 }
             }
         }
@@ -72,7 +71,7 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
         }
 
         if (isAllowPlaceholders()) {
-            PlaceholdersManager.trackIfNecessary(this);
+            getPlaceholderManager().trackIfNecessary(this);
         }
     }
     

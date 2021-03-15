@@ -26,9 +26,6 @@ import java.util.regex.Pattern;
 
 public class PlaceholdersManager {
     
-    private static long elapsedTenthsOfSecond;
-    protected static final Set<DynamicLineData> linesToUpdate = new HashSet<>();
-    
     private static final Pattern BUNGEE_ONLINE_PATTERN = makePlaceholderWithArgsPattern("online");
     private static final Pattern BUNGEE_MAX_PATTERN = makePlaceholderWithArgsPattern("max_players");
     private static final Pattern BUNGEE_MOTD_PATTERN = makePlaceholderWithArgsPattern("motd");
@@ -36,24 +33,26 @@ public class PlaceholdersManager {
     private static final Pattern BUNGEE_STATUS_PATTERN = makePlaceholderWithArgsPattern("status");
     private static final Pattern ANIMATION_PATTERN = makePlaceholderWithArgsPattern("animation");
     private static final Pattern WORLD_PATTERN = makePlaceholderWithArgsPattern("world");
-    
-    private static BungeeServerTracker bungeeServerTracker;
 
-    private static Pattern makePlaceholderWithArgsPattern(String prefix) {
-        return Pattern.compile("(\\{" + Pattern.quote(prefix) + ":)(.+?)(\\})");
-    }
-    
-    private static String extractArgumentFromPlaceholder(Matcher matcher) {
-        return matcher.group(2).trim();
-    }
-    
-    
-    public static void startRefreshTask(Plugin plugin, BungeeServerTracker bungeeServerTracker) {
-        PlaceholdersManager.bungeeServerTracker = bungeeServerTracker;
+    private final PlaceholdersRegistry placeholderRegistry;
+    private final AnimationsRegistry animationRegistry;
+    private final BungeeServerTracker bungeeServerTracker;
+    protected final Set<DynamicLineData> linesToUpdate;
+    private long elapsedTenthsOfSecond;
 
+    public PlaceholdersManager(BungeeServerTracker bungeeServerTracker, AnimationsRegistry animationRegistry) {
+        this.placeholderRegistry = new PlaceholdersRegistry(this);
+        this.animationRegistry = animationRegistry;
+        this.bungeeServerTracker = bungeeServerTracker;
+        this.linesToUpdate = new HashSet<>();
+        
+        placeholderRegistry.addDefaultPlaceholders();
+    }
+
+    public void startRefreshTask(Plugin plugin) {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             
-            for (Placeholder placeholder : PlaceholdersRegistry.getPlaceholders()) {
+            for (Placeholder placeholder : placeholderRegistry.getPlaceholders()) {
                 if (elapsedTenthsOfSecond % placeholder.getTenthsToRefresh() == 0) {
                     try {
                         placeholder.update();
@@ -63,7 +62,7 @@ public class PlaceholdersManager {
                 }
             }
             
-            for (Placeholder placeholder : AnimationsRegistry.getAnimationsByFilename().values()) {
+            for (Placeholder placeholder : animationRegistry.getAnimationsByFilename().values()) {
                 if (elapsedTenthsOfSecond % placeholder.getTenthsToRefresh() == 0) {
                     placeholder.update();
                 }
@@ -88,11 +87,11 @@ public class PlaceholdersManager {
     }
     
     
-    public static void untrackAll() {
+    public void untrackAll() {
         linesToUpdate.clear();
     }
     
-    public static void untrack(StandardTextLine line) {
+    public void untrack(StandardTextLine line) {
         Iterator<DynamicLineData> iter = linesToUpdate.iterator();
         while (iter.hasNext()) {
             DynamicLineData data = iter.next();
@@ -103,7 +102,7 @@ public class PlaceholdersManager {
         }
     }
     
-    public static void trackIfNecessary(StandardTextLine line) {        
+    public void trackIfNecessary(StandardTextLine line) {        
         String text = line.getText();
         if (text == null || text.isEmpty()) {
             return;
@@ -124,7 +123,7 @@ public class PlaceholdersManager {
         
         Matcher matcher;
         
-        for (Placeholder placeholder : PlaceholdersRegistry.getPlaceholders()) {
+        for (Placeholder placeholder : placeholderRegistry.getPlaceholders()) {
             if (text.contains(placeholder.getTextPlaceholder())) {
                 if (normalPlaceholders == null) {
                     normalPlaceholders = new HashSet<>();
@@ -266,7 +265,7 @@ public class PlaceholdersManager {
         matcher = ANIMATION_PATTERN.matcher(text);
         while (matcher.find()) {
             String fileName = extractArgumentFromPlaceholder(matcher);
-            Placeholder animation = AnimationsRegistry.getAnimation(fileName);
+            Placeholder animation = animationRegistry.getAnimation(fileName);
             
             // If exists...
             if (animation != null) {
@@ -319,7 +318,7 @@ public class PlaceholdersManager {
     }
     
     
-    private static void updatePlaceholders(DynamicLineData lineData) {
+    private void updatePlaceholders(DynamicLineData lineData) {
         String oldCustomName = lineData.getEntity().getCustomNameStringNMS();
         String newCustomName = lineData.getOriginalName();
         
@@ -345,6 +344,18 @@ public class PlaceholdersManager {
         if (!oldCustomName.equals(newCustomName)) {
             lineData.getEntity().setCustomNameNMS(newCustomName);
         }
+    }
+
+    public PlaceholdersRegistry getRegistry() {
+        return placeholderRegistry;
+    }
+
+    private static Pattern makePlaceholderWithArgsPattern(String prefix) {
+        return Pattern.compile("(\\{" + Pattern.quote(prefix) + ":)(.+?)(\\})");
+    }
+
+    private static String extractArgumentFromPlaceholder(Matcher matcher) {
+        return matcher.group(2).trim();
     }
 
 }

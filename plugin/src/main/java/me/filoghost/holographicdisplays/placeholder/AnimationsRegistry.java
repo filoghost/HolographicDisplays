@@ -24,9 +24,9 @@ public class AnimationsRegistry {
 
     private static final String SPEED_PREFIX = "speed:";
     
-    private static final Map<String, Placeholder> animationsByFilename = new HashMap<>();
+    private final Map<String, Placeholder> animationsByFilename = new HashMap<>();
 
-    public static void loadAnimations(ConfigManager configManager, ErrorCollector errorCollector) throws IOException, ConfigSaveException {
+    public void loadAnimations(ConfigManager configManager, ErrorCollector errorCollector) throws IOException, ConfigSaveException {
         animationsByFilename.clear();
         Path animationFolder = configManager.getAnimationsFolder();
 
@@ -41,7 +41,7 @@ public class AnimationsRegistry {
         }
     }
 
-    private static void readAnimationFile(Path file, ErrorCollector errorCollector) {
+    private void readAnimationFile(Path file, ErrorCollector errorCollector) {
         String fileName = file.getFileName().toString();
         
         try {
@@ -89,11 +89,11 @@ public class AnimationsRegistry {
     }
 
 
-    public static Map<String, Placeholder> getAnimationsByFilename() {
+    public Map<String, Placeholder> getAnimationsByFilename() {
         return animationsByFilename;
     }
 
-    public static Placeholder getAnimation(String name) {
+    public Placeholder getAnimation(String name) {
         return animationsByFilename.get(name);
     }
     

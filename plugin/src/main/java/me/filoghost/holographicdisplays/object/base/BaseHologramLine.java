@@ -11,6 +11,7 @@ import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
+import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import org.bukkit.World;
 
 public abstract class BaseHologramLine extends BaseHologramComponent implements StandardHologramLine {
@@ -31,6 +32,10 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
 
     protected final NMSManager getNMSManager() {
         return hologram.getNMSManager();
+    }
+
+    protected final PlaceholdersManager getPlaceholderManager() {
+        return hologram.getPlaceholderManager();
     }
 
     @Override

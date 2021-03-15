@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.object.api;
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseHologramManager;
+import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -19,13 +20,15 @@ import java.util.List;
 public class APIHologramManager extends BaseHologramManager<APIHologram> {
 
     private final NMSManager nmsManager;
+    private final PlaceholdersManager placeholderManager;
 
-    public APIHologramManager(NMSManager nmsManager) {
+    public APIHologramManager(NMSManager nmsManager, PlaceholdersManager placeholderManager) {
         this.nmsManager = nmsManager;
+        this.placeholderManager = placeholderManager;
     }
 
     public Hologram createHologram(Location source, Plugin plugin) {
-        APIHologram hologram = new APIHologram(source, plugin, nmsManager, this);
+        APIHologram hologram = new APIHologram(source, plugin, nmsManager, this, placeholderManager);
         super.addHologram(hologram);
         return hologram;
     }

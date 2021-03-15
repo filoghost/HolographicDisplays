@@ -47,6 +47,8 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
     private InternalHologramManager internalHologramManager;
     private APIHologramManager apiHologramManager;
     private BungeeServerTracker bungeeServerTracker;
+    private AnimationsRegistry animationRegistry;
+    private PlaceholdersManager placeholderManager;
 
     @Override
     public void onCheckedEnable() throws PluginEnableException {
@@ -87,11 +89,13 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         } catch (Exception e) {
             throw new PluginEnableException(e, "Couldn't initialize the NMS manager.");
         }
-
+        
         bungeeServerTracker = new BungeeServerTracker(this);
+        animationRegistry = new AnimationsRegistry();
+        placeholderManager = new PlaceholdersManager(bungeeServerTracker, animationRegistry);
         configManager = new ConfigManager(getDataFolder().toPath());
-        internalHologramManager = new InternalHologramManager(nmsManager);
-        apiHologramManager = new APIHologramManager(nmsManager);
+        internalHologramManager = new InternalHologramManager(nmsManager, placeholderManager);
+        apiHologramManager = new APIHologramManager(nmsManager, placeholderManager);
 
         PrintableErrorCollector errorCollector = new PrintableErrorCollector();
 
@@ -107,7 +111,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         ProtocolLibHook.setup(this, nmsManager, this, errorCollector);
         
         // Start repeating tasks.
-        PlaceholdersManager.startRefreshTask(this, bungeeServerTracker);
+        placeholderManager.startRefreshTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new BungeeCleanupTask(bungeeServerTracker), 5 * 60 * 20, 5 * 60 * 20);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorldPlayerCounterTask(), 0L, 3 * 20);
 
@@ -121,7 +125,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         registerListener(updateNotificationListener);
         
         // Enable the API.
-        BackendAPI.setImplementation(new DefaultBackendAPI(apiHologramManager, nmsManager));
+        BackendAPI.setImplementation(new DefaultBackendAPI(apiHologramManager, nmsManager, placeholderManager.getRegistry()));
 
         // Register bStats metrics
         int pluginID = 3123;
@@ -136,7 +140,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
     }
     
     public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
-        PlaceholdersManager.untrackAll();
+        placeholderManager.untrackAll();
         internalHologramManager.clearAll();
         bungeeServerTracker.resetTrackedServers();
         
@@ -144,7 +148,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         configManager.reloadMainConfig(errorCollector);
         HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
         try {
-            AnimationsRegistry.loadAnimations(configManager, errorCollector);
+            animationRegistry.loadAnimations(configManager, errorCollector);
         } catch (IOException | ConfigException e) {
             errorCollector.add(e, "failed to load animation files");
         }
