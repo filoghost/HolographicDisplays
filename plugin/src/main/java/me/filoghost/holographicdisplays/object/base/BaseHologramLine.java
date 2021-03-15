@@ -15,15 +15,13 @@ import org.bukkit.World;
 
 public abstract class BaseHologramLine extends BaseHologramComponent implements StandardHologramLine {
     
-    private final StandardHologram hologram;
-    private final NMSManager nmsManager;
+    private final BaseHologram<?> hologram;
 
     private boolean isSpawned;
 
-    protected BaseHologramLine(StandardHologram hologram, NMSManager nmsManager) {
+    protected BaseHologramLine(BaseHologram<?> hologram) {
         Preconditions.notNull(hologram, "parent hologram");
         this.hologram = hologram;
-        this.nmsManager = nmsManager;
     }
     
     @Override
@@ -32,7 +30,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     }
 
     protected final NMSManager getNMSManager() {
-        return nmsManager;
+        return hologram.getNMSManager();
     }
 
     @Override

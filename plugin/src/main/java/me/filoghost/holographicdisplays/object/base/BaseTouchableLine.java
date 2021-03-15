@@ -8,9 +8,7 @@ package me.filoghost.holographicdisplays.object.base;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import me.filoghost.holographicdisplays.core.DebugLogger;
-import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardTouchableLine;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
@@ -37,8 +35,8 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
     private NMSArmorStand slimeVehicleEntity;
     
 
-    protected BaseTouchableLine(StandardHologram hologram, NMSManager nmsManager) {
-        super(hologram, nmsManager);
+    protected BaseTouchableLine(BaseHologram<?> hologram) {
+        super(hologram);
     }
 
     @Override

@@ -5,8 +5,6 @@
  */
 package me.filoghost.holographicdisplays.object.internal;
 
-import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,8 +12,8 @@ public class InternalItemLine extends BaseItemLine implements InternalHologramLi
 
     private final String serializedConfigValue;
 
-    protected InternalItemLine(StandardHologram hologram, NMSManager nmsManager, ItemStack itemStack, String serializedConfigValue) {
-        super(hologram, nmsManager, itemStack);
+    protected InternalItemLine(InternalHologram hologram, ItemStack itemStack, String serializedConfigValue) {
+        super(hologram, itemStack);
         this.serializedConfigValue = serializedConfigValue;
     }
 

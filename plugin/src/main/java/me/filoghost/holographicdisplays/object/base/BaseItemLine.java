@@ -8,9 +8,7 @@ package me.filoghost.holographicdisplays.object.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
-import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
@@ -28,8 +26,8 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
     private NMSArmorStand itemVehicleEntity;
     private PickupHandler pickupHandler;
 
-    public BaseItemLine(StandardHologram hologram, NMSManager nmsManager, ItemStack itemStack) {
-        super(hologram, nmsManager);
+    public BaseItemLine(BaseHologram<?> hologram, ItemStack itemStack) {
+        super(hologram);
         setItemStack(itemStack);
     }
     

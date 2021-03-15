@@ -77,11 +77,11 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
 
     private APITextLine createTextLine(String text) {
-        return new APITextLine(this, getNMSManager(), text);
+        return new APITextLine(this, text);
     }
 
     private APIItemLine createItemLine(ItemStack itemStack) {
-        return new APIItemLine(this, getNMSManager(), itemStack);
+        return new APIItemLine(this, itemStack);
     }
 
     @Override

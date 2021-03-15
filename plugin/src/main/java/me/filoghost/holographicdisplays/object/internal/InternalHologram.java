@@ -23,11 +23,11 @@ public class InternalHologram extends BaseHologram<InternalHologramLine> {
     }
 
     public InternalTextLine createTextLine(String text, String serializedConfigValue) {
-        return new InternalTextLine(this, getNMSManager(), text, serializedConfigValue);
+        return new InternalTextLine(this, text, serializedConfigValue);
     }
 
     public InternalItemLine createItemLine(ItemStack icon, String serializedConfigValue) {
-        return new InternalItemLine(this, getNMSManager(), icon, serializedConfigValue);
+        return new InternalItemLine(this, icon, serializedConfigValue);
     }
 
     public String getName() {

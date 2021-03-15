@@ -5,16 +5,14 @@
  */
 package me.filoghost.holographicdisplays.object.internal;
 
-import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseTextLine;
 
 public class InternalTextLine extends BaseTextLine implements InternalHologramLine {
 
     private final String serializedConfigValue;
 
-    protected InternalTextLine(StandardHologram hologram, NMSManager nmsManager, String text, String serializedConfigValue) {
-        super(hologram, nmsManager, text);
+    protected InternalTextLine(InternalHologram hologram, String text, String serializedConfigValue) {
+        super(hologram, text);
         this.serializedConfigValue = serializedConfigValue;
     }
 

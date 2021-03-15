@@ -5,9 +5,7 @@
  */
 package me.filoghost.holographicdisplays.object.base;
 
-import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
@@ -23,8 +21,8 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     private String text;
     private NMSArmorStand textEntity;
     
-    public BaseTextLine(StandardHologram hologram, NMSManager nmsManager, String text) {
-        super(hologram, nmsManager);
+    public BaseTextLine(BaseHologram<?> hologram, String text) {
+        super(hologram);
         this.relativePlaceholders = new ArrayList<>();
         setText(text);
     }
