@@ -12,6 +12,7 @@ import me.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerPin
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.ServerAddress;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -22,27 +23,35 @@ import java.util.concurrent.ConcurrentHashMap;
 public class BungeeServerTracker {
 
     private static final String PINGER_NOT_ENABLED_ERROR = "[Please enable pinger]";
+
+    private final BungeeChannel bungeeChannel;
+    private final Map<String, BungeeServerInfo> trackedServers;
     
-    private static final Map<String, BungeeServerInfo> trackedServers = new ConcurrentHashMap<>();
-    private static int taskID = -1;
-    
-    public static void resetTrackedServers() {
+    private int taskID = -1;
+
+    public BungeeServerTracker(Plugin plugin) {
+        bungeeChannel = new BungeeChannel(this);
+        bungeeChannel.register(plugin);
+        trackedServers = new ConcurrentHashMap<>();
+    }
+
+    public void resetTrackedServers() {
         trackedServers.clear();
     }
     
-    public static void track(String server) {
+    public void track(String server) {
         if (!trackedServers.containsKey(server)) {
             BungeeServerInfo info = new BungeeServerInfo();
             info.setMotd(Configuration.pingerOfflineMotd);
             trackedServers.put(server, info);
             
             if (!Configuration.pingerEnabled) {
-                BungeeChannel.getInstance().askPlayerCount(server);
+                bungeeChannel.askPlayerCount(server);
             }
         }
     }
     
-    protected static BungeeServerInfo getOrCreateServerInfo(String server) {
+    protected BungeeServerInfo getOrCreateServerInfo(String server) {
         BungeeServerInfo info = trackedServers.get(server);
         if (info == null) {
             info = new BungeeServerInfo();
@@ -53,7 +62,7 @@ public class BungeeServerTracker {
         return info;
     }
 
-    public static int getPlayersOnline(String server) {
+    public int getPlayersOnline(String server) {
         BungeeServerInfo info = trackedServers.get(server);
         if (info != null) {
             info.updateLastRequest();
@@ -65,7 +74,7 @@ public class BungeeServerTracker {
         }
     }
     
-    public static String getMaxPlayers(String server) {
+    public String getMaxPlayers(String server) {
         if (!Configuration.pingerEnabled) {
             return PINGER_NOT_ENABLED_ERROR;
         }
@@ -81,7 +90,7 @@ public class BungeeServerTracker {
         }
     }
     
-    public static String getMotd1(String server) {
+    public String getMotd1(String server) {
         if (!Configuration.pingerEnabled) {
             return PINGER_NOT_ENABLED_ERROR;
         }
@@ -97,7 +106,7 @@ public class BungeeServerTracker {
         }
     }
     
-    public static String getMotd2(String server) {
+    public String getMotd2(String server) {
         if (!Configuration.pingerEnabled) {
             return PINGER_NOT_ENABLED_ERROR;
         }
@@ -113,7 +122,7 @@ public class BungeeServerTracker {
         }
     }
     
-    public static String getOnlineStatus(String server) {
+    public String getOnlineStatus(String server) {
         if (!Configuration.pingerEnabled) {
             return PINGER_NOT_ENABLED_ERROR;
         }
@@ -129,11 +138,11 @@ public class BungeeServerTracker {
         }
     }
 
-    public static Map<String, BungeeServerInfo> getTrackedServers() {
+    public Map<String, BungeeServerInfo> getTrackedServers() {
         return trackedServers;
     }
     
-    public static void restartTask(int refreshSeconds) {
+    public void restartTask(int refreshSeconds) {
         if (taskID != -1) {
             Bukkit.getScheduler().cancelTask(taskID);
         }
@@ -143,14 +152,14 @@ public class BungeeServerTracker {
                 runAsyncPinger();
             } else {
                 for (String server : trackedServers.keySet()) {
-                    BungeeChannel.getInstance().askPlayerCount(server);
+                    bungeeChannel.askPlayerCount(server);
                 }
             }
 
         }, 1, refreshSeconds * 20L);
     }
 
-    private static void runAsyncPinger() {
+    private void runAsyncPinger() {
         Bukkit.getScheduler().runTaskAsynchronously(HolographicDisplays.getInstance(), () -> {
             for (ServerAddress serverAddress : Configuration.pingerServers) {
                 BungeeServerInfo serverInfo = getOrCreateServerInfo(serverAddress.getName());

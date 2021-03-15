@@ -25,17 +25,14 @@ public class BungeeChannel implements PluginMessageListener {
     
     private static final String BUNGEECORD_CHANNEL = "BungeeCord";
     private static final String REDISBUNGEE_CHANNEL = "legacy:redisbungee";
+    
+    private final BungeeServerTracker bungeeServerTracker;
 
-    private static BungeeChannel instance;
-
-    public static BungeeChannel getInstance() {
-        if (instance == null) {
-            instance = new BungeeChannel(HolographicDisplays.getInstance());
-        }
-        return instance;
+    public BungeeChannel(BungeeServerTracker bungeeServerTracker) {
+        this.bungeeServerTracker = bungeeServerTracker;
     }
-
-    private BungeeChannel(Plugin plugin) {
+    
+    public void register(Plugin plugin) {
         Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, BUNGEECORD_CHANNEL);
         Bukkit.getMessenger().registerIncomingPluginChannel(plugin, BUNGEECORD_CHANNEL, this);
 
@@ -65,7 +62,7 @@ public class BungeeChannel implements PluginMessageListener {
                     if (in.available() > 0) {
                         int online = in.readInt();
 
-                        BungeeServerInfo serverInfo = BungeeServerTracker.getOrCreateServerInfo(server);
+                        BungeeServerInfo serverInfo = bungeeServerTracker.getOrCreateServerInfo(server);
                         serverInfo.setOnlinePlayers(online);
                     }
                 }

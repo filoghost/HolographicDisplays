@@ -37,6 +37,8 @@ public class PlaceholdersManager {
     private static final Pattern ANIMATION_PATTERN = makePlaceholderWithArgsPattern("animation");
     private static final Pattern WORLD_PATTERN = makePlaceholderWithArgsPattern("world");
     
+    private static BungeeServerTracker bungeeServerTracker;
+
     private static Pattern makePlaceholderWithArgsPattern(String prefix) {
         return Pattern.compile("(\\{" + Pattern.quote(prefix) + ":)(.+?)(\\})");
     }
@@ -46,7 +48,9 @@ public class PlaceholdersManager {
     }
     
     
-    public static void startRefreshTask(Plugin plugin) {
+    public static void startRefreshTask(Plugin plugin, BungeeServerTracker bungeeServerTracker) {
+        PlaceholdersManager.bungeeServerTracker = bungeeServerTracker;
+
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             
             for (Placeholder placeholder : PlaceholdersRegistry.getPlaceholders()) {
@@ -167,7 +171,7 @@ public class PlaceholdersManager {
             }
             
             final String serverName = extractArgumentFromPlaceholder(matcher);
-            BungeeServerTracker.track(serverName); // Track this server.
+            bungeeServerTracker.track(serverName); // Track this server.
             
             if (serverName.contains(",")) {
                 String[] split = serverName.split(",");
@@ -181,14 +185,14 @@ public class PlaceholdersManager {
                 bungeeReplacers.put(matcher.group(), () -> {
                     int count = 0;
                     for (String serverToTrack : serversToTrack) {
-                        count += BungeeServerTracker.getPlayersOnline(serverToTrack);
+                        count += bungeeServerTracker.getPlayersOnline(serverToTrack);
                     }
                     return String.valueOf(count);
                 });
             } else {
                 // Normal, single tracked server.
                 bungeeReplacers.put(matcher.group(), () -> {
-                    return String.valueOf(BungeeServerTracker.getPlayersOnline(serverName));
+                    return String.valueOf(bungeeServerTracker.getPlayersOnline(serverName));
                 });
             }
         }
@@ -201,11 +205,11 @@ public class PlaceholdersManager {
             }
             
             final String serverName = extractArgumentFromPlaceholder(matcher);
-            BungeeServerTracker.track(serverName); // Track this server.
+            bungeeServerTracker.track(serverName); // Track this server.
             
             // Add it to tracked servers.
             bungeeReplacers.put(matcher.group(), () -> {
-                return BungeeServerTracker.getMaxPlayers(serverName);
+                return bungeeServerTracker.getMaxPlayers(serverName);
             });
         }
         
@@ -217,11 +221,11 @@ public class PlaceholdersManager {
             }
             
             final String serverName = extractArgumentFromPlaceholder(matcher);
-            BungeeServerTracker.track(serverName); // Track this server.
+            bungeeServerTracker.track(serverName); // Track this server.
             
             // Add it to tracked servers.
             bungeeReplacers.put(matcher.group(), () -> {
-                return BungeeServerTracker.getMotd1(serverName);
+                return bungeeServerTracker.getMotd1(serverName);
             });
         }
         
@@ -233,11 +237,11 @@ public class PlaceholdersManager {
             }
             
             final String serverName = extractArgumentFromPlaceholder(matcher);
-            BungeeServerTracker.track(serverName); // Track this server.
+            bungeeServerTracker.track(serverName); // Track this server.
             
             // Add it to tracked servers.
             bungeeReplacers.put(matcher.group(), () -> {
-                return BungeeServerTracker.getMotd2(serverName);
+                return bungeeServerTracker.getMotd2(serverName);
             });
         }
         
@@ -249,11 +253,11 @@ public class PlaceholdersManager {
             }
             
             final String serverName = extractArgumentFromPlaceholder(matcher);
-            BungeeServerTracker.track(serverName); // Track this server.
+            bungeeServerTracker.track(serverName); // Track this server.
             
             // Add it to tracked servers.
             bungeeReplacers.put(matcher.group(), () -> {
-                return BungeeServerTracker.getOnlineStatus(serverName);
+                return bungeeServerTracker.getOnlineStatus(serverName);
             });
         }
         

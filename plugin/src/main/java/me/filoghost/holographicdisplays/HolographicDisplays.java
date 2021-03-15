@@ -46,6 +46,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
     private ConfigManager configManager;
     private InternalHologramManager internalHologramManager;
     private APIHologramManager apiHologramManager;
+    private BungeeServerTracker bungeeServerTracker;
 
     @Override
     public void onCheckedEnable() throws PluginEnableException {
@@ -87,6 +88,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
             throw new PluginEnableException(e, "Couldn't initialize the NMS manager.");
         }
 
+        bungeeServerTracker = new BungeeServerTracker(this);
         configManager = new ConfigManager(getDataFolder().toPath());
         internalHologramManager = new InternalHologramManager(nmsManager);
         apiHologramManager = new APIHologramManager(nmsManager);
@@ -105,8 +107,8 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         ProtocolLibHook.setup(this, nmsManager, this, errorCollector);
         
         // Start repeating tasks.
-        PlaceholdersManager.startRefreshTask(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new BungeeCleanupTask(), 5 * 60 * 20, 5 * 60 * 20);
+        PlaceholdersManager.startRefreshTask(this, bungeeServerTracker);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new BungeeCleanupTask(bungeeServerTracker), 5 * 60 * 20, 5 * 60 * 20);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorldPlayerCounterTask(), 0L, 3 * 20);
 
         HologramCommandManager commandManager = new HologramCommandManager(configManager, internalHologramManager, nmsManager);
@@ -136,7 +138,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
     public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
         PlaceholdersManager.untrackAll();
         internalHologramManager.clearAll();
-        BungeeServerTracker.resetTrackedServers();
+        bungeeServerTracker.resetTrackedServers();
         
         configManager.reloadCustomPlaceholders(errorCollector);
         configManager.reloadMainConfig(errorCollector);
@@ -147,7 +149,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
             errorCollector.add(e, "failed to load animation files");
         }
         
-        BungeeServerTracker.restartTask(Configuration.bungeeRefreshSeconds);
+        bungeeServerTracker.restartTask(Configuration.bungeeRefreshSeconds);
         
         if (deferHologramsCreation) {
             // For the initial load: holograms are loaded later, when the worlds are ready

@@ -19,11 +19,17 @@ import java.util.concurrent.TimeUnit;
 public class BungeeCleanupTask implements Runnable {
     
     private static final long MAX_INACTIVITY = TimeUnit.MINUTES.toMillis(10);
+    
+    private final BungeeServerTracker bungeeServerTracker;
+
+    public BungeeCleanupTask(BungeeServerTracker bungeeServerTracker) {
+        this.bungeeServerTracker = bungeeServerTracker;
+    }
 
     @Override
     public void run() {
         long now = System.currentTimeMillis();
-        Iterator<Entry<String, BungeeServerInfo>> iter = BungeeServerTracker.getTrackedServers().entrySet().iterator();
+        Iterator<Entry<String, BungeeServerInfo>> iter = bungeeServerTracker.getTrackedServers().entrySet().iterator();
         
         while (iter.hasNext()) {
             Entry<String, BungeeServerInfo> next = iter.next();
