@@ -5,12 +5,15 @@
  */
 package me.filoghost.holographicdisplays.placeholder;
 
+import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
+import me.filoghost.holographicdisplays.bridge.bungeecord.ServerInfo;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -25,6 +28,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PlaceholdersManager {
+
+    private static final String PINGER_NOT_ENABLED_ERROR = "[Please enable pinger]";
     
     private static final Pattern BUNGEE_ONLINE_PATTERN = makePlaceholderWithArgsPattern("online");
     private static final Pattern BUNGEE_MAX_PATTERN = makePlaceholderWithArgsPattern("max_players");
@@ -170,28 +175,22 @@ public class PlaceholdersManager {
             }
             
             final String serverName = extractArgumentFromPlaceholder(matcher);
-            bungeeServerTracker.track(serverName); // Track this server.
             
             if (serverName.contains(",")) {
-                String[] split = serverName.split(",");
-                for (int i = 0; i < split.length; i++) {
-                    split[i] = split[i].trim();
-                }
-                
-                final String[] serversToTrack = split;
+                String[] serversToTrack = Strings.splitAndTrim(serverName, ",");
             
                 // Add it to tracked servers.
                 bungeeReplacers.put(matcher.group(), () -> {
                     int count = 0;
                     for (String serverToTrack : serversToTrack) {
-                        count += bungeeServerTracker.getPlayersOnline(serverToTrack);
+                        count += bungeeServerTracker.getCurrentServerInfo(serverToTrack).getOnlinePlayers();
                     }
                     return String.valueOf(count);
                 });
             } else {
                 // Normal, single tracked server.
                 bungeeReplacers.put(matcher.group(), () -> {
-                    return String.valueOf(bungeeServerTracker.getPlayersOnline(serverName));
+                    return String.valueOf(bungeeServerTracker.getCurrentServerInfo(serverName).getOnlinePlayers());
                 });
             }
         }
@@ -204,11 +203,14 @@ public class PlaceholdersManager {
             }
             
             final String serverName = extractArgumentFromPlaceholder(matcher);
-            bungeeServerTracker.track(serverName); // Track this server.
             
             // Add it to tracked servers.
             bungeeReplacers.put(matcher.group(), () -> {
-                return bungeeServerTracker.getMaxPlayers(serverName);
+                if (!Configuration.pingerEnabled) {
+                    return PINGER_NOT_ENABLED_ERROR;
+                }
+
+                return String.valueOf(bungeeServerTracker.getCurrentServerInfo(serverName).getMaxPlayers());
             });
         }
         
@@ -220,11 +222,14 @@ public class PlaceholdersManager {
             }
             
             final String serverName = extractArgumentFromPlaceholder(matcher);
-            bungeeServerTracker.track(serverName); // Track this server.
             
             // Add it to tracked servers.
             bungeeReplacers.put(matcher.group(), () -> {
-                return bungeeServerTracker.getMotd1(serverName);
+                if (!Configuration.pingerEnabled) {
+                    return PINGER_NOT_ENABLED_ERROR;
+                }
+
+                return bungeeServerTracker.getCurrentServerInfo(serverName).getMotdLine1();
             });
         }
         
@@ -236,11 +241,14 @@ public class PlaceholdersManager {
             }
             
             final String serverName = extractArgumentFromPlaceholder(matcher);
-            bungeeServerTracker.track(serverName); // Track this server.
             
             // Add it to tracked servers.
             bungeeReplacers.put(matcher.group(), () -> {
-                return bungeeServerTracker.getMotd2(serverName);
+                if (!Configuration.pingerEnabled) {
+                    return PINGER_NOT_ENABLED_ERROR;
+                }
+                
+                return bungeeServerTracker.getCurrentServerInfo(serverName).getMotdLine2();
             });
         }
         
@@ -252,11 +260,19 @@ public class PlaceholdersManager {
             }
             
             final String serverName = extractArgumentFromPlaceholder(matcher);
-            bungeeServerTracker.track(serverName); // Track this server.
             
             // Add it to tracked servers.
             bungeeReplacers.put(matcher.group(), () -> {
-                return bungeeServerTracker.getOnlineStatus(serverName);
+                if (!Configuration.pingerEnabled) {
+                    return PINGER_NOT_ENABLED_ERROR;
+                }
+
+                ServerInfo serverInfo = bungeeServerTracker.getCurrentServerInfo(serverName);
+                if (serverInfo.isOnline()) {
+                    return Configuration.pingerStatusOnline;
+                } else {
+                    return Configuration.pingerStatusOffline;
+                }
             });
         }
         

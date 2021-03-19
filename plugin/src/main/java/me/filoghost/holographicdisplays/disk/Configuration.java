@@ -19,8 +19,8 @@ import org.bukkit.ChatColor;
 import java.time.DateTimeException;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Configuration {
     
@@ -41,7 +41,7 @@ public class Configuration {
     public static String pingerStatusOnline;
     public static String pingerStatusOffline;
     public static boolean pingerTrimMotd;
-    public static List<ServerAddress> pingerServers;
+    public static Map<String, ServerAddress> pingerServerAddresses;
     
     public static void load(MainConfigModel config, ErrorCollector errorCollector) {
         spaceBetweenLines = config.spaceBetweenLines;
@@ -61,13 +61,13 @@ public class Configuration {
         pingerStatusOnline = StringConverter.toReadableFormat(config.pingerStatusOnline);
         pingerStatusOffline = StringConverter.toReadableFormat(config.pingerStatusOffline);
         pingerTrimMotd = config.pingerTrimMotd;
-        
-        pingerServers = new ArrayList<>();
+
+        pingerServerAddresses = new HashMap<>();
         if (pingerEnabled) {
             for (String singleServer : config.pingerServers) {
                 ServerAddress serverAddress = parseServerAddress(singleServer, errorCollector);
                 if (serverAddress != null) {
-                    pingerServers.add(serverAddress);
+                    pingerServerAddresses.put(serverAddress.getName(), serverAddress);
                 }
             }
         }

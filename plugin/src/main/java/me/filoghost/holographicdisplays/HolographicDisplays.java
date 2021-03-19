@@ -30,7 +30,6 @@ import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.placeholder.AnimationsRegistry;
 import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
-import me.filoghost.holographicdisplays.task.BungeeCleanupTask;
 import me.filoghost.holographicdisplays.task.WorldPlayerCounterTask;
 import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bstats.bukkit.MetricsLite;
@@ -38,6 +37,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacketSettings {
     
@@ -112,7 +112,6 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         
         // Start repeating tasks.
         placeholderManager.startRefreshTask(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new BungeeCleanupTask(bungeeServerTracker), 5 * 60 * 20, 5 * 60 * 20);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorldPlayerCounterTask(), 0L, 3 * 20);
 
         HologramCommandManager commandManager = new HologramCommandManager(configManager, internalHologramManager, nmsManager);
@@ -142,8 +141,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
     public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
         placeholderManager.untrackAll();
         internalHologramManager.clearAll();
-        bungeeServerTracker.resetTrackedServers();
-        
+
         configManager.reloadCustomPlaceholders(errorCollector);
         configManager.reloadMainConfig(errorCollector);
         HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
@@ -153,7 +151,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
             errorCollector.add(e, "failed to load animation files");
         }
         
-        bungeeServerTracker.restartTask(Configuration.bungeeRefreshSeconds);
+        bungeeServerTracker.restart(Configuration.bungeeRefreshSeconds, TimeUnit.SECONDS);
         
         if (deferHologramsCreation) {
             // For the initial load: holograms are loaded later, when the worlds are ready

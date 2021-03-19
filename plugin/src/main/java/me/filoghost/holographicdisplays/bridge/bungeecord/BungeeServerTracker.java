@@ -7,8 +7,9 @@ package me.filoghost.holographicdisplays.bridge.bungeecord;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.HolographicDisplays;
-import me.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.PingResponse;
-import me.filoghost.holographicdisplays.bridge.bungeecord.serverpinger.ServerPinger;
+import me.filoghost.holographicdisplays.bridge.bungeecord.pinger.PingResponse;
+import me.filoghost.holographicdisplays.bridge.bungeecord.pinger.ServerPinger;
+import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.ServerAddress;
 import org.bukkit.Bukkit;
@@ -17,184 +18,122 @@ import org.bukkit.plugin.Plugin;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 public class BungeeServerTracker {
 
-    private static final String PINGER_NOT_ENABLED_ERROR = "[Please enable pinger]";
+    private static final long UNTRACK_AFTER_TIME_WITHOUT_REQUESTS = TimeUnit.MINUTES.toMillis(10);
 
-    private final BungeeChannel bungeeChannel;
-    private final Map<String, BungeeServerInfo> trackedServers;
+    private final ConcurrentMap<String, TrackedServer> trackedServers;
+    private final BungeeMessenger bungeeMessenger;
     
     private int taskID = -1;
 
     public BungeeServerTracker(Plugin plugin) {
-        bungeeChannel = new BungeeChannel(this);
-        bungeeChannel.register(plugin);
         trackedServers = new ConcurrentHashMap<>();
+        bungeeMessenger = BungeeMessenger.registerNew(plugin, this::updateServerInfoFromBungee);
     }
 
-    public void resetTrackedServers() {
+    public void restart(int updateInterval, TimeUnit timeUnit) {
         trackedServers.clear();
-    }
-    
-    public void track(String server) {
-        if (!trackedServers.containsKey(server)) {
-            BungeeServerInfo info = new BungeeServerInfo();
-            info.setMotd(Configuration.pingerOfflineMotd);
-            trackedServers.put(server, info);
-            
-            if (!Configuration.pingerEnabled) {
-                bungeeChannel.askPlayerCount(server);
-            }
-        }
-    }
-    
-    protected BungeeServerInfo getOrCreateServerInfo(String server) {
-        BungeeServerInfo info = trackedServers.get(server);
-        if (info == null) {
-            info = new BungeeServerInfo();
-            info.setMotd(Configuration.pingerOfflineMotd);
-            trackedServers.put(server, info);
-        }
         
-        return info;
-    }
-
-    public int getPlayersOnline(String server) {
-        BungeeServerInfo info = trackedServers.get(server);
-        if (info != null) {
-            info.updateLastRequest();
-            return info.getOnlinePlayers();
-        } else {
-            // It was not tracked, add it.
-            track(server);
-            return 0;
-        }
-    }
-    
-    public String getMaxPlayers(String server) {
-        if (!Configuration.pingerEnabled) {
-            return PINGER_NOT_ENABLED_ERROR;
-        }
-        
-        BungeeServerInfo info = trackedServers.get(server);
-        if (info != null) {
-            info.updateLastRequest();
-            return String.valueOf(info.getMaxPlayers());
-        } else {
-            // It was not tracked, add it.
-            track(server);
-            return "0";
-        }
-    }
-    
-    public String getMotd1(String server) {
-        if (!Configuration.pingerEnabled) {
-            return PINGER_NOT_ENABLED_ERROR;
-        }
-        
-        BungeeServerInfo info = trackedServers.get(server);
-        if (info != null) {
-            info.updateLastRequest();
-            return info.getMotd1();
-        } else {
-            // It was not tracked, add it.
-            track(server);
-            return Configuration.pingerOfflineMotd;
-        }
-    }
-    
-    public String getMotd2(String server) {
-        if (!Configuration.pingerEnabled) {
-            return PINGER_NOT_ENABLED_ERROR;
-        }
-        
-        BungeeServerInfo info = trackedServers.get(server);
-        if (info != null) {
-            info.updateLastRequest();
-            return info.getMotd2();
-        } else {
-            // It was not tracked, add it.
-            track(server);
-            return "";
-        }
-    }
-    
-    public String getOnlineStatus(String server) {
-        if (!Configuration.pingerEnabled) {
-            return PINGER_NOT_ENABLED_ERROR;
-        }
-        
-        BungeeServerInfo info = trackedServers.get(server);
-        if (info != null) {
-            info.updateLastRequest();
-            return info.isOnline() ? Configuration.pingerStatusOnline : Configuration.pingerStatusOffline;
-        } else {
-            // It was not tracked, add it.
-            track(server);
-            return Configuration.pingerStatusOffline;
-        }
-    }
-
-    public Map<String, BungeeServerInfo> getTrackedServers() {
-        return trackedServers;
-    }
-    
-    public void restartTask(int refreshSeconds) {
         if (taskID != -1) {
             Bukkit.getScheduler().cancelTask(taskID);
         }
-        
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(HolographicDisplays.getInstance(), () -> {
-            if (Configuration.pingerEnabled) {
-                runAsyncPinger();
-            } else {
-                for (String server : trackedServers.keySet()) {
-                    bungeeChannel.askPlayerCount(server);
-                }
-            }
 
-        }, 1, refreshSeconds * 20L);
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(HolographicDisplays.getInstance(), 
+                this::runPeriodicUpdateTask, 1, timeUnit.toSeconds(updateInterval) * 20L);
     }
 
-    private void runAsyncPinger() {
-        Bukkit.getScheduler().runTaskAsynchronously(HolographicDisplays.getInstance(), () -> {
-            for (ServerAddress serverAddress : Configuration.pingerServers) {
-                BungeeServerInfo serverInfo = getOrCreateServerInfo(serverAddress.getName());
-                boolean displayOffline = false;
-                
-                try {
-                    PingResponse data = ServerPinger.fetchData(serverAddress, Configuration.pingerTimeout);
-                    
-                    if (data.isOnline()) {
-                        serverInfo.setOnline(true);
-                        serverInfo.setOnlinePlayers(data.getOnlinePlayers());
-                        serverInfo.setMaxPlayers(data.getMaxPlayers());
-                        serverInfo.setMotd(data.getMotd());
-                    } else {
-                        displayOffline = true;
-                    }
-                } catch (SocketTimeoutException e) {
-                    // Common error, avoid logging
-                    displayOffline = true;
-                } catch (UnknownHostException e) {
-                    Log.warning("Couldn't fetch data from " + serverAddress + ": unknown host address.");
-                    displayOffline = true;
-                } catch (IOException e) {
-                    Log.warning("Couldn't fetch data from " + serverAddress + ".", e);
-                    displayOffline = true;
+    public ServerInfo getCurrentServerInfo(String serverName) {
+        // If it wasn't already tracked, send an update request instantly
+        if (!Configuration.pingerEnabled && !trackedServers.containsKey(serverName)) {
+            bungeeMessenger.sendPlayerCountRequest(serverName);
+        }
+
+        TrackedServer trackedServer = trackedServers.computeIfAbsent(serverName, TrackedServer::new);
+        trackedServer.updateLastRequest();
+        return trackedServer.serverInfo;
+    }
+
+    private void runPeriodicUpdateTask() {
+        removeUnusedServers();
+
+        if (Configuration.pingerEnabled) {
+            Bukkit.getScheduler().runTaskAsynchronously(HolographicDisplays.getInstance(), () -> {
+                for (TrackedServer trackedServer : trackedServers.values()) {
+                    updateServerInfoWithPinger(trackedServer);
                 }
-                
-                if (displayOffline) {
-                    serverInfo.setOnline(false);
-                    serverInfo.setOnlinePlayers(0);
-                    serverInfo.setMaxPlayers(0);
-                    serverInfo.setMotd(Configuration.pingerOfflineMotd);
-                }
+            });
+        } else {
+            for (String serverName : trackedServers.keySet()) {
+                bungeeMessenger.sendPlayerCountRequest(serverName);
+            }
+        }
+    }
+
+    private void updateServerInfoWithPinger(TrackedServer trackedServer) {
+        ServerAddress serverAddress = Configuration.pingerServerAddresses.get(trackedServer.serverName);
+
+        if (serverAddress != null) {
+            trackedServer.serverInfo = pingServer(serverAddress);
+        } else {
+            trackedServer.serverInfo = ServerInfo.offline("[Unknown server: " + trackedServer.serverName + "]");
+        }
+    }
+
+    private void updateServerInfoFromBungee(String serverName, int onlinePlayers) {
+        TrackedServer trackedServer = trackedServers.get(serverName);
+        if (trackedServer != null) {
+            trackedServer.serverInfo = ServerInfo.online(onlinePlayers, 0, "");
+        }
+    }
+
+    private ServerInfo pingServer(ServerAddress serverAddress) {
+        try {
+            PingResponse data = ServerPinger.fetchData(serverAddress, Configuration.pingerTimeout);
+            return ServerInfo.online(data.getOnlinePlayers(), data.getMaxPlayers(), data.getMotd());
+        } catch (SocketTimeoutException e) {
+            // Common error, do not log
+        } catch (UnknownHostException e) {
+            Log.warning("Couldn't fetch data from " + serverAddress + ": unknown host address.");
+        } catch (IOException e) {
+            Log.warning("Couldn't fetch data from " + serverAddress + ".", e);
+        }
+        
+        return ServerInfo.offline(Configuration.pingerOfflineMotd);
+    }
+
+    private void removeUnusedServers() {
+        long now = System.currentTimeMillis();
+        
+        trackedServers.values().removeIf(trackedServer -> {
+            if (now - trackedServer.lastRequest > UNTRACK_AFTER_TIME_WITHOUT_REQUESTS) {
+                DebugLogger.info("Untracked unused server \"" + trackedServer.serverName + "\".");
+                return true;
+            } else {
+                return false;
             }
         });
+    }
+
+    private static class TrackedServer {
+
+        private final String serverName;
+        private volatile ServerInfo serverInfo;
+        private volatile long lastRequest;
+
+        private TrackedServer(String serverName) {
+            this.serverName = serverName;
+            this.serverInfo = ServerInfo.offline(Configuration.pingerOfflineMotd);
+        }
+        
+        private void updateLastRequest() {
+            this.lastRequest = System.currentTimeMillis();
+        }
+
     }
 
 }
