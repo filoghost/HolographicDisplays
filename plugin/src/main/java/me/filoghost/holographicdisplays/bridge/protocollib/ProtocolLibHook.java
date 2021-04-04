@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.bridge.protocollib;
 
-import com.google.common.base.Preconditions;
+import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
