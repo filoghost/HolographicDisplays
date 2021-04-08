@@ -16,12 +16,13 @@ package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 
 import java.util.Map;
 
-import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.EquivalentConverter;
 import com.comphenix.protocol.reflect.PrettyPrinter;
 import com.comphenix.protocol.reflect.PrettyPrinter.ObjectPrinter;
+import com.comphenix.protocol.utility.ByteBuddyFactory;
+import com.comphenix.protocol.utility.ByteBuddyGenerated;
 import com.comphenix.protocol.utility.HexDumper;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.BukkitConverters;
@@ -57,9 +58,13 @@ public class DebugHelper {
 		Class<?> clazz = packet.getClass();
 		
 		// Get the first Minecraft super class
-		while (clazz != null && clazz != Object.class &&
-				(!MinecraftReflection.isMinecraftClass(clazz) || 
-				 Factory.class.isAssignableFrom(clazz))) {
+		while (clazz != null
+				&& clazz != Object.class
+				// Check if the super class is a generated class/factory from ByteBuddy, the new
+				// ProtocolLib bytecode library replacing cglib
+				&& (!MinecraftReflection.isMinecraftClass(clazz)
+				|| ByteBuddyGenerated.class.isAssignableFrom(clazz)
+				|| ByteBuddyFactory.class.isAssignableFrom(clazz))) {
 			clazz = clazz.getSuperclass();
 		}
 		
