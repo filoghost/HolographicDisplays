@@ -14,6 +14,7 @@ import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.ServerAddress;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -47,7 +48,7 @@ public class BungeeServerTracker {
                 this::runPeriodicUpdateTask, 1, timeUnit.toSeconds(updateInterval) * 20L);
     }
 
-    public ServerInfo getCurrentServerInfo(String serverName) {
+    public ServerInfo getCurrentServerInfo(@NotNull String serverName) {
         // If it wasn't already tracked, send an update request instantly
         if (!Configuration.pingerEnabled && !trackedServers.containsKey(serverName)) {
             bungeeMessenger.sendPlayerCountRequest(serverName);

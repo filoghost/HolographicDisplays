@@ -65,26 +65,6 @@ public class Utils {
         
         return result.toString();
     }
-    
-    public static String sanitize(String s) {
-        return s != null ? s : "null";
-    }
-    
-    
-    public static boolean isThereNonNull(Object... objects) {
-        if (objects == null) {
-            return false;
-        }
-
-        for (Object object : objects) {
-            if (object != null) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-    
 
     public static String formatExceptionMessage(Throwable t) {
         return formatExceptionMessage(t.getMessage());

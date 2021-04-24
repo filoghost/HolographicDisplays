@@ -33,11 +33,11 @@ public abstract class BackendAPI {
 
     public abstract Collection<Hologram> getHolograms(Plugin plugin);
 
-    public abstract boolean registerPlaceholder(Plugin plugin, String textPlaceholder, double refreshRate, PlaceholderReplacer replacer);
+    public abstract void registerPlaceholder(Plugin plugin, String identifier, int refreshIntervalTicks, PlaceholderReplacer replacer);
 
     public abstract Collection<String> getRegisteredPlaceholders(Plugin plugin);
 
-    public abstract boolean unregisterPlaceholder(Plugin plugin, String textPlaceholder);
+    public abstract void unregisterPlaceholder(Plugin plugin, String identifier);
 
     public abstract void unregisterPlaceholders(Plugin plugin);
 

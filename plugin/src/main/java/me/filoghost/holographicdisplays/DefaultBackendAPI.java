@@ -11,8 +11,7 @@ import me.filoghost.holographicdisplays.api.internal.BackendAPI;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.api.APIHologramManager;
-import me.filoghost.holographicdisplays.placeholder.Placeholder;
-import me.filoghost.holographicdisplays.placeholder.PlaceholdersRegistry;
+import me.filoghost.holographicdisplays.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -24,9 +23,9 @@ public class DefaultBackendAPI extends BackendAPI {
 
     private final APIHologramManager apiHologramManager;
     private final NMSManager nmsManager;
-    private final PlaceholdersRegistry placeholderRegistry;
+    private final PlaceholderRegistry placeholderRegistry;
 
-    public DefaultBackendAPI(APIHologramManager apiHologramManager, NMSManager nmsManager, PlaceholdersRegistry placeholderRegistry) {
+    public DefaultBackendAPI(APIHologramManager apiHologramManager, NMSManager nmsManager, PlaceholderRegistry placeholderRegistry) {
         this.apiHologramManager = apiHologramManager;
         this.nmsManager = nmsManager;
         this.placeholderRegistry = placeholderRegistry;
@@ -43,12 +42,12 @@ public class DefaultBackendAPI extends BackendAPI {
     }
     
     @Override
-    public boolean registerPlaceholder(Plugin plugin, String textPlaceholder, double refreshRate, PlaceholderReplacer replacer) {
-        Preconditions.notNull(textPlaceholder, "textPlaceholder");
-        Preconditions.checkArgument(refreshRate >= 0, "refreshRate should be positive");
+    public void registerPlaceholder(Plugin plugin, String identifier, int refreshIntervalTicks, PlaceholderReplacer replacer) {
+        Preconditions.notNull(identifier, "identifier");
+        Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
         Preconditions.notNull(replacer, "replacer");
         
-        return placeholderRegistry.register(new Placeholder(plugin, textPlaceholder, refreshRate, replacer));
+        placeholderRegistry.registerReplacer(plugin, identifier, refreshIntervalTicks, replacer);
     }
 
     @Override
@@ -66,22 +65,20 @@ public class DefaultBackendAPI extends BackendAPI {
     @Override
     public Collection<String> getRegisteredPlaceholders(Plugin plugin) {
         Preconditions.notNull(plugin, "plugin");
-        return placeholderRegistry.getTextPlaceholdersByPlugin(plugin);
+        return placeholderRegistry.getRegisteredIdentifiers(plugin);
     }
 
     @Override
-    public boolean unregisterPlaceholder(Plugin plugin, String textPlaceholder) {
+    public void unregisterPlaceholder(Plugin plugin, String identifier) {
         Preconditions.notNull(plugin, "plugin");
-        Preconditions.notNull(textPlaceholder, "textPlaceholder");
-        return placeholderRegistry.unregister(plugin, textPlaceholder);
+        Preconditions.notNull(identifier, "identifier");
+        placeholderRegistry.unregister(plugin, identifier);
     }
 
     @Override
     public void unregisterPlaceholders(Plugin plugin) {
         Preconditions.notNull(plugin, "plugin");
-        for (String placeholder : getRegisteredPlaceholders(plugin)) {
-            unregisterPlaceholder(plugin, placeholder);
-        }
+        placeholderRegistry.unregisterAll(plugin);
     }
 
 }

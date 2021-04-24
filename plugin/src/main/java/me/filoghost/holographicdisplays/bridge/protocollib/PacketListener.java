@@ -101,8 +101,11 @@ class PacketListener extends PacketAdapter {
             }
 
             StandardTextLine textLine = (StandardTextLine) hologramLine;
+            if (!textLine.isAllowPlaceholders()) {
+                return;
+            }
+            
             Collection<RelativePlaceholder> relativePlaceholders = textLine.getRelativePlaceholders();
-
             if (relativePlaceholders == null || relativePlaceholders.isEmpty()) {
                 return;
             }

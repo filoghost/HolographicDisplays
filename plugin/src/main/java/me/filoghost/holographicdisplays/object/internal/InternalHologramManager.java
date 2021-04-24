@@ -7,15 +7,15 @@ package me.filoghost.holographicdisplays.object.internal;
 
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.base.BaseHologramManager;
-import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
+import me.filoghost.holographicdisplays.placeholder.PlaceholderManager;
 import org.bukkit.Location;
 
 public class InternalHologramManager extends BaseHologramManager<InternalHologram> {
     
     private final NMSManager nmsManager;
-    private final PlaceholdersManager placeholderManager;
+    private final PlaceholderManager placeholderManager;
 
-    public InternalHologramManager(NMSManager nmsManager, PlaceholdersManager placeholderManager) {
+    public InternalHologramManager(NMSManager nmsManager, PlaceholderManager placeholderManager) {
         this.nmsManager = nmsManager;
         this.placeholderManager = placeholderManager;
     }

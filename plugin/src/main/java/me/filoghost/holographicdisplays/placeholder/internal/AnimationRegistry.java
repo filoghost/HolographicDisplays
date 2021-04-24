@@ -3,14 +3,15 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.placeholder;
+package me.filoghost.holographicdisplays.placeholder.internal;
 
 import me.filoghost.fcommons.config.exception.ConfigSaveException;
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.StringConverter;
+import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
+import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class AnimationsRegistry {
-
+public class AnimationRegistry implements PlaceholderFactory {
+    
     private static final String SPEED_PREFIX = "speed:";
     
     private final Map<String, Placeholder> animationsByFilename = new HashMap<>();
@@ -80,21 +81,23 @@ public class AnimationsRegistry {
                 lines.set(i, StringConverter.toReadableFormat(lines.get(i)));
             }
 
-            animationsByFilename.put(fileName, new Placeholder(HolographicDisplays.getInstance(), fileName, speed, new CyclicPlaceholderReplacer(lines)));
+            int refreshIntervalTicks = Math.min((int) (speed * 20.0), 1);
+            animationsByFilename.put(fileName, new AnimationPlaceholder(refreshIntervalTicks, lines));
             DebugLogger.info("Successfully loaded animation \"" + fileName + "\", speed = " + speed + ".");
 
         } catch (Exception e) {
             errorCollector.add(e, "couldn't load the animation file \"" + fileName + "\"");
         }
     }
-
-
-    public Map<String, Placeholder> getAnimationsByFilename() {
-        return animationsByFilename;
-    }
-
-    public Placeholder getAnimation(String name) {
-        return animationsByFilename.get(name);
-    }
     
+    @Override
+    public Placeholder getPlaceholder(String fileNameArgument) {
+        Placeholder placeholder = animationsByFilename.get(fileNameArgument);
+        if (placeholder != null) {
+            return placeholder;
+        } else {
+            return new StaticPlaceholder("[Animation not found: " + fileNameArgument + "]");
+        }
+    }
+
 }

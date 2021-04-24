@@ -14,6 +14,8 @@ public interface StandardTextLine extends StandardTouchableLine {
 
     String getText();
 
+    boolean isAllowPlaceholders();
+
     Collection<RelativePlaceholder> getRelativePlaceholders();
 
     NMSArmorStand getNMSArmorStand();

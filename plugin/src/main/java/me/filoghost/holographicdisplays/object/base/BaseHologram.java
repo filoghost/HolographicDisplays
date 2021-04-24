@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
+import me.filoghost.holographicdisplays.placeholder.PlaceholderManager;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -22,13 +22,13 @@ import java.util.List;
 public abstract class BaseHologram<T extends StandardHologramLine> extends BaseHologramComponent implements StandardHologram {
     
     private final NMSManager nmsManager;
-    private final PlaceholdersManager placeholderManager;
+    private final PlaceholderManager placeholderManager;
     private final List<T> lines;
     private final List<T> unmodifiableLinesView;
     
     private boolean deleted;
 
-    public BaseHologram(Location location, NMSManager nmsManager, PlaceholdersManager placeholderManager) {
+    public BaseHologram(Location location, NMSManager nmsManager, PlaceholderManager placeholderManager) {
         this.placeholderManager = placeholderManager;
         Preconditions.notNull(location, "location");
         this.setLocation(location);
@@ -41,7 +41,7 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
         return nmsManager;
     }
 
-    protected final PlaceholdersManager getPlaceholderManager() {
+    protected final PlaceholderManager getPlaceholderManager() {
         return placeholderManager;
     }
 

@@ -23,7 +23,7 @@ public class APITextLine extends BaseTextLine implements TextLine, APIHologramLi
     }
 
     @Override
-    protected boolean isAllowPlaceholders() {
+    public boolean isAllowPlaceholders() {
         return parent.isAllowPlaceholders();
     }
 

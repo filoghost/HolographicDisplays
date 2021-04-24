@@ -13,10 +13,11 @@ import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public abstract class BaseTextLine extends BaseTouchableLine implements StandardTextLine {
 
-    private final ArrayList<RelativePlaceholder> relativePlaceholders;
+    private final List<RelativePlaceholder> relativePlaceholders;
     private String text;
     private NMSArmorStand textEntity;
     
@@ -25,8 +26,6 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
         this.relativePlaceholders = new ArrayList<>();
         setText(text);
     }
-    
-    protected abstract boolean isAllowPlaceholders();
     
     @Override
     public String getText() {
@@ -37,17 +36,8 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
         this.text = text;
         
         if (textEntity != null) {
-            if (text != null && !text.isEmpty()) {
-                textEntity.setCustomNameNMS(text);
-                if (isAllowPlaceholders()) {
-                    getPlaceholderManager().trackIfNecessary(this);
-                }
-            } else {
-                textEntity.setCustomNameNMS(""); // It will not appear
-                if (isAllowPlaceholders()) {
-                    getPlaceholderManager().untrack(this);
-                }
-            }
+            textEntity.setCustomNameNMS(text != null ? text : "");
+            getPlaceholderManager().updateTracking(this);
         }
         
         relativePlaceholders.clear();
@@ -70,9 +60,7 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
             textEntity.setCustomNameNMS(text);
         }
 
-        if (isAllowPlaceholders()) {
-            getPlaceholderManager().trackIfNecessary(this);
-        }
+        getPlaceholderManager().updateTracking(this);
     }
     
     @Override
@@ -96,10 +84,6 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
 
     @Override
     public Collection<RelativePlaceholder> getRelativePlaceholders() {
-        if (!isAllowPlaceholders()) {
-            return null;
-        }
-        
         return relativePlaceholders;
     }
 

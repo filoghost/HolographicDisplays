@@ -17,7 +17,7 @@ public class InternalTextLine extends BaseTextLine implements InternalHologramLi
     }
 
     @Override
-    protected boolean isAllowPlaceholders() {
+    public boolean isAllowPlaceholders() {
         return true;
     }
 

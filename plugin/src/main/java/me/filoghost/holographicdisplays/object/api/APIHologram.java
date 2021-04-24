@@ -14,7 +14,7 @@ import me.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.object.base.BaseHologram;
-import me.filoghost.holographicdisplays.placeholder.PlaceholdersManager;
+import me.filoghost.holographicdisplays.placeholder.PlaceholderManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +31,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
 
     private boolean allowPlaceholders;
 
-    protected APIHologram(Location source, Plugin plugin, NMSManager nmsManager, APIHologramManager apiHologramManager, PlaceholdersManager placeholderManager) {
+    protected APIHologram(Location source, Plugin plugin, NMSManager nmsManager, APIHologramManager apiHologramManager, PlaceholderManager placeholderManager) {
         super(source, nmsManager, placeholderManager);
         Preconditions.notNull(plugin, "plugin");
         this.plugin = plugin;

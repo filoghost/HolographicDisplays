@@ -10,31 +10,37 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 import java.util.HashSet;
 
-public abstract class RelativePlaceholder {
+public class RelativePlaceholder implements RelativePlaceholderReplacer {
     
     private static final Collection<RelativePlaceholder> registry = new HashSet<>();
     
     // The placeholder itself, something like {player}.
     private final String textPlaceholder;
     
-    public RelativePlaceholder(String textPlaceholder) {
+    private final RelativePlaceholderReplacer replacer;
+    
+    public RelativePlaceholder(String textPlaceholder, RelativePlaceholderReplacer replacer) {
         this.textPlaceholder = textPlaceholder;
+        this.replacer = replacer;
     }
     
     public String getTextPlaceholder() {
         return textPlaceholder;
     }
     
-    public abstract String getReplacement(Player player);
+    @Override
+    public String getReplacement(Player player) {
+        return replacer.getReplacement(player);
+    }
     
-    public static void register(RelativePlaceholder relativePlaceholder) {
+    public static void register(String textPlaceholder, RelativePlaceholderReplacer replacer) {
         for (RelativePlaceholder existingPlaceholder : registry) {
-            if (existingPlaceholder.getTextPlaceholder().equals(relativePlaceholder.getTextPlaceholder())) {
+            if (existingPlaceholder.getTextPlaceholder().equals(textPlaceholder)) {
                 throw new IllegalArgumentException("Relative placeholder already registered");
             }
         }
         
-        registry.add(relativePlaceholder);
+        registry.add(new RelativePlaceholder(textPlaceholder, replacer));
     }
     
     public static Collection<RelativePlaceholder> getRegistry() {
@@ -42,21 +48,8 @@ public abstract class RelativePlaceholder {
     }
     
     static {
-        register(new RelativePlaceholder("{player}") {
-            
-            @Override
-            public String getReplacement(Player player) {
-                return player.getName();
-            }
-        });
-        
-        register(new RelativePlaceholder("{displayname}") {
-            
-            @Override
-            public String getReplacement(Player player) {
-                return player.getDisplayName();
-            }
-        });
+        register("{player}", Player::getName);
+        register("{displayname}", Player::getDisplayName);
     }
 
 }

@@ -48,27 +48,16 @@ public class HologramsAPI {
         return BackendAPI.getImplementation().getHolograms(plugin);
     }
     
-    
-    /**
-     * Registers a new placeholder that can be used in holograms created with commands.
-     * With this method, you can basically expand the core of HolographicDisplays.
-     * 
-     * @param plugin the owner plugin of the placeholder
-     * @param textPlaceholder the text that the placeholder will be associated to (e.g.: "{onlinePlayers}")
-     * @param refreshRate the refresh rate of the placeholder, in seconds. Keep in mind that the minimum is 0.1 seconds, and that will be rounded to tenths of seconds
-     * @param replacer the implementation that will return the text to replace the placeholder, where the update() method is called every <b>refreshRate</b> seconds
-     * @return true if the registration was successfull, false if it was already registered
-     */
-    public static boolean registerPlaceholder(Plugin plugin, String textPlaceholder, double refreshRate, PlaceholderReplacer replacer) {
-        return BackendAPI.getImplementation().registerPlaceholder(plugin, textPlaceholder, refreshRate, replacer);
+    public static void registerPlaceholder(Plugin plugin, String identifier, int refreshIntervalTicks, PlaceholderReplacer replacer) {
+        BackendAPI.getImplementation().registerPlaceholder(plugin, identifier, refreshIntervalTicks, replacer);
     }
     
     
     /**
-     * Finds all the placeholders registered by a given plugin.
+     * Returns all the placeholder identifiers registered by a given plugin.
      * 
      * @param plugin the plugin to search for
-     * @return a collection of placeholders registered by the plugin
+     * @return a collection of placeholder identifiers registered by the plugin
      */
     public static Collection<String> getRegisteredPlaceholders(Plugin plugin) {
         return BackendAPI.getImplementation().getRegisteredPlaceholders(plugin);
@@ -79,11 +68,10 @@ public class HologramsAPI {
      * Unregister a placeholder created by a plugin.
      * 
      * @param plugin the plugin that owns the placeholder
-     * @param textPlaceholder the placeholder to remove
-     * @return true if found and removed, false otherwise
+     * @param identifier the identifier of the placeholder to remove
      */
-    public static boolean unregisterPlaceholder(Plugin plugin, String textPlaceholder) {
-        return BackendAPI.getImplementation().unregisterPlaceholder(plugin, textPlaceholder);
+    public static void unregisterPlaceholder(Plugin plugin, String identifier) {
+        BackendAPI.getImplementation().unregisterPlaceholder(plugin, identifier);
     }
     
     
