@@ -36,7 +36,7 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
         this.text = text;
         
         if (textEntity != null) {
-            textEntity.setCustomNameNMS(text != null ? text : "");
+            textEntity.setCustomNameNMS(text);
             getPlaceholderManager().updateTracking(this);
         }
         

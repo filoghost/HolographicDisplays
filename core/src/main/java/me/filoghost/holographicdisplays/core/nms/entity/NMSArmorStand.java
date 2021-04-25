@@ -8,9 +8,9 @@ package me.filoghost.holographicdisplays.core.nms.entity;
 public interface NMSArmorStand extends NMSVehicle {
 
     // Sets a custom name as a String.
-    void setCustomNameNMS(String name);
+    void setCustomNameNMS(String customName);
 
-    // Returns the custom name as a String.
+    // Returns the last custom name set.
     String getCustomNameStringNMS();
 
     // Returns the custom name as version-dependent NMS object (String for MC 1.12 and below, ChatComponent for MC 1.13+ a ChatComponent).

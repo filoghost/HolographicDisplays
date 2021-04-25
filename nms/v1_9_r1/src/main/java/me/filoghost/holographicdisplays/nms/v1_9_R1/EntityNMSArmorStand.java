@@ -30,6 +30,8 @@ import net.minecraft.server.v1_9_R1.Vec3D;
 import net.minecraft.server.v1_9_R1.World;
 import org.bukkit.craftbukkit.v1_9_R1.entity.CraftEntity;
 
+import java.util.Objects;
+
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
     
     private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "as");
@@ -165,9 +167,12 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
     
     @Override
-    public void setCustomNameNMS(String name) {
-        this.customName = Utils.limitLength(name, 300);
-        super.setCustomName(customName);
+    public void setCustomNameNMS(String customName) {
+        if (Objects.equals(this.customName, customName)) {
+            return;
+        }
+        this.customName = customName;
+        super.setCustomName(customName != null ? Utils.limitLength(customName, 256) : "");
         super.setCustomNameVisible(customName != null && !customName.isEmpty());
     }
     
@@ -177,7 +182,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
     
     @Override
-    public Object getCustomNameObjectNMS() {
+    public String getCustomNameObjectNMS() {
         return super.getCustomName();
     }
     

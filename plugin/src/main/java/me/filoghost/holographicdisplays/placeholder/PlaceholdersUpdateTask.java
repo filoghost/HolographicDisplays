@@ -132,7 +132,7 @@ public class PlaceholdersUpdateTask implements Runnable {
     
         void restoreOriginalName() {
             if (!entity.isDeadNMS()) {
-                entity.setCustomNameNMS(textLine.getText() != null ? textLine.getText() : "");
+                entity.setCustomNameNMS(textLine.getText());
             }
         }
 

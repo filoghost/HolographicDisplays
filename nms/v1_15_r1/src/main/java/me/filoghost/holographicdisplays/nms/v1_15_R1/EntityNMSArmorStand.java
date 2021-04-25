@@ -33,6 +33,8 @@ import net.minecraft.server.v1_15_R1.World;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_15_R1.util.CraftChatMessage;
 
+import java.util.Objects;
+
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
 
     private static final ReflectField<Entity> VEHICLE_FIELD = ReflectField.lookup(Entity.class, Entity.class, "vehicle");
@@ -168,9 +170,12 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
 
     @Override
-    public void setCustomNameNMS(String name) {
-        this.customName = Utils.limitLength(name, 300);
-        super.setCustomName(CraftChatMessage.fromStringOrNull(customName));
+    public void setCustomNameNMS(String customName) {
+        if (Objects.equals(this.customName, customName)) {
+            return;
+        }
+        this.customName = customName;
+        super.setCustomName(CraftChatMessage.fromStringOrNull(Utils.limitLength(customName, 300)));
         super.setCustomNameVisible(customName != null && !customName.isEmpty());
     }
 
@@ -180,7 +185,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
     
     @Override
-    public Object getCustomNameObjectNMS() {
+    public IChatBaseComponent getCustomNameObjectNMS() {
         return super.getCustomName();
     }
 
