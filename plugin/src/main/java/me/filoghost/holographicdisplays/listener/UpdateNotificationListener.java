@@ -36,7 +36,7 @@ public class UpdateNotificationListener implements Listener {
                 player.sendMessage(Colors.PRIMARY_SHADOW + "[HolographicDisplays] " 
                         + Colors.PRIMARY + "Found an update: " + newVersion + ". Download:");
                 player.sendMessage(Colors.PRIMARY_SHADOW + ">> " 
-                        + Colors.PRIMARY + "http://dev.bukkit.org/bukkit-plugins/holographic-displays");
+                        + Colors.PRIMARY + "https://dev.bukkit.org/projects/holographic-displays");
             }
         }
     }
