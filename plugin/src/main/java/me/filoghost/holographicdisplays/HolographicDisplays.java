@@ -9,7 +9,7 @@ import me.filoghost.fcommons.FCommonsPlugin;
 import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.holographicdisplays.api.internal.BackendAPI;
+import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.commands.HologramCommandManager;
@@ -123,7 +123,10 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         registerListener(updateNotificationListener);
         
         // Enable the API.
-        BackendAPI.setImplementation(new DefaultBackendAPI(apiHologramManager, nmsManager, placeholderManager.getPlaceholderRegistry()));
+        HolographicDisplaysAPIProvider.setImplementation(new DefaultHolographicDisplaysAPIProvider(
+                apiHologramManager,
+                nmsManager,
+                placeholderManager.getPlaceholderRegistry()));
 
         // Register bStats metrics
         int pluginID = 3123;

@@ -6,7 +6,7 @@
 package me.filoghost.example.deathholograms;
 
 import me.filoghost.holographicdisplays.api.Hologram;
-import me.filoghost.holographicdisplays.api.HologramsAPI;
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -20,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 public class DeathHolograms extends JavaPlugin implements Listener {
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("H:mm");
+    
+    private HolographicDisplaysAPI holographicDisplaysAPI;
 
     @Override
     public void onEnable() {
@@ -30,13 +32,14 @@ public class DeathHolograms extends JavaPlugin implements Listener {
             return;
         }
         
+        holographicDisplaysAPI = HolographicDisplaysAPI.get(this);
         Bukkit.getPluginManager().registerEvents(this, this);
     }
     
     
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        Hologram hologram = HologramsAPI.createHologram(this, event.getEntity().getEyeLocation());
+        Hologram hologram = holographicDisplaysAPI.createHologram(event.getEntity().getEyeLocation());
         
         hologram.appendTextLine(ChatColor.RED + "Player " + ChatColor.GOLD + event.getEntity().getName() + ChatColor.RED + " died here!");
         hologram.appendTextLine(ChatColor.GRAY + "Time of death: " + TIME_FORMATTER.format(Instant.now()));

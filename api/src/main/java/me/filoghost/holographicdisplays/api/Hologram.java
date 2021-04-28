@@ -15,7 +15,9 @@ import org.bukkit.inventory.ItemStack;
 /**
  * An object made of various lines, that can be items or holograms.
  * Holographic lines appear as a nametag without any entity below.
- * To create one, please see {@link HologramsAPI#createHologram(org.bukkit.plugin.Plugin, Location)}.
+ * To create one, please see {@link HolographicDisplaysAPI#createHologram(Location)}.
+ * 
+ * @since 1
  */
 public interface Hologram {
     
@@ -24,6 +26,7 @@ public interface Hologram {
      * 
      * @param text the content of the line, can be null for an empty line
      * @return the new TextLine appended
+     * @since 1
      */
     TextLine appendTextLine(String text);
     
@@ -33,6 +36,7 @@ public interface Hologram {
      * 
      * @param itemStack the content of the line
      * @return the new ItemLine appended
+     * @since 1
      */
     ItemLine appendItemLine(ItemStack itemStack);
     
@@ -45,6 +49,7 @@ public interface Hologram {
      * @param text the content of the line, can be null for an empty line
      * @return the new TextLine inserted
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
+     * @since 1
      */
     TextLine insertTextLine(int index, String text);
     
@@ -57,6 +62,7 @@ public interface Hologram {
      * @param itemStack the content of the line
      * @return the new ItemLine inserted
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
+     * @since 1
      */
     ItemLine insertItemLine(int index, ItemStack itemStack);
     
@@ -67,6 +73,7 @@ public interface Hologram {
      * @param index the index of the line to retrieve.
      * @return the hologram line at the given index, can be an {@link ItemLine} or a {@link TextLine}.
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
+     * @since 1
      */
     HologramLine getLine(int index);
     
@@ -75,12 +82,15 @@ public interface Hologram {
      * 
      * @param index the index of the line, that should be between 0 and size() - 1.
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
+     * @since 1
      */
     void removeLine(int index);
     
     
     /**
      * Removes all the lines from this hologram.
+     * 
+     * @since 1
      */
     void clearLines();
 
@@ -89,6 +99,7 @@ public interface Hologram {
      * Checks the amount of lines of the hologram.
      * 
      * @return the amount of lines
+     * @since 1
      */
     int size();
     
@@ -97,6 +108,7 @@ public interface Hologram {
      * The physical height of the hologram, counting all the lines. Since: v2.1.4
      * 
      * @return the height of the hologram, counting all the lines and the gaps between them
+     * @since 1
      */
     double getHeight();
     
@@ -105,6 +117,7 @@ public interface Hologram {
      * Teleports a hologram to the given location.
      * 
      * @param location the new location
+     * @since 1
      */
     void teleport(Location location);
     
@@ -117,6 +130,7 @@ public interface Hologram {
      * @param x the X coordinate
      * @param y the Y coordinate
      * @param z the Z coordinate
+     * @since 1
      */
     void teleport(World world, double x, double y, double z);
     
@@ -124,6 +138,7 @@ public interface Hologram {
      * Returns the position of the hologram.
      * 
      * @return the Location of the hologram
+     * @since 1
      */
     Location getLocation();
     
@@ -131,6 +146,7 @@ public interface Hologram {
      * Returns the X coordinate.
      * 
      * @return the X coordinate of the hologram
+     * @since 1
      */
     double getX();
     
@@ -139,6 +155,7 @@ public interface Hologram {
      * Returns the Y coordinate.
      * 
      * @return the Y coordinate of the hologram
+     * @since 1
      */
     double getY();
     
@@ -147,6 +164,7 @@ public interface Hologram {
      * Returns the Z coordinate.
      * 
      * @return the Z coordinate of the hologram
+     * @since 1
      */
     double getZ();
     
@@ -155,6 +173,7 @@ public interface Hologram {
      * Returns the world.
      * 
      * @return the world of the hologram
+     * @since 1
      */
     World getWorld();
     
@@ -165,6 +184,7 @@ public interface Hologram {
      * Without the plugin, holograms will be always visible.
      * 
      * @return the VisibilityManager of this hologram
+     * @since 1
      */
     VisibilityManager getVisibilityManager();
     
@@ -173,6 +193,7 @@ public interface Hologram {
      * Returns when the hologram was created. Useful for removing old holograms.
      * 
      * @return the timestamp of when the hologram was created, in milliseconds
+     * @since 1
      */
     long getCreationTimestamp();
 
@@ -181,6 +202,7 @@ public interface Hologram {
      * This is false by default.
      * 
      * @return if the hologram allows placeholders
+     * @since 1
      */
     boolean isAllowPlaceholders();
 
@@ -189,6 +211,7 @@ public interface Hologram {
      * By default if will not track them.
      * 
      * @param allowPlaceholders if the hologram should track placeholders
+     * @since 1
      */
     void setAllowPlaceholders(boolean allowPlaceholders);
     
@@ -196,6 +219,8 @@ public interface Hologram {
      * Deletes this hologram. Editing or teleporting the hologram when deleted
      * will throw an exception. Lines will be automatically cleared.
      * You should remove all the references of the hologram after deletion.
+     * 
+     * @since 1
      */
     void delete();
     
@@ -204,6 +229,7 @@ public interface Hologram {
      * Checks if a hologram was deleted.
      * 
      * @return true if this hologram was deleted
+     * @since 1
      */
     boolean isDeleted();
     

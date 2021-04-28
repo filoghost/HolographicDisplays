@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
  * This object is used to manage the visibility of a hologram.
  * It allows to hide/show the hologram to certain players, and the default behaviour
  * (when a hologram is not specifically being hidden/shown to a player) can be customized.
+ * 
+ * @since 1
  */
 public interface VisibilityManager {
     
@@ -19,6 +21,7 @@ public interface VisibilityManager {
      * is true by default so the hologram is visible to everyone.
      * 
      * @return if the hologram hologram is visible by default
+     * @since 1
      */
     boolean isVisibleByDefault();
     
@@ -27,6 +30,7 @@ public interface VisibilityManager {
      * is true by default so the hologram is visible to everyone.
      * 
      * @param visibleByDefault the new behaviour
+     * @since 1
      */
     void setVisibleByDefault(boolean visibleByDefault);
     
@@ -35,6 +39,7 @@ public interface VisibilityManager {
      * This is persistent if the players goes offline.
      * 
      * @param player the involved player
+     * @since 1
      */
     void showTo(Player player);
     
@@ -43,6 +48,7 @@ public interface VisibilityManager {
      * This is persistent if the players goes offline.
      * 
      * @param player the involved player
+     * @since 1
      */
     void hideTo(Player player);
     
@@ -51,6 +57,7 @@ public interface VisibilityManager {
      * 
      * @param player the involved player
      * @return if the player can see the hologram
+     * @since 1
      */
     boolean isVisibleTo(Player player);
     
@@ -60,11 +67,14 @@ public interface VisibilityManager {
      * to reflect the value of {@link #isVisibleByDefault()}.
      * 
      * @param player the involved player
+     * @since 1
      */
     void resetVisibility(Player player);
     
     /**
      * Resets the visibility for all the players. See {@link #resetVisibility(Player)} for more details.
+     * 
+     * @since 1
      */
     void resetVisibilityAll();
     

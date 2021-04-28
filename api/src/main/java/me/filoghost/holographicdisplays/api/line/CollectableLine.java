@@ -9,6 +9,8 @@ import me.filoghost.holographicdisplays.api.handler.PickupHandler;
 
 /**
  * A line of a Hologram that can be picked up.
+ * 
+ * @since 1
  */
 public interface CollectableLine extends HologramLine {
     
@@ -16,6 +18,7 @@ public interface CollectableLine extends HologramLine {
      * Sets the PickupHandler for this line.
      * 
      * @param pickupHandler the new PickupHandler, can be null.
+     * @since 1
      */
     void setPickupHandler(PickupHandler pickupHandler);
     
@@ -23,6 +26,7 @@ public interface CollectableLine extends HologramLine {
      * Returns the current PickupHandler of this line.
      * 
      * @return the current PickupHandler, can be null.
+     * @since 1
      */
     PickupHandler getPickupHandler();
     

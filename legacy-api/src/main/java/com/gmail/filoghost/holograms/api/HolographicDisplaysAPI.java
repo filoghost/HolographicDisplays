@@ -8,7 +8,6 @@ package com.gmail.filoghost.holograms.api;
 import com.gmail.filoghost.holograms.api.adapter.FloatingItemAdapter;
 import com.gmail.filoghost.holograms.api.adapter.HologramAdapter;
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.api.HologramsAPI;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -49,7 +48,7 @@ public class HolographicDisplaysAPI {
         
         validateLocation(source);
         
-        me.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
+        me.filoghost.holographicdisplays.api.Hologram hologram = me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.get(plugin).createHologram(source);
         for (String line : lines) {
             hologram.appendTextLine(line);
         }
@@ -63,7 +62,7 @@ public class HolographicDisplaysAPI {
         validateLocation(source);
         validateItem(itemstack);
         
-        me.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
+        me.filoghost.holographicdisplays.api.Hologram hologram = me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.get(plugin).createHologram(source);
         ItemLine itemLine = hologram.appendItemLine(itemstack);
         return new FloatingItemAdapter(plugin, hologram, itemLine);
     }
@@ -81,7 +80,7 @@ public class HolographicDisplaysAPI {
         
         validateLocation(source);
         
-        me.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
+        me.filoghost.holographicdisplays.api.Hologram hologram = me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.get(plugin).createHologram(source);
         
         hologram.getVisibilityManager().setVisibleByDefault(false);
         if (whoCanSee != null) {
@@ -111,7 +110,7 @@ public class HolographicDisplaysAPI {
         validateLocation(source);
         validateItem(itemstack);
         
-        me.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(plugin, source);
+        me.filoghost.holographicdisplays.api.Hologram hologram = me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.get(plugin).createHologram(source);
         ItemLine itemLine = hologram.appendItemLine(itemstack);
         
         hologram.getVisibilityManager().setVisibleByDefault(false);
@@ -142,7 +141,7 @@ public class HolographicDisplaysAPI {
     
     @Deprecated
     public static boolean isHologramEntity(Entity bukkitEntity) {
-        return HologramsAPI.isHologramEntity(bukkitEntity);
+        return me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.isHologramEntity(bukkitEntity);
     }
     
     private static void validateLocation(Location loc) {

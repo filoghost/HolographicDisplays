@@ -9,6 +9,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Simple callback to provide a placeholder replacement.
+ * 
+ * @since 1
  */
 @FunctionalInterface
 public interface PlaceholderReplacer {
@@ -21,6 +23,7 @@ public interface PlaceholderReplacer {
      * <b>Warning</b>: this method should be performance efficient, as it may be invoked often.
      *
      * @return the placeholder replacement
+     * @since 1
      */
     String getReplacement(@Nullable String argument);
 

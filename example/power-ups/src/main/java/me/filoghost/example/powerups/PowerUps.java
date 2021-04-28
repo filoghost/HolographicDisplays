@@ -6,7 +6,7 @@
 package me.filoghost.example.powerups;
 
 import me.filoghost.holographicdisplays.api.Hologram;
-import me.filoghost.holographicdisplays.api.HologramsAPI;
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,7 +23,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class PowerUps extends JavaPlugin implements Listener {
-    
+
+    private HolographicDisplaysAPI holographicDisplaysAPI;
+
     @Override
     public void onEnable() {
         if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
@@ -32,7 +34,8 @@ public class PowerUps extends JavaPlugin implements Listener {
             this.setEnabled(false);
             return;
         }
-        
+
+        holographicDisplaysAPI = HolographicDisplaysAPI.get(this);
         Bukkit.getPluginManager().registerEvents(this, this);
     }
     
@@ -45,7 +48,7 @@ public class PowerUps extends JavaPlugin implements Listener {
             event.setDroppedExp(0);
             
             // Spawn the floating item with a label.
-            Hologram hologram = HologramsAPI.createHologram(this, event.getEntity().getLocation().add(0.0, 0.9, 0.0));
+            Hologram hologram = holographicDisplaysAPI.createHologram(event.getEntity().getLocation().add(0.0, 0.9, 0.0));
             hologram.appendTextLine(ChatColor.AQUA  + "" + ChatColor.BOLD + "Speed PowerUp");
             ItemLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
             

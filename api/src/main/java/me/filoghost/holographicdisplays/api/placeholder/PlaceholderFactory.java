@@ -7,8 +7,14 @@ package me.filoghost.holographicdisplays.api.placeholder;
 
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @since 1
+ */
 public interface PlaceholderFactory {
-    
+
+    /**
+     * @since 1
+     */
     Placeholder getPlaceholder(@Nullable String argument);
     
 }

@@ -9,6 +9,8 @@ import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 
 /**
  * A line of a Hologram that can be touched (right click).
+ * 
+ * @since 1
  */
 public interface TouchableLine extends HologramLine {
 
@@ -16,6 +18,7 @@ public interface TouchableLine extends HologramLine {
      * Sets the TouchHandler for this line.
      * 
      * @param touchHandler the new TouchHandler, can be null.
+     * @since 1
      */
     void setTouchHandler(TouchHandler touchHandler);
     
@@ -23,6 +26,7 @@ public interface TouchableLine extends HologramLine {
      * Returns the current TouchHandler of this line.
      * 
      * @return the current TouchHandler, can be null.
+     * @since 1
      */
     TouchHandler getTouchHandler();
     

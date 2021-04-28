@@ -9,12 +9,15 @@ import org.bukkit.entity.Player;
 
 /**
  * Interface to handle items being picked up by players.
+ * 
+ * @since 1
  */
 public interface PickupHandler {
 
     /**
      * Called when a player picks up the item.
      * @param player the player who picked up the item
+     * @since 1
      */
     void onPickup(Player player);
     
