@@ -51,12 +51,11 @@ public class StringWithPlaceholders {
             if (replacement != null) {                
                 // Append placeholder replacement
                 output.append(replacement);
-                lastAppendIndex = match.endIndex;
             } else {
                 // If no replacement is provided, do not replace the occurrence
                 output.append(match.unparsedString);
             }
-
+            lastAppendIndex = match.endIndex;
         }
 
         // Append trailing text (if any)

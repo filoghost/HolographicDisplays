@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.placeholder.parsing;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,6 +33,13 @@ class StringWithPlaceholdersTest {
                 Arguments.of("{p abc", "{p abc"), // Placeholder without closing tag
                 Arguments.of("abc p}", "abc p}") // Placeholder without opening tag
         );
+    }
+    
+    @Test
+    void skipReplacing() {
+        String input = "{p} a {p} b {p}";
+        StringWithPlaceholders s = new StringWithPlaceholders(input);
+        assertThat(s.replacePlaceholders(occurrence -> null)).isEqualTo(input);
     }
 
     @ParameterizedTest(name = "[{index}] {0} -> {1}, {2}, {3}")
