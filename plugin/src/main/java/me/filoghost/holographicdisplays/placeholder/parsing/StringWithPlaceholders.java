@@ -5,7 +5,6 @@
  */
 package me.filoghost.holographicdisplays.placeholder.parsing;
 
-import me.filoghost.fcommons.collection.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -23,10 +22,6 @@ public class StringWithPlaceholders {
     public StringWithPlaceholders(String string) {
         this.string = string;
         this.placeholderMatches = findPlaceholders(string);
-    }
-    
-    protected List<PlaceholderOccurrence> getPlaceholders() {
-        return CollectionUtils.transform(placeholderMatches, match -> match.content);
     }
 
     public boolean containsPlaceholders() {

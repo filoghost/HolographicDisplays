@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -47,7 +48,11 @@ class StringWithPlaceholdersTest {
     void parsing(String input, String expectedPluginName, String expectedIdentifier, String expectedArgument) {
         StringWithPlaceholders s = new StringWithPlaceholders(input);
         
-        List<PlaceholderOccurrence> placeholders = s.getPlaceholders();
+        List<PlaceholderOccurrence> placeholders = new ArrayList<>();
+        s.replacePlaceholders(occurrence -> {
+            placeholders.add(occurrence); // Just save occurrences
+            return null;
+        });
         assertThat(placeholders).hasSize(1);
         
         PlaceholderOccurrence placeholder = placeholders.get(0);
