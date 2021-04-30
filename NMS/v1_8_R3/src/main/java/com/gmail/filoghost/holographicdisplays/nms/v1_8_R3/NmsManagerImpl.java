@@ -17,6 +17,7 @@ package com.gmail.filoghost.holographicdisplays.nms.v1_8_R3;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
@@ -35,16 +36,11 @@ import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
 import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
 
-import net.minecraft.server.v1_8_R3.Entity;
-import net.minecraft.server.v1_8_R3.EntityTypes;
-import net.minecraft.server.v1_8_R3.MathHelper;
-import net.minecraft.server.v1_8_R3.World;
-import net.minecraft.server.v1_8_R3.WorldServer;
-
 public class NmsManagerImpl implements NMSManager {
 	
 	private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD = new ReflectField<>(EntityTypes.class, "d");
 	private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD = new ReflectField<>(EntityTypes.class, "f");
+	private static final ReflectField<IntHashMap<Entity>> ENTITY_IDS_IN_WORLD = new ReflectField<>(World.class, "entitiesById");
 
 	private Method validateEntityMethod;
 	
@@ -60,7 +56,7 @@ public class NmsManagerImpl implements NMSManager {
 	
 	public void registerCustomEntity(Class<?> entityClass, String name, int id) throws Exception {
 		ENTITY_NAMES_BY_CLASS_FIELD.getStatic().put(entityClass, name);
-		ENTITY_IDS_BY_CLASS_FIELD.getStatic().put(entityClass, Integer.valueOf(id));
+		ENTITY_IDS_BY_CLASS_FIELD.getStatic().put(entityClass, id);
 	}
 	
 	@Override
@@ -115,8 +111,15 @@ public class NmsManagerImpl implements NMSManager {
         
         nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
         nmsWorld.entityList.add(nmsEntity);
-        
-        try {
+
+		try {
+			// We need to register IDs before the entity is spawned, so that spawn packet listeners can get the entity from its ID.
+			ENTITY_IDS_IN_WORLD.get(nmsWorld).a(nmsEntity.getId(), nmsEntity);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		try {
 			validateEntityMethod.invoke(nmsWorld, nmsEntity);
 		} catch (Exception e) {
 			e.printStackTrace();
