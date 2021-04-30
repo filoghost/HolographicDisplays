@@ -11,6 +11,12 @@
 
     <artifactId>holographicdisplays-legacy-api</artifactId>
     <name>HolographicDisplays Legacy API</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>v1</module>
+        <module>v2</module>
+    </modules>
 
     <dependencies>
         <dependency>
