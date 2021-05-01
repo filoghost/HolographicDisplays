@@ -3,21 +3,21 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package com.gmail.filoghost.holograms.api.adapter;
+package com.gmail.filoghost.holograms.api.internal;
 
 import com.gmail.filoghost.holograms.api.FloatingItem;
 import com.gmail.filoghost.holograms.api.PickupHandler;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
-public class PickupHandlerAdapter implements me.filoghost.holographicdisplays.api.handler.PickupHandler {
+class PickupHandlerAdapter implements me.filoghost.holographicdisplays.api.handler.PickupHandler {
 
     private final PickupHandler oldHandler;
     private final FloatingItem item;
     
-    public PickupHandlerAdapter(FloatingItem item, PickupHandler oldPickupHandler) {
+    PickupHandlerAdapter(FloatingItem item, PickupHandler oldHandler) {
         this.item = item;
-        this.oldHandler = oldPickupHandler;
+        this.oldHandler = oldHandler;
     }
     
     @Override

@@ -3,40 +3,46 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package com.gmail.filoghost.holograms.api.adapter;
+package com.gmail.filoghost.holograms.api.internal;
 
 import com.gmail.filoghost.holograms.api.FloatingItem;
 import com.gmail.filoghost.holograms.api.ItemTouchHandler;
 import com.gmail.filoghost.holograms.api.PickupHandler;
-import me.filoghost.holographicdisplays.api.Hologram;
-import me.filoghost.holographicdisplays.api.line.ItemLine;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class FloatingItemAdapter implements FloatingItem {
+class FloatingItemAdapter extends BaseHologramAdapter implements FloatingItem {
     
-    public static final Map<Plugin, Collection<FloatingItemAdapter>> activeFloatingItems = new HashMap<>();
-    
-    private final Plugin plugin;
-    private final Hologram hologram;
-    private final ItemLine itemLine;
+    private final me.filoghost.holographicdisplays.api.line.ItemLine itemLine;
     private ItemTouchHandler touchHandler;
     private PickupHandler pickupHandler;
+
+    FloatingItemAdapter(Plugin plugin, Location source, ItemStack itemstack) {
+        super(plugin, source);
+        this.itemLine = hologram.appendItemLine(itemstack);
+
+        ActiveObjectsRegistry.addFloatingItem(this);
+    }
     
-    public FloatingItemAdapter(Plugin plugin, Hologram delegateHologram, ItemLine delegateItemLine) {
-        this.plugin = plugin;
-        this.hologram = delegateHologram;        
-        this.itemLine = delegateItemLine;
+    FloatingItemAdapter(Plugin plugin, Location source, ItemStack itemstack, List<Player> whoCanSee) {
+        super(plugin, source);
+        restrictVisibityTo(whoCanSee);
+        this.itemLine = hologram.appendItemLine(itemstack);
         
-        activeFloatingItems.computeIfAbsent(plugin, __ -> new ArrayList<>()).add(this);
+        ActiveObjectsRegistry.addFloatingItem(this);
+    }
+
+    @Override
+    public void delete() {
+        hologram.delete();
+        
+        ActiveObjectsRegistry.removeFloatingItem(this);
     }
 
     @Override
@@ -134,13 +140,6 @@ public class FloatingItemAdapter implements FloatingItem {
     @Override
     public long getCreationTimestamp() {
         return hologram.getCreationTimestamp();
-    }
-
-    @Override
-    public void delete() {
-        hologram.delete();
-        
-        activeFloatingItems.get(plugin).remove(this);
     }
 
     @Override

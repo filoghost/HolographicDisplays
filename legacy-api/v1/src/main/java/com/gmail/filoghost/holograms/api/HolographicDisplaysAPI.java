@@ -5,25 +5,14 @@
  */
 package com.gmail.filoghost.holograms.api;
 
-import com.gmail.filoghost.holograms.api.adapter.FloatingItemAdapter;
-import com.gmail.filoghost.holograms.api.adapter.HologramAdapter;
-import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.api.line.ItemLine;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import com.gmail.filoghost.holograms.api.internal.NewAPIAdapter;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @deprecated Please use the new API!
@@ -31,127 +20,49 @@ import java.util.Set;
 @Deprecated
 public class HolographicDisplaysAPI {
     
-    private static final Set<String> notifiedPlugins = new HashSet<>();
-    
-    private static void notifyOldAPI(Plugin plugin) {
-        Preconditions.notNull(plugin, "plugin");
-        
-        if (notifiedPlugins.add(plugin.getName())) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Holographic Displays] The plugin \"" + plugin.getName() + "\" is still using the old API of Holographic Displays. "
-                + "Please notify the author and ask them to update it, the old API will be removed soon.");
-        }
-    }
-    
     @Deprecated
     public static Hologram createHologram(Plugin plugin, Location source, String... lines) {
-        notifyOldAPI(plugin);
-        
-        validateLocation(source);
-        
-        me.filoghost.holographicdisplays.api.Hologram hologram = me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.get(plugin).createHologram(source);
-        for (String line : lines) {
-            hologram.appendTextLine(line);
-        }
-        return new HologramAdapter(plugin, hologram);
+        return NewAPIAdapter.createHologram(plugin, source, lines);
     }
 
     @Deprecated
     public static FloatingItem createFloatingItem(Plugin plugin, Location source, ItemStack itemstack) {
-        notifyOldAPI(plugin);
-        
-        validateLocation(source);
-        validateItem(itemstack);
-        
-        me.filoghost.holographicdisplays.api.Hologram hologram = me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.get(plugin).createHologram(source);
-        ItemLine itemLine = hologram.appendItemLine(itemstack);
-        return new FloatingItemAdapter(plugin, hologram, itemLine);
+        return NewAPIAdapter.createFloatingItem(plugin, source, itemstack);
     }
 
     @Deprecated
     public static Hologram createIndividualHologram(Plugin plugin, Location source, Player whoCanSee, String... lines) {
-        notifyOldAPI(plugin);
-        
-        return createIndividualHologram(plugin, source, Arrays.asList(whoCanSee), lines);
+        return NewAPIAdapter.createIndividualHologram(plugin, source, whoCanSee, lines);
     }
     
     @Deprecated
     public static Hologram createIndividualHologram(Plugin plugin, Location source, List<Player> whoCanSee, String... lines) {
-        notifyOldAPI(plugin);
-        
-        validateLocation(source);
-        
-        me.filoghost.holographicdisplays.api.Hologram hologram = me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.get(plugin).createHologram(source);
-        
-        hologram.getVisibilityManager().setVisibleByDefault(false);
-        if (whoCanSee != null) {
-            for (Player player : whoCanSee) {
-                hologram.getVisibilityManager().showTo(player);
-            }
-        }
-        
-        for (String line : lines) {
-            hologram.appendTextLine(line);
-        }
-        
-        return new HologramAdapter(plugin, hologram);
+        return NewAPIAdapter.createIndividualHologram(plugin, source, whoCanSee, lines);
     }
     
     @Deprecated
     public static FloatingItem createIndividualFloatingItem(Plugin plugin, Location source, Player whoCanSee, ItemStack itemstack) {
-        notifyOldAPI(plugin);
-        
-        return createIndividualFloatingItem(plugin, source, Arrays.asList(whoCanSee), itemstack);
+        return NewAPIAdapter.createIndividualFloatingItem(plugin, source, whoCanSee, itemstack);
     }
     
     @Deprecated
     public static FloatingItem createIndividualFloatingItem(Plugin plugin, Location source, List<Player> whoCanSee, ItemStack itemstack) {
-        notifyOldAPI(plugin);
-        
-        validateLocation(source);
-        validateItem(itemstack);
-        
-        me.filoghost.holographicdisplays.api.Hologram hologram = me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.get(plugin).createHologram(source);
-        ItemLine itemLine = hologram.appendItemLine(itemstack);
-        
-        hologram.getVisibilityManager().setVisibleByDefault(false);
-        if (whoCanSee != null) {
-            for (Player player : whoCanSee) {
-                hologram.getVisibilityManager().showTo(player);
-            }
-        }
-        
-        return new FloatingItemAdapter(plugin, hologram, itemLine);
+        return NewAPIAdapter.createIndividualFloatingItem(plugin, source, whoCanSee, itemstack);
     }
     
     @Deprecated
     public static Hologram[] getHolograms(Plugin plugin) {
-        notifyOldAPI(plugin);
-        
-        Collection<HologramAdapter> pluginHolograms = HologramAdapter.activeHolograms.getOrDefault(plugin, Collections.emptyList());        
-        return pluginHolograms.toArray(new HologramAdapter[0]);
+        return NewAPIAdapter.getHolograms(plugin);
     }
     
     @Deprecated
     public static FloatingItem[] getFloatingItems(Plugin plugin) {
-        notifyOldAPI(plugin);
-        
-        Collection<FloatingItemAdapter> pluginFloatingItems = FloatingItemAdapter.activeFloatingItems.getOrDefault(plugin, Collections.emptyList());        
-        return pluginFloatingItems.toArray(new FloatingItemAdapter[0]);
+        return NewAPIAdapter.getFloatingItems(plugin);
     }
     
     @Deprecated
     public static boolean isHologramEntity(Entity bukkitEntity) {
-        return me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.isHologramEntity(bukkitEntity);
-    }
-    
-    private static void validateLocation(Location loc) {
-        Preconditions.notNull(loc, "location");
-        Preconditions.notNull(loc.getWorld(), "location's world");
-    }
-    
-    private static void validateItem(ItemStack itemstack) {
-        Preconditions.notNull(itemstack, "itemstack");
-        Preconditions.checkArgument(itemstack.getType() != Material.AIR, "itemstack cannot be AIR");
+        return NewAPIAdapter.isHologramEntity(bukkitEntity);
     }
 
 }
