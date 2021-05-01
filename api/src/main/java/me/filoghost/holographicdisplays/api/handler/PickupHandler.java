@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.api.handler;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Interface to handle items being picked up by players.
@@ -19,6 +20,6 @@ public interface PickupHandler {
      * @param player the player who picked up the item
      * @since 1
      */
-    void onPickup(Player player);
+    void onPickup(@NotNull Player player);
     
 }

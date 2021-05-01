@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.api.line;
 
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A line of a Hologram that can be touched (right click).
@@ -20,7 +21,7 @@ public interface TouchableLine extends HologramLine {
      * @param touchHandler the new TouchHandler, can be null.
      * @since 1
      */
-    void setTouchHandler(TouchHandler touchHandler);
+    void setTouchHandler(@Nullable TouchHandler touchHandler);
     
     /**
      * Returns the current TouchHandler of this line.
@@ -28,6 +29,7 @@ public interface TouchableLine extends HologramLine {
      * @return the current TouchHandler, can be null.
      * @since 1
      */
+    @Nullable
     TouchHandler getTouchHandler();
     
 }

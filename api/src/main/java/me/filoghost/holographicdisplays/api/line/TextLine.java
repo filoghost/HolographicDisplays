@@ -5,6 +5,8 @@
  */
 package me.filoghost.holographicdisplays.api.line;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * @since 1
  */
@@ -16,6 +18,7 @@ public interface TextLine extends TouchableLine {
      * @return the current text of this line.
      * @since 1
      */
+    @Nullable
     String getText();
     
     /**
@@ -24,6 +27,6 @@ public interface TextLine extends TouchableLine {
      * @param text the new text of this line.
      * @since 1
      */
-    void setText(String text);
+    void setText(@Nullable String text);
     
 }

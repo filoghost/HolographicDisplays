@@ -10,6 +10,7 @@ import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -39,7 +40,8 @@ public interface HolographicDisplaysAPI {
         return 1;
     }
 
-    static HolographicDisplaysAPI get(Plugin plugin) {
+    @NotNull
+    static HolographicDisplaysAPI get(@NotNull Plugin plugin) {
         return HolographicDisplaysAPIProvider.getImplementation().getHolographicDisplaysAPI(plugin);
     }
 
@@ -50,7 +52,8 @@ public interface HolographicDisplaysAPI {
      * @return the created hologram
      * @since 1
      */
-    Hologram createHologram(Location source);
+    @NotNull
+    Hologram createHologram(@NotNull Location source);
 
     /**
      * Returns all the active holograms. A hologram is no longer active after {@link Hologram#delete()} is invoked.
@@ -58,12 +61,13 @@ public interface HolographicDisplaysAPI {
      * @return an immutable collection of active holograms
      * @since 1
      */
+    @NotNull
     Collection<Hologram> getHolograms();
 
     /**
      * @since 1
      */
-    void registerPlaceholder(String identifier, int refreshIntervalTicks, PlaceholderReplacer replacer);
+    void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull PlaceholderReplacer replacer);
 
     /**
      * Returns all the registered placeholder identifiers.
@@ -71,6 +75,7 @@ public interface HolographicDisplaysAPI {
      * @return a collection of placeholder identifiers
      * @since 1
      */
+    @NotNull
     Collection<String> getRegisteredPlaceholders();
 
     /**
@@ -79,7 +84,7 @@ public interface HolographicDisplaysAPI {
      * @param identifier the identifier of the placeholder to remove
      * @since 1
      */
-    void unregisterPlaceholder(String identifier);
+    void unregisterPlaceholder(@NotNull String identifier);
 
     /**
      * Resets and removes all the registered placeholders.
@@ -97,7 +102,7 @@ public interface HolographicDisplaysAPI {
      * @return if the entity is part of a hologram
      * @since 1
      */
-    static boolean isHologramEntity(Entity entity) {
+    static boolean isHologramEntity(@NotNull Entity entity) {
         return HolographicDisplaysAPIProvider.getImplementation().isHologramEntity(entity);
     }
 

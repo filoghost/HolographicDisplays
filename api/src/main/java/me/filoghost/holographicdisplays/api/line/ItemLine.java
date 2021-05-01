@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.api.line;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @since 1
@@ -18,6 +19,7 @@ public interface ItemLine extends CollectableLine, TouchableLine {
      * @return the ItemStack if this ItemLine.
      * @since 1
      */
+    @NotNull
     ItemStack getItemStack();
 
     /**
@@ -26,6 +28,6 @@ public interface ItemLine extends CollectableLine, TouchableLine {
      * @param itemStack the new item, should not be null.
      * @since 1
      */
-    void setItemStack(ItemStack itemStack);
+    void setItemStack(@NotNull ItemStack itemStack);
     
 }

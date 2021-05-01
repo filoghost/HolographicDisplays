@@ -11,6 +11,8 @@ import me.filoghost.holographicdisplays.api.line.TextLine;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An object made of various lines, that can be items or holograms.
@@ -28,7 +30,8 @@ public interface Hologram {
      * @return the new TextLine appended
      * @since 1
      */
-    TextLine appendTextLine(String text);
+    @NotNull
+    TextLine appendTextLine(@Nullable String text);
     
     
     /**
@@ -38,7 +41,8 @@ public interface Hologram {
      * @return the new ItemLine appended
      * @since 1
      */
-    ItemLine appendItemLine(ItemStack itemStack);
+    @NotNull
+    ItemLine appendItemLine(@NotNull ItemStack itemStack);
     
     
     /**
@@ -51,7 +55,8 @@ public interface Hologram {
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
      * @since 1
      */
-    TextLine insertTextLine(int index, String text);
+    @NotNull
+    TextLine insertTextLine(int index, @Nullable String text);
     
     
     /**
@@ -64,7 +69,8 @@ public interface Hologram {
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
      * @since 1
      */
-    ItemLine insertItemLine(int index, ItemStack itemStack);
+    @NotNull
+    ItemLine insertItemLine(int index, @NotNull ItemStack itemStack);
     
     
     /**
@@ -75,6 +81,7 @@ public interface Hologram {
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
      * @since 1
      */
+    @NotNull
     HologramLine getLine(int index);
     
     /**
@@ -119,7 +126,7 @@ public interface Hologram {
      * @param location the new location
      * @since 1
      */
-    void teleport(Location location);
+    void teleport(@NotNull Location location);
     
     
     /**
@@ -132,7 +139,7 @@ public interface Hologram {
      * @param z the Z coordinate
      * @since 1
      */
-    void teleport(World world, double x, double y, double z);
+    void teleport(@NotNull World world, double x, double y, double z);
     
     /**
      * Returns the position of the hologram.
@@ -140,6 +147,7 @@ public interface Hologram {
      * @return the Location of the hologram
      * @since 1
      */
+    @NotNull
     Location getLocation();
     
     /**
@@ -175,6 +183,7 @@ public interface Hologram {
      * @return the world of the hologram
      * @since 1
      */
+    @NotNull
     World getWorld();
     
     
@@ -186,6 +195,7 @@ public interface Hologram {
      * @return the VisibilityManager of this hologram
      * @since 1
      */
+    @NotNull
     VisibilityManager getVisibilityManager();
     
     

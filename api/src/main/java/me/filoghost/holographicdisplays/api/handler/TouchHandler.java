@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.api.handler;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Interface to handle touch holograms.
@@ -19,6 +20,6 @@ public interface TouchHandler {
      * @param player the player who interacts
      * @since 1
      */
-    void onTouch(Player player);
+    void onTouch(@NotNull Player player);
     
 }

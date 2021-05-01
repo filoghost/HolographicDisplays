@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.api.line;
 
 import me.filoghost.holographicdisplays.api.Hologram;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Interface to represent a line in a Hologram.
@@ -20,6 +21,7 @@ public interface HologramLine {
      * @return the parent Hologram.
      * @since 1
      */
+    @NotNull
     Hologram getParent();
     
     /**

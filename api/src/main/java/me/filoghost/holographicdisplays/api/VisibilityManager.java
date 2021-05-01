@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.api;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This object is used to manage the visibility of a hologram.
@@ -41,7 +42,7 @@ public interface VisibilityManager {
      * @param player the involved player
      * @since 1
      */
-    void showTo(Player player);
+    void showTo(@NotNull Player player);
     
     /**
      * Hides the hologram to a player, overriding the value of {@link #isVisibleByDefault()}.
@@ -50,7 +51,7 @@ public interface VisibilityManager {
      * @param player the involved player
      * @since 1
      */
-    void hideTo(Player player);
+    void hideTo(@NotNull Player player);
     
     /**
      * Checks if a hologram is visible to a player.
@@ -59,7 +60,7 @@ public interface VisibilityManager {
      * @return if the player can see the hologram
      * @since 1
      */
-    boolean isVisibleTo(Player player);
+    boolean isVisibleTo(@NotNull Player player);
     
     /**
      * Resets the visibility to the default value. If you previously called {@link #showTo(Player)}
@@ -69,7 +70,7 @@ public interface VisibilityManager {
      * @param player the involved player
      * @since 1
      */
-    void resetVisibility(Player player);
+    void resetVisibility(@NotNull Player player);
     
     /**
      * Resets the visibility for all the players. See {@link #resetVisibility(Player)} for more details.
