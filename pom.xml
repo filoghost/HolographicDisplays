@@ -74,7 +74,13 @@
     
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>holographicdisplays-legacy-api</artifactId>
+                <artifactId>holographicdisplays-legacy-api-v1</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>holographicdisplays-legacy-api-v2</artifactId>
                 <version>${project.version}</version>
             </dependency>
             
