@@ -12,9 +12,9 @@ import me.filoghost.holographicdisplays.placeholder.PlaceholderManager;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class APIHologramManager extends BaseHologramManager<APIHologram> {
@@ -34,7 +34,7 @@ public class APIHologramManager extends BaseHologramManager<APIHologram> {
     }
 
     public Collection<Hologram> getHologramsByPlugin(Plugin plugin) {
-        List<Hologram> ownedHolograms = new LinkedList<>();
+        List<Hologram> ownedHolograms = new ArrayList<>();
         
         for (APIHologram hologram : getHolograms()) {
             if (hologram.getOwnerPlugin().equals(plugin)) {
