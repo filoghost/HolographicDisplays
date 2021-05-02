@@ -21,8 +21,7 @@ public interface HologramLine {
      * @return the parent Hologram.
      * @since 1
      */
-    @NotNull
-    Hologram getParent();
+    @NotNull Hologram getParent();
     
     /**
      * Removes this line from the parent Hologram. Since: v2.0.1

@@ -29,7 +29,6 @@ public interface CollectableLine extends HologramLine {
      * @return the current PickupHandler, can be null.
      * @since 1
      */
-    @Nullable
-    PickupHandler getPickupHandler();
+    @Nullable PickupHandler getPickupHandler();
     
 }

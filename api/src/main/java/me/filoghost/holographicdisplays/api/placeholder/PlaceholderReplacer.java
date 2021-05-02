@@ -25,7 +25,6 @@ public interface PlaceholderReplacer {
      * @return the placeholder replacement
      * @since 1
      */
-    @Nullable
-    String getReplacement(@Nullable String argument);
+    @Nullable String getReplacement(@Nullable String argument);
 
 }

@@ -19,8 +19,7 @@ public interface ItemLine extends CollectableLine, TouchableLine {
      * @return the ItemStack if this ItemLine.
      * @since 1
      */
-    @NotNull
-    ItemStack getItemStack();
+    @NotNull ItemStack getItemStack();
 
     /**
      * Sets the ItemStack for this ItemLine.

@@ -61,8 +61,7 @@ public class StringWithPlaceholders {
         return output.toString();
     }
     
-    @Nullable
-    private List<PlaceholderMatch> findPlaceholders(String input) {
+    private @Nullable List<PlaceholderMatch> findPlaceholders(String input) {
         int currentIndex = 0;
         int placeholderStartIndex = -1;
         List<PlaceholderMatch> matches = null;

@@ -26,18 +26,15 @@ public class PlaceholderOccurrence {
         this.hashCode = Objects.hash(pluginName, identifier, argument);
     }
     
-    @Nullable
-    public PluginName getPluginName() {
+    public @Nullable PluginName getPluginName() {
         return pluginName;
     }
-
-    @NotNull
-    public PlaceholderIdentifier getIdentifier() {
+    
+    public @NotNull PlaceholderIdentifier getIdentifier() {
         return identifier;
     }
-
-    @Nullable
-    public String getArgument() {
+    
+    public @Nullable String getArgument() {
         return argument;
     }
 

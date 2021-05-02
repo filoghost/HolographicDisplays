@@ -29,7 +29,6 @@ public interface TouchableLine extends HologramLine {
      * @return the current TouchHandler, can be null.
      * @since 1
      */
-    @Nullable
-    TouchHandler getTouchHandler();
+    @Nullable TouchHandler getTouchHandler();
     
 }

@@ -61,9 +61,8 @@ public class PlaceholderRegistry {
         
         changeListener.run();
     }
-
-    @Nullable
-    public PlaceholderExpansion findBestMatch(PlaceholderOccurrence textOccurrence) {
+    
+    public @Nullable PlaceholderExpansion findBestMatch(PlaceholderOccurrence textOccurrence) {
         PluginName pluginName = textOccurrence.getPluginName();
         PlaceholderIdentifier identifier = textOccurrence.getIdentifier();
         

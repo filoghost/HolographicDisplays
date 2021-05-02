@@ -39,9 +39,8 @@ public interface HolographicDisplaysAPI {
     static int getVersion() {
         return 1;
     }
-
-    @NotNull
-    static HolographicDisplaysAPI get(@NotNull Plugin plugin) {
+    
+    static @NotNull HolographicDisplaysAPI get(@NotNull Plugin plugin) {
         return HolographicDisplaysAPIProvider.getImplementation().getHolographicDisplaysAPI(plugin);
     }
 
@@ -52,8 +51,7 @@ public interface HolographicDisplaysAPI {
      * @return the created hologram
      * @since 1
      */
-    @NotNull
-    Hologram createHologram(@NotNull Location source);
+    @NotNull Hologram createHologram(@NotNull Location source);
 
     /**
      * Returns all the active holograms. A hologram is no longer active after {@link Hologram#delete()} is invoked.
@@ -61,8 +59,7 @@ public interface HolographicDisplaysAPI {
      * @return an immutable collection of active holograms
      * @since 1
      */
-    @NotNull
-    Collection<Hologram> getHolograms();
+    @NotNull Collection<Hologram> getHolograms();
 
     /**
      * @since 1
@@ -75,8 +72,7 @@ public interface HolographicDisplaysAPI {
      * @return a collection of placeholder identifiers
      * @since 1
      */
-    @NotNull
-    Collection<String> getRegisteredPlaceholders();
+    @NotNull Collection<String> getRegisteredPlaceholders();
 
     /**
      * Unregisters a placeholder.

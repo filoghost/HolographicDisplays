@@ -30,8 +30,7 @@ public interface Hologram {
      * @return the new TextLine appended
      * @since 1
      */
-    @NotNull
-    TextLine appendTextLine(@Nullable String text);
+    @NotNull TextLine appendTextLine(@Nullable String text);
     
     
     /**
@@ -41,8 +40,7 @@ public interface Hologram {
      * @return the new ItemLine appended
      * @since 1
      */
-    @NotNull
-    ItemLine appendItemLine(@NotNull ItemStack itemStack);
+    @NotNull ItemLine appendItemLine(@NotNull ItemStack itemStack);
     
     
     /**
@@ -55,8 +53,7 @@ public interface Hologram {
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
      * @since 1
      */
-    @NotNull
-    TextLine insertTextLine(int index, @Nullable String text);
+    @NotNull TextLine insertTextLine(int index, @Nullable String text);
     
     
     /**
@@ -69,8 +66,7 @@ public interface Hologram {
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
      * @since 1
      */
-    @NotNull
-    ItemLine insertItemLine(int index, @NotNull ItemStack itemStack);
+    @NotNull ItemLine insertItemLine(int index, @NotNull ItemStack itemStack);
     
     
     /**
@@ -81,8 +77,7 @@ public interface Hologram {
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
      * @since 1
      */
-    @NotNull
-    HologramLine getLine(int index);
+    @NotNull HologramLine getLine(int index);
     
     /**
      * Removes a line at a given index. Since: v2.0.1
@@ -147,8 +142,7 @@ public interface Hologram {
      * @return the Location of the hologram
      * @since 1
      */
-    @NotNull
-    Location getLocation();
+    @NotNull Location getLocation();
     
     /**
      * Returns the X coordinate.
@@ -183,8 +177,7 @@ public interface Hologram {
      * @return the world of the hologram
      * @since 1
      */
-    @NotNull
-    World getWorld();
+    @NotNull World getWorld();
     
     
     /**
@@ -195,8 +188,7 @@ public interface Hologram {
      * @return the VisibilityManager of this hologram
      * @since 1
      */
-    @NotNull
-    VisibilityManager getVisibilityManager();
+    @NotNull VisibilityManager getVisibilityManager();
     
     
     /**

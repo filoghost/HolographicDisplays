@@ -63,8 +63,7 @@ public class PlaceholdersUpdateTask implements Runnable {
         }
     }
     
-    @Nullable
-    private TrackedLine createTrackedLineIfNeeded(StandardTextLine textLine) {
+    private @Nullable TrackedLine createTrackedLineIfNeeded(StandardTextLine textLine) {
         if (!textLine.isAllowPlaceholders()) {
             return null;
         }

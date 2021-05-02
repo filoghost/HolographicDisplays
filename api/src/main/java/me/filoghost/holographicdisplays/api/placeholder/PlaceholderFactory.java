@@ -15,7 +15,6 @@ public interface PlaceholderFactory {
     /**
      * @since 1
      */
-    @Nullable
-    Placeholder getPlaceholder(@Nullable String argument);
+    @Nullable Placeholder getPlaceholder(@Nullable String argument);
     
 }

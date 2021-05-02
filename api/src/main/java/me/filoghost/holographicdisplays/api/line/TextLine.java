@@ -18,8 +18,7 @@ public interface TextLine extends TouchableLine {
      * @return the current text of this line.
      * @since 1
      */
-    @Nullable
-    String getText();
+    @Nullable String getText();
     
     /**
      * Sets the text of this TextLine.

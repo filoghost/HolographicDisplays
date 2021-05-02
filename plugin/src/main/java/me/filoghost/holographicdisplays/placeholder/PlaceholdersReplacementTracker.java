@@ -39,8 +39,7 @@ public class PlaceholdersReplacementTracker {
         });
     }
     
-    @Nullable
-    public String getOrUpdateReplacement(PlaceholderOccurrence placeholderOccurrence, long currentTick) throws PlaceholderException {
+    public @Nullable String getOrUpdateReplacement(PlaceholderOccurrence placeholderOccurrence, long currentTick) throws PlaceholderException {
         ReplacementHolder replacementHolder = currentReplacements.get(placeholderOccurrence);
         
         if (replacementHolder == null) {
