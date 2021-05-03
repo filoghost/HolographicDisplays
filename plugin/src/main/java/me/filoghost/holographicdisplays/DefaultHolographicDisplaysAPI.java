@@ -48,6 +48,13 @@ public class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
+    public boolean isRegisteredPlaceholder(String identifier) {
+        Preconditions.notNull(identifier, "identifier");
+        
+        return placeholderRegistry.isRegisteredIdentifier(plugin, identifier);
+    }
+
+    @Override
     public Collection<Hologram> getHolograms() {
         return apiHologramManager.getHologramsByPlugin(plugin);
     }

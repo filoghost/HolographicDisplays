@@ -67,6 +67,11 @@ public interface HolographicDisplaysAPI {
     void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull PlaceholderReplacer replacer);
 
     /**
+     * @since 1
+     */
+    boolean isRegisteredPlaceholder(@NotNull String identifier);
+    
+    /**
      * Returns all the registered placeholder identifiers.
      *
      * @return a collection of placeholder identifiers

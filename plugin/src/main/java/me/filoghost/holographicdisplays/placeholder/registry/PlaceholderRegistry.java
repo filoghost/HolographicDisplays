@@ -87,4 +87,8 @@ public class PlaceholderRegistry {
         return identifiers;
     }
 
+    public boolean isRegisteredIdentifier(Plugin plugin, String identifier) {
+        return placeholderExpansions.contains(new PlaceholderIdentifier(identifier), new PluginName(plugin));
+    }
+
 }
