@@ -5,13 +5,13 @@
  */
 package me.filoghost.holographicdisplays.commands.subs;
 
+import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
-import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.event.InternalHologramEditEvent;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
@@ -40,7 +40,7 @@ public class SetlineCommand extends LineEditingCommand implements QuickEditComma
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
-        String serializedLine = Utils.join(args, " ", 2, args.length);
+        String serializedLine = Strings.joinFrom(" ", args, 2);
         
         int lineNumber = CommandValidate.parseInteger(args[1]);
         CommandValidate.check(lineNumber >= 1 && lineNumber <= hologram.getLinesAmount(), "The line number must be between 1 and " + hologram.getLinesAmount() + ".");

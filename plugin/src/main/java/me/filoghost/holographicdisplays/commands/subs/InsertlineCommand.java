@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.commands.subs;
 
+import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
@@ -12,7 +13,6 @@ import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.Messages;
-import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.event.InternalHologramEditEvent;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
@@ -45,7 +45,7 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
         int insertAfterIndex = CommandValidate.parseInteger(args[1]);
-        String serializedLine = Utils.join(args, " ", 2, args.length);
+        String serializedLine = Strings.joinFrom(" ", args, 2);
         
         int oldLinesAmount = hologram.getLinesAmount();
         

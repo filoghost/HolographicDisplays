@@ -5,16 +5,18 @@
  */
 package me.filoghost.holographicdisplays.placeholder.internal;
 
+import me.filoghost.fcommons.collection.CollectionUtils;
 import me.filoghost.holographicdisplays.HolographicDisplays;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.bridge.bungeecord.ServerInfo;
-import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 
 public class DefaultPlaceholders {
 
@@ -26,7 +28,7 @@ public class DefaultPlaceholders {
         placeholderRegistry.unregisterAll(plugin);
 
         // TODO restore "&u"
-        placeholderRegistry.register(plugin, "rainbow", new AnimationPlaceholder(4, Utils.toStringList(
+        placeholderRegistry.register(plugin, "rainbow", new AnimationPlaceholder(4, toStringList(
                 ChatColor.RED,
                 ChatColor.GOLD,
                 ChatColor.YELLOW,
@@ -98,6 +100,10 @@ public class DefaultPlaceholders {
 
             return bungeeServerTracker.getCurrentServerInfo(serverName).getMotdLine2();
         });
+    }
+
+    private static List<String> toStringList(ChatColor... colors) {
+        return CollectionUtils.toArrayList(Arrays.asList(colors), ChatColor::toString);
     }
 
 }

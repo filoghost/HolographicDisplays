@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.object.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.core.Utils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -43,8 +42,13 @@ public abstract class BaseHologramComponent {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.chunkX = Utils.floor(x) >> 4;
-        this.chunkZ = Utils.floor(z) >> 4;
+        this.chunkX = floor(x) >> 4;
+        this.chunkZ = floor(z) >> 4;
+    }
+
+    private static int floor(double num) {
+        int floor = (int) num;
+        return floor == num ? floor : floor - (int) (Double.doubleToRawLongBits(num) >>> 63);
     }
 
     public World getWorld() {

@@ -5,13 +5,13 @@
  */
 package me.filoghost.holographicdisplays.commands.subs;
 
+import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.Colors;
 import me.filoghost.holographicdisplays.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.commands.HologramSubCommand;
-import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramLine;
@@ -62,7 +62,7 @@ public class CreateCommand extends HologramSubCommand {
         InternalHologramLine line;
 
         if (args.length > 1) {
-            String text = Utils.join(args, " ", 1, args.length);
+            String text = Strings.joinFrom(" ", args, 1);
             CommandValidate.check(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
             
             line = HologramCommandValidate.parseHologramLine(hologram, text);
