@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.nms.v1_8_R2;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.core.DebugLogger;
@@ -160,7 +161,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
             return;
         }
         this.customName = customName;
-        super.setCustomName(customName != null ? Utils.limitLength(customName, 256) : "");
+        super.setCustomName(customName != null ? Strings.truncate(customName, 256) : "");
         super.setCustomNameVisible(customName != null && !customName.isEmpty());
     }
     

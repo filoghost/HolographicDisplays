@@ -25,15 +25,6 @@ public class Utils {
         return result;
     }
     
-    
-    public static String limitLength(String s, int maxLength) {
-        if (s != null && s.length() > maxLength) {
-            s = s.substring(0, maxLength);
-        }
-        return s;
-    }
-    
-    
     public static int floor(double num) {
         int floor = (int) num;
         return floor == num ? floor : floor - (int) (Double.doubleToRawLongBits(num) >>> 63);

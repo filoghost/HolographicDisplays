@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.nms.v1_13_R2;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.core.Utils;
@@ -173,7 +174,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
             return;
         }
         this.customName = customName;
-        super.setCustomName(CraftChatMessage.fromStringOrNull(Utils.limitLength(customName, 300)));
+        super.setCustomName(CraftChatMessage.fromStringOrNull(Strings.truncate(customName, 300)));
         super.setCustomNameVisible(customName != null && !customName.isEmpty());
     }
     
