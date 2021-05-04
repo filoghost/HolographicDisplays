@@ -219,12 +219,12 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     private void broadcastLocationPacketNMS() {
         PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
 
-        for (Object humanEntity : super.world.getPlayers()) {
+        for (EntityHuman humanEntity : super.world.getPlayers()) {
             if (humanEntity instanceof EntityPlayer) {
                 EntityPlayer nmsPlayer = (EntityPlayer) humanEntity;
 
-                double distanceSquared = Utils.square(nmsPlayer.locX() - super.locX()) + Utils.square(nmsPlayer.locZ() - super.locZ());
-                if (distanceSquared < 8192 && nmsPlayer.playerConnection != null) {
+                double distanceSquared = Utils.distanceSquared(nmsPlayer.locX(), super.locX(), nmsPlayer.locZ(), super.locZ());
+                if (distanceSquared < 64 * 64 * 2 && nmsPlayer.playerConnection != null) {
                     nmsPlayer.playerConnection.sendPacket(teleportPacket);
                 }
             }

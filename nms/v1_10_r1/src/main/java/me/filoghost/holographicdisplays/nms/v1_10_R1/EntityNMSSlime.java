@@ -12,6 +12,7 @@ import net.minecraft.server.v1_10_R1.AxisAlignedBB;
 import net.minecraft.server.v1_10_R1.DamageSource;
 import net.minecraft.server.v1_10_R1.Entity;
 import net.minecraft.server.v1_10_R1.EntityDamageSource;
+import net.minecraft.server.v1_10_R1.EntityHuman;
 import net.minecraft.server.v1_10_R1.EntityPlayer;
 import net.minecraft.server.v1_10_R1.EntitySlime;
 import net.minecraft.server.v1_10_R1.NBTTagCompound;
@@ -55,12 +56,12 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
                 // Send a packet near to "remind" players that the slime is riding the armor stand (Spigot bug or client bug)
                 PacketPlayOutMount mountPacket = new PacketPlayOutMount(vehicle);
     
-                for (Object humanEntity : super.world.players) {
+                for (EntityHuman humanEntity : super.world.players) {
                     if (humanEntity instanceof EntityPlayer) {
                         EntityPlayer nmsPlayer = (EntityPlayer) humanEntity;
     
-                        double distanceSquared = Utils.square(nmsPlayer.locX - super.locX) + Utils.square(nmsPlayer.locZ - super.locZ);
-                        if (distanceSquared < 1024 && nmsPlayer.playerConnection != null) {
+                        double distanceSquared = Utils.distanceSquared(nmsPlayer.locX, super.locX, nmsPlayer.locZ, super.locZ);
+                        if (distanceSquared < 32 * 32 && nmsPlayer.playerConnection != null) {
                             nmsPlayer.playerConnection.sendPacket(mountPacket);
                         }
                     }

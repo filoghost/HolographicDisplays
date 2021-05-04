@@ -53,12 +53,12 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
                 // Send a packet near to "remind" players that the item is riding the armor stand (Spigot bug or client bug)
                 PacketPlayOutMount mountPacket = new PacketPlayOutMount(vehicle);
     
-                for (Object humanEntity : super.world.players) {
+                for (EntityHuman humanEntity : super.world.players) {
                     if (humanEntity instanceof EntityPlayer) {
                         EntityPlayer nmsPlayer = (EntityPlayer) humanEntity;
     
-                        double distanceSquared = Utils.square(nmsPlayer.locX - super.locX) + Utils.square(nmsPlayer.locZ - super.locZ);
-                        if (distanceSquared < 1024 && nmsPlayer.playerConnection != null) {
+                        double distanceSquared = Utils.distanceSquared(nmsPlayer.locX, super.locX, nmsPlayer.locZ, super.locZ);
+                        if (distanceSquared < 32 * 32 && nmsPlayer.playerConnection != null) {
                             nmsPlayer.playerConnection.sendPacket(mountPacket);
                         }
                     }

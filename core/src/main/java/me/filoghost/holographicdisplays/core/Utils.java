@@ -8,6 +8,10 @@ package me.filoghost.holographicdisplays.core;
 import me.filoghost.fcommons.Strings;
 
 public class Utils {
+
+    public static double distanceSquared(double locX1, double locX2, double locZ1, double locZ2) {
+        return square(locX1 - locX2) + square(locZ1 - locZ2);
+    }
     
     public static double square(double num) {
         return num * num;
