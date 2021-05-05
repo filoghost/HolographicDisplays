@@ -23,21 +23,21 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
     private final NMSManager nmsManager;
     private final PlaceholderRegistry placeholderRegistry;
     
-    // Avoid creating a new instance every time a plugin requires it
-    private final Map<Plugin, HolographicDisplaysAPI> apiCache;
+    // Optimization: avoid creating a new instance every time a plugin requires it, in case it never stores a reference
+    private final Map<Plugin, HolographicDisplaysAPI> apiInstanceCache;
 
     public DefaultHolographicDisplaysAPIProvider(APIHologramManager apiHologramManager, NMSManager nmsManager, PlaceholderRegistry placeholderRegistry) {
         this.apiHologramManager = apiHologramManager;
         this.nmsManager = nmsManager;
         this.placeholderRegistry = placeholderRegistry;
-        this.apiCache = new WeakHashMap<>();
+        this.apiInstanceCache = new WeakHashMap<>();
     }
 
     @Override
     public HolographicDisplaysAPI getHolographicDisplaysAPI(Plugin plugin) {
         Preconditions.notNull(plugin, "plugin");
         
-        return apiCache.computeIfAbsent(plugin, pluginKey ->
+        return apiInstanceCache.computeIfAbsent(plugin, pluginKey ->
                 new DefaultHolographicDisplaysAPI(pluginKey, apiHologramManager, placeholderRegistry));
     }
 
