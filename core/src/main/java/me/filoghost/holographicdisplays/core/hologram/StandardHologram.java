@@ -6,15 +6,21 @@
 package me.filoghost.holographicdisplays.core.hologram;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
 public interface StandardHologram {
-
-    Location getLocation();
+    
+    World getWorld();
+    
+    double getX();
+    
+    double getY();
+    
+    double getZ();
 
     boolean isInChunk(Chunk chunk);
 

@@ -8,11 +8,13 @@ package me.filoghost.holographicdisplays.bridge.protocollib;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
+import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.util.VersionUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -63,12 +65,33 @@ public class ProtocolLibHook {
 
     public static void sendDestroyEntitiesPacket(Player player, StandardHologram hologram) {
         checkState();
-        packetSender.sendDestroyEntitiesPacket(player, hologram);
+        
+        if (shouldReceivePacket(player, hologram)) {
+            packetSender.sendDestroyEntitiesPacket(player, hologram);
+        }
     }
 
     public static void sendCreateEntitiesPacket(Player player, StandardHologram hologram) {
         checkState();
-        packetSender.sendCreateEntitiesPacket(player, hologram);
+
+        if (shouldReceivePacket(player, hologram)) {
+            packetSender.sendCreateEntitiesPacket(player, hologram);
+        }
+    }
+
+    private static boolean shouldReceivePacket(Player player, StandardHologram hologram) {
+        if (!player.isOnline()) {
+            return false;
+        }
+        
+        if (!player.getWorld().equals(hologram.getWorld())) {
+            return false;
+        }
+
+        Location playerLocation = player.getLocation();
+        double distanceSquared = Utils.distanceSquared(playerLocation.getX(), hologram.getX(), playerLocation.getZ(), hologram.getZ());
+        
+        return distanceSquared < 64 * 64;
     }
 
     public static boolean isEnabled() {

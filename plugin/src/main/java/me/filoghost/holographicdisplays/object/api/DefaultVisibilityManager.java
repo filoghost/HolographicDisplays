@@ -10,7 +10,6 @@ import me.filoghost.holographicdisplays.api.VisibilityManager;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -20,8 +19,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultVisibilityManager implements VisibilityManager {
-
-    private static final int VISIBILITY_DISTANCE_SQUARED = 64 * 64;
     
     private final StandardHologram hologram;
     private Map<UUID, Boolean> playersVisibilityMap;
@@ -54,10 +51,10 @@ public class DefaultVisibilityManager implements VisibilityManager {
                 
             if (visibleByDefault) {
                 // Now it's visible, and it previously wasn't because the value has changed
-                sendCreatePacketIfNear(player, hologram);
+                sendCreatePacket(player, hologram);
             } else {
                 // Opposite case: now it's not visible
-                sendDestroyPacketIfNear(player, hologram);
+                sendDestroyPacket(player, hologram);
             }
         }
     }
@@ -76,7 +73,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
         playersVisibilityMap.put(player.getUniqueId(), true);
         
         if (!wasVisible) {
-            sendCreatePacketIfNear(player, hologram);
+            sendCreatePacket(player, hologram);
         }
     }
     
@@ -95,7 +92,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
         playersVisibilityMap.put(player.getUniqueId(), false);
         
         if (wasVisible) {
-            sendDestroyPacketIfNear(player, hologram);
+            sendDestroyPacket(player, hologram);
         }
     }
     
@@ -126,10 +123,10 @@ public class DefaultVisibilityManager implements VisibilityManager {
         playersVisibilityMap.remove(player.getUniqueId());
         
         if (visibleByDefault && !wasVisible) {
-            sendCreatePacketIfNear(player, hologram);
+            sendCreatePacket(player, hologram);
             
         } else if (!visibleByDefault && wasVisible) {
-            sendDestroyPacketIfNear(player, hologram);
+            sendDestroyPacket(player, hologram);
         }
     }
     
@@ -151,25 +148,16 @@ public class DefaultVisibilityManager implements VisibilityManager {
         }
     }
     
-    private void sendCreatePacketIfNear(Player player, StandardHologram hologram) {
-        if (ProtocolLibHook.isEnabled() && isNear(player, hologram)) {
+    private void sendCreatePacket(Player player, StandardHologram hologram) {
+        if (ProtocolLibHook.isEnabled()) {
             ProtocolLibHook.sendCreateEntitiesPacket(player, hologram);
         }
     }
     
-    private void sendDestroyPacketIfNear(Player player, StandardHologram hologram) {
-        if (ProtocolLibHook.isEnabled() && isNear(player, hologram)) {
+    private void sendDestroyPacket(Player player, StandardHologram hologram) {
+        if (ProtocolLibHook.isEnabled()) {
             ProtocolLibHook.sendDestroyEntitiesPacket(player, hologram);
         }
-    }
-    
-    private boolean isNear(Player player, StandardHologram hologram) {
-        Location playerLocation = player.getLocation();
-        Location hologramLocation = hologram.getLocation();
-        
-        return player.isOnline() 
-                && playerLocation.getWorld().equals(hologramLocation.getWorld()) 
-                && playerLocation.distanceSquared(hologramLocation) < VISIBILITY_DISTANCE_SQUARED;
     }
 
     @Override
