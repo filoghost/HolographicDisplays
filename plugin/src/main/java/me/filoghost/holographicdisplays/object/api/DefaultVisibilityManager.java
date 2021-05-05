@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultVisibilityManager implements VisibilityManager {
@@ -23,7 +24,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
     private static final int VISIBILITY_DISTANCE_SQUARED = 64 * 64;
     
     private final StandardHologram hologram;
-    private Map<String, Boolean> playersVisibilityMap;
+    private Map<UUID, Boolean> playersVisibilityMap;
     private boolean visibleByDefault;
     
     public DefaultVisibilityManager(StandardHologram hologram) {
@@ -46,7 +47,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
         this.visibleByDefault = visibleByDefault;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (playersVisibilityMap != null && playersVisibilityMap.containsKey(player.getName().toLowerCase())) {
+            if (playersVisibilityMap != null && playersVisibilityMap.containsKey(player.getUniqueId())) {
                 // Has a specific value set
                 continue;
             }
@@ -72,7 +73,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
             playersVisibilityMap = new ConcurrentHashMap<>();
         }
         
-        playersVisibilityMap.put(player.getName().toLowerCase(), true);
+        playersVisibilityMap.put(player.getUniqueId(), true);
         
         if (!wasVisible) {
             sendCreatePacketIfNear(player, hologram);
@@ -91,7 +92,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
             playersVisibilityMap = new ConcurrentHashMap<>();
         }
         
-        playersVisibilityMap.put(player.getName().toLowerCase(), false);
+        playersVisibilityMap.put(player.getUniqueId(), false);
         
         if (wasVisible) {
             sendDestroyPacketIfNear(player, hologram);
@@ -103,7 +104,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
         Preconditions.notNull(player, "player");
         
         if (playersVisibilityMap != null) {
-            Boolean value = playersVisibilityMap.get(player.getName().toLowerCase());
+            Boolean value = playersVisibilityMap.get(player.getUniqueId());
             if (value != null) {
                 return value;
             }
@@ -122,7 +123,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
         
         boolean wasVisible = isVisibleTo(player);
         
-        playersVisibilityMap.remove(player.getName().toLowerCase());
+        playersVisibilityMap.remove(player.getUniqueId());
         
         if (visibleByDefault && !wasVisible) {
             sendCreatePacketIfNear(player, hologram);
@@ -136,10 +137,10 @@ public class DefaultVisibilityManager implements VisibilityManager {
     public void resetVisibilityAll() {
         if (playersVisibilityMap != null) {
             // We need to refresh all the players
-            Set<String> playerNames = new HashSet<>(playersVisibilityMap.keySet());
+            Set<UUID> playerIDs = new HashSet<>(playersVisibilityMap.keySet());
             
-            for (String playerName : playerNames) {
-                Player onlinePlayer = Bukkit.getPlayerExact(playerName);
+            for (UUID playerID : playerIDs) {
+                Player onlinePlayer = Bukkit.getPlayer(playerID);
                 if (onlinePlayer != null) {
                     resetVisibility(onlinePlayer);
                 }
