@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.core.hologram;
 
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.util.Collection;
 
@@ -19,6 +20,6 @@ public interface StandardHologramLine {
 
     double getHeight();
 
-    void collectEntityIDs(Collection<Integer> collector);
+    void collectTrackedEntityIDs(Player player, Collection<Integer> collector);
 
 }

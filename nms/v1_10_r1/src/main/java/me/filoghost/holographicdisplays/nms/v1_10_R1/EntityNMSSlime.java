@@ -19,6 +19,7 @@ import net.minecraft.server.v1_10_R1.SoundEffect;
 import net.minecraft.server.v1_10_R1.World;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_10_R1.entity.CraftEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
@@ -191,6 +192,11 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
+    }
+
+    @Override
+    public boolean isTrackedBy(Player bukkitPlayer) {
+        return helper.isTrackedBy(bukkitPlayer);
     }
 
 }

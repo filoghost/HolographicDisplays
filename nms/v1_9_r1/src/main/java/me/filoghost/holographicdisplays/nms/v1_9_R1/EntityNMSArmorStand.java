@@ -28,6 +28,7 @@ import net.minecraft.server.v1_9_R1.SoundEffect;
 import net.minecraft.server.v1_9_R1.Vec3D;
 import net.minecraft.server.v1_9_R1.World;
 import org.bukkit.craftbukkit.v1_9_R1.entity.CraftEntity;
+import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
@@ -246,6 +247,11 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
+    }
+
+    @Override
+    public boolean isTrackedBy(Player bukkitPlayer) {
+        return helper.isTrackedBy(bukkitPlayer);
     }
     
 }

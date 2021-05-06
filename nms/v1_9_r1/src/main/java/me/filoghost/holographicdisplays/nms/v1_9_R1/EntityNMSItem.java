@@ -23,6 +23,7 @@ import net.minecraft.server.v1_9_R1.PacketPlayOutMount;
 import net.minecraft.server.v1_9_R1.World;
 import org.bukkit.craftbukkit.v1_9_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
     
@@ -198,6 +199,11 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
+    }
+
+    @Override
+    public boolean isTrackedBy(Player bukkitPlayer) {
+        return helper.isTrackedBy(bukkitPlayer);
     }
 
     @Override

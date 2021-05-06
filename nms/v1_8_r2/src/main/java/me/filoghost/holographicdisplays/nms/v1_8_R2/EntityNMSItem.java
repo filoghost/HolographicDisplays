@@ -5,10 +5,10 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_8_R2;
 
-import me.filoghost.holographicdisplays.core.nms.NMSCommons;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
+import me.filoghost.holographicdisplays.core.nms.NMSCommons;
+import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import net.minecraft.server.v1_8_R2.Blocks;
 import net.minecraft.server.v1_8_R2.DamageSource;
 import net.minecraft.server.v1_8_R2.EntityHuman;
@@ -21,14 +21,17 @@ import net.minecraft.server.v1_8_R2.NBTTagString;
 import net.minecraft.server.v1_8_R2.World;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
     
     private final StandardItemLine parentHologramLine;
-    
+    private final VersionNMSEntityHelper helper;
+
     public EntityNMSItem(World world, StandardItemLine parentHologramLine) {
         super(world);
         this.parentHologramLine = parentHologramLine;
+        this.helper = new VersionNMSEntityHelper(this);
         
         super.pickupDelay = Integer.MAX_VALUE;
     }
@@ -167,6 +170,11 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
+    }
+
+    @Override
+    public boolean isTrackedBy(Player bukkitPlayer) {
+        return helper.isTrackedBy(bukkitPlayer);
     }
     
     @Override

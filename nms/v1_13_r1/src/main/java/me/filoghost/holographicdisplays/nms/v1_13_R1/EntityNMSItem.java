@@ -21,14 +21,17 @@ import net.minecraft.server.v1_13_R1.NBTTagString;
 import net.minecraft.server.v1_13_R1.World;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
     
     private final StandardItemLine parentHologramLine;
+    private final VersionNMSEntityHelper helper;
     
     public EntityNMSItem(World world, StandardItemLine parentHologramLine) {
         super(world);
         this.parentHologramLine = parentHologramLine;
+        this.helper = new VersionNMSEntityHelper(this);
         
         super.pickupDelay = 32767; // Lock the item pickup delay, also prevents entities from picking up the item
     }
@@ -182,6 +185,11 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
+    }
+
+    @Override
+    public boolean isTrackedBy(Player bukkitPlayer) {
+        return helper.isTrackedBy(bukkitPlayer);
     }
 
     @Override

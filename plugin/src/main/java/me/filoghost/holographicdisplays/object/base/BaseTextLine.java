@@ -10,6 +10,7 @@ import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -93,10 +94,10 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     }
     
     @Override
-    public void collectEntityIDs(Collection<Integer> collector) {
-        super.collectEntityIDs(collector);
+    public void collectTrackedEntityIDs(Player player, Collection<Integer> collector) {
+        super.collectTrackedEntityIDs(player, collector);
         
-        if (textEntity != null) {
+        if (textEntity != null && textEntity.isTrackedBy(player)) {
             collector.add(textEntity.getIdNMS());
         }
     }

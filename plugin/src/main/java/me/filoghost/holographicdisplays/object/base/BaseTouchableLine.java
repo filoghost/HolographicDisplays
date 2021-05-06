@@ -134,11 +134,11 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
     }
 
     @Override
-    public void collectEntityIDs(Collection<Integer> collector) {
-        if (slimeVehicleEntity != null) {
+    public void collectTrackedEntityIDs(Player player, Collection<Integer> collector) {
+        if (slimeVehicleEntity != null && slimeVehicleEntity.isTrackedBy(player)) {
             collector.add(slimeVehicleEntity.getIdNMS());
         }
-        if (slimeEntity != null) {
+        if (slimeEntity != null && slimeEntity.isTrackedBy(player)) {
             collector.add(slimeEntity.getIdNMS());
         }
     }

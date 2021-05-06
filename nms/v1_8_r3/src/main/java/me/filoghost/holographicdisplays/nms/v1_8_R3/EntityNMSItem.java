@@ -21,14 +21,17 @@ import net.minecraft.server.v1_8_R3.NBTTagString;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
     
     private final StandardItemLine parentHologramLine;
+    private final VersionNMSEntityHelper helper;
     
     public EntityNMSItem(World world, StandardItemLine parentHologramLine) {
         super(world);
         this.parentHologramLine = parentHologramLine;
+        this.helper = new VersionNMSEntityHelper(this);
         
         super.pickupDelay = Integer.MAX_VALUE;
     }
@@ -167,6 +170,11 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
+    }
+
+    @Override
+    public boolean isTrackedBy(Player bukkitPlayer) {
+        return helper.isTrackedBy(bukkitPlayer);
     }
     
     @Override

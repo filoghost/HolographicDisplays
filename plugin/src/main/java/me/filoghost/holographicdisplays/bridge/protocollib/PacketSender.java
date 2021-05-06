@@ -40,7 +40,7 @@ class PacketSender {
     public void sendDestroyEntitiesPacket(Player player, StandardHologram hologram) {
         List<Integer> ids = new ArrayList<>();
         for (StandardHologramLine line : hologram.getLines()) { 
-            line.collectEntityIDs(ids);
+            line.collectTrackedEntityIDs(player, ids);
         }
 
         if (!ids.isEmpty()) {
@@ -57,19 +57,25 @@ class PacketSender {
     private void sendCreateEntitiesPacket(Player player, StandardHologramLine line) {
         if (line instanceof StandardTextLine) {
             StandardTextLine textLine = (StandardTextLine) line;
-            
-            if (textLine.getNMSArmorStand() != null) {
-                sendSpawnArmorStandPacket(player, textLine.getNMSArmorStand());
+
+            NMSArmorStand armorStand = textLine.getNMSArmorStand();
+            if (armorStand != null && armorStand.isTrackedBy(player)) {
+                sendSpawnArmorStandPacket(player, armorStand);
             }
 
         } else if (line instanceof StandardItemLine) {
             StandardItemLine itemLine = (StandardItemLine) line;
+            NMSArmorStand itemVehicle = itemLine.getNMSItemVehicle();
+            NMSItem item = itemLine.getNMSItem();
 
-            if (itemLine.getNMSItem() != null && itemLine.getNMSItemVehicle() != null) {
-                sendSpawnArmorStandPacket(player, itemLine.getNMSItemVehicle());
-                sendSpawnItemPacket(player, itemLine.getNMSItem());
-                sendVehicleAttachPacket(player, itemLine.getNMSItemVehicle(), itemLine.getNMSItem());
-                sendItemMetadataPacket(player, itemLine.getNMSItem());
+            if (itemVehicle != null && itemVehicle.isTrackedBy(player)) {
+                sendSpawnArmorStandPacket(player, itemVehicle);
+            }
+
+            if (item != null && item.isTrackedBy(player)) {
+                sendSpawnItemPacket(player, item);
+                sendVehicleAttachPacket(player, itemVehicle, item);
+                sendItemMetadataPacket(player, item);
             }
         } else {
             throw new IllegalArgumentException("Unexpected hologram line type: " + line.getClass().getName());
@@ -77,11 +83,16 @@ class PacketSender {
 
         // All sub-types of lines are touchable, no need to check instance type
         StandardTouchableLine touchableLine = (StandardTouchableLine) line;
+        NMSArmorStand slimeVehicle = touchableLine.getNMSSlimeVehicle();
+        NMSSlime slime = touchableLine.getNMSSlime();
+        
+        if (slimeVehicle != null && slimeVehicle.isTrackedBy(player)) {
+            sendSpawnArmorStandPacket(player, slimeVehicle);
+        }
 
-        if (touchableLine.getNMSSlime() != null && touchableLine.getNMSSlimeVehicle() != null) {
-            sendSpawnArmorStandPacket(player, touchableLine.getNMSSlimeVehicle());
-            sendSpawnSlimePacket(player, touchableLine.getNMSSlime());
-            sendVehicleAttachPacket(player, touchableLine.getNMSSlimeVehicle(), touchableLine.getNMSSlime());
+        if (slime != null && slime.isTrackedBy(player)) {
+            sendSpawnSlimePacket(player, slime);
+            sendVehicleAttachPacket(player, slimeVehicle, slime);
         }
     }
     

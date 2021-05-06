@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.core.nms.entity;
 
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import org.bukkit.entity.Player;
 
 /**
  * An interface to represent a custom NMS entity being part of a hologram.
@@ -29,5 +30,7 @@ public interface NMSEntity {
     
     // Returns the bukkit entity.
     org.bukkit.entity.Entity getBukkitEntityNMS();
+    
+    boolean isTrackedBy(Player bukkitPlayer);
 
 }

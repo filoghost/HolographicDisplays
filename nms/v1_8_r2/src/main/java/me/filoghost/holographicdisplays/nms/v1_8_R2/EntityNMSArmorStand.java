@@ -25,6 +25,7 @@ import net.minecraft.server.v1_8_R2.PacketPlayOutEntityTeleport;
 import net.minecraft.server.v1_8_R2.Vec3D;
 import net.minecraft.server.v1_8_R2.World;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
+import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
@@ -238,5 +239,10 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
     }
-    
+
+    @Override
+    public boolean isTrackedBy(Player bukkitPlayer) {
+        return helper.isTrackedBy(bukkitPlayer);
+    }
+
 }

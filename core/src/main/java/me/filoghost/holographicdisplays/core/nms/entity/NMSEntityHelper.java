@@ -5,6 +5,8 @@
  */
 package me.filoghost.holographicdisplays.core.nms.entity;
 
+import org.bukkit.entity.Player;
+
 public abstract class NMSEntityHelper<T> {
 
     private T tracker;
@@ -19,5 +21,7 @@ public abstract class NMSEntityHelper<T> {
     }
 
     protected abstract T getTracker0();
+
+    public abstract boolean isTrackedBy(Player bukkitPlayer);
 
 }

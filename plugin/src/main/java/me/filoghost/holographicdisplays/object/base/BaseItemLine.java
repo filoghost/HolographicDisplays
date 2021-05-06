@@ -111,13 +111,13 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
     }
 
     @Override
-    public void collectEntityIDs(Collection<Integer> collector) {
-        super.collectEntityIDs(collector);
+    public void collectTrackedEntityIDs(Player player, Collection<Integer> collector) {
+        super.collectTrackedEntityIDs(player, collector);
         
-        if (itemVehicleEntity != null) {
+        if (itemVehicleEntity != null && itemVehicleEntity.isTrackedBy(player)) {
             collector.add(itemVehicleEntity.getIdNMS());
         }
-        if (itemEntity != null) {
+        if (itemEntity != null && itemEntity.isTrackedBy(player)) {
             collector.add(itemEntity.getIdNMS());
         }
     }

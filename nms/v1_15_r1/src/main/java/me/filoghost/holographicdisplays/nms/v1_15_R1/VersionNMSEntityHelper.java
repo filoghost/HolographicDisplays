@@ -10,6 +10,8 @@ import net.minecraft.server.v1_15_R1.Entity;
 import net.minecraft.server.v1_15_R1.Packet;
 import net.minecraft.server.v1_15_R1.PlayerChunkMap.EntityTracker;
 import net.minecraft.server.v1_15_R1.WorldServer;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 
 public class VersionNMSEntityHelper extends NMSEntityHelper<EntityTracker> {
 
@@ -22,6 +24,16 @@ public class VersionNMSEntityHelper extends NMSEntityHelper<EntityTracker> {
     @Override
     protected EntityTracker getTracker0() {
         return ((WorldServer) entity.world).getChunkProvider().playerChunkMap.trackedEntities.get(entity.getId());
+    }
+
+    @Override
+    public boolean isTrackedBy(Player bukkitPlayer) {
+        EntityTracker tracker = getTracker();
+        if (tracker != null) {
+            return tracker.trackedPlayers.contains(((CraftPlayer) bukkitPlayer).getHandle());
+        } else {
+            return false;
+        }
     }
 
     public void broadcastPacket(Packet<?> packet) {
