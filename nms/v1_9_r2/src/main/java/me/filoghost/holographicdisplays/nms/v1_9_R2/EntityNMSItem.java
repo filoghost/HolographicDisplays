@@ -5,7 +5,6 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_9_R2;
 
-import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.core.nms.NMSCommons;
@@ -28,12 +27,14 @@ import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 public class EntityNMSItem extends EntityItem implements NMSItem {
     
     private final StandardItemLine parentHologramLine;
+    private final VersionNMSEntityHelper helper;
     
     private int resendMountPacketTicks;
     
     public EntityNMSItem(World world, StandardItemLine parentHologramLine) {
         super(world);
         this.parentHologramLine = parentHologramLine;
+        this.helper = new VersionNMSEntityHelper(this);
         
         super.pickupDelay = Integer.MAX_VALUE;
     }
@@ -51,18 +52,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
             Entity vehicle = bz();
             if (vehicle != null) {
                 // Send a packet near to "remind" players that the item is riding the armor stand (Spigot bug or client bug)
-                PacketPlayOutMount mountPacket = new PacketPlayOutMount(vehicle);
-    
-                for (EntityHuman humanEntity : super.world.players) {
-                    if (humanEntity instanceof EntityPlayer) {
-                        EntityPlayer nmsPlayer = (EntityPlayer) humanEntity;
-    
-                        double distanceSquared = Utils.distanceSquared(nmsPlayer.locX, super.locX, nmsPlayer.locZ, super.locZ);
-                        if (distanceSquared < 32 * 32 && nmsPlayer.playerConnection != null) {
-                            nmsPlayer.playerConnection.sendPacket(mountPacket);
-                        }
-                    }
-                }
+                helper.broadcastPacket(new PacketPlayOutMount(vehicle));
             }
         }
     }

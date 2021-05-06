@@ -5,14 +5,12 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_10_R1;
 
-import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import net.minecraft.server.v1_10_R1.AxisAlignedBB;
 import net.minecraft.server.v1_10_R1.DamageSource;
 import net.minecraft.server.v1_10_R1.Entity;
 import net.minecraft.server.v1_10_R1.EntityDamageSource;
-import net.minecraft.server.v1_10_R1.EntityHuman;
 import net.minecraft.server.v1_10_R1.EntityPlayer;
 import net.minecraft.server.v1_10_R1.EntitySlime;
 import net.minecraft.server.v1_10_R1.NBTTagCompound;
@@ -26,12 +24,14 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     private final StandardHologramLine parentHologramLine;
+    private final VersionNMSEntityHelper helper;
     
     private int resendMountPacketTicks;
     
     public EntityNMSSlime(World world, StandardHologramLine parentHologramLine) {
         super(world);
         this.parentHologramLine = parentHologramLine;
+        this.helper = new VersionNMSEntityHelper(this);
         
         super.persistent = true;
         super.collides = false;
@@ -54,18 +54,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
             Entity vehicle = bB();
             if (vehicle != null) {
                 // Send a packet near to "remind" players that the slime is riding the armor stand (Spigot bug or client bug)
-                PacketPlayOutMount mountPacket = new PacketPlayOutMount(vehicle);
-    
-                for (EntityHuman humanEntity : super.world.players) {
-                    if (humanEntity instanceof EntityPlayer) {
-                        EntityPlayer nmsPlayer = (EntityPlayer) humanEntity;
-    
-                        double distanceSquared = Utils.distanceSquared(nmsPlayer.locX, super.locX, nmsPlayer.locZ, super.locZ);
-                        if (distanceSquared < 32 * 32 && nmsPlayer.playerConnection != null) {
-                            nmsPlayer.playerConnection.sendPacket(mountPacket);
-                        }
-                    }
-                }
+                helper.broadcastPacket(new PacketPlayOutMount(vehicle));
             }
         }
     }

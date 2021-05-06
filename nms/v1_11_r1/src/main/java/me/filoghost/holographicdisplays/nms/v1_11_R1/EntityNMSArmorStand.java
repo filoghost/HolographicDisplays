@@ -9,7 +9,6 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.holographicdisplays.core.DebugLogger;
-import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
@@ -19,7 +18,6 @@ import net.minecraft.server.v1_11_R1.DamageSource;
 import net.minecraft.server.v1_11_R1.Entity;
 import net.minecraft.server.v1_11_R1.EntityArmorStand;
 import net.minecraft.server.v1_11_R1.EntityHuman;
-import net.minecraft.server.v1_11_R1.EntityPlayer;
 import net.minecraft.server.v1_11_R1.EnumHand;
 import net.minecraft.server.v1_11_R1.EnumInteractionResult;
 import net.minecraft.server.v1_11_R1.EnumItemSlot;
@@ -39,12 +37,14 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 
     private final StandardHologramLine parentHologramLine;
     private final ProtocolPacketSettings protocolPacketSettings;
+    private final VersionNMSEntityHelper helper;
     private String customName;
     
     public EntityNMSArmorStand(World world, StandardHologramLine parentHologramLine, ProtocolPacketSettings protocolPacketSettings) {
         super(world);
         this.parentHologramLine = parentHologramLine;
         this.protocolPacketSettings = protocolPacketSettings;
+        this.helper = new VersionNMSEntityHelper(this);
         
         super.setInvisible(true);
         super.setSmall(true);
@@ -208,22 +208,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public void setLocationNMS(double x, double y, double z) {
         super.setPosition(x, y, z);
         if (protocolPacketSettings.sendAccurateLocationPackets()) {
-            broadcastLocationPacketNMS();
-        }
-    }
-    
-    private void broadcastLocationPacketNMS() {
-        PacketPlayOutEntityTeleport teleportPacket = new PacketPlayOutEntityTeleport(this);
-        
-        for (EntityHuman humanEntity : super.world.players) {
-            if (humanEntity instanceof EntityPlayer) {
-                EntityPlayer nmsPlayer = (EntityPlayer) humanEntity;
-
-                double distanceSquared = Utils.distanceSquared(nmsPlayer.locX, super.locX, nmsPlayer.locZ, super.locZ);
-                if (distanceSquared < 64 * 64 * 2 && nmsPlayer.playerConnection != null) {
-                    nmsPlayer.playerConnection.sendPacket(teleportPacket);
-                }
-            }
+            helper.broadcastPacket(new PacketPlayOutEntityTeleport(this));
         }
     }
 
