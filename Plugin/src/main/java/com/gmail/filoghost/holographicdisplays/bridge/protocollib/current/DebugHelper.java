@@ -16,7 +16,6 @@ package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 
 import java.util.Map;
 
-import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.EquivalentConverter;
@@ -58,11 +57,10 @@ public class DebugHelper {
 		
 		// Get the first Minecraft super class
 		while (clazz != null && clazz != Object.class &&
-				(!MinecraftReflection.isMinecraftClass(clazz) || 
-				 Factory.class.isAssignableFrom(clazz))) {
+				(!MinecraftReflection.isMinecraftClass(clazz))) {
 			clazz = clazz.getSuperclass();
 		}
-		
+
 		return PrettyPrinter.printObject(packet, clazz, MinecraftReflection.getPacketClass(), PrettyPrinter.RECURSE_DEPTH, new ObjectPrinter() {
 			@Override
 			public boolean print(StringBuilder output, Object value) {
