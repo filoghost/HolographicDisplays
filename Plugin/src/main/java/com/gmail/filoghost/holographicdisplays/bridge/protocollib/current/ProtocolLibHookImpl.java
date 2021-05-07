@@ -123,7 +123,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 						
-						spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet.deepClone());
+						spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet);
 						WrappedWatchableObject customNameWatchableObject = metadataHelper.getCustomNameWacthableObject(spawnEntityPacket.getMetadata());
 						
 						if (customNameWatchableObject == null) {
@@ -164,7 +164,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 						
-						entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet.deepClone());
+						entityMetadataPacket = new WrapperPlayServerEntityMetadata(packet);
 						WrappedWatchableObject customNameWatchableObject = metadataHelper.getCustomNameWatchableObject(entityMetadataPacket.getEntityMetadata());
 						
 						if (customNameWatchableObject == null) {
