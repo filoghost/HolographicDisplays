@@ -19,6 +19,8 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.gmail.filoghost.holographicdisplays.bridge.placeholderapi.PlaceholderAPIHook;
+import com.gmail.filoghost.holographicdisplays.bridge.placeholderapi.impl.PlaceholderAPIHookImpl;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -68,6 +70,9 @@ public class HolographicDisplays extends JavaPlugin {
 	
 	// Not null if ProtocolLib is installed and successfully loaded.
 	private static ProtocolLibHook protocolLibHook;
+
+	// Not null if PlaceholderAPI is installed and successfully loaded
+	private static PlaceholderAPIHook placeholderAPIHook;
 	
 	@Override
 	public void onEnable() {
@@ -133,7 +138,9 @@ public class HolographicDisplays extends JavaPlugin {
 		
 		// ProtocolLib check.
 		hookProtocolLib();
-		
+		// PlaceholderAPI check.
+		hookPlaceholderAPI();
+
 		// Load animation files and the placeholder manager.
 		PlaceholdersManager.load(this);
 		try {
@@ -269,8 +276,23 @@ public class HolographicDisplays extends JavaPlugin {
 	public static ProtocolLibHook getProtocolLibHook() {
 		return protocolLibHook;
 	}
-	
-	
+
+	public void hookPlaceholderAPI() {
+		if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+			return;
+		}
+
+		placeholderAPIHook = new PlaceholderAPIHookImpl();
+    }
+    
+    public static boolean hasPlaceholderAPIHook() {
+    	return placeholderAPIHook != null;
+    }
+
+    public static PlaceholderAPIHook getPlaceholderAPIHook() {
+    	return placeholderAPIHook;
+    }
+
 	public static boolean isConfigFile(File file) {
 		return file.getName().toLowerCase().endsWith(".yml") && instance.getResource(file.getName()) != null;
 	}

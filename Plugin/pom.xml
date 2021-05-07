@@ -27,6 +27,11 @@
 			<id>codemc-repo</id>
 			<url>https://repo.codemc.io/repository/maven-public/</url>
 		</repository>
+
+		<repository>
+			<id>placeholderapi</id>
+			<url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -133,6 +138,11 @@
 		<dependency>
 			<groupId>com.github.dmulloy2</groupId>
 			<artifactId>ProtocolLib</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>me.clip</groupId>
+			<artifactId>placeholderapi</artifactId>
 		</dependency>
 
 		<dependency>

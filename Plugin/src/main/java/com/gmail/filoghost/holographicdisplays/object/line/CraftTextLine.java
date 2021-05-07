@@ -36,6 +36,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 
 	private String text;
 	private List<RelativePlaceholder> relativePlaceholders;
+	private boolean needsPlaceholderAPI;
 	private NMSArmorStand nmsNameable;
 	
 	
@@ -77,6 +78,7 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 					relativePlaceholders.add(relativePlaceholder);
 				}
 			}
+			this.needsPlaceholderAPI = HolographicDisplays.hasPlaceholderAPIHook() && HolographicDisplays.getPlaceholderAPIHook().containsPlaceholders(text);
 		}
 		
 		// Deallocate the list if unused
@@ -123,7 +125,11 @@ public class CraftTextLine extends CraftTouchableLine implements TextLine {
 		return relativePlaceholders;
 	}
 
-	
+	@Override
+	public boolean needsPlaceholderAPI() {
+		return this.needsPlaceholderAPI;
+	}
+
 	@Override
 	public void teleport(double x, double y, double z) {
 		super.teleport(x, y, z);

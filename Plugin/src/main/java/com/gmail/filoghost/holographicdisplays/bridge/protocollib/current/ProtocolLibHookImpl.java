@@ -17,7 +17,10 @@ package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -56,8 +59,18 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 	private NMSManager nmsManager;
 	private PacketHelper packetHelper;
 	private MetadataHelper metadataHelper;
-	
-	
+	private final boolean useOptional;
+
+	public ProtocolLibHookImpl() {
+		String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+		String majorVersion = version.split("_")[1];
+		if (majorVersion.contains("_")) {
+			majorVersion = majorVersion.split("_")[0];
+		}
+
+		this.useOptional = Integer.parseInt(majorVersion) >= 13;
+	}
+
 	@Override
 	public boolean hook(Plugin plugin, NMSManager nmsManager) {
 		this.nmsManager = nmsManager;
@@ -106,7 +119,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 						
-						if (!hologramLine.getParent().isAllowPlaceholders() || !hologramLine.hasRelativePlaceholders()) {
+						if ((!hologramLine.getParent().isAllowPlaceholders() || !hologramLine.hasRelativePlaceholders()) && !hologramLine.needsPlaceholderAPI()) {
 							return;
 						}
 						
@@ -118,6 +131,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 						}
 						
 						replaceRelativePlaceholders(customNameWatchableObject, player, hologramLine.getRelativePlaceholders());
+						replacePlaceholderAPI(customNameWatchableObject, player);
 						event.setPacket(spawnEntityPacket.getHandle());
 
 					} else if (packet.getType() == PacketType.Play.Server.SPAWN_ENTITY) {
@@ -146,7 +160,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 						
-						if (!hologramLine.getParent().isAllowPlaceholders() || !hologramLine.hasRelativePlaceholders()) {
+						if ((!hologramLine.getParent().isAllowPlaceholders() || !hologramLine.hasRelativePlaceholders()) && !hologramLine.needsPlaceholderAPI()) {
 							return;
 						}
 						
@@ -157,7 +171,15 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 							return;
 						}
 						
-						boolean modified = replaceRelativePlaceholders(customNameWatchableObject, player, hologramLine.getRelativePlaceholders());
+						boolean modified = false;
+						if (hologramLine.getParent().isAllowPlaceholders() && hologramLine.hasRelativePlaceholders()) {
+							if (replaceRelativePlaceholders(customNameWatchableObject, player, hologramLine.getRelativePlaceholders())) {
+								modified = true;
+							}
+						}
+						if (hologramLine.needsPlaceholderAPI()) {
+							modified = replacePlaceholderAPI(customNameWatchableObject, player);
+						}
 						if (modified) {
 							event.setPacket(entityMetadataPacket.getHandle());
 						}
@@ -200,8 +222,40 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 		metadataHelper.setCustomNameNMSObject(customNameWatchableObject, replacedCustomNameNMSObject);
 		return true;
 	}
-	
-	
+
+	// GPL 3 https://github.com/Niall7459/HolographicExtension/blob/f25850f25ec91ac2dee9bee5f4314312713eb0f3/src/main/java/net/kitesoftware/holograms/listener/PacketPlaceholderListener.java#L75
+	private boolean replacePlaceholderAPI(WrappedWatchableObject customNameWatchableObject, Player player) {
+		Object customNameWatchableObjectValue = customNameWatchableObject.getValue();
+		String customName;
+
+		if (useOptional) { //1.13 or above
+			if (!(customNameWatchableObjectValue instanceof Optional)) {
+				return false;
+			}
+
+			Optional<?> customNameOptional = (Optional<?>) customNameWatchableObjectValue;
+			if (!customNameOptional.isPresent()) {
+				return false;
+			}
+
+			WrappedChatComponent componentWrapper = WrappedChatComponent.fromHandle(customNameOptional.get());
+			customName = componentWrapper.getJson();
+
+		} else {
+			customName = (String) customNameWatchableObjectValue;
+		}
+
+		customName = HolographicDisplays.getPlaceholderAPIHook().replacePlaceholders(player, customName);
+
+		if (useOptional) { // 1.13 or above
+			customNameWatchableObject.setValue(Optional.of(WrappedChatComponent.fromJson(customName).getHandle()));
+		} else {
+			customNameWatchableObject.setValue(customName);
+		}
+		
+		return true;
+	}
+
 	@Override
 	public void sendDestroyEntitiesPacket(Player player, CraftHologram hologram) {
 		List<Integer> ids = new ArrayList<>();
