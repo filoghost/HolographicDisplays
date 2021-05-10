@@ -21,7 +21,7 @@ public abstract class HolographicDisplaysAPIProvider {
     
     public static HolographicDisplaysAPIProvider getImplementation() {
         if (implementation == null) {
-            throw new IllegalStateException("No API implementation set. Is Holographic Displays enabled?");
+            throw new IllegalStateException("Holographic Displays did not load properly");
         }
         
         return implementation;
