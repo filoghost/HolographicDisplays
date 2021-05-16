@@ -61,7 +61,7 @@ public class V2HologramAdapter implements Hologram {
 
     @Override
     public int size() {
-        return newHologram.size();
+        return newHologram.getLineCount();
     }
 
     @Override

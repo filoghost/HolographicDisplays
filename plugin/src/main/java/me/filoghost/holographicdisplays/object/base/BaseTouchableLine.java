@@ -56,7 +56,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
         try {
             touchHandler.onTouch(player);
         } catch (Throwable t) {
-            Log.warning("The plugin " + getHologram().getOwnerPlugin().getName() + " generated an exception" 
+            Log.warning("The plugin " + getHologram().getCreatorPlugin().getName() + " generated an exception" 
                     + " when the player " + player.getName() + " touched a hologram.", t);
         }
     }

@@ -36,7 +36,7 @@ public class InternalHologram extends BaseHologram<InternalHologramLine> {
     }
 
     @Override
-    public Plugin getOwnerPlugin() {
+    public Plugin getCreatorPlugin() {
         return HolographicDisplays.getInstance();
     }
     

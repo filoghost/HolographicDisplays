@@ -129,7 +129,7 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
     }
     
     @Override
-    public int getLinesAmount() {
+    public int getLineCount() {
         return lines.size();
     }
     

@@ -52,7 +52,7 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
         List<Hologram> ownedHolograms = new ArrayList<>();
 
         for (APIHologram hologram : apiHologramManager.getHolograms()) {
-            if (hologram.getOwnerPlugin().equals(plugin)) {
+            if (hologram.getCreatorPlugin().equals(plugin)) {
                 ownedHolograms.add(hologram.getV2Adapter());
             }
         }

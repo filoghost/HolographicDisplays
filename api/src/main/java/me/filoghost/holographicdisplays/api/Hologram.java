@@ -103,7 +103,7 @@ public interface Hologram {
      * @return the amount of lines
      * @since 1
      */
-    int size();
+    int getLineCount();
     
     
     /**

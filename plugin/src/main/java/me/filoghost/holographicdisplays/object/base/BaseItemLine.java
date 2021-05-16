@@ -40,7 +40,7 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
         try {
             pickupHandler.onPickup(player);
         } catch (Throwable t) {
-            Log.warning("The plugin " + getHologram().getOwnerPlugin().getName() + " generated an exception" 
+            Log.warning("The plugin " + getHologram().getCreatorPlugin().getName() + " generated an exception" 
                     + " when the player " + player.getName() + " picked up an item from a hologram.", t);
         }
     }

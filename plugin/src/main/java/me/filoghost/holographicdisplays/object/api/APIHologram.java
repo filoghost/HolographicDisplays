@@ -40,7 +40,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
     
     @Override
-    public Plugin getOwnerPlugin() {
+    public Plugin getCreatorPlugin() {
         return plugin;
     }
     
@@ -87,11 +87,6 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     @Override
     public APIHologramLine getLine(int index) {
         return getLines().get(index);
-    }
-
-    @Override
-    public int size() {
-        return getLinesAmount();
     }
 
     @Override

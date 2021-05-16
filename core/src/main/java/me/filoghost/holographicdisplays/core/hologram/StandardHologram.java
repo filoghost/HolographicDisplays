@@ -26,9 +26,9 @@ public interface StandardHologram {
 
     List<? extends StandardHologramLine> getLines();
 
-    int getLinesAmount();
+    int getLineCount();
 
-    Plugin getOwnerPlugin();
+    Plugin getCreatorPlugin();
 
     boolean isVisibleTo(Player player);
 
