@@ -9,6 +9,7 @@ import me.filoghost.fcommons.Preconditions;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseHologramComponent {
 
@@ -27,7 +28,7 @@ public abstract class BaseHologramComponent {
         return world.isChunkLoaded(chunkX, chunkZ);
     }
 
-    public Location getLocation() {
+    public @NotNull Location getLocation() {
         return new Location(world, x, y, z);
     }
     
@@ -51,7 +52,7 @@ public abstract class BaseHologramComponent {
         return floor == num ? floor : floor - (int) (Double.doubleToRawLongBits(num) >>> 63);
     }
 
-    public World getWorld() {
+    public @NotNull World getWorld() {
         return world;
     }
 

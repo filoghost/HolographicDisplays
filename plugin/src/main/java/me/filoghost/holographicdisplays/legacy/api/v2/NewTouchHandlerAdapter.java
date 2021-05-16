@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.legacy.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 public class NewTouchHandlerAdapter implements me.filoghost.holographicdisplays.api.handler.TouchHandler {
@@ -18,7 +19,7 @@ public class NewTouchHandlerAdapter implements me.filoghost.holographicdisplays.
     }
 
     @Override
-    public void onTouch(Player player) {
+    public void onTouch(@NotNull Player player) {
         v2TouchHandler.onTouch(player);
     }
 

@@ -10,6 +10,7 @@ import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import me.filoghost.holographicdisplays.object.api.APIHologram;
 import me.filoghost.holographicdisplays.object.api.APITextLine;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -182,7 +183,7 @@ class V2TouchableLineAdapterTest {
     private static class ExampleNewTouchHandler implements TouchHandler {
 
         @Override
-        public void onTouch(Player player) {}
+        public void onTouch(@NotNull Player player) {}
 
     }
     

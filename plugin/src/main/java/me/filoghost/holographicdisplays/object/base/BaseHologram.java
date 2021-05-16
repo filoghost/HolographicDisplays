@@ -13,6 +13,7 @@ import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.placeholder.PlaceholderManager;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -133,13 +134,13 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
         return lines.size();
     }
     
-    public void teleport(Location location) {
+    public void teleport(@NotNull Location location) {
         Preconditions.notNull(location, "location");
 
         teleport(location.getWorld(), location.getX(), location.getY(), location.getZ());
     }
     
-    public void teleport(World world, double x, double y, double z) {
+    public void teleport(@NotNull World world, double x, double y, double z) {
         checkNotDeleted();
         Preconditions.notNull(world, "world");
 

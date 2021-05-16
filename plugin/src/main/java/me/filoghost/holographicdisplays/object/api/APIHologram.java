@@ -16,6 +16,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -45,14 +47,14 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
     
     @Override
-    public APITextLine appendTextLine(String text) {
+    public @NotNull APITextLine appendTextLine(@Nullable String text) {
         APITextLine line = createTextLine(text);
         addLine(line);
         return line;
     }
 
     @Override
-    public APIItemLine appendItemLine(ItemStack itemStack) {
+    public @NotNull APIItemLine appendItemLine(@NotNull ItemStack itemStack) {
         Preconditions.notNull(itemStack, "itemStack");
 
         APIItemLine line = createItemLine(itemStack);
@@ -61,14 +63,14 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
 
     @Override
-    public APITextLine insertTextLine(int index, String text) {
+    public @NotNull APITextLine insertTextLine(int index, @Nullable String text) {
         APITextLine line = createTextLine(text);
         addLine(line);
         return line;
     }
 
     @Override
-    public APIItemLine insertItemLine(int index, ItemStack itemStack) {
+    public @NotNull APIItemLine insertItemLine(int index, @NotNull ItemStack itemStack) {
         Preconditions.notNull(itemStack, "itemStack");
 
         APIItemLine line = createItemLine(itemStack);
@@ -85,7 +87,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
 
     @Override
-    public APIHologramLine getLine(int index) {
+    public @NotNull APIHologramLine getLine(int index) {
         return getLines().get(index);
     }
 
@@ -132,7 +134,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
 
     @Override
-    public DefaultVisibilityManager getVisibilityManager() {
+    public @NotNull DefaultVisibilityManager getVisibilityManager() {
         return visibilityManager;
     }
 

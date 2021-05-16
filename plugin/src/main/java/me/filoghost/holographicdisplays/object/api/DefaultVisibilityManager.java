@@ -12,6 +12,7 @@ import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.legacy.api.v2.V2VisibilityManagerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -63,7 +64,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
     }
     
     @Override
-    public void showTo(Player player) {
+    public void showTo(@NotNull Player player) {
         Preconditions.notNull(player, "player");
         
         boolean wasVisible = isVisibleTo(player);
@@ -82,7 +83,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
     
     
     @Override
-    public void hideTo(Player player) {
+    public void hideTo(@NotNull Player player) {
         Preconditions.notNull(player, "player");
         
         boolean wasVisible = isVisibleTo(player);
@@ -100,7 +101,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
     }
     
     @Override
-    public boolean isVisibleTo(Player player) {
+    public boolean isVisibleTo(@NotNull Player player) {
         Preconditions.notNull(player, "player");
         
         if (playersVisibilityMap != null) {
@@ -114,7 +115,7 @@ public class DefaultVisibilityManager implements VisibilityManager {
     }
 
     @Override
-    public void resetVisibility(Player player) {
+    public void resetVisibility(@NotNull Player player) {
         Preconditions.notNull(player, "player");
         
         if (playersVisibilityMap == null) {

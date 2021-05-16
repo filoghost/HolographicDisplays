@@ -6,6 +6,8 @@ import me.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.legacy.api.v2.V2ItemLineAdapter;
 import me.filoghost.holographicdisplays.object.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class APIItemLine extends BaseItemLine implements ItemLine, APITouchableLine {
 
@@ -19,18 +21,18 @@ public class APIItemLine extends BaseItemLine implements ItemLine, APITouchableL
     }
 
     @Override
-    public APIHologram getParent() {
+    public @NotNull APIHologram getParent() {
         return parent;
     }
 
     @Override
-    public void setTouchHandler(TouchHandler touchHandler) {
+    public void setTouchHandler(@Nullable TouchHandler touchHandler) {
         v2Adapter.onNewTouchHandlerChange(getTouchHandler(), touchHandler);
         super.setTouchHandler(touchHandler);
     }
 
     @Override
-    public void setPickupHandler(PickupHandler pickupHandler) {
+    public void setPickupHandler(@Nullable PickupHandler pickupHandler) {
         v2Adapter.onNewPickupHandlerChange(getPickupHandler(), pickupHandler);
         super.setPickupHandler(pickupHandler);
     }

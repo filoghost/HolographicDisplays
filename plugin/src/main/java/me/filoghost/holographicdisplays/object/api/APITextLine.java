@@ -4,6 +4,8 @@ import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import me.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.legacy.api.v2.V2TextLineAdapter;
 import me.filoghost.holographicdisplays.object.base.BaseTextLine;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class APITextLine extends BaseTextLine implements TextLine, APITouchableLine {
 
@@ -17,7 +19,7 @@ public class APITextLine extends BaseTextLine implements TextLine, APITouchableL
     }
 
     @Override
-    public APIHologram getParent() {
+    public @NotNull APIHologram getParent() {
         return parent;
     }
 
@@ -27,7 +29,7 @@ public class APITextLine extends BaseTextLine implements TextLine, APITouchableL
     }
 
     @Override
-    public void setTouchHandler(TouchHandler touchHandler) {
+    public void setTouchHandler(@Nullable TouchHandler touchHandler) {
         v2Adapter.onNewTouchHandlerChange(getTouchHandler(), touchHandler);
         super.setTouchHandler(touchHandler);
     }

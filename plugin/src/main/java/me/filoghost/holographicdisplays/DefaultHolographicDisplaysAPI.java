@@ -14,6 +14,7 @@ import me.filoghost.holographicdisplays.placeholder.registry.PlaceholderRegistry
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -30,7 +31,7 @@ public class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public Hologram createHologram(Location source) {
+    public @NotNull Hologram createHologram(@NotNull Location source) {
         Preconditions.notNull(source, "source");
         Preconditions.notNull(source.getWorld(), "source's world");
         Preconditions.checkState(Bukkit.isPrimaryThread(), "Async hologram creation");
@@ -39,7 +40,7 @@ public class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
     
     @Override
-    public void registerPlaceholder(String identifier, int refreshIntervalTicks, PlaceholderReplacer replacer) {
+    public void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull PlaceholderReplacer replacer) {
         Preconditions.notNull(identifier, "identifier");
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
         Preconditions.notNull(replacer, "replacer");
@@ -48,24 +49,24 @@ public class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public boolean isRegisteredPlaceholder(String identifier) {
+    public boolean isRegisteredPlaceholder(@NotNull String identifier) {
         Preconditions.notNull(identifier, "identifier");
         
         return placeholderRegistry.isRegisteredIdentifier(plugin, identifier);
     }
 
     @Override
-    public Collection<Hologram> getHolograms() {
+    public @NotNull Collection<Hologram> getHolograms() {
         return apiHologramManager.getHologramsByPlugin(plugin);
     }
 
     @Override
-    public Collection<String> getRegisteredPlaceholders() {
+    public @NotNull Collection<String> getRegisteredPlaceholders() {
         return placeholderRegistry.getRegisteredIdentifiers(plugin);
     }
 
     @Override
-    public void unregisterPlaceholder(String identifier) {
+    public void unregisterPlaceholder(@NotNull String identifier) {
         Preconditions.notNull(identifier, "identifier");
         
         placeholderRegistry.unregister(plugin, identifier);

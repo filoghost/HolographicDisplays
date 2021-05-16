@@ -11,6 +11,7 @@ import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,11 +30,11 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     }
     
     @Override
-    public String getText() {
+    public @Nullable String getText() {
         return text;
     }
     
-    public void setText(String text) {
+    public void setText(@Nullable String text) {
         this.text = text;
         
         if (textEntity != null) {

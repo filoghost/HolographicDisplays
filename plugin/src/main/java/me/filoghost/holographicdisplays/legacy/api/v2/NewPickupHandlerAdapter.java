@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.legacy.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 public class NewPickupHandlerAdapter implements me.filoghost.holographicdisplays.api.handler.PickupHandler {
@@ -18,7 +19,7 @@ public class NewPickupHandlerAdapter implements me.filoghost.holographicdisplays
     }
 
     @Override
-    public void onPickup(Player player) {
+    public void onPickup(@NotNull Player player) {
         v2PickupHandler.onPickup(player);
     }
 

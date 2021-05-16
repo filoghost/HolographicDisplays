@@ -14,6 +14,7 @@ import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Map;
@@ -61,7 +62,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
         }
     }
 
-    public void setTouchHandler(TouchHandler touchHandler) {
+    public void setTouchHandler(@Nullable TouchHandler touchHandler) {
         this.touchHandler = touchHandler;
         
         if (touchHandler != null && slimeEntity == null && super.isSpawned()) {
@@ -73,7 +74,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
         }
     }
 
-    public TouchHandler getTouchHandler() {
+    public @Nullable TouchHandler getTouchHandler() {
         return this.touchHandler;
     }
 

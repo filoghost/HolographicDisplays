@@ -8,11 +8,12 @@ package me.filoghost.holographicdisplays.object.api;
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.legacy.api.v2.V2HologramLineAdapter;
+import org.jetbrains.annotations.NotNull;
 
 public interface APIHologramLine extends HologramLine, StandardHologramLine {
 
     @Override
-    APIHologram getParent();
+    @NotNull APIHologram getParent();
     
     @Override
     default void removeLine() {

@@ -15,6 +15,8 @@ import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -45,19 +47,19 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
         }
     }
     
-    public PickupHandler getPickupHandler() {
+    public @Nullable PickupHandler getPickupHandler() {
         return pickupHandler;
     }
     
-    public void setPickupHandler(PickupHandler pickupHandler) {
+    public void setPickupHandler(@Nullable PickupHandler pickupHandler) {
         this.pickupHandler = pickupHandler;
     }
     
-    public ItemStack getItemStack() {
+    public @NotNull ItemStack getItemStack() {
         return itemStack;
     }
     
-    public void setItemStack(ItemStack itemStack) {
+    public void setItemStack(@NotNull ItemStack itemStack) {
         Preconditions.notNull(itemStack, "itemStack");
         Preconditions.checkArgument(0 < itemStack.getAmount() && itemStack.getAmount() <= 64, "Item must have amount between 1 and 64");
         this.itemStack = itemStack;
