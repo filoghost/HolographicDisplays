@@ -33,7 +33,7 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
         return text;
     }
     
-    protected void setText(String text) {
+    public void setText(String text) {
         this.text = text;
         
         if (textEntity != null) {

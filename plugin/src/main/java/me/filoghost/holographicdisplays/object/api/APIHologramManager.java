@@ -27,7 +27,7 @@ public class APIHologramManager extends BaseHologramManager<APIHologram> {
         this.placeholderManager = placeholderManager;
     }
 
-    public Hologram createHologram(Location source, Plugin plugin) {
+    public APIHologram createHologram(Location source, Plugin plugin) {
         APIHologram hologram = new APIHologram(source, plugin, nmsManager, this, placeholderManager);
         super.addHologram(hologram);
         return hologram;

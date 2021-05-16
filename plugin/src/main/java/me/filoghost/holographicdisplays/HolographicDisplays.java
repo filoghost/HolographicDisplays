@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays;
 
+import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider;
 import me.filoghost.fcommons.FCommonsPlugin;
 import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.config.exception.ConfigException;
@@ -19,6 +20,7 @@ import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.disk.upgrade.LegacySymbolsUpgrader;
+import me.filoghost.holographicdisplays.legacy.api.v2.V2HologramsAPIProvider;
 import me.filoghost.holographicdisplays.listener.ChunkListener;
 import me.filoghost.holographicdisplays.listener.InteractListener;
 import me.filoghost.holographicdisplays.listener.SpawnListener;
@@ -31,6 +33,7 @@ import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.placeholder.PlaceholderManager;
 import me.filoghost.holographicdisplays.placeholder.internal.AnimationRegistry;
 import me.filoghost.holographicdisplays.placeholder.internal.DefaultPlaceholders;
+import me.filoghost.holographicdisplays.placeholder.registry.PlaceholderRegistry;
 import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
@@ -122,11 +125,15 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
         registerListener(updateNotificationListener);
         
-        // Enable the API.
+        // Enable the APIs
         HolographicDisplaysAPIProvider.setImplementation(new DefaultHolographicDisplaysAPIProvider(
                 apiHologramManager,
                 nmsManager,
                 placeholderManager.getPlaceholderRegistry()));
+        enableLegacyAPI(
+                apiHologramManager,
+                nmsManager,
+                placeholderManager.getPlaceholderRegistry());
 
         // Register bStats metrics
         int pluginID = 3123;
@@ -139,7 +146,15 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
             Bukkit.getScheduler().runTaskLater(this, errorCollector::logErrorCount, 10L);
         }
     }
-    
+
+    @SuppressWarnings("deprecation")
+    private void enableLegacyAPI(APIHologramManager apiHologramManager, NMSManager nmsManager, PlaceholderRegistry placeholderRegistry) {
+        HologramsAPIProvider.setImplementation(new V2HologramsAPIProvider(
+                apiHologramManager,
+                nmsManager,
+                placeholderRegistry));
+    }
+
     public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
         DefaultPlaceholders.resetAndRegister(placeholderManager.getPlaceholderRegistry(), animationRegistry, bungeeServerTracker);
         

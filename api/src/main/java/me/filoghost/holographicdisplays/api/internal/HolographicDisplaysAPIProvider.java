@@ -12,6 +12,8 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 
 @Internal
 public abstract class HolographicDisplaysAPIProvider {
+
+    public static final String ERROR_IMPLEMENTATION_NOT_SET = "Holographic Displays did not load properly (no API implementation was set)";
     
     private static HolographicDisplaysAPIProvider implementation;
     
@@ -21,7 +23,7 @@ public abstract class HolographicDisplaysAPIProvider {
     
     public static HolographicDisplaysAPIProvider getImplementation() {
         if (implementation == null) {
-            throw new IllegalStateException("Holographic Displays did not load properly");
+            throw new IllegalStateException(ERROR_IMPLEMENTATION_NOT_SET);
         }
         
         return implementation;

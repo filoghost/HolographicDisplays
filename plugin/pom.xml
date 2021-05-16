@@ -32,7 +32,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>holographicdisplays-legacy-api-v2</artifactId>
-            <scope>runtime</scope>
         </dependency>
         
         <dependency>

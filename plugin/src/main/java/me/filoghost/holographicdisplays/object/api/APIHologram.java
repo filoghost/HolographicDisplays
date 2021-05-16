@@ -7,12 +7,9 @@ package me.filoghost.holographicdisplays.object.api;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.Hologram;
-import me.filoghost.holographicdisplays.api.VisibilityManager;
-import me.filoghost.holographicdisplays.api.line.HologramLine;
-import me.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
+import me.filoghost.holographicdisplays.legacy.api.v2.V2HologramAdapter;
 import me.filoghost.holographicdisplays.object.base.BaseHologram;
 import me.filoghost.holographicdisplays.placeholder.PlaceholderManager;
 import org.bukkit.Location;
@@ -23,11 +20,12 @@ import org.bukkit.plugin.Plugin;
 import java.util.List;
 
 public class APIHologram extends BaseHologram<APIHologramLine> implements Hologram {
-    
+
     private final Plugin plugin;
     private final APIHologramManager apiHologramManager;
-    private final VisibilityManager visibilityManager;
+    private final DefaultVisibilityManager visibilityManager;
     private final long creationTimestamp;
+    private final V2HologramAdapter v2Adapter;
 
     private boolean allowPlaceholders;
 
@@ -38,6 +36,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
         this.apiHologramManager = apiHologramManager;
         this.visibilityManager = new DefaultVisibilityManager(this);
         this.creationTimestamp = System.currentTimeMillis();
+        this.v2Adapter = new V2HologramAdapter(this);
     }
     
     @Override
@@ -46,14 +45,14 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
     
     @Override
-    public TextLine appendTextLine(String text) {
+    public APITextLine appendTextLine(String text) {
         APITextLine line = createTextLine(text);
         addLine(line);
         return line;
     }
 
     @Override
-    public ItemLine appendItemLine(ItemStack itemStack) {
+    public APIItemLine appendItemLine(ItemStack itemStack) {
         Preconditions.notNull(itemStack, "itemStack");
 
         APIItemLine line = createItemLine(itemStack);
@@ -62,14 +61,14 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
 
     @Override
-    public TextLine insertTextLine(int index, String text) {
+    public APITextLine insertTextLine(int index, String text) {
         APITextLine line = createTextLine(text);
         addLine(line);
         return line;
     }
 
     @Override
-    public ItemLine insertItemLine(int index, ItemStack itemStack) {
+    public APIItemLine insertItemLine(int index, ItemStack itemStack) {
         Preconditions.notNull(itemStack, "itemStack");
 
         APIItemLine line = createItemLine(itemStack);
@@ -86,7 +85,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
 
     @Override
-    public HologramLine getLine(int index) {
+    public APIHologramLine getLine(int index) {
         return getLines().get(index);
     }
 
@@ -138,7 +137,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
 
     @Override
-    public VisibilityManager getVisibilityManager() {
+    public DefaultVisibilityManager getVisibilityManager() {
         return visibilityManager;
     }
 
@@ -150,6 +149,10 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     @Override
     public String toFormattedString() {
         return plugin.getName() + "@" + Integer.toHexString(hashCode());
+    }
+
+    public V2HologramAdapter getV2Adapter() {
+        return v2Adapter;
     }
 
 }

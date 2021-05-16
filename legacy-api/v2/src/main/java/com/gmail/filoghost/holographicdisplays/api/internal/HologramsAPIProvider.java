@@ -5,11 +5,13 @@
  */
 package com.gmail.filoghost.holographicdisplays.api.internal;
 
-import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.Collection;
 
@@ -17,19 +19,20 @@ import java.util.Collection;
  * @deprecated Please use the new API!
  */
 @Deprecated
-public abstract class BackendAPI {
+@Internal
+public abstract class HologramsAPIProvider {
     
-    private static BackendAPI implementation;
+    private static HologramsAPIProvider implementation;
 
     @Deprecated
-    public static void setImplementation(BackendAPI implementation) {
-        BackendAPI.implementation = implementation;
+    public static void setImplementation(HologramsAPIProvider implementation) {
+        HologramsAPIProvider.implementation = implementation;
     }
 
     @Deprecated
-    public static BackendAPI getImplementation() {
+    public static HologramsAPIProvider getImplementation() {
         if (implementation == null) {
-            throw new IllegalStateException("No API implementation set. Is Holographic Displays enabled?");
+            throw new IllegalStateException(HolographicDisplaysAPIProvider.ERROR_IMPLEMENTATION_NOT_SET);
         }
         
         return implementation;

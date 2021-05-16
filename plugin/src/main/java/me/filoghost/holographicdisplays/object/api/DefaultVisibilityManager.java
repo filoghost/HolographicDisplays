@@ -9,6 +9,7 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.VisibilityManager;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.legacy.api.v2.V2VisibilityManagerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -21,12 +22,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultVisibilityManager implements VisibilityManager {
     
     private final StandardHologram hologram;
+    private final V2VisibilityManagerAdapter v2Adapter;
     private Map<UUID, Boolean> playersVisibilityMap;
     private boolean visibleByDefault;
     
     public DefaultVisibilityManager(StandardHologram hologram) {
         Preconditions.notNull(hologram, "hologram");
         this.hologram = hologram;
+        this.v2Adapter = new V2VisibilityManagerAdapter(this);
         this.visibleByDefault = true;
     }
     
@@ -164,5 +167,9 @@ public class DefaultVisibilityManager implements VisibilityManager {
     public String toString() {
         return "VisibilityManager [playersMap=" + playersVisibilityMap + ", visibleByDefault=" + visibleByDefault + "]";
     }
-    
+
+    public V2VisibilityManagerAdapter getV2Adapter() {
+        return v2Adapter;
+    }
+
 }

@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.object.api;
 
 import me.filoghost.holographicdisplays.api.line.HologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.legacy.api.v2.V2HologramLineAdapter;
 
 public interface APIHologramLine extends HologramLine, StandardHologramLine {
 
@@ -17,5 +18,7 @@ public interface APIHologramLine extends HologramLine, StandardHologramLine {
     default void removeLine() {
         getParent().removeLine(this);
     }
+
+    V2HologramLineAdapter getV2Adapter();
 
 }
