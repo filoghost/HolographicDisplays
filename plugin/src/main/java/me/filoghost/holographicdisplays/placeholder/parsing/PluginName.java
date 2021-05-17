@@ -21,11 +21,11 @@ public class PluginName {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (!(obj instanceof PluginName)) {
             return false;
         }
 
@@ -34,7 +34,7 @@ public class PluginName {
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return pluginName.hashCode();
     }
     

@@ -71,11 +71,11 @@ public class PlaceholderOccurrence {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
-        if (obj == null || this.getClass() != obj.getClass()) {
+        if (!(obj instanceof PlaceholderOccurrence)) {
             return false;
         }
 
@@ -87,7 +87,7 @@ public class PlaceholderOccurrence {
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return hashCode;
     }
 
