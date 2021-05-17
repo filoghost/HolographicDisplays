@@ -55,7 +55,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
 
     @Override
     public void onCheckedEnable() throws PluginEnableException {
-        // Warn about plugin reloaders and the /reload command.
+        // Warn about plugin reloaders and the /reload command
         if (instance != null || System.getProperty("HolographicDisplaysLoaded") != null) {
             Bukkit.getConsoleSender().sendMessage(
                     ChatColor.RED + "[HolographicDisplays] Please do not use /reload or plugin reloaders." 
@@ -66,7 +66,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         System.setProperty("HolographicDisplaysLoaded", "true");
         instance = this;
 
-        // The bungee chat API is required.
+        // The bungee chat API is required
         if (!FeatureSupport.CHAT_COMPONENTS) {
             throw new PluginEnableException(
                     "Holographic Displays requires the new chat API.",
@@ -102,7 +102,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
 
         PrintableErrorCollector errorCollector = new PrintableErrorCollector();
 
-        // Run only once at startup, before anything else.
+        // Run only once at startup, before anything else
         try {
             LegacySymbolsUpgrader.run(configManager, errorCollector);
         } catch (ConfigException e) {
@@ -113,7 +113,6 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         
         ProtocolLibHook.setup(this, nmsManager, this, errorCollector);
         
-        // Start repeating tasks.
         placeholderManager.startUpdaterTask(this);
 
         HologramCommandManager commandManager = new HologramCommandManager(configManager, internalHologramManager, nmsManager);

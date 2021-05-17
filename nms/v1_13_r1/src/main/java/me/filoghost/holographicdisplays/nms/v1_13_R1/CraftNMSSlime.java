@@ -23,11 +23,11 @@ public class CraftNMSSlime extends CraftSlime {
         super(server, entity);
     }
     
-    // Disallow all the bukkit methods.
+    // Disallow all the bukkit methods
     
     @Override
     public void remove() {
-        // Cannot be removed, this is the most important to override.
+        // Cannot be removed, this is the most important to override
     }
     
     // Methods from LivingEntity class

@@ -42,12 +42,12 @@ public class ChunkListener implements Listener {
     public void onChunkLoad(ChunkLoadEvent event) {
         Chunk chunk = event.getChunk();
 
-        // Other plugins could call this event wrongly, check if the chunk is actually loaded.
+        // Other plugins could call this event wrongly, check if the chunk is actually loaded
         if (!chunk.isLoaded()) {
             return;
         }
 
-        // In case another plugin loads the chunk asynchronously, always make sure to load the holograms on the main thread.
+        // In case another plugin loads the chunk asynchronously, always make sure to load the holograms on the main thread
         SchedulerUtils.runOnMainThread(() -> {
             internalHologramManager.onChunkLoad(chunk);
             apiHologramManager.onChunkLoad(chunk);

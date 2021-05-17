@@ -14,9 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/**
- * Huge thanks to bobacadodl for this awesome library!
- * Bukkit thread: https://forums.bukkit.org/threads/lib-imagemessage-v2-1-send-images-to-players-via-the-chat.204902
+/*
+ * Credits: https://forums.bukkit.org/threads/lib-imagemessage-v2-1-send-images-to-players-via-the-chat.204902
  */
 public class ImageMessage {
     
@@ -119,15 +118,15 @@ public class ImageMessage {
     }
     
     private BufferedImage toBufferedImage(Image img) {
-        // Creates a buffered image with transparency.
+        // Creates a buffered image with transparency
         BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
-        // Draws the image on to the buffered image.
+        // Draws the image on to the buffered image
         Graphics2D graphics = bimage.createGraphics();
         graphics.drawImage(img, 0, 0, null);
         graphics.dispose();
 
-        // Returns the buffered image.
+        // Returns the buffered image
         return bimage;
     }
 

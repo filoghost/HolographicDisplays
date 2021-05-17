@@ -14,7 +14,7 @@ public class RelativePlaceholder implements RelativePlaceholderReplacer {
     
     private static final Collection<RelativePlaceholder> registry = new HashSet<>();
     
-    // The placeholder itself, something like {player}.
+    // The placeholder itself, something like {player}
     private final String textPlaceholder;
     
     private final RelativePlaceholderReplacer replacer;

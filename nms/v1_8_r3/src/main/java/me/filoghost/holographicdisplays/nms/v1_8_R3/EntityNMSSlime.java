@@ -39,12 +39,12 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     @Override
     public void t_() {
-        // Disable normal ticking for this entity.
+        // Disable normal ticking for this entity
         
-        // So it won't get removed.
+        // So it won't get removed
         ticksLived = 0;
 
-        // The slime dies without a vehicle.
+        // The slime dies without a vehicle
         if (super.vehicle == null) {
             killEntityNMS();
         }
@@ -52,15 +52,15 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     @Override
     public void inactiveTick() {
-        // Disable normal ticking for this entity.
+        // Disable normal ticking for this entity
         
-        // So it won't get removed.
+        // So it won't get removed
         ticksLived = 0;
     }
     
     @Override
     public void a(AxisAlignedBB boundingBox) {
-        // Prevent bounding box from being changed
+        // Prevent changes to bounding box
     }
     
     public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
@@ -69,24 +69,24 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     @Override
     public void b(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
     }
     
     @Override
     public boolean c(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
         return false;
     }
 
     @Override
     public boolean d(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
         return false;
     }
     
     @Override
     public void e(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
     }
     
     @Override
@@ -112,22 +112,22 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 
     @Override
     public void setCustomName(String customName) {
-        // Locks the custom name.
+        // Prevents changes to custom name
     }
     
     @Override
     public void setCustomNameVisible(boolean visible) {
-        // Locks the custom name.
+        // Prevents changes to custom name visibility
     }
     
     @Override
     public void makeSound(String sound, float volume, float pitch) {
-        // Remove sounds.
+        // Remove sounds
     }
     
     @Override
     public void die() {
-        // Prevent being killed.
+        // Prevent entity from dying
     }
     
     @Override

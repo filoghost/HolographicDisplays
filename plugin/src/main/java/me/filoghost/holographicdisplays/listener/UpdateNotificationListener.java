@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class UpdateNotificationListener implements Listener {
 
-    // The new version found by the updater, null if there is no new version.
+    // The new version found by the updater, null if there is no new version
     private String newVersion;
 
     public void runAsyncUpdateCheck() {

@@ -9,10 +9,11 @@ import org.bukkit.inventory.ItemStack;
 
 public interface NMSItem extends NMSEntity {
     
-    // Sets the bukkit ItemStack for this item.
     void setItemStackNMS(ItemStack stack);
 
-    // The raw NMS ItemStack object.
+    /**
+     * Returns the item stack NMS object.
+     */
     Object getRawItemStack();
     
 }

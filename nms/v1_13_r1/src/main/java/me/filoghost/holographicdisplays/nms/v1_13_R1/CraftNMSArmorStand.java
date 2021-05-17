@@ -24,14 +24,14 @@ public class CraftNMSArmorStand extends CraftArmorStand {
         super(server, entity);
     }
     
-    // Disallow all the bukkit methods.
+    // Disallow all the bukkit methods
     
     @Override
     public void remove() {
-        // Cannot be removed, this is the most important to override.
+        // Cannot be removed, this is the most important to override
     }
 
-    // Methods from Armor stand class
+    // Methods from ArmorStand class
     
     @Override public void setArms(boolean arms) {}
     @Override public void setBasePlate(boolean basePlate) {}

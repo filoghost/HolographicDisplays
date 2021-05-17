@@ -55,17 +55,17 @@ public class VersionNMSManager implements NMSManager {
     }
     
     public void registerCustomEntity(Class<? extends Entity> entityClass, int id, float sizeWidth, float sizeHeight) throws Exception {
-        // Use reflection to get the RegistryID of entities.
+        // Use reflection to get the RegistryID of entities
         RegistryID<EntityTypes<?>> registryID = REGISTRY_ID_FIELD.get(IRegistry.ENTITY_TYPE);
         Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
         
-        // Save the the ID -> EntityTypes mapping before the registration.
+        // Save the the ID -> EntityTypes mapping before the registration
         Object oldValue = idToClassMap[id];
 
-        // Register the EntityTypes object.
+        // Register the EntityTypes object
         registryID.a(EntityTypes.Builder.a(EnumCreatureType.MONSTER).a(sizeWidth, sizeHeight).b().a((String) null), id);
 
-        // Restore the ID -> EntityTypes mapping.
+        // Restore the ID -> EntityTypes mapping
         idToClassMap[id] = oldValue;
     }
     

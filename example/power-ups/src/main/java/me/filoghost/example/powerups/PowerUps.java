@@ -43,23 +43,23 @@ public class PowerUps extends JavaPlugin implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         if (event.getEntityType() == EntityType.ZOMBIE) {
-            // Remove normal drops and exp.
+            // Remove normal drops and exp
             event.getDrops().clear();
             event.setDroppedExp(0);
             
-            // Spawn the floating item with a label.
+            // Spawn the floating item with a label
             Hologram hologram = holographicDisplaysAPI.createHologram(event.getEntity().getLocation().add(0.0, 0.9, 0.0));
             hologram.appendTextLine(ChatColor.AQUA  + "" + ChatColor.BOLD + "Speed PowerUp");
             ItemLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
             
             icon.setPickupHandler((Player player) -> {
-                // Play an effect.
+                // Play an effect
                 player.playEffect(hologram.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
                 
-                // 30 seconds of speed II.
+                // 30 seconds of speed II
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * 20, 1), true);
                 
-                // Delete the hologram.
+                // Delete the hologram
                 hologram.delete();
             });
         }

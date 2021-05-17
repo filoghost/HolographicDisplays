@@ -56,7 +56,7 @@ public class AnimationRegistry implements PlaceholderFactory {
 
             String firstLine = lines.get(0).trim();
             if (firstLine.toLowerCase().startsWith(SPEED_PREFIX)) {
-                // Do not consider it.
+                // Do not consider it
                 lines.remove(0);
 
                 firstLine = firstLine.substring(SPEED_PREFIX.length()).trim();
@@ -76,7 +76,7 @@ public class AnimationRegistry implements PlaceholderFactory {
                 errorCollector.add("could not find any line in \"" + fileName + "\" (excluding the speed), you should add at least one more line");
             }
 
-            // Replace placeholders.
+            // Replace placeholders
             for (int i = 0; i < lines.size(); i++) {
                 lines.set(i, StringConverter.toReadableFormat(lines.get(i)));
             }

@@ -56,17 +56,17 @@ public class VersionNMSManager implements NMSManager {
     }
     
     public void registerCustomEntity(Class<? extends Entity> entityClass, int id, float sizeWidth, float sizeHeight) throws Exception {
-        // Use reflection to get the RegistryID of entities.
+        // Use reflection to get the RegistryID of entities
         RegistryID<EntityTypes<?>> registryID = REGISTRY_ID_FIELD.get(IRegistry.ENTITY_TYPE);
         Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
         
-        // Save the the ID -> EntityTypes mapping before the registration.
+        // Save the the ID -> EntityTypes mapping before the registration
         Object oldValue = idToClassMap[id];
 
-        // Register the EntityTypes object.
+        // Register the EntityTypes object
         registryID.a(EntityTypes.a.a(EnumCreatureType.MONSTER).a(sizeWidth, sizeHeight).b().a((String) null), id);
 
-        // Restore the ID -> EntityTypes mapping.
+        // Restore the ID -> EntityTypes mapping
         idToClassMap[id] = oldValue;
     }
     
@@ -170,12 +170,12 @@ public class VersionNMSManager implements NMSManager {
                 try {
                     return chatComponent.getSiblings();
                 } catch (NoSuchMethodError e) {
-                    // The method was named differently in older 1.14 versions, use workaround.
+                    // The method was named differently in older 1.14 versions, use workaround
                     useNewGetSiblingsMethod = false;
                 }
             }
             
-            // Access siblings field directly in older 1.14 versions.
+            // Access siblings field directly in older 1.14 versions
             try {
                 return OLD_SIBLINGS_FIELD.get(chatComponent);
             } catch (ReflectiveOperationException e) {

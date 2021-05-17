@@ -73,12 +73,12 @@ class PacketListener extends PacketAdapter {
 
         NMSEntity nmsEntity = nmsManager.getNMSEntityBaseFromID(event.getPlayer().getWorld(), entityID);
         if (nmsEntity == null) {
-            return; // Entity not existing or not related to holograms.
+            return; // Entity not existing or not related to holograms
         }
 
         if (packetType == PacketType.Play.Server.REL_ENTITY_MOVE || packetType == PacketType.Play.Server.REL_ENTITY_MOVE_LOOK) {
             if (nmsEntity instanceof NMSArmorStand && packetSettings.sendAccurateLocationPackets()) {
-                event.setCancelled(true); // Don't send relative movement packets for armor stands, only keep precise teleport packets.
+                event.setCancelled(true); // Don't send relative movement packets for armor stands, only keep precise teleport packets
             }
             return;
         }
@@ -153,7 +153,7 @@ class PacketListener extends PacketAdapter {
         }
         
         if (replacedCustomNameNMSObject == originalCustomNameNMSObject) {
-            // It means nothing has been replaced, since original custom name has been returned.
+            // It means nothing has been replaced, since original custom name has been returned
             return false;
         }
         

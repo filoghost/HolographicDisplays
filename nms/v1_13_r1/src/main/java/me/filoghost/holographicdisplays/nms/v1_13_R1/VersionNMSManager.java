@@ -56,17 +56,17 @@ public class VersionNMSManager implements NMSManager {
     }
     
     public void registerCustomEntity(Class<? extends Entity> entityClass, int id) throws Exception {
-        // Use reflection to get the RegistryID of entities.
+        // Use reflection to get the RegistryID of entities
         RegistryID<EntityTypes<?>> registryID = REGISTRY_ID_FIELD.get(EntityTypes.REGISTRY);
         Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
         
-        // Save the the ID -> EntityTypes mapping before the registration.
+        // Save the the ID -> EntityTypes mapping before the registration
         Object oldValue = idToClassMap[id];
 
-        // Register the EntityTypes object.
+        // Register the EntityTypes object
         registryID.a(new EntityTypes<>(entityClass, world -> null, true, true, null), id);
 
-        // Restore the ID -> EntityTypes mapping.
+        // Restore the ID -> EntityTypes mapping
         idToClassMap[id] = oldValue;
     }
     
@@ -113,7 +113,7 @@ public class VersionNMSManager implements NMSManager {
         nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
         if (NMSCommons.IS_PAPER_SERVER) {
             try {
-                // Workaround because nmsWorld.entityList is a different class in Paper, if used without reflection it throws NoSuchFieldError.
+                // Workaround because nmsWorld.entityList is a different class in Paper, if used without reflection it throws NoSuchFieldError
                 ENTITY_LIST_FIELD.get(nmsWorld).add(nmsEntity);
             } catch (ReflectiveOperationException e) {
                 e.printStackTrace();

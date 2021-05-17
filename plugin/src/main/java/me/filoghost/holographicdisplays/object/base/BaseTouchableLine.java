@@ -66,10 +66,10 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
         this.touchHandler = touchHandler;
         
         if (touchHandler != null && slimeEntity == null && super.isSpawned()) {
-            // If the touch handler was null before and no entity has been spawned, spawn it now.
+            // If the touch handler was null before and no entity has been spawned, spawn it now
             spawnSlime(getWorld(), getX(), getY(), getZ());
         } else if (touchHandler == null) {
-            // Opposite case, the touch handler was not null and an entity was spawned, but now it's useless.
+            // Opposite case, the touch handler was not null and an entity was spawned, but now it's useless
             despawnSlime();
         }
     }

@@ -43,7 +43,7 @@ public abstract class BaseHologramManager<H extends StandardHologram> {
     }
     
     public void onChunkLoad(Chunk chunk) {
-        // Load the holograms in that chunk.
+        // Load the holograms in that chunk
         for (H hologram : holograms) {
             if (hologram.isInChunk(chunk)) {
                 hologram.refresh(false, true);

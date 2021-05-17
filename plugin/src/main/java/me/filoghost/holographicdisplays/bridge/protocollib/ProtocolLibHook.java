@@ -90,8 +90,9 @@ public class ProtocolLibHook {
 
         Location playerLocation = player.getLocation();
         double distanceSquared = Utils.distanceSquared(playerLocation.getX(), hologram.getX(), playerLocation.getZ(), hologram.getZ());
-        
-        return distanceSquared < 128 * 128; // Approximate, more checks are done for single entities
+
+        // Approximate, more checks are done for single entities
+        return distanceSquared < 128 * 128;
     }
 
     public static boolean isEnabled() {

@@ -43,23 +43,23 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     @Override
     public void tick() {
-        // Disable normal ticking for this entity.
+        // Disable normal ticking for this entity
         
-        // So it won't get removed.
+        // So it won't get removed
         ticksLived = 0;
     }
     
     @Override
     public void inactiveTick() {
-        // Disable normal ticking for this entity.
+        // Disable normal ticking for this entity
         
-        // So it won't get removed.
+        // So it won't get removed
         ticksLived = 0;
     }
     
     @Override
     public void a(AxisAlignedBB boundingBox) {
-        // Prevent bounding box from being changed
+        // Prevent changes to bounding box
     }
     
     public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
@@ -68,35 +68,35 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     @Override
     public void saveData(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
     }
     
     @Override
     public boolean a_(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
         return false;
     }
 
     @Override
     public boolean d(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
         return false;
     }
     
     @Override
     public NBTTagCompound save(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
         return nbttagcompound;
     }
     
     @Override
     public void load(NBTTagCompound nbttagcompound) {
-        // Do not load NBT.
+        // Do not load NBT
     }
     
     @Override
     public void loadData(NBTTagCompound nbttagcompound) {
-        // Do not load NBT.
+        // Do not load NBT
     }
     
     @Override
@@ -127,22 +127,22 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
 
     @Override
     public void setCustomName(IChatBaseComponent ichatbasecomponent) {
-        // Locks the custom name.
+        // Prevents changes to custom name
     }
     
     @Override
     public void setCustomNameVisible(boolean visible) {
-        // Locks the custom name.
+        // Prevents changes to custom name visibility
     }
     
     @Override
     public void playSound(SoundEffect soundeffect, float f, float f1) {
-        // Remove sounds.
+        // Remove sounds
     }
     
     @Override
     public void die() {
-        // Prevent being killed.
+        // Prevent entity from dying
     }
     
     @Override

@@ -15,7 +15,11 @@ import org.bukkit.inventory.ItemStack;
 
 public interface NMSManager {
     
-    // A method to register all the custom entities of the plugin, it may fail.
+    /** 
+     * Register all the custom entities of the plugin.
+     * 
+     * @throws Exception if anything during the process fails
+     */
     void setup() throws Exception;
     
     NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, StandardHologramLine parentHologramLine) throws SpawnFailedException;

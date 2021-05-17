@@ -55,18 +55,18 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
             SET_MARKER_METHOD.invoke(this, true);
         } catch (ReflectiveOperationException e) {
             DebugLogger.cannotSetArmorStandAsMarker(e);
-            // It will still work, but the offset will be wrong.
+            // It will still work, but the offset will be wrong
         }
         super.noclip = true;
-        super.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet.
+        super.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet
         forceSetBoundingBox(new NullBoundingBox());
     }
     
     @Override
     public void t_() {
-        // Disable normal ticking for this entity.
+        // Disable normal ticking for this entity
         
-        // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+        // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity
         if (super.onGround) {
             super.onGround = false;
         }
@@ -74,9 +74,9 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     
     @Override
     public void inactiveTick() {
-        // Disable normal ticking for this entity.
+        // Disable normal ticking for this entity
         
-        // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity.
+        // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity
         if (super.onGround) {
             super.onGround = false;
         }
@@ -84,24 +84,24 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     
     @Override
     public void b(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
     }
     
     @Override
     public boolean c(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
         return false;
     }
 
     @Override
     public boolean d(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
         return false;
     }
     
     @Override
     public void e(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
     }
     
     
@@ -117,34 +117,34 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     
     @Override
     public void setCustomName(String customName) {
-        // Locks the custom name.
+        // Prevents changes to custom name
     }
     
     @Override
     public void setCustomNameVisible(boolean visible) {
-        // Locks the custom name.
+        // Prevents changes to custom name visibility
     }
 
     @Override
     public boolean a(EntityHuman human, Vec3D vec3d) {
-        // Prevent stand being equipped
+        // Prevent armor stand from being equipped
         return true;
     }
 
     @Override
     public boolean d(int i, ItemStack item) {
-        // Prevent stand being equipped
+        // Prevent armor stand from being equipped
         return false;
     }
 
     @Override
     public void setEquipment(int i, ItemStack item) {
-        // Prevent stand being equipped
+        // Prevent armor stand from being equipped
     }
     
     @Override
     public void a(AxisAlignedBB boundingBox) {
-        // Prevent bounding box from being changed
+        // Prevent changes to bounding box
     }
     
     public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
@@ -153,7 +153,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     
     @Override
     public void makeSound(String sound, float f1, float f2) {
-        // Remove sounds.
+        // Remove sounds
     }
     
     @Override
@@ -178,7 +178,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     
     @Override
     public void die() {
-        // Prevent being killed.
+        // Prevent entity from dying
     }
     
     @Override

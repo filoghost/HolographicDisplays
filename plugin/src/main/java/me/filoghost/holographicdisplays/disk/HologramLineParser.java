@@ -87,7 +87,7 @@ public class HologramLineParser {
         
         if (nbtString != null) {
             try {
-                // Check NBT syntax validity before applying it.
+                // Check NBT syntax validity before applying it
                 MojangsonParser.parse(nbtString);
                 Bukkit.getUnsafe().modifyItemStack(itemStack, nbtString);
             } catch (MojangsonParseException e) {

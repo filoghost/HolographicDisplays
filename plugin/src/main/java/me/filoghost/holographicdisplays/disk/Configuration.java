@@ -155,7 +155,7 @@ public class Configuration {
             }
         } else {
             ip = address;
-            port = 25565; // The default Minecraft port.
+            port = 25565; // Default Minecraft server port
         }
         
         return new ServerAddress(name, ip, port);

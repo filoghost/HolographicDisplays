@@ -40,65 +40,65 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     
     @Override
     public void tick() {
-        // Disable normal ticking for this entity.
+        // Disable normal ticking for this entity
         
-        // So it won't get removed.
+        // So it won't get removed
         ticksLived = 0;
     }
     
     @Override
     public void inactiveTick() {
-        // Disable normal ticking for this entity.
+        // Disable normal ticking for this entity
         
-        // So it won't get removed.
+        // So it won't get removed
         ticksLived = 0;
     }
     
-    // Method called when a player is near.
+    // Method called when a player is near
     @Override
     public void pickup(EntityHuman human) {
         if (human.locY < super.locY - 1.5 || human.locY > super.locY + 1.0) {
-            // Too low or too high, it's a bit weird.
+            // Too low or too high, it's a bit weird
             return;
         }
         
         if (human instanceof EntityPlayer) {
             parentHologramLine.onPickup(((EntityPlayer) human).getBukkitEntity());
-            // It is never added to the inventory.
+            // It is never added to the inventory
         }
     }
     
     @Override
     public void b(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
     }
     
     @Override
     public boolean c(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
         return false;
     }
 
     @Override
     public boolean d(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
         return false;
     }
     
     @Override
     public NBTTagCompound save(NBTTagCompound nbttagcompound) {
-        // Do not save NBT.
+        // Do not save NBT
         return nbttagcompound;
     }
     
     @Override
     public void f(NBTTagCompound nbttagcompound) {
-        // Do not load NBT.
+        // Do not load NBT
     }
     
     @Override
     public void a(NBTTagCompound nbttagcompound) {
-        // Do not load NBT.
+        // Do not load NBT
     }
     
     @Override
@@ -118,13 +118,12 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     
     @Override
     public void die() {
-        // Prevent being killed.
+        // Prevent entity from dying
     }
     
     @Override
     public boolean isAlive() {
-        // This override prevents items from being picked up by hoppers.
-        // Should have no side effects.
+        // This override prevents items from being picked up by hoppers (should have no side effects)
         return false;
     }
 
@@ -153,9 +152,9 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
 
     @Override
     public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
-        ItemStack newItem = CraftItemStack.asNMSCopy(stack); // ItemStack.a is returned if the stack is not valid
+        ItemStack newItem = CraftItemStack.asNMSCopy(stack);
         
-        if (newItem == null || newItem == ItemStack.a) {
+        if (newItem == null || newItem == ItemStack.a) { // ItemStack.a is returned if the stack is not valid
             newItem = new ItemStack(Blocks.BEDROCK);
         }
 

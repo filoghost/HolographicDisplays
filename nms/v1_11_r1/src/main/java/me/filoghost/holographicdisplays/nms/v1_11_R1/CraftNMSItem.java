@@ -20,11 +20,11 @@ public class CraftNMSItem extends CraftItem {
         super(server, entity);
     }
 
-    // Disallow all the bukkit methods.
+    // Disallow all the bukkit methods
     
     @Override
     public void remove() {
-        // Cannot be removed, this is the most important to override.
+        // Cannot be removed, this is the most important to override
     }
 
     // Methods from Entity
