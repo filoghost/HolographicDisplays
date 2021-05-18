@@ -10,4 +10,10 @@
     <suppress
             checks="Header"
             files="[\\/]me[\\/]filoghost[\\/]holographicdisplays[\\/]bridge[\\/]protocollib[\\/].+\.java"/>
+    <suppress
+            checks="LeftCurly|EmptyLineSeparator"
+            files="[\\/]me[\\/]filoghost[\\/]holographicdisplays[\\/]nms[\\/]\w+[\\/]Craft.+\.java"/>
+    <suppress
+            checks="SummaryJavadoc"
+            files="[\\/]com[\\/]gmail[\\/]filoghost[\\/](holograms|holographicdisplays)[\\/]api[\\/].+\.java"/>
 </suppressions>

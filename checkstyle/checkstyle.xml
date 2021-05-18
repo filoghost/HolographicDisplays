@@ -41,7 +41,9 @@
     <module name="TreeWalker">
         <!-- Blocks -->
         <module name="AvoidNestedBlocks"/>
-        <module name="EmptyBlock"/>
+        <module name="EmptyBlock">
+            <property name="option" value="text"/>
+        </module>
         <module name="EmptyCatchBlock">
             <property name="exceptionVariableName" value="expected|ignore"/>
         </module>
@@ -64,7 +66,6 @@
         </module>
         <module name="DefaultComesLast"/>
         <module name="EmptyStatement"/>
-        <module name="EqualsAvoidNull"/>
         <module name="EqualsHashCode"/>
         <module name="FallThrough"/>
         <module name="IllegalThrows"/>
@@ -159,7 +160,8 @@
 
         <!-- Whitespace -->
         <module name="RegexpSinglelineJava">
-            <property name="format" value="[^\s]\s+$"/>
+            <!-- Tolerate one trailing space, except immediately after curly braces, left parenthesis and semicolon -->
+            <property name="format" value="([^\s]\s{2,}|[}{(;]\s+)$"/>
             <property name="minimum" value="0"/>
             <property name="maximum" value="0"/>
             <property name="ignoreComments" value="true"/>

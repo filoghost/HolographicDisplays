@@ -374,6 +374,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <consoleOutput>true</consoleOutput>
                     <configLocation>${rootDir}/checkstyle/checkstyle.xml</configLocation>
                     <propertyExpansion>samedir=${rootDir}/checkstyle</propertyExpansion>
                     <sourceDirectories>
