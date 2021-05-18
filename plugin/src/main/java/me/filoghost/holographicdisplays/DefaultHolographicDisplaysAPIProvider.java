@@ -26,7 +26,10 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
     // Optimization: avoid creating a new instance every time a plugin requires it, in case it never stores a reference
     private final Map<Plugin, HolographicDisplaysAPI> apiInstanceCache;
 
-    public DefaultHolographicDisplaysAPIProvider(APIHologramManager apiHologramManager, NMSManager nmsManager, PlaceholderRegistry placeholderRegistry) {
+    public DefaultHolographicDisplaysAPIProvider(
+            APIHologramManager apiHologramManager,
+            NMSManager nmsManager,
+            PlaceholderRegistry placeholderRegistry) {
         this.apiHologramManager = apiHologramManager;
         this.nmsManager = nmsManager;
         this.placeholderRegistry = placeholderRegistry;

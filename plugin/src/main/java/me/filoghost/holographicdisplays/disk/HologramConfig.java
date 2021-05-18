@@ -42,7 +42,7 @@ public class HologramConfig {
             serializedLines.add(line.getSerializedConfigValue());
         }
 
-       this.serializedLocation = serializeLocation(hologram.getLocation());
+        this.serializedLocation = serializeLocation(hologram.getLocation());
     }
 
     public ConfigSection toConfigSection() {

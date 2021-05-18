@@ -33,8 +33,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class VersionNMSManager implements NMSManager {
     
-    private static final ReflectField<RegistryID<Class<? extends Entity>>> REGISTRY_ID_FIELD = ReflectField.lookup(new ClassToken<RegistryID<Class<? extends Entity>>>(){}, RegistryMaterials.class, "a");
-    private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = ReflectField.lookup(Object[].class, RegistryID.class, "d");
+    private static final ReflectField<RegistryID<Class<? extends Entity>>> REGISTRY_ID_FIELD
+            = ReflectField.lookup(new ClassToken<RegistryID<Class<? extends Entity>>>(){}, RegistryMaterials.class, "a");
+    private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD
+            = ReflectField.lookup(Object[].class, RegistryID.class, "d");
 
     private static final ReflectMethod<?> REGISTER_ENTITY_METHOD = ReflectMethod.lookup(Object.class, World.class, "b", Entity.class);
 
@@ -65,7 +67,10 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, StandardItemLine parentHologramLine, ItemStack stack) throws SpawnFailedException {
+    public NMSItem spawnNMSItem(
+            org.bukkit.World bukkitWorld, double x, double y, double z,
+            StandardItemLine parentHologramLine,
+            ItemStack stack) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         EntityNMSItem item = new EntityNMSItem(nmsWorld, parentHologramLine);
         item.setLocationNMS(x, y, z);
@@ -75,7 +80,9 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public EntityNMSSlime spawnNMSSlime(org.bukkit.World bukkitWorld, double x, double y, double z, StandardHologramLine parentHologramLine) throws SpawnFailedException {
+    public EntityNMSSlime spawnNMSSlime(
+            org.bukkit.World bukkitWorld, double x, double y, double z,
+            StandardHologramLine parentHologramLine) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         EntityNMSSlime slime = new EntityNMSSlime(nmsWorld, parentHologramLine);
         slime.setLocationNMS(x, y, z);
@@ -84,7 +91,9 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public NMSArmorStand spawnNMSArmorStand(org.bukkit.World world, double x, double y, double z, StandardHologramLine parentHologramLine) throws SpawnFailedException {
+    public NMSArmorStand spawnNMSArmorStand(
+            org.bukkit.World world, double x, double y, double z,
+            StandardHologramLine parentHologramLine) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) world).getHandle();
         EntityNMSArmorStand armorStand = new EntityNMSArmorStand(nmsWorld, parentHologramLine, protocolPacketSettings);
         armorStand.setLocationNMS(x, y, z);
@@ -125,7 +134,7 @@ public class VersionNMSManager implements NMSManager {
         Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
         
         if (nmsEntity instanceof NMSEntity) {
-            return ((NMSEntity) nmsEntity);
+            return (NMSEntity) nmsEntity;
         } else {
             return null;
         }
@@ -137,7 +146,7 @@ public class VersionNMSManager implements NMSManager {
         Entity nmsEntity = nmsWorld.getEntity(entityID);
         
         if (nmsEntity instanceof NMSEntity) {
-            return ((NMSEntity) nmsEntity);
+            return (NMSEntity) nmsEntity;
         } else {
             return null;
         }

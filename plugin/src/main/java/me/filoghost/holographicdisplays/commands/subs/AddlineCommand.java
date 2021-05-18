@@ -25,7 +25,10 @@ public class AddlineCommand extends LineEditingCommand implements QuickEditComma
     private final InternalHologramManager internalHologramManager;
     private final ConfigManager configManager;
 
-    public AddlineCommand(HologramCommandManager commandManager, InternalHologramManager internalHologramManager, ConfigManager configManager) {
+    public AddlineCommand(
+            HologramCommandManager commandManager,
+            InternalHologramManager internalHologramManager,
+            ConfigManager configManager) {
         super("addline");
         setMinArgs(2);
         setUsageArgs("<hologram> <text>");

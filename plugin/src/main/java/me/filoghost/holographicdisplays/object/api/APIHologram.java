@@ -31,7 +31,12 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
 
     private boolean allowPlaceholders;
 
-    protected APIHologram(Location source, Plugin plugin, NMSManager nmsManager, APIHologramManager apiHologramManager, PlaceholderManager placeholderManager) {
+    protected APIHologram(
+            Location source,
+            Plugin plugin,
+            NMSManager nmsManager,
+            APIHologramManager apiHologramManager,
+            PlaceholderManager placeholderManager) {
         super(source, nmsManager, placeholderManager);
         Preconditions.notNull(plugin, "plugin");
         this.plugin = plugin;

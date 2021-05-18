@@ -8,7 +8,9 @@ package me.filoghost.holographicdisplays.image;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import org.bukkit.ChatColor;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +31,7 @@ public class ImageMessage {
         colorsMap.put(ChatColor.DARK_GREEN, new Color(0, 170, 0));
         colorsMap.put(ChatColor.DARK_AQUA, new Color(0, 170, 170));
         colorsMap.put(ChatColor.DARK_RED, new Color(170, 0, 0));
-        colorsMap.put(ChatColor.DARK_PURPLE,  new Color(170, 0, 170));
+        colorsMap.put(ChatColor.DARK_PURPLE, new Color(170, 0, 170));
         colorsMap.put(ChatColor.GOLD, new Color(255, 170, 0));
         colorsMap.put(ChatColor.BLUE, new Color(85, 85, 255));
         colorsMap.put(ChatColor.GREEN, new Color(85, 255, 85));
@@ -54,7 +56,7 @@ public class ImageMessage {
 
     private ChatColor[][] toChatColorArray(BufferedImage image, int width) throws ImageTooWideException {
         double ratio = (double) image.getHeight() / image.getWidth();
-        int height = (int) ((width) * ratio);
+        int height = (int) (width * ratio);
         if (height == 0) {
             height = 1;
         }
@@ -142,14 +144,16 @@ public class ImageMessage {
     }
 
     private boolean areIdentical(Color c1, Color c2) {
-        return Math.abs(c1.getRed() - c2.getRed()) <= 5 &&
-               Math.abs(c1.getGreen() - c2.getGreen()) <= 5 &&
-               Math.abs(c1.getBlue() - c2.getBlue()) <= 5;
+        return Math.abs(c1.getRed() - c2.getRed()) <= 5 
+                && Math.abs(c1.getGreen() - c2.getGreen()) <= 5 
+                && Math.abs(c1.getBlue() - c2.getBlue()) <= 5;
 
     }
 
     private ChatColor getClosestChatColor(Color color) {
-        if (color.getAlpha() < 80) return null;
+        if (color.getAlpha() < 80) {
+            return null;
+        }
 
         for (Entry<ChatColor, Color> entry : colorsMap.entrySet()) {
             if (areIdentical(entry.getValue(), color)) {

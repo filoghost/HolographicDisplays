@@ -33,7 +33,7 @@ public class ServerPinger {
             writeByteArray(out, handshakeBytes.toByteArray());
             
             // Status request packet
-            writeByteArray(out, new byte[]{ 0x00 }); // Packet ID
+            writeByteArray(out, new byte[]{0x00}); // Packet ID
             
             // Response packet
             readVarInt(in); // Packet size

@@ -30,7 +30,7 @@ public class WorldPlayersPlaceholderFactory implements PlaceholderFactory {
 
         private final String[] worldNames;
 
-        public WorldPlayersPlaceholder(String[] worldNames) {
+        WorldPlayersPlaceholder(String[] worldNames) {
             this.worldNames = worldNames;
         }
 

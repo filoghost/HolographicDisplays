@@ -46,7 +46,7 @@ public class Configuration {
     public static void load(MainConfigModel config, ErrorCollector errorCollector) {
         spaceBetweenLines = config.spaceBetweenLines;
         quickEditCommands = config.quickEditCommands;
-        timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone, errorCollector);        
+        timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone, errorCollector);
         updateNotification = config.updateNotification;
         
         imageSymbol = StringConverter.toReadableFormat(config.imageSymbol);
@@ -134,7 +134,8 @@ public class Configuration {
     private static ServerAddress parseServerAddress(String singleServer, ErrorCollector errorCollector) {
         String[] nameAndAddress = Strings.splitAndTrim(singleServer, ":", 2);
         if (nameAndAddress.length < 2) {
-            errorCollector.add("the server info \"" + singleServer + "\" is not valid. There should be a name and an address, separated by a colon");
+            errorCollector.add("the server info \"" + singleServer + "\" is not valid." 
+                    + " There should be a name and an address, separated by a colon");
             return null;
         }
 

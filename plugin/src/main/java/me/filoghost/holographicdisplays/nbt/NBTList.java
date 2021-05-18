@@ -120,10 +120,11 @@ public final class NBTList extends NBTTag implements Iterable<NBTTag>, Cloneable
      * @param value the tag
      */
     public void add(NBTTag value) {
-        if (this.type == null)
+        if (this.type == null) {
             this.type = value.getType();
-        else if (this.type != value.getType())
+        } else if (this.type != value.getType()) {
             throw new IllegalArgumentException(value.getType() + " is not of expected type " + type);
+        }
         list.add(value);
     }
 
@@ -133,12 +134,14 @@ public final class NBTList extends NBTTag implements Iterable<NBTTag>, Cloneable
      * @param value the tag
      */
     public void add(int index, NBTTag value) {
-        if (index < 0 || index >= list.size())
+        if (index < 0 || index >= list.size()) {
             throw new IndexOutOfBoundsException(Integer.toString(index));
-        if (this.type == null)
+        }
+        if (this.type == null) {
             this.type = value.getType();
-        else if (this.type != value.getType())
+        } else if (this.type != value.getType()) {
             throw new IllegalArgumentException(value.getType() + " is not of expected type " + type);
+        }
         list.add(index, value);
     }
 
@@ -177,8 +180,11 @@ public final class NBTList extends NBTTag implements Iterable<NBTTag>, Cloneable
 
         boolean first = true;
         while (iter.hasNext()) {
-            if (first) first = false;
-            else builder.append(',');
+            if (first) {
+                first = false;
+            } else {
+                builder.append(',');
+            }
             builder.append(iter.next().toMSONString());
         }
 

@@ -44,7 +44,7 @@ public class PlaceholderOccurrence {
      * {identifier: argument}
      * {pluginName/identifier}
      * {pluginName/identifier: argument}
-     * 
+     *
      * identifier is required, pluginName and argument are optional
      */
     public static PlaceholderOccurrence parse(String placeholderContent) {

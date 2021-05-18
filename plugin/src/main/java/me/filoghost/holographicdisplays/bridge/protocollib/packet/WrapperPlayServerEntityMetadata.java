@@ -40,7 +40,6 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket {
     
     /**
      * Retrieve unique entity ID to update.
-     * @return The current Entity ID
     */
     public int getEntityID() {
         return handle.getIntegers().read(0);
@@ -48,7 +47,6 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket {
     
     /**
      * Set unique entity ID to update.
-     * @param value - new value.
     */
     public void setEntityID(int value) {
         handle.getIntegers().write(0, value);
@@ -56,8 +54,6 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket {
     
     /**
      * Retrieve the entity.
-     * @param world - the current world of the entity.
-     * @return The entity.
      */
     public Entity getEntity(World world) {
         return handle.getEntityModifier(world).read(0);
@@ -65,26 +61,23 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket {
 
     /**
      * Retrieve the entity.
-     * @param event - the packet event.
-     * @return The entity.
      */
     public Entity getEntity(PacketEvent event) {
         return getEntity(event.getPlayer().getWorld());
     }
-    
+
     /**
      * Retrieve a list of all the watchable objects.
      * <p>
-     * This can be converted to a data watcher using {@link WrappedDataWatcher#WrappedDataWatcher(List) WrappedDataWatcher(List)}
-     * @return The current metadata
-    */
+     * This can be converted to a data watcher using {@link WrappedDataWatcher#WrappedDataWatcher(List)
+     * WrappedDataWatcher(List)}
+     */
     public List<WrappedWatchableObject> getEntityMetadata() {
         return handle.getWatchableCollectionModifier().read(0);
     }
     
     /**
      * Set the list of the watchable objects (meta data).
-     * @param value - new value.
     */
     public void setEntityMetadata(List<WrappedWatchableObject> value) {
         handle.getWatchableCollectionModifier().write(0, value);

@@ -26,8 +26,11 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
     private final HologramCommandManager commandManager;
     private final InternalHologramManager internalHologramManager;
     private final ConfigManager configManager;
-    
-    public InsertlineCommand(HologramCommandManager commandManager, InternalHologramManager internalHologramManager, ConfigManager configManager) {
+
+    public InsertlineCommand(
+            HologramCommandManager commandManager,
+            InternalHologramManager internalHologramManager,
+            ConfigManager configManager) {
         super("insertline");
         setMinArgs(3);
         setUsageArgs("<hologram> <lineNumber> <text>");
@@ -49,7 +52,8 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
         
         int oldLinesAmount = hologram.getLineCount();
         
-        CommandValidate.check(insertAfterIndex >= 0 && insertAfterIndex <= oldLinesAmount, "The number must be between 0 and " + hologram.getLineCount() + "(amount of lines of the hologram).");
+        CommandValidate.check(insertAfterIndex >= 0 && insertAfterIndex <= oldLinesAmount, 
+                "The number must be between 0 and " + hologram.getLineCount() + "(amount of lines of the hologram).");
 
         InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine);
         hologram.insertLine(insertAfterIndex, line);

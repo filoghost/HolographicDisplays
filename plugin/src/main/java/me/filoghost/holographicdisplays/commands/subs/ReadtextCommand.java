@@ -88,7 +88,8 @@ public class ReadtextCommand extends LineEditingCommand {
             configManager.saveHologramDatabase(internalHologramManager);
             
             if (isImageExtension(FileUtils.getExtension(fileName))) {
-                Messages.sendWarning(sender, "The read file has an image's extension. If it is an image, you should use /" + context.getRootLabel() + " readimage.");
+                Messages.sendWarning(sender, "The read file has an image's extension." 
+                        + " If it is an image, you should use /" + context.getRootLabel() + " readimage.");
             }
             
             sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram.");

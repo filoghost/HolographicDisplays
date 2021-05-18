@@ -77,7 +77,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         if (super.onGround) {
             super.onGround = false;
         }
-    }    
+    }
     
     @Override
     public void b(NBTTagCompound nbttagcompound) {

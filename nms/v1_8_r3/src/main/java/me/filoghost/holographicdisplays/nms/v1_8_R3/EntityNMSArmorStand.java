@@ -31,7 +31,8 @@ import java.util.Objects;
 
 public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorStand {
     
-    private static final ReflectMethod<Void> SET_MARKER_METHOD = ReflectMethod.lookup(void.class, EntityArmorStand.class, "n", boolean.class);
+    private static final ReflectMethod<Void> SET_MARKER_METHOD
+            = ReflectMethod.lookup(void.class, EntityArmorStand.class, "n", boolean.class);
     private static final ReflectField<Double> PASSENGER_PITCH_DELTA = ReflectField.lookup(double.class, Entity.class, "ar");
     private static final ReflectField<Double> PASSENGER_YAW_DELTA = ReflectField.lookup(double.class, Entity.class, "as");
 
@@ -80,7 +81,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         if (super.onGround) {
             super.onGround = false;
         }
-    }    
+    }
     
     @Override
     public void b(NBTTagCompound nbttagcompound) {

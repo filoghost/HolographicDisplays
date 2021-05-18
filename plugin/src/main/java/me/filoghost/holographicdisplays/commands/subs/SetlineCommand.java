@@ -26,7 +26,9 @@ public class SetlineCommand extends LineEditingCommand implements QuickEditComma
     private final InternalHologramManager internalHologramManager;
     private final ConfigManager configManager;
 
-    public SetlineCommand(HologramCommandManager commandManager, InternalHologramManager internalHologramManager, ConfigManager configManager) {
+    public SetlineCommand(HologramCommandManager commandManager,
+            InternalHologramManager internalHologramManager,
+            ConfigManager configManager) {
         super("setline");
         setMinArgs(3);
         setUsageArgs("<hologram> <lineNumber> <newText>");
@@ -43,7 +45,8 @@ public class SetlineCommand extends LineEditingCommand implements QuickEditComma
         String serializedLine = Strings.joinFrom(" ", args, 2);
         
         int lineNumber = CommandValidate.parseInteger(args[1]);
-        CommandValidate.check(lineNumber >= 1 && lineNumber <= hologram.getLineCount(), "The line number must be between 1 and " + hologram.getLineCount() + ".");
+        CommandValidate.check(lineNumber >= 1 && lineNumber <= hologram.getLineCount(), 
+                "The line number must be between 1 and " + hologram.getLineCount() + ".");
         int index = lineNumber - 1;
         
         InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine);

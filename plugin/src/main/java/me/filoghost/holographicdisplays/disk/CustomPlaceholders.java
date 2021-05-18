@@ -38,7 +38,8 @@ public class CustomPlaceholders {
             }
 
             if (placeholder.length() > 100) {
-                errorCollector.add("error in \"" + config.getSourceFile() + "\": placeholder cannot be longer than 100 character (" + placeholder + ")");
+                errorCollector.add("error in \"" + config.getSourceFile() + "\":" 
+                        + " placeholder cannot be longer than 100 character (" + placeholder + ")");
                 continue;
             }
 
@@ -59,7 +60,7 @@ public class CustomPlaceholders {
         private final String identifier;
         private final String replacement;
     
-        public StaticPlaceholder(String identifier, String replacement) {
+        StaticPlaceholder(String identifier, String replacement) {
             this.identifier = identifier;
             this.replacement = replacement;
         }

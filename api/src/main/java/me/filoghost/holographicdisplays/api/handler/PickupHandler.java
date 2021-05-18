@@ -10,13 +10,14 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Interface to handle items being picked up by players.
- * 
+ *
  * @since 1
  */
 public interface PickupHandler {
 
     /**
      * Called when a player picks up the item.
+     *
      * @param player the player who picked up the item
      * @since 1
      */

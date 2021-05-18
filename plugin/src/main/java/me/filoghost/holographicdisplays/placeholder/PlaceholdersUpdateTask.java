@@ -86,7 +86,7 @@ public class PlaceholdersUpdateTask implements Runnable {
         return new TrackedLine(textLine, entity, textWithPlaceholders);
     }
 
-    private String getCurrentReplacement(PlaceholderOccurrence placeholderOccurrence) {        
+    private String getCurrentReplacement(PlaceholderOccurrence placeholderOccurrence) {
         try {
             return placeholdersReplacementTracker.getOrUpdateReplacement(placeholderOccurrence, currentTick);
         } catch (PlaceholderException e) {
@@ -103,7 +103,7 @@ public class PlaceholdersUpdateTask implements Runnable {
             return; // Avoid spamming the console too frequently
         }
         lastErrorLogByPlaceholderExpansion.put(placeholderExpansion, currentTick);
-        
+
         Log.warning("The placeholder \"" + placeholderExpansion.getIdentifier() + "\""
                         + " registered by the plugin " + placeholderExpansion.getPluginName()
                         + " generated an exception."

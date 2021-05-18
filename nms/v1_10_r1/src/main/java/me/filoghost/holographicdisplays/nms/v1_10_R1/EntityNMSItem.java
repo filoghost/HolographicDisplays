@@ -176,7 +176,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         NBTTagCompound display = newItem.getTag().getCompound("display");
         
         if (!newItem.getTag().hasKey("display")) {
-        newItem.getTag().set("display", display);
+            newItem.getTag().set("display", display);
         }
         
         NBTTagList tagList = new NBTTagList();

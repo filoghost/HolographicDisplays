@@ -33,13 +33,13 @@ class PacketSender {
     
     private final MetadataHelper metadataHelper;
     
-    public PacketSender(MetadataHelper metadataHelper) {
+    PacketSender(MetadataHelper metadataHelper) {
         this.metadataHelper = metadataHelper;
     }
 
     public void sendDestroyEntitiesPacket(Player player, StandardHologram hologram) {
         List<Integer> ids = new ArrayList<>();
-        for (StandardHologramLine line : hologram.getLines()) { 
+        for (StandardHologramLine line : hologram.getLines()) {
             line.collectTrackedEntityIDs(player, ids);
         }
 
@@ -96,13 +96,15 @@ class PacketSender {
         }
     }
     
-    private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {        
+    private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1)) {
             AbstractPacket spawnPacket;
             if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_14_R1)) {
                 spawnPacket = new WrapperPlayServerSpawnEntityLiving(armorStand.getBukkitEntityNMS());
             } else {
-                spawnPacket = new WrapperPlayServerSpawnEntity(armorStand.getBukkitEntityNMS(), WrapperPlayServerSpawnEntity.ObjectTypes.ARMOR_STAND, 1);
+                spawnPacket = new WrapperPlayServerSpawnEntity(
+                        armorStand.getBukkitEntityNMS(), 
+                        WrapperPlayServerSpawnEntity.ObjectTypes.ARMOR_STAND, 1);
             }
             spawnPacket.sendPacket(receiver);
             
@@ -167,7 +169,7 @@ class PacketSender {
     }
     
     
-    private void sendVehicleAttachPacket(Player receiver, NMSEntity vehicle, NMSEntity passenger) {        
+    private void sendVehicleAttachPacket(Player receiver, NMSEntity vehicle, NMSEntity passenger) {
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
             WrapperPlayServerMount packet = new WrapperPlayServerMount();
             packet.setVehicleId(vehicle.getIdNMS());

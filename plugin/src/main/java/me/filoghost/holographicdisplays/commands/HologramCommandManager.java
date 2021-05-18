@@ -32,9 +32,9 @@ import me.filoghost.holographicdisplays.commands.subs.RemovelineCommand;
 import me.filoghost.holographicdisplays.commands.subs.SetlineCommand;
 import me.filoghost.holographicdisplays.commands.subs.TeleportCommand;
 import me.filoghost.holographicdisplays.core.Utils;
+import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
 import net.md_5.bungee.api.ChatColor;
@@ -54,12 +54,12 @@ import java.util.logging.Level;
 public class HologramCommandManager extends SubCommandManager {
 
     private final List<HologramSubCommand> subCommands;
-    
     private final HelpCommand helpCommand;
 
     public HologramCommandManager(ConfigManager configManager, InternalHologramManager internalHologramManager, NMSManager nmsManager) {
         setName("holograms");
-        subCommands = new ArrayList<>();
+        this.helpCommand = new HelpCommand(this);
+        this.subCommands = new ArrayList<>();
 
         subCommands.add(new AddlineCommand(this, internalHologramManager, configManager));
         subCommands.add(new CreateCommand(internalHologramManager, configManager));
@@ -81,7 +81,7 @@ public class HologramCommandManager extends SubCommandManager {
         subCommands.add(new InfoCommand(this, internalHologramManager));
 
         subCommands.add(new DebugCommand(nmsManager));
-        subCommands.add(helpCommand = new HelpCommand(this));
+        subCommands.add(helpCommand);
     }
 
     @Override
@@ -132,8 +132,8 @@ public class HologramCommandManager extends SubCommandManager {
             message.append("[" + quickEditCommand.getActionName() + "]").color(ChatColor.DARK_AQUA)
                     .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
                     .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(
-                            ChatColor.GRAY + "Click to insert in chat the highlighted part of the command:\n" +
-                                    ChatColor.YELLOW + usage + ChatColor.DARK_GRAY + usageArgs)));
+                            ChatColor.GRAY + "Click to insert in chat the highlighted part of the command:\n"
+                                    + ChatColor.YELLOW + usage + ChatColor.DARK_GRAY + usageArgs)));
             message.append("  ", FormatRetention.NONE);
         }
 
@@ -148,7 +148,9 @@ public class HologramCommandManager extends SubCommandManager {
     @Override
     protected void sendNoArgsMessage(CommandContext context) {
         CommandSender sender = context.getSender();
-        sender.sendMessage(Colors.PRIMARY_SHADOW + "Server is running " + Colors.PRIMARY + "Holographic Displays " + Colors.PRIMARY_SHADOW + "v" + HolographicDisplays.getInstance().getDescription().getVersion() + " by " + Colors.PRIMARY + "filoghost");
+        String version = HolographicDisplays.getInstance().getDescription().getVersion();
+        sender.sendMessage(Colors.PRIMARY_SHADOW + "Server is running " + Colors.PRIMARY + "Holographic Displays " 
+                + Colors.PRIMARY_SHADOW + "v" + version + " by " + Colors.PRIMARY + "filoghost");
         if (helpCommand.hasPermission(sender)) {
             sender.sendMessage(Colors.PRIMARY_SHADOW + "Commands: " + Colors.PRIMARY + helpCommand.getFullUsageText(context));
         }

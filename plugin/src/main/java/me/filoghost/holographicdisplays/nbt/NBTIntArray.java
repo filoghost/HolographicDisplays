@@ -26,8 +26,9 @@ public final class NBTIntArray extends NBTTag implements Cloneable {
 
     public NBTIntArray(Number[] numbers) {
         this.value = new int[numbers.length];
-        for (int i = 0; i < numbers.length; i++)
+        for (int i = 0; i < numbers.length; i++) {
             value[i] = numbers[i].intValue();
+        }
     }
 
     /**

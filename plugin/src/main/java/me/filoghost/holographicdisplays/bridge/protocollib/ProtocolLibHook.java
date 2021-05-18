@@ -47,7 +47,8 @@ public class ProtocolLibHook {
             }
 
         } catch (Exception e) {
-            errorCollector.add(e, "could not detect ProtocolLib version (" + e.getMessage() + "), enabling support anyway and hoping for the best");
+            errorCollector.add(e, "could not detect ProtocolLib version (" + e.getMessage() + ")," 
+                    + " enabling support anyway and hoping for the best");
         }
 
         try {

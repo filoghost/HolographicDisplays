@@ -10,13 +10,14 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Interface to handle touch holograms.
- * 
+ *
  * @since 1
  */
 public interface TouchHandler {
 
     /**
      * Called when a player interacts with the hologram (right click).
+     *
      * @param player the player who interacts
      * @since 1
      */

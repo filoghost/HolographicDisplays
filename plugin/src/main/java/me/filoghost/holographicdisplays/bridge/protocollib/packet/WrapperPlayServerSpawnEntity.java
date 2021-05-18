@@ -33,7 +33,7 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     
     /**
      * Represents the different object types.
-     * 
+     *
      * @author Kristian
      */
     public static class ObjectTypes extends IntEnum {
@@ -68,7 +68,6 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
         
         /**
          * Retrieve an instance of the object types enum.
-         * @return Object type enum.
          */
         public static ObjectTypes getInstance() {
             return INSTANCE;
@@ -107,7 +106,6 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     
     /**
      * Retrieve entity ID of the Object.
-     * @return The current EID
     */
     public int getEntityID() {
         return handle.getIntegers().read(0);
@@ -115,8 +113,6 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     
     /**
      * Retrieve the entity that will be spawned.
-     * @param world - the current world of the entity.
-     * @return The spawned entity.
      */
     public Entity getEntity(World world) {
         return handle.getEntityModifier(world).read(0);
@@ -124,8 +120,6 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
 
     /**
      * Retrieve the entity that will be spawned.
-     * @param event - the packet event.
-     * @return The spawned entity.
      */
     public Entity getEntity(PacketEvent event) {
         return getEntity(event.getPlayer().getWorld());
@@ -133,7 +127,6 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     
     /**
      * Set entity ID of the Object.
-     * @param value - new value.
     */
     public void setEntityID(int value) {
         handle.getIntegers().write(0, value);
@@ -141,7 +134,6 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     
     /**
      * Retrieve the type of object. See {@link ObjectTypes}
-     * @return The current Type
     */
     public int getType() {
         return handle.getIntegers().read(6);
@@ -149,7 +141,6 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     
     /**
      * Set the type of object. See {@link ObjectTypes}.
-     * @param value - new value.
     */
     public void setType(int value) {
         handle.getIntegers().write(6, value);

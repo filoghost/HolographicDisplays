@@ -61,7 +61,9 @@ public final class NBTCompound extends NBTTag {
      * @throws NoSuchElementException if there is no tag with given name
      */
     public NBTTag getTag(String key) {
-        if (!hasKey(key)) throw new NoSuchElementException(key);
+        if (!hasKey(key)) {
+            throw new NoSuchElementException(key);
+        }
         return value.get(key);
     }
 
@@ -74,7 +76,9 @@ public final class NBTCompound extends NBTTag {
      */
     public byte getByte(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTByte)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTByte)) {
+            throw new NoSuchElementException(key);
+        }
         return ((NBTByte) tag).getValue();
     }
 
@@ -87,7 +91,9 @@ public final class NBTCompound extends NBTTag {
      */
     public short getShort(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTShort)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTShort)) {
+            throw new NoSuchElementException(key);
+        }
         return ((NBTShort) tag).getValue();
     }
 
@@ -100,7 +106,9 @@ public final class NBTCompound extends NBTTag {
      */
     public int getInt(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTInt)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTInt)) {
+            throw new NoSuchElementException(key);
+        }
         return ((NBTInt) tag).getValue();
     }
 
@@ -113,7 +121,9 @@ public final class NBTCompound extends NBTTag {
      */
     public long getLong(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTLong)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTLong)) {
+            throw new NoSuchElementException(key);
+        }
         return ((NBTLong) tag).getValue();
     }
 
@@ -126,7 +136,9 @@ public final class NBTCompound extends NBTTag {
      */
     public float getFloat(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTFloat)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTFloat)) {
+            throw new NoSuchElementException(key);
+        }
         return ((NBTFloat) tag).getValue();
     }
 
@@ -139,7 +151,9 @@ public final class NBTCompound extends NBTTag {
      */
     public double getDouble(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTDouble)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTDouble)) {
+            throw new NoSuchElementException(key);
+        }
         return ((NBTDouble) tag).getValue();
     }
 
@@ -152,7 +166,9 @@ public final class NBTCompound extends NBTTag {
      */
     public byte[] getByteArray(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTByteArray)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTByteArray)) {
+            throw new NoSuchElementException(key);
+        }
         return ((NBTByteArray) tag).getValue();
     }
 
@@ -165,7 +181,9 @@ public final class NBTCompound extends NBTTag {
      */
     public String getString(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTString)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTString)) {
+            throw new NoSuchElementException(key);
+        }
         return ((NBTString) tag).getValue();
     }
 
@@ -189,7 +207,9 @@ public final class NBTCompound extends NBTTag {
      */
     public NBTList getTagList(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTList)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTList)) {
+            throw new NoSuchElementException(key);
+        }
         return (NBTList) tag;
     }
 
@@ -213,7 +233,9 @@ public final class NBTCompound extends NBTTag {
      */
     public NBTCompound getCompoundTag(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTCompound)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTCompound)) {
+            throw new NoSuchElementException(key);
+        }
         return (NBTCompound) tag;
     }
 
@@ -226,7 +248,9 @@ public final class NBTCompound extends NBTTag {
      */
     public int[] getIntArray(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTIntArray)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTIntArray)) {
+            throw new NoSuchElementException(key);
+        }
         return ((NBTIntArray) tag).getValue();
     }
 
@@ -239,7 +263,9 @@ public final class NBTCompound extends NBTTag {
      */
     public long[] getLongArray(String key) {
         NBTTag tag = value.get(key);
-        if (!(tag instanceof NBTLongArray)) throw new NoSuchElementException(key);
+        if (!(tag instanceof NBTLongArray)) {
+            throw new NoSuchElementException(key);
+        }
         return ((NBTLongArray) tag).getValue();
     }
 

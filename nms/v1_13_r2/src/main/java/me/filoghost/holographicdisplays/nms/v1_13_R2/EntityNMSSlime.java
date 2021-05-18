@@ -62,7 +62,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     
     public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
         super.a(boundingBox);
-    }    
+    }
     
     @Override
     public void b(NBTTagCompound nbttagcompound) {
@@ -102,7 +102,9 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
         if (damageSource instanceof EntityDamageSource) {
             EntityDamageSource entityDamageSource = (EntityDamageSource) damageSource;
             if (entityDamageSource.getEntity() instanceof EntityPlayer) {
-                Bukkit.getPluginManager().callEvent(new PlayerInteractEntityEvent(((EntityPlayer) entityDamageSource.getEntity()).getBukkitEntity(), getBukkitEntity())); // Bukkit takes care of the exceptions
+                Player player = ((EntityPlayer) entityDamageSource.getEntity()).getBukkitEntity();
+                PlayerInteractEntityEvent event = new PlayerInteractEntityEvent(player, getBukkitEntity());
+                Bukkit.getPluginManager().callEvent(event); // Bukkit takes care of the exceptions
             }
         }
         return false;

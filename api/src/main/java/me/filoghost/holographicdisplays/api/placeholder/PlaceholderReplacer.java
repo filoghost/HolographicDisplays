@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Simple callback to provide a placeholder replacement.
- * 
+ *
  * @since 1
  */
 @FunctionalInterface

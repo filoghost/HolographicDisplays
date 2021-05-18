@@ -16,7 +16,7 @@ import java.util.Collection;
 
 /**
  * Main entry point for accessing the Holographic Displays API.
- * 
+ *
  * @since 1
  */
 public interface HolographicDisplaysAPI {
@@ -91,7 +91,7 @@ public interface HolographicDisplaysAPI {
      * Resets and removes all the registered placeholders.
      * <p>
      * May be useful to invoke before registering all the placeholders of your plugin.
-     * 
+     *
      * @since 1
      */
     void unregisterPlaceholders();

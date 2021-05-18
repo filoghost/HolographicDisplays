@@ -20,8 +20,9 @@ public final class NBTByteArray extends NBTTag {
 
     public NBTByteArray(Number[] numbers) {
         this.value = new byte[numbers.length];
-        for (int i = 0; i < numbers.length; i++)
+        for (int i = 0; i < numbers.length; i++) {
             value[i] = numbers[i].byteValue();
+        }
     }
 
     /**

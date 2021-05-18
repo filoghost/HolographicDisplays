@@ -119,7 +119,8 @@ public class ReadimageCommand extends LineEditingCommand {
             hologram.addLines(newLines);
             
             if (newLines.size() < 5) {
-                Messages.sendTip(sender, "The image has a very low height. You can increase it by increasing the width, it will scale automatically.");
+                Messages.sendTip(sender, "The image has a very low height." 
+                        + " You can increase it by increasing the width, it will scale automatically.");
             }
             
             configManager.saveHologramDatabase(internalHologramManager);

@@ -21,8 +21,9 @@ public class V2ItemLineAdapter extends V2TouchableLineAdapter implements ItemLin
         this.newItemLine = newItemLine;
     }
 
-    public void onNewPickupHandlerChange(me.filoghost.holographicdisplays.api.handler.PickupHandler previous,
-                                         me.filoghost.holographicdisplays.api.handler.PickupHandler current) {
+    public void onNewPickupHandlerChange(
+            me.filoghost.holographicdisplays.api.handler.PickupHandler previous,
+            me.filoghost.holographicdisplays.api.handler.PickupHandler current) {
         if (previous != current) {
             v2PickupHandler = null; // Clear the field to force a new lazy initialization
         }

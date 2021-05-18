@@ -35,7 +35,7 @@ class PacketListener extends PacketAdapter {
     private final MetadataHelper metadataHelper;
     private final ProtocolPacketSettings packetSettings;
 
-    public PacketListener(Plugin plugin, NMSManager nmsManager, MetadataHelper metadataHelper, ProtocolPacketSettings packetSettings) {
+    PacketListener(Plugin plugin, NMSManager nmsManager, MetadataHelper metadataHelper, ProtocolPacketSettings packetSettings) {
         super(PacketAdapter.params()
                 .plugin(plugin)
                 .types(
@@ -132,31 +132,34 @@ class PacketListener extends PacketAdapter {
                 event.setPacket(packetWrapper.getHandle());
             }
         }
-    }    
-    
-    private boolean replaceRelativePlaceholders(WrappedWatchableObject customNameWatchableObject, Player player, Collection<RelativePlaceholder> relativePlaceholders) {
+    }
+
+    private boolean replaceRelativePlaceholders(
+            WrappedWatchableObject customNameWatchableObject,
+            Player player,
+            Collection<RelativePlaceholder> relativePlaceholders) {
         if (customNameWatchableObject == null) {
             return false;
         }
-        
+
         final Object originalCustomNameNMSObject = metadataHelper.getCustomNameNMSObject(customNameWatchableObject);
         if (originalCustomNameNMSObject == null) {
             return false;
         }
-        
+
         Object replacedCustomNameNMSObject = originalCustomNameNMSObject;
         for (RelativePlaceholder relativePlaceholder : relativePlaceholders) {
             replacedCustomNameNMSObject = nmsManager.getCustomNameEditor().replaceCustomName(
-                    replacedCustomNameNMSObject, 
-                    relativePlaceholder.getTextPlaceholder(), 
+                    replacedCustomNameNMSObject,
+                    relativePlaceholder.getTextPlaceholder(),
                     relativePlaceholder.getReplacement(player));
         }
-        
+
         if (replacedCustomNameNMSObject == originalCustomNameNMSObject) {
             // It means nothing has been replaced, since original custom name has been returned
             return false;
         }
-        
+
         metadataHelper.setCustomNameNMSObject(customNameWatchableObject, replacedCustomNameNMSObject);
         return true;
     }

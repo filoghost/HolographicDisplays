@@ -36,7 +36,6 @@ public class WrapperPlayServerEntityDestroy extends AbstractPacket {
     
     /**
      * Retrieve the IDs of the entities that will be destroyed.
-     * @return The current entities.
     */
     public List<Integer> getEntities() {
         return Ints.asList(handle.getIntegerArrays().read(0));
@@ -44,7 +43,6 @@ public class WrapperPlayServerEntityDestroy extends AbstractPacket {
     
     /**
      * Set the entities that will be destroyed.
-     * @param value - new value.
     */
     public void setEntities(int[] entities) {
         handle.getIntegerArrays().write(0, entities);
@@ -52,7 +50,6 @@ public class WrapperPlayServerEntityDestroy extends AbstractPacket {
     
     /**
      * Set the entities that will be destroyed.
-     * @param value - new value.
     */
     public void setEntities(List<Integer> entities) {
         setEntities(Ints.toArray(entities));

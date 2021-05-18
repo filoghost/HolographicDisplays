@@ -40,7 +40,9 @@ public class InfoCommand extends LineEditingCommand implements QuickEditCommand 
         int index = 0;
         
         for (InternalHologramLine line : hologram.getLines()) {
-            sender.sendMessage(Colors.SECONDARY + Colors.BOLD + (++index) + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + line.getSerializedConfigValue());
+            index++;
+            sender.sendMessage(Colors.SECONDARY + Colors.BOLD + index 
+                    + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + line.getSerializedConfigValue());
         }
         commandManager.sendQuickEditCommands(context, hologram);
     }

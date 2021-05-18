@@ -22,9 +22,9 @@ class DebugHelper {
     
     public static void printInformation(PacketEvent event) {
         String verb = event.isServerPacket() ? "Sent" : "Received";
-        String format = event.isServerPacket() ? 
-                "%s %s to %s" : 
-                "%s %s from %s";
+        String format = event.isServerPacket() 
+                ? "%s %s to %s" 
+                : "%s %s from %s";
         
         String shortDescription = String.format(format,
                 event.isCancelled() ? "Cancelled" : verb,
@@ -33,7 +33,7 @@ class DebugHelper {
         );
         
         // Detailed will print the packet's content too
-        try {            
+        try {
             System.out.println(shortDescription + ":\n" + getPacketDescription(event.getPacket()));
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -47,33 +47,38 @@ class DebugHelper {
         Class<?> clazz = packet.getClass();
         
         // Get the first Minecraft super class
-        while (clazz != null && clazz != Object.class &&
-                (!MinecraftReflection.isMinecraftClass(clazz) || 
-                 Factory.class.isAssignableFrom(clazz))) {
+        while (clazz != null 
+                && clazz != Object.class 
+                && (!MinecraftReflection.isMinecraftClass(clazz) || Factory.class.isAssignableFrom(clazz))) {
             clazz = clazz.getSuperclass();
         }
         
-        return PrettyPrinter.printObject(packet, clazz, MinecraftReflection.getPacketClass(), PrettyPrinter.RECURSE_DEPTH, (StringBuilder output, Object value) -> {
-            // Special case
-            if (value instanceof byte[]) {
-                byte[] data = (byte[]) value;
-                
-                if (data.length > HEX_DUMP_THRESHOLD) {
-                    output.append("[");
-                    HexDumper.defaultDumper().appendTo(output, data);
-                    output.append("]");
-                    return true;
-                }
-            } else if (value != null) {
-                EquivalentConverter<Object> converter = findConverter(value.getClass());
+        return PrettyPrinter.printObject(
+                packet, 
+                clazz, 
+                MinecraftReflection.getPacketClass(), 
+                PrettyPrinter.RECURSE_DEPTH,
+                (StringBuilder output, Object value) -> {
+                    // Special case
+                    if (value instanceof byte[]) {
+                        byte[] data = (byte[]) value;
 
-                if (converter != null) {
-                    output.append(converter.getSpecific(value));
-                    return true;
-                }
-            }
-            return false;
-        });
+                        if (data.length > HEX_DUMP_THRESHOLD) {
+                            output.append("[");
+                            HexDumper.defaultDumper().appendTo(output, data);
+                            output.append("]");
+                            return true;
+                        }
+                    } else if (value != null) {
+                        EquivalentConverter<Object> converter = findConverter(value.getClass());
+
+                        if (converter != null) {
+                            output.append(converter.getSpecific(value));
+                            return true;
+                        }
+                    }
+                    return false;
+                });
     }
     
     
@@ -83,10 +88,11 @@ class DebugHelper {
         while (clazz != null) {
             EquivalentConverter<Object> result = converters.get(clazz);
             
-            if (result != null)
+            if (result != null) {
                 return result;
-            else
+            } else {
                 clazz = clazz.getSuperclass();
+            }
         }
         return null;
     }

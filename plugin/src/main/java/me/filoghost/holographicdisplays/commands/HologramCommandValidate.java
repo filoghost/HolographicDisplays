@@ -28,7 +28,8 @@ public class HologramCommandValidate {
         }
     }
 
-    public static InternalHologram getInternalHologram(InternalHologramManager internalHologramManager, String hologramName) throws CommandException {
+    public static InternalHologram getInternalHologram(InternalHologramManager internalHologramManager, String hologramName) 
+            throws CommandException {
         InternalHologram hologram = internalHologramManager.getHologramByName(hologramName);
         CommandValidate.notNull(hologram, "Cannot find a hologram named \"" + hologramName + "\".");
         return hologram;
@@ -36,8 +37,10 @@ public class HologramCommandValidate {
 
     public static Path getUserReadableFile(Path dataFolder, String fileName) throws CommandException {
         Path targetFile = dataFolder.resolve(fileName);
-        CommandValidate.check(FileUtils.isInsideDirectory(targetFile, dataFolder), "The specified file must be inside HolographicDisplays' folder.");
-        CommandValidate.check(Files.exists(targetFile), "The specified file \"" + fileName + "\" does not exist inside HolographicDisplays' folder.");
+        CommandValidate.check(FileUtils.isInsideDirectory(targetFile, dataFolder), 
+                "The specified file must be inside HolographicDisplays' folder.");
+        CommandValidate.check(Files.exists(targetFile), 
+                "The specified file \"" + fileName + "\" does not exist inside HolographicDisplays' folder.");
         CommandValidate.check(!Files.isDirectory(targetFile), "The file cannot be a folder.");
         CommandValidate.check(!isConfigFile(targetFile), "Cannot read YML configuration files.");
         return targetFile;

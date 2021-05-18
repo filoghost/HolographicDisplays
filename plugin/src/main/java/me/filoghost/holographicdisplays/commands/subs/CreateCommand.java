@@ -66,7 +66,8 @@ public class CreateCommand extends HologramSubCommand {
             CommandValidate.check(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
             
             line = HologramCommandValidate.parseHologramLine(hologram, text);
-            player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + context.getRootLabel() + " edit " + hologram.getName() + ")");
+            player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + context.getRootLabel() 
+                    + " edit " + hologram.getName() + ")");
         } else {
             String defaultText = "Default hologram. Change it with " 
                     + Colors.PRIMARY + "/" + context.getRootLabel() + " edit " + hologram.getName();
@@ -82,7 +83,10 @@ public class CreateCommand extends HologramSubCommand {
         player.sendMessage(Colors.PRIMARY + "You created a hologram named '" + hologram.getName() + "'.");
 
         if (moveUp) {
-            player.sendMessage(Colors.SECONDARY_SHADOW + "(You were on the ground, the hologram was automatically moved up. If you use /" + context.getRootLabel() + " movehere " + hologram.getName() + ", the hologram will be moved to your feet)");
+            player.sendMessage(Colors.SECONDARY_SHADOW + "(You were on the ground," 
+                    + " the hologram was automatically moved up." 
+                    + " If you use /" + context.getRootLabel() + " movehere " + hologram.getName() + "," 
+                    + " the hologram will be moved to your feet)");
         }
     }
     

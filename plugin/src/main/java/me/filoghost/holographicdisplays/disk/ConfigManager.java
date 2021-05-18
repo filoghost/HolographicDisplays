@@ -93,7 +93,7 @@ public class ConfigManager extends BaseConfigManager {
     }
 
     private String formatPath(Path path) {
-       return ConfigErrors.formatPath(getRootDataFolder(), path);
+        return ConfigErrors.formatPath(getRootDataFolder(), path);
     }
 
 }

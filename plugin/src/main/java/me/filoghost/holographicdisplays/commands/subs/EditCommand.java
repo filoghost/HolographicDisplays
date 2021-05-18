@@ -56,12 +56,12 @@ public class EditCommand extends HologramSubCommand {
                     for (String tutLine : subCommand.getDescription(context)) {
                         help.add(Colors.SECONDARY_SHADOW + tutLine);
                     }
-                    
+
                     ((Player) sender).spigot().sendMessage(new ComponentBuilder(usage)
-                        .color(ChatColor.AQUA)
-                        .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
-                        .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(String.join("\n", help))))
-                        .create());
+                            .color(ChatColor.AQUA)
+                            .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
+                            .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(String.join("\n", help))))
+                            .create());
                     
                 } else {
                     sender.sendMessage(Colors.PRIMARY + usage);

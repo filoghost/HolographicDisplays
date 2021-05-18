@@ -25,8 +25,9 @@ public final class NBTLongArray extends NBTTag {
 
     public NBTLongArray(Number[] numbers) {
         this.value = new long[numbers.length];
-        for (int i = 0; i < numbers.length; i++)
+        for (int i = 0; i < numbers.length; i++) {
             value[i] = numbers[i].longValue();
+        }
     }
 
     /**

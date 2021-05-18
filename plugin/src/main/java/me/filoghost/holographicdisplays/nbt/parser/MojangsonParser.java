@@ -66,11 +66,13 @@ public final class MojangsonParser {
 
     private NBTTag parseStringOrLiteral() throws MojangsonParseException {
         skipWhitespace();
-        if (currentChar() == '"')
+        if (currentChar() == '"') {
             return new NBTString(parseQuotedString());
+        }
         String str = parseSimpleString();
-        if (str.isEmpty())
+        if (str.isEmpty()) {
             throw parseException("expected value");
+        }
         return parseLiteral(str);
     }
 
@@ -151,16 +153,18 @@ public final class MojangsonParser {
 
     private NBTTag parseAnything() throws MojangsonParseException {
         skipWhitespace();
-        if (!hasNext())
+        if (!hasNext()) {
             throw parseException("expected value");
+        }
 
         int c = currentChar();
-        if (c == '{')
+        if (c == '{') {
             return parseCompound();
-        else if (c == '[')
+        } else if (c == '[') {
             return parseDetectedArray();
-        else
+        } else {
             return parseStringOrLiteral();
+        }
     }
 
     private NBTTag parseDetectedArray() throws MojangsonParseException {
@@ -238,12 +242,13 @@ public final class MojangsonParser {
         if (!hasNext()) {
             throw parseException("expected value");
         }
-        if (arrayType == 'B')
+        if (arrayType == 'B') {
             return new NBTByteArray(parseNumArray(NBTType.BYTE_ARRAY, NBTType.BYTE));
-        else if (arrayType == 'L')
+        } else if (arrayType == 'L') {
             return new NBTLongArray(parseNumArray(NBTType.LONG_ARRAY, NBTType.LONG));
-        else if (arrayType == 'I')
+        } else if (arrayType == 'I') {
             return new NBTIntArray(parseNumArray(NBTType.INT_ARRAY, NBTType.INT));
+        }
         throw parseException("invalid array type '" + arrayType + "' found");
     }
 
@@ -347,7 +352,8 @@ public final class MojangsonParser {
             this.index += 1;
             return;
         }
-        throw new MojangsonParseException("expected '" + c + "' but got '" + (hasNext ? Character.valueOf(currentChar()) : "<End of string>") + "'", this.str, this.index + 1);
+        Object unexpectedChar = hasNext ? Character.valueOf(currentChar()) : "<End of string>";
+        throw new MojangsonParseException("expected '" + c + "' but got '" + unexpectedChar + "'", this.str, this.index + 1);
     }
 
     /**

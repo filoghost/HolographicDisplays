@@ -37,7 +37,7 @@ public class CraftNMSSlime extends CraftSlime {
     @Override public void setAI(boolean ai) {}
     @Override public void setCanPickupItems(boolean pickup) {}
     @Override public void setCollidable(boolean collidable) {}
-    @Override public void setGliding(boolean gliding) {    }
+    @Override public void setGliding(boolean gliding) {}
     @Override public boolean setLeashHolder(Entity holder) { return false; }
 
     // Methods from Entity

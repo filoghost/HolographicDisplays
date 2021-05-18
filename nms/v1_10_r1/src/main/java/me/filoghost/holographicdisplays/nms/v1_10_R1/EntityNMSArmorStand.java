@@ -69,7 +69,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
     
     @Override
-    public void inactiveTick() {    
+    public void inactiveTick() {
         // Disable normal ticking for this entity
         
         // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity

@@ -39,9 +39,12 @@ import java.util.List;
 
 public class VersionNMSManager implements NMSManager {
     
-    private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD = ReflectField.lookup(new ClassToken<RegistryID<EntityTypes<?>>>(){}, RegistryMaterials.class, "b");
-    private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD = ReflectField.lookup(Object[].class, RegistryID.class, "d");
-    private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD = ReflectMethod.lookup(void.class, WorldServer.class, "registerEntity", Entity.class);
+    private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD
+            = ReflectField.lookup(new ClassToken<RegistryID<EntityTypes<?>>>(){}, RegistryMaterials.class, "b");
+    private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD
+            = ReflectField.lookup(Object[].class, RegistryID.class, "d");
+    private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD
+            = ReflectMethod.lookup(void.class, WorldServer.class, "registerEntity", Entity.class);
 
     private final ProtocolPacketSettings protocolPacketSettings;
 
@@ -50,7 +53,7 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public void setup() throws Exception {        
+    public void setup() throws Exception {
         registerCustomEntity(EntityNMSSlime.class, 55, 2.04f, 2.04f);
     }
     
@@ -70,7 +73,10 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public NMSItem spawnNMSItem(World bukkitWorld, double x, double y, double z, StandardItemLine parentHologramLine, ItemStack stack) throws SpawnFailedException {
+    public NMSItem spawnNMSItem(
+            World bukkitWorld, double x, double y, double z,
+            StandardItemLine parentHologramLine,
+            ItemStack stack) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         EntityNMSItem item = new EntityNMSItem(nmsWorld, parentHologramLine);
         item.setLocationNMS(x, y, z);
@@ -80,7 +86,9 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public EntityNMSSlime spawnNMSSlime(World bukkitWorld, double x, double y, double z, StandardHologramLine parentHologramLine) throws SpawnFailedException {
+    public EntityNMSSlime spawnNMSSlime(
+            World bukkitWorld, double x, double y, double z,
+            StandardHologramLine parentHologramLine) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         EntityNMSSlime slime = new EntityNMSSlime(nmsWorld, parentHologramLine);
         slime.setLocationNMS(x, y, z);
@@ -89,7 +97,9 @@ public class VersionNMSManager implements NMSManager {
     }
     
     @Override
-    public NMSArmorStand spawnNMSArmorStand(World world, double x, double y, double z, StandardHologramLine parentHologramLine) throws SpawnFailedException {
+    public NMSArmorStand spawnNMSArmorStand(
+            World world, double x, double y, double z,
+            StandardHologramLine parentHologramLine) throws SpawnFailedException {
         WorldServer nmsWorld = ((CraftWorld) world).getHandle();
         EntityNMSArmorStand armorStand = new EntityNMSArmorStand(nmsWorld, parentHologramLine, protocolPacketSettings);
         armorStand.setLocationNMS(x, y, z);
@@ -128,7 +138,7 @@ public class VersionNMSManager implements NMSManager {
         Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
         
         if (nmsEntity instanceof NMSEntity) {
-            return ((NMSEntity) nmsEntity);
+            return (NMSEntity) nmsEntity;
         } else {
             return null;
         }
@@ -140,7 +150,7 @@ public class VersionNMSManager implements NMSManager {
         Entity nmsEntity = nmsWorld.getEntity(entityID);
         
         if (nmsEntity instanceof NMSEntity) {
-            return ((NMSEntity) nmsEntity);
+            return (NMSEntity) nmsEntity;
         } else {
             return null;
         }

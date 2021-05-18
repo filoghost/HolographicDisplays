@@ -12,7 +12,7 @@ public class VersionUtils {
     }
 
     /**
-     * @return 1 if version1 > version2, 0 if version1 == version2, -1 if version1 < version2
+     * Returns 1 if version1 > version2, 0 if version1 == version2, -1 if version1 < version2.
      */
     private static int compare(String version1, String version2) throws NumberFormatException {
         String[] version1Split = version1.split("\\.");

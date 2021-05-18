@@ -68,12 +68,15 @@ public class AnimationRegistry implements PlaceholderFactory {
             }
 
             if (!validSpeedFound) {
-                errorCollector.add("could not find a valid \"" + SPEED_PREFIX + " <number>\" in the first line of the file \"" + fileName + "\", default speed of 0.5 seconds will be used");
+                errorCollector.add("could not find a valid \"" + SPEED_PREFIX + " <number>\"" 
+                        + " in the first line of the file \"" + fileName + "\"," 
+                        + " default speed of 0.5 seconds will be used");
             }
 
             if (lines.isEmpty()) {
                 lines.add("[No lines: " + fileName + "]");
-                errorCollector.add("could not find any line in \"" + fileName + "\" (excluding the speed), you should add at least one more line");
+                errorCollector.add("could not find any line in \"" + fileName + "\" (excluding the speed)," 
+                        + " you should add at least one more line");
             }
 
             // Replace placeholders

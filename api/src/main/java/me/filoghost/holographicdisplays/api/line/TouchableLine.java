@@ -10,14 +10,14 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * A line of a Hologram that can be touched (right click).
- * 
+ *
  * @since 1
  */
 public interface TouchableLine extends HologramLine {
 
     /**
      * Sets the TouchHandler for this line.
-     * 
+     *
      * @param touchHandler the new TouchHandler, can be null.
      * @since 1
      */
@@ -25,7 +25,7 @@ public interface TouchableLine extends HologramLine {
     
     /**
      * Returns the current TouchHandler of this line.
-     * 
+     *
      * @return the current TouchHandler, can be null.
      * @since 1
      */

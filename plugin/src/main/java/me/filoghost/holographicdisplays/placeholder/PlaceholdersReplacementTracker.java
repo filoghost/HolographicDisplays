@@ -39,7 +39,8 @@ public class PlaceholdersReplacementTracker {
         });
     }
     
-    public @Nullable String getOrUpdateReplacement(PlaceholderOccurrence placeholderOccurrence, long currentTick) throws PlaceholderException {
+    public @Nullable String getOrUpdateReplacement(PlaceholderOccurrence placeholderOccurrence, long currentTick) 
+            throws PlaceholderException {
         ReplacementHolder replacementHolder = currentReplacements.get(placeholderOccurrence);
         
         if (replacementHolder == null) {
@@ -53,7 +54,7 @@ public class PlaceholdersReplacementTracker {
             throw new PlaceholderException(t, replacementHolder.source);
         }
         
-        return replacementHolder.currentReplacement;        
+        return replacementHolder.currentReplacement;
     }
 
     private ReplacementHolder createReplacementHolder(PlaceholderOccurrence placeholderOccurrence) throws PlaceholderException {
@@ -83,7 +84,7 @@ public class PlaceholdersReplacementTracker {
         String currentReplacement;
         long lastUpdateTick = -1;
 
-        public ReplacementHolder(PlaceholderExpansion source, Placeholder placeholder) {
+        ReplacementHolder(PlaceholderExpansion source, Placeholder placeholder) {
             this.source = source;
             this.placeholder = placeholder;
         }

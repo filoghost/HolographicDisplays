@@ -46,14 +46,14 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
     
     // Useful constructor
     private static PacketContainer fromEntity(Entity entity) {
-        if (entityConstructor == null)
+        if (entityConstructor == null) {
             entityConstructor = ProtocolLibrary.getProtocolManager().createPacketConstructor(TYPE, entity);
+        }
         return entityConstructor.createPacket(entity);
     }
     
     /**
      * Retrieve entity ID.
-     * @return The current EID
     */
     public int getEntityID() {
         return handle.getIntegers().read(0);
@@ -61,8 +61,6 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
     
     /**
      * Retrieve the entity that will be spawned.
-     * @param world - the current world of the entity.
-     * @return The spawned entity.
      */
     public Entity getEntity(World world) {
         return handle.getEntityModifier(world).read(0);
@@ -70,8 +68,6 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
     /**
      * Retrieve the entity that will be spawned.
-     * @param event - the packet event.
-     * @return The spawned entity.
      */
     public Entity getEntity(PacketEvent event) {
         return getEntity(event.getPlayer().getWorld());
@@ -79,7 +75,6 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
     
     /**
      * Set entity ID.
-     * @param value - new value.
     */
     public void setEntityID(int value) {
         handle.getIntegers().write(0, value);
@@ -87,7 +82,6 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
     
     /**
      * Retrieve the type of mob.
-     * @return The current Type
     */
     @SuppressWarnings("deprecation")
     public EntityType getType() {
@@ -96,7 +90,6 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
     
     /**
      * Set the type of mob.
-     * @param value - new value.
     */
     @SuppressWarnings("deprecation")
     public void setType(EntityType value) {
@@ -107,7 +100,6 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
      * Retrieve the data watcher.
      * <p>
      * Content varies by mob, see Entities.
-     * @return The current Metadata
     */
     public WrappedDataWatcher getMetadata() {
         return handle.getDataWatcherModifier().read(0);
@@ -115,7 +107,6 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
     
     /**
      * Set the data watcher.
-     * @param value - new value.
     */
     public void setMetadata(WrappedDataWatcher value) {
         handle.getDataWatcherModifier().write(0, value);

@@ -12,7 +12,8 @@ import org.bukkit.command.CommandSender;
 public class Messages {
     
     public static void sendTitle(CommandSender recipient, String title) {
-        recipient.sendMessage("" + Colors.PRIMARY_SHADOW + ChatColor.BOLD + "----- " + title + Colors.PRIMARY_SHADOW + ChatColor.BOLD + " -----");
+        recipient.sendMessage("" + Colors.PRIMARY_SHADOW + ChatColor.BOLD + "----- " 
+                + title + Colors.PRIMARY_SHADOW + ChatColor.BOLD + " -----");
     }
     
     public static void sendTip(CommandSender recipient, String tip) {
@@ -20,7 +21,8 @@ public class Messages {
     }
     
     public static void sendWarning(CommandSender recipient, String warning) {
-        recipient.sendMessage(ChatColor.RED + "( " + ChatColor.DARK_RED + ChatColor.BOLD + "!" + ChatColor.RED + " ) " + Colors.SECONDARY_SHADOW + warning);
+        recipient.sendMessage(ChatColor.RED + "( " + ChatColor.DARK_RED + ChatColor.BOLD + "!" + ChatColor.RED + " ) " 
+                + Colors.SECONDARY_SHADOW + warning);
     }
     
 }

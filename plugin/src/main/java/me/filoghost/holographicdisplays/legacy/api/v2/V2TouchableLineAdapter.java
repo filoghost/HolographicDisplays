@@ -20,8 +20,9 @@ abstract class V2TouchableLineAdapter extends V2HologramLineAdapter implements T
         this.newTouchableLine = newTouchableLine;
     }
 
-    public void onNewTouchHandlerChange(me.filoghost.holographicdisplays.api.handler.TouchHandler previous,
-                                        me.filoghost.holographicdisplays.api.handler.TouchHandler current) {
+    public void onNewTouchHandlerChange(
+            me.filoghost.holographicdisplays.api.handler.TouchHandler previous,
+            me.filoghost.holographicdisplays.api.handler.TouchHandler current) {
         if (previous != current) {
             v2TouchHandler = null; // Clear the field to force a new lazy initialization
         }

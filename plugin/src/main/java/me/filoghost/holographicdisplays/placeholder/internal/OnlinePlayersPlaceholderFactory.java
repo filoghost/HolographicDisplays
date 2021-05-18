@@ -52,7 +52,7 @@ public class OnlinePlayersPlaceholderFactory implements PlaceholderFactory {
         private final String[] serverNames;
         private final BungeeServerTracker bungeeServerTracker;
 
-        public BungeeOnlinePlayersPlaceholder(String[] serverNames, BungeeServerTracker bungeeServerTracker) {
+        BungeeOnlinePlayersPlaceholder(String[] serverNames, BungeeServerTracker bungeeServerTracker) {
             this.serverNames = serverNames;
             this.bungeeServerTracker = bungeeServerTracker;
         }

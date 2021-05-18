@@ -43,7 +43,7 @@ public class StringWithPlaceholders {
             }
             
             String replacement = replaceFunction.apply(match.content);
-            if (replacement != null) {                
+            if (replacement != null) {
                 // Append placeholder replacement
                 output.append(replacement);
             } else {
@@ -115,7 +115,7 @@ public class StringWithPlaceholders {
         private final int startIndex;
         private final int endIndex;
 
-        public PlaceholderMatch(PlaceholderOccurrence parsedContent, String unparsedString, int startIndex, int endIndex) {
+        PlaceholderMatch(PlaceholderOccurrence parsedContent, String unparsedString, int startIndex, int endIndex) {
             this.content = parsedContent;
             this.unparsedString = unparsedString;
             this.startIndex = startIndex;

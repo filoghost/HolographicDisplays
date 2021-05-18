@@ -21,9 +21,12 @@ import java.util.List;
 public class DefaultPlaceholders {
 
     private static final String PINGER_NOT_ENABLED_ERROR = "[Please enable pinger]";
-    public static final String NO_SERVER_SPECIFIED_ERROR = "[No server specified]";
+    private static final String NO_SERVER_SPECIFIED_ERROR = "[No server specified]";
 
-    public static void resetAndRegister(PlaceholderRegistry placeholderRegistry, AnimationRegistry animationRegistry, BungeeServerTracker bungeeServerTracker) {
+    public static void resetAndRegister(
+            PlaceholderRegistry placeholderRegistry,
+            AnimationRegistry animationRegistry,
+            BungeeServerTracker bungeeServerTracker) {
         HolographicDisplays plugin = HolographicDisplays.getInstance();
         placeholderRegistry.unregisterAll(plugin);
 
@@ -42,17 +45,17 @@ public class DefaultPlaceholders {
         });
 
         placeholderRegistry.registerFactory(plugin, "animation", animationRegistry);
-        
+
         placeholderRegistry.registerFactory(plugin, "world", new WorldPlayersPlaceholderFactory());
-        
+
         placeholderRegistry.registerFactory(plugin, "online", new OnlinePlayersPlaceholderFactory(bungeeServerTracker));
-        
+
         placeholderRegistry.registerReplacer(plugin, "max_players", 20, (serverName) -> {
             if (serverName == null) {
                 // No argument specified, return max players of this server
                 return String.valueOf(Bukkit.getMaxPlayers());
             }
-            
+
             if (!Configuration.pingerEnabled) {
                 return PINGER_NOT_ENABLED_ERROR;
             }
@@ -64,7 +67,7 @@ public class DefaultPlaceholders {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
-            
+
             if (!Configuration.pingerEnabled) {
                 return PINGER_NOT_ENABLED_ERROR;
             }
@@ -81,7 +84,7 @@ public class DefaultPlaceholders {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
-            
+
             if (!Configuration.pingerEnabled) {
                 return PINGER_NOT_ENABLED_ERROR;
             }
@@ -93,7 +96,7 @@ public class DefaultPlaceholders {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
-            
+
             if (!Configuration.pingerEnabled) {
                 return PINGER_NOT_ENABLED_ERROR;
             }

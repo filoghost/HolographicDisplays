@@ -49,7 +49,7 @@ public class DebugCommand extends HologramSubCommand {
                     }
 
                     StandardHologram ownerHologram = nmsEntity.getHologramLine().getHologram();
-                    HologramDebugInfo hologramDebugInfo = hologramsDebugInfo.computeIfAbsent(ownerHologram, mapKey -> new HologramDebugInfo());
+                    HologramDebugInfo hologramDebugInfo = hologramsDebugInfo.computeIfAbsent(ownerHologram, key -> new HologramDebugInfo());
 
                     if (nmsEntity.isDeadNMS()) {
                         hologramDebugInfo.deadEntities++;
@@ -66,8 +66,10 @@ public class DebugCommand extends HologramSubCommand {
                 for (Entry<StandardHologram, HologramDebugInfo> entry : hologramsDebugInfo.entrySet()) {
                     StandardHologram hologram = entry.getKey();
                     HologramDebugInfo debugInfo = entry.getValue();
-                    sender.sendMessage(Colors.PRIMARY_SHADOW + "- '" + hologram.toFormattedString() + "': " + hologram.getLineCount() + " lines, "
-                            + debugInfo.getTotalEntities() + " entities (" + debugInfo.aliveEntities + " alive, " + debugInfo.deadEntities + " dead)");
+                    sender.sendMessage(Colors.PRIMARY_SHADOW + "- '" + hologram.toFormattedString() + "':" 
+                            + " " + hologram.getLineCount() + " lines," 
+                            + " " + debugInfo.getTotalEntities() + " entities" 
+                            + " (" + debugInfo.aliveEntities + " alive, " + debugInfo.deadEntities + " dead)");
                 }
             }
         }
