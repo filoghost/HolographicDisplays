@@ -14,11 +14,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultVisibilityManager implements VisibilityManager {
     
@@ -52,33 +50,16 @@ public class DefaultVisibilityManager implements VisibilityManager {
                 // Has a specific value set
                 continue;
             }
-                
-            if (visibleByDefault) {
-                // Now it's visible, and it previously wasn't because the value has changed
-                sendCreatePacket(player, hologram);
-            } else {
-                // Opposite case: now it's not visible
-                sendDestroyPacket(player, hologram);
-            }
+            
+            sendVisibilityChangePacket(hologram, player, visibleByDefault);
         }
     }
     
     @Override
     public void showTo(@NotNull Player player) {
         Preconditions.notNull(player, "player");
-        
-        boolean wasVisible = isVisibleTo(player);
-        
-        if (playersVisibilityMap == null) {
-            // Lazy initialization
-            playersVisibilityMap = new ConcurrentHashMap<>();
-        }
-        
-        playersVisibilityMap.put(player.getUniqueId(), true);
-        
-        if (!wasVisible) {
-            sendCreatePacket(player, hologram);
-        }
+
+        setVisibleTo(player, true);
     }
     
     
@@ -86,17 +67,20 @@ public class DefaultVisibilityManager implements VisibilityManager {
     public void hideTo(@NotNull Player player) {
         Preconditions.notNull(player, "player");
         
+        setVisibleTo(player, false);
+    }
+    
+    private void setVisibleTo(Player player, boolean visible) {
         boolean wasVisible = isVisibleTo(player);
-        
+
+        // Lazy initialization
         if (playersVisibilityMap == null) {
-            // Lazy initialization
-            playersVisibilityMap = new ConcurrentHashMap<>();
+            playersVisibilityMap = new HashMap<>();
         }
-        
-        playersVisibilityMap.put(player.getUniqueId(), false);
-        
-        if (wasVisible) {
-            sendDestroyPacket(player, hologram);
+        playersVisibilityMap.put(player.getUniqueId(), visible);
+
+        if (wasVisible != visible) {
+            sendVisibilityChangePacket(hologram, player, visible);
         }
     }
     
@@ -105,9 +89,9 @@ public class DefaultVisibilityManager implements VisibilityManager {
         Preconditions.notNull(player, "player");
         
         if (playersVisibilityMap != null) {
-            Boolean value = playersVisibilityMap.get(player.getUniqueId());
-            if (value != null) {
-                return value;
+            Boolean visible = playersVisibilityMap.get(player.getUniqueId());
+            if (visible != null) {
+                return visible;
             }
         }
 
@@ -122,45 +106,34 @@ public class DefaultVisibilityManager implements VisibilityManager {
             return;
         }
         
-        boolean wasVisible = isVisibleTo(player);
-        
-        playersVisibilityMap.remove(player.getUniqueId());
-        
-        if (visibleByDefault && !wasVisible) {
-            sendCreatePacket(player, hologram);
-            
-        } else if (!visibleByDefault && wasVisible) {
-            sendDestroyPacket(player, hologram);
+        Boolean wasVisible = playersVisibilityMap.remove(player.getUniqueId());        
+        if (wasVisible != null && visibleByDefault != wasVisible) {
+            sendVisibilityChangePacket(hologram, player, visibleByDefault);
         }
     }
     
     @Override
     public void resetVisibilityAll() {
-        if (playersVisibilityMap != null) {
-            // We need to refresh all the players
-            Set<UUID> playerIDs = new HashSet<>(playersVisibilityMap.keySet());
-            
-            for (UUID playerID : playerIDs) {
-                Player onlinePlayer = Bukkit.getPlayer(playerID);
-                if (onlinePlayer != null) {
-                    resetVisibility(onlinePlayer);
-                }
+        if (playersVisibilityMap == null) {
+            return;
+        }
+        
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            boolean wasVisible = isVisibleTo(player);
+            if (visibleByDefault != wasVisible) {
+                sendVisibilityChangePacket(hologram, player, visibleByDefault);
             }
-            
-            playersVisibilityMap.clear();
-            playersVisibilityMap = null;
         }
+        playersVisibilityMap = null;
     }
     
-    private void sendCreatePacket(Player player, StandardHologram hologram) {
+    private void sendVisibilityChangePacket(StandardHologram hologram, Player player, boolean visible) {
         if (ProtocolLibHook.isEnabled()) {
-            ProtocolLibHook.sendCreateEntitiesPacket(player, hologram);
-        }
-    }
-    
-    private void sendDestroyPacket(Player player, StandardHologram hologram) {
-        if (ProtocolLibHook.isEnabled()) {
-            ProtocolLibHook.sendDestroyEntitiesPacket(player, hologram);
+            if (visible) {
+                ProtocolLibHook.sendCreateEntitiesPacket(player, hologram);
+            } else {
+                ProtocolLibHook.sendDestroyEntitiesPacket(player, hologram);
+            }
         }
     }
 
