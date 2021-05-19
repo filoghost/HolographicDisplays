@@ -178,14 +178,14 @@ public interface Hologram {
     
     
     /**
-     * Returns the {@link VisibilityManager} of this hologram.
-     * <br><b style = "color: red">Note</b>: the usage of the VisibilityManager requires ProtocolLib.
+     * Returns the {@link VisibilitySettings} of this hologram.
+     * <br><b style = "color: red">Note</b>: the usage of the VisibilitySettings requires ProtocolLib.
      * Without the plugin, holograms will be always visible.
      *
-     * @return the VisibilityManager of this hologram
+     * @return the VisibilitySettings of this hologram
      * @since 1
      */
-    @NotNull VisibilityManager getVisibilityManager();
+    @NotNull VisibilitySettings getVisibilitySettings();
     
     
     /**

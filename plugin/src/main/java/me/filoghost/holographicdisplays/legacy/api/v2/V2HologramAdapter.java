@@ -106,7 +106,7 @@ public class V2HologramAdapter implements Hologram {
 
     @Override
     public VisibilityManager getVisibilityManager() {
-        return newHologram.getVisibilityManager().getV2Adapter();
+        return newHologram.getVisibilitySettings().getV2Adapter();
     }
 
     @Override

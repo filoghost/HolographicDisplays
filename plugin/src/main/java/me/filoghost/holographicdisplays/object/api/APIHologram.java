@@ -25,7 +25,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
 
     private final Plugin plugin;
     private final APIHologramManager apiHologramManager;
-    private final DefaultVisibilityManager visibilityManager;
+    private final DefaultVisibilitySettings visibilitySettings;
     private final long creationTimestamp;
     private final V2HologramAdapter v2Adapter;
 
@@ -41,7 +41,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
         Preconditions.notNull(plugin, "plugin");
         this.plugin = plugin;
         this.apiHologramManager = apiHologramManager;
-        this.visibilityManager = new DefaultVisibilityManager(this);
+        this.visibilitySettings = new DefaultVisibilitySettings(this);
         this.creationTimestamp = System.currentTimeMillis();
         this.v2Adapter = new V2HologramAdapter(this);
     }
@@ -113,7 +113,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
 
     @Override
     public boolean isVisibleTo(Player player) {
-        return visibilityManager.isVisibleTo(player);
+        return visibilitySettings.isVisibleTo(player);
     }
     
     @Override
@@ -139,8 +139,8 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
 
     @Override
-    public @NotNull DefaultVisibilityManager getVisibilityManager() {
-        return visibilityManager;
+    public @NotNull DefaultVisibilitySettings getVisibilitySettings() {
+        return visibilitySettings;
     }
 
     @Override

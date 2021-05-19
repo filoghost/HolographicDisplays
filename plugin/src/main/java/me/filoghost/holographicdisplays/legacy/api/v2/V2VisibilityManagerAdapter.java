@@ -6,51 +6,52 @@
 package me.filoghost.holographicdisplays.legacy.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
-import me.filoghost.holographicdisplays.object.api.DefaultVisibilityManager;
+import me.filoghost.holographicdisplays.api.VisibilitySettings.Visibility;
+import me.filoghost.holographicdisplays.object.api.DefaultVisibilitySettings;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
 public class V2VisibilityManagerAdapter implements VisibilityManager {
 
-    private final DefaultVisibilityManager newVisibilityManager;
+    private final DefaultVisibilitySettings newVisibilitySettings;
 
-    public V2VisibilityManagerAdapter(DefaultVisibilityManager newVisibilityManager) {
-        this.newVisibilityManager = newVisibilityManager;
+    public V2VisibilityManagerAdapter(DefaultVisibilitySettings newVisibilitySettings) {
+        this.newVisibilitySettings = newVisibilitySettings;
     }
 
     @Override
     public boolean isVisibleByDefault() {
-        return newVisibilityManager.isVisibleByDefault();
+        return newVisibilitySettings.getDefaultVisibility() == Visibility.VISIBLE;
     }
 
     @Override
     public void setVisibleByDefault(boolean visibleByDefault) {
-        newVisibilityManager.setVisibleByDefault(visibleByDefault);
+        newVisibilitySettings.setDefaultVisibility(visibleByDefault ? Visibility.VISIBLE : Visibility.HIDDEN);
     }
 
     @Override
     public void showTo(Player player) {
-        newVisibilityManager.showTo(player);
+        newVisibilitySettings.setIndividualVisibility(player, Visibility.VISIBLE);
     }
 
     @Override
     public void hideTo(Player player) {
-        newVisibilityManager.hideTo(player);
+        newVisibilitySettings.setIndividualVisibility(player, Visibility.HIDDEN);
     }
 
     @Override
     public boolean isVisibleTo(Player player) {
-        return newVisibilityManager.isVisibleTo(player);
+        return newVisibilitySettings.isVisibleTo(player);
     }
 
     @Override
     public void resetVisibility(Player player) {
-        newVisibilityManager.resetVisibility(player);
+        newVisibilitySettings.resetIndividualVisibility(player);
     }
 
     @Override
     public void resetVisibilityAll() {
-        newVisibilityManager.resetVisibilityAll();
+        newVisibilitySettings.resetIndividualVisibilityAll();
     }
 
     @Override
@@ -63,17 +64,17 @@ public class V2VisibilityManagerAdapter implements VisibilityManager {
         }
 
         V2VisibilityManagerAdapter other = (V2VisibilityManagerAdapter) obj;
-        return this.newVisibilityManager.equals(other.newVisibilityManager);
+        return this.newVisibilitySettings.equals(other.newVisibilitySettings);
     }
 
     @Override
     public final int hashCode() {
-        return newVisibilityManager.hashCode();
+        return newVisibilitySettings.hashCode();
     }
 
     @Override
     public final String toString() {
-        return newVisibilityManager.toString();
+        return newVisibilitySettings.toString();
     }
 
 }
