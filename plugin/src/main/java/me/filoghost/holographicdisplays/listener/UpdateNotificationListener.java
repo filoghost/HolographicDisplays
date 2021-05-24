@@ -27,7 +27,7 @@ public class UpdateNotificationListener implements Listener {
                 this.newVersion = newVersion;
                 Log.info("Found a new version available: " + newVersion);
                 Log.info("Download it on Bukkit Dev:");
-                Log.info("dev.bukkit.org/projects/holographic-displays");
+                Log.info("https://dev.bukkit.org/projects/holographic-displays");
             });
         }
     }
