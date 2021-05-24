@@ -21,14 +21,19 @@ class StringWithPlaceholdersTest {
     @ParameterizedTest(name = "[{index}] {0} -> {1}")
     @MethodSource("replacementsTestArguments")
     void replacements(String input, String expectedOutput) {
+        boolean expectedContainsPlaceholders = expectedOutput.contains("#");
         StringWithPlaceholders s = new StringWithPlaceholders(input);
+        
         assertThat(s.replacePlaceholders(occurrence -> "#")).isEqualTo(expectedOutput);
+        assertThat(s.containsPlaceholders()).isEqualTo(expectedContainsPlaceholders);
     }
     
     static Stream<Arguments> replacementsTestArguments() {
         return Stream.of(
+                Arguments.of("", ""),
                 Arguments.of("{}", "#"), // Empty placeholder should still be detected
                 Arguments.of("{p}{p}", "##"),
+                Arguments.of(" {p} ", " # "),
                 Arguments.of("{p} {p} {p}", "# # #"),
                 Arguments.of("{{p}}", "{#}"), // Only the innermost placeholder should be replaced
                 Arguments.of("{p abc", "{p abc"), // Placeholder without closing tag

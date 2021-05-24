@@ -17,15 +17,15 @@ public class StringWithPlaceholders {
     private static final char PLACEHOLDER_START_CHAR = '{';
 
     private final String string;
-    private final List<PlaceholderMatch> placeholderMatches;
+    private final List<StringPart> stringParts;
 
     public StringWithPlaceholders(String string) {
         this.string = string;
-        this.placeholderMatches = findPlaceholders(string);
+        this.stringParts = toStringParts(string);
     }
 
     public boolean containsPlaceholders() {
-        return placeholderMatches != null && !placeholderMatches.isEmpty();
+        return stringParts != null;
     }
 
     public String replacePlaceholders(Function<PlaceholderOccurrence, String> replaceFunction) {
@@ -34,61 +34,45 @@ public class StringWithPlaceholders {
         }
         
         StringBuilder output = new StringBuilder();
-        int lastAppendIndex = 0;
+        for (StringPart part : stringParts) {
+            output.append(part.getValue(replaceFunction));
+        }
         
-        for (PlaceholderMatch match : placeholderMatches) {
-            // Append leading text (if any)
-            if (lastAppendIndex != match.startIndex) {
-                output.append(string, lastAppendIndex, match.startIndex);
-            }
-            
-            String replacement = replaceFunction.apply(match.content);
-            if (replacement != null) {
-                // Append placeholder replacement
-                output.append(replacement);
-            } else {
-                // If no replacement is provided, do not replace the occurrence
-                output.append(match.unparsedString);
-            }
-            lastAppendIndex = match.endIndex;
-        }
-
-        // Append trailing text (if any)
-        if (lastAppendIndex < string.length()) {
-            output.append(string, lastAppendIndex, string.length());
-        }
-
         return output.toString();
     }
     
-    private @Nullable List<PlaceholderMatch> findPlaceholders(String input) {
-        int currentIndex = 0;
+    private @Nullable List<StringPart> toStringParts(String string) {
         int placeholderStartIndex = -1;
-        List<PlaceholderMatch> matches = null;
+        int lastAppendIndex = 0;
+        List<StringPart> stringParts = null; // Lazy initialization
 
-        while (currentIndex < input.length()) {
-            char currentChar = input.charAt(currentIndex);
+        for (int currentIndex = 0; currentIndex < string.length(); currentIndex++) {
+            char currentChar = string.charAt(currentIndex);
 
             if (placeholderStartIndex >= 0) {
+                // Inside placeholder
                 if (currentChar == PLACEHOLDER_END_CHAR) {
                     int endIndex = currentIndex + 1;
                     
                     // The unparsed string includes the opening and closing tags (e.g.: "{online: lobby}")
-                    String unparsedString = input.substring(placeholderStartIndex, endIndex);
+                    String unparsedString = string.substring(placeholderStartIndex, endIndex);
                     
                     // The content string does NOT include the opening and closing tags (e.g.: "online: lobby")
                     String contentString = unparsedString.substring(1, unparsedString.length() - 1);
                     PlaceholderOccurrence content = PlaceholderOccurrence.parse(contentString);
                     
-                    if (matches == null) {
-                        matches = new ArrayList<>();
+                    if (stringParts == null) {
+                        stringParts = new ArrayList<>();
                     }
-                    matches.add(new PlaceholderMatch(
-                            content,
-                            unparsedString,
-                            placeholderStartIndex,
-                            endIndex));
+
+                    // Append leading literal part (if any)
+                    if (placeholderStartIndex != lastAppendIndex) {
+                        stringParts.add(new LiteralStringPart(string.substring(lastAppendIndex, placeholderStartIndex)));
+                    }
                     
+                    // Append placeholder part
+                    stringParts.add(new PlaceholderStringPart(content, unparsedString));
+                    lastAppendIndex = endIndex;
                     placeholderStartIndex = -1;
 
                 } else if (currentChar == PLACEHOLDER_START_CHAR) {
@@ -96,30 +80,64 @@ public class StringWithPlaceholders {
                     placeholderStartIndex = currentIndex;
                 }
             } else {
+                // Outside placeholders, just look for the start of a placeholder
                 if (currentChar == PLACEHOLDER_START_CHAR) {
                     placeholderStartIndex = currentIndex;
                 }
             }
-
-            currentIndex++;
         }
         
-        return matches;
+        // Append trailing literal part (if any)
+        if (lastAppendIndex != string.length() && stringParts != null) {
+            stringParts.add(new LiteralStringPart(string.substring(lastAppendIndex)));
+        }
+        
+        return stringParts;
+    }
+    
+    
+    private interface StringPart {
+        
+        String getValue(Function<PlaceholderOccurrence, String> placeholderReplaceFunction);
+        
+    }
+    
+    
+    private static class LiteralStringPart implements StringPart {
+        
+        private final String literalString;
+
+        public LiteralStringPart(String literalString) {
+            this.literalString = literalString;
+        }
+
+        @Override
+        public String getValue(Function<PlaceholderOccurrence, String> placeholderReplaceFunction) {
+            return literalString;
+        }
+
     }
     
 
-    private static class PlaceholderMatch {
+    private static class PlaceholderStringPart implements StringPart {
 
         private final PlaceholderOccurrence content;
         private final String unparsedString;
-        private final int startIndex;
-        private final int endIndex;
 
-        PlaceholderMatch(PlaceholderOccurrence parsedContent, String unparsedString, int startIndex, int endIndex) {
+        PlaceholderStringPart(PlaceholderOccurrence parsedContent, String unparsedString) {
             this.content = parsedContent;
             this.unparsedString = unparsedString;
-            this.startIndex = startIndex;
-            this.endIndex = endIndex;
+        }
+
+        @Override
+        public String getValue(Function<PlaceholderOccurrence, String> placeholderReplaceFunction) {
+            String replacement = placeholderReplaceFunction.apply(content);
+            if (replacement != null) {
+                return replacement;
+            } else {
+                // If no replacement is provided, leave the unparsed placeholder string
+                return unparsedString;
+            }
         }
 
     }
