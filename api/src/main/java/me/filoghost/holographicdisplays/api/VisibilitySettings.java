@@ -40,7 +40,7 @@ public interface VisibilitySettings {
     /**
      * Sets the visibility for a specific player, overriding the default value ({@link #getDefaultVisibility()}).
      * The individual visibility value can be reverted with {@link #resetIndividualVisibility(Player)}.
-     * 
+     *
      * @since 1
      */
     void setIndividualVisibility(@NotNull Player player, @NotNull Visibility visibility);

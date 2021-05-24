@@ -107,7 +107,7 @@ public class StringWithPlaceholders {
         
         private final String literalString;
 
-        public LiteralStringPart(String literalString) {
+        LiteralStringPart(String literalString) {
             this.literalString = literalString;
         }
 
