@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays;
 
 public class Permissions {
 
-    public static final String COMMAND_BASE = "holograms.";
+    public static final String COMMAND_BASE = "holographicdisplays.command.";
+    public static final String UPDATE_NOTIFICATION = "holographicdisplays.update";
 
 }

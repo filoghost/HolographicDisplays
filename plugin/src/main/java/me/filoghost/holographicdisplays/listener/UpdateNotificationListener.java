@@ -37,7 +37,7 @@ public class UpdateNotificationListener implements Listener {
         if (Configuration.updateNotification && newVersion != null) {
             Player player = event.getPlayer();
             
-            if (player.hasPermission(Permissions.COMMAND_BASE + "update")) {
+            if (player.hasPermission(Permissions.UPDATE_NOTIFICATION)) {
                 player.sendMessage(Colors.PRIMARY_SHADOW + "[HolographicDisplays] " 
                         + Colors.PRIMARY + "Found an update: " + newVersion + ". Download:");
                 player.sendMessage(Colors.PRIMARY_SHADOW + ">> " 
