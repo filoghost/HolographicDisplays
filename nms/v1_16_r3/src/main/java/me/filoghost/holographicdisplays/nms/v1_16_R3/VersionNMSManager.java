@@ -11,19 +11,15 @@ import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
-import me.filoghost.holographicdisplays.core.nms.ChatComponentCustomNameEditor;
-import me.filoghost.holographicdisplays.core.nms.CustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
-import net.minecraft.server.v1_16_R3.ChatComponentText;
 import net.minecraft.server.v1_16_R3.Entity;
 import net.minecraft.server.v1_16_R3.EntityTypes;
 import net.minecraft.server.v1_16_R3.EnumCreatureType;
-import net.minecraft.server.v1_16_R3.IChatBaseComponent;
 import net.minecraft.server.v1_16_R3.IRegistry;
 import net.minecraft.server.v1_16_R3.MathHelper;
 import net.minecraft.server.v1_16_R3.RegistryMaterials;
@@ -34,7 +30,6 @@ import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
 import java.util.Map;
 
 public class VersionNMSManager implements NMSManager {
@@ -145,39 +140,10 @@ public class VersionNMSManager implements NMSManager {
             return null;
         }
     }
-    
+
     @Override
-    public CustomNameEditor getCustomNameEditor() {
-        return VersionChatComponentCustomNameEditor.INSTANCE;
-    }
-    
-    private enum VersionChatComponentCustomNameEditor implements ChatComponentCustomNameEditor<IChatBaseComponent> {
-
-        INSTANCE;
-
-        @Override
-        public String getText(IChatBaseComponent chatComponent) {
-            return chatComponent.getText();
-        }
-
-        @Override
-        public List<IChatBaseComponent> getSiblings(IChatBaseComponent chatComponent) {
-            return chatComponent.getSiblings();
-        }
-
-        @Override
-        public void addSibling(IChatBaseComponent chatComponent, IChatBaseComponent newSibling) {
-            newSibling.getChatModifier().setChatModifier(chatComponent.getChatModifier());
-            chatComponent.getSiblings().add(newSibling);
-        }
-
-        @Override
-        public ChatComponentText cloneComponent(IChatBaseComponent chatComponent, String newText) {
-            ChatComponentText clonedChatComponent = new ChatComponentText(newText);
-            clonedChatComponent.setChatModifier(chatComponent.getChatModifier().a());
-            return clonedChatComponent;
-        }
-        
+    public Object createCustomNameNMSObject(String customName) {
+        return EntityNMSArmorStand.createCustomNameNMSObject(customName);
     }
     
 }

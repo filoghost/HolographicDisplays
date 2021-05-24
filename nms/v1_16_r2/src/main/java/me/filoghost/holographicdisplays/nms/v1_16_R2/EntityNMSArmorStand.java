@@ -177,10 +177,14 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
             return;
         }
         this.customName = customName;
-        super.setCustomName(CraftChatMessage.fromStringOrNull(Strings.truncate(customName, 300)));
+        super.setCustomName(createCustomNameNMSObject(customName));
         super.setCustomNameVisible(customName != null && !customName.isEmpty());
     }
 
+    protected static IChatBaseComponent createCustomNameNMSObject(String customName) {
+        return CraftChatMessage.fromStringOrNull(Strings.truncate(customName, 300));
+    }
+    
     @Override
     public String getCustomNameStringNMS() {
         return this.customName;

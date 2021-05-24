@@ -11,11 +11,9 @@ import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.fcommons.reflection.ReflectMethod;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
-import me.filoghost.holographicdisplays.core.nms.CustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
-import me.filoghost.holographicdisplays.core.nms.StringCustomNameEditor;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
@@ -143,10 +141,10 @@ public class VersionNMSManager implements NMSManager {
             return null;
         }
     }
-    
+
     @Override
-    public CustomNameEditor getCustomNameEditor() {
-        return StringCustomNameEditor.INSTANCE;
+    public Object createCustomNameNMSObject(String customName) {
+        return EntityNMSArmorStand.createCustomNameNMSObject(customName);
     }
 
 }

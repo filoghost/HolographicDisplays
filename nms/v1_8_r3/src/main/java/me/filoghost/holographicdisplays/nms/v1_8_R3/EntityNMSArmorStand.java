@@ -163,8 +163,12 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
             return;
         }
         this.customName = customName;
-        super.setCustomName(customName != null ? Strings.truncate(customName, 256) : "");
+        super.setCustomName(createCustomNameNMSObject(customName));
         super.setCustomNameVisible(customName != null && !customName.isEmpty());
+    }
+
+    protected static String createCustomNameNMSObject(String customName) {
+        return customName != null ? Strings.truncate(customName, 256) : "";
     }
     
     @Override

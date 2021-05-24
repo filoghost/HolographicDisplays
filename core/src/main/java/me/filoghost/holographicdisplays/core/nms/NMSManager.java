@@ -39,6 +39,6 @@ public interface NMSManager {
 
     NMSEntity getNMSEntityBaseFromID(World bukkitWorld, int entityID);
 
-    CustomNameEditor getCustomNameEditor();
+    Object createCustomNameNMSObject(String customName);
 
 }
