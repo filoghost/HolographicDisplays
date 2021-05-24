@@ -41,8 +41,8 @@ public class ProtocolLibHook {
 
             String versionNumbers = versionNumbersMatcher.group();
 
-            if (!VersionUtils.isVersionGreaterEqual(versionNumbers, "4.1")) {
-                errorCollector.add("detected old version of ProtocolLib, support disabled. You must use ProtocolLib 4.1 or higher");
+            if (!VersionUtils.isVersionGreaterEqual(versionNumbers, "4.4")) {
+                errorCollector.add("detected old unsupported version of ProtocolLib, support disabled. You must use ProtocolLib 4.4.0 or higher");
                 return;
             }
 

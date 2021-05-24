@@ -5,7 +5,6 @@
  */
 package me.filoghost.holographicdisplays.bridge.protocollib;
 
-import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -58,13 +57,13 @@ class PacketListener extends PacketAdapter {
 
     @Override
     public void onPacketSending(PacketEvent event) {
+        if (event.isPlayerTemporary()) {
+            return;
+        }
+        
         PacketContainer packet = event.getPacket();
         PacketType packetType = packet.getType();
         Player player = event.getPlayer();
-
-        if (player instanceof Factory) {
-            return; // Ignore temporary players (reference: https://github.com/dmulloy2/ProtocolLib/issues/349)
-        }
 
         int entityID = packet.getIntegers().read(0);
         if (entityID < 0) {
