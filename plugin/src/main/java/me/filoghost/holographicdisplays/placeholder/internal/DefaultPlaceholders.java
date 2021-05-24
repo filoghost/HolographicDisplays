@@ -29,8 +29,7 @@ public class DefaultPlaceholders {
             BungeeServerTracker bungeeServerTracker) {
         HolographicDisplays plugin = HolographicDisplays.getInstance();
         placeholderRegistry.unregisterAll(plugin);
-
-        // TODO restore "&u"
+        
         placeholderRegistry.register(plugin, "rainbow", new AnimationPlaceholder(4, toStringList(
                 ChatColor.RED,
                 ChatColor.GOLD,

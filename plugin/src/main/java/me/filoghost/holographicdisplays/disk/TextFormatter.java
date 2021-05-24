@@ -21,6 +21,7 @@ public class TextFormatter {
         }
 
         input = StaticReplacements.searchAndReplace(input);
+        input = input.replace("&u", "{rainbow}");
         input = Colors.addColors(input);
         return input;
     }
