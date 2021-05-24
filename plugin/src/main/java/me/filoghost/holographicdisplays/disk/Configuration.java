@@ -43,23 +43,23 @@ public class Configuration {
     public static boolean pingerTrimMotd;
     public static Map<String, ServerAddress> pingerServerAddresses;
     
-    public static void load(MainConfigModel config, ErrorCollector errorCollector) {
+    public static void load(ConfigurationFileModel config, ErrorCollector errorCollector) {
         spaceBetweenLines = config.spaceBetweenLines;
         quickEditCommands = config.quickEditCommands;
         timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone, errorCollector);
         updateNotification = config.updateNotification;
         
-        imageSymbol = StringConverter.toReadableFormat(config.imageSymbol);
-        transparencySymbol = StringConverter.toReadableFormat(config.transparencySymbol);
+        imageSymbol = TextFormatter.toDisplayFormat(config.imageSymbol);
+        transparencySymbol = TextFormatter.toDisplayFormat(config.transparencySymbol);
         transparencyColor = parseTransparencyColor(config.transparencyColor, errorCollector);
         
         bungeeRefreshSeconds = parseBungeeRefreshInterval(config.bungeeRefreshSeconds, errorCollector);
         useRedisBungee = config.useRedisBungee;
         pingerEnabled = config.pingerEnable;
         pingerTimeout = parsePingerTimeout(config.pingerTimeout, errorCollector);
-        pingerOfflineMotd = StringConverter.toReadableFormat(config.pingerOfflineMotd);
-        pingerStatusOnline = StringConverter.toReadableFormat(config.pingerStatusOnline);
-        pingerStatusOffline = StringConverter.toReadableFormat(config.pingerStatusOffline);
+        pingerOfflineMotd = TextFormatter.toDisplayFormat(config.pingerOfflineMotd);
+        pingerStatusOnline = TextFormatter.toDisplayFormat(config.pingerStatusOnline);
+        pingerStatusOffline = TextFormatter.toDisplayFormat(config.pingerStatusOffline);
         pingerTrimMotd = config.pingerTrimMotd;
 
         pingerServerAddresses = new HashMap<>();

@@ -13,14 +13,14 @@ package me.filoghost.holographicdisplays.disk;
 
 import me.filoghost.fcommons.Colors;
 
-public class StringConverter {
+public class TextFormatter {
     
-    public static String toReadableFormat(String input) {
+    public static String toDisplayFormat(String input) {
         if (input == null) {
             return null;
         }
 
-        input = CustomPlaceholders.replaceStaticPlaceholders(input);
+        input = StaticReplacements.searchAndReplace(input);
         input = Colors.addColors(input);
         return input;
     }

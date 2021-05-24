@@ -20,25 +20,25 @@ import java.nio.file.Path;
 
 public class ConfigManager extends BaseConfigManager {
 
-    private final MappedConfigLoader<MainConfigModel> mainConfigLoader;
+    private final MappedConfigLoader<ConfigurationFileModel> mainConfigLoader;
     private final ConfigLoader databaseConfigLoader;
-    private final ConfigLoader placeholdersConfigLoader;
+    private final ConfigLoader staticReplacementsConfigLoader;
 
     public ConfigManager(Path rootDataFolder) {
         super(rootDataFolder);
-        this.mainConfigLoader = getMappedConfigLoader("config.yml", MainConfigModel.class);
+        this.mainConfigLoader = getMappedConfigLoader("config.yml", ConfigurationFileModel.class);
         this.databaseConfigLoader = getConfigLoader("database.yml");
-        this.placeholdersConfigLoader = getConfigLoader("custom-placeholders.yml");
+        this.staticReplacementsConfigLoader = getConfigLoader("custom-placeholders.yml");
     }
 
     public void reloadMainConfig(ErrorCollector errorCollector) {
-        MainConfigModel mainConfig;
+        ConfigurationFileModel mainConfig;
 
         try {
             mainConfig = mainConfigLoader.init();
         } catch (ConfigException e) {
             logConfigInitException(errorCollector, mainConfigLoader.getFile(), e);
-            mainConfig = new MainConfigModel(); // Fallback: use default values
+            mainConfig = new ConfigurationFileModel(); // Fallback: use default values
         }
         
         Configuration.load(mainConfig, errorCollector);
@@ -67,17 +67,17 @@ public class ConfigManager extends BaseConfigManager {
         }
     }
 
-    public void reloadCustomPlaceholders(ErrorCollector errorCollector) {
-        FileConfig placeholdersConfig;
+    public void reloadStaticReplacements(ErrorCollector errorCollector) {
+        FileConfig staticReplacementsConfig;
         
         try {
-            placeholdersConfig = placeholdersConfigLoader.init();
+            staticReplacementsConfig = staticReplacementsConfigLoader.init();
         } catch (ConfigException e) {
-            logConfigInitException(errorCollector, placeholdersConfigLoader.getFile(), e);
-            placeholdersConfig = new FileConfig(placeholdersConfigLoader.getFile()); // Fallback: empty config
+            logConfigInitException(errorCollector, staticReplacementsConfigLoader.getFile(), e);
+            staticReplacementsConfig = new FileConfig(staticReplacementsConfigLoader.getFile()); // Fallback: empty config
         }
         
-        CustomPlaceholders.load(placeholdersConfig, errorCollector);
+        StaticReplacements.load(staticReplacementsConfig, errorCollector);
     }
 
     public Path getAnimationsFolder() {

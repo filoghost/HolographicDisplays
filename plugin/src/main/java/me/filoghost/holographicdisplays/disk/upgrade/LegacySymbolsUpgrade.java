@@ -22,7 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class LegacySymbolsUpgrader {
+public class LegacySymbolsUpgrade {
     
     public static void run(ConfigManager configManager, ErrorCollector errorCollector) throws ConfigLoadException, ConfigSaveException {
         Path oldFile = configManager.getRootDataFolder().resolve("symbols.yml");

@@ -9,7 +9,7 @@ import me.filoghost.fcommons.config.exception.ConfigSaveException;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.core.DebugLogger;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
-import me.filoghost.holographicdisplays.disk.StringConverter;
+import me.filoghost.holographicdisplays.disk.TextFormatter;
 import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
 
@@ -79,9 +79,9 @@ public class AnimationRegistry implements PlaceholderFactory {
                         + " you should add at least one more line");
             }
 
-            // Replace placeholders
+            // Add colors and formatting to lines
             for (int i = 0; i < lines.size(); i++) {
-                lines.set(i, StringConverter.toReadableFormat(lines.get(i)));
+                lines.set(i, TextFormatter.toDisplayFormat(lines.get(i)));
             }
 
             int refreshIntervalTicks = Math.min((int) (speed * 20.0), 1);

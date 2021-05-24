@@ -20,7 +20,7 @@ import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.disk.ConfigManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.disk.HologramDatabase;
-import me.filoghost.holographicdisplays.disk.upgrade.LegacySymbolsUpgrader;
+import me.filoghost.holographicdisplays.disk.upgrade.LegacySymbolsUpgrade;
 import me.filoghost.holographicdisplays.legacy.api.v2.V2HologramsAPIProvider;
 import me.filoghost.holographicdisplays.listener.ChunkListener;
 import me.filoghost.holographicdisplays.listener.InteractListener;
@@ -105,9 +105,9 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
 
         // Run only once at startup, before anything else
         try {
-            LegacySymbolsUpgrader.run(configManager, errorCollector);
+            LegacySymbolsUpgrade.run(configManager, errorCollector);
         } catch (ConfigException e) {
-            errorCollector.add(e, "couldn't convert symbols file");
+            errorCollector.add(e, "couldn't automatically convert symbols file to the new format");
         }
         
         load(true, errorCollector);
@@ -161,7 +161,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         
         internalHologramManager.clearAll();
 
-        configManager.reloadCustomPlaceholders(errorCollector);
+        configManager.reloadStaticReplacements(errorCollector);
         configManager.reloadMainConfig(errorCollector);
         HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
         try {

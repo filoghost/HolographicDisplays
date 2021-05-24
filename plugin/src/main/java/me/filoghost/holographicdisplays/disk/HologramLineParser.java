@@ -33,7 +33,7 @@ public class HologramLineParser {
             if (serializedLine.trim().equalsIgnoreCase(EMPTY_LINE_PLACEHOLDER)) {
                 displayText = "";
             } else {
-                displayText = StringConverter.toReadableFormat(serializedLine);
+                displayText = TextFormatter.toDisplayFormat(serializedLine);
             }
             
             hologramLine = hologram.createTextLine(displayText, serializedLine);
