@@ -108,6 +108,11 @@ class PacketListener extends PacketAdapter {
 
             NMSArmorStand nmsArmorStand = (NMSArmorStand) nmsEntity;
             String customName = nmsArmorStand.getCustomNameStringNMS();
+            
+            if (customName == null || customName.isEmpty()) {
+                return;
+            }
+            
             String customNameWithRelativePlaceholders = replaceRelativePlaceholders(textLine, customName, player);
             
             if (customNameWithRelativePlaceholders.equals(customName)) {
