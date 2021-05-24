@@ -115,6 +115,11 @@
         </dependency>
 
         <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit-lite</artifactId>
         </dependency>

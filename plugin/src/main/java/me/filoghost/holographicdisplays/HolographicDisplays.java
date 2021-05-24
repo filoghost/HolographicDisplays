@@ -12,6 +12,7 @@ import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.bridge.bungeecord.BungeeServerTracker;
+import me.filoghost.holographicdisplays.bridge.placeholderapi.PlaceholderAPIHook;
 import me.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
@@ -112,6 +113,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         load(true, errorCollector);
         
         ProtocolLibHook.setup(this, nmsManager, this, errorCollector);
+        PlaceholderAPIHook.setup();
         
         placeholderManager.startUpdaterTask(this);
 

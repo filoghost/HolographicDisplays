@@ -12,6 +12,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+import me.filoghost.holographicdisplays.bridge.placeholderapi.PlaceholderAPIHook;
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.AbstractPacket;
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerEntityMetadata;
 import me.filoghost.holographicdisplays.bridge.protocollib.packet.WrapperPlayServerSpawnEntityLiving;
@@ -147,6 +148,10 @@ class PacketListener extends PacketAdapter {
                             relativePlaceholder.getReplacement(player));
                 }
             }
+        }
+        
+        if (PlaceholderAPIHook.isEnabled() && PlaceholderAPIHook.containsPlaceholders(text)) {
+            text = PlaceholderAPIHook.replacePlaceholders(player, text);
         }
 
         return text;
