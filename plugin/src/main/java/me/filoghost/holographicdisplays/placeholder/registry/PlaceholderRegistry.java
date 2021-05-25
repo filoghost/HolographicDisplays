@@ -14,8 +14,6 @@ import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.placeholder.parsing.PlaceholderIdentifier;
 import me.filoghost.holographicdisplays.placeholder.parsing.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.placeholder.parsing.PluginName;
-import me.filoghost.holographicdisplays.placeholder.util.SimplePlaceholder;
-import me.filoghost.holographicdisplays.placeholder.util.SingletonPlaceholderFactory;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
