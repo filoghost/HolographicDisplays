@@ -18,7 +18,7 @@ public class PlaceholderManager {
     public PlaceholderManager() {
         this.placeholderRegistry = new PlaceholderRegistry();
         PlaceholdersReplacementTracker placeholdersReplacementTracker = new PlaceholdersReplacementTracker(placeholderRegistry);
-        this.placeholdersUpdateTask = new PlaceholdersUpdateTask(placeholdersReplacementTracker);
+        this.placeholdersUpdateTask = new PlaceholdersUpdateTask(placeholdersReplacementTracker, placeholderRegistry);
         
         placeholderRegistry.setChangeListener(placeholdersReplacementTracker::clearOutdatedSources);
     }

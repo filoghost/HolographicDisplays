@@ -22,18 +22,22 @@ import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
-import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
+import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
+import me.filoghost.holographicdisplays.placeholder.PlaceholdersUpdateTask;
+import me.filoghost.holographicdisplays.placeholder.TrackedLine;
+import me.filoghost.holographicdisplays.placeholder.parsing.StringWithPlaceholders;
+import me.filoghost.holographicdisplays.placeholder.registry.PlaceholderRegistry;
 import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.util.Collection;
 
 class PacketListener extends PacketAdapter {
     
     private final NMSManager nmsManager;
     private final MetadataHelper metadataHelper;
     private final ProtocolPacketSettings packetSettings;
+    PlaceholdersUpdateTask placeholdersUpdateTask;
+    PlaceholderRegistry placeholderRegistry;
 
     PacketListener(Plugin plugin, NMSManager nmsManager, MetadataHelper metadataHelper, ProtocolPacketSettings packetSettings) {
         super(PacketAdapter.params()
@@ -143,18 +147,23 @@ class PacketListener extends PacketAdapter {
     }
 
     private String replaceRelativePlaceholders(StandardTextLine textLine, String text, Player player) {
-        Collection<RelativePlaceholder> relativePlaceholders = textLine.getRelativePlaceholders();
-        
-        if (relativePlaceholders != null && !relativePlaceholders.isEmpty()) {
-            for (RelativePlaceholder relativePlaceholder : relativePlaceholders) {
-                if (text.contains(relativePlaceholder.getTextPlaceholder())) {
-                    text = text.replace(
-                            relativePlaceholder.getTextPlaceholder(),
-                            relativePlaceholder.getReplacement(player));
-                }
-            }
+        TrackedLine trackedLine = placeholdersUpdateTask.getTrackedLine(textLine);
+        if (trackedLine == null) {
+            return text;
         }
         
+        if (trackedLine.containsRelativePlaceholders()) {
+            StringWithPlaceholders textWithPlaceholders = new StringWithPlaceholders(text);
+            textWithPlaceholders.replacePlaceholders(placeholderOccurrence -> {
+                RelativePlaceholder relativePlaceholder = placeholderRegistry.findRelative(placeholderOccurrence);
+                if (relativePlaceholder != null) {
+                    return relativePlaceholder.getReplacement(player);
+                } else {
+                    return null;
+                }
+            });
+        }
+
         if (PlaceholderAPIHook.isEnabled() && PlaceholderAPIHook.containsPlaceholders(text)) {
             text = PlaceholderAPIHook.replacePlaceholders(player, text);
         }

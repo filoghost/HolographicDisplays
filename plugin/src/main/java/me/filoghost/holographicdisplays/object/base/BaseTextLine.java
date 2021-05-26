@@ -8,24 +8,19 @@ package me.filoghost.holographicdisplays.object.base;
 import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.core.placeholder.RelativePlaceholder;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public abstract class BaseTextLine extends BaseTouchableLine implements StandardTextLine {
-
-    private final List<RelativePlaceholder> relativePlaceholders;
+    
     private String text;
     private NMSArmorStand textEntity;
     
     public BaseTextLine(BaseHologram<?> hologram, String text) {
         super(hologram);
-        this.relativePlaceholders = new ArrayList<>();
         setText(text);
     }
     
@@ -40,15 +35,6 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
         if (textEntity != null) {
             textEntity.setCustomNameNMS(text);
             getPlaceholderManager().updateTracking(this);
-        }
-        
-        relativePlaceholders.clear();
-        if (text != null) {
-            for (RelativePlaceholder relativePlaceholder : RelativePlaceholder.getRegistry()) {
-                if (text.contains(relativePlaceholder.getTextPlaceholder())) {
-                    relativePlaceholders.add(relativePlaceholder);
-                }
-            }
         }
     }
 
@@ -82,11 +68,6 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
             textEntity.killEntityNMS();
             textEntity = null;
         }
-    }
-
-    @Override
-    public Collection<RelativePlaceholder> getRelativePlaceholders() {
-        return relativePlaceholders;
     }
 
     @Override

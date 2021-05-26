@@ -11,26 +11,38 @@ import com.google.common.collect.Table;
 import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
+import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
 import me.filoghost.holographicdisplays.placeholder.parsing.PlaceholderIdentifier;
 import me.filoghost.holographicdisplays.placeholder.parsing.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.placeholder.parsing.PluginName;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlaceholderRegistry {
     
     private final Table<PlaceholderIdentifier, PluginName, PlaceholderExpansion> placeholderExpansions;
+    private final Map<PlaceholderIdentifier, RelativePlaceholder> relativePlaceholders;
     private Runnable changeListener;
     
     public PlaceholderRegistry() {
         this.placeholderExpansions = HashBasedTable.create();
+        relativePlaceholders = new HashMap<>();
+        registerRelative("player", Player::getName);
+        registerRelative("displayName", Player::getDisplayName);
     }
 
     public void setChangeListener(Runnable changeListener) {
         this.changeListener = changeListener;
+    }
+    
+    public void registerRelative(String identifier, RelativePlaceholder relativePlaceholder) {
+        relativePlaceholders.put(new PlaceholderIdentifier(identifier), relativePlaceholder);        
     }
 
     public void registerReplacer(Plugin plugin, String identifier, int refreshIntervalTicks, PlaceholderReplacer placeholderReplacer) {
@@ -87,6 +99,11 @@ public class PlaceholderRegistry {
 
     public boolean isRegisteredIdentifier(Plugin plugin, String identifier) {
         return placeholderExpansions.contains(new PlaceholderIdentifier(identifier), new PluginName(plugin));
+    }
+
+    public @Nullable RelativePlaceholder findRelative(PlaceholderOccurrence textOccurrence) {
+        PlaceholderIdentifier identifier = textOccurrence.getIdentifier();
+        return relativePlaceholders.get(identifier);
     }
 
 }

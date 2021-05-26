@@ -3,11 +3,11 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.placeholder;
+package me.filoghost.holographicdisplays.placeholder;
 
 import org.bukkit.entity.Player;
 
-public interface RelativePlaceholderReplacer {
+public interface RelativePlaceholder {
     
     String getReplacement(Player player);
 

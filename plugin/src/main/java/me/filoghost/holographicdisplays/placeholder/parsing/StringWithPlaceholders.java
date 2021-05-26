@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class StringWithPlaceholders {
 
@@ -26,6 +27,23 @@ public class StringWithPlaceholders {
 
     public boolean containsPlaceholders() {
         return stringParts != null;
+    }
+
+    public boolean containsPlaceholdersMatching(Predicate<PlaceholderOccurrence> filter) {
+        if (stringParts == null) {
+            return false;
+        }
+        
+        for (StringPart stringPart : stringParts) {
+            if (stringPart instanceof PlaceholderStringPart) {
+                PlaceholderStringPart placeholderStringPart = (PlaceholderStringPart) stringPart;
+                if (filter.test(placeholderStringPart.content)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
     public String replacePlaceholders(Function<PlaceholderOccurrence, String> replaceFunction) {
