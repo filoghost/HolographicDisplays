@@ -22,6 +22,7 @@ import org.bukkit.craftbukkit.v1_13_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftSlime;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
@@ -70,7 +71,7 @@ public class CraftNMSSlime extends CraftSlime {
 	@Override public void setMomentum(Vector value) { }
 	@Override public void setSilent(boolean flag) { }
 	@Override public void setTicksLived(int value) { }
-	
+	@Override public void setLastDamageCause(EntityDamageEvent event) { }
 
 	// Methods from Slime
 	@Override public void setSize(int size) { }

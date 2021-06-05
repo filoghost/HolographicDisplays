@@ -19,6 +19,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftItem;
 import org.bukkit.entity.Entity;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -56,7 +57,8 @@ public class CraftNMSItem extends CraftItem {
 	@Override public void setSilent(boolean flag) { }
 	@Override public void setTicksLived(int value) { }
 	@Override public void setPersistent(boolean flag) { }
-	
+	@Override public void setLastDamageCause(EntityDamageEvent event) { }
+
 	// Methods from Item
 	@Override public void setItemStack(ItemStack stack) { }
 	@Override public void setPickupDelay(int delay) { }
