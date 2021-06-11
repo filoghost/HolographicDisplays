@@ -153,6 +153,12 @@
 				<artifactId>holographicdisplays-nms-v1_16_r3</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>holographicdisplays-nms-v1_17_r1</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 	
 			<dependency>
 				<groupId>org.spigotmc</groupId>
@@ -160,9 +166,9 @@
 				<version>${spigot-api.version}</version>
 				<scope>provided</scope>
 			</dependency>
-	
+
 			<dependency>
-				<groupId>com.github.dmulloy2</groupId>
+				<groupId>com.comphenix.protocol</groupId>
 				<artifactId>ProtocolLib</artifactId>
 				<version>4.5.0</version>
 				<scope>provided</scope>

@@ -152,7 +152,7 @@ public class NmsManagerImpl implements NMSManager {
 		return CustomNameHelper.replaceCustomNameChatComponent(NMSChatComponentAdapter.INSTANCE, customNameObject, target, replacement);
 	}
 	
-	private static enum NMSChatComponentAdapter implements ChatComponentAdapter<IChatBaseComponent> {
+	private enum NMSChatComponentAdapter implements ChatComponentAdapter<IChatBaseComponent> {
 
 		INSTANCE {
 			

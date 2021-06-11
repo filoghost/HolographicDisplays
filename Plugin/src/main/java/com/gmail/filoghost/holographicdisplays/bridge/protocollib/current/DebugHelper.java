@@ -58,7 +58,7 @@ public class DebugHelper {
 		
 		// Get the first Minecraft super class
 		while (clazz != null && clazz != Object.class &&
-				(!MinecraftReflection.isMinecraftClass(clazz) || 
+				(!MinecraftReflection.isMinecraftClass(clazz) ||
 				 Factory.class.isAssignableFrom(clazz))) {
 			clazz = clazz.getSuperclass();
 		}

@@ -126,12 +126,17 @@
 		</dependency>
 
 		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>holographicdisplays-nms-v1_17_r1</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.github.dmulloy2</groupId>
+			<groupId>com.comphenix.protocol</groupId>
 			<artifactId>ProtocolLib</artifactId>
 		</dependency>
 
