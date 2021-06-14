@@ -32,7 +32,8 @@ public enum NMSVersion {
 	v1_15_R1,
 	v1_16_R1,
 	v1_16_R2,
-	v1_16_R3;
+	v1_16_R3,
+	v1_17_R1;
 	
 	private static final NMSVersion CURRENT_VERSION = extractCurrentVersion();
 	
