@@ -19,8 +19,8 @@
 		</repository>
 
 		<repository>
-			<id>jitpack</id>
-			<url>https://jitpack.io/</url>
+			<id>dmulloy2-repo</id>
+			<url>https://repo.dmulloy2.net/repository/public/</url>
 		</repository>
 		
 		<repository>
@@ -136,7 +136,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.github.dmulloy2</groupId>
+			<groupId>com.comphenix.protocol</groupId>
 			<artifactId>ProtocolLib</artifactId>
 		</dependency>
 
