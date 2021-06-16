@@ -25,40 +25,23 @@ import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSEntityBa
 import com.gmail.filoghost.holographicdisplays.nms.interfaces.entity.NMSItem;
 import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
 import com.gmail.filoghost.holographicdisplays.util.Validator;
-import com.gmail.filoghost.holographicdisplays.util.reflection.ReflectField;
-import net.minecraft.core.IRegistry;
-import net.minecraft.core.RegistryMaterials;
 import net.minecraft.network.chat.ChatComponentText;
 import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
-import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.EnumCreatureType;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.Map;
 
 public class NmsManagerImpl implements NMSManager {
 	
-	private static final ReflectField<Map<EntityTypes<?>, Integer>> REGISTRY_TO_ID_FIELD = new ReflectField<>(RegistryMaterials.class, "bw");
-	
 	@Override
-	public void setup() throws Exception {		
-		registerCustomEntity(EntityNMSSlime.class, 55, 2.04f, 2.04f);
-	}
-	
-	public void registerCustomEntity(Class<? extends Entity> entityClass, int id, float sizeWidth, float sizeHeight) throws Exception {
-		// Use reflection to map the custom entity to the correct ID
-		Map<EntityTypes<?>, Integer> entityTypesToId = REGISTRY_TO_ID_FIELD.get(IRegistry.Y /* ENTITY_TYPES */);
-		EntityTypes<?> customEntityTypes = EntityTypes.Builder.a(EnumCreatureType.a /* monster */).a(sizeWidth, sizeHeight).b().a((String) null);
-		entityTypesToId.put(customEntityTypes, id);
-	}
+	public void setup() {}
 	
 	@Override
 	public NMSItem spawnNMSItem(org.bukkit.World bukkitWorld, double x, double y, double z, ItemLine parentPiece, ItemStack stack, ItemPickupManager itemPickupManager) {
@@ -107,7 +90,6 @@ public class NmsManagerImpl implements NMSManager {
             return false;
         }
         
-        nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
         try {
         	nmsWorld.G /* entityManager */ .a /* addNewEntity */ (nmsEntity);
         	return true;
