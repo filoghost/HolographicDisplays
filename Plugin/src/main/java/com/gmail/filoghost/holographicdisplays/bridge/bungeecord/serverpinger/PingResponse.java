@@ -14,14 +14,13 @@
  */
 package com.gmail.filoghost.holographicdisplays.bridge.bungeecord.serverpinger;
 
-import java.lang.String;
-import java.util.logging.Level;
-
+import com.gmail.filoghost.holographicdisplays.disk.ServerAddress;
+import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import com.gmail.filoghost.holographicdisplays.disk.ServerAddress;
-import com.gmail.filoghost.holographicdisplays.util.ConsoleLogger;
+import java.util.logging.Level;
 
 public class PingResponse
 {
@@ -60,12 +59,13 @@ public class PingResponse
     	
     	if (descriptionObject != null) {
     		if (descriptionObject instanceof JSONObject) {
-    			Object text = ((JSONObject) descriptionObject).get("text");
-    			if (text != null) {
-    				motd = text.toString();
-    			} else {
-    				motd = "Invalid ping response (text not found)";
-    			}
+				String descriptionString = ((JSONObject) descriptionObject).toJSONString();
+				try {
+					motd = ComponentSerializer.parse(descriptionString)[0].toLegacyText();
+				} catch (Exception e) {
+					ConsoleLogger.log(Level.WARNING, "Could not parse ping response: " + descriptionString, e);
+					motd = "Invalid ping response";
+				}
     		} else {
     			motd = descriptionObject.toString();
     		}

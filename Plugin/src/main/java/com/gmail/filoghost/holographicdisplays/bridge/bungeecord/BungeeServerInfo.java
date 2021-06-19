@@ -15,6 +15,7 @@
 package com.gmail.filoghost.holographicdisplays.bridge.bungeecord;
 
 import com.gmail.filoghost.holographicdisplays.disk.Configuration;
+import org.bukkit.ChatColor;
 
 public class BungeeServerInfo {
 
@@ -79,11 +80,55 @@ public class BungeeServerInfo {
 		if (separatorIndex >= 0) {
 			String line1 = motd.substring(0, separatorIndex);
 			String line2 = motd.substring(separatorIndex + 1);
-			this.motd1 = Configuration.pingerTrimMotd ? line1.trim() : line1;
-			this.motd2 = Configuration.pingerTrimMotd ? line2.trim() : line2;
+			this.motd1 = Configuration.pingerTrimMotd ? trimWithColors(line1) : line1;
+			this.motd2 = Configuration.pingerTrimMotd ? trimWithColors(line2) : line2;
 		} else {
-			this.motd1 = Configuration.pingerTrimMotd ? motd.trim() : motd;
+			this.motd1 = Configuration.pingerTrimMotd ? trimWithColors(motd) : motd;
 			this.motd2 = "";
+		}
+	}
+
+	private static String trimWithColors(String s) {
+		if (s == null || s.isEmpty()) {
+			return s;
+		}
+
+		int firstNonWhitespace = -1;
+		int lastNonWhitespace = -1;
+
+		int length = s.length();
+		boolean trimWhitespace = true;
+		for (int i = 0; i < length; i++) {
+			char c = s.charAt(i);
+
+			if (c == ' ' && trimWhitespace) {
+				// Ignore space
+			} else if (c == ChatColor.COLOR_CHAR && i < length - 1) {
+				ChatColor chatColor = ChatColor.getByChar(s.charAt(i + 1));
+				if (chatColor == null) {
+					continue;
+				}
+				if (chatColor == ChatColor.STRIKETHROUGH || chatColor == ChatColor.UNDERLINE) {
+					trimWhitespace = false;
+				} else if (chatColor == ChatColor.RESET) {
+					trimWhitespace = true;
+				}
+				i++;
+			} else {
+				if (firstNonWhitespace == -1) {
+					// Set only once
+					firstNonWhitespace = i;
+				}
+				lastNonWhitespace = i;
+			}
+		}
+		
+		if (firstNonWhitespace >= 0) {
+			return s.substring(0, firstNonWhitespace).replace(" ", "")
+					+ s.substring(firstNonWhitespace, lastNonWhitespace + 1)
+					+ s.substring(lastNonWhitespace + 1).replace(" ", "");
+		} else {
+			return s;
 		}
 	}
 
