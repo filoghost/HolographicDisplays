@@ -11,7 +11,7 @@ import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
 import me.filoghost.holographicdisplays.legacy.api.v2.V2HologramAdapter;
 import me.filoghost.holographicdisplays.object.base.BaseHologram;
-import me.filoghost.holographicdisplays.placeholder.PlaceholderManager;
+import me.filoghost.holographicdisplays.placeholder.tracking.PlaceholderLineTracker;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -36,8 +36,8 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
             Plugin plugin,
             NMSManager nmsManager,
             APIHologramManager apiHologramManager,
-            PlaceholderManager placeholderManager) {
-        super(source, nmsManager, placeholderManager);
+            PlaceholderLineTracker placeholderLineTracker) {
+        super(source, nmsManager, placeholderLineTracker);
         Preconditions.notNull(plugin, "plugin");
         this.plugin = plugin;
         this.apiHologramManager = apiHologramManager;

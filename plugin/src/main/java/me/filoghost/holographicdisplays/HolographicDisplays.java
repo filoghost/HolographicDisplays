@@ -31,7 +31,10 @@ import me.filoghost.holographicdisplays.object.api.APIHologram;
 import me.filoghost.holographicdisplays.object.api.APIHologramManager;
 import me.filoghost.holographicdisplays.object.internal.InternalHologram;
 import me.filoghost.holographicdisplays.object.internal.InternalHologramManager;
-import me.filoghost.holographicdisplays.placeholder.PlaceholderManager;
+import me.filoghost.holographicdisplays.placeholder.tracking.PlaceholderLineTracker;
+import me.filoghost.holographicdisplays.placeholder.tracking.PlaceholderTracker;
+import me.filoghost.holographicdisplays.placeholder.TickClock;
+import me.filoghost.holographicdisplays.placeholder.TickingTask;
 import me.filoghost.holographicdisplays.placeholder.internal.AnimationRegistry;
 import me.filoghost.holographicdisplays.placeholder.internal.DefaultPlaceholders;
 import me.filoghost.holographicdisplays.placeholder.registry.PlaceholderRegistry;
@@ -52,7 +55,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
     private APIHologramManager apiHologramManager;
     private BungeeServerTracker bungeeServerTracker;
     private AnimationRegistry animationRegistry;
-    private PlaceholderManager placeholderManager;
+    private PlaceholderRegistry placeholderRegistry;
 
     @Override
     public void onCheckedEnable() throws PluginEnableException {
@@ -94,12 +97,15 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
             throw new PluginEnableException(e, "Couldn't initialize the NMS manager.");
         }
         
+        configManager = new ConfigManager(getDataFolder().toPath());
         bungeeServerTracker = new BungeeServerTracker(this);
         animationRegistry = new AnimationRegistry();
-        placeholderManager = new PlaceholderManager();
-        configManager = new ConfigManager(getDataFolder().toPath());
-        internalHologramManager = new InternalHologramManager(nmsManager, placeholderManager);
-        apiHologramManager = new APIHologramManager(nmsManager, placeholderManager);
+        placeholderRegistry = new PlaceholderRegistry();
+        TickClock tickClock = new TickClock();
+        PlaceholderTracker placeholderTracker = new PlaceholderTracker(placeholderRegistry, tickClock);
+        PlaceholderLineTracker placeholderLineTracker = new PlaceholderLineTracker(placeholderTracker);
+        internalHologramManager = new InternalHologramManager(nmsManager, placeholderLineTracker);
+        apiHologramManager = new APIHologramManager(nmsManager, placeholderLineTracker);
 
         PrintableErrorCollector errorCollector = new PrintableErrorCollector();
 
@@ -109,14 +115,15 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         } catch (ConfigException e) {
             errorCollector.add(e, "couldn't automatically convert symbols file to the new format");
         }
-        
-        load(true, errorCollector);
-        
-        ProtocolLibHook.setup(this, nmsManager, this, errorCollector);
-        PlaceholderAPIHook.setup();
-        
-        placeholderManager.startUpdaterTask(this);
 
+        load(true, errorCollector);
+
+        ProtocolLibHook.setup(this, nmsManager, this, placeholderLineTracker, errorCollector);
+        PlaceholderAPIHook.setup();
+
+        TickingTask tickingTask = new TickingTask(tickClock, placeholderLineTracker);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, tickingTask, 0, 1);
+        
         HologramCommandManager commandManager = new HologramCommandManager(configManager, internalHologramManager, nmsManager);
         commandManager.register(this);
         
@@ -127,14 +134,9 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         registerListener(updateNotificationListener);
         
         // Enable the APIs
-        HolographicDisplaysAPIProvider.setImplementation(new DefaultHolographicDisplaysAPIProvider(
-                apiHologramManager,
-                nmsManager,
-                placeholderManager.getPlaceholderRegistry()));
-        enableLegacyAPI(
-                apiHologramManager,
-                nmsManager,
-                placeholderManager.getPlaceholderRegistry());
+        HolographicDisplaysAPIProvider.setImplementation(
+                new DefaultHolographicDisplaysAPIProvider(apiHologramManager, nmsManager, placeholderRegistry));
+        enableLegacyAPI(apiHologramManager, nmsManager, placeholderRegistry);
 
         // Register bStats metrics
         int pluginID = 3123;
@@ -157,7 +159,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
     }
 
     public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
-        DefaultPlaceholders.resetAndRegister(placeholderManager.getPlaceholderRegistry(), animationRegistry, bungeeServerTracker);
+        DefaultPlaceholders.resetAndRegister(placeholderRegistry, animationRegistry, bungeeServerTracker);
         
         internalHologramManager.clearAll();
 

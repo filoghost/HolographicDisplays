@@ -41,11 +41,22 @@ public class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     
     @Override
     public void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull PlaceholderReplacer replacer) {
-        Preconditions.notNull(identifier, "identifier");
+        Preconditions.notEmpty(identifier, "identifier");
+        for (char c : identifier.toCharArray()) {
+            Preconditions.checkArgument(isValidIdentifierCharacter(c), "identifier contains invalid character '" + c + "'");
+        }
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
         Preconditions.notNull(replacer, "replacer");
         
-        placeholderRegistry.registerReplacer(plugin, identifier, refreshIntervalTicks, replacer);
+        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, identifier, refreshIntervalTicks, replacer);
+    }
+    
+    private boolean isValidIdentifierCharacter(char c) {
+        return ('a' <= c && c <= 'z')
+                || ('A' <= c && c <= 'Z')
+                || ('0' <= c && c <= '9')
+                || c == '-'
+                || c == '_';
     }
 
     @Override

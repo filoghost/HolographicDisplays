@@ -8,55 +8,63 @@ package me.filoghost.holographicdisplays.placeholder.registry;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplacer;
 import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
-import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.placeholder.parsing.PlaceholderIdentifier;
 import me.filoghost.holographicdisplays.placeholder.parsing.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.placeholder.parsing.PluginName;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PlaceholderRegistry {
     
     private final Table<PlaceholderIdentifier, PluginName, PlaceholderExpansion> placeholderExpansions;
-    private final Map<PlaceholderIdentifier, RelativePlaceholder> relativePlaceholders;
     private Runnable changeListener;
     
     public PlaceholderRegistry() {
         this.placeholderExpansions = HashBasedTable.create();
-        relativePlaceholders = new HashMap<>();
-        registerRelative("player", Player::getName);
-        registerRelative("displayName", Player::getDisplayName);
     }
 
     public void setChangeListener(Runnable changeListener) {
         this.changeListener = changeListener;
     }
+
+    public void registerIndividualPlaceholderReplacer(Plugin plugin, String identifier, int refreshIntervalTicks, IndividualPlaceholderReplacer placeholderReplacer) {
+        registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, placeholderReplacer));
+    }
     
-    public void registerRelative(String identifier, RelativePlaceholder relativePlaceholder) {
-        relativePlaceholders.put(new PlaceholderIdentifier(identifier), relativePlaceholder);        
+    public void registerIndividualPlaceholder(Plugin plugin, String identifier, IndividualPlaceholder placeholder) {
+        registerIndividualPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
     }
 
-    public void registerReplacer(Plugin plugin, String identifier, int refreshIntervalTicks, PlaceholderReplacer placeholderReplacer) {
-        register(plugin, identifier, new SimplePlaceholder(refreshIntervalTicks, placeholderReplacer));
+    public void registerIndividualPlaceholderFactory(Plugin plugin, String identifier, IndividualPlaceholderFactory factory) {
+        PlaceholderExpansion expansion = new IndividualPlaceholderExpansion(plugin, identifier, factory);
+        registerExpansion(expansion);
+    }
+
+    public void registerGlobalPlaceholderReplacer(Plugin plugin, String identifier, int refreshIntervalTicks, PlaceholderReplacer placeholderReplacer) {
+        registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, placeholderReplacer));
     }
     
-    public void register(Plugin plugin, String identifier, Placeholder placeholder) {
-        registerFactory(plugin, identifier, new SingletonPlaceholderFactory(placeholder));
+    public void registerGlobalPlaceholder(Plugin plugin, String identifier, Placeholder placeholder) {
+        registerGlobalPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
     }
     
-    public void registerFactory(Plugin plugin, String identifier, PlaceholderFactory placeholderFactory) {
-        PlaceholderExpansion expansion = new PlaceholderExpansion(plugin, identifier, placeholderFactory);
+    public void registerGlobalPlaceholderFactory(Plugin plugin, String identifier, PlaceholderFactory factory) {
+        PlaceholderExpansion expansion = new GlobalPlaceholderExpansion(plugin, identifier, factory);
+        registerExpansion(expansion);
+    }
+    
+    private void registerExpansion(PlaceholderExpansion expansion) {
         placeholderExpansions.put(expansion.getIdentifier(), expansion.getPluginName(), expansion);
-        
+
         changeListener.run();
     }
     
@@ -72,7 +80,7 @@ public class PlaceholderRegistry {
         changeListener.run();
     }
     
-    public @Nullable PlaceholderExpansion findBestMatch(PlaceholderOccurrence textOccurrence) {
+    public @Nullable PlaceholderExpansion find(PlaceholderOccurrence textOccurrence) {
         PluginName pluginName = textOccurrence.getPluginName();
         PlaceholderIdentifier identifier = textOccurrence.getIdentifier();
         
@@ -99,11 +107,6 @@ public class PlaceholderRegistry {
 
     public boolean isRegisteredIdentifier(Plugin plugin, String identifier) {
         return placeholderExpansions.contains(new PlaceholderIdentifier(identifier), new PluginName(plugin));
-    }
-
-    public @Nullable RelativePlaceholder findRelative(PlaceholderOccurrence textOccurrence) {
-        PlaceholderIdentifier identifier = textOccurrence.getIdentifier();
-        return relativePlaceholders.get(identifier);
     }
 
 }

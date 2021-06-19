@@ -30,7 +30,7 @@ public class DefaultPlaceholders {
         HolographicDisplays plugin = HolographicDisplays.getInstance();
         placeholderRegistry.unregisterAll(plugin);
         
-        placeholderRegistry.register(plugin, "rainbow", new AnimationPlaceholder(4, toStringList(
+        placeholderRegistry.registerGlobalPlaceholder(plugin, "rainbow", new AnimationPlaceholder(4, toStringList(
                 ChatColor.RED,
                 ChatColor.GOLD,
                 ChatColor.YELLOW,
@@ -39,17 +39,17 @@ public class DefaultPlaceholders {
                 ChatColor.LIGHT_PURPLE
         )));
 
-        placeholderRegistry.registerReplacer(plugin, "time", 10, (argument) -> {
+        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "time", 10, (argument) -> {
             return Configuration.timeFormat.format(Instant.now());
         });
 
-        placeholderRegistry.registerFactory(plugin, "animation", animationRegistry);
+        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "animation", animationRegistry);
 
-        placeholderRegistry.registerFactory(plugin, "world", new WorldPlayersPlaceholderFactory());
+        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "world", new WorldPlayersPlaceholderFactory());
 
-        placeholderRegistry.registerFactory(plugin, "online", new OnlinePlayersPlaceholderFactory(bungeeServerTracker));
+        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "online", new OnlinePlayersPlaceholderFactory(bungeeServerTracker));
 
-        placeholderRegistry.registerReplacer(plugin, "max_players", 20, (serverName) -> {
+        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "max_players", 20, (serverName) -> {
             if (serverName == null) {
                 // No argument specified, return max players of this server
                 return String.valueOf(Bukkit.getMaxPlayers());
@@ -62,7 +62,7 @@ public class DefaultPlaceholders {
             return String.valueOf(bungeeServerTracker.getCurrentServerInfo(serverName).getMaxPlayers());
         });
 
-        placeholderRegistry.registerReplacer(plugin, "status", 20, (serverName) -> {
+        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "status", 20, (serverName) -> {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
@@ -79,7 +79,7 @@ public class DefaultPlaceholders {
             }
         });
 
-        placeholderRegistry.registerReplacer(plugin, "motd", 20, (serverName) -> {
+        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "motd", 20, (serverName) -> {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
@@ -91,7 +91,7 @@ public class DefaultPlaceholders {
             return bungeeServerTracker.getCurrentServerInfo(serverName).getMotdLine1();
         });
 
-        placeholderRegistry.registerReplacer(plugin, "motd2", 20, (serverName) -> {
+        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "motd2", 20, (serverName) -> {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
@@ -101,6 +101,14 @@ public class DefaultPlaceholders {
             }
 
             return bungeeServerTracker.getCurrentServerInfo(serverName).getMotdLine2();
+        });
+
+        placeholderRegistry.registerIndividualPlaceholderReplacer(plugin, "player", Integer.MAX_VALUE, (player, argument) -> {
+            return player.getName();
+        });
+        
+        placeholderRegistry.registerIndividualPlaceholderReplacer(plugin, "displayName", 20, (player, argument) -> {
+            return player.getDisplayName();
         });
     }
 

@@ -22,11 +22,8 @@ import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
-import me.filoghost.holographicdisplays.placeholder.RelativePlaceholder;
-import me.filoghost.holographicdisplays.placeholder.PlaceholdersUpdateTask;
-import me.filoghost.holographicdisplays.placeholder.TrackedLine;
-import me.filoghost.holographicdisplays.placeholder.parsing.StringWithPlaceholders;
-import me.filoghost.holographicdisplays.placeholder.registry.PlaceholderRegistry;
+import me.filoghost.holographicdisplays.placeholder.tracking.PlaceholderLineTracker;
+import me.filoghost.holographicdisplays.placeholder.tracking.TrackedLine;
 import me.filoghost.holographicdisplays.util.NMSVersion;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -36,10 +33,14 @@ class PacketListener extends PacketAdapter {
     private final NMSManager nmsManager;
     private final MetadataHelper metadataHelper;
     private final ProtocolPacketSettings packetSettings;
-    PlaceholdersUpdateTask placeholdersUpdateTask;
-    PlaceholderRegistry placeholderRegistry;
+    private final PlaceholderLineTracker placeholderLineTracker;
 
-    PacketListener(Plugin plugin, NMSManager nmsManager, MetadataHelper metadataHelper, ProtocolPacketSettings packetSettings) {
+    PacketListener(
+            Plugin plugin,
+            NMSManager nmsManager,
+            MetadataHelper metadataHelper,
+            ProtocolPacketSettings packetSettings,
+            PlaceholderLineTracker placeholderLineTracker) {
         super(PacketAdapter.params()
                 .plugin(plugin)
                 .types(
@@ -54,6 +55,7 @@ class PacketListener extends PacketAdapter {
         this.nmsManager = nmsManager;
         this.metadataHelper = metadataHelper;
         this.packetSettings = packetSettings;
+        this.placeholderLineTracker = placeholderLineTracker;
     }
 
     public void registerListener() {
@@ -117,9 +119,9 @@ class PacketListener extends PacketAdapter {
                 return;
             }
             
-            String customNameWithRelativePlaceholders = replaceRelativePlaceholders(textLine, customName, player);
+            String customNameWithIndividualPlaceholders = replaceIndividualPlaceholders(textLine, customName, player);
             
-            if (customNameWithRelativePlaceholders.equals(customName)) {
+            if (customNameWithIndividualPlaceholders.equals(customName)) {
                 return; // No need to modify packets, custom name doesn't need changes
             }
 
@@ -133,36 +135,26 @@ class PacketListener extends PacketAdapter {
             } else {
                 WrapperPlayServerSpawnEntityLiving spawnEntityPacket = new WrapperPlayServerSpawnEntityLiving(packet.deepClone());
                 packetWrapper = spawnEntityPacket;
-                customNameWatchableObject = metadataHelper.getCustomNameWacthableObject(spawnEntityPacket.getMetadata());
+                customNameWatchableObject = metadataHelper.getCustomNameWatchableObject(spawnEntityPacket.getMetadata());
             }
             
             if (customNameWatchableObject == null) {
                 return;
             }
 
-            Object customNameNMSObject = nmsManager.createCustomNameNMSObject(customNameWithRelativePlaceholders);
+            Object customNameNMSObject = nmsManager.createCustomNameNMSObject(customNameWithIndividualPlaceholders);
             metadataHelper.setCustomNameNMSObject(customNameWatchableObject, customNameNMSObject);
             event.setPacket(packetWrapper.getHandle());
         }
     }
 
-    private String replaceRelativePlaceholders(StandardTextLine textLine, String text, Player player) {
-        TrackedLine trackedLine = placeholdersUpdateTask.getTrackedLine(textLine);
+    private String replaceIndividualPlaceholders(StandardTextLine textLine, String text, Player player) {
+        TrackedLine trackedLine = placeholderLineTracker.getTrackedLine(textLine);
         if (trackedLine == null) {
             return text;
         }
         
-        if (trackedLine.containsRelativePlaceholders()) {
-            StringWithPlaceholders textWithPlaceholders = new StringWithPlaceholders(text);
-            textWithPlaceholders.replacePlaceholders(placeholderOccurrence -> {
-                RelativePlaceholder relativePlaceholder = placeholderRegistry.findRelative(placeholderOccurrence);
-                if (relativePlaceholder != null) {
-                    return relativePlaceholder.getReplacement(player);
-                } else {
-                    return null;
-                }
-            });
-        }
+        text = trackedLine.replaceIndividualPlaceholders(player);
 
         if (PlaceholderAPIHook.isEnabled() && PlaceholderAPIHook.containsPlaceholders(text)) {
             text = PlaceholderAPIHook.replacePlaceholders(player, text);

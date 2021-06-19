@@ -84,7 +84,7 @@ class MetadataHelper {
     }
     
 
-    public WrappedWatchableObject getCustomNameWacthableObject(WrappedDataWatcher metadata) {
+    public WrappedWatchableObject getCustomNameWatchableObject(WrappedDataWatcher metadata) {
         return metadata.getWatchableObject(customNameIndex);
     }
     

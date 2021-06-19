@@ -12,6 +12,7 @@ import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
+import me.filoghost.holographicdisplays.placeholder.tracking.PlaceholderLineTracker;
 import me.filoghost.holographicdisplays.util.VersionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,7 +27,12 @@ public class ProtocolLibHook {
     private static boolean enabled;
     private static PacketSender packetSender;
 
-    public static void setup(Plugin plugin, NMSManager nmsManager, ProtocolPacketSettings packetSettings, ErrorCollector errorCollector) {
+    public static void setup(
+            Plugin plugin,
+            NMSManager nmsManager,
+            ProtocolPacketSettings packetSettings,
+            PlaceholderLineTracker placeholderLineTracker,
+            ErrorCollector errorCollector) {
         if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             return;
         }
@@ -42,21 +48,21 @@ public class ProtocolLibHook {
             String versionNumbers = versionNumbersMatcher.group();
 
             if (!VersionUtils.isVersionGreaterEqual(versionNumbers, "4.4")) {
-                errorCollector.add("detected old unsupported version of ProtocolLib, support disabled." 
+                errorCollector.add("detected old unsupported version of ProtocolLib, support disabled."
                         + " You must use ProtocolLib 4.4.0 or higher");
                 return;
             }
 
         } catch (Exception e) {
-            errorCollector.add(e, "could not detect ProtocolLib version (" + e.getMessage() + ")," 
+            errorCollector.add(e, "could not detect ProtocolLib version (" + e.getMessage() + "),"
                     + " enabling support anyway and hoping for the best");
         }
 
         try {
             MetadataHelper metadataHelper = new MetadataHelper();
-            new PacketListener(plugin, nmsManager, metadataHelper, packetSettings).registerListener();
+            new PacketListener(plugin, nmsManager, metadataHelper, packetSettings, placeholderLineTracker).registerListener();
             packetSender = new PacketSender(metadataHelper);
-            Log.info("Enabled player relative placeholders with ProtocolLib.");
+            Log.info("Enabled per-player placeholders with ProtocolLib.");
         } catch (Exception e) {
             errorCollector.add(e, "failed to load ProtocolLib support, is it updated?");
             return;

@@ -71,7 +71,11 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
         boolean alreadyRegistered = placeholderRegistry.isRegisteredIdentifier(plugin, textPlaceholder);
         
         if (!alreadyRegistered) {
-            placeholderRegistry.registerReplacer(plugin, textPlaceholder, refreshIntervalTicks, argument -> replacer.update());
+            placeholderRegistry.registerGlobalPlaceholderReplacer(
+                    plugin,
+                    textPlaceholder,
+                    refreshIntervalTicks,
+                    argument -> replacer.update());
             return true;
         } else {
             return false;

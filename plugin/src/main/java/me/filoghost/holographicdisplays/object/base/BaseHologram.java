@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.disk.Configuration;
-import me.filoghost.holographicdisplays.placeholder.PlaceholderManager;
+import me.filoghost.holographicdisplays.placeholder.tracking.PlaceholderLineTracker;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -23,14 +23,14 @@ import java.util.List;
 public abstract class BaseHologram<T extends StandardHologramLine> extends BaseHologramComponent implements StandardHologram {
     
     private final NMSManager nmsManager;
-    private final PlaceholderManager placeholderManager;
+    private final PlaceholderLineTracker placeholderLineTracker;
     private final List<T> lines;
     private final List<T> unmodifiableLinesView;
     
     private boolean deleted;
 
-    public BaseHologram(Location location, NMSManager nmsManager, PlaceholderManager placeholderManager) {
-        this.placeholderManager = placeholderManager;
+    public BaseHologram(Location location, NMSManager nmsManager, PlaceholderLineTracker placeholderLineTracker) {
+        this.placeholderLineTracker = placeholderLineTracker;
         Preconditions.notNull(location, "location");
         this.setLocation(location);
         this.nmsManager = nmsManager;
@@ -42,8 +42,8 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
         return nmsManager;
     }
 
-    protected final PlaceholderManager getPlaceholderManager() {
-        return placeholderManager;
+    protected final PlaceholderLineTracker getPlaceholderLineTracker() {
+        return placeholderLineTracker;
     }
 
     @Override

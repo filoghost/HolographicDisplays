@@ -5,18 +5,15 @@
  */
 package me.filoghost.holographicdisplays.placeholder.registry;
 
-import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 
-class SimplePlaceholder implements Placeholder {
+class SimpleGlobalPlaceholder implements Placeholder {
 
     private final int refreshIntervalTicks;
     private final PlaceholderReplacer placeholderReplacer;
 
-    SimplePlaceholder(int refreshIntervalTicks, PlaceholderReplacer placeholderReplacer) {
-        Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks cannot be negative");
-        Preconditions.notNull(placeholderReplacer, "placeholderReplacer");
+    SimpleGlobalPlaceholder(int refreshIntervalTicks, PlaceholderReplacer placeholderReplacer) {
         this.refreshIntervalTicks = refreshIntervalTicks;
         this.placeholderReplacer = placeholderReplacer;
     }

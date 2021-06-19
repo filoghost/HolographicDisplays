@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class StringWithPlaceholders {
@@ -22,14 +21,24 @@ public class StringWithPlaceholders {
 
     public StringWithPlaceholders(String string) {
         this.string = string;
-        this.stringParts = toStringParts(string);
+        this.stringParts = splitToParts(string);
+    }
+
+    private StringWithPlaceholders(String string, List<StringPart> stringParts) {
+        this.string = string;
+        this.stringParts = stringParts;
+    }
+    
+    @Override
+    public String toString() {
+        return string;
     }
 
     public boolean containsPlaceholders() {
         return stringParts != null;
     }
 
-    public boolean containsPlaceholdersMatching(Predicate<PlaceholderOccurrence> filter) {
+    public boolean anyMatch(Predicate<PlaceholderOccurrence> filter) {
         if (stringParts == null) {
             return false;
         }
@@ -37,7 +46,7 @@ public class StringWithPlaceholders {
         for (StringPart stringPart : stringParts) {
             if (stringPart instanceof PlaceholderStringPart) {
                 PlaceholderStringPart placeholderStringPart = (PlaceholderStringPart) stringPart;
-                if (filter.test(placeholderStringPart.content)) {
+                if (filter.test(placeholderStringPart.placeholderOccurrence)) {
                     return true;
                 }
             }
@@ -46,7 +55,51 @@ public class StringWithPlaceholders {
         return false;
     }
 
-    public String replacePlaceholders(Function<PlaceholderOccurrence, String> replaceFunction) {
+    public StringWithPlaceholders partiallyReplacePlaceholders(PlaceholderReplaceFunction replaceFunction) {
+        if (!containsPlaceholders()) {
+            return this;
+        }
+
+        StringBuilder output = new StringBuilder();
+        StringBuilder fullOutput = new StringBuilder();
+        List<StringPart> newStringParts = null; // Lazy initialization
+        
+        for (StringPart part : stringParts) {
+            if (part instanceof PlaceholderStringPart) {
+                PlaceholderStringPart placeholderStringPart = (PlaceholderStringPart) part;
+                String replacement = replaceFunction.getReplacement(placeholderStringPart.placeholderOccurrence);
+                if (replacement != null) {
+                    output.append(replacement);
+                    fullOutput.append(replacement);
+                } else {
+                    // Placeholder was not replaced, may be replaced later
+                    if (newStringParts == null) {
+                        newStringParts = new ArrayList<>();
+                    }
+                    // Append leading literal string, if present
+                    if (output.length() > 0) {
+                        newStringParts.add(new LiteralStringPart(output.toString()));
+                        output.setLength(0);
+                    }
+                    newStringParts.add(placeholderStringPart);
+                    output.append(placeholderStringPart.nonReplacedString);
+                    fullOutput.append(placeholderStringPart.nonReplacedString);
+                }
+            } else {
+                LiteralStringPart literalStringPart = (LiteralStringPart) part;
+                output.append(literalStringPart.literalString);
+                fullOutput.append(literalStringPart.literalString);
+            }
+        }
+        
+        if (output.length() > 0 && newStringParts != null) {
+            newStringParts.add(new LiteralStringPart(output.toString()));
+        }
+        
+        return new StringWithPlaceholders(fullOutput.toString(), newStringParts);
+    }
+
+    public String replacePlaceholders(PlaceholderReplaceFunction replaceFunction) {
         if (!containsPlaceholders()) {
             return string;
         }
@@ -59,7 +112,7 @@ public class StringWithPlaceholders {
         return output.toString();
     }
     
-    private @Nullable List<StringPart> toStringParts(String string) {
+    private @Nullable List<StringPart> splitToParts(String string) {
         int placeholderStartIndex = -1;
         int lastAppendIndex = 0;
         List<StringPart> stringParts = null; // Lazy initialization
@@ -116,7 +169,7 @@ public class StringWithPlaceholders {
     
     private interface StringPart {
         
-        String getValue(Function<PlaceholderOccurrence, String> placeholderReplaceFunction);
+        String getValue(PlaceholderReplaceFunction placeholderReplaceFunction);
         
     }
     
@@ -130,7 +183,7 @@ public class StringWithPlaceholders {
         }
 
         @Override
-        public String getValue(Function<PlaceholderOccurrence, String> placeholderReplaceFunction) {
+        public String getValue(PlaceholderReplaceFunction placeholderReplaceFunction) {
             return literalString;
         }
 
@@ -139,22 +192,22 @@ public class StringWithPlaceholders {
 
     private static class PlaceholderStringPart implements StringPart {
 
-        private final PlaceholderOccurrence content;
-        private final String unparsedString;
+        private final PlaceholderOccurrence placeholderOccurrence;
+        private final String nonReplacedString;
 
-        PlaceholderStringPart(PlaceholderOccurrence parsedContent, String unparsedString) {
-            this.content = parsedContent;
-            this.unparsedString = unparsedString;
+        PlaceholderStringPart(PlaceholderOccurrence placeholderOccurrence, String nonReplacedString) {
+            this.placeholderOccurrence = placeholderOccurrence;
+            this.nonReplacedString = nonReplacedString;
         }
 
         @Override
-        public String getValue(Function<PlaceholderOccurrence, String> placeholderReplaceFunction) {
-            String replacement = placeholderReplaceFunction.apply(content);
+        public String getValue(PlaceholderReplaceFunction placeholderReplaceFunction) {
+            String replacement = placeholderReplaceFunction.getReplacement(placeholderOccurrence);
             if (replacement != null) {
                 return replacement;
             } else {
                 // If no replacement is provided, leave the unparsed placeholder string
-                return unparsedString;
+                return nonReplacedString;
             }
         }
 
