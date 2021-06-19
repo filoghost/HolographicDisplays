@@ -68,7 +68,6 @@
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
         <module name="FallThrough"/>
-        <module name="IllegalThrows"/>
         <module name="IllegalToken"/>
         <module name="InnerAssignment"/>
         <module name="MissingSwitchDefault"/>
