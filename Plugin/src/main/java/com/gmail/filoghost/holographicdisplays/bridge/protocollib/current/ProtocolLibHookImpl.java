@@ -18,11 +18,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.comphenix.net.sf.cglib.proxy.Factory;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -81,7 +81,7 @@ public class ProtocolLibHookImpl implements ProtocolLibHook {
 					  
 				@Override
 				public void onPacketSending(PacketEvent event) {
-					if (event.isPlayerTemporary()) {
+					if (event.isPlayerTemporary() || !Bukkit.isPrimaryThread()) {
 						return;
 					}
 
