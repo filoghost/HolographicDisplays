@@ -6,9 +6,9 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
-import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
 import me.filoghost.holographicdisplays.plugin.disk.Configuration;
 import org.bukkit.Location;

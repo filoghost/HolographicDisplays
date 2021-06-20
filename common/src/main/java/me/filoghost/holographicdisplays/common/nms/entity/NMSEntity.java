@@ -3,9 +3,9 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.nms.entity;
+package me.filoghost.holographicdisplays.common.nms.entity;
 
-import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 import org.bukkit.entity.Player;
 
 /**

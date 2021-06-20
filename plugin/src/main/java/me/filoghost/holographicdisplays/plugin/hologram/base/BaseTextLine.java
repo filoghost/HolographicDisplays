@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
-import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
-import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.common.hologram.StandardTextLine;
+import me.filoghost.holographicdisplays.common.nms.SpawnFailedException;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;

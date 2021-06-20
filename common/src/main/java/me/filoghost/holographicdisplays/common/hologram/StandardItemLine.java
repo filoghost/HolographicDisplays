@@ -3,10 +3,10 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.hologram;
+package me.filoghost.holographicdisplays.common.hologram;
 
-import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSItem;
 import org.bukkit.entity.Player;
 
 public interface StandardItemLine extends StandardTouchableLine {

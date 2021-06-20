@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.hologram;
+package me.filoghost.holographicdisplays.common.hologram;
 
 import org.bukkit.Chunk;
 import org.bukkit.World;

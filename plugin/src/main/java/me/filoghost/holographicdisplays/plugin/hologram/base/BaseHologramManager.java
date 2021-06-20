@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
 import org.bukkit.Chunk;
 
 import java.util.ArrayList;

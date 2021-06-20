@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.placeholder.internal;
 
 import me.filoghost.fcommons.config.exception.ConfigSaveException;
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.holographicdisplays.core.DebugLogger;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.disk.TextFormatter;
 import me.filoghost.holographicdisplays.api.placeholder.Placeholder;

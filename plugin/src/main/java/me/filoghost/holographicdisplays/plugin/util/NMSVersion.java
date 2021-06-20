@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.plugin.util;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
+import me.filoghost.holographicdisplays.common.nms.NMSManager;
+import me.filoghost.holographicdisplays.common.nms.ProtocolPacketSettings;
 import org.bukkit.Bukkit;
 
 import java.util.regex.Matcher;

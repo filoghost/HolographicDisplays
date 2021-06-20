@@ -16,8 +16,8 @@ import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTra
 import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
 import me.filoghost.holographicdisplays.plugin.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.ProtocolPacketSettings;
+import me.filoghost.holographicdisplays.common.nms.NMSManager;
+import me.filoghost.holographicdisplays.common.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.disk.Configuration;
 import me.filoghost.holographicdisplays.plugin.disk.HologramDatabase;

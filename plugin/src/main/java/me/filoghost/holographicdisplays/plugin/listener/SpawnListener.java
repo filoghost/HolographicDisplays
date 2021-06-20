@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.listener;
 
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

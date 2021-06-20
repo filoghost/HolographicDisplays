@@ -28,7 +28,7 @@
     </distributionManagement>
 
     <modules>
-        <module>core</module>
+        <module>common</module>
         <module>api</module>
         <module>legacy-api</module>
         <module>nms</module>
@@ -73,7 +73,7 @@
     
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>holographicdisplays-core</artifactId>
+                <artifactId>holographicdisplays-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
     

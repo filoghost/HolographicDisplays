@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.Hologram;
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
+import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
 import me.filoghost.holographicdisplays.plugin.disk.Configuration;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramAdapter;

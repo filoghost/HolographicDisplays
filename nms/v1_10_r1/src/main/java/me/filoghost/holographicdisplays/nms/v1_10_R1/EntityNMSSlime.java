@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_10_R1;
 
-import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSSlime;
 import net.minecraft.server.v1_10_R1.AxisAlignedBB;
 import net.minecraft.server.v1_10_R1.DamageSource;
 import net.minecraft.server.v1_10_R1.Entity;

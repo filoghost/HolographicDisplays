@@ -14,15 +14,15 @@ import me.filoghost.holographicdisplays.plugin.bridge.protocollib.packet.Wrapper
 import me.filoghost.holographicdisplays.plugin.bridge.protocollib.packet.WrapperPlayServerSpawnEntity;
 import me.filoghost.holographicdisplays.plugin.bridge.protocollib.packet.WrapperPlayServerSpawnEntity.ObjectTypes;
 import me.filoghost.holographicdisplays.plugin.bridge.protocollib.packet.WrapperPlayServerSpawnEntityLiving;
-import me.filoghost.holographicdisplays.core.hologram.StandardHologram;
-import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
-import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
-import me.filoghost.holographicdisplays.core.hologram.StandardTouchableLine;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.common.hologram.StandardItemLine;
+import me.filoghost.holographicdisplays.common.hologram.StandardTextLine;
+import me.filoghost.holographicdisplays.common.hologram.StandardTouchableLine;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSEntity;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSItem;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSSlime;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion;
 import org.bukkit.entity.Player;
 

@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.internal;
 
-import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 
 public interface InternalHologramLine extends StandardHologramLine {
     

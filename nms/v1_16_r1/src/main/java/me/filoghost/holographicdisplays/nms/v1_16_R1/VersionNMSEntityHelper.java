@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_16_R1;
 
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntityHelper;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSEntityHelper;
 import net.minecraft.server.v1_16_R1.Entity;
 import net.minecraft.server.v1_16_R1.Packet;
 import net.minecraft.server.v1_16_R1.PlayerChunkMap.EntityTracker;

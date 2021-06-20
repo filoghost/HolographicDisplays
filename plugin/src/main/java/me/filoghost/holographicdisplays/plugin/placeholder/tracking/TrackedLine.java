@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.tracking;
 
-import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.common.hologram.StandardTextLine;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderReplaceFunction;
 import org.bukkit.entity.Player;

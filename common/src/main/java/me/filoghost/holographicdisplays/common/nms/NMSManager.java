@@ -3,14 +3,14 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.nms;
+package me.filoghost.holographicdisplays.common.nms;
 
-import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.common.hologram.StandardItemLine;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSEntity;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSItem;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSSlime;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;

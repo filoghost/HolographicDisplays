@@ -5,10 +5,10 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_10_R1;
 
-import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.core.hologram.StandardItemLine;
-import me.filoghost.holographicdisplays.core.nms.NMSCommons;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSItem;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.common.hologram.StandardItemLine;
+import me.filoghost.holographicdisplays.common.nms.NMSCommons;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSItem;
 import net.minecraft.server.v1_10_R1.Blocks;
 import net.minecraft.server.v1_10_R1.DamageSource;
 import net.minecraft.server.v1_10_R1.Entity;

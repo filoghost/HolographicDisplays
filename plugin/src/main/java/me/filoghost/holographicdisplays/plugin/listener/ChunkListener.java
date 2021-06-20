@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.listener;
 
-import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
+import me.filoghost.holographicdisplays.common.nms.NMSManager;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.util.SchedulerUtils;

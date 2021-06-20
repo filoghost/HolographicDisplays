@@ -3,11 +3,11 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core;
+package me.filoghost.holographicdisplays.common;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.core.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.common.nms.SpawnFailedException;
 
 public class DebugLogger {
     

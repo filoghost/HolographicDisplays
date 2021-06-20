@@ -7,11 +7,11 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
-import me.filoghost.holographicdisplays.core.DebugLogger;
-import me.filoghost.holographicdisplays.core.hologram.StandardTouchableLine;
-import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.core.nms.entity.NMSSlime;
+import me.filoghost.holographicdisplays.common.DebugLogger;
+import me.filoghost.holographicdisplays.common.hologram.StandardTouchableLine;
+import me.filoghost.holographicdisplays.common.nms.SpawnFailedException;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
+import me.filoghost.holographicdisplays.common.nms.entity.NMSSlime;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;

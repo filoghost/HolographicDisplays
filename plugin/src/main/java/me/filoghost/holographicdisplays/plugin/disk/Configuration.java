@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.disk;
 
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.holographicdisplays.core.DebugLogger;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import org.bukkit.ChatColor;
 
 import java.time.DateTimeException;

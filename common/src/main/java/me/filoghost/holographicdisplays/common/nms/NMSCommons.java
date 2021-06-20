@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.core.nms;
+package me.filoghost.holographicdisplays.common.nms;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
