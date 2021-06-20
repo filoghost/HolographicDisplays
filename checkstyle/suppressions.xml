@@ -5,11 +5,11 @@
 
 <suppressions>
     <suppress
-            checks="Header|EqualsHashCode"
-            files="[\\/]me[\\/]filoghost[\\/]holographicdisplays[\\/]nbt[\\/].+\.java"/>
-    <suppress
             checks="Header"
-            files="[\\/]me[\\/]filoghost[\\/]holographicdisplays[\\/]bridge[\\/]protocollib[\\/].+\.java"/>
+            files="[\\/]me[\\/]filoghost[\\/]holographicdisplays[\\/]plugin[\\/]lib[\\/].+\.java"/>
+    <suppress
+            checks="EqualsHashCode"
+            files="[\\/]me[\\/]filoghost[\\/]holographicdisplays[\\/]plugin[\\/]lib[\\/]nbt[\\/].+\.java"/>
     <suppress
             checks="LeftCurly|EmptyLineSeparator"
             files="[\\/]me[\\/]filoghost[\\/]holographicdisplays[\\/]nms[\\/]\w+[\\/]Craft.+\.java"/>
