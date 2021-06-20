@@ -32,9 +32,9 @@ import java.util.Map;
 public class VersionNMSManager implements NMSManager {
     
     private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD 
-            = ReflectField.lookup(new ClassToken<Map<Class<?>, String>>(){}, EntityTypes.class, "d");
+            = ReflectField.lookup(new ClassToken<Map<Class<?>, String>>() {}, EntityTypes.class, "d");
     private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD 
-            = ReflectField.lookup(new ClassToken<Map<Class<?>, Integer>>(){}, EntityTypes.class, "f");
+            = ReflectField.lookup(new ClassToken<Map<Class<?>, Integer>>() {}, EntityTypes.class, "f");
 
     private static final ReflectMethod<?> REGISTER_ENTITY_METHOD = ReflectMethod.lookup(Object.class, World.class, "b", Entity.class);
 

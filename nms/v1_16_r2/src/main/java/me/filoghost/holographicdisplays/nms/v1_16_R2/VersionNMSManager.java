@@ -35,7 +35,7 @@ import java.util.Map;
 public class VersionNMSManager implements NMSManager {
     
     private static final ReflectField<Map<EntityTypes<?>, Integer>> REGISTRY_TO_ID_FIELD
-            = ReflectField.lookup(new ClassToken<Map<EntityTypes<?>, Integer>>(){}, RegistryMaterials.class, "bg");
+            = ReflectField.lookup(new ClassToken<Map<EntityTypes<?>, Integer>>() {}, RegistryMaterials.class, "bg");
     private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD
             = ReflectMethod.lookup(void.class, WorldServer.class, "registerEntity", Entity.class);
 

@@ -8,7 +8,9 @@ package me.filoghost.holographicdisplays.plugin.image;
 import me.filoghost.holographicdisplays.plugin.disk.Configuration;
 import org.bukkit.ChatColor;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;

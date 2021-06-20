@@ -37,36 +37,37 @@ public class WrapperPlayServerMount extends AbstractPacket {
     
     /**
      * Retrieve the entity ID being attached.
-    */
+     */
     public int getVehicleId() {
         return handle.getIntegers().read(0);
     }
     
     /**
      * Set the entity ID being attached.
-    */
+     */
     public void setVehicleId(int value) {
         handle.getIntegers().write(0, value);
     }
 
     /**
      * Retrieve the IDs of the passenger entities.
-    */
+     */
     public List<Integer> getPassengers() {
         return Ints.asList(handle.getIntegerArrays().read(0));
     }
     
     /**
      * Set the passenger entities.
-    */
+     */
     public void setPassengers(int[] entities) {
         handle.getIntegerArrays().write(0, entities);
     }
     
     /**
      * Set the passenger entities.
-    */
+     */
     public void setPassengers(List<Integer> entities) {
         setPassengers(Ints.toArray(entities));
     }
+    
 }

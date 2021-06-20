@@ -27,6 +27,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
 public class WrapperPlayServerSpawnEntity extends AbstractPacket {
+    
     public static final PacketType TYPE = PacketType.Play.Server.SPAWN_ENTITY;
         
     private static PacketConstructor entityConstructor;
@@ -37,6 +38,7 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
      * @author Kristian
      */
     public static class ObjectTypes extends IntEnum {
+        
         public static final int BOAT = 1;
         public static final int ITEM_STACK = 2;
         public static final int MINECART = 10;
@@ -72,6 +74,7 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
         public static ObjectTypes getInstance() {
             return INSTANCE;
         }
+        
     }
     
     public WrapperPlayServerSpawnEntity() {
@@ -106,7 +109,7 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     
     /**
      * Retrieve entity ID of the Object.
-    */
+     */
     public int getEntityID() {
         return handle.getIntegers().read(0);
     }
@@ -127,21 +130,21 @@ public class WrapperPlayServerSpawnEntity extends AbstractPacket {
     
     /**
      * Set entity ID of the Object.
-    */
+     */
     public void setEntityID(int value) {
         handle.getIntegers().write(0, value);
     }
     
     /**
      * Retrieve the type of object. See {@link ObjectTypes}
-    */
+     */
     public int getType() {
         return handle.getIntegers().read(6);
     }
     
     /**
      * Set the type of object. See {@link ObjectTypes}.
-    */
+     */
     public void setType(int value) {
         handle.getIntegers().write(6, value);
     }

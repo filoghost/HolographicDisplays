@@ -302,7 +302,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Returns whether this compound tag contains the given key and its value is of a given type.
      *
-     * @param key  the given key
+     * @param key the given key
      * @param type the type of the value
      * @return true if the tag contains an entry with given key and of given type
      */
@@ -317,7 +317,7 @@ public final class NBTCompound extends NBTTag {
      * Put the given name and its corresponding tag into the compound tag.
      *
      * @param name the tag name
-     * @param tag  the tag value
+     * @param tag the tag value
      */
     public void put(String name, NBTTag tag) {
         this.value.put(name, tag);
@@ -326,7 +326,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Put the given key and value into the compound tag.
      *
-     * @param key   they key
+     * @param key they key
      * @param value the value
      */
     public void putByteArray(String key, byte[] value) {
@@ -336,7 +336,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Put the given key and value into the compound tag.
      *
-     * @param key   they key
+     * @param key they key
      * @param value the value
      */
     public void putByte(String key, byte value) {
@@ -346,7 +346,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Put the given key and value into the compound tag.
      *
-     * @param key   they key
+     * @param key they key
      * @param value the value
      */
     public void putDouble(String key, double value) {
@@ -356,7 +356,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Put the given key and value into the compound tag.
      *
-     * @param key   they key
+     * @param key they key
      * @param value the value
      */
     public void putFloat(String key, float value) {
@@ -366,7 +366,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Put the given key and value into the compound tag.
      *
-     * @param key   they key
+     * @param key they key
      * @param value the value
      */
     public void putIntArray(String key, int[] value) {
@@ -376,7 +376,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Put the given key and value into the compound tag.
      *
-     * @param key   they key
+     * @param key they key
      * @param value the value
      */
     public void putLongArray(String key, long[] value) {
@@ -386,7 +386,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Put the given key and value into the compound tag.
      *
-     * @param key   they key
+     * @param key they key
      * @param value the value
      */
     public void putInt(String key, int value) {
@@ -396,7 +396,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Put the given key and value into the compound tag.
      *
-     * @param key   they key
+     * @param key they key
      * @param value the value
      */
     public void putLong(String key, long value) {
@@ -406,7 +406,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Put the given key and value into the compound tag.
      *
-     * @param key   they key
+     * @param key they key
      * @param value the value
      */
     public void putShort(String key, short value) {
@@ -416,7 +416,7 @@ public final class NBTCompound extends NBTTag {
     /**
      * Put the given key and value into the compound tag.
      *
-     * @param key   they key
+     * @param key they key
      * @param value the value
      */
     public void putString(String key, String value) {

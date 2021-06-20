@@ -64,4 +64,5 @@ public class PowerUps extends JavaPlugin implements Listener {
             });
         }
     }
+    
 }

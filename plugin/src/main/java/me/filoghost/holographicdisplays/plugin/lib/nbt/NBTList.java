@@ -24,7 +24,7 @@ public final class NBTList extends NBTTag implements Iterable<NBTTag>, Cloneable
     /**
      * Creates the list with a type and a series of elements.
      *
-     * @param type  the type of tag
+     * @param type the type of tag
      * @param value the value of the tag
      */
     public NBTList(NBTType type, List<? extends NBTTag> value) {
@@ -37,7 +37,7 @@ public final class NBTList extends NBTTag implements Iterable<NBTTag>, Cloneable
     /**
      * Creates the list with a type and a series of elements.
      *
-     * @param type  the type of tag
+     * @param type the type of tag
      * @param value the value of the tag
      */
     public NBTList(NBTType type, NBTTag... value) {

@@ -34,7 +34,7 @@ import org.bukkit.inventory.ItemStack;
 public class VersionNMSManager implements NMSManager {
     
     private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD
-            = ReflectField.lookup(new ClassToken<RegistryID<EntityTypes<?>>>(){}, RegistryMaterials.class, "b");
+            = ReflectField.lookup(new ClassToken<RegistryID<EntityTypes<?>>>() {}, RegistryMaterials.class, "b");
     private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD
             = ReflectField.lookup(Object[].class, RegistryID.class, "d");
     private static final ReflectMethod<Void> REGISTER_ENTITY_METHOD

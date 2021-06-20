@@ -71,4 +71,5 @@ public interface FloatingItem {
 
     @Deprecated
     boolean isDeleted();
+    
 }

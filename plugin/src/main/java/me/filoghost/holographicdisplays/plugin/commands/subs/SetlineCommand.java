@@ -26,7 +26,8 @@ public class SetlineCommand extends LineEditingCommand implements QuickEditComma
     private final InternalHologramManager internalHologramManager;
     private final ConfigManager configManager;
 
-    public SetlineCommand(HologramCommandManager commandManager,
+    public SetlineCommand(
+            HologramCommandManager commandManager,
             InternalHologramManager internalHologramManager,
             ConfigManager configManager) {
         super("setline");

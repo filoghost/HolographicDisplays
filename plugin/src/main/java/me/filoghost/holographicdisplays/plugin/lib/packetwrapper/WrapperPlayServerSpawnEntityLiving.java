@@ -27,6 +27,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
+    
     public static final PacketType TYPE = PacketType.Play.Server.SPAWN_ENTITY_LIVING;
     
     private static PacketConstructor entityConstructor;
@@ -54,7 +55,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
     
     /**
      * Retrieve entity ID.
-    */
+     */
     public int getEntityID() {
         return handle.getIntegers().read(0);
     }
@@ -75,14 +76,14 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
     
     /**
      * Set entity ID.
-    */
+     */
     public void setEntityID(int value) {
         handle.getIntegers().write(0, value);
     }
     
     /**
      * Retrieve the type of mob.
-    */
+     */
     @SuppressWarnings("deprecation")
     public EntityType getType() {
         return EntityType.fromId(handle.getIntegers().read(1));
@@ -90,7 +91,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
     
     /**
      * Set the type of mob.
-    */
+     */
     @SuppressWarnings("deprecation")
     public void setType(EntityType value) {
         handle.getIntegers().write(1, (int) value.getTypeId());
@@ -100,15 +101,16 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
      * Retrieve the data watcher.
      * <p>
      * Content varies by mob, see Entities.
-    */
+     */
     public WrappedDataWatcher getMetadata() {
         return handle.getDataWatcherModifier().read(0);
     }
     
     /**
      * Set the data watcher.
-    */
+     */
     public void setMetadata(WrappedDataWatcher value) {
         handle.getDataWatcherModifier().write(0, value);
     }
+    
 }

@@ -11,21 +11,21 @@ comment: >-
 
 issueConfigs:
 
-# Bug
-- content:
-  - "# Description"
-  - "# How to reproduce"
-  - "# Platform"
+  # Bug
+  - content:
+    - "# Description"
+    - "# How to reproduce"
+    - "# Platform"
 
-# Feature / Documentation
-- content:
-  - "# Description"
+  # Feature / Documentation
+  - content:
+    - "# Description"
 
-# Help
-- content:
-  - "# What are you trying to do"
-  - "# What have you tried so far"
-  - "# Platform"
+  # Help
+  - content:
+    - "# What are you trying to do"
+    - "# What have you tried so far"
+    - "# Platform"
 
 caseInsensitive: true
 label: "Closed by bot"
