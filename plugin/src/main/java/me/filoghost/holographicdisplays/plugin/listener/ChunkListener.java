@@ -7,9 +7,10 @@ package me.filoghost.holographicdisplays.plugin.listener;
 
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.entity.NMSEntity;
+import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
-import me.filoghost.holographicdisplays.plugin.util.SchedulerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -53,10 +54,16 @@ public class ChunkListener implements Listener {
         }
 
         // In case another plugin loads the chunk asynchronously, always make sure to load the holograms on the main thread
-        SchedulerUtils.runOnMainThread(() -> {
-            internalHologramManager.onChunkLoad(chunk);
-            apiHologramManager.onChunkLoad(chunk);
-        });
+        if (Bukkit.isPrimaryThread()) {
+            onChunkLoad(chunk);
+        } else {
+            Bukkit.getScheduler().runTask(HolographicDisplays.getInstance(), () -> onChunkLoad(chunk));
+        }
+    }
+
+    private void onChunkLoad(Chunk chunk) {
+        internalHologramManager.onChunkLoad(chunk);
+        apiHologramManager.onChunkLoad(chunk);
     }
 
 }

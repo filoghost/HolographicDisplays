@@ -5,6 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.util;
 
+import me.filoghost.fcommons.Strings;
+
 public class VersionUtils {
 
     public static boolean isVersionGreaterEqual(String reference, String thanWhat) {
@@ -15,8 +17,8 @@ public class VersionUtils {
      * Returns 1 if version1 > version2, 0 if version1 == version2, -1 if version1 < version2.
      */
     private static int compare(String version1, String version2) throws NumberFormatException {
-        String[] version1Split = version1.split("\\.");
-        String[] version2Split = version2.split("\\.");
+        String[] version1Split = Strings.split(version1, ".");
+        String[] version2Split = Strings.split(version2, ".");
         
         int longest = Math.max(version1Split.length, version2Split.length);
         
