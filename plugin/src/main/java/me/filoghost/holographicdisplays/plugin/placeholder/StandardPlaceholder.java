@@ -12,8 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class StandardPlaceholder {
 
-    private final @NotNull
-    PlaceholderExpansion source;
+    private final @NotNull PlaceholderExpansion source;
 
     protected StandardPlaceholder(@NotNull PlaceholderExpansion source) {
         this.source = source;
