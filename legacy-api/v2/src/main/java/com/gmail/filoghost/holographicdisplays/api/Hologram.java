@@ -23,7 +23,7 @@ public interface Hologram {
 
     @Deprecated
     ItemLine appendItemLine(ItemStack itemStack);
-    
+
     @Deprecated
     TextLine insertTextLine(int index, String text);
 
@@ -32,7 +32,7 @@ public interface Hologram {
 
     @Deprecated
     HologramLine getLine(int index);
-    
+
     @Deprecated
     void removeLine(int index);
 
@@ -47,13 +47,13 @@ public interface Hologram {
 
     @Deprecated
     void teleport(Location location);
-    
+
     @Deprecated
     void teleport(World world, double x, double y, double z);
-    
+
     @Deprecated
     Location getLocation();
-    
+
     @Deprecated
     double getX();
 
@@ -62,7 +62,7 @@ public interface Hologram {
 
     @Deprecated
     double getZ();
-    
+
     @Deprecated
     World getWorld();
 
@@ -77,11 +77,11 @@ public interface Hologram {
 
     @Deprecated
     void setAllowPlaceholders(boolean allowPlaceholders);
-    
+
     @Deprecated
     void delete();
-    
+
     @Deprecated
     boolean isDeleted();
-    
+
 }

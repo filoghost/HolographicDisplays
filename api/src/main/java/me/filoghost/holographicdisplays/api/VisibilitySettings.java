@@ -36,7 +36,7 @@ public interface VisibilitySettings {
      * @since 1
      */
     void setDefaultVisibility(@NotNull Visibility defaultVisibility);
-    
+
     /**
      * Sets the visibility for a specific player, overriding the default value ({@link #getDefaultVisibility()}).
      * The individual visibility value can be reverted with {@link #resetIndividualVisibility(Player)}.
@@ -58,7 +58,7 @@ public interface VisibilitySettings {
      * @since 1
      */
     void resetIndividualVisibilityAll();
-    
+
     /**
      * Checks if a hologram is visible to a player, taking into account the individual visibility for the specific
      * player and the default visibility.
@@ -74,10 +74,10 @@ public interface VisibilitySettings {
      * The available statuses for the visibility of a hologram.
      */
     enum Visibility {
-        
+
         VISIBLE,
         HIDDEN
-        
+
     }
-    
+
 }

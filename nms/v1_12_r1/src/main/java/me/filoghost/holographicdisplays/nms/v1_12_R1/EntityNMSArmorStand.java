@@ -40,13 +40,13 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     private final ProtocolPacketSettings protocolPacketSettings;
     private final VersionNMSEntityHelper helper;
     private String customName;
-    
+
     public EntityNMSArmorStand(World world, StandardHologramLine parentHologramLine, ProtocolPacketSettings protocolPacketSettings) {
         super(world);
         this.parentHologramLine = parentHologramLine;
         this.protocolPacketSettings = protocolPacketSettings;
         this.helper = new VersionNMSEntityHelper(this);
-        
+
         super.setInvisible(true);
         super.setSmall(true);
         super.setArms(false);
@@ -57,32 +57,32 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         super.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet
         forceSetBoundingBox(new NullBoundingBox());
     }
-    
+
     @Override
     public void B_() {
         // Disable normal ticking for this entity
-        
+
         // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity
         if (super.onGround) {
             super.onGround = false;
         }
     }
-    
+
     @Override
     public void inactiveTick() {
         // Disable normal ticking for this entity
-        
+
         // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity
         if (super.onGround) {
             super.onGround = false;
         }
     }
-    
+
     @Override
     public void b(NBTTagCompound nbttagcompound) {
         // Do not save NBT
     }
-    
+
     @Override
     public boolean c(NBTTagCompound nbttagcompound) {
         // Do not save NBT
@@ -94,23 +94,23 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         // Do not save NBT
         return false;
     }
-    
+
     @Override
     public NBTTagCompound save(NBTTagCompound nbttagcompound) {
         // Do not save NBT
         return nbttagcompound;
     }
-    
+
     @Override
     public void f(NBTTagCompound nbttagcompound) {
         // Do not load NBT
     }
-    
+
     @Override
     public void a(NBTTagCompound nbttagcompound) {
         // Do not load NBT
     }
-    
+
     @Override
     public boolean isInvulnerable(DamageSource source) {
         /*
@@ -120,17 +120,17 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
          */
         return true;
     }
-    
+
     @Override
     public boolean isCollidable() {
         return false;
     }
-    
+
     @Override
     public void setCustomName(String customName) {
         // Prevents changes to custom name
     }
-    
+
     @Override
     public void setCustomNameVisible(boolean visible) {
         // Prevents changes to custom name visibility
@@ -152,21 +152,21 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public void setSlot(EnumItemSlot enumitemslot, ItemStack itemstack) {
         // Prevent armor stand from being equipped
     }
-    
+
     @Override
     public void a(AxisAlignedBB boundingBox) {
         // Prevent changes to bounding box
     }
-    
+
     public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
         super.a(boundingBox);
     }
-    
+
     @Override
     public void a(SoundEffect soundeffect, float f, float f1) {
         // Remove sounds
     }
-    
+
     @Override
     public void setCustomNameNMS(String customName) {
         if (Objects.equals(this.customName, customName)) {
@@ -180,22 +180,22 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     protected static String createCustomNameNMSObject(String customName) {
         return customName != null ? Strings.truncate(customName, 256) : "";
     }
-    
+
     @Override
     public String getCustomNameStringNMS() {
         return this.customName;
     }
-    
+
     @Override
     public String getCustomNameObjectNMS() {
         return super.getCustomName();
     }
-    
+
     @Override
     public void die() {
         // Prevent entity from dying
     }
-    
+
     @Override
     public CraftEntity getBukkitEntity() {
         if (super.bukkitEntity == null) {
@@ -203,12 +203,12 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         }
         return super.bukkitEntity;
     }
-    
+
     @Override
     public void killEntityNMS() {
         super.dead = true;
     }
-    
+
     @Override
     public void setLocationNMS(double x, double y, double z) {
         super.setPosition(x, y, z);
@@ -236,7 +236,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public boolean isDeadNMS() {
         return super.dead;
     }
-    
+
     @Override
     public int getIdNMS() {
         return super.getId();
@@ -246,7 +246,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public StandardHologramLine getHologramLine() {
         return parentHologramLine;
     }
-    
+
     @Override
     public org.bukkit.entity.Entity getBukkitEntityNMS() {
         return getBukkitEntity();
@@ -256,5 +256,5 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public boolean isTrackedBy(Player bukkitPlayer) {
         return helper.isTrackedBy(bukkitPlayer);
     }
-    
+
 }

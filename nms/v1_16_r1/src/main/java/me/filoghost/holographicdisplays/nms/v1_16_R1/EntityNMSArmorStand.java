@@ -50,7 +50,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         this.parentHologramLine = parentHologramLine;
         this.protocolPacketSettings = protocolPacketSettings;
         this.helper = new VersionNMSEntityHelper(this);
-        
+
         super.setInvisible(true);
         super.setSmall(true);
         super.setArms(false);
@@ -61,21 +61,21 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
         super.onGround = true; // Workaround to force EntityTrackerEntry to send a teleport packet
         forceSetBoundingBox(new NullBoundingBox());
     }
-    
+
     @Override
     public void tick() {
         // Disable normal ticking for this entity
-        
+
         // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity
         if (super.onGround) {
             super.onGround = false;
         }
     }
-    
+
     @Override
     public void inactiveTick() {
         // Disable normal ticking for this entity
-        
+
         // Workaround to force EntityTrackerEntry to send a teleport packet immediately after spawning this entity
         if (super.onGround) {
             super.onGround = false;
@@ -165,7 +165,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
         super.a(boundingBox);
     }
-    
+
     @Override
     public void playSound(SoundEffect soundeffect, float f, float f1) {
         // Remove sounds
@@ -189,7 +189,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public String getCustomNameStringNMS() {
         return this.customName;
     }
-    
+
     @Override
     public IChatBaseComponent getCustomNameObjectNMS() {
         return super.getCustomName();
@@ -260,5 +260,5 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     public boolean isTrackedBy(Player bukkitPlayer) {
         return helper.isTrackedBy(bukkitPlayer);
     }
-    
+
 }

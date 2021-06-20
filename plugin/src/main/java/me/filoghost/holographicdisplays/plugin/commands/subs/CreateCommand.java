@@ -46,9 +46,9 @@ public class CreateCommand extends HologramSubCommand {
         Player player = CommandValidate.getPlayerSender(sender);
         String hologramName = args[0];
 
-        CommandValidate.check(hologramName.matches("[a-zA-Z0-9_\\-]+"), 
+        CommandValidate.check(hologramName.matches("[a-zA-Z0-9_\\-]+"),
                 "The name must contain only alphanumeric chars, underscores and hyphens.");
-        CommandValidate.check(!internalHologramManager.isExistingHologram(hologramName), 
+        CommandValidate.check(!internalHologramManager.isExistingHologram(hologramName),
                 "A hologram with that name already exists.");
 
         Location spawnLoc = player.getLocation();
@@ -57,25 +57,25 @@ public class CreateCommand extends HologramSubCommand {
         if (moveUp) {
             spawnLoc.add(0.0, 1.2, 0.0);
         }
-        
+
         InternalHologram hologram = internalHologramManager.createHologram(spawnLoc, hologramName);
         InternalHologramLine line;
 
         if (args.length > 1) {
             String text = Strings.joinFrom(" ", args, 1);
             CommandValidate.check(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
-            
+
             line = HologramCommandValidate.parseHologramLine(hologram, text);
-            player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + context.getRootLabel() 
+            player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + context.getRootLabel()
                     + " edit " + hologram.getName() + ")");
         } else {
-            String defaultText = "Default hologram. Change it with " 
+            String defaultText = "Default hologram. Change it with "
                     + Colors.PRIMARY + "/" + context.getRootLabel() + " edit " + hologram.getName();
             line = hologram.createTextLine(defaultText, defaultText.replace(ChatColor.COLOR_CHAR, '&'));
         }
-        
+
         hologram.addLine(line);
-        
+
         configManager.saveHologramDatabase(internalHologramManager);
         Location look = player.getLocation();
         look.setPitch(90);
@@ -83,11 +83,11 @@ public class CreateCommand extends HologramSubCommand {
         player.sendMessage(Colors.PRIMARY + "You created a hologram named '" + hologram.getName() + "'.");
 
         if (moveUp) {
-            player.sendMessage(Colors.SECONDARY_SHADOW + "(You were on the ground," 
-                    + " the hologram was automatically moved up." 
-                    + " If you use /" + context.getRootLabel() + " movehere " + hologram.getName() + "," 
+            player.sendMessage(Colors.SECONDARY_SHADOW + "(You were on the ground,"
+                    + " the hologram was automatically moved up."
+                    + " If you use /" + context.getRootLabel() + " movehere " + hologram.getName() + ","
                     + " the hologram will be moved to your feet)");
         }
     }
-    
+
 }

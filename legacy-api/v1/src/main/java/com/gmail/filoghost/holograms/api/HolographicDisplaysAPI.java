@@ -24,7 +24,7 @@ import java.util.Set;
 public class HolographicDisplaysAPI {
 
     private static final Set<String> notifiedPlugins = new HashSet<>();
-    
+
     @Deprecated
     public static Hologram createHologram(Plugin plugin, Location source, String... lines) {
         throw removedAPIException(plugin);
@@ -39,22 +39,22 @@ public class HolographicDisplaysAPI {
     public static Hologram createIndividualHologram(Plugin plugin, Location source, Player whoCanSee, String... lines) {
         throw removedAPIException(plugin);
     }
-    
+
     @Deprecated
     public static Hologram createIndividualHologram(Plugin plugin, Location source, List<Player> whoCanSee, String... lines) {
         throw removedAPIException(plugin);
     }
-    
+
     @Deprecated
     public static FloatingItem createIndividualFloatingItem(Plugin plugin, Location source, Player whoCanSee, ItemStack itemstack) {
         throw removedAPIException(plugin);
     }
-    
+
     @Deprecated
     public static FloatingItem createIndividualFloatingItem(Plugin plugin, Location source, List<Player> whoCanSee, ItemStack itemstack) {
         throw removedAPIException(plugin);
     }
-    
+
     @Deprecated
     public static Hologram[] getHolograms(Plugin plugin) {
         throw removedAPIException(plugin);
@@ -64,7 +64,7 @@ public class HolographicDisplaysAPI {
     public static FloatingItem[] getFloatingItems(Plugin plugin) {
         throw removedAPIException(plugin);
     }
-    
+
     private static RuntimeException removedAPIException(Plugin plugin) {
         if (plugin != null && notifiedPlugins.add(plugin.getName())) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Holographic Displays] The plugin \""

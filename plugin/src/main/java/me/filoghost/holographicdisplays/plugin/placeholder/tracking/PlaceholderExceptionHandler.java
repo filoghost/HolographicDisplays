@@ -22,16 +22,16 @@ class PlaceholderExceptionHandler {
         this.tickClock = tickClock;
         this.lastErrorLogByPlaceholderExpansion = new WeakHashMap<>();
     }
-    
+
     void handle(PlaceholderException exception) {
         PlaceholderExpansion placeholderExpansion = exception.getPlaceholderExpansion();
         Long lastErrorLog = lastErrorLogByPlaceholderExpansion.get(placeholderExpansion);
         long currentTick = tickClock.getCurrentTick();
-        
+
         if (lastErrorLog != null && currentTick - lastErrorLog < 20) {
             return; // Avoid spamming the console too frequently
         }
-        
+
         lastErrorLogByPlaceholderExpansion.put(placeholderExpansion, currentTick);
 
         Log.warning("The placeholder \"" + placeholderExpansion.getIdentifier() + "\""

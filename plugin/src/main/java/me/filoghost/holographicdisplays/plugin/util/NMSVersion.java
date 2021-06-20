@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * The NMS version is the name of the main package under net.minecraft.server, for example "v1_13_R2".
  */
 public enum NMSVersion {
-    
+
     // Not using shorter method reference syntax here because it initializes the class, causing a ClassNotFoundException
     v1_8_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_8_R2.VersionNMSManager(packetSettings)),
     v1_8_R3(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_8_R3.VersionNMSManager(packetSettings)),
@@ -33,9 +33,9 @@ public enum NMSVersion {
     v1_16_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager(packetSettings)),
     v1_16_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager(packetSettings)),
     v1_16_R3(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager(packetSettings));
-    
+
     private static final NMSVersion CURRENT_VERSION = extractCurrentVersion();
-    
+
     private final NMSManagerConstructor nmsManagerConstructor;
 
     NMSVersion(NMSManagerConstructor nmsManagerConstructor) {
@@ -59,7 +59,7 @@ public enum NMSVersion {
             return null; // Unknown version
         }
     }
-    
+
     public static boolean isValid() {
         return CURRENT_VERSION != null;
     }
@@ -77,7 +77,7 @@ public enum NMSVersion {
     private interface NMSManagerConstructor {
 
         NMSManager create(ProtocolPacketSettings protocolPacketSettings);
-        
+
     }
-    
+
 }

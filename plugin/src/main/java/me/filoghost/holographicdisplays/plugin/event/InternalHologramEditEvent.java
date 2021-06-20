@@ -10,11 +10,11 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class InternalHologramEditEvent extends Event {
-    
+
     private static final HandlerList handlers = new HandlerList();
-    
+
     private final InternalHologram hologram;
-    
+
     public InternalHologramEditEvent(InternalHologram hologram) {
         this.hologram = hologram;
     }
@@ -27,9 +27,9 @@ public class InternalHologramEditEvent extends Event {
     public HandlerList getHandlers() {
         return handlers;
     }
-    
+
     public static HandlerList getHandlerList() {
         return handlers;
     }
-    
+
 }

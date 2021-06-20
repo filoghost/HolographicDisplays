@@ -48,7 +48,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacketSettings {
-    
+
     private static HolographicDisplays instance;
 
     private ConfigManager configManager;
@@ -63,11 +63,11 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         // Warn about plugin reloaders and the /reload command
         if (instance != null || System.getProperty("HolographicDisplaysLoaded") != null) {
             Bukkit.getConsoleSender().sendMessage(
-                    ChatColor.RED + "[HolographicDisplays] Please do not use /reload or plugin reloaders." 
-                            + " Use the command \"/holograms reload\" instead." 
+                    ChatColor.RED + "[HolographicDisplays] Please do not use /reload or plugin reloaders."
+                            + " Use the command \"/holograms reload\" instead."
                             + " You will receive no support for doing this operation.");
         }
-        
+
         System.setProperty("HolographicDisplaysLoaded", "true");
         instance = this;
 
@@ -89,7 +89,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
                     "Holographic Displays was unable to register the command \"holograms\".",
                     "This can be caused by edits to plugin.yml or other plugins.");
         }
-        
+
         NMSManager nmsManager;
         try {
             nmsManager = NMSVersion.createNMSManager(this);
@@ -97,7 +97,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         } catch (Exception e) {
             throw new PluginEnableException(e, "Couldn't initialize the NMS manager.");
         }
-        
+
         configManager = new ConfigManager(getDataFolder().toPath());
         bungeeServerTracker = new BungeeServerTracker(this);
         animationRegistry = new AnimationRegistry();
@@ -124,16 +124,16 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
 
         TickingTask tickingTask = new TickingTask(tickClock, placeholderLineTracker);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, tickingTask, 0, 1);
-        
+
         HologramCommandManager commandManager = new HologramCommandManager(configManager, internalHologramManager, nmsManager);
         commandManager.register(this);
-        
+
         registerListener(new InteractListener(nmsManager));
         registerListener(new SpawnListener(nmsManager));
         registerListener(new ChunkListener(nmsManager, internalHologramManager, apiHologramManager));
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
         registerListener(updateNotificationListener);
-        
+
         // Enable the APIs
         HolographicDisplaysAPIProvider.setImplementation(
                 new DefaultHolographicDisplaysAPIProvider(apiHologramManager, nmsManager, placeholderRegistry));
@@ -142,7 +142,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         // Register bStats metrics
         int pluginID = 3123;
         new MetricsLite(this, pluginID);
-        
+
         updateNotificationListener.runAsyncUpdateCheck();
 
         if (errorCollector.hasErrors()) {
@@ -161,7 +161,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
 
     public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
         DefaultPlaceholders.resetAndRegister(placeholderRegistry, animationRegistry, bungeeServerTracker);
-        
+
         internalHologramManager.clearAll();
 
         configManager.reloadStaticReplacements(errorCollector);
@@ -172,9 +172,9 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         } catch (IOException | ConfigException e) {
             errorCollector.add(e, "failed to load animation files");
         }
-        
+
         bungeeServerTracker.restart(Configuration.bungeeRefreshSeconds, TimeUnit.SECONDS);
-        
+
         if (deferHologramsCreation) {
             // For the initial load: holograms are loaded later, when the worlds are ready
             Bukkit.getScheduler().runTask(this, () -> hologramDatabase.createHolograms(internalHologramManager, errorCollector));
@@ -200,7 +200,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
     public static HolographicDisplays getInstance() {
         return instance;
     }
-    
+
     @Override
     public boolean sendAccurateLocationPackets() {
         return ProtocolLibHook.isEnabled();

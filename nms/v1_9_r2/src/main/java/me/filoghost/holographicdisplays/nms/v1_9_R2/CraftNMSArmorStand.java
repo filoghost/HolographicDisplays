@@ -24,9 +24,9 @@ public class CraftNMSArmorStand extends CraftArmorStand {
     public CraftNMSArmorStand(CraftServer server, EntityNMSArmorStand entity) {
         super(server, entity);
     }
-    
+
     // Disallow all the bukkit methods
-    
+
     @Override
     public void remove() {
         // Cannot be removed, this is the most important to override
@@ -56,7 +56,7 @@ public class CraftNMSArmorStand extends CraftArmorStand {
     @Override public boolean addPotionEffect(PotionEffect effect, boolean param) { return false; }
     @Override public boolean addPotionEffects(Collection<PotionEffect> effects) { return false; }
     @Override public void setRemoveWhenFarAway(boolean remove) {}
-    
+
     // Methods from Entity
     @Override public void setVelocity(Vector vel) {}
     @Override public boolean teleport(Location loc) { return false; }
@@ -71,5 +71,5 @@ public class CraftNMSArmorStand extends CraftArmorStand {
     @Override public void setCustomName(String name) {}
     @Override public void setCustomNameVisible(boolean flag) {}
     @Override public void setLastDamageCause(EntityDamageEvent event) {}
-    
+
 }

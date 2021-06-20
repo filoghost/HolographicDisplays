@@ -67,13 +67,13 @@ public class ProtocolLibHook {
             errorCollector.add(e, "failed to load ProtocolLib support, is it updated?");
             return;
         }
-        
+
         enabled = true;
     }
 
     public static void sendDestroyEntitiesPacket(Player player, StandardHologram hologram) {
         checkState();
-        
+
         if (shouldReceivePacket(player, hologram)) {
             packetSender.sendDestroyEntitiesPacket(player, hologram);
         }
@@ -91,7 +91,7 @@ public class ProtocolLibHook {
         if (!player.isOnline()) {
             return false;
         }
-        
+
         if (!player.getWorld().equals(hologram.getWorld())) {
             return false;
         }

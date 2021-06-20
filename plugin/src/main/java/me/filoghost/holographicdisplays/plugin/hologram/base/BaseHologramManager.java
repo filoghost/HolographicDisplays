@@ -41,7 +41,7 @@ public abstract class BaseHologramManager<H extends StandardHologram> {
             hologram.setDeleted();
         }
     }
-    
+
     public void onChunkLoad(Chunk chunk) {
         // Load the holograms in that chunk
         for (H hologram : holograms) {

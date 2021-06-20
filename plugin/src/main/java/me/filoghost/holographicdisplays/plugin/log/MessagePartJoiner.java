@@ -62,7 +62,7 @@ class MessagePartJoiner {
         if (previousMessagePart == null) {
             return;
         }
-        
+
         if (hasSentenceEnding(previousMessagePart)) {
             output.append(" ");
             this.appendedFirstSentenceSeparator = false;

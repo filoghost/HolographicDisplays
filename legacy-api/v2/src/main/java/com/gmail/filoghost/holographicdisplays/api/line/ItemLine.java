@@ -18,5 +18,5 @@ public interface ItemLine extends CollectableLine, TouchableLine {
 
     @Deprecated
     void setItemStack(ItemStack itemStack);
-    
+
 }

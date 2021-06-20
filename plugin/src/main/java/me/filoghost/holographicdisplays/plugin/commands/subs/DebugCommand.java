@@ -24,12 +24,12 @@ import java.util.Map.Entry;
 public class DebugCommand extends HologramSubCommand {
 
     private final NMSManager nmsManager;
-    
+
     public DebugCommand(NMSManager nmsManager) {
         super("debug");
         setShowInHelpCommand(false);
         setDescription("Displays information useful for debugging.");
-        
+
         this.nmsManager = nmsManager;
     }
 
@@ -66,9 +66,9 @@ public class DebugCommand extends HologramSubCommand {
                 for (Entry<StandardHologram, HologramDebugInfo> entry : hologramsDebugInfo.entrySet()) {
                     StandardHologram hologram = entry.getKey();
                     HologramDebugInfo debugInfo = entry.getValue();
-                    sender.sendMessage(Colors.PRIMARY_SHADOW + "- '" + hologram.toFormattedString() + "':" 
-                            + " " + hologram.getLineCount() + " lines," 
-                            + " " + debugInfo.getTotalEntities() + " entities" 
+                    sender.sendMessage(Colors.PRIMARY_SHADOW + "- '" + hologram.toFormattedString() + "':"
+                            + " " + hologram.getLineCount() + " lines,"
+                            + " " + debugInfo.getTotalEntities() + " entities"
                             + " (" + debugInfo.aliveEntities + " alive, " + debugInfo.deadEntities + " dead)");
                 }
             }
@@ -78,17 +78,17 @@ public class DebugCommand extends HologramSubCommand {
             sender.sendMessage(Colors.ERROR + "Couldn't find any loaded hologram (holograms may be in unloaded chunks).");
         }
     }
-    
+
     private static class HologramDebugInfo {
-        
+
         private int aliveEntities;
         private int deadEntities;
-        
+
         public int getTotalEntities() {
             return aliveEntities + deadEntities;
         }
-        
+
     }
-    
+
 
 }

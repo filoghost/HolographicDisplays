@@ -10,21 +10,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PlaceholderAPIHook {
-    
+
     private static boolean enabled;
 
     public static void setup() {
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             return;
         }
-        
+
         enabled = true;
     }
 
     public static boolean containsPlaceholders(String text) {
         return PlaceholderAPI.containsPlaceholders(text);
     }
-    
+
     public static String replacePlaceholders(Player player, String text) {
         return PlaceholderAPI.setPlaceholders(player, text);
     }

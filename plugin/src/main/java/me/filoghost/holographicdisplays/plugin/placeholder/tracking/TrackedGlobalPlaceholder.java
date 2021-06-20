@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 class TrackedGlobalPlaceholder extends TrackedPlaceholder {
-    
+
     private final ReplacementHolder replacementHolder;
 
     TrackedGlobalPlaceholder(@NotNull StandardPlaceholder placeholder, @NotNull PlaceholderOccurrence placeholderOccurrence) {

@@ -24,34 +24,34 @@ import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 
 public class EntityNMSItem extends EntityItem implements NMSItem {
-    
+
     private final StandardItemLine parentHologramLine;
     private final VersionNMSEntityHelper helper;
-    
+
     public EntityNMSItem(World world, StandardItemLine parentHologramLine) {
         super(world);
         this.parentHologramLine = parentHologramLine;
         this.helper = new VersionNMSEntityHelper(this);
-        
+
         super.pickupDelay = 32767; // Lock the item pickup delay, also prevents entities from picking up the item
     }
-    
+
     @Override
     public void A_() {
         // Disable normal ticking for this entity
-        
+
         // So it won't get removed
         ticksLived = 0;
     }
-    
+
     @Override
     public void inactiveTick() {
         // Disable normal ticking for this entity
-        
+
         // So it won't get removed
         ticksLived = 0;
     }
-    
+
     // Method called when a player is near
     @Override
     public void d(EntityHuman human) {
@@ -59,18 +59,18 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
             // Too low or too high, it's a bit weird
             return;
         }
-        
+
         if (human instanceof EntityPlayer) {
             parentHologramLine.onPickup(((EntityPlayer) human).getBukkitEntity());
             // It is never added to the inventory
         }
     }
-    
+
     @Override
     public void b(NBTTagCompound nbttagcompound) {
         // Do not save NBT
     }
-    
+
     @Override
     public boolean c(NBTTagCompound nbttagcompound) {
         // Do not save NBT
@@ -82,23 +82,23 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         // Do not save NBT
         return false;
     }
-    
+
     @Override
     public NBTTagCompound e(NBTTagCompound nbttagcompound) {
         // Do not save NBT
         return nbttagcompound;
     }
-    
+
     @Override
     public void f(NBTTagCompound nbttagcompound) {
         // Do not load NBT
     }
-    
+
     @Override
     public void a(NBTTagCompound nbttagcompound) {
         // Do not load NBT
     }
-    
+
     @Override
     public boolean isInvulnerable(DamageSource source) {
         /*
@@ -108,17 +108,17 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
          */
         return true;
     }
-    
+
     @Override
     public boolean isCollidable() {
         return false;
     }
-    
+
     @Override
     public void die() {
         // Prevent entity from dying
     }
-    
+
     @Override
     public boolean isAlive() {
         // This override prevents items from being picked up by hoppers (should have no side effects)
@@ -137,12 +137,12 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     public boolean isDeadNMS() {
         return super.dead;
     }
-    
+
     @Override
     public void killEntityNMS() {
         super.dead = true;
     }
-    
+
     @Override
     public void setLocationNMS(double x, double y, double z) {
         super.setPosition(x, y, z);
@@ -151,7 +151,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     @Override
     public void setItemStackNMS(org.bukkit.inventory.ItemStack stack) {
         ItemStack newItem = CraftItemStack.asNMSCopy(stack);
-        
+
         if (newItem == null || newItem == ItemStack.a) { // ItemStack.a is returned if the stack is not valid
             newItem = new ItemStack(Blocks.BEDROCK);
         }
@@ -167,15 +167,15 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         NBTTagList tagList = new NBTTagList();
         tagList.add(new NBTTagString(NMSCommons.ANTI_STACK_LORE));
         display.set("Lore", tagList);
-        
+
         super.setItemStack(newItem);
     }
-    
+
     @Override
     public int getIdNMS() {
         return super.getId();
     }
-    
+
     @Override
     public StandardHologramLine getHologramLine() {
         return parentHologramLine;
@@ -190,10 +190,10 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     public boolean isTrackedBy(Player bukkitPlayer) {
         return helper.isTrackedBy(bukkitPlayer);
     }
-    
+
     @Override
     public Object getRawItemStack() {
         return super.getItemStack();
     }
-    
+
 }

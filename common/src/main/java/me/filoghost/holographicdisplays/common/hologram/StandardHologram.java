@@ -13,13 +13,13 @@ import org.bukkit.plugin.Plugin;
 import java.util.List;
 
 public interface StandardHologram {
-    
+
     World getWorld();
-    
+
     double getX();
-    
+
     double getY();
-    
+
     double getZ();
 
     boolean isInChunk(Chunk chunk);

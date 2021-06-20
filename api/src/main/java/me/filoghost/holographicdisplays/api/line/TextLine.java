@@ -19,7 +19,7 @@ public interface TextLine extends TouchableLine {
      * @since 1
      */
     @Nullable String getText();
-    
+
     /**
      * Sets the text of this TextLine.
      *
@@ -27,5 +27,5 @@ public interface TextLine extends TouchableLine {
      * @since 1
      */
     void setText(@Nullable String text);
-    
+
 }

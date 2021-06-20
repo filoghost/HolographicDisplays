@@ -8,5 +8,5 @@ package me.filoghost.holographicdisplays.common.nms.entity;
 public interface NMSVehicle extends NMSEntity {
 
     void setPassengerNMS(NMSEntity passenger);
-    
+
 }

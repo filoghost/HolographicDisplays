@@ -26,12 +26,12 @@ public class OnlinePlayersPlaceholderFactory implements PlaceholderFactory {
             // No argument specified, return online players in this server
             return new LocalOnlinePlayersPlaceholder();
         }
-        
+
         String[] serverNames = Strings.splitAndTrim(argument, ",");
         return new BungeeOnlinePlayersPlaceholder(serverNames, bungeeServerTracker);
     }
-    
-    
+
+
     private static class LocalOnlinePlayersPlaceholder implements Placeholder {
 
         @Override

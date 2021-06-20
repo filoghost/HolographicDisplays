@@ -43,13 +43,13 @@ public class AddlineCommand extends LineEditingCommand implements QuickEditComma
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
         String serializedLine = Strings.joinFrom(" ", args, 1);
-        
+
         InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine);
         hologram.addLine(line);
 
         configManager.saveHologramDatabase(internalHologramManager);
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
-        
+
         sender.sendMessage(Colors.PRIMARY + "Line added.");
         commandManager.sendQuickEditCommands(context, hologram);
     }

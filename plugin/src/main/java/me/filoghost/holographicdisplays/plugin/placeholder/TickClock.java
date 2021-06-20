@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.placeholder;
 public class TickClock {
 
     private long currentTick;
-    
+
     public void incrementTick() {
         currentTick++;
     }
@@ -16,5 +16,5 @@ public class TickClock {
     public long getCurrentTick() {
         return currentTick;
     }
-    
+
 }

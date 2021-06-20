@@ -10,7 +10,7 @@ import me.filoghost.fcommons.collection.CaseInsensitiveString;
 public class PlaceholderIdentifier {
 
     private final CaseInsensitiveString identifier;
-    
+
     public PlaceholderIdentifier(String identifier) {
         this.identifier = new CaseInsensitiveString(identifier);
     }

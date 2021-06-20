@@ -15,5 +15,5 @@ public interface ItemTouchHandler {
 
     @Deprecated
     void onTouch(FloatingItem floatingItem, Player player);
-    
+
 }

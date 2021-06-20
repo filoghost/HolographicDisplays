@@ -8,12 +8,12 @@ package me.filoghost.holographicdisplays.common.nms.entity;
 import org.bukkit.inventory.ItemStack;
 
 public interface NMSItem extends NMSEntity {
-    
+
     void setItemStackNMS(ItemStack stack);
 
     /**
      * Returns the item stack NMS object.
      */
     Object getRawItemStack();
-    
+
 }

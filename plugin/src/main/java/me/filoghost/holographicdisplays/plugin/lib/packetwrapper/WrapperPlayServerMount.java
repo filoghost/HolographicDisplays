@@ -23,25 +23,25 @@ import com.google.common.primitives.Ints;
 import java.util.List;
 
 public class WrapperPlayServerMount extends AbstractPacket {
-    
+
     public static final PacketType TYPE = PacketType.Play.Server.MOUNT;
-    
+
     public WrapperPlayServerMount() {
         super(new PacketContainer(TYPE), TYPE);
         handle.getModifier().writeDefaults();
     }
-    
+
     public WrapperPlayServerMount(PacketContainer packet) {
         super(packet, TYPE);
     }
-    
+
     /**
      * Retrieve the entity ID being attached.
      */
     public int getVehicleId() {
         return handle.getIntegers().read(0);
     }
-    
+
     /**
      * Set the entity ID being attached.
      */
@@ -55,19 +55,19 @@ public class WrapperPlayServerMount extends AbstractPacket {
     public List<Integer> getPassengers() {
         return Ints.asList(handle.getIntegerArrays().read(0));
     }
-    
+
     /**
      * Set the passenger entities.
      */
     public void setPassengers(int[] entities) {
         handle.getIntegerArrays().write(0, entities);
     }
-    
+
     /**
      * Set the passenger entities.
      */
     public void setPassengers(List<Integer> entities) {
         setPassengers(Ints.toArray(entities));
     }
-    
+
 }

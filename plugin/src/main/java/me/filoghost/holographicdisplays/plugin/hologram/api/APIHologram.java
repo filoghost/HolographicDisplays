@@ -45,12 +45,12 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
         this.creationTimestamp = System.currentTimeMillis();
         this.v2Adapter = new V2HologramAdapter(this);
     }
-    
+
     @Override
     public Plugin getCreatorPlugin() {
         return plugin;
     }
-    
+
     @Override
     public @NotNull APITextLine appendTextLine(@Nullable String text) {
         APITextLine line = createTextLine(text);
@@ -115,7 +115,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     public boolean isVisibleTo(Player player) {
         return visibilitySettings.isVisibleTo(player);
     }
-    
+
     @Override
     public double getHeight() {
         List<APIHologramLine> lines = getLines();

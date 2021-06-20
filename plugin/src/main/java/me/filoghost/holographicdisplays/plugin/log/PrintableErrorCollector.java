@@ -18,15 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrintableErrorCollector extends ErrorCollector {
-    
+
     private static final String ERROR_PREFIX = ChatColor.RED + "[HolographicDisplays] ";
-    
+
     public void logErrorCount() {
         Bukkit.getConsoleSender().sendMessage(ERROR_PREFIX
                 + "Encountered " + getErrorsCount() + " error(s) on load. "
                 + "Check previous console logs for more information.");
     }
-    
+
     @Override
     public void logToConsole() {
         StringBuilder output = new StringBuilder();

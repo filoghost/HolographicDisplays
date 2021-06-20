@@ -32,7 +32,7 @@ import org.bukkit.craftbukkit.v1_16_R1.entity.CraftEntity;
 import org.bukkit.inventory.ItemStack;
 
 public class VersionNMSManager implements NMSManager {
-    
+
     private static final ReflectField<RegistryID<EntityTypes<?>>> REGISTRY_ID_FIELD
             = ReflectField.lookup(new ClassToken<RegistryID<EntityTypes<?>>>() {}, RegistryMaterials.class, "b");
     private static final ReflectField<Object[]> ID_TO_CLASS_MAP_FIELD
@@ -45,17 +45,17 @@ public class VersionNMSManager implements NMSManager {
     public VersionNMSManager(ProtocolPacketSettings protocolPacketSettings) {
         this.protocolPacketSettings = protocolPacketSettings;
     }
-    
+
     @Override
     public void setup() throws Exception {
         registerCustomEntity(EntityNMSSlime.class, 55, 2.04f, 2.04f);
     }
-    
+
     public void registerCustomEntity(Class<? extends Entity> entityClass, int id, float sizeWidth, float sizeHeight) throws Exception {
         // Use reflection to get the RegistryID of entities
         RegistryID<EntityTypes<?>> registryID = REGISTRY_ID_FIELD.get(IRegistry.ENTITY_TYPE);
         Object[] idToClassMap = ID_TO_CLASS_MAP_FIELD.get(registryID);
-        
+
         // Save the the ID -> EntityTypes mapping before the registration
         Object oldValue = idToClassMap[id];
 
@@ -65,7 +65,7 @@ public class VersionNMSManager implements NMSManager {
         // Restore the ID -> EntityTypes mapping
         idToClassMap[id] = oldValue;
     }
-    
+
     @Override
     public NMSItem spawnNMSItem(
             World bukkitWorld, double x, double y, double z,
@@ -78,7 +78,7 @@ public class VersionNMSManager implements NMSManager {
         addEntityToWorld(nmsWorld, item);
         return item;
     }
-    
+
     @Override
     public EntityNMSSlime spawnNMSSlime(
             World bukkitWorld, double x, double y, double z,
@@ -89,7 +89,7 @@ public class VersionNMSManager implements NMSManager {
         addEntityToWorld(nmsWorld, slime);
         return slime;
     }
-    
+
     @Override
     public NMSArmorStand spawnNMSArmorStand(
             World world, double x, double y, double z,
@@ -100,19 +100,19 @@ public class VersionNMSManager implements NMSManager {
         addEntityToWorld(nmsWorld, armorStand);
         return armorStand;
     }
-    
+
     private void addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) throws SpawnFailedException {
         Preconditions.checkState(Bukkit.isPrimaryThread(), "Async entity add");
-        
+
         final int chunkX = MathHelper.floor(nmsEntity.locX() / 16.0);
         final int chunkZ = MathHelper.floor(nmsEntity.locZ() / 16.0);
-        
+
         if (!nmsWorld.isChunkLoaded(chunkX, chunkZ)) {
             // This should never happen
             nmsEntity.dead = true;
             throw new SpawnFailedException(SpawnFailedException.CHUNK_NOT_LOADED);
         }
-        
+
         nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
         try {
             REGISTER_ENTITY_METHOD.invoke(nmsWorld, nmsEntity);
@@ -121,7 +121,7 @@ public class VersionNMSManager implements NMSManager {
             throw new SpawnFailedException(SpawnFailedException.REGISTER_ENTITY_FAIL, e);
         }
     }
-    
+
     @Override
     public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
         return ((CraftEntity) bukkitEntity).getHandle() instanceof NMSEntity;
@@ -130,19 +130,19 @@ public class VersionNMSManager implements NMSManager {
     @Override
     public NMSEntity getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
         Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
-        
+
         if (nmsEntity instanceof NMSEntity) {
             return (NMSEntity) nmsEntity;
         } else {
             return null;
         }
     }
-    
+
     @Override
     public NMSEntity getNMSEntityBaseFromID(org.bukkit.World bukkitWorld, int entityID) {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         Entity nmsEntity = nmsWorld.getEntity(entityID);
-        
+
         if (nmsEntity instanceof NMSEntity) {
             return (NMSEntity) nmsEntity;
         } else {
@@ -154,5 +154,5 @@ public class VersionNMSManager implements NMSManager {
     public Object createCustomNameNMSObject(String customName) {
         return EntityNMSArmorStand.createCustomNameNMSObject(customName);
     }
-    
+
 }

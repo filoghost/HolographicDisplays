@@ -12,11 +12,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class PlaceholderOccurrence {
-    
+
     private final PluginName pluginName;
     private final PlaceholderIdentifier identifier;
     private final String argument;
-    
+
     private final int hashCode; // Cached for performance reasons
 
     private PlaceholderOccurrence(PluginName pluginName, PlaceholderIdentifier identifier, String argument) {
@@ -25,15 +25,15 @@ public class PlaceholderOccurrence {
         this.argument = argument;
         this.hashCode = Objects.hash(pluginName, identifier, argument);
     }
-    
+
     public @Nullable PluginName getPluginName() {
         return pluginName;
     }
-    
+
     public @NotNull PlaceholderIdentifier getIdentifier() {
         return identifier;
     }
-    
+
     public @Nullable String getArgument() {
         return argument;
     }

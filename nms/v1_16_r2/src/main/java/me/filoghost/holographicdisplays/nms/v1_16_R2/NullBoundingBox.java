@@ -120,5 +120,5 @@ public class NullBoundingBox extends AxisAlignedBB {
     public Vec3D f() {
         return Vec3D.a;
     }
-    
+
 }

@@ -19,30 +19,30 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultVisibilitySettings implements VisibilitySettings {
-    
+
     private final StandardHologram hologram;
     private final V2VisibilityManagerAdapter v2Adapter;
     private Map<UUID, Visibility> visibilityByPlayer;
     private Visibility defaultVisibility;
-    
+
     public DefaultVisibilitySettings(StandardHologram hologram) {
         Preconditions.notNull(hologram, "hologram");
         this.hologram = hologram;
         this.v2Adapter = new V2VisibilityManagerAdapter(this);
         this.defaultVisibility = Visibility.VISIBLE;
     }
-    
+
     @Override
     public @NotNull Visibility getDefaultVisibility() {
         return defaultVisibility;
     }
-    
+
     @Override
     public void setDefaultVisibility(@NotNull Visibility defaultVisibility) {
         if (this.defaultVisibility == defaultVisibility) {
             return;
         }
-        
+
         this.defaultVisibility = defaultVisibility;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -50,11 +50,11 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
                 // Has a specific value set
                 continue;
             }
-            
+
             sendVisibilityChangePacket(hologram, player, defaultVisibility);
         }
     }
-    
+
     @Override
     public void setIndividualVisibility(@NotNull Player player, @NotNull Visibility visibility) {
         Visibility oldVisibility = getVisibility(player);
@@ -69,14 +69,14 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
             sendVisibilityChangePacket(hologram, player, visibility);
         }
     }
-    
+
     @Override
     public boolean isVisibleTo(@NotNull Player player) {
         Preconditions.notNull(player, "player");
-        
+
         return getVisibility(player) == Visibility.VISIBLE;
     }
-    
+
     private Visibility getVisibility(Player player) {
         if (visibilityByPlayer != null) {
             Visibility visibility = visibilityByPlayer.get(player.getUniqueId());
@@ -91,24 +91,24 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
     @Override
     public void resetIndividualVisibility(@NotNull Player player) {
         Preconditions.notNull(player, "player");
-        
+
         if (visibilityByPlayer == null) {
             return;
         }
-        
+
         Visibility oldVisibility = visibilityByPlayer.remove(player.getUniqueId());
-        
+
         if (oldVisibility != null && oldVisibility != defaultVisibility) {
             sendVisibilityChangePacket(hologram, player, defaultVisibility);
         }
     }
-    
+
     @Override
     public void resetIndividualVisibilityAll() {
         if (visibilityByPlayer == null) {
             return;
         }
-        
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             Visibility oldVisibility = getVisibility(player);
             if (oldVisibility != defaultVisibility) {
@@ -117,7 +117,7 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
         }
         visibilityByPlayer = null;
     }
-    
+
     private void sendVisibilityChangePacket(StandardHologram hologram, Player player, Visibility visibility) {
         if (ProtocolLibHook.isEnabled()) {
             if (visibility == Visibility.VISIBLE) {
@@ -130,9 +130,9 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
 
     @Override
     public String toString() {
-        return "VisibilitySettings [" 
-                + "defaultVisibility=" + defaultVisibility 
-                + ", visibilityByPlayer=" + visibilityByPlayer 
+        return "VisibilitySettings ["
+                + "defaultVisibility=" + defaultVisibility
+                + ", visibilityByPlayer=" + visibilityByPlayer
                 + "]";
     }
 

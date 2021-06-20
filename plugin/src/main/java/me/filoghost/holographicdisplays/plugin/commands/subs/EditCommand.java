@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditCommand extends HologramSubCommand {
-    
+
     private final HologramCommandManager commandManager;
     private final InternalHologramManager internalHologramManager;
 
@@ -43,7 +43,7 @@ public class EditCommand extends HologramSubCommand {
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
-        
+
         sender.sendMessage("");
         Messages.sendTitle(sender, "How to edit the hologram '" + hologram.getName() + "'");
         for (HologramSubCommand subCommand : commandManager.getSubCommands()) {
@@ -62,7 +62,7 @@ public class EditCommand extends HologramSubCommand {
                             .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(String.join("\n", help))))
                             .create());
-                    
+
                 } else {
                     sender.sendMessage(Colors.PRIMARY + usage);
                 }

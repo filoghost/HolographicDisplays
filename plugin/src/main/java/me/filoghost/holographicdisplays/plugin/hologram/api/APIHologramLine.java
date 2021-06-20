@@ -14,7 +14,7 @@ public interface APIHologramLine extends HologramLine, StandardHologramLine {
 
     @Override
     @NotNull APIHologram getParent();
-    
+
     @Override
     default void removeLine() {
         getParent().removeLine(this);

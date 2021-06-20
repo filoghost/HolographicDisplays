@@ -33,13 +33,13 @@ public class StaticReplacements {
             String replacement = Colors.addColors(entry.getValue());
 
             if (target.length() == 0) {
-                errorCollector.add("error in \"" + config.getSourceFile() + "\":" 
+                errorCollector.add("error in \"" + config.getSourceFile() + "\":"
                         + " placeholder cannot be empty (skipped)");
                 continue;
             }
 
             if (target.length() > 100) {
-                errorCollector.add("error in \"" + config.getSourceFile() + "\":" 
+                errorCollector.add("error in \"" + config.getSourceFile() + "\":"
                         + " placeholder cannot be longer than 100 character (" + target + ")");
                 continue;
             }
@@ -54,26 +54,26 @@ public class StaticReplacements {
         }
         return text;
     }
-    
+
 
     private static class StaticReplacement {
-    
+
         private final String target;
         private final String replacement;
-    
+
         StaticReplacement(String target, String replacement) {
             this.target = target;
             this.replacement = replacement;
         }
-    
+
         public String getTarget() {
             return target;
         }
-    
+
         public String getReplacement() {
             return replacement;
         }
-    
+
     }
 
 }

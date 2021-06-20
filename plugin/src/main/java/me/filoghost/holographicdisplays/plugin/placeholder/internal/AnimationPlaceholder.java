@@ -14,7 +14,7 @@ public class AnimationPlaceholder implements Placeholder {
     private final int refreshIntervalTicks;
     private final List<String> frames;
     private int currentIndex;
-    
+
     public AnimationPlaceholder(int refreshIntervalTicks, List<String> frames) {
         this.frames = frames;
         this.refreshIntervalTicks = refreshIntervalTicks;
@@ -24,7 +24,7 @@ public class AnimationPlaceholder implements Placeholder {
     public int getRefreshIntervalTicks() {
         return refreshIntervalTicks;
     }
-    
+
     @Override
     public String getReplacement(String argument) {
         String result = frames.get(currentIndex);

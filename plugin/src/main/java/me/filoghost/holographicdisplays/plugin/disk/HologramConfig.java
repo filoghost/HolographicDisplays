@@ -22,9 +22,9 @@ import java.util.Locale;
 
 public class HologramConfig {
 
-    private static final DecimalFormat LOCATION_NUMBER_FORMAT 
+    private static final DecimalFormat LOCATION_NUMBER_FORMAT
             = new DecimalFormat("0.000", DecimalFormatSymbols.getInstance(Locale.ROOT));
-    
+
     private final String name;
     private final List<String> serializedLines;
     private final String serializedLocation;
@@ -72,7 +72,7 @@ public class HologramConfig {
                 throw new HologramLoadException("invalid line: " + e.getMessage(), e);
             }
         }
-        
+
         hologram.setLines(lines);
         return hologram;
     }

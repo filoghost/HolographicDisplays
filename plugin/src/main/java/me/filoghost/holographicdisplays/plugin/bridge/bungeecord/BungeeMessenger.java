@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 public class BungeeMessenger implements PluginMessageListener {
-    
+
     private static final String BUNGEECORD_CHANNEL = "BungeeCord";
     private static final String REDISBUNGEE_CHANNEL = "legacy:redisbungee";
 
@@ -31,25 +31,25 @@ public class BungeeMessenger implements PluginMessageListener {
         this.plugin = plugin;
         this.playerCountCallback = playerCountCallback;
     }
-    
+
     public static BungeeMessenger registerNew(Plugin plugin, PlayerCountCallback playerCountCallback) {
         BungeeMessenger bungeeMessenger = new BungeeMessenger(plugin, playerCountCallback);
-        
+
         Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, BUNGEECORD_CHANNEL);
         Bukkit.getMessenger().registerIncomingPluginChannel(plugin, BUNGEECORD_CHANNEL, bungeeMessenger);
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, REDISBUNGEE_CHANNEL);
         Bukkit.getMessenger().registerIncomingPluginChannel(plugin, REDISBUNGEE_CHANNEL, bungeeMessenger);
-        
+
         return bungeeMessenger;
     }
-    
+
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
         if (Configuration.pingerEnabled || !channel.equals(getTargetChannel())) {
             return;
         }
-        
+
         DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
 
         try {
@@ -57,7 +57,7 @@ public class BungeeMessenger implements PluginMessageListener {
             if (!subChannel.equals("PlayerCount")) {
                 return;
             }
-            
+
             String server = in.readUTF();
             int online = in.readInt();
             playerCountCallback.onReceive(server, online);
@@ -76,7 +76,7 @@ public class BungeeMessenger implements PluginMessageListener {
         } catch (IOException e) {
             Log.warning("Error while encoding player count message for server \"" + server + "\".", e);
         }
-        
+
         // Send the message through a random player (BungeeCord will not forward it to them)
         Collection<? extends Player> players = Bukkit.getOnlinePlayers();
         if (players.size() > 0) {
@@ -92,12 +92,12 @@ public class BungeeMessenger implements PluginMessageListener {
             return BUNGEECORD_CHANNEL;
         }
     }
-    
-    
+
+
     public interface PlayerCountCallback {
-        
+
         void onReceive(String serverName, int playerCount);
-        
+
     }
-    
+
 }

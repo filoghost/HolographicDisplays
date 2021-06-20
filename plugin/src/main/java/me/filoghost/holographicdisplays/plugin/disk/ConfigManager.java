@@ -40,7 +40,7 @@ public class ConfigManager extends BaseConfigManager {
             logConfigInitException(errorCollector, mainConfigLoader.getFile(), e);
             mainConfig = new ConfigurationFileModel(); // Fallback: use default values
         }
-        
+
         Configuration.load(mainConfig, errorCollector);
     }
 
@@ -69,21 +69,21 @@ public class ConfigManager extends BaseConfigManager {
 
     public void reloadStaticReplacements(ErrorCollector errorCollector) {
         FileConfig staticReplacementsConfig;
-        
+
         try {
             staticReplacementsConfig = staticReplacementsConfigLoader.init();
         } catch (ConfigException e) {
             logConfigInitException(errorCollector, staticReplacementsConfigLoader.getFile(), e);
             staticReplacementsConfig = new FileConfig(staticReplacementsConfigLoader.getFile()); // Fallback: empty config
         }
-        
+
         StaticReplacements.load(staticReplacementsConfig, errorCollector);
     }
 
     public Path getAnimationsFolder() {
         return getRootDataFolder().resolve("animations");
     }
-    
+
     public ConfigLoader getExampleAnimationLoader() {
         return getConfigLoader(getAnimationsFolder().resolve("example.txt"));
     }

@@ -29,7 +29,7 @@ public class BungeeServerTracker {
 
     private final ConcurrentMap<String, TrackedServer> trackedServers;
     private final BungeeMessenger bungeeMessenger;
-    
+
     private int taskID = -1;
 
     public BungeeServerTracker(Plugin plugin) {
@@ -39,12 +39,12 @@ public class BungeeServerTracker {
 
     public void restart(int updateInterval, TimeUnit timeUnit) {
         trackedServers.clear();
-        
+
         if (taskID != -1) {
             Bukkit.getScheduler().cancelTask(taskID);
         }
 
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(HolographicDisplays.getInstance(), 
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(HolographicDisplays.getInstance(),
                 this::runPeriodicUpdateTask, 1, timeUnit.toSeconds(updateInterval) * 20L);
     }
 
@@ -103,13 +103,13 @@ public class BungeeServerTracker {
         } catch (IOException e) {
             Log.warning("Couldn't fetch data from " + serverAddress + ".", e);
         }
-        
+
         return ServerInfo.offline(Configuration.pingerOfflineMotd);
     }
 
     private void removeUnusedServers() {
         long now = System.currentTimeMillis();
-        
+
         trackedServers.values().removeIf(trackedServer -> {
             if (now - trackedServer.lastRequest > UNTRACK_AFTER_TIME_WITHOUT_REQUESTS) {
                 DebugLogger.info("Untracked unused server \"" + trackedServer.serverName + "\".");
@@ -130,7 +130,7 @@ public class BungeeServerTracker {
             this.serverName = serverName;
             this.serverInfo = ServerInfo.offline(Configuration.pingerOfflineMotd);
         }
-        
+
         private void updateLastRequest() {
             this.lastRequest = System.currentTimeMillis();
         }

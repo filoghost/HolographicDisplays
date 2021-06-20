@@ -38,7 +38,7 @@ public class APITextLine extends BaseTextLine implements TextLine, APITouchableL
         v2Adapter.onNewTouchHandlerChange(getTouchHandler(), touchHandler);
         super.setTouchHandler(touchHandler);
     }
-    
+
     @Override
     public V2TextLineAdapter getV2Adapter() {
         return v2Adapter;

@@ -16,23 +16,23 @@ import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
 public interface NMSManager {
-    
+
     /**
      * Register all the custom entities of the plugin.
      *
      * @throws Exception if anything during the process fails
      */
     void setup() throws Exception;
-    
+
     NMSArmorStand spawnNMSArmorStand(World bukkitWorld, double x, double y, double z, StandardHologramLine parentHologramLine)
             throws SpawnFailedException;
-    
+
     NMSItem spawnNMSItem(World bukkitWorld, double x, double y, double z, StandardItemLine parentHologramLine, ItemStack stack)
             throws SpawnFailedException;
-    
+
     NMSSlime spawnNMSSlime(World bukkitWorld, double x, double y, double z, StandardHologramLine parentHologramLine)
             throws SpawnFailedException;
-    
+
     boolean isNMSEntityBase(Entity bukkitEntity);
 
     NMSEntity getNMSEntityBase(Entity bukkitEntity);

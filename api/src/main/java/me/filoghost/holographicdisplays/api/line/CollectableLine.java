@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 1
  */
 public interface CollectableLine extends HologramLine {
-    
+
     /**
      * Sets the PickupHandler for this line.
      *
@@ -22,7 +22,7 @@ public interface CollectableLine extends HologramLine {
      * @since 1
      */
     void setPickupHandler(@Nullable PickupHandler pickupHandler);
-    
+
     /**
      * Returns the current PickupHandler of this line.
      *
@@ -30,5 +30,5 @@ public interface CollectableLine extends HologramLine {
      * @since 1
      */
     @Nullable PickupHandler getPickupHandler();
-    
+
 }

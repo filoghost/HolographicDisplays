@@ -37,7 +37,7 @@ public class PluginName {
     public final int hashCode() {
         return pluginName.hashCode();
     }
-    
+
     @Override
     public String toString() {
         return pluginName.toString();

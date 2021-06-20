@@ -31,7 +31,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 
 public class VersionNMSManager implements NMSManager {
-    
+
     private static final ReflectField<Map<Class<?>, String>> ENTITY_NAMES_BY_CLASS_FIELD
             = ReflectField.lookup(new ClassToken<Map<Class<?>, String>>() {}, EntityTypes.class, "d");
     private static final ReflectField<Map<Class<?>, Integer>> ENTITY_IDS_BY_CLASS_FIELD
@@ -44,14 +44,14 @@ public class VersionNMSManager implements NMSManager {
     public VersionNMSManager(ProtocolPacketSettings protocolPacketSettings) {
         this.protocolPacketSettings = protocolPacketSettings;
     }
-    
+
     @Override
     public void setup() throws Exception {
         registerCustomEntity(EntityNMSArmorStand.class, "ArmorStand", 30);
         registerCustomEntity(EntityNMSItem.class, "Item", 1);
         registerCustomEntity(EntityNMSSlime.class, "Slime", 55);
     }
-    
+
     public void registerCustomEntity(Class<?> entityClass, String name, int id) throws Exception {
         ENTITY_NAMES_BY_CLASS_FIELD.getStatic().put(entityClass, name);
         ENTITY_IDS_BY_CLASS_FIELD.getStatic().put(entityClass, id);
@@ -91,10 +91,10 @@ public class VersionNMSManager implements NMSManager {
         addEntityToWorld(nmsWorld, armorStand);
         return armorStand;
     }
-    
+
     private void addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) throws SpawnFailedException {
         Preconditions.checkState(Bukkit.isPrimaryThread(), "Async entity add");
-        
+
         if (!REGISTER_ENTITY_METHOD.isValid()) {
             boolean added = nmsWorld.addEntity(nmsEntity, SpawnReason.CUSTOM);
             if (!added) {
@@ -102,19 +102,19 @@ public class VersionNMSManager implements NMSManager {
                 throw new SpawnFailedException(SpawnFailedException.ADD_ENTITY_FAILED);
             }
         }
-        
+
         final int chunkX = MathHelper.floor(nmsEntity.locX / 16.0);
         final int chunkZ = MathHelper.floor(nmsEntity.locZ / 16.0);
-        
+
         if (!nmsWorld.chunkProviderServer.isChunkLoaded(chunkX, chunkZ)) {
             // This should never happen
             nmsEntity.dead = true;
             throw new SpawnFailedException(SpawnFailedException.CHUNK_NOT_LOADED);
         }
-        
+
         nmsWorld.getChunkAt(chunkX, chunkZ).a(nmsEntity);
         nmsWorld.entityList.add(nmsEntity);
-        
+
         try {
             REGISTER_ENTITY_METHOD.invoke(nmsWorld, nmsEntity);
         } catch (ReflectiveOperationException e) {
@@ -122,7 +122,7 @@ public class VersionNMSManager implements NMSManager {
             throw new SpawnFailedException(SpawnFailedException.REGISTER_ENTITY_FAIL, e);
         }
     }
-    
+
     @Override
     public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
         return ((CraftEntity) bukkitEntity).getHandle() instanceof NMSEntity;
@@ -131,19 +131,19 @@ public class VersionNMSManager implements NMSManager {
     @Override
     public NMSEntity getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
         Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
-        
+
         if (nmsEntity instanceof NMSEntity) {
             return (NMSEntity) nmsEntity;
         } else {
             return null;
         }
     }
-    
+
     @Override
     public NMSEntity getNMSEntityBaseFromID(org.bukkit.World bukkitWorld, int entityID) {
         WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
         Entity nmsEntity = nmsWorld.a(entityID);
-        
+
         if (nmsEntity instanceof NMSEntity) {
             return (NMSEntity) nmsEntity;
         } else {

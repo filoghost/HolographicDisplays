@@ -30,7 +30,7 @@ public class HelpCommand extends HologramSubCommand {
         super("help");
         setShowInHelpCommand(false);
         setDescription("Show the list of commands.");
-        
+
         this.commandManager = commandManager;
     }
 
@@ -54,7 +54,7 @@ public class HelpCommand extends HologramSubCommand {
                             .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(String.join("\n", help))))
                             .create());
-                    
+
                 } else {
                     sender.sendMessage(Colors.PRIMARY + usage);
                 }

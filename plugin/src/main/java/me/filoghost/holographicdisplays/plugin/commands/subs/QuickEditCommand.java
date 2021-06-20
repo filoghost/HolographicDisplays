@@ -8,5 +8,5 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 public interface QuickEditCommand {
 
     String getActionName();
-    
+
 }

@@ -28,7 +28,7 @@ public class StringWithPlaceholders {
         this.string = string;
         this.stringParts = stringParts;
     }
-    
+
     @Override
     public String toString() {
         return string;
@@ -42,7 +42,7 @@ public class StringWithPlaceholders {
         if (stringParts == null) {
             return false;
         }
-        
+
         for (StringPart stringPart : stringParts) {
             if (stringPart instanceof PlaceholderStringPart) {
                 PlaceholderStringPart placeholderStringPart = (PlaceholderStringPart) stringPart;
@@ -51,7 +51,7 @@ public class StringWithPlaceholders {
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -63,7 +63,7 @@ public class StringWithPlaceholders {
         StringBuilder output = new StringBuilder();
         StringBuilder fullOutput = new StringBuilder();
         List<StringPart> newStringParts = null; // Lazy initialization
-        
+
         for (StringPart part : stringParts) {
             if (part instanceof PlaceholderStringPart) {
                 PlaceholderStringPart placeholderStringPart = (PlaceholderStringPart) part;
@@ -91,11 +91,11 @@ public class StringWithPlaceholders {
                 fullOutput.append(literalStringPart.literalString);
             }
         }
-        
+
         if (output.length() > 0 && newStringParts != null) {
             newStringParts.add(new LiteralStringPart(output.toString()));
         }
-        
+
         return new StringWithPlaceholders(fullOutput.toString(), newStringParts);
     }
 
@@ -103,15 +103,15 @@ public class StringWithPlaceholders {
         if (!containsPlaceholders()) {
             return string;
         }
-        
+
         StringBuilder output = new StringBuilder();
         for (StringPart part : stringParts) {
             output.append(part.getValue(replaceFunction));
         }
-        
+
         return output.toString();
     }
-    
+
     private @Nullable List<StringPart> splitToParts(String string) {
         int placeholderStartIndex = -1;
         int lastAppendIndex = 0;
@@ -124,14 +124,14 @@ public class StringWithPlaceholders {
                 // Inside placeholder
                 if (currentChar == PLACEHOLDER_END_CHAR) {
                     int endIndex = currentIndex + 1;
-                    
+
                     // The unparsed string includes the opening and closing tags (e.g.: "{online: lobby}")
                     String unparsedString = string.substring(placeholderStartIndex, endIndex);
-                    
+
                     // The content string does NOT include the opening and closing tags (e.g.: "online: lobby")
                     String contentString = unparsedString.substring(1, unparsedString.length() - 1);
                     PlaceholderOccurrence content = PlaceholderOccurrence.parse(contentString);
-                    
+
                     if (stringParts == null) {
                         stringParts = new ArrayList<>();
                     }
@@ -140,7 +140,7 @@ public class StringWithPlaceholders {
                     if (placeholderStartIndex != lastAppendIndex) {
                         stringParts.add(new LiteralStringPart(string.substring(lastAppendIndex, placeholderStartIndex)));
                     }
-                    
+
                     // Append placeholder part
                     stringParts.add(new PlaceholderStringPart(content, unparsedString));
                     lastAppendIndex = endIndex;
@@ -157,25 +157,25 @@ public class StringWithPlaceholders {
                 }
             }
         }
-        
+
         // Append trailing literal part (if any)
         if (lastAppendIndex != string.length() && stringParts != null) {
             stringParts.add(new LiteralStringPart(string.substring(lastAppendIndex)));
         }
-        
+
         return stringParts;
     }
-    
-    
+
+
     private interface StringPart {
-        
+
         String getValue(PlaceholderReplaceFunction placeholderReplaceFunction);
-        
+
     }
-    
-    
+
+
     private static class LiteralStringPart implements StringPart {
-        
+
         private final String literalString;
 
         LiteralStringPart(String literalString) {
@@ -188,7 +188,7 @@ public class StringWithPlaceholders {
         }
 
     }
-    
+
 
     private static class PlaceholderStringPart implements StringPart {
 

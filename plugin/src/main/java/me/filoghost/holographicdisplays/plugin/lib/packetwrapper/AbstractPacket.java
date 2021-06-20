@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.InvocationTargetException;
 
 public abstract class AbstractPacket {
-    
+
     // The packet we will be modifying
     protected PacketContainer handle;
 
@@ -76,5 +76,5 @@ public abstract class AbstractPacket {
             throw new RuntimeException("Cannot receive packet.", e);
         }
     }
-    
+
 }

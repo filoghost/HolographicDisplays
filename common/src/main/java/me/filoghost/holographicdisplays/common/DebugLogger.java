@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.common.nms.SpawnFailedException;
 
 public class DebugLogger {
-    
+
     private static boolean debug;
     private static final String PREFIX = "[Debug] ";
 
@@ -27,7 +27,7 @@ public class DebugLogger {
             Log.info(PREFIX + msg, thrown);
         }
     }
-    
+
     public static void warning(String msg) {
         warning(msg, null);
     }
@@ -37,7 +37,7 @@ public class DebugLogger {
             Log.warning(PREFIX + msg, thrown);
         }
     }
-    
+
     public static void severe(String msg) {
         severe(msg, null);
     }
@@ -47,7 +47,7 @@ public class DebugLogger {
             Log.severe(PREFIX + msg, thrown);
         }
     }
-    
+
     public static void handleSpawnFail(SpawnFailedException exception, StandardHologramLine parentHologramLine) {
         severe("Couldn't spawn entity for this hologram: " + parentHologramLine.getHologram(), exception);
     }

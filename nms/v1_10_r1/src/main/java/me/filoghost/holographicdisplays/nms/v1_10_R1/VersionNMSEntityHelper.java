@@ -20,7 +20,7 @@ public class VersionNMSEntityHelper extends NMSEntityHelper<EntityTrackerEntry> 
     public VersionNMSEntityHelper(Entity entity) {
         this.entity = entity;
     }
-    
+
     @Override
     protected EntityTrackerEntry getTracker0() {
         return ((WorldServer) entity.world).tracker.trackedEntities.get(entity.getId());
@@ -35,7 +35,7 @@ public class VersionNMSEntityHelper extends NMSEntityHelper<EntityTrackerEntry> 
             return false;
         }
     }
-    
+
     public void broadcastPacket(Packet<?> packet) {
         EntityTrackerEntry tracker = getTracker();
         if (tracker != null) {

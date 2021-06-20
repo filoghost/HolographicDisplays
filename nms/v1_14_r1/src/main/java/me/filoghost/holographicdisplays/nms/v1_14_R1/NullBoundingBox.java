@@ -40,7 +40,7 @@ public class NullBoundingBox extends AxisAlignedBB {
     public AxisAlignedBB shrink(double arg0) {
         return this;
     }
-    
+
     @Override
     public AxisAlignedBB a(BlockPosition arg0) {
         return this;
@@ -50,7 +50,7 @@ public class NullBoundingBox extends AxisAlignedBB {
     public boolean a(double arg0, double arg1, double arg2, double arg3, double arg4, double arg5) {
         return false;
     }
-    
+
     @Override
     public AxisAlignedBB g(double arg0) {
         return this;
@@ -85,7 +85,7 @@ public class NullBoundingBox extends AxisAlignedBB {
     public double a(EnumAxis arg0) {
         return 0.0;
     }
-    
+
     @Override
     public double b(EnumAxis arg0) {
         return 0.0;
@@ -105,7 +105,7 @@ public class NullBoundingBox extends AxisAlignedBB {
     public double c() {
         return 0.0;
     }
-    
+
     @Override
     public double d() {
         return 0.0;

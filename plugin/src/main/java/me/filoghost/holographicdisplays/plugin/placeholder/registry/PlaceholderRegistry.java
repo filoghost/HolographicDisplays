@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceholderRegistry {
-    
+
     private final Table<PlaceholderIdentifier, PluginName, PlaceholderExpansion> placeholderExpansions;
     private Runnable changeListener;
-    
+
     public PlaceholderRegistry() {
         this.placeholderExpansions = HashBasedTable.create();
     }
@@ -39,7 +39,7 @@ public class PlaceholderRegistry {
     public void registerIndividualPlaceholderReplacer(Plugin plugin, String identifier, int refreshIntervalTicks, IndividualPlaceholderReplacer placeholderReplacer) {
         registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, placeholderReplacer));
     }
-    
+
     public void registerIndividualPlaceholder(Plugin plugin, String identifier, IndividualPlaceholder placeholder) {
         registerIndividualPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
     }
@@ -52,38 +52,38 @@ public class PlaceholderRegistry {
     public void registerGlobalPlaceholderReplacer(Plugin plugin, String identifier, int refreshIntervalTicks, PlaceholderReplacer placeholderReplacer) {
         registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, placeholderReplacer));
     }
-    
+
     public void registerGlobalPlaceholder(Plugin plugin, String identifier, Placeholder placeholder) {
         registerGlobalPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
     }
-    
+
     public void registerGlobalPlaceholderFactory(Plugin plugin, String identifier, PlaceholderFactory factory) {
         PlaceholderExpansion expansion = new GlobalPlaceholderExpansion(plugin, identifier, factory);
         registerExpansion(expansion);
     }
-    
+
     private void registerExpansion(PlaceholderExpansion expansion) {
         placeholderExpansions.put(expansion.getIdentifier(), expansion.getPluginName(), expansion);
 
         changeListener.run();
     }
-    
+
     public void unregisterAll(Plugin plugin) {
         placeholderExpansions.column(new PluginName(plugin)).clear();
-        
+
         changeListener.run();
     }
 
     public void unregister(Plugin plugin, String identifier) {
         placeholderExpansions.remove(new PlaceholderIdentifier(identifier), new PluginName(plugin));
-        
+
         changeListener.run();
     }
-    
+
     public @Nullable PlaceholderExpansion find(PlaceholderOccurrence textOccurrence) {
         PluginName pluginName = textOccurrence.getPluginName();
         PlaceholderIdentifier identifier = textOccurrence.getIdentifier();
-        
+
         if (pluginName != null) {
             // Find exact entry if plugin name is specified
             return placeholderExpansions.get(identifier, pluginName);

@@ -39,7 +39,7 @@ public interface HolographicDisplaysAPI {
     static int getVersion() {
         return 1;
     }
-    
+
     static @NotNull HolographicDisplaysAPI get(@NotNull Plugin plugin) {
         return HolographicDisplaysAPIProvider.getImplementation().getHolographicDisplaysAPI(plugin);
     }
@@ -70,7 +70,7 @@ public interface HolographicDisplaysAPI {
      * @since 1
      */
     boolean isRegisteredPlaceholder(@NotNull String identifier);
-    
+
     /**
      * Returns all the registered placeholder identifiers.
      *

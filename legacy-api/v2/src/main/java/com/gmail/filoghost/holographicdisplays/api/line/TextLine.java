@@ -13,8 +13,8 @@ public interface TextLine extends TouchableLine {
 
     @Deprecated
     String getText();
-    
+
     @Deprecated
     void setText(String text);
-    
+
 }

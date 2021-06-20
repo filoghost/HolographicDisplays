@@ -22,12 +22,12 @@ public class CraftNMSItem extends CraftItem {
     }
 
     // Disallow all the bukkit methods
-    
+
     @Override
     public void remove() {
         // Cannot be removed, this is the most important to override
     }
-    
+
     // Methods from Item class
     @Override public void setItemStack(ItemStack stack) {}
     @Override public void setPickupDelay(int delay) {}
@@ -54,5 +54,5 @@ public class CraftNMSItem extends CraftItem {
     @Override public void setTicksLived(int value) {}
     @Override public void setPersistent(boolean flag) {}
     @Override public void setRotation(float yaw, float pitch) {}
-    
+
 }

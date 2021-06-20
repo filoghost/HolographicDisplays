@@ -56,7 +56,7 @@ public class PlaceholderTracker {
     public @Nullable String updateAndGetIndividualReplacement(PlaceholderOccurrence placeholderOccurrence, Player player) {
         return updateAndGetReplacement(placeholderOccurrence, player, true);
     }
-    
+
     private @Nullable String updateAndGetReplacement(PlaceholderOccurrence placeholderOccurrence, Player player, boolean individual) {
         try {
             TrackedPlaceholder trackedPlaceholder = getTrackedPlaceholder(placeholderOccurrence);
@@ -85,13 +85,13 @@ public class PlaceholderTracker {
     private TrackedPlaceholder createTrackedPlaceholder(PlaceholderOccurrence placeholderOccurrence) throws PlaceholderException {
         PlaceholderExpansion placeholderExpansion = registry.find(placeholderOccurrence);
         StandardPlaceholder placeholder;
-        
+
         if (placeholderExpansion != null) {
             placeholder = placeholderExpansion.createPlaceholder(placeholderOccurrence.getArgument());
         } else {
             placeholder = null;
         }
-        
+
         if (placeholder == null) {
             return new TrackedNullPlaceholder(placeholderExpansion);
         } else if (placeholder.isIndividual()) {

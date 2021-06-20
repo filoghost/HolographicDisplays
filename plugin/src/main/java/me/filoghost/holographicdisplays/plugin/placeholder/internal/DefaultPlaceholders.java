@@ -29,7 +29,7 @@ public class DefaultPlaceholders {
             BungeeServerTracker bungeeServerTracker) {
         HolographicDisplays plugin = HolographicDisplays.getInstance();
         placeholderRegistry.unregisterAll(plugin);
-        
+
         placeholderRegistry.registerGlobalPlaceholder(plugin, "rainbow", new AnimationPlaceholder(4, toStringList(
                 ChatColor.RED,
                 ChatColor.GOLD,
@@ -106,7 +106,7 @@ public class DefaultPlaceholders {
         placeholderRegistry.registerIndividualPlaceholderReplacer(plugin, "player", Integer.MAX_VALUE, (player, argument) -> {
             return player.getName();
         });
-        
+
         placeholderRegistry.registerIndividualPlaceholderReplacer(plugin, "displayName", 20, (player, argument) -> {
             return player.getDisplayName();
         });

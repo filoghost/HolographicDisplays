@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 class MetadataHelper {
-    
+
     private final int itemSlotIndex;
     private final int entityStatusIndex;
     private final int airLevelIndex;
@@ -47,20 +47,20 @@ class MetadataHelper {
         } else {
             itemSlotIndex = 10;
         }
-        
+
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_15_R1)) {
             armorStandStatusIndex = 14;
         } else {
             armorStandStatusIndex = 11;
         }
-        
+
         entityStatusIndex = 0;
         airLevelIndex = 1;
         customNameIndex = 2;
         customNameVisibleIndex = 3;
         noGravityIndex = 5;
         slimeSizeIndex = 15;
-        
+
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
             itemSerializer = Registry.get(MinecraftReflection.getItemStackClass());
             intSerializer = Registry.get(Integer.class);
@@ -68,7 +68,7 @@ class MetadataHelper {
             stringSerializer = Registry.get(String.class);
             booleanSerializer = Registry.get(Boolean.class);
         }
-        
+
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_13_R1)) {
             customNameUsesChatComponents = true;
             chatComponentSerializer = Registry.get(MinecraftReflection.getIChatBaseComponentClass(), true);
@@ -76,53 +76,53 @@ class MetadataHelper {
             customNameUsesChatComponents = false;
         }
     }
-    
-    
+
+
     public void setEntityStatus(WrappedDataWatcher dataWatcher, byte statusBitmask) {
         requireMinimumVersion(NMSVersion.v1_9_R1);
         dataWatcher.setObject(new WrappedDataWatcherObject(entityStatusIndex, byteSerializer), statusBitmask);
     }
-    
+
 
     public WrappedWatchableObject getCustomNameWatchableObject(WrappedDataWatcher metadata) {
         return metadata.getWatchableObject(customNameIndex);
     }
-    
-    
+
+
     public WrappedWatchableObject getCustomNameWatchableObject(List<WrappedWatchableObject> dataWatcherValues) {
         for (WrappedWatchableObject watchableObject : dataWatcherValues) {
             if (watchableObject.getIndex() == customNameIndex) {
                 return watchableObject;
             }
         }
-        
+
         return null;
     }
-    
-    
+
+
     public Object getCustomNameNMSObject(WrappedWatchableObject customNameWatchableObject) {
         Object customNameNMSObject = customNameWatchableObject.getRawValue();
         if (customNameNMSObject == null) {
             return null;
         }
-        
+
         if (customNameUsesChatComponents) {
             if (!(customNameNMSObject instanceof Optional)) {
                 throw new IllegalArgumentException("Expected custom name of type " + Optional.class);
             }
-            
+
             return ((Optional<?>) customNameNMSObject).orElse(null);
-            
+
         } else {
             if (!(customNameNMSObject instanceof String)) {
                 throw new IllegalArgumentException("Expected custom name of type " + String.class);
             }
-            
+
             return customNameNMSObject;
         }
     }
-    
-    
+
+
     public void setCustomNameNMSObject(WrappedWatchableObject customNameWatchableObject, Object customNameNMSObject) {
         if (customNameUsesChatComponents) {
             customNameWatchableObject.setValue(Optional.ofNullable(customNameNMSObject));
@@ -131,17 +131,17 @@ class MetadataHelper {
         }
     }
 
-    
+
     public void setCustomNameNMSObject(WrappedDataWatcher dataWatcher, Object customNameNMSObject) {
         requireMinimumVersion(NMSVersion.v1_9_R1);
-        
+
         if (customNameUsesChatComponents) {
             dataWatcher.setObject(
-                    new WrappedDataWatcherObject(customNameIndex, chatComponentSerializer), 
+                    new WrappedDataWatcherObject(customNameIndex, chatComponentSerializer),
                     Optional.ofNullable(customNameNMSObject));
         } else {
             dataWatcher.setObject(
-                    new WrappedDataWatcherObject(customNameIndex, stringSerializer), 
+                    new WrappedDataWatcherObject(customNameIndex, stringSerializer),
                     customNameNMSObject);
         }
     }
@@ -168,11 +168,11 @@ class MetadataHelper {
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
             if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1)) {
                 dataWatcher.setObject(
-                        new WrappedDataWatcherObject(itemSlotIndex, itemSerializer), 
+                        new WrappedDataWatcherObject(itemSlotIndex, itemSerializer),
                         nmsItemStack);
             } else {
                 dataWatcher.setObject(
-                        new WrappedDataWatcherObject(itemSlotIndex, itemSerializer), 
+                        new WrappedDataWatcherObject(itemSlotIndex, itemSerializer),
                         com.google.common.base.Optional.of(nmsItemStack));
             }
             dataWatcher.setObject(new WrappedDataWatcherObject(airLevelIndex, intSerializer), 300);

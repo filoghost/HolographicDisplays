@@ -11,7 +11,7 @@ import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderL
 import org.bukkit.Location;
 
 public class InternalHologramManager extends BaseHologramManager<InternalHologram> {
-    
+
     private final NMSManager nmsManager;
     private final PlaceholderLineTracker placeholderLineTracker;
 
@@ -38,5 +38,5 @@ public class InternalHologramManager extends BaseHologramManager<InternalHologra
     public boolean isExistingHologram(String name) {
         return getHologramByName(name) != null;
     }
-    
+
 }

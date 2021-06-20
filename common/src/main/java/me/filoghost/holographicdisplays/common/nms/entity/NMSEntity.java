@@ -12,19 +12,19 @@ import org.bukkit.entity.Player;
  * A custom entity that is part of a hologram.
  */
 public interface NMSEntity {
-    
+
     StandardHologramLine getHologramLine();
-    
+
     void setLocationNMS(double x, double y, double z);
-    
+
     boolean isDeadNMS();
-    
+
     void killEntityNMS();
-    
+
     int getIdNMS();
-    
+
     org.bukkit.entity.Entity getBukkitEntityNMS();
-    
+
     boolean isTrackedBy(Player bukkitPlayer);
 
 }

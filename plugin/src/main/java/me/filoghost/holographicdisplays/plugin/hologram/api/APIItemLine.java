@@ -41,10 +41,10 @@ public class APIItemLine extends BaseItemLine implements ItemLine, APITouchableL
         v2Adapter.onNewPickupHandlerChange(getPickupHandler(), pickupHandler);
         super.setPickupHandler(pickupHandler);
     }
-    
+
     @Override
     public V2ItemLineAdapter getV2Adapter() {
         return v2Adapter;
     }
-    
+
 }

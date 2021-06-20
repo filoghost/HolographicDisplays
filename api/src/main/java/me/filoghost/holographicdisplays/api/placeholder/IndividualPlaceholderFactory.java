@@ -16,5 +16,5 @@ public interface IndividualPlaceholderFactory {
      * @since 1
      */
     @Nullable IndividualPlaceholder getPlaceholder(@Nullable String argument);
-    
+
 }

@@ -16,21 +16,21 @@ public class ImageReader {
 
     public static BufferedImage readImage(Path file) throws ImageReadException, IOException {
         BufferedImage image = ImageIO.read(Files.newInputStream(file));
-        
+
         if (image == null) {
             throw new ImageReadException();
         }
-            
+
         return image;
     }
 
     public static BufferedImage readImage(URL url) throws ImageReadException, IOException {
         BufferedImage image = ImageIO.read(url);
-        
+
         if (image == null) {
             throw new ImageReadException();
         }
-            
+
         return image;
     }
 

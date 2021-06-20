@@ -29,7 +29,7 @@ public class NearCommand extends HologramSubCommand {
         setMinArgs(1);
         setUsageArgs("<radius>");
         setDescription("Get a list of near holograms.");
-        
+
         this.internalHologramManager = internalHologramManager;
     }
 
@@ -38,28 +38,28 @@ public class NearCommand extends HologramSubCommand {
         Player player = CommandValidate.getPlayerSender(sender);
         int radius = CommandValidate.parseInteger(args[0]);
         CommandValidate.check(radius > 0, "Radius must be at least 1.");
-        
+
         World world = player.getWorld();
         int radiusSquared = radius * radius;
         List<InternalHologram> nearHolograms = new ArrayList<>();
-        
+
         for (InternalHologram hologram : internalHologramManager.getHolograms()) {
             if (hologram.getWorld().equals(world) && hologram.getLocation().distanceSquared(player.getLocation()) <= radiusSquared) {
                 nearHolograms.add(hologram);
             }
         }
-        
+
         CommandValidate.check(!nearHolograms.isEmpty(), "There are no holograms in the given radius.");
-        
+
         Messages.sendTitle(player, "Near holograms");
         for (InternalHologram nearHologram : nearHolograms) {
-            player.sendMessage(Colors.SECONDARY_SHADOW + "- " 
-                    + Colors.SECONDARY + Colors.BOLD + nearHologram.getName() + " " + Colors.SECONDARY_SHADOW + "at" 
-                    + " x: " + (int) nearHologram.getX() + "," 
-                    + " y: " + (int) nearHologram.getY() + "," 
+            player.sendMessage(Colors.SECONDARY_SHADOW + "- "
+                    + Colors.SECONDARY + Colors.BOLD + nearHologram.getName() + " " + Colors.SECONDARY_SHADOW + "at"
+                    + " x: " + (int) nearHologram.getX() + ","
+                    + " y: " + (int) nearHologram.getY() + ","
                     + " z: " + (int) nearHologram.getZ()
                     + " (lines: " + nearHologram.getLineCount() + ")");
         }
     }
-    
+
 }

@@ -45,7 +45,7 @@ public abstract class StandardPlaceholder {
     /*
      * Below methods may use externally provided objects which can throw any exception
      */
-    
+
     protected abstract int doGetRefreshIntervalTicks() throws Throwable;
 
     protected abstract @Nullable String doGetReplacement(Player player, @Nullable String argument) throws Throwable;

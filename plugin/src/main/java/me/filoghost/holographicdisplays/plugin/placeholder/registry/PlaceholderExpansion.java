@@ -13,15 +13,15 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class PlaceholderExpansion {
-    
+
     private final PluginName pluginName;
     private final PlaceholderIdentifier identifier;
-    
+
     public PlaceholderExpansion(Plugin plugin, String identifier) {
         this.pluginName = new PluginName(plugin);
         this.identifier = new PlaceholderIdentifier(identifier);
     }
-    
+
     public PluginName getPluginName() {
         return pluginName;
     }

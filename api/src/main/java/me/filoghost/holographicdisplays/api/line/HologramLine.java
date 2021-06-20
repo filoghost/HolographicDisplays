@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 1
  */
 public interface HologramLine {
-    
+
     /**
      * Returns the parent Hologram of this line.
      *
@@ -22,7 +22,7 @@ public interface HologramLine {
      * @since 1
      */
     @NotNull Hologram getParent();
-    
+
     /**
      * Removes this line from the parent Hologram. Since: v2.0.1
      * Do not call if the Hologram has been deleted, an exception will be thrown.

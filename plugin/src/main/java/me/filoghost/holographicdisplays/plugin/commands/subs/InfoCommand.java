@@ -34,14 +34,14 @@ public class InfoCommand extends LineEditingCommand implements QuickEditCommand 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
-        
+
         sender.sendMessage("");
         Messages.sendTitle(sender, "Lines of the hologram '" + hologram.getName() + "'");
         int index = 0;
-        
+
         for (InternalHologramLine line : hologram.getLines()) {
             index++;
-            sender.sendMessage(Colors.SECONDARY + Colors.BOLD + index 
+            sender.sendMessage(Colors.SECONDARY + Colors.BOLD + index
                     + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + line.getSerializedConfigValue());
         }
         commandManager.sendQuickEditCommands(context, hologram);

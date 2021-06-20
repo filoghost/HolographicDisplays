@@ -24,14 +24,14 @@ public class CraftNMSSlime extends CraftSlime {
     public CraftNMSSlime(CraftServer server, EntityNMSSlime entity) {
         super(server, entity);
     }
-    
+
     // Disallow all the bukkit methods
-    
+
     @Override
     public void remove() {
         // Cannot be removed, this is the most important to override
     }
-    
+
     // Methods from LivingEntity class
     @Override public boolean addPotionEffect(PotionEffect effect) { return false; }
     @Override public boolean addPotionEffect(PotionEffect effect, boolean param) { return false; }
@@ -65,7 +65,7 @@ public class CraftNMSSlime extends CraftSlime {
     @Override public void setSilent(boolean flag) {}
     @Override public void setTicksLived(int value) {}
     @Override public void setPersistent(boolean flag) {}
-    
+
     // Methods from Mob
     @Override public void setLootTable(LootTable table) {}
     @Override public void setSeed(long seed) {}
@@ -73,5 +73,5 @@ public class CraftNMSSlime extends CraftSlime {
     // Methods from Slime
     @Override public void setSize(int size) {}
     @Override public void setTarget(LivingEntity target) {}
-    
+
 }

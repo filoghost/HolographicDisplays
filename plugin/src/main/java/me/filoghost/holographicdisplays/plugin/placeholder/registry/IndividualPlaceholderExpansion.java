@@ -36,7 +36,7 @@ class IndividualPlaceholderExpansion extends PlaceholderExpansion {
         } catch (Throwable t) {
             throw new PlaceholderException(t, this);
         }
-        
+
         if (placeholder != null) {
             return new IndividualStandardPlaceholder(placeholder, this);
         } else {
@@ -44,26 +44,26 @@ class IndividualPlaceholderExpansion extends PlaceholderExpansion {
         }
     }
 
-    
+
     private static class IndividualStandardPlaceholder extends StandardPlaceholder {
-    
+
         private final @NotNull IndividualPlaceholder placeholder;
-    
+
         IndividualStandardPlaceholder(@NotNull IndividualPlaceholder placeholder, @NotNull IndividualPlaceholderExpansion source) {
             super(source);
             this.placeholder = placeholder;
         }
-    
+
         @Override
         protected int doGetRefreshIntervalTicks() {
             return placeholder.getRefreshIntervalTicks();
         }
-    
+
         @Override
         protected @Nullable String doGetReplacement(Player player, @Nullable String argument) {
             return placeholder.getReplacement(player, argument);
         }
-    
+
     }
 
 }

@@ -15,23 +15,23 @@ public interface VisibilityManager {
 
     @Deprecated
     boolean isVisibleByDefault();
-    
+
     @Deprecated
     void setVisibleByDefault(boolean visibleByDefault);
-    
+
     @Deprecated
     void showTo(Player player);
-    
+
     @Deprecated
     void hideTo(Player player);
-    
+
     @Deprecated
     boolean isVisibleTo(Player player);
-    
+
     @Deprecated
     void resetVisibility(Player player);
-    
+
     @Deprecated
     void resetVisibilityAll();
-    
+
 }

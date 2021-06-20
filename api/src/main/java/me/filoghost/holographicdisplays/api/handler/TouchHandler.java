@@ -22,5 +22,5 @@ public interface TouchHandler {
      * @since 1
      */
     void onTouch(@NotNull Player player);
-    
+
 }

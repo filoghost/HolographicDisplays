@@ -49,19 +49,19 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
         int insertAfterIndex = CommandValidate.parseInteger(args[1]);
         String serializedLine = Strings.joinFrom(" ", args, 2);
-        
+
         int oldLinesAmount = hologram.getLineCount();
-        
-        CommandValidate.check(insertAfterIndex >= 0 && insertAfterIndex <= oldLinesAmount, 
+
+        CommandValidate.check(insertAfterIndex >= 0 && insertAfterIndex <= oldLinesAmount,
                 "The number must be between 0 and " + hologram.getLineCount() + "(amount of lines of the hologram).");
 
         InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine);
         hologram.insertLine(insertAfterIndex, line);
-            
+
         configManager.saveHologramDatabase(internalHologramManager);
-        
+
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
-        
+
         if (insertAfterIndex == 0) {
             sender.sendMessage(Colors.PRIMARY + "Line inserted before first line.");
         } else if (insertAfterIndex == oldLinesAmount) {

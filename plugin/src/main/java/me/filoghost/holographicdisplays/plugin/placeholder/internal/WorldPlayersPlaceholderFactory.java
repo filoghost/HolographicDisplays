@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 public class WorldPlayersPlaceholderFactory implements PlaceholderFactory {
-    
+
     @Override
     public Placeholder getPlaceholder(@Nullable String argument) {
         if (argument == null) {
@@ -42,7 +42,7 @@ public class WorldPlayersPlaceholderFactory implements PlaceholderFactory {
         @Override
         public String getReplacement(@Nullable String argument) {
             int count = 0;
-            
+
             for (String worldName : worldNames) {
                 World world = Bukkit.getWorld(worldName);
                 if (world == null) {
@@ -55,7 +55,7 @@ public class WorldPlayersPlaceholderFactory implements PlaceholderFactory {
                     }
                 }
             }
-            
+
             return String.valueOf(count);
         }
 

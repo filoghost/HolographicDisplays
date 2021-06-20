@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 1
  */
 public interface Hologram {
-    
+
     /**
      * Appends a text line to end of this hologram.
      *
@@ -31,8 +31,8 @@ public interface Hologram {
      * @since 1
      */
     @NotNull TextLine appendTextLine(@Nullable String text);
-    
-    
+
+
     /**
      * Appends an item line to end of this hologram.
      *
@@ -41,8 +41,8 @@ public interface Hologram {
      * @since 1
      */
     @NotNull ItemLine appendItemLine(@NotNull ItemStack itemStack);
-    
-    
+
+
     /**
      * Inserts a text line in this hologram.
      *
@@ -53,8 +53,8 @@ public interface Hologram {
      * @since 1
      */
     @NotNull TextLine insertTextLine(int index, @Nullable String text);
-    
-    
+
+
     /**
      * Inserts an item line in this hologram.
      *
@@ -65,8 +65,8 @@ public interface Hologram {
      * @since 1
      */
     @NotNull ItemLine insertItemLine(int index, @NotNull ItemStack itemStack);
-    
-    
+
+
     /**
      * Finds the element at a given index in the lines.
      *
@@ -76,7 +76,7 @@ public interface Hologram {
      * @since 1
      */
     @NotNull HologramLine getLine(int index);
-    
+
     /**
      * Removes a line at a given index. Since: v2.0.1
      *
@@ -85,8 +85,8 @@ public interface Hologram {
      * @since 1
      */
     void removeLine(int index);
-    
-    
+
+
     /**
      * Removes all the lines from this hologram.
      *
@@ -94,7 +94,7 @@ public interface Hologram {
      */
     void clearLines();
 
-    
+
     /**
      * Checks the amount of lines of the hologram.
      *
@@ -102,8 +102,8 @@ public interface Hologram {
      * @since 1
      */
     int getLineCount();
-    
-    
+
+
     /**
      * The physical height of the hologram, counting all the lines. Since: v2.1.4
      *
@@ -111,8 +111,8 @@ public interface Hologram {
      * @since 1
      */
     double getHeight();
-    
-    
+
+
     /**
      * Teleports a hologram to the given location.
      *
@@ -120,8 +120,8 @@ public interface Hologram {
      * @since 1
      */
     void teleport(@NotNull Location location);
-    
-    
+
+
     /**
      * Teleports a hologram to the given location.
      *
@@ -132,7 +132,7 @@ public interface Hologram {
      * @since 1
      */
     void teleport(@NotNull World world, double x, double y, double z);
-    
+
     /**
      * Returns the position of the hologram.
      *
@@ -140,7 +140,7 @@ public interface Hologram {
      * @since 1
      */
     @NotNull Location getLocation();
-    
+
     /**
      * Returns the X coordinate.
      *
@@ -148,8 +148,8 @@ public interface Hologram {
      * @since 1
      */
     double getX();
-    
-    
+
+
     /**
      * Returns the Y coordinate.
      *
@@ -157,8 +157,8 @@ public interface Hologram {
      * @since 1
      */
     double getY();
-    
-    
+
+
     /**
      * Returns the Z coordinate.
      *
@@ -166,8 +166,8 @@ public interface Hologram {
      * @since 1
      */
     double getZ();
-    
-    
+
+
     /**
      * Returns the world.
      *
@@ -175,8 +175,8 @@ public interface Hologram {
      * @since 1
      */
     @NotNull World getWorld();
-    
-    
+
+
     /**
      * Returns the {@link VisibilitySettings} of this hologram.
      * <br><b style = "color: red">Note</b>: the usage of the VisibilitySettings requires ProtocolLib.
@@ -186,8 +186,8 @@ public interface Hologram {
      * @since 1
      */
     @NotNull VisibilitySettings getVisibilitySettings();
-    
-    
+
+
     /**
      * Returns when the hologram was created. Useful for removing old holograms.
      *
@@ -213,7 +213,7 @@ public interface Hologram {
      * @since 1
      */
     void setAllowPlaceholders(boolean allowPlaceholders);
-    
+
     /**
      * Deletes this hologram. Editing or teleporting the hologram when deleted
      * will throw an exception. Lines will be automatically cleared.
@@ -222,8 +222,8 @@ public interface Hologram {
      * @since 1
      */
     void delete();
-    
-    
+
+
     /**
      * Checks if a hologram was deleted.
      *
@@ -231,5 +231,5 @@ public interface Hologram {
      * @since 1
      */
     boolean isDeleted();
-    
+
 }

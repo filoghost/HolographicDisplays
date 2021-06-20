@@ -9,7 +9,7 @@ import me.filoghost.fcommons.Strings;
 import me.filoghost.holographicdisplays.plugin.disk.Configuration;
 
 public class ServerInfo {
-    
+
     private final boolean online;
     private final int onlinePlayers;
     private final int maxPlayers;
@@ -27,7 +27,7 @@ public class ServerInfo {
         this.online = online;
         this.onlinePlayers = onlinePlayers;
         this.maxPlayers = maxPlayers;
-        
+
         if (Strings.isEmpty(motd)) {
             motdLine1 = "";
             motdLine2 = "";
@@ -54,7 +54,7 @@ public class ServerInfo {
     public int getOnlinePlayers() {
         return onlinePlayers;
     }
-    
+
     public int getMaxPlayers() {
         return maxPlayers;
     }

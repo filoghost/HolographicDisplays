@@ -21,7 +21,7 @@ public class ServerPinger {
             socket.setSoTimeout(timeout);
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             DataInputStream in = new DataInputStream(socket.getInputStream());
-            
+
             // Handshake packet
             ByteArrayOutputStream handshakeBytes = new ByteArrayOutputStream();
             DataOutputStream handshakeOut = new DataOutputStream(handshakeBytes);
@@ -31,15 +31,15 @@ public class ServerPinger {
             handshakeOut.writeShort(serverAddress.getPort());
             writeVarInt(handshakeOut, 1); // Next state: status request
             writeByteArray(out, handshakeBytes.toByteArray());
-            
+
             // Status request packet
             writeByteArray(out, new byte[]{0x00}); // Packet ID
-            
+
             // Response packet
             readVarInt(in); // Packet size
             readVarInt(in); // Packet ID
             String responseJson = readString(in);
-            
+
             return PingResponse.fromJson(responseJson, serverAddress);
         }
     }

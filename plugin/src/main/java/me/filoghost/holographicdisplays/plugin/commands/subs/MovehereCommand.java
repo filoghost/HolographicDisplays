@@ -38,14 +38,14 @@ public class MovehereCommand extends HologramSubCommand {
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         Player player = CommandValidate.getPlayerSender(sender);
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
-        
+
         hologram.teleport(player.getLocation());
-        
+
         configManager.saveHologramDatabase(internalHologramManager);
         Location to = player.getLocation();
         to.setPitch(90);
         player.teleport(to, TeleportCause.PLUGIN);
         player.sendMessage(Colors.PRIMARY + "You moved the hologram '" + hologram.getName() + "' near to you.");
     }
-    
+
 }

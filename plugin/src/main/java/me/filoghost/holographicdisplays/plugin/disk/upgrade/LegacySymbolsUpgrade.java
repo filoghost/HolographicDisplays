@@ -23,7 +23,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class LegacySymbolsUpgrade {
-    
+
     public static void run(ConfigManager configManager, ErrorCollector errorCollector) throws ConfigLoadException, ConfigSaveException {
         Path oldFile = configManager.getRootDataFolder().resolve("symbols.yml");
         ConfigLoader newConfigLoader = configManager.getConfigLoader("custom-placeholders.yml");
@@ -32,14 +32,14 @@ public class LegacySymbolsUpgrade {
         if (!Files.isRegularFile(oldFile)) {
             return; // Old file doesn't exist, ignore upgrade
         }
-        
+
         if (Files.isRegularFile(newFile)) {
             return; // Already created, do not override
         }
 
         Config newConfig = new Config();
         ConfigSection placeholdersSection = newConfig.getOrCreateSection("placeholders");
-        
+
         List<String> lines;
         try {
             lines = Files.readAllLines(oldFile);

@@ -99,7 +99,7 @@ public class HologramCommandManager extends SubCommandManager {
                 }
             }
         }
-        
+
         return null;
     }
 
@@ -117,7 +117,7 @@ public class HologramCommandManager extends SubCommandManager {
             if (!(subCommand instanceof QuickEditCommand)) {
                 continue;
             }
-            
+
             QuickEditCommand quickEditCommand = (QuickEditCommand) subCommand;
 
             // Assume first argument is always "<hologram>" and remove it
@@ -149,7 +149,7 @@ public class HologramCommandManager extends SubCommandManager {
     protected void sendNoArgsMessage(CommandContext context) {
         CommandSender sender = context.getSender();
         String version = HolographicDisplays.getInstance().getDescription().getVersion();
-        sender.sendMessage(Colors.PRIMARY_SHADOW + "Server is running " + Colors.PRIMARY + "Holographic Displays " 
+        sender.sendMessage(Colors.PRIMARY_SHADOW + "Server is running " + Colors.PRIMARY + "Holographic Displays "
                 + Colors.PRIMARY_SHADOW + "v" + version + " by " + Colors.PRIMARY + "filoghost");
         if (helpCommand.hasPermission(sender)) {
             sender.sendMessage(Colors.PRIMARY_SHADOW + "Commands: " + Colors.PRIMARY + helpCommand.getFullUsageText(context));
@@ -163,13 +163,13 @@ public class HologramCommandManager extends SubCommandManager {
 
     @Override
     protected void sendUnknownSubCommandMessage(SubCommandContext context) {
-        context.getSender().sendMessage(Colors.ERROR + "Unknown sub-command." 
+        context.getSender().sendMessage(Colors.ERROR + "Unknown sub-command."
                 + " Type \"" + helpCommand.getFullUsageText(context) + "\" for a list of commands.");
     }
 
     @Override
     protected void sendSubCommandUsage(SubCommandContext context) {
-        context.getSender().sendMessage(Colors.ERROR + "Usage: /" + context.getRootLabel() + " " 
+        context.getSender().sendMessage(Colors.ERROR + "Usage: /" + context.getRootLabel() + " "
                 + context.getSubLabel() + " " + context.getSubCommand().getUsageArgs());
     }
 
@@ -181,8 +181,8 @@ public class HologramCommandManager extends SubCommandManager {
     @Override
     protected void handleUnexpectedException(CommandContext context, Throwable t) {
         Bukkit.getLogger().log(Level.SEVERE, "Unhandled exception while executing /" + context.getRootLabel(), t);
-        context.getSender().sendMessage(Colors.ERROR + "Internal error while executing command." 
+        context.getSender().sendMessage(Colors.ERROR + "Internal error while executing command."
                 + " Please look on the console for more details.");
     }
-    
+
 }

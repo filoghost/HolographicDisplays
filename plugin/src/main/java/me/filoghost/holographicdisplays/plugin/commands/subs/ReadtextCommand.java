@@ -34,7 +34,7 @@ public class ReadtextCommand extends LineEditingCommand {
 
     private final InternalHologramManager internalHologramManager;
     private final ConfigManager configManager;
-    
+
     public ReadtextCommand(InternalHologramManager internalHologramManager, ConfigManager configManager) {
         super("readtext", "readlines");
         setMinArgs(2);
@@ -57,22 +57,22 @@ public class ReadtextCommand extends LineEditingCommand {
                 "to paste it in the hologram named 'test'. In this case you",
                 "would execute " + ChatColor.YELLOW + "/" + context.getRootLabel() + " " + getName() + " test info.txt");
     }
-    
+
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
         String fileName = args[1];
-        
+
         try {
             Path targetFile = HologramCommandValidate.getUserReadableFile(configManager.getRootDataFolder(), fileName);
             List<String> serializedLines = Files.readAllLines(targetFile);
-            
+
             int linesAmount = serializedLines.size();
             if (linesAmount > 40) {
                 Messages.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
                 linesAmount = 40;
             }
-            
+
             List<InternalHologramLine> linesToAdd = new ArrayList<>();
             for (int i = 0; i < linesAmount; i++) {
                 try {
@@ -82,26 +82,26 @@ public class ReadtextCommand extends LineEditingCommand {
                     throw new CommandException("Error at line " + (i + 1) + ": " + e.getMessage());
                 }
             }
-            
+
             hologram.setLines(linesToAdd);
 
             configManager.saveHologramDatabase(internalHologramManager);
-            
+
             if (isImageExtension(FileUtils.getExtension(fileName))) {
-                Messages.sendWarning(sender, "The read file has an image's extension." 
+                Messages.sendWarning(sender, "The read file has an image's extension."
                         + " If it is an image, you should use /" + context.getRootLabel() + " readimage.");
             }
-            
+
             sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram.");
             Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
-            
+
         } catch (IOException e) {
             throw new CommandException("I/O exception while reading the file. Is it in use?");
         }
     }
-    
+
     private boolean isImageExtension(String extension) {
         return Arrays.asList("jpg", "png", "jpeg", "gif").contains(extension.toLowerCase());
     }
-    
+
 }

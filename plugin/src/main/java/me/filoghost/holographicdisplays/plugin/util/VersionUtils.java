@@ -19,21 +19,21 @@ public class VersionUtils {
     private static int compare(String version1, String version2) throws NumberFormatException {
         String[] version1Split = Strings.split(version1, ".");
         String[] version2Split = Strings.split(version2, ".");
-        
+
         int longest = Math.max(version1Split.length, version2Split.length);
-        
+
         // Default value is 0 (for elements not explicitly set)
         int[] version1NumbersArray = new int[longest];
         int[] version2NumbersArray = new int[longest];
-        
+
         for (int i = 0; i < version1Split.length; i++) {
             version1NumbersArray[i] = Integer.parseInt(version1Split[i]);
         }
-        
+
         for (int i = 0; i < version2Split.length; i++) {
             version2NumbersArray[i] = Integer.parseInt(version2Split[i]);
         }
-        
+
         for (int i = 0; i < longest; i++) {
             int diff = version1NumbersArray[i] - version2NumbersArray[i];
             if (diff > 0) {
@@ -42,8 +42,8 @@ public class VersionUtils {
                 return -1;
             }
         }
-        
+
         return 0;
     }
-    
+
 }

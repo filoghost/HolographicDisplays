@@ -22,7 +22,7 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
     private final APIHologramManager apiHologramManager;
     private final NMSManager nmsManager;
     private final PlaceholderRegistry placeholderRegistry;
-    
+
     // Optimization: avoid creating a new instance every time a plugin requires it, in case it never stores a reference
     private final Map<Plugin, HolographicDisplaysAPI> apiInstanceCache;
 
@@ -39,7 +39,7 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
     @Override
     public HolographicDisplaysAPI getHolographicDisplaysAPI(Plugin plugin) {
         Preconditions.notNull(plugin, "plugin");
-        
+
         return apiInstanceCache.computeIfAbsent(plugin, pluginKey ->
                 new DefaultHolographicDisplaysAPI(pluginKey, apiHologramManager, placeholderRegistry));
     }
@@ -47,7 +47,7 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
     @Override
     public boolean isHologramEntity(Entity entity) {
         Preconditions.notNull(entity, "entity");
-        
+
         return nmsManager.isNMSEntityBase(entity);
     }
 

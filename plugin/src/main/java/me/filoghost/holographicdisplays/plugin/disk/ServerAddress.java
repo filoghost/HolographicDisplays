@@ -6,11 +6,11 @@
 package me.filoghost.holographicdisplays.plugin.disk;
 
 public class ServerAddress {
-    
+
     private final String name;
     private final String ip;
     private final int port;
-    
+
     public ServerAddress(String name, String ip, int port) {
         this.name = name;
         this.ip = ip;
@@ -28,10 +28,10 @@ public class ServerAddress {
     public int getPort() {
         return port;
     }
-    
+
     @Override
     public String toString() {
         return name + " (" + ip + ":" + port + ")";
     }
-    
+
 }

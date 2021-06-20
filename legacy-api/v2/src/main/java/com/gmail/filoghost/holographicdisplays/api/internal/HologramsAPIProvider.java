@@ -21,7 +21,7 @@ import java.util.Collection;
 @Deprecated
 @Internal
 public abstract class HologramsAPIProvider {
-    
+
     private static HologramsAPIProvider implementation;
 
     @Deprecated
@@ -34,7 +34,7 @@ public abstract class HologramsAPIProvider {
         if (implementation == null) {
             throw new IllegalStateException(HolographicDisplaysAPIProvider.ERROR_IMPLEMENTATION_NOT_SET);
         }
-        
+
         return implementation;
     }
 

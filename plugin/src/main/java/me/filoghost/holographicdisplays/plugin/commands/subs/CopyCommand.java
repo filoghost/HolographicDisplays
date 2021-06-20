@@ -23,7 +23,7 @@ public class CopyCommand extends HologramSubCommand {
 
     private final InternalHologramManager internalHologramManager;
     private final ConfigManager configManager;
-    
+
     public CopyCommand(InternalHologramManager internalHologramManager, ConfigManager configManager) {
         super("copy");
         setMinArgs(2);
@@ -33,7 +33,7 @@ public class CopyCommand extends HologramSubCommand {
         this.internalHologramManager = internalHologramManager;
         this.configManager = configManager;
     }
-    
+
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram fromHologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
@@ -43,12 +43,12 @@ public class CopyCommand extends HologramSubCommand {
         for (InternalHologramLine line : fromHologram.getLines()) {
             clonedLines.add(HologramCommandValidate.parseHologramLine(toHologram, line.getSerializedConfigValue()));
         }
-        
+
         toHologram.setLines(clonedLines);
-        
+
         configManager.saveHologramDatabase(internalHologramManager);
-        
-        sender.sendMessage(Colors.PRIMARY + "Hologram \"" + fromHologram.getName() + "\"" 
+
+        sender.sendMessage(Colors.PRIMARY + "Hologram \"" + fromHologram.getName() + "\""
                 + " copied into hologram \"" + toHologram.getName() + "\".");
     }
 

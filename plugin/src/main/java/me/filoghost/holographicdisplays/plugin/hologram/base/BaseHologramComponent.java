@@ -16,11 +16,11 @@ public abstract class BaseHologramComponent {
     private World world;
     private double x, y, z;
     private int chunkX, chunkZ;
-    
+
     public boolean isInChunk(Chunk chunk) {
-        return world != null 
-                && chunk.getWorld() == world 
-                && chunk.getX() == chunkX 
+        return world != null
+                && chunk.getWorld() == world
+                && chunk.getX() == chunkX
                 && chunk.getZ() == chunkZ;
     }
 
@@ -31,7 +31,7 @@ public abstract class BaseHologramComponent {
     public @NotNull Location getLocation() {
         return new Location(world, x, y, z);
     }
-    
+
     protected void setLocation(Location location) {
         setLocation(location.getWorld(), location.getX(), location.getY(), location.getZ());
     }

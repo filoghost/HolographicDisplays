@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.internal;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 
 public interface InternalHologramLine extends StandardHologramLine {
-    
+
     String getSerializedConfigValue();
 
 }

@@ -23,18 +23,18 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
 public class WrapperPlayServerAttachEntity extends AbstractPacket {
-    
+
     public static final PacketType TYPE = PacketType.Play.Server.ATTACH_ENTITY;
-    
+
     public WrapperPlayServerAttachEntity() {
         super(new PacketContainer(TYPE), TYPE);
         handle.getModifier().writeDefaults();
     }
-    
+
     public WrapperPlayServerAttachEntity(PacketContainer packet) {
         super(packet, TYPE);
     }
-    
+
     /**
      * Retrieve whether or not the entity is leached onto the vehicle.
      *
@@ -43,7 +43,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
     public boolean getLeached() {
         return handle.getIntegers().read(0) != 0;
     }
-    
+
     /**
      * Set whether or not the entity is leached onto the vehicle.
      *
@@ -52,7 +52,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
     public void setLeached(boolean value) {
         handle.getIntegers().write(0, value ? 1 : 0);
     }
-    
+
     /**
      * Retrieve the player entity ID being attached.
      *
@@ -61,7 +61,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
     public int getEntityId() {
         return handle.getIntegers().read(1);
     }
-    
+
     /**
      * Set the player entity ID being attached.
      *
@@ -90,7 +90,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
     public Entity getEntity(PacketEvent event) {
         return getEntity(event.getPlayer().getWorld());
     }
-    
+
     /**
      * Retrieve the vehicle entity ID attached to (-1 for unattaching).
      *
@@ -99,7 +99,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
     public int getVehicleId() {
         return handle.getIntegers().read(2);
     }
-    
+
     /**
      * Set the vehicle entity ID attached to (-1 for unattaching).
      *
@@ -108,7 +108,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
     public void setVehicleId(int value) {
         handle.getIntegers().write(2, value);
     }
-    
+
     /**
      * Retrieve the vehicle entity attached to (NULL for unattaching).
      *
@@ -128,5 +128,5 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
     public Entity getVehicle(PacketEvent event) {
         return getVehicle(event.getPlayer().getWorld());
     }
-    
+
 }

@@ -35,10 +35,10 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
         Preconditions.notNull(source, "source");
         Preconditions.notNull(source.getWorld(), "source's world");
         Preconditions.checkState(Bukkit.isPrimaryThread(), "Async hologram creation");
-        
+
         return apiHologramManager.createHologram(source, plugin);
     }
-    
+
     @Override
     public void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull PlaceholderReplacer replacer) {
         Preconditions.notEmpty(identifier, "identifier");
@@ -47,10 +47,10 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
         }
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
         Preconditions.notNull(replacer, "replacer");
-        
+
         placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, identifier, refreshIntervalTicks, replacer);
     }
-    
+
     private boolean isValidIdentifierCharacter(char c) {
         return ('a' <= c && c <= 'z')
                 || ('A' <= c && c <= 'Z')
@@ -62,7 +62,7 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     @Override
     public boolean isRegisteredPlaceholder(@NotNull String identifier) {
         Preconditions.notNull(identifier, "identifier");
-        
+
         return placeholderRegistry.isRegisteredIdentifier(plugin, identifier);
     }
 
@@ -79,7 +79,7 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     @Override
     public void unregisterPlaceholder(@NotNull String identifier) {
         Preconditions.notNull(identifier, "identifier");
-        
+
         placeholderRegistry.unregister(plugin, identifier);
     }
 

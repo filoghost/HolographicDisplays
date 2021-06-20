@@ -36,7 +36,7 @@ class GlobalPlaceholderExpansion extends PlaceholderExpansion {
         } catch (Throwable t) {
             throw new PlaceholderException(t, this);
         }
-        
+
         if (placeholder != null) {
             return new GlobalStandardPlaceholder(placeholder, this);
         } else {
@@ -44,26 +44,26 @@ class GlobalPlaceholderExpansion extends PlaceholderExpansion {
         }
     }
 
-    
+
     private static class GlobalStandardPlaceholder extends StandardPlaceholder {
-    
+
         private final @NotNull Placeholder placeholder;
-    
+
         GlobalStandardPlaceholder(@NotNull Placeholder placeholder, @NotNull GlobalPlaceholderExpansion source) {
             super(source);
             this.placeholder = placeholder;
         }
-        
+
         @Override
         protected int doGetRefreshIntervalTicks() {
             return placeholder.getRefreshIntervalTicks();
         }
-    
+
         @Override
         protected @Nullable String doGetReplacement(Player player, @Nullable String argument) {
             return placeholder.getReplacement(argument);
         }
-    
+
     }
 
 }

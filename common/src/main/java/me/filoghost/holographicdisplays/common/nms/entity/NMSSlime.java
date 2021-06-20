@@ -6,5 +6,5 @@
 package me.filoghost.holographicdisplays.common.nms.entity;
 
 public interface NMSSlime extends NMSEntity {
-    
+
 }

@@ -19,7 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class HologramCommandValidate {
-    
+
     public static InternalHologramLine parseHologramLine(InternalHologram hologram, String serializedLine) throws CommandException {
         try {
             return HologramLineParser.parseLine(hologram, serializedLine);
@@ -28,7 +28,7 @@ public class HologramCommandValidate {
         }
     }
 
-    public static InternalHologram getInternalHologram(InternalHologramManager internalHologramManager, String hologramName) 
+    public static InternalHologram getInternalHologram(InternalHologramManager internalHologramManager, String hologramName)
             throws CommandException {
         InternalHologram hologram = internalHologramManager.getHologramByName(hologramName);
         CommandValidate.notNull(hologram, "Cannot find a hologram named \"" + hologramName + "\".");
@@ -37,9 +37,9 @@ public class HologramCommandValidate {
 
     public static Path getUserReadableFile(Path dataFolder, String fileName) throws CommandException {
         Path targetFile = dataFolder.resolve(fileName);
-        CommandValidate.check(FileUtils.isInsideDirectory(targetFile, dataFolder), 
+        CommandValidate.check(FileUtils.isInsideDirectory(targetFile, dataFolder),
                 "The specified file must be inside HolographicDisplays' folder.");
-        CommandValidate.check(Files.exists(targetFile), 
+        CommandValidate.check(Files.exists(targetFile),
                 "The specified file \"" + fileName + "\" does not exist inside HolographicDisplays' folder.");
         CommandValidate.check(!Files.isDirectory(targetFile), "The file cannot be a folder.");
         CommandValidate.check(!isConfigFile(targetFile), "Cannot read YML configuration files.");

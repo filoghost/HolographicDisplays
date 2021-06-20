@@ -22,13 +22,13 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 public class TeleportCommand extends HologramSubCommand {
 
     private final InternalHologramManager internalHologramManager;
-    
+
     public TeleportCommand(InternalHologramManager internalHologramManager) {
         super("teleport", "tp");
         setMinArgs(1);
         setUsageArgs("<hologram>");
         setDescription("Teleports you to the given hologram.");
-        
+
         this.internalHologramManager = internalHologramManager;
     }
 
@@ -36,7 +36,7 @@ public class TeleportCommand extends HologramSubCommand {
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         Player player = CommandValidate.getPlayerSender(sender);
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
-        
+
         Location loc = hologram.getLocation();
         loc.setPitch(90);
         player.teleport(loc, TeleportCause.PLUGIN);

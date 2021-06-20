@@ -20,12 +20,12 @@ import java.util.Map.Entry;
  * Credits: https://forums.bukkit.org/threads/lib-imagemessage-v2-1-send-images-to-players-via-the-chat.204902
  */
 public class ImageMessage {
-    
+
     public static final int MAX_WIDTH = 150;
 
     private static final Map<ChatColor, Color> colorsMap = new HashMap<>();
     private static final Map<ChatColor, Color> graysMap = new HashMap<>();
-    
+
     static {
         colorsMap.put(ChatColor.DARK_BLUE, new Color(0, 0, 170));
         colorsMap.put(ChatColor.DARK_GREEN, new Color(0, 170, 0));
@@ -39,13 +39,13 @@ public class ImageMessage {
         colorsMap.put(ChatColor.RED, new Color(255, 85, 85));
         colorsMap.put(ChatColor.LIGHT_PURPLE, new Color(255, 85, 255));
         colorsMap.put(ChatColor.YELLOW, new Color(255, 255, 85));
-        
+
         graysMap.put(ChatColor.BLACK, new Color(0, 0, 0));
         graysMap.put(ChatColor.DARK_GRAY, new Color(85, 85, 85));
         graysMap.put(ChatColor.GRAY, new Color(170, 170, 170));
         graysMap.put(ChatColor.WHITE, new Color(255, 255, 255));
     }
-    
+
 
     private final String[] lines;
 
@@ -60,13 +60,13 @@ public class ImageMessage {
         if (height == 0) {
             height = 1;
         }
-        
+
         if (width > MAX_WIDTH) {
             throw new ImageTooWideException();
         }
 
         BufferedImage resized = resizeImage(image, width, height);
-        
+
         ChatColor[][] chatImg = new ChatColor[resized.getWidth()][resized.getHeight()];
         for (int x = 0; x < resized.getWidth(); x++) {
             for (int y = 0; y < resized.getHeight(); y++) {
@@ -82,14 +82,14 @@ public class ImageMessage {
         ChatColor transparencyColor = Configuration.transparencyColor;
         String transparencySymbol = Configuration.transparencySymbol;
         String imageSymbol = Configuration.imageSymbol;
-        
+
         for (int y = 0; y < colors[0].length; y++) {
             StringBuilder line = new StringBuilder();
             ChatColor previous = ChatColor.RESET;
-            
+
             for (int x = 0; x < colors.length; x++) {
                 ChatColor currentColor = colors[x][y];
-                
+
                 if (currentColor == null) {
                     // Use the transparent char
                     if (previous != transparencyColor) {
@@ -98,27 +98,27 @@ public class ImageMessage {
                         previous = transparencyColor;
                     }
                     line.append(transparencySymbol);
-                    
+
                 } else {
                     if (previous != currentColor) {
                         line.append(currentColor.toString());
                         previous = currentColor;
                     }
-                    
+
                     line.append(imageSymbol);
                 }
             }
-            
+
             lines[y] = line.toString();
         }
-        
+
         return lines;
     }
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
         return toBufferedImage(originalImage.getScaledInstance(width, height, Image.SCALE_DEFAULT));
     }
-    
+
     private BufferedImage toBufferedImage(Image img) {
         // Creates a buffered image with transparency
         BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
@@ -144,8 +144,8 @@ public class ImageMessage {
     }
 
     private boolean areIdentical(Color c1, Color c2) {
-        return Math.abs(c1.getRed() - c2.getRed()) <= 5 
-                && Math.abs(c1.getGreen() - c2.getGreen()) <= 5 
+        return Math.abs(c1.getRed() - c2.getRed()) <= 5
+                && Math.abs(c1.getGreen() - c2.getGreen()) <= 5
                 && Math.abs(c1.getBlue() - c2.getBlue()) <= 5;
 
     }
@@ -160,29 +160,29 @@ public class ImageMessage {
                 return entry.getKey();
             }
         }
-        
+
         double bestGrayDistance = -1;
         ChatColor bestGrayMatch = null;
-        
+
         for (Entry<ChatColor, Color> entry : graysMap.entrySet()) {
             double distance = getDistance(color, entry.getValue());
-            
+
             if (distance < bestGrayDistance || bestGrayDistance == -1) {
                 bestGrayDistance = distance;
                 bestGrayMatch = entry.getKey();
             }
         }
-        
+
         if (bestGrayDistance < 17500) {
             return bestGrayMatch;
         }
-        
+
         double bestColorDistance = -1;
         ChatColor bestColorMatch = null;
-        
+
         for (Entry<ChatColor, Color> entry : colorsMap.entrySet()) {
             double distance = getDistance(color, entry.getValue());
-            
+
             if (distance < bestColorDistance || bestColorDistance == -1) {
                 bestColorDistance = distance;
                 bestColorMatch = entry.getKey();
@@ -192,9 +192,9 @@ public class ImageMessage {
         // Minecraft has 15 colors
         return bestColorMatch;
     }
-    
+
     public String[] getLines() {
         return lines;
     }
-    
+
 }

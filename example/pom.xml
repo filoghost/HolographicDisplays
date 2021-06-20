@@ -17,13 +17,13 @@
         <module>death-holograms</module>
         <module>power-ups</module>
     </modules>
-    
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>holographicdisplays-api</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>

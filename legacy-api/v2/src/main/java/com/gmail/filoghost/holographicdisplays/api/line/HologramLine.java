@@ -15,7 +15,7 @@ public interface HologramLine {
 
     @Deprecated
     Hologram getParent();
-    
+
     @Deprecated
     void removeLine();
 

@@ -29,7 +29,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 class PacketListener extends PacketAdapter {
-    
+
     private final NMSManager nmsManager;
     private final MetadataHelper metadataHelper;
     private final ProtocolPacketSettings packetSettings;
@@ -67,7 +67,7 @@ class PacketListener extends PacketAdapter {
         if (event.isPlayerTemporary()) {
             return;
         }
-        
+
         PacketContainer packet = event.getPacket();
         PacketType packetType = packet.getType();
         Player player = event.getPlayer();
@@ -90,7 +90,7 @@ class PacketListener extends PacketAdapter {
         }
 
         StandardHologramLine hologramLine = nmsEntity.getHologramLine();
-        
+
         if (!hologramLine.getHologram().isVisibleTo(player)) {
             event.setCancelled(true);
             return;
@@ -100,27 +100,27 @@ class PacketListener extends PacketAdapter {
             // There's no metadata field in 1.15+ on the spawn entity packet, ignore it
             return;
         }
-        
+
         if (packetType == PacketType.Play.Server.SPAWN_ENTITY_LIVING || packetType == PacketType.Play.Server.ENTITY_METADATA) {
             if (!(hologramLine instanceof StandardTextLine) || !(nmsEntity instanceof NMSArmorStand)) {
                 return;
             }
-            
+
             StandardTextLine textLine = (StandardTextLine) hologramLine;
-            
+
             if (!textLine.isAllowPlaceholders()) {
                 return;
             }
 
             NMSArmorStand nmsArmorStand = (NMSArmorStand) nmsEntity;
             String customName = nmsArmorStand.getCustomNameStringNMS();
-            
+
             if (customName == null || customName.isEmpty()) {
                 return;
             }
-            
+
             String customNameWithIndividualPlaceholders = replaceIndividualPlaceholders(textLine, customName, player);
-            
+
             if (customNameWithIndividualPlaceholders.equals(customName)) {
                 return; // No need to modify packets, custom name doesn't need changes
             }
@@ -137,7 +137,7 @@ class PacketListener extends PacketAdapter {
                 packetWrapper = spawnEntityPacket;
                 customNameWatchableObject = metadataHelper.getCustomNameWatchableObject(spawnEntityPacket.getMetadata());
             }
-            
+
             if (customNameWatchableObject == null) {
                 return;
             }
@@ -153,7 +153,7 @@ class PacketListener extends PacketAdapter {
         if (trackedLine == null) {
             return text;
         }
-        
+
         text = trackedLine.replaceIndividualPlaceholders(player);
 
         if (PlaceholderAPIHook.isEnabled() && PlaceholderAPIHook.containsPlaceholders(text)) {

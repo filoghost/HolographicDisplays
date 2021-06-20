@@ -21,7 +21,7 @@ public abstract class HologramSubCommand implements SubCommand {
 
     private String usageArgs;
     private int minArgs;
-    
+
     private List<String> description;
     private boolean showInHelpCommand;
 
@@ -29,7 +29,7 @@ public abstract class HologramSubCommand implements SubCommand {
         this.name = name;
         this.aliases = aliases != null ? Arrays.asList(aliases) : Collections.emptyList();
         this.permission = Permissions.COMMAND_BASE + name.toLowerCase();
-        
+
         this.showInHelpCommand = true;
     }
 

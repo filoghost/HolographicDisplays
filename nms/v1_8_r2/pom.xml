@@ -12,7 +12,7 @@
     <artifactId>holographicdisplays-nms-v1_8_r2</artifactId>
     <name>HolographicDisplays NMS v1_8_R2</name>
 
-    <dependencies>        
+    <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>holographicdisplays-common</artifactId>

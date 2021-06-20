@@ -35,13 +35,13 @@ public class APIHologramManager extends BaseHologramManager<APIHologram> {
 
     public Collection<Hologram> getHologramsByPlugin(Plugin plugin) {
         List<Hologram> ownedHolograms = new ArrayList<>();
-        
+
         for (APIHologram hologram : getHolograms()) {
             if (hologram.getCreatorPlugin().equals(plugin)) {
                 ownedHolograms.add(hologram);
             }
         }
-        
+
         return Collections.unmodifiableList(ownedHolograms);
     }
 

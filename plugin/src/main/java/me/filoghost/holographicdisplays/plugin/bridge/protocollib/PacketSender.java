@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 class PacketSender {
-    
+
     private final MetadataHelper metadataHelper;
-    
+
     PacketSender(MetadataHelper metadataHelper) {
         this.metadataHelper = metadataHelper;
     }
@@ -85,7 +85,7 @@ class PacketSender {
         StandardTouchableLine touchableLine = (StandardTouchableLine) line;
         NMSArmorStand slimeVehicle = touchableLine.getNMSSlimeVehicle();
         NMSSlime slime = touchableLine.getNMSSlime();
-        
+
         if (slimeVehicle != null && slimeVehicle.isTrackedBy(player)) {
             sendSpawnArmorStandPacket(player, slimeVehicle);
         }
@@ -95,7 +95,7 @@ class PacketSender {
             sendVehicleAttachPacket(player, slimeVehicle, slime);
         }
     }
-    
+
     private void sendSpawnArmorStandPacket(Player receiver, NMSArmorStand armorStand) {
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_11_R1)) {
             AbstractPacket spawnPacket;
@@ -103,14 +103,14 @@ class PacketSender {
                 spawnPacket = new WrapperPlayServerSpawnEntityLiving(armorStand.getBukkitEntityNMS());
             } else {
                 spawnPacket = new WrapperPlayServerSpawnEntity(
-                        armorStand.getBukkitEntityNMS(), 
+                        armorStand.getBukkitEntityNMS(),
                         WrapperPlayServerSpawnEntity.ObjectTypes.ARMOR_STAND, 1);
             }
             spawnPacket.sendPacket(receiver);
-            
+
             WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
             WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
-            
+
             metadataHelper.setEntityStatus(dataWatcher, (byte) 0x20); // Invisible
 
             String customName = armorStand.getCustomNameStringNMS();
@@ -118,57 +118,57 @@ class PacketSender {
                 metadataHelper.setCustomNameNMSObject(dataWatcher, armorStand.getCustomNameObjectNMS());
                 metadataHelper.setCustomNameVisible(dataWatcher, true);
             }
-            
+
             metadataHelper.setNoGravity(dataWatcher, true);
             metadataHelper.setArmorStandStatus(dataWatcher, (byte) (0x01 | 0x08 | 0x10)); // Small, no base plate, marker
-            
+
             dataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
             dataPacket.setEntityID(armorStand.getIdNMS());
             dataPacket.sendPacket(receiver);
-            
+
         } else {
             WrapperPlayServerSpawnEntityLiving spawnPacket = new WrapperPlayServerSpawnEntityLiving(armorStand.getBukkitEntityNMS());
             spawnPacket.sendPacket(receiver);
         }
     }
-    
-    
+
+
     private void sendSpawnItemPacket(Player receiver, NMSItem item) {
         AbstractPacket packet = new WrapperPlayServerSpawnEntity(item.getBukkitEntityNMS(), ObjectTypes.ITEM_STACK, 1);
         packet.sendPacket(receiver);
     }
-    
-    
+
+
     private void sendSpawnSlimePacket(Player receiver, NMSSlime slime) {
         AbstractPacket spawnPacket = new WrapperPlayServerSpawnEntityLiving(slime.getBukkitEntityNMS());
         spawnPacket.sendPacket(receiver);
-        
+
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_15_R1)) {
             WrapperPlayServerEntityMetadata dataPacket = new WrapperPlayServerEntityMetadata();
             WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
-            
+
             metadataHelper.setEntityStatus(dataWatcher, (byte) 0x20); // Invisible
             metadataHelper.setSlimeSize(dataWatcher, 1); // Size 1 = small
-            
+
             dataPacket.setEntityMetadata(dataWatcher.getWatchableObjects());
             dataPacket.setEntityID(slime.getIdNMS());
             dataPacket.sendPacket(receiver);
         }
     }
-    
-    
+
+
     private void sendItemMetadataPacket(Player receiver, NMSItem item) {
         WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata();
-        
+
         WrappedDataWatcher dataWatcher = new WrappedDataWatcher();
         metadataHelper.setItemMetadata(dataWatcher, item.getRawItemStack());
         packet.setEntityMetadata(dataWatcher.getWatchableObjects());
-        
+
         packet.setEntityID(item.getIdNMS());
         packet.sendPacket(receiver);
     }
-    
-    
+
+
     private void sendVehicleAttachPacket(Player receiver, NMSEntity vehicle, NMSEntity passenger) {
         if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_9_R1)) {
             WrapperPlayServerMount packet = new WrapperPlayServerMount();
@@ -182,13 +182,13 @@ class PacketSender {
             packet.sendPacket(receiver);
         }
     }
-    
-    
+
+
     private void sendDestroyEntitiesPacket(Player player, List<Integer> ids) {
         WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
         packet.setEntities(ids);
         packet.sendPacket(player);
     }
-    
+
 
 }

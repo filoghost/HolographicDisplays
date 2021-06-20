@@ -27,32 +27,32 @@ import org.bukkit.entity.Entity;
 import java.util.List;
 
 public class WrapperPlayServerEntityMetadata extends AbstractPacket {
-    
+
     public static final PacketType TYPE = PacketType.Play.Server.ENTITY_METADATA;
-    
+
     public WrapperPlayServerEntityMetadata() {
         super(new PacketContainer(TYPE), TYPE);
         handle.getModifier().writeDefaults();
     }
-    
+
     public WrapperPlayServerEntityMetadata(PacketContainer packet) {
         super(packet, TYPE);
     }
-    
+
     /**
      * Retrieve unique entity ID to update.
      */
     public int getEntityID() {
         return handle.getIntegers().read(0);
     }
-    
+
     /**
      * Set unique entity ID to update.
      */
     public void setEntityID(int value) {
         handle.getIntegers().write(0, value);
     }
-    
+
     /**
      * Retrieve the entity.
      */
@@ -76,12 +76,12 @@ public class WrapperPlayServerEntityMetadata extends AbstractPacket {
     public List<WrappedWatchableObject> getEntityMetadata() {
         return handle.getWatchableCollectionModifier().read(0);
     }
-    
+
     /**
      * Set the list of the watchable objects (meta data).
      */
     public void setEntityMetadata(List<WrappedWatchableObject> value) {
         handle.getWatchableCollectionModifier().write(0, value);
     }
-    
+
 }

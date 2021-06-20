@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 abstract class TrackedPlaceholder {
-    
+
     private final @Nullable PlaceholderExpansion source;
 
     TrackedPlaceholder(@Nullable PlaceholderExpansion source) {

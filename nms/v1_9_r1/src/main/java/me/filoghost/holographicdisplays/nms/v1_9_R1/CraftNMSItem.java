@@ -22,7 +22,7 @@ public class CraftNMSItem extends CraftItem {
     }
 
     // Disallow all the bukkit methods
-    
+
     @Override
     public void remove() {
         // Cannot be removed, this is the most important to override
@@ -42,9 +42,9 @@ public class CraftNMSItem extends CraftItem {
     @Override public void setCustomName(String name) {}
     @Override public void setCustomNameVisible(boolean flag) {}
     @Override public void setLastDamageCause(EntityDamageEvent event) {}
-    
+
     // Methods from Item
     @Override public void setItemStack(ItemStack stack) {}
     @Override public void setPickupDelay(int delay) {}
-    
+
 }

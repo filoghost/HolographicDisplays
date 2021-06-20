@@ -23,11 +23,11 @@ class StringWithPlaceholdersTest {
     void replacements(String input, String expectedOutput) {
         boolean expectedContainsPlaceholders = expectedOutput.contains("#");
         StringWithPlaceholders s = new StringWithPlaceholders(input);
-        
+
         assertThat(s.replacePlaceholders(occurrence -> "#")).isEqualTo(expectedOutput);
         assertThat(s.containsPlaceholders()).isEqualTo(expectedContainsPlaceholders);
     }
-    
+
     static Stream<Arguments> replacementsTestArguments() {
         return Stream.of(
                 Arguments.of("", ""),
@@ -40,7 +40,7 @@ class StringWithPlaceholdersTest {
                 Arguments.of("abc p}", "abc p}") // Placeholder without opening tag
         );
     }
-    
+
     @Test
     void skipReplacing() {
         String input = "{p} a {p} b {p}";
@@ -52,16 +52,16 @@ class StringWithPlaceholdersTest {
     @MethodSource("parsingTestArguments")
     void parsing(String input, String expectedPluginName, String expectedIdentifier, String expectedArgument) {
         StringWithPlaceholders s = new StringWithPlaceholders(input);
-        
+
         List<PlaceholderOccurrence> placeholders = new ArrayList<>();
         s.replacePlaceholders(occurrence -> {
             placeholders.add(occurrence); // Just save occurrences
             return null;
         });
         assertThat(placeholders).hasSize(1);
-        
+
         PlaceholderOccurrence placeholder = placeholders.get(0);
-        
+
         if (expectedPluginName != null) {
             assertThat(placeholder.getPluginName()).hasToString(expectedPluginName);
         } else {

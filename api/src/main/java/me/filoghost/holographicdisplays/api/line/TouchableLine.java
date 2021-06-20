@@ -22,7 +22,7 @@ public interface TouchableLine extends HologramLine {
      * @since 1
      */
     void setTouchHandler(@Nullable TouchHandler touchHandler);
-    
+
     /**
      * Returns the current TouchHandler of this line.
      *
@@ -30,5 +30,5 @@ public interface TouchableLine extends HologramLine {
      * @since 1
      */
     @Nullable TouchHandler getTouchHandler();
-    
+
 }

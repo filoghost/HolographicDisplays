@@ -22,5 +22,5 @@ public interface PickupHandler {
      * @since 1
      */
     void onPickup(@NotNull Player player);
-    
+
 }

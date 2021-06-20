@@ -15,7 +15,7 @@ import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderL
 import org.bukkit.World;
 
 public abstract class BaseHologramLine extends BaseHologramComponent implements StandardHologramLine {
-    
+
     private final BaseHologram<?> hologram;
 
     private boolean isSpawned;
@@ -24,7 +24,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
         Preconditions.notNull(hologram, "parent hologram");
         this.hologram = hologram;
     }
-    
+
     @Override
     public final StandardHologram getHologram() {
         return hologram;
@@ -41,10 +41,10 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     @Override
     public final void respawn(World world, double x, double y, double z) {
         Preconditions.notNull(world, "world");
-        
+
         boolean changedWorld = world != getWorld();
         setLocation(world, x, y, z);
-        
+
         try {
             if (changedWorld) {
                 // World has changed, entities must be fully respawned
@@ -71,7 +71,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
         despawnEntities();
         isSpawned = false;
     }
-    
+
     protected final boolean isSpawned() {
         return isSpawned;
     }

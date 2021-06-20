@@ -39,7 +39,7 @@ public class InternalHologram extends BaseHologram<InternalHologramLine> {
     public Plugin getCreatorPlugin() {
         return HolographicDisplays.getInstance();
     }
-    
+
     @Override
     public boolean isVisibleTo(Player player) {
         return true;

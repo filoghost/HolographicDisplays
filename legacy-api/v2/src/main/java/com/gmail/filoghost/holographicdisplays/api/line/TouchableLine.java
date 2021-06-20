@@ -15,8 +15,8 @@ public interface TouchableLine extends HologramLine {
 
     @Deprecated
     void setTouchHandler(TouchHandler touchHandler);
-    
+
     @Deprecated
     TouchHandler getTouchHandler();
-    
+
 }

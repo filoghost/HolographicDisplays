@@ -13,19 +13,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ConfigurationFileModel implements MappedConfig {
-    
+
     @Path("space-between-lines")
     double spaceBetweenLines = 0.02;
-    
+
     @Path("quick-edit-commands")
     boolean quickEditCommands = true;
-    
+
     @Path("images.symbol")
     String imageSymbol = "[x]";
-    
+
     @Path("images.transparency.space")
     String transparencySymbol = " [|] ";
-    
+
     @Path("images.transparency.color")
     String transparencyColor = "&7";
 
@@ -61,13 +61,13 @@ public class ConfigurationFileModel implements MappedConfig {
 
     @Path("time.zone")
     String timeZone = "GMT+1";
-    
+
     @Path("update-notification")
     boolean updateNotification = true;
 
     @Path("debug")
     boolean debug = false;
-    
+
     @Override
     public List<String> getHeader() {
         return Arrays.asList(
@@ -92,14 +92,14 @@ public class ConfigurationFileModel implements MappedConfig {
         );
 
         boolean modified = false;
-        
+
         for (String path : pathsToRemove) {
             if (rawConfig.get(path) != null) {
                 rawConfig.remove(path);
                 modified = true;
             }
         }
-        
+
         return modified;
     }
 

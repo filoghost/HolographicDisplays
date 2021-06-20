@@ -15,8 +15,8 @@ public interface CollectableLine extends HologramLine {
 
     @Deprecated
     void setPickupHandler(PickupHandler pickupHandler);
-    
+
     @Deprecated
     PickupHandler getPickupHandler();
-    
+
 }

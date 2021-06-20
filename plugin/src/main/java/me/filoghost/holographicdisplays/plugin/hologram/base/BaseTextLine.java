@@ -15,23 +15,23 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 
 public abstract class BaseTextLine extends BaseTouchableLine implements StandardTextLine {
-    
+
     private String text;
     private NMSArmorStand textEntity;
-    
+
     public BaseTextLine(BaseHologram<?> hologram, String text) {
         super(hologram);
         setText(text);
     }
-    
+
     @Override
     public @Nullable String getText() {
         return text;
     }
-    
+
     public void setText(@Nullable String text) {
         this.text = text;
-        
+
         if (textEntity != null) {
             textEntity.setCustomNameNMS(text);
             getPlaceholderLineTracker().onTextLineChange(this);
@@ -50,7 +50,7 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
 
         getPlaceholderLineTracker().onTextLineChange(this);
     }
-    
+
     @Override
     public void teleportEntities(double x, double y, double z) {
         super.teleportEntities(x, y, z);
@@ -63,7 +63,7 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     @Override
     public void despawnEntities() {
         super.despawnEntities();
-        
+
         if (textEntity != null) {
             textEntity.killEntityNMS();
             textEntity = null;
@@ -74,11 +74,11 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     public double getHeight() {
         return 0.23;
     }
-    
+
     @Override
     public void collectTrackedEntityIDs(Player player, Collection<Integer> collector) {
         super.collectTrackedEntityIDs(player, collector);
-        
+
         if (textEntity != null && textEntity.isTrackedBy(player)) {
             collector.add(textEntity.getIdNMS());
         }
@@ -97,5 +97,5 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
     public String toString() {
         return "TextLine [text=" + text + "]";
     }
-    
+
 }

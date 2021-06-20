@@ -24,9 +24,9 @@ public class CraftNMSArmorStand extends CraftArmorStand {
     public CraftNMSArmorStand(CraftServer server, EntityNMSArmorStand entity) {
         super(server, entity);
     }
-    
+
     // Disallow all the bukkit methods
-    
+
     @Override
     public void remove() {
         // Cannot be removed, this is the most important to override
@@ -60,7 +60,7 @@ public class CraftNMSArmorStand extends CraftArmorStand {
     @Override public void setCollidable(boolean collidable) {}
     @Override public void setGliding(boolean gliding) {}
     @Override public boolean setLeashHolder(Entity holder) { return false; }
-    
+
     // Methods from Entity
     @Override public void setVelocity(Vector vel) {}
     @Override public boolean teleport(Location loc) { return false; }
@@ -81,5 +81,5 @@ public class CraftNMSArmorStand extends CraftArmorStand {
     @Override public void setMomentum(Vector value) {}
     @Override public void setSilent(boolean flag) {}
     @Override public void setTicksLived(int value) {}
-    
+
 }

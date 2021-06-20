@@ -35,7 +35,7 @@ public class HologramsAPI {
     public static boolean registerPlaceholder(Plugin plugin, String textPlaceholder, double refreshRate, PlaceholderReplacer replacer) {
         return HologramsAPIProvider.getImplementation().registerPlaceholder(plugin, textPlaceholder, refreshRate, replacer);
     }
-    
+
     @Deprecated
     public static Collection<String> getRegisteredPlaceholders(Plugin plugin) {
         return HologramsAPIProvider.getImplementation().getRegisteredPlaceholders(plugin);
@@ -45,7 +45,7 @@ public class HologramsAPI {
     public static boolean unregisterPlaceholder(Plugin plugin, String textPlaceholder) {
         return HologramsAPIProvider.getImplementation().unregisterPlaceholder(plugin, textPlaceholder);
     }
-    
+
     @Deprecated
     public static void unregisterPlaceholders(Plugin plugin) {
         HologramsAPIProvider.getImplementation().unregisterPlaceholders(plugin);

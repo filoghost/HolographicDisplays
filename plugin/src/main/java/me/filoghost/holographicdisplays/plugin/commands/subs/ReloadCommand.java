@@ -21,7 +21,7 @@ public class ReloadCommand extends HologramSubCommand {
         super("reload");
         setDescription("Reloads the holograms from the database.");
     }
-    
+
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) {
         PrintableErrorCollector errorCollector = new PrintableErrorCollector();
@@ -36,7 +36,7 @@ public class ReloadCommand extends HologramSubCommand {
                 sender.sendMessage(Colors.ERROR + "Check the console for the details.");
             }
         }
-        
+
         Bukkit.getPluginManager().callEvent(new HolographicDisplaysReloadEvent());
     }
 

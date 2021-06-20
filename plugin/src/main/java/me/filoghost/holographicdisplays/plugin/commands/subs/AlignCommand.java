@@ -36,7 +36,7 @@ public class AlignCommand extends HologramSubCommand {
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[1]);
         InternalHologram referenceHologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[2]);
-        
+
         CommandValidate.check(hologram != referenceHologram, "The holograms must not be the same.");
 
         Location loc = hologram.getLocation();
@@ -56,11 +56,11 @@ public class AlignCommand extends HologramSubCommand {
         }
 
         hologram.teleport(loc);
-            
+
         configManager.saveHologramDatabase(internalHologramManager);
-        sender.sendMessage(Colors.PRIMARY + "Hologram \"" + hologram.getName() + "\"" 
-                + " aligned to the hologram \"" + referenceHologram.getName() + "\"" 
+        sender.sendMessage(Colors.PRIMARY + "Hologram \"" + hologram.getName() + "\""
+                + " aligned to the hologram \"" + referenceHologram.getName() + "\""
                 + " on the " + axis.toUpperCase() + " axis.");
     }
-    
+
 }

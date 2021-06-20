@@ -9,7 +9,7 @@ package me.filoghost.holographicdisplays.plugin.disk;
 import me.filoghost.fcommons.Colors;
 
 public class TextFormatter {
-    
+
     public static String toDisplayFormat(String input) {
         if (input == null) {
             return null;
@@ -20,5 +20,5 @@ public class TextFormatter {
         input = Colors.addColors(input);
         return input;
     }
-    
+
 }

@@ -27,14 +27,14 @@ import java.util.WeakHashMap;
 public abstract class BaseTouchableLine extends BaseHologramLine implements StandardTouchableLine {
 
     private static final double SLIME_HEIGHT = 0.5;
-    
+
     private static final Map<Player, Long> lastClickByPlayer = new WeakHashMap<>();
 
     private TouchHandler touchHandler;
 
     private NMSSlime slimeEntity;
     private NMSArmorStand slimeVehicleEntity;
-    
+
 
     protected BaseTouchableLine(BaseHologram<?> hologram) {
         super(hologram);
@@ -57,14 +57,14 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
         try {
             touchHandler.onTouch(player);
         } catch (Throwable t) {
-            Log.warning("The plugin " + getHologram().getCreatorPlugin().getName() + " generated an exception" 
+            Log.warning("The plugin " + getHologram().getCreatorPlugin().getName() + " generated an exception"
                     + " when the player " + player.getName() + " touched a hologram.", t);
         }
     }
 
     public void setTouchHandler(@Nullable TouchHandler touchHandler) {
         this.touchHandler = touchHandler;
-        
+
         if (touchHandler != null && slimeEntity == null && super.isSpawned()) {
             // If the touch handler was null before and no entity has been spawned, spawn it now
             spawnSlime(getWorld(), getX(), getY(), getZ());
@@ -102,7 +102,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
 
     private void spawnSlime(World world, double x, double y, double z) {
         despawnSlime();
-        
+
         if (world != null) {
             try {
                 slimeEntity = getNMSManager().spawnNMSSlime(world, x, getSlimeSpawnY(y), z, this);

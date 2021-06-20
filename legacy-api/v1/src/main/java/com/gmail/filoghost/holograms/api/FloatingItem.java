@@ -53,7 +53,7 @@ public interface FloatingItem {
 
     @Deprecated
     boolean hasTouchHandler();
-    
+
     @Deprecated
     void setPickupHandler(PickupHandler handler);
 
@@ -71,5 +71,5 @@ public interface FloatingItem {
 
     @Deprecated
     boolean isDeleted();
-    
+
 }

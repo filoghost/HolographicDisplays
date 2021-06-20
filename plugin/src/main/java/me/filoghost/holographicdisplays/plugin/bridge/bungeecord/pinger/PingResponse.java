@@ -11,7 +11,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 public class PingResponse {
-    
+
     private final String motd;
     private final int onlinePlayers;
     private final int maxPlayers;
@@ -30,7 +30,7 @@ public class PingResponse {
         }
 
         JSONObject json = (JSONObject) jsonObject;
-        
+
         Object descriptionObject = json.get("description");
 
         String motd;
@@ -41,7 +41,7 @@ public class PingResponse {
             logInvalidResponse(jsonString, address);
             return errorResponse("Invalid ping response (description not found)");
         }
-        
+
         if (descriptionObject instanceof JSONObject) {
             Object text = ((JSONObject) descriptionObject).get("text");
             if (text == null) {
@@ -68,7 +68,7 @@ public class PingResponse {
                 maxPlayers = ((Number) maxObject).intValue();
             }
         }
-        
+
         return new PingResponse(motd, onlinePlayers, maxPlayers);
     }
 
@@ -85,7 +85,7 @@ public class PingResponse {
         this.onlinePlayers = onlinePlayers;
         this.maxPlayers = maxPlayers;
     }
-    
+
     public String getMotd() {
         return motd;
     }

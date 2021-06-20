@@ -34,7 +34,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         super(EntityTypes.ITEM, world);
         this.parentHologramLine = parentHologramLine;
         this.helper = new VersionNMSEntityHelper(this);
-        
+
         super.pickupDelay = 32767; // Lock the item pickup delay, also prevents entities from picking up the item
     }
 
@@ -45,11 +45,11 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
         // So it won't get removed
         ticksLived = 0;
     }
-    
+
     @Override
     public void inactiveTick() {
         // Disable normal ticking for this entity
-        
+
         // So it won't get removed
         ticksLived = 0;
     }
@@ -115,7 +115,7 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     public boolean isCollidable() {
         return false;
     }
-    
+
     @Override
     public void die() {
         // Prevent entity from dying
@@ -197,5 +197,5 @@ public class EntityNMSItem extends EntityItem implements NMSItem {
     public Object getRawItemStack() {
         return super.getItemStack();
     }
-    
+
 }

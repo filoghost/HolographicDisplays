@@ -13,5 +13,5 @@ public interface PlaceholderReplacer {
 
     @Deprecated
     String update();
-    
+
 }

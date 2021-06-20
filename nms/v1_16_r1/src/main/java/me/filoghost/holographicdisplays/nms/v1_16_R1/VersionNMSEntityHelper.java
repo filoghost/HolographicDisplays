@@ -20,7 +20,7 @@ public class VersionNMSEntityHelper extends NMSEntityHelper<EntityTracker> {
     public VersionNMSEntityHelper(Entity entity) {
         this.entity = entity;
     }
-    
+
     @Override
     protected EntityTracker getTracker0() {
         return ((WorldServer) entity.world).getChunkProvider().playerChunkMap.trackedEntities.get(entity.getId());

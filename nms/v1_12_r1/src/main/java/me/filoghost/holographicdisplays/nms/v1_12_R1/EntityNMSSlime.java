@@ -21,15 +21,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class EntityNMSSlime extends EntitySlime implements NMSSlime {
-    
+
     private final StandardHologramLine parentHologramLine;
     private final VersionNMSEntityHelper helper;
-    
+
     public EntityNMSSlime(World world, StandardHologramLine parentHologramLine) {
         super(world);
         this.parentHologramLine = parentHologramLine;
         this.helper = new VersionNMSEntityHelper(this);
-        
+
         super.persistent = true;
         super.collides = false;
         super.a(0.0F, 0.0F);
@@ -37,37 +37,37 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
         super.setInvisible(true);
         forceSetBoundingBox(new NullBoundingBox());
     }
-    
+
     @Override
     public void B_() {
         // Disable normal ticking for this entity
-        
+
         // So it won't get removed
         ticksLived = 0;
     }
-    
+
     @Override
     public void inactiveTick() {
         // Disable normal ticking for this entity
-        
+
         // So it won't get removed
         ticksLived = 0;
     }
-    
+
     @Override
     public void a(AxisAlignedBB boundingBox) {
         // Prevent changes to bounding box
     }
-    
+
     public void forceSetBoundingBox(AxisAlignedBB boundingBox) {
         super.a(boundingBox);
     }
-    
+
     @Override
     public void b(NBTTagCompound nbttagcompound) {
         // Do not save NBT
     }
-    
+
     @Override
     public boolean c(NBTTagCompound nbttagcompound) {
         // Do not save NBT
@@ -79,23 +79,23 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
         // Do not save NBT
         return false;
     }
-    
+
     @Override
     public NBTTagCompound save(NBTTagCompound nbttagcompound) {
         // Do not save NBT
         return nbttagcompound;
     }
-    
+
     @Override
     public void f(NBTTagCompound nbttagcompound) {
         // Do not load NBT
     }
-    
+
     @Override
     public void a(NBTTagCompound nbttagcompound) {
         // Do not load NBT
     }
-    
+
     @Override
     public boolean damageEntity(DamageSource damageSource, float amount) {
         if (damageSource instanceof EntityDamageSource) {
@@ -108,7 +108,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
         }
         return false;
     }
-    
+
     @Override
     public boolean isInvulnerable(DamageSource source) {
         /*
@@ -118,7 +118,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
          */
         return true;
     }
-    
+
     @Override
     public boolean isCollidable() {
         return false;
@@ -128,12 +128,12 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     public void setCustomName(String customName) {
         // Prevents changes to custom name
     }
-    
+
     @Override
     public void setCustomNameVisible(boolean visible) {
         // Prevents changes to custom name visibility
     }
-    
+
     @Override
     public void a(SoundEffect soundeffect, float f, float f1) {
         // Remove sounds
@@ -143,7 +143,7 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     public void die() {
         // Prevent entity from dying
     }
-    
+
     @Override
     public CraftEntity getBukkitEntity() {
         if (super.bukkitEntity == null) {
@@ -156,22 +156,22 @@ public class EntityNMSSlime extends EntitySlime implements NMSSlime {
     public boolean isDeadNMS() {
         return super.dead;
     }
-    
+
     @Override
     public void killEntityNMS() {
         super.dead = true;
     }
-    
+
     @Override
     public void setLocationNMS(double x, double y, double z) {
         super.setPosition(x, y, z);
     }
-    
+
     @Override
     public int getIdNMS() {
         return super.getId();
     }
-    
+
     @Override
     public StandardHologramLine getHologramLine() {
         return parentHologramLine;

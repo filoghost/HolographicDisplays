@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Configuration {
-    
+
     public static double spaceBetweenLines;
     public static boolean quickEditCommands;
     public static DateTimeFormatter timeFormat;
@@ -37,17 +37,17 @@ public class Configuration {
     public static String pingerStatusOffline;
     public static boolean pingerTrimMotd;
     public static Map<String, ServerAddress> pingerServerAddresses;
-    
+
     public static void load(ConfigurationFileModel config, ErrorCollector errorCollector) {
         spaceBetweenLines = config.spaceBetweenLines;
         quickEditCommands = config.quickEditCommands;
         timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone, errorCollector);
         updateNotification = config.updateNotification;
-        
+
         imageSymbol = TextFormatter.toDisplayFormat(config.imageSymbol);
         transparencySymbol = TextFormatter.toDisplayFormat(config.transparencySymbol);
         transparencyColor = parseTransparencyColor(config.transparencyColor, errorCollector);
-        
+
         bungeeRefreshSeconds = parseBungeeRefreshInterval(config.bungeeRefreshSeconds, errorCollector);
         useRedisBungee = config.useRedisBungee;
         pingerEnabled = config.pingerEnable;
@@ -129,7 +129,7 @@ public class Configuration {
     private static ServerAddress parseServerAddress(String singleServer, ErrorCollector errorCollector) {
         String[] nameAndAddress = Strings.splitAndTrim(singleServer, ":", 2);
         if (nameAndAddress.length < 2) {
-            errorCollector.add("the server info \"" + singleServer + "\" is not valid." 
+            errorCollector.add("the server info \"" + singleServer + "\" is not valid."
                     + " There should be a name and an address, separated by a colon");
             return null;
         }
@@ -153,7 +153,7 @@ public class Configuration {
             ip = address;
             port = 25565; // Default Minecraft server port
         }
-        
+
         return new ServerAddress(name, ip, port);
     }
 

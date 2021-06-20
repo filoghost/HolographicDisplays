@@ -18,24 +18,24 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class InteractListener implements Listener {
-    
+
     private final NMSManager nmsManager;
-    
+
     public InteractListener(NMSManager nmsManager) {
         this.nmsManager = nmsManager;
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSlimeInteract(PlayerInteractEntityEvent event) {
         if (event.getRightClicked().getType() != EntityType.SLIME) {
             return;
         }
-            
+
         Player clicker = event.getPlayer();
         if (clicker.getGameMode() == GameMode.SPECTATOR) {
             return;
         }
-        
+
         NMSEntity entityBase = nmsManager.getNMSEntityBase(event.getRightClicked());
         if (entityBase == null) {
             return;
@@ -48,5 +48,5 @@ public class InteractListener implements Listener {
 
         ((StandardTouchableLine) line).onTouch(clicker);
     }
-    
+
 }

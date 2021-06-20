@@ -28,5 +28,5 @@ public interface ItemLine extends CollectableLine, TouchableLine {
      * @since 1
      */
     void setItemStack(@NotNull ItemStack itemStack);
-    
+
 }
