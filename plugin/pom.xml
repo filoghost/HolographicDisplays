@@ -226,15 +226,15 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats.bukkit</pattern>
-                            <shadedPattern>me.filoghost.holographicdisplays.lib.metrics</shadedPattern>
+                            <shadedPattern>me.filoghost.holographicdisplays.plugin.lib.metrics</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>me.filoghost.updatechecker</pattern>
-                            <shadedPattern>me.filoghost.holographicdisplays.lib.updater</shadedPattern>
+                            <shadedPattern>me.filoghost.holographicdisplays.plugin.lib.updater</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>me.filoghost.fcommons</pattern>
-                            <shadedPattern>me.filoghost.holographicdisplays.lib.fcommons</shadedPattern>
+                            <shadedPattern>me.filoghost.holographicdisplays.plugin.lib.fcommons</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

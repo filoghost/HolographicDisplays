@@ -14,7 +14,7 @@
  *  if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *  02111-1307 USA
  */
-package me.filoghost.holographicdisplays.plugin.bridge.protocollib.packet;
+package me.filoghost.holographicdisplays.plugin.lib.packetwrapper;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
@@ -22,51 +22,36 @@ import com.google.common.primitives.Ints;
 
 import java.util.List;
 
-public class WrapperPlayServerMount extends AbstractPacket {
+public class WrapperPlayServerEntityDestroy extends AbstractPacket {
+    public static final PacketType TYPE = PacketType.Play.Server.ENTITY_DESTROY;
     
-    public static final PacketType TYPE = PacketType.Play.Server.MOUNT;
-    
-    public WrapperPlayServerMount() {
+    public WrapperPlayServerEntityDestroy() {
         super(new PacketContainer(TYPE), TYPE);
         handle.getModifier().writeDefaults();
     }
     
-    public WrapperPlayServerMount(PacketContainer packet) {
+    public WrapperPlayServerEntityDestroy(PacketContainer packet) {
         super(packet, TYPE);
     }
     
     /**
-     * Retrieve the entity ID being attached.
+     * Retrieve the IDs of the entities that will be destroyed.
     */
-    public int getVehicleId() {
-        return handle.getIntegers().read(0);
-    }
-    
-    /**
-     * Set the entity ID being attached.
-    */
-    public void setVehicleId(int value) {
-        handle.getIntegers().write(0, value);
-    }
-
-    /**
-     * Retrieve the IDs of the passenger entities.
-    */
-    public List<Integer> getPassengers() {
+    public List<Integer> getEntities() {
         return Ints.asList(handle.getIntegerArrays().read(0));
     }
     
     /**
-     * Set the passenger entities.
+     * Set the entities that will be destroyed.
     */
-    public void setPassengers(int[] entities) {
+    public void setEntities(int[] entities) {
         handle.getIntegerArrays().write(0, entities);
     }
     
     /**
-     * Set the passenger entities.
+     * Set the entities that will be destroyed.
     */
-    public void setPassengers(List<Integer> entities) {
-        setPassengers(Ints.toArray(entities));
+    public void setEntities(List<Integer> entities) {
+        setEntities(Ints.toArray(entities));
     }
 }

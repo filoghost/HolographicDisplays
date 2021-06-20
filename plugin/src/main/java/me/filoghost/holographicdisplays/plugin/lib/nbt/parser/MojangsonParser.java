@@ -3,22 +3,22 @@
  *
  * SPDX-License-Identifier: MIT
  */
-package me.filoghost.holographicdisplays.plugin.nbt.parser;
+package me.filoghost.holographicdisplays.plugin.lib.nbt.parser;
 
-import me.filoghost.holographicdisplays.plugin.nbt.NBTByteArray;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTCompound;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTDouble;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTFloat;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTIntArray;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTLong;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTString;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTTag;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTByte;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTInt;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTList;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTLongArray;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTShort;
-import me.filoghost.holographicdisplays.plugin.nbt.NBTType;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTByte;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTByteArray;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTCompound;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTDouble;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTFloat;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTInt;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTIntArray;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTList;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTLong;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTLongArray;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTTag;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTType;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTString;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTShort;
 
 import java.util.ArrayList;
 import java.util.List;

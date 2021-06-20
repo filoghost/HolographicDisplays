@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: MIT
  */
-package me.filoghost.holographicdisplays.plugin.nbt;
+package me.filoghost.holographicdisplays.plugin.lib.nbt;
 
 import java.util.Arrays;
 

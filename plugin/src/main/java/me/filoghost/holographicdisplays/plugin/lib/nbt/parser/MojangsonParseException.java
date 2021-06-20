@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: MIT
  */
-package me.filoghost.holographicdisplays.plugin.nbt.parser;
+package me.filoghost.holographicdisplays.plugin.lib.nbt.parser;
 
 import java.io.IOException;
 

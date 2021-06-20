@@ -7,8 +7,8 @@ package me.filoghost.holographicdisplays.plugin.disk;
 
 import me.filoghost.fcommons.MaterialsHelper;
 import me.filoghost.fcommons.Strings;
-import me.filoghost.holographicdisplays.plugin.nbt.parser.MojangsonParseException;
-import me.filoghost.holographicdisplays.plugin.nbt.parser.MojangsonParser;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParseException;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParser;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import org.bukkit.Bukkit;
