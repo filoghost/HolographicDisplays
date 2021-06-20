@@ -7,9 +7,9 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.VisibilitySettings;
-import me.filoghost.holographicdisplays.plugin.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2VisibilityManagerAdapter;
+import me.filoghost.holographicdisplays.plugin.bridge.protocollib.ProtocolLibHook;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

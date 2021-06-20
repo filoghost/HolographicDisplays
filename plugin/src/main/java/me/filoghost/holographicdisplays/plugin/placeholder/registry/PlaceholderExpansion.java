@@ -5,10 +5,10 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PluginName;
+import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
 import me.filoghost.holographicdisplays.plugin.placeholder.StandardPlaceholder;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderIdentifier;
-import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
+import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PluginName;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 

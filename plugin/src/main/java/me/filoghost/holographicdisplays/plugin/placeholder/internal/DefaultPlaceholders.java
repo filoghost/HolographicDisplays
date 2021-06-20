@@ -7,10 +7,10 @@ package me.filoghost.holographicdisplays.plugin.placeholder.internal;
 
 import me.filoghost.fcommons.collection.CollectionUtils;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
-import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.ServerInfo;
 import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 

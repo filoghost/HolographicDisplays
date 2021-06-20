@@ -6,11 +6,11 @@
 package me.filoghost.holographicdisplays.plugin.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
-import me.filoghost.holographicdisplays.plugin.Colors;
-import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.entity.NMSEntity;
-import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
+import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;

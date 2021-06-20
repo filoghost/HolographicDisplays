@@ -15,10 +15,10 @@ import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTIntArray;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTList;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTLong;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTLongArray;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTShort;
+import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTString;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTTag;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTType;
-import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTString;
-import me.filoghost.holographicdisplays.plugin.lib.nbt.NBTShort;
 
 import java.util.ArrayList;
 import java.util.List;

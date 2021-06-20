@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.plugin.disk;
 
 import me.filoghost.fcommons.config.Config;
-import me.filoghost.fcommons.config.mapped.Path;
 import me.filoghost.fcommons.config.mapped.MappedConfig;
+import me.filoghost.fcommons.config.mapped.Path;
 
 import java.util.Arrays;
 import java.util.List;

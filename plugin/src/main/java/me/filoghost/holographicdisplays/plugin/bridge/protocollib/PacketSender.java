@@ -6,14 +6,6 @@
 package me.filoghost.holographicdisplays.plugin.bridge.protocollib;
 
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.AbstractPacket;
-import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerAttachEntity;
-import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerEntityDestroy;
-import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerEntityMetadata;
-import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerMount;
-import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerSpawnEntity;
-import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerSpawnEntity.ObjectTypes;
-import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerSpawnEntityLiving;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.common.hologram.StandardItemLine;
@@ -23,6 +15,14 @@ import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
 import me.filoghost.holographicdisplays.common.nms.entity.NMSEntity;
 import me.filoghost.holographicdisplays.common.nms.entity.NMSItem;
 import me.filoghost.holographicdisplays.common.nms.entity.NMSSlime;
+import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.AbstractPacket;
+import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerAttachEntity;
+import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerEntityDestroy;
+import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerEntityMetadata;
+import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerMount;
+import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerSpawnEntity;
+import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerSpawnEntity.ObjectTypes;
+import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServerSpawnEntityLiving;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion;
 import org.bukkit.entity.Player;
 

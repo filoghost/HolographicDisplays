@@ -8,15 +8,15 @@ package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplacer;
 import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
-import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PluginName;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderIdentifier;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
+import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PluginName;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 

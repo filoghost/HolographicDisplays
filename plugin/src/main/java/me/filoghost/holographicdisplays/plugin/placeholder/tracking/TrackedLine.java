@@ -7,8 +7,8 @@ package me.filoghost.holographicdisplays.plugin.placeholder.tracking;
 
 import me.filoghost.holographicdisplays.common.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderReplaceFunction;
+import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
 import org.bukkit.entity.Player;
 
 public class TrackedLine {

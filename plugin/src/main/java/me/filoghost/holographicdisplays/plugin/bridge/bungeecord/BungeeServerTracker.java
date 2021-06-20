@@ -6,10 +6,10 @@
 package me.filoghost.holographicdisplays.plugin.bridge.bungeecord;
 
 import me.filoghost.fcommons.logging.Log;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.pinger.PingResponse;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.pinger.ServerPinger;
-import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.plugin.disk.Configuration;
 import me.filoghost.holographicdisplays.plugin.disk.ServerAddress;
 import org.bukkit.Bukkit;

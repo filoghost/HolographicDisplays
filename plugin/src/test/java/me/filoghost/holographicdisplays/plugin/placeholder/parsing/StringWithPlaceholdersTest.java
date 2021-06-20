@@ -5,8 +5,6 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.parsing;
 
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

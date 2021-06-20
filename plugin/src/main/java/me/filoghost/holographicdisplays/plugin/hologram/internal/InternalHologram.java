@@ -5,10 +5,10 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.internal;
 
+import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

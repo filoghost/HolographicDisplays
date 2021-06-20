@@ -7,8 +7,8 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramManager;
+import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
