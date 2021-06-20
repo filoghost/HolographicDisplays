@@ -158,6 +158,11 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
     }
 
     @Override
+    public void setSlot(EnumItemSlot enumitemslot, ItemStack itemstack, boolean silent) {
+        // Prevent armor stand from being equipped
+    }
+
+    @Override
     public void a(AxisAlignedBB boundingBox) {
         // Prevent changes to bounding box
     }
