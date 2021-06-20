@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.object.api;
 
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import me.filoghost.holographicdisplays.api.line.TextLine;
-import me.filoghost.holographicdisplays.plugin.legacy.api.v2.V2TextLineAdapter;
+import me.filoghost.holographicdisplays.plugin.api.v2.V2TextLineAdapter;
 import me.filoghost.holographicdisplays.plugin.object.base.BaseTextLine;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

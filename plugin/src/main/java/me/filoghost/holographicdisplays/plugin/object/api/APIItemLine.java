@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.object.api;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import me.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.plugin.legacy.api.v2.V2ItemLineAdapter;
+import me.filoghost.holographicdisplays.plugin.api.v2.V2ItemLineAdapter;
 import me.filoghost.holographicdisplays.plugin.object.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

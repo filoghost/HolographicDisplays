@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
 import me.filoghost.holographicdisplays.plugin.disk.Configuration;
-import me.filoghost.holographicdisplays.plugin.legacy.api.v2.V2HologramAdapter;
+import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramAdapter;
 import me.filoghost.holographicdisplays.plugin.object.base.BaseHologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

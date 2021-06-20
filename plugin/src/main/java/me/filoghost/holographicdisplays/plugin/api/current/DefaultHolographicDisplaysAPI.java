@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin;
+package me.filoghost.holographicdisplays.plugin.api.current;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.Hologram;
@@ -18,13 +18,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
+class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
 
     private final Plugin plugin;
     private final APIHologramManager apiHologramManager;
     private final PlaceholderRegistry placeholderRegistry;
 
-    public DefaultHolographicDisplaysAPI(Plugin plugin, APIHologramManager apiHologramManager, PlaceholderRegistry placeholderRegistry) {
+    DefaultHolographicDisplaysAPI(Plugin plugin, APIHologramManager apiHologramManager, PlaceholderRegistry placeholderRegistry) {
         this.plugin = plugin;
         this.apiHologramManager = apiHologramManager;
         this.placeholderRegistry = placeholderRegistry;

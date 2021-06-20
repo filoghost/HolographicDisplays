@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.legacy.api.v2;
+package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import org.bukkit.entity.Player;
