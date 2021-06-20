@@ -1,7 +1,7 @@
 /*
- * Copyright (C) filoghost and contributors
+ * Copyright (C) Jan Schultke
  *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-License-Identifier: MIT
  */
 package me.filoghost.holographicdisplays.plugin.nbt;
 
