@@ -10,9 +10,9 @@ import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.core.Utils;
 import me.filoghost.holographicdisplays.plugin.disk.HologramLineParser;
 import me.filoghost.holographicdisplays.plugin.disk.HologramLoadException;
-import me.filoghost.holographicdisplays.plugin.object.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.object.internal.InternalHologramLine;
-import me.filoghost.holographicdisplays.plugin.object.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.util.FileUtils;
 
 import java.nio.file.Files;

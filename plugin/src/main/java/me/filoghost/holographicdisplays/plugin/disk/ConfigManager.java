@@ -14,7 +14,7 @@ import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.config.mapped.MappedConfigLoader;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.object.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 
 import java.nio.file.Path;
 

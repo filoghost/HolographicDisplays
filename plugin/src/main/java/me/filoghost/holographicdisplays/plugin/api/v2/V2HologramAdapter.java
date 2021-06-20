@@ -10,7 +10,7 @@ import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
-import me.filoghost.holographicdisplays.plugin.object.api.APIHologram;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;

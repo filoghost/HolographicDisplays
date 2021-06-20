@@ -3,9 +3,9 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.object.internal;
+package me.filoghost.holographicdisplays.plugin.hologram.internal;
 
-import me.filoghost.holographicdisplays.plugin.object.base.BaseItemLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
 
 public class InternalItemLine extends BaseItemLine implements InternalHologramLine {

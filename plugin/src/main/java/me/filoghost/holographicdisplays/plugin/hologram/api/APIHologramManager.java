@@ -3,12 +3,12 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.object.api;
+package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
-import me.filoghost.holographicdisplays.plugin.object.base.BaseHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramManager;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 

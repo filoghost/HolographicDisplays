@@ -15,9 +15,9 @@ import me.filoghost.holographicdisplays.plugin.commands.Messages;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramEditEvent;
-import me.filoghost.holographicdisplays.plugin.object.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.object.internal.InternalHologramLine;
-import me.filoghost.holographicdisplays.plugin.object.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 

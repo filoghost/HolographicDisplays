@@ -9,7 +9,7 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
-import me.filoghost.holographicdisplays.plugin.object.api.APIHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;

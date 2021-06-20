@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
-import me.filoghost.holographicdisplays.plugin.object.api.APIHologramLine;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramLine;
 
 @SuppressWarnings("deprecation")
 public abstract class V2HologramLineAdapter implements HologramLine {

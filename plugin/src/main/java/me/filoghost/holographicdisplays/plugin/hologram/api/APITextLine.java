@@ -3,12 +3,12 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.object.api;
+package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.holographicdisplays.api.handler.TouchHandler;
 import me.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2TextLineAdapter;
-import me.filoghost.holographicdisplays.plugin.object.base.BaseTextLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.TouchableLine;
-import me.filoghost.holographicdisplays.plugin.object.api.APITouchableLine;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APITouchableLine;
 
 @SuppressWarnings("deprecation")
 abstract class V2TouchableLineAdapter extends V2HologramLineAdapter implements TouchableLine {

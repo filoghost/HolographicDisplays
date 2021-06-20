@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
-import me.filoghost.holographicdisplays.plugin.object.api.APIItemLine;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APIItemLine;
 import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("deprecation")

@@ -7,8 +7,8 @@ package me.filoghost.holographicdisplays.plugin.listener;
 
 import me.filoghost.holographicdisplays.core.nms.NMSManager;
 import me.filoghost.holographicdisplays.core.nms.entity.NMSEntity;
-import me.filoghost.holographicdisplays.plugin.object.api.APIHologramManager;
-import me.filoghost.holographicdisplays.plugin.object.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.util.SchedulerUtils;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;

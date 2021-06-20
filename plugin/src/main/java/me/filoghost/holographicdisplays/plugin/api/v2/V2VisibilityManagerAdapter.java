@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 import me.filoghost.holographicdisplays.api.VisibilitySettings.Visibility;
-import me.filoghost.holographicdisplays.plugin.object.api.DefaultVisibilitySettings;
+import me.filoghost.holographicdisplays.plugin.hologram.api.DefaultVisibilitySettings;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")

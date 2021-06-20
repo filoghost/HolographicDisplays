@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
-import me.filoghost.holographicdisplays.plugin.object.api.APITextLine;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APITextLine;
 
 @SuppressWarnings("deprecation")
 public class V2TextLineAdapter extends V2TouchableLineAdapter implements TextLine {

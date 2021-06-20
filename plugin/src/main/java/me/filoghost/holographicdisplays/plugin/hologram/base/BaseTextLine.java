@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.object.base;
+package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.holographicdisplays.core.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.core.nms.SpawnFailedException;
