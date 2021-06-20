@@ -11,6 +11,7 @@ import org.bukkit.craftbukkit.v1_16_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftSlime;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.loot.LootTable;
 import org.bukkit.potion.PotionEffect;
@@ -64,6 +65,7 @@ public class CraftNMSSlime extends CraftSlime {
     @Override public void playEffect(EntityEffect effect) {}
     @Override public void setCustomName(String name) {}
     @Override public void setCustomNameVisible(boolean flag) {}
+    @Override public void setLastDamageCause(EntityDamageEvent event) {}
     @Override public void setGlowing(boolean flag) {}
     @Override public void setGravity(boolean gravity) {}
     @Override public void setInvulnerable(boolean flag) {}

@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_10_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_10_R1.entity.CraftArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -73,6 +74,7 @@ public class CraftNMSArmorStand extends CraftArmorStand {
     @Override public void playEffect(EntityEffect effect) {}
     @Override public void setCustomName(String name) {}
     @Override public void setCustomNameVisible(boolean flag) {}
+    @Override public void setLastDamageCause(EntityDamageEvent event) {}
     @Override public void setGlowing(boolean flag) {}
     @Override public void setGravity(boolean gravity) {}
     @Override public void setInvulnerable(boolean flag) {}

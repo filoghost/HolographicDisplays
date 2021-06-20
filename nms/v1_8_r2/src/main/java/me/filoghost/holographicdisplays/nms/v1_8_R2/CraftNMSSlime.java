@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftSlime;
 import org.bukkit.entity.Entity;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
@@ -48,6 +49,7 @@ public class CraftNMSSlime extends CraftSlime {
     @Override public void playEffect(EntityEffect effect) {}
     @Override public void setCustomName(String name) {}
     @Override public void setCustomNameVisible(boolean flag) {}
+    @Override public void setLastDamageCause(EntityDamageEvent event) {}
     
     // Methods from Slime
     @Override public void setSize(int size) {}
