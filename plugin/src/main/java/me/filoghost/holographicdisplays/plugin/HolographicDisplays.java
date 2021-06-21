@@ -81,7 +81,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         if (!NMSVersion.isValid()) {
             throw new PluginEnableException(
                     "Holographic Displays does not support this server version.",
-                    "Supported Spigot versions: from 1.8.3 to 1.16.4.");
+                    "Supported Spigot versions: from 1.8.3 to 1.17.");
         }
 
         if (getCommand("holograms") == null) {

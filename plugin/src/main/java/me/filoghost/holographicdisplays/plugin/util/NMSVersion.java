@@ -32,7 +32,8 @@ public enum NMSVersion {
     v1_15_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_15_R1.VersionNMSManager(packetSettings)),
     v1_16_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager(packetSettings)),
     v1_16_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager(packetSettings)),
-    v1_16_R3(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager(packetSettings));
+    v1_16_R3(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager(packetSettings)),
+    v1_17_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_17_R1.VersionNMSManager(packetSettings));
 
     private static final NMSVersion CURRENT_VERSION = extractCurrentVersion();
 
