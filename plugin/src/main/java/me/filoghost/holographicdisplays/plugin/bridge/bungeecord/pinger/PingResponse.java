@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.plugin.bridge.bungeecord.pinger;
 
 import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.plugin.disk.ServerAddress;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -43,12 +44,13 @@ public class PingResponse {
         }
 
         if (descriptionObject instanceof JSONObject) {
-            Object text = ((JSONObject) descriptionObject).get("text");
-            if (text == null) {
+            String descriptionString = ((JSONObject) descriptionObject).toJSONString();
+            try {
+                motd = ComponentSerializer.parse(descriptionString)[0].toLegacyText();
+            } catch (Exception e) {
                 logInvalidResponse(jsonString, address);
-                return errorResponse("Invalid ping response (text not found)");
+                return errorResponse("Invalid ping response (could not parse description)");
             }
-            motd = text.toString();
         } else {
             motd = descriptionObject.toString();
         }
