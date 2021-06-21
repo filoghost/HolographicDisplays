@@ -17,17 +17,21 @@ public class PingResponse {
     private final int onlinePlayers;
     private final int maxPlayers;
 
+    private PingResponse(String motd, int onlinePlayers, int maxPlayers) {
+        this.motd = motd;
+        this.onlinePlayers = onlinePlayers;
+        this.maxPlayers = maxPlayers;
+    }
+
     protected static PingResponse fromJson(String jsonString, ServerAddress address) {
         if (jsonString == null || jsonString.isEmpty()) {
-            logInvalidResponse(jsonString, address);
-            return errorResponse("Invalid ping response (null or empty)");
+            return errorResponse("Invalid ping response (null or empty)", jsonString, address);
         }
 
         Object jsonObject = JSONValue.parse(jsonString);
 
         if (!(jsonObject instanceof JSONObject)) {
-            logInvalidResponse(jsonString, address);
-            return errorResponse("Invalid ping response (wrong format)");
+            return errorResponse("Invalid ping response (wrong format)", jsonString, address);
         }
 
         JSONObject json = (JSONObject) jsonObject;
@@ -39,8 +43,7 @@ public class PingResponse {
         int maxPlayers = 0;
 
         if (descriptionObject == null) {
-            logInvalidResponse(jsonString, address);
-            return errorResponse("Invalid ping response (description not found)");
+            return errorResponse("Invalid ping response (description not found)", jsonString, address);
         }
 
         if (descriptionObject instanceof JSONObject) {
@@ -48,8 +51,7 @@ public class PingResponse {
             try {
                 motd = ComponentSerializer.parse(descriptionString)[0].toLegacyText();
             } catch (Exception e) {
-                logInvalidResponse(jsonString, address);
-                return errorResponse("Invalid ping response (could not parse description)");
+                return errorResponse("Invalid ping response (could not parse description)", jsonString, address);
             }
         } else {
             motd = descriptionObject.toString();
@@ -74,18 +76,9 @@ public class PingResponse {
         return new PingResponse(motd, onlinePlayers, maxPlayers);
     }
 
-    private static void logInvalidResponse(String responseJsonString, ServerAddress address) {
-        DebugLogger.warning("Received invalid JSON response from IP \"" + address + "\": " + responseJsonString);
-    }
-
-    private static PingResponse errorResponse(String error) {
+    private static PingResponse errorResponse(String error, String jsonString, ServerAddress address) {
+        DebugLogger.warning("Received invalid JSON response from IP \"" + address + "\": " + jsonString);
         return new PingResponse(error, 0, 0);
-    }
-
-    private PingResponse(String motd, int onlinePlayers, int maxPlayers) {
-        this.motd = motd;
-        this.onlinePlayers = onlinePlayers;
-        this.maxPlayers = maxPlayers;
     }
 
     public String getMotd() {
