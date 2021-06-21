@@ -25,6 +25,7 @@ import me.filoghost.holographicdisplays.plugin.lib.packetwrapper.WrapperPlayServ
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.TrackedLine;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -64,7 +65,7 @@ class PacketListener extends PacketAdapter {
 
     @Override
     public void onPacketSending(PacketEvent event) {
-        if (event.isPlayerTemporary()) {
+        if (event.isPlayerTemporary() || !Bukkit.isPrimaryThread()) {
             return;
         }
 
