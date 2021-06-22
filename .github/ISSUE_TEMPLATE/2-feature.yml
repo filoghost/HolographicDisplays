@@ -1,0 +1,16 @@
+name: 💡 Suggestion
+description: "Suggest a new feature or an improvement."
+labels:
+  - "Enhancement"
+body:
+  - type: markdown
+    attributes:
+      value: |-
+        Please suggest changes that would benefit as many users as possible, not just specific situations. Thank you for contributing to the project.
+
+  - type: textarea
+    attributes:
+      label: "Description"
+      description: "Describe the new feature or improvement."
+    validations:
+      required: true

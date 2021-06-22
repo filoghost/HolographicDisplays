@@ -1,0 +1,16 @@
+name: 📚 Documentation improvement
+description: "Suggest a change or report an error to improve the official documentation."
+labels:
+  - "Documentation"
+body:
+  - type: markdown
+    attributes:
+      value: |-
+        Suggest a change or report an error to improve the official documentation. Thank you for contributing to the project.
+
+  - type: textarea
+    attributes:
+      label: "Description"
+      description: "Describe what should be improved and, if possible, _how_."
+    validations:
+      required: true
