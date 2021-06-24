@@ -10,11 +10,11 @@ import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
-import me.filoghost.holographicdisplays.plugin.commands.Messages;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramEditEvent;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalTextLine;
@@ -100,7 +100,7 @@ public class ReadimageCommand extends LineEditingCommand {
             } else {
 
                 if (fileName.matches(".*[a-zA-Z0-9\\-]+\\.[a-zA-Z0-9\\-]{1,4}/.+")) {
-                    Messages.sendWarning(sender, "The image path seems to be an URL. If so, please use http:// or https:// in the path.");
+                    DisplayFormat.sendWarning(sender, "The image path seems to be an URL. If so, please use http:// or https:// in the path.");
                 }
 
                 Path targetImage = HologramCommandValidate.getUserReadableFile(configManager.getRootDataFolder(), fileName);
@@ -119,16 +119,16 @@ public class ReadimageCommand extends LineEditingCommand {
             hologram.addLines(newLines);
 
             if (newLines.size() < 5) {
-                Messages.sendTip(sender, "The image has a very low height."
+                DisplayFormat.sendTip(sender, "The image has a very low height."
                         + " You can increase it by increasing the width, it will scale automatically.");
             }
 
             configManager.saveHologramDatabase(internalHologramManager);
 
             if (append) {
-                sender.sendMessage(Colors.PRIMARY + "The image was appended int the end of the hologram.");
+                sender.sendMessage(ColorScheme.PRIMARY + "The image was appended int the end of the hologram.");
             } else {
-                sender.sendMessage(Colors.PRIMARY + "The image was drawn in the hologram.");
+                sender.sendMessage(ColorScheme.PRIMARY + "The image was drawn in the hologram.");
             }
             Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
 

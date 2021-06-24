@@ -11,7 +11,7 @@ import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
 import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
-import me.filoghost.holographicdisplays.plugin.disk.TextFormatter;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -81,7 +81,7 @@ public class AnimationRegistry implements PlaceholderFactory {
 
             // Add colors and formatting to lines
             for (int i = 0; i < lines.size(); i++) {
-                lines.set(i, TextFormatter.toDisplayFormat(lines.get(i)));
+                lines.set(i, DisplayFormat.apply(lines.get(i)));
             }
 
             int refreshIntervalTicks = Math.min((int) (speed * 20.0), 1);

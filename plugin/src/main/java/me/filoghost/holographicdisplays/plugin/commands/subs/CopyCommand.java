@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
@@ -48,7 +48,7 @@ public class CopyCommand extends HologramSubCommand {
 
         configManager.saveHologramDatabase(internalHologramManager);
 
-        sender.sendMessage(Colors.PRIMARY + "Hologram \"" + fromHologram.getName() + "\""
+        sender.sendMessage(ColorScheme.PRIMARY + "Hologram \"" + fromHologram.getName() + "\""
                 + " copied into hologram \"" + toHologram.getName() + "\".");
     }
 

@@ -9,7 +9,7 @@ import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
@@ -66,11 +66,11 @@ public class CreateCommand extends HologramSubCommand {
             CommandValidate.check(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
 
             line = HologramCommandValidate.parseHologramLine(hologram, text);
-            player.sendMessage(Colors.SECONDARY_SHADOW + "(Change the lines with /" + context.getRootLabel()
+            player.sendMessage(ColorScheme.SECONDARY_DARKER + "(Change the lines with /" + context.getRootLabel()
                     + " edit " + hologram.getName() + ")");
         } else {
             String defaultText = "Default hologram. Change it with "
-                    + Colors.PRIMARY + "/" + context.getRootLabel() + " edit " + hologram.getName();
+                    + ColorScheme.PRIMARY + "/" + context.getRootLabel() + " edit " + hologram.getName();
             line = hologram.createTextLine(defaultText, defaultText.replace(ChatColor.COLOR_CHAR, '&'));
         }
 
@@ -80,10 +80,10 @@ public class CreateCommand extends HologramSubCommand {
         Location look = player.getLocation();
         look.setPitch(90);
         player.teleport(look, TeleportCause.PLUGIN);
-        player.sendMessage(Colors.PRIMARY + "You created a hologram named '" + hologram.getName() + "'.");
+        player.sendMessage(ColorScheme.PRIMARY + "You created a hologram named '" + hologram.getName() + "'.");
 
         if (moveUp) {
-            player.sendMessage(Colors.SECONDARY_SHADOW + "(You were on the ground,"
+            player.sendMessage(ColorScheme.SECONDARY_DARKER + "(You were on the ground,"
                     + " the hologram was automatically moved up."
                     + " If you use /" + context.getRootLabel() + " movehere " + hologram.getName() + ","
                     + " the hologram will be moved to your feet)");

@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
@@ -40,7 +40,7 @@ public class TeleportCommand extends HologramSubCommand {
         Location loc = hologram.getLocation();
         loc.setPitch(90);
         player.teleport(loc, TeleportCause.PLUGIN);
-        player.sendMessage(Colors.PRIMARY + "You were teleported to the hologram named '" + hologram.getName() + "'.");
+        player.sendMessage(ColorScheme.PRIMARY + "You were teleported to the hologram named '" + hologram.getName() + "'.");
     }
 
 }

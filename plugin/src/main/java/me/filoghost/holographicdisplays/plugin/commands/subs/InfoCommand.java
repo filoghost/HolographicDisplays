@@ -7,10 +7,10 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
-import me.filoghost.holographicdisplays.plugin.Colors;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
-import me.filoghost.holographicdisplays.plugin.commands.Messages;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
@@ -36,13 +36,13 @@ public class InfoCommand extends LineEditingCommand implements QuickEditCommand 
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
 
         sender.sendMessage("");
-        Messages.sendTitle(sender, "Lines of the hologram '" + hologram.getName() + "'");
+        DisplayFormat.sendTitle(sender, "Lines of the hologram '" + hologram.getName() + "'");
         int index = 0;
 
         for (InternalHologramLine line : hologram.getLines()) {
             index++;
-            sender.sendMessage(Colors.SECONDARY + Colors.BOLD + index
-                    + Colors.SECONDARY_SHADOW + ". " + Colors.SECONDARY + line.getSerializedConfigValue());
+            sender.sendMessage(ColorScheme.SECONDARY_BOLD + index + ColorScheme.SECONDARY_DARKER + ". "
+                    + ColorScheme.SECONDARY + line.getSerializedConfigValue());
         }
         commandManager.sendQuickEditCommands(context, hologram);
     }

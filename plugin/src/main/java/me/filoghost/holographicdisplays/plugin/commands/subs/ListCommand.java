@@ -8,9 +8,9 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
-import me.filoghost.holographicdisplays.plugin.commands.Messages;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.command.CommandSender;
@@ -47,15 +47,15 @@ public class ListCommand extends HologramSubCommand {
                 "There are no holograms yet. Create one with /" + context.getRootLabel() + " create.");
 
         sender.sendMessage("");
-        Messages.sendTitle(sender, "Holograms list " + Colors.SECONDARY + "(Page " + page + " of " + totalPages + ")");
+        DisplayFormat.sendTitle(sender, "Holograms list " + ColorScheme.SECONDARY + "(Page " + page + " of " + totalPages + ")");
         int fromIndex = (page - 1) * HOLOGRAMS_PER_PAGE;
         int toIndex = fromIndex + HOLOGRAMS_PER_PAGE;
 
         for (int i = fromIndex; i < toIndex; i++) {
             if (i < holograms.size()) {
                 InternalHologram hologram = holograms.get(i);
-                sender.sendMessage(Colors.SECONDARY_SHADOW + "- " + Colors.SECONDARY + Colors.BOLD + hologram.getName()
-                        + " " + Colors.SECONDARY_SHADOW + "at x: " + (int) hologram.getX()
+                sender.sendMessage(ColorScheme.SECONDARY_DARKER + "- " + ColorScheme.SECONDARY_BOLD + hologram.getName()
+                        + " " + ColorScheme.SECONDARY_DARKER + "at x: " + (int) hologram.getX()
                         + ", y: " + (int) hologram.getY()
                         + ", z: " + (int) hologram.getZ()
                         + " (lines: " + hologram.getLineCount() + ", world: \"" + hologram.getWorld().getName() + "\")");
@@ -63,7 +63,7 @@ public class ListCommand extends HologramSubCommand {
         }
 
         if (page < totalPages) {
-            Messages.sendTip(sender, "See the next page with /" + context.getRootLabel() + " list " + (page + 1));
+            DisplayFormat.sendTip(sender, "See the next page with /" + context.getRootLabel() + " list " + (page + 1));
         }
     }
 

@@ -9,12 +9,12 @@ import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
-import me.filoghost.holographicdisplays.plugin.commands.Messages;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramEditEvent;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
@@ -63,12 +63,12 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
 
         if (insertAfterIndex == 0) {
-            sender.sendMessage(Colors.PRIMARY + "Line inserted before first line.");
+            sender.sendMessage(ColorScheme.PRIMARY + "Line inserted before first line.");
         } else if (insertAfterIndex == oldLinesAmount) {
-            sender.sendMessage(Colors.PRIMARY + "Line appended at the end.");
-            Messages.sendTip(sender, "You can use \"/" + context.getRootLabel() + " addline\" to append a line at the end.");
+            sender.sendMessage(ColorScheme.PRIMARY + "Line appended at the end.");
+            DisplayFormat.sendTip(sender, "You can use \"/" + context.getRootLabel() + " addline\" to append a line at the end.");
         } else {
-            sender.sendMessage(Colors.PRIMARY + "Line inserted between lines " + insertAfterIndex + " and " + (insertAfterIndex + 1) + ".");
+            sender.sendMessage(ColorScheme.PRIMARY + "Line inserted between lines " + insertAfterIndex + " and " + (insertAfterIndex + 1) + ".");
         }
         commandManager.sendQuickEditCommands(context, hologram);
     }

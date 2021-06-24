@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
@@ -45,7 +45,7 @@ public class MovehereCommand extends HologramSubCommand {
         Location to = player.getLocation();
         to.setPitch(90);
         player.teleport(to, TeleportCause.PLUGIN);
-        player.sendMessage(Colors.PRIMARY + "You moved the hologram '" + hologram.getName() + "' near to you.");
+        player.sendMessage(ColorScheme.PRIMARY + "You moved the hologram '" + hologram.getName() + "' near to you.");
     }
 
 }

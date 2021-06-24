@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
@@ -56,7 +56,7 @@ public class RemovelineCommand extends LineEditingCommand implements QuickEditCo
         configManager.saveHologramDatabase(internalHologramManager);
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
 
-        sender.sendMessage(Colors.PRIMARY + "Line " + lineNumber + " removed.");
+        sender.sendMessage(ColorScheme.PRIMARY + "Line " + lineNumber + " removed.");
         commandManager.sendQuickEditCommands(context, hologram);
     }
 

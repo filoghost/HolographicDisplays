@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.plugin.disk;
 
 import me.filoghost.fcommons.MaterialsHelper;
 import me.filoghost.fcommons.Strings;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParseException;
@@ -33,7 +34,7 @@ public class HologramLineParser {
             if (serializedLine.trim().equalsIgnoreCase(EMPTY_LINE_PLACEHOLDER)) {
                 displayText = "";
             } else {
-                displayText = TextFormatter.toDisplayFormat(serializedLine);
+                displayText = DisplayFormat.apply(serializedLine);
             }
 
             hologramLine = hologram.createTextLine(displayText, serializedLine);

@@ -11,7 +11,7 @@ import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.sub.SubCommandManager;
 import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.commands.subs.AddlineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.AlignCommand;
@@ -149,39 +149,39 @@ public class HologramCommandManager extends SubCommandManager {
     protected void sendNoArgsMessage(CommandContext context) {
         CommandSender sender = context.getSender();
         String version = HolographicDisplays.getInstance().getDescription().getVersion();
-        sender.sendMessage(Colors.PRIMARY_SHADOW + "Server is running " + Colors.PRIMARY + "Holographic Displays "
-                + Colors.PRIMARY_SHADOW + "v" + version + " by " + Colors.PRIMARY + "filoghost");
+        sender.sendMessage(ColorScheme.PRIMARY_DARKER + "Server is running " + ColorScheme.PRIMARY + "Holographic Displays "
+                + ColorScheme.PRIMARY_DARKER + "v" + version + " by " + ColorScheme.PRIMARY + "filoghost");
         if (helpCommand.hasPermission(sender)) {
-            sender.sendMessage(Colors.PRIMARY_SHADOW + "Commands: " + Colors.PRIMARY + helpCommand.getFullUsageText(context));
+            sender.sendMessage(ColorScheme.PRIMARY_DARKER + "Commands: " + ColorScheme.PRIMARY + helpCommand.getFullUsageText(context));
         }
     }
 
     @Override
     protected void sendSubCommandDefaultPermissionMessage(SubCommandContext context) {
-        context.getSender().sendMessage(Colors.ERROR + "You don't have permission for this sub-command.");
+        context.getSender().sendMessage(ColorScheme.ERROR + "You don't have permission for this sub-command.");
     }
 
     @Override
     protected void sendUnknownSubCommandMessage(SubCommandContext context) {
-        context.getSender().sendMessage(Colors.ERROR + "Unknown sub-command."
+        context.getSender().sendMessage(ColorScheme.ERROR + "Unknown sub-command."
                 + " Type \"" + helpCommand.getFullUsageText(context) + "\" for a list of commands.");
     }
 
     @Override
     protected void sendSubCommandUsage(SubCommandContext context) {
-        context.getSender().sendMessage(Colors.ERROR + "Usage: /" + context.getRootLabel() + " "
+        context.getSender().sendMessage(ColorScheme.ERROR + "Usage: /" + context.getRootLabel() + " "
                 + context.getSubLabel() + " " + context.getSubCommand().getUsageArgs());
     }
 
     @Override
     protected void sendExecutionErrorMessage(CommandContext context, String errorMessage) {
-        context.getSender().sendMessage(Colors.ERROR + Utils.formatExceptionMessage(errorMessage));
+        context.getSender().sendMessage(ColorScheme.ERROR + Utils.formatExceptionMessage(errorMessage));
     }
 
     @Override
     protected void handleUnexpectedException(CommandContext context, Throwable t) {
         Bukkit.getLogger().log(Level.SEVERE, "Unhandled exception while executing /" + context.getRootLabel(), t);
-        context.getSender().sendMessage(Colors.ERROR + "Internal error while executing command."
+        context.getSender().sendMessage(ColorScheme.ERROR + "Internal error while executing command."
                 + " Please look on the console for more details.");
     }
 

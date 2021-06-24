@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
@@ -50,7 +50,7 @@ public class AddlineCommand extends LineEditingCommand implements QuickEditComma
         configManager.saveHologramDatabase(internalHologramManager);
         Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
 
-        sender.sendMessage(Colors.PRIMARY + "Line added.");
+        sender.sendMessage(ColorScheme.PRIMARY + "Line added.");
         commandManager.sendQuickEditCommands(context, hologram);
     }
 

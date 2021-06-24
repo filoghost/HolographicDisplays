@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.event.HolographicDisplaysReloadEvent;
@@ -28,12 +28,12 @@ public class ReloadCommand extends HologramSubCommand {
         HolographicDisplays.getInstance().load(false, errorCollector);
 
         if (!errorCollector.hasErrors()) {
-            sender.sendMessage(Colors.PRIMARY + "Configuration reloaded successfully.");
+            sender.sendMessage(ColorScheme.PRIMARY + "Configuration reloaded successfully.");
         } else {
             errorCollector.logToConsole();
-            sender.sendMessage(Colors.ERROR + "Plugin reloaded with " + errorCollector.getErrorsCount() + " error(s).");
+            sender.sendMessage(ColorScheme.ERROR + "Plugin reloaded with " + errorCollector.getErrorsCount() + " error(s).");
             if (!(sender instanceof ConsoleCommandSender)) {
-                sender.sendMessage(Colors.ERROR + "Check the console for the details.");
+                sender.sendMessage(ColorScheme.ERROR + "Check the console for the details.");
             }
         }
 

@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.listener;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.Permissions;
 import me.filoghost.holographicdisplays.plugin.disk.Configuration;
@@ -38,10 +38,10 @@ public class UpdateNotificationListener implements Listener {
             Player player = event.getPlayer();
 
             if (player.hasPermission(Permissions.UPDATE_NOTIFICATION)) {
-                player.sendMessage(Colors.PRIMARY_SHADOW + "[HolographicDisplays] "
-                        + Colors.PRIMARY + "Found an update: " + newVersion + ". Download:");
-                player.sendMessage(Colors.PRIMARY_SHADOW + ">> "
-                        + Colors.PRIMARY + "https://dev.bukkit.org/projects/holographic-displays");
+                player.sendMessage(ColorScheme.PRIMARY_DARKER + "[HolographicDisplays] "
+                        + ColorScheme.PRIMARY + "Found an update: " + newVersion + ". Download:");
+                player.sendMessage(ColorScheme.PRIMARY_DARKER + ">> "
+                        + ColorScheme.PRIMARY + "https://dev.bukkit.org/projects/holographic-displays");
             }
         }
     }

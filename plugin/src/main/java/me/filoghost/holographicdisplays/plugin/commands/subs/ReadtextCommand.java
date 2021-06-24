@@ -8,13 +8,13 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.CommandContext;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
-import me.filoghost.holographicdisplays.plugin.commands.Messages;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.disk.HologramLineParser;
 import me.filoghost.holographicdisplays.plugin.disk.HologramLoadException;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramEditEvent;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
@@ -69,7 +69,7 @@ public class ReadtextCommand extends LineEditingCommand {
 
             int linesAmount = serializedLines.size();
             if (linesAmount > 40) {
-                Messages.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
+                DisplayFormat.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
                 linesAmount = 40;
             }
 
@@ -88,11 +88,11 @@ public class ReadtextCommand extends LineEditingCommand {
             configManager.saveHologramDatabase(internalHologramManager);
 
             if (isImageExtension(FileUtils.getExtension(fileName))) {
-                Messages.sendWarning(sender, "The read file has an image's extension."
+                DisplayFormat.sendWarning(sender, "The read file has an image's extension."
                         + " If it is an image, you should use /" + context.getRootLabel() + " readimage.");
             }
 
-            sender.sendMessage(Colors.PRIMARY + "The lines were pasted into the hologram.");
+            sender.sendMessage(ColorScheme.PRIMARY + "The lines were pasted into the hologram.");
             Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
 
         } catch (IOException e) {

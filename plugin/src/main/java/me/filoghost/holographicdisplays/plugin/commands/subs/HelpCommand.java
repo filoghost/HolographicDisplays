@@ -6,10 +6,10 @@
 package me.filoghost.holographicdisplays.plugin.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
-import me.filoghost.holographicdisplays.plugin.commands.Messages;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -37,16 +37,16 @@ public class HelpCommand extends HologramSubCommand {
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) {
         sender.sendMessage("");
-        Messages.sendTitle(sender, "Holographic Displays Commands");
+        DisplayFormat.sendTitle(sender, "Holographic Displays Commands");
         for (HologramSubCommand subCommand : commandManager.getSubCommands()) {
             if (subCommand.isShowInHelpCommand()) {
                 String usage = subCommand.getFullUsageText(context);
 
                 if (sender instanceof Player) {
                     List<String> help = new ArrayList<>();
-                    help.add(Colors.PRIMARY + usage);
+                    help.add(ColorScheme.PRIMARY + usage);
                     for (String tutLine : subCommand.getDescription(context)) {
-                        help.add(Colors.SECONDARY_SHADOW + tutLine);
+                        help.add(ColorScheme.SECONDARY_DARKER + tutLine);
                     }
 
                     ((Player) sender).spigot().sendMessage(new ComponentBuilder(usage)
@@ -56,7 +56,7 @@ public class HelpCommand extends HologramSubCommand {
                             .create());
 
                 } else {
-                    sender.sendMessage(Colors.PRIMARY + usage);
+                    sender.sendMessage(ColorScheme.PRIMARY + usage);
                 }
             }
         }

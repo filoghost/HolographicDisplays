@@ -9,7 +9,7 @@ import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.entity.NMSEntity;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -61,12 +61,12 @@ public class DebugCommand extends HologramSubCommand {
 
             if (!hologramsDebugInfo.isEmpty()) {
                 foundAnyHologram = true;
-                sender.sendMessage(Colors.PRIMARY + "Holograms in world '" + world.getName() + "':");
+                sender.sendMessage(ColorScheme.PRIMARY + "Holograms in world '" + world.getName() + "':");
 
                 for (Entry<StandardHologram, HologramDebugInfo> entry : hologramsDebugInfo.entrySet()) {
                     StandardHologram hologram = entry.getKey();
                     HologramDebugInfo debugInfo = entry.getValue();
-                    sender.sendMessage(Colors.PRIMARY_SHADOW + "- '" + hologram.toFormattedString() + "':"
+                    sender.sendMessage(ColorScheme.PRIMARY_DARKER + "- '" + hologram.toFormattedString() + "':"
                             + " " + hologram.getLineCount() + " lines,"
                             + " " + debugInfo.getTotalEntities() + " entities"
                             + " (" + debugInfo.aliveEntities + " alive, " + debugInfo.deadEntities + " dead)");
@@ -75,7 +75,7 @@ public class DebugCommand extends HologramSubCommand {
         }
 
         if (!foundAnyHologram) {
-            sender.sendMessage(Colors.ERROR + "Couldn't find any loaded hologram (holograms may be in unloaded chunks).");
+            sender.sendMessage(ColorScheme.ERROR + "Couldn't find any loaded hologram (holograms may be in unloaded chunks).");
         }
     }
 

@@ -7,11 +7,11 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
-import me.filoghost.holographicdisplays.plugin.commands.Messages;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import net.md_5.bungee.api.ChatColor;
@@ -45,16 +45,16 @@ public class EditCommand extends HologramSubCommand {
         InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
 
         sender.sendMessage("");
-        Messages.sendTitle(sender, "How to edit the hologram '" + hologram.getName() + "'");
+        DisplayFormat.sendTitle(sender, "How to edit the hologram '" + hologram.getName() + "'");
         for (HologramSubCommand subCommand : commandManager.getSubCommands()) {
             if (subCommand instanceof LineEditingCommand) {
                 String usage = subCommand.getFullUsageText(context).replace("<hologram>", hologram.getName());
 
                 if (sender instanceof Player) {
                     List<String> help = new ArrayList<>();
-                    help.add(Colors.PRIMARY + usage);
+                    help.add(ColorScheme.PRIMARY + usage);
                     for (String tutLine : subCommand.getDescription(context)) {
-                        help.add(Colors.SECONDARY_SHADOW + tutLine);
+                        help.add(ColorScheme.SECONDARY_DARKER + tutLine);
                     }
 
                     ((Player) sender).spigot().sendMessage(new ComponentBuilder(usage)
@@ -64,7 +64,7 @@ public class EditCommand extends HologramSubCommand {
                             .create());
 
                 } else {
-                    sender.sendMessage(Colors.PRIMARY + usage);
+                    sender.sendMessage(ColorScheme.PRIMARY + usage);
                 }
             }
         }

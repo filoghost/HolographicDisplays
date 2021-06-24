@@ -9,6 +9,7 @@ package me.filoghost.holographicdisplays.plugin.disk;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.common.DebugLogger;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import org.bukkit.ChatColor;
 
 import java.time.DateTimeException;
@@ -44,17 +45,17 @@ public class Configuration {
         timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone, errorCollector);
         updateNotification = config.updateNotification;
 
-        imageSymbol = TextFormatter.toDisplayFormat(config.imageSymbol);
-        transparencySymbol = TextFormatter.toDisplayFormat(config.transparencySymbol);
+        imageSymbol = DisplayFormat.apply(config.imageSymbol);
+        transparencySymbol = DisplayFormat.apply(config.transparencySymbol);
         transparencyColor = parseTransparencyColor(config.transparencyColor, errorCollector);
 
         bungeeRefreshSeconds = parseBungeeRefreshInterval(config.bungeeRefreshSeconds, errorCollector);
         useRedisBungee = config.useRedisBungee;
         pingerEnabled = config.pingerEnable;
         pingerTimeout = parsePingerTimeout(config.pingerTimeout, errorCollector);
-        pingerOfflineMotd = TextFormatter.toDisplayFormat(config.pingerOfflineMotd);
-        pingerStatusOnline = TextFormatter.toDisplayFormat(config.pingerStatusOnline);
-        pingerStatusOffline = TextFormatter.toDisplayFormat(config.pingerStatusOffline);
+        pingerOfflineMotd = DisplayFormat.apply(config.pingerOfflineMotd);
+        pingerStatusOnline = DisplayFormat.apply(config.pingerStatusOnline);
+        pingerStatusOffline = DisplayFormat.apply(config.pingerStatusOffline);
         pingerTrimMotd = config.pingerTrimMotd;
 
         pingerServerAddresses = new HashMap<>();

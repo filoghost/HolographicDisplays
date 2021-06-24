@@ -8,9 +8,9 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.Colors;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
-import me.filoghost.holographicdisplays.plugin.commands.Messages;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.World;
@@ -51,10 +51,10 @@ public class NearCommand extends HologramSubCommand {
 
         CommandValidate.check(!nearHolograms.isEmpty(), "There are no holograms in the given radius.");
 
-        Messages.sendTitle(player, "Near holograms");
+        DisplayFormat.sendTitle(player, "Near holograms");
         for (InternalHologram nearHologram : nearHolograms) {
-            player.sendMessage(Colors.SECONDARY_SHADOW + "- "
-                    + Colors.SECONDARY + Colors.BOLD + nearHologram.getName() + " " + Colors.SECONDARY_SHADOW + "at"
+            player.sendMessage(ColorScheme.SECONDARY_DARKER + "- "
+                    + ColorScheme.SECONDARY_BOLD + nearHologram.getName() + " " + ColorScheme.SECONDARY_DARKER + "at"
                     + " x: " + (int) nearHologram.getX() + ","
                     + " y: " + (int) nearHologram.getY() + ","
                     + " z: " + (int) nearHologram.getZ()
