@@ -18,8 +18,8 @@ public class InternalHologram extends BaseHologram<InternalHologramLine> {
 
     private final String name;
 
-    protected InternalHologram(Location source, String name, NMSManager nmsManager, PlaceholderLineTracker placeholderLineTracker) {
-        super(source, nmsManager, placeholderLineTracker);
+    protected InternalHologram(Location location, String name, NMSManager nmsManager, PlaceholderLineTracker placeholderLineTracker) {
+        super(location, nmsManager, placeholderLineTracker);
         this.name = name;
     }
 

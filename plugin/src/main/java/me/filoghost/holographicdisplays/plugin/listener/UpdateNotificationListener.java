@@ -9,7 +9,7 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.Permissions;
-import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.updatechecker.UpdateChecker;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +22,7 @@ public class UpdateNotificationListener implements Listener {
     private String newVersion;
 
     public void runAsyncUpdateCheck() {
-        if (Configuration.updateNotification) {
+        if (Settings.updateNotification) {
             UpdateChecker.run(HolographicDisplays.getInstance(), 75097, newVersion -> {
                 this.newVersion = newVersion;
                 Log.info("Found a new version available: " + newVersion);
@@ -34,7 +34,7 @@ public class UpdateNotificationListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (Configuration.updateNotification && newVersion != null) {
+        if (Settings.updateNotification && newVersion != null) {
             Player player = event.getPlayer();
 
             if (player.hasPermission(Permissions.UPDATE_NOTIFICATION)) {

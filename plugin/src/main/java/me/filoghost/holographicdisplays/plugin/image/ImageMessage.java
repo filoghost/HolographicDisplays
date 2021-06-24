@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.image;
 
-import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import org.bukkit.ChatColor;
 
 import java.awt.Color;
@@ -79,9 +79,9 @@ public class ImageMessage {
 
     private String[] toImgMessage(ChatColor[][] colors) {
         String[] lines = new String[colors[0].length];
-        ChatColor transparencyColor = Configuration.transparencyColor;
-        String transparencySymbol = Configuration.transparencySymbol;
-        String imageSymbol = Configuration.imageSymbol;
+        ChatColor transparencyColor = Settings.transparencyColor;
+        String transparencySymbol = Settings.transparencySymbol;
+        String imageSymbol = Settings.imageSymbol;
 
         for (int y = 0; y < colors[0].length; y++) {
             StringBuilder line = new StringBuilder();

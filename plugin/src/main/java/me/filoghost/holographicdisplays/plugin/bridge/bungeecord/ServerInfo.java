@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.bridge.bungeecord;
 
 import me.filoghost.fcommons.Strings;
-import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 
 public class ServerInfo {
 
@@ -33,13 +33,13 @@ public class ServerInfo {
             motdLine2 = "";
         } else if (motd.contains("\n")) {
             String[] lines = Strings.split(motd, "\n", 2);
-            if (Configuration.pingerTrimMotd) {
+            if (Settings.pingerTrimMotd) {
                 lines = Strings.trim(lines);
             }
             motdLine1 = lines[0];
             motdLine2 = lines.length > 1 ? lines[1] : "";
         } else {
-            if (Configuration.pingerTrimMotd) {
+            if (Settings.pingerTrimMotd) {
                 motd = motd.trim();
             }
             motdLine1 = motd;

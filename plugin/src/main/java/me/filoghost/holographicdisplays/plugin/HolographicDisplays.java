@@ -20,7 +20,7 @@ import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.Placeholder
 import me.filoghost.holographicdisplays.plugin.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
-import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.plugin.disk.upgrade.LegacySymbolsUpgrade;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
@@ -165,7 +165,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         internalHologramManager.clearAll();
 
         configManager.reloadStaticReplacements(errorCollector);
-        configManager.reloadMainConfig(errorCollector);
+        configManager.reloadMainSettings(errorCollector);
         HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
         try {
             animationRegistry.loadAnimations(configManager, errorCollector);
@@ -173,7 +173,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
             errorCollector.add(e, "failed to load animation files");
         }
 
-        bungeeServerTracker.restart(Configuration.bungeeRefreshSeconds, TimeUnit.SECONDS);
+        bungeeServerTracker.restart(Settings.bungeeRefreshSeconds, TimeUnit.SECONDS);
 
         if (deferHologramsCreation) {
             // For the initial load: holograms are loaded later, when the worlds are ready

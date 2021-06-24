@@ -34,7 +34,7 @@ import me.filoghost.holographicdisplays.plugin.commands.subs.RemovelineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.SetlineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.TeleportCommand;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
-import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import net.md_5.bungee.api.ChatColor;
@@ -104,7 +104,7 @@ public class HologramCommandManager extends SubCommandManager {
     }
 
     public void sendQuickEditCommands(SubCommandContext commandContext, InternalHologram hologram) {
-        if (!Configuration.quickEditCommands) {
+        if (!Settings.quickEditCommands) {
             return;
         }
         if (!(commandContext.getSender() instanceof Player)) {

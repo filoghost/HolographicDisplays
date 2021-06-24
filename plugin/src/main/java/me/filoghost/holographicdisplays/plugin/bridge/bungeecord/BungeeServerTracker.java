@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.pinger.PingResponse;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.pinger.ServerPinger;
-import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.disk.ServerAddress;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -50,7 +50,7 @@ public class BungeeServerTracker {
 
     public ServerInfo getCurrentServerInfo(@NotNull String serverName) {
         // If it wasn't already tracked, send an update request instantly
-        if (!Configuration.pingerEnabled && !trackedServers.containsKey(serverName)) {
+        if (!Settings.pingerEnabled && !trackedServers.containsKey(serverName)) {
             bungeeMessenger.sendPlayerCountRequest(serverName);
         }
 
@@ -62,7 +62,7 @@ public class BungeeServerTracker {
     private void runPeriodicUpdateTask() {
         removeUnusedServers();
 
-        if (Configuration.pingerEnabled) {
+        if (Settings.pingerEnabled) {
             Bukkit.getScheduler().runTaskAsynchronously(HolographicDisplays.getInstance(), () -> {
                 for (TrackedServer trackedServer : trackedServers.values()) {
                     updateServerInfoWithPinger(trackedServer);
@@ -76,7 +76,7 @@ public class BungeeServerTracker {
     }
 
     private void updateServerInfoWithPinger(TrackedServer trackedServer) {
-        ServerAddress serverAddress = Configuration.pingerServerAddresses.get(trackedServer.serverName);
+        ServerAddress serverAddress = Settings.pingerServerAddresses.get(trackedServer.serverName);
 
         if (serverAddress != null) {
             trackedServer.serverInfo = pingServer(serverAddress);
@@ -94,7 +94,7 @@ public class BungeeServerTracker {
 
     private ServerInfo pingServer(ServerAddress serverAddress) {
         try {
-            PingResponse data = ServerPinger.fetchData(serverAddress, Configuration.pingerTimeout);
+            PingResponse data = ServerPinger.fetchData(serverAddress, Settings.pingerTimeout);
             return ServerInfo.online(data.getOnlinePlayers(), data.getMaxPlayers(), data.getMotd());
         } catch (SocketTimeoutException e) {
             // Common error, do not log
@@ -104,7 +104,7 @@ public class BungeeServerTracker {
             Log.warning("Couldn't fetch data from " + serverAddress + ".", e);
         }
 
-        return ServerInfo.offline(Configuration.pingerOfflineMotd);
+        return ServerInfo.offline(Settings.pingerOfflineMotd);
     }
 
     private void removeUnusedServers() {
@@ -128,7 +128,7 @@ public class BungeeServerTracker {
 
         private TrackedServer(String serverName) {
             this.serverName = serverName;
-            this.serverInfo = ServerInfo.offline(Configuration.pingerOfflineMotd);
+            this.serverInfo = ServerInfo.offline(Settings.pingerOfflineMotd);
         }
 
         private void updateLastRequest() {

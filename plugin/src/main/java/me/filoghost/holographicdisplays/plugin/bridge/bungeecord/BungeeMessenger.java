@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.bridge.bungeecord;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -46,7 +46,7 @@ public class BungeeMessenger implements PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        if (Configuration.pingerEnabled || !channel.equals(getTargetChannel())) {
+        if (Settings.pingerEnabled || !channel.equals(getTargetChannel())) {
             return;
         }
 
@@ -86,7 +86,7 @@ public class BungeeMessenger implements PluginMessageListener {
     }
 
     private String getTargetChannel() {
-        if (Configuration.useRedisBungee) {
+        if (Settings.useRedisBungee) {
             return REDISBUNGEE_CHANNEL;
         } else {
             return BUNGEECORD_CHANNEL;

@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Configuration {
+public class Settings {
 
     public static double spaceBetweenLines;
     public static boolean quickEditCommands;
@@ -39,7 +39,7 @@ public class Configuration {
     public static boolean pingerTrimMotd;
     public static Map<String, ServerAddress> pingerServerAddresses;
 
-    public static void load(ConfigurationFileModel config, ErrorCollector errorCollector) {
+    public static void load(SettingsModel config, ErrorCollector errorCollector) {
         spaceBetweenLines = config.spaceBetweenLines;
         quickEditCommands = config.quickEditCommands;
         timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone, errorCollector);

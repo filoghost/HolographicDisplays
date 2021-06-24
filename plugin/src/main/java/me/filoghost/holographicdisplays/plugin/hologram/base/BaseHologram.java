@@ -9,7 +9,7 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -181,7 +181,7 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
 
             currentLineY -= line.getHeight();
             if (i > 0) {
-                currentLineY -= Configuration.spaceBetweenLines;
+                currentLineY -= Settings.spaceBetweenLines;
             }
 
             if (forceRespawn) {

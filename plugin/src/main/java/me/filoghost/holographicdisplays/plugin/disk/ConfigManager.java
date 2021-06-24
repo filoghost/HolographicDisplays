@@ -20,28 +20,28 @@ import java.nio.file.Path;
 
 public class ConfigManager extends BaseConfigManager {
 
-    private final MappedConfigLoader<ConfigurationFileModel> mainConfigLoader;
+    private final MappedConfigLoader<SettingsModel> mainConfigLoader;
     private final ConfigLoader databaseConfigLoader;
     private final ConfigLoader staticReplacementsConfigLoader;
 
     public ConfigManager(Path rootDataFolder) {
         super(rootDataFolder);
-        this.mainConfigLoader = getMappedConfigLoader("config.yml", ConfigurationFileModel.class);
+        this.mainConfigLoader = getMappedConfigLoader("config.yml", SettingsModel.class);
         this.databaseConfigLoader = getConfigLoader("database.yml");
         this.staticReplacementsConfigLoader = getConfigLoader("custom-placeholders.yml");
     }
 
-    public void reloadMainConfig(ErrorCollector errorCollector) {
-        ConfigurationFileModel mainConfig;
+    public void reloadMainSettings(ErrorCollector errorCollector) {
+        SettingsModel mainConfig;
 
         try {
             mainConfig = mainConfigLoader.init();
         } catch (ConfigException e) {
             logConfigInitException(errorCollector, mainConfigLoader.getFile(), e);
-            mainConfig = new ConfigurationFileModel(); // Fallback: use default values
+            mainConfig = new SettingsModel(); // Fallback: use default values
         }
 
-        Configuration.load(mainConfig, errorCollector);
+        Settings.load(mainConfig, errorCollector);
     }
 
     public HologramDatabase loadHologramDatabase(ErrorCollector errorCollector) {

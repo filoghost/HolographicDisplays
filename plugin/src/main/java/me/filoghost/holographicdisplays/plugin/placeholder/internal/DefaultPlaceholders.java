@@ -9,7 +9,7 @@ import me.filoghost.fcommons.collection.CollectionUtils;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.ServerInfo;
-import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -40,7 +40,7 @@ public class DefaultPlaceholders {
         )));
 
         placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "time", 10, (argument) -> {
-            return Configuration.timeFormat.format(Instant.now());
+            return Settings.timeFormat.format(Instant.now());
         });
 
         placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "animation", animationRegistry);
@@ -55,7 +55,7 @@ public class DefaultPlaceholders {
                 return String.valueOf(Bukkit.getMaxPlayers());
             }
 
-            if (!Configuration.pingerEnabled) {
+            if (!Settings.pingerEnabled) {
                 return PINGER_NOT_ENABLED_ERROR;
             }
 
@@ -67,15 +67,15 @@ public class DefaultPlaceholders {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
 
-            if (!Configuration.pingerEnabled) {
+            if (!Settings.pingerEnabled) {
                 return PINGER_NOT_ENABLED_ERROR;
             }
 
             ServerInfo serverInfo = bungeeServerTracker.getCurrentServerInfo(serverName);
             if (serverInfo.isOnline()) {
-                return Configuration.pingerStatusOnline;
+                return Settings.pingerStatusOnline;
             } else {
-                return Configuration.pingerStatusOffline;
+                return Settings.pingerStatusOffline;
             }
         });
 
@@ -84,7 +84,7 @@ public class DefaultPlaceholders {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
 
-            if (!Configuration.pingerEnabled) {
+            if (!Settings.pingerEnabled) {
                 return PINGER_NOT_ENABLED_ERROR;
             }
 
@@ -96,7 +96,7 @@ public class DefaultPlaceholders {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
 
-            if (!Configuration.pingerEnabled) {
+            if (!Settings.pingerEnabled) {
                 return PINGER_NOT_ENABLED_ERROR;
             }
 

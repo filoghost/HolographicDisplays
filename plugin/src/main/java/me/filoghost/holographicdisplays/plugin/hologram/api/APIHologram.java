@@ -9,7 +9,7 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramAdapter;
-import me.filoghost.holographicdisplays.plugin.disk.Configuration;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
 import org.bukkit.Location;
@@ -32,12 +32,12 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     private boolean allowPlaceholders;
 
     protected APIHologram(
-            Location source,
+            Location location,
             Plugin plugin,
             NMSManager nmsManager,
             APIHologramManager apiHologramManager,
             PlaceholderLineTracker placeholderLineTracker) {
-        super(source, nmsManager, placeholderLineTracker);
+        super(location, nmsManager, placeholderLineTracker);
         Preconditions.notNull(plugin, "plugin");
         this.plugin = plugin;
         this.apiHologramManager = apiHologramManager;
@@ -129,7 +129,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
             height += line.getHeight();
         }
 
-        height += Configuration.spaceBetweenLines * (lines.size() - 1);
+        height += Settings.spaceBetweenLines * (lines.size() - 1);
         return height;
     }
 

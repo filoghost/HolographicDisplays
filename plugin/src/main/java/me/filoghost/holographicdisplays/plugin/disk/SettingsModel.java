@@ -12,7 +12,7 @@ import me.filoghost.fcommons.config.mapped.Path;
 import java.util.Arrays;
 import java.util.List;
 
-public class ConfigurationFileModel implements MappedConfig {
+public class SettingsModel implements MappedConfig {
 
     @Path("space-between-lines")
     double spaceBetweenLines = 0.02;
