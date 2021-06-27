@@ -7,194 +7,179 @@ package me.filoghost.holographicdisplays.plugin.image;
 
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /*
  * Credits: https://forums.bukkit.org/threads/lib-imagemessage-v2-1-send-images-to-players-via-the-chat.204902
  */
 public class ImageMessage {
 
-    public static final int MAX_WIDTH = 150;
+    private static final List<ColorMapping> COLORS = Arrays.asList(
+            new ColorMapping(new Color(0, 0, 170), ChatColor.DARK_BLUE),
+            new ColorMapping(new Color(0, 170, 0), ChatColor.DARK_GREEN),
+            new ColorMapping(new Color(0, 170, 170), ChatColor.DARK_AQUA),
+            new ColorMapping(new Color(170, 0, 0), ChatColor.DARK_RED),
+            new ColorMapping(new Color(170, 0, 170), ChatColor.DARK_PURPLE),
+            new ColorMapping(new Color(255, 170, 0), ChatColor.GOLD),
+            new ColorMapping(new Color(85, 85, 255), ChatColor.BLUE),
+            new ColorMapping(new Color(85, 255, 85), ChatColor.GREEN),
+            new ColorMapping(new Color(85, 255, 255), ChatColor.AQUA),
+            new ColorMapping(new Color(255, 85, 85), ChatColor.RED),
+            new ColorMapping(new Color(255, 85, 255), ChatColor.LIGHT_PURPLE),
+            new ColorMapping(new Color(255, 255, 85), ChatColor.YELLOW)
+    );
 
-    private static final Map<ChatColor, Color> colorsMap = new HashMap<>();
-    private static final Map<ChatColor, Color> graysMap = new HashMap<>();
+    private static final List<ColorMapping> GRAYS = Arrays.asList(
+            new ColorMapping(new Color(0, 0, 0), ChatColor.BLACK),
+            new ColorMapping(new Color(85, 85, 85), ChatColor.DARK_GRAY),
+            new ColorMapping(new Color(170, 170, 170), ChatColor.GRAY),
+            new ColorMapping(new Color(255, 255, 255), ChatColor.WHITE)
+    );
 
-    static {
-        colorsMap.put(ChatColor.DARK_BLUE, new Color(0, 0, 170));
-        colorsMap.put(ChatColor.DARK_GREEN, new Color(0, 170, 0));
-        colorsMap.put(ChatColor.DARK_AQUA, new Color(0, 170, 170));
-        colorsMap.put(ChatColor.DARK_RED, new Color(170, 0, 0));
-        colorsMap.put(ChatColor.DARK_PURPLE, new Color(170, 0, 170));
-        colorsMap.put(ChatColor.GOLD, new Color(255, 170, 0));
-        colorsMap.put(ChatColor.BLUE, new Color(85, 85, 255));
-        colorsMap.put(ChatColor.GREEN, new Color(85, 255, 85));
-        colorsMap.put(ChatColor.AQUA, new Color(85, 255, 255));
-        colorsMap.put(ChatColor.RED, new Color(255, 85, 85));
-        colorsMap.put(ChatColor.LIGHT_PURPLE, new Color(255, 85, 255));
-        colorsMap.put(ChatColor.YELLOW, new Color(255, 255, 85));
+    private final List<String> lines;
 
-        graysMap.put(ChatColor.BLACK, new Color(0, 0, 0));
-        graysMap.put(ChatColor.DARK_GRAY, new Color(85, 85, 85));
-        graysMap.put(ChatColor.GRAY, new Color(170, 170, 170));
-        graysMap.put(ChatColor.WHITE, new Color(255, 255, 255));
+    public ImageMessage(BufferedImage image, int width) {
+        this.lines = toChatLines(resizeImage(image, width));
     }
 
+    private List<String> toChatLines(BufferedImage image) {
+        List<String> lines = new ArrayList<>(image.getHeight());
+        ChatColor transparencyColor = Settings.transparencyColor;
+        String transparencySymbol = Settings.transparencySymbol;
+        String imageSymbol = Settings.imageSymbol;
 
-    private final String[] lines;
+        for (int y = 0; y < image.getHeight(); y++) {
+            StringBuilder line = new StringBuilder();
+            ChatColor previousColor = null;
 
-    public ImageMessage(BufferedImage image, int width) throws ImageTooWideException {
-        ChatColor[][] chatColors = toChatColorArray(image, width);
-        this.lines = toImgMessage(chatColors);
+            for (int x = 0; x < image.getWidth(); x++) {
+                ChatColor currentColor = getClosestChatColor(image, x, y);
+                String symbol;
+
+                if (currentColor == null) {
+                    // Use the transparent char
+                    currentColor = transparencyColor;
+                    symbol = transparencySymbol;
+                } else {
+                    symbol = imageSymbol;
+                }
+
+                if (currentColor != previousColor) {
+                    // Append the different color and save it
+                    line.append(currentColor);
+                    previousColor = currentColor;
+                }
+                line.append(symbol);
+            }
+
+            lines.add(line.toString());
+        }
+
+        return lines;
     }
 
-    private ChatColor[][] toChatColorArray(BufferedImage image, int width) throws ImageTooWideException {
+    private BufferedImage resizeImage(BufferedImage image, int width) {
         double ratio = (double) image.getHeight() / image.getWidth();
         int height = (int) (width * ratio);
         if (height == 0) {
             height = 1;
         }
-
-        if (width > MAX_WIDTH) {
-            throw new ImageTooWideException();
-        }
-
-        BufferedImage resized = resizeImage(image, width, height);
-
-        ChatColor[][] chatImg = new ChatColor[resized.getWidth()][resized.getHeight()];
-        for (int x = 0; x < resized.getWidth(); x++) {
-            for (int y = 0; y < resized.getHeight(); y++) {
-                int rgb = resized.getRGB(x, y);
-                chatImg[x][y] = getClosestChatColor(new Color(rgb, true));
-            }
-        }
-        return chatImg;
-    }
-
-    private String[] toImgMessage(ChatColor[][] colors) {
-        String[] lines = new String[colors[0].length];
-        ChatColor transparencyColor = Settings.transparencyColor;
-        String transparencySymbol = Settings.transparencySymbol;
-        String imageSymbol = Settings.imageSymbol;
-
-        for (int y = 0; y < colors[0].length; y++) {
-            StringBuilder line = new StringBuilder();
-            ChatColor previous = ChatColor.RESET;
-
-            for (int x = 0; x < colors.length; x++) {
-                ChatColor currentColor = colors[x][y];
-
-                if (currentColor == null) {
-                    // Use the transparent char
-                    if (previous != transparencyColor) {
-                        // Change the previous chat color and append the newer
-                        line.append(transparencyColor);
-                        previous = transparencyColor;
-                    }
-                    line.append(transparencySymbol);
-
-                } else {
-                    if (previous != currentColor) {
-                        line.append(currentColor.toString());
-                        previous = currentColor;
-                    }
-
-                    line.append(imageSymbol);
-                }
-            }
-
-            lines[y] = line.toString();
-        }
-
-        return lines;
-    }
-
-    private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
-        return toBufferedImage(originalImage.getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        return toBufferedImage(image.getScaledInstance(width, height, Image.SCALE_DEFAULT));
     }
 
     private BufferedImage toBufferedImage(Image img) {
         // Creates a buffered image with transparency
-        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
         // Draws the image on to the buffered image
-        Graphics2D graphics = bimage.createGraphics();
+        Graphics2D graphics = bufferedImage.createGraphics();
         graphics.drawImage(img, 0, 0, null);
         graphics.dispose();
 
-        // Returns the buffered image
-        return bimage;
+        return bufferedImage;
     }
 
-    private double getDistance(Color c1, Color c2) {
-        double rmean = (c1.getRed() + c2.getRed()) / 2.0;
-        double r = c1.getRed() - c2.getRed();
-        double g = c1.getGreen() - c2.getGreen();
-        int b = c1.getBlue() - c2.getBlue();
-        double weightR = 2 + rmean / 256.0;
-        double weightG = 4.0;
-        double weightB = 2 + (255 - rmean) / 256.0;
-        return weightR * r * r + weightG * g * g + weightB * b * b;
-    }
-
-    private boolean areIdentical(Color c1, Color c2) {
-        return Math.abs(c1.getRed() - c2.getRed()) <= 5
-                && Math.abs(c1.getGreen() - c2.getGreen()) <= 5
-                && Math.abs(c1.getBlue() - c2.getBlue()) <= 5;
-
-    }
-
-    private ChatColor getClosestChatColor(Color color) {
+    private @Nullable ChatColor getClosestChatColor(BufferedImage image, int x, int y) {
+        Color color = new Color(image.getRGB(x, y), true);
         if (color.getAlpha() < 80) {
             return null;
         }
 
-        for (Entry<ChatColor, Color> entry : colorsMap.entrySet()) {
-            if (areIdentical(entry.getValue(), color)) {
-                return entry.getKey();
+        for (ColorMapping colorMapping : COLORS) {
+            if (colorMapping.isIdenticalTo(color)) {
+                return colorMapping.chatColor;
             }
         }
 
-        double bestGrayDistance = -1;
-        ChatColor bestGrayMatch = null;
+        ColorMapping bestGrayMatch = getClosestColorMapping(GRAYS, color);
 
-        for (Entry<ChatColor, Color> entry : graysMap.entrySet()) {
-            double distance = getDistance(color, entry.getValue());
-
-            if (distance < bestGrayDistance || bestGrayDistance == -1) {
-                bestGrayDistance = distance;
-                bestGrayMatch = entry.getKey();
-            }
+        if (bestGrayMatch.getDistance(color) < 17500) {
+            return bestGrayMatch.chatColor;
+        } else {
+            return getClosestColorMapping(COLORS, color).chatColor;
         }
-
-        if (bestGrayDistance < 17500) {
-            return bestGrayMatch;
-        }
-
-        double bestColorDistance = -1;
-        ChatColor bestColorMatch = null;
-
-        for (Entry<ChatColor, Color> entry : colorsMap.entrySet()) {
-            double distance = getDistance(color, entry.getValue());
-
-            if (distance < bestColorDistance || bestColorDistance == -1) {
-                bestColorDistance = distance;
-                bestColorMatch = entry.getKey();
-            }
-        }
-
-        // Minecraft has 15 colors
-        return bestColorMatch;
     }
 
-    public String[] getLines() {
+    private ColorMapping getClosestColorMapping(Collection<ColorMapping> colorMappings, Color color) {
+        double bestDistance = 0;
+        ColorMapping bestMatch = null;
+
+        for (ColorMapping colorMapping : colorMappings) {
+            double distance = colorMapping.getDistance(color);
+
+            if (bestMatch == null || distance < bestDistance) {
+                bestMatch = colorMapping;
+                bestDistance = distance;
+            }
+        }
+
+        return bestMatch;
+    }
+
+    public List<String> getLines() {
         return lines;
+    }
+
+
+    private static class ColorMapping {
+
+        private final Color color;
+        private final ChatColor chatColor;
+
+        ColorMapping(Color color, ChatColor chatColor) {
+            this.chatColor = chatColor;
+            this.color = color;
+        }
+
+        boolean isIdenticalTo(Color otherColor) {
+            return Math.abs(color.getRed() - otherColor.getRed()) <= 5
+                    && Math.abs(color.getGreen() - otherColor.getGreen()) <= 5
+                    && Math.abs(color.getBlue() - otherColor.getBlue()) <= 5;
+        }
+
+        double getDistance(Color otherColor) {
+            int redDiff = color.getRed() - otherColor.getRed();
+            int greenDiff = color.getGreen() - otherColor.getGreen();
+            int blueDiff = color.getBlue() - otherColor.getBlue();
+            double redMean = (color.getRed() + otherColor.getRed()) / 2.0;
+            double redWeight = 2 + redMean / 256.0;
+            double greenWeight = 4.0;
+            double blueWeight = 2 + (255 - redMean) / 256.0;
+
+            return redWeight * redDiff * redDiff
+                    + greenWeight * greenDiff * greenDiff
+                    + blueWeight * blueDiff * blueDiff;
+        }
+
     }
 
 }

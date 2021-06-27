@@ -10,10 +10,10 @@ import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramEditEvent;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
@@ -21,7 +21,6 @@ import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalTextLin
 import me.filoghost.holographicdisplays.plugin.image.ImageMessage;
 import me.filoghost.holographicdisplays.plugin.image.ImageReadException;
 import me.filoghost.holographicdisplays.plugin.image.ImageReader;
-import me.filoghost.holographicdisplays.plugin.image.ImageTooWideException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -87,6 +86,7 @@ public class ReadimageCommand extends LineEditingCommand {
 
         int width = CommandValidate.parseInteger(args[2]);
         CommandValidate.check(width >= 2, "The width of the image must be 2 or greater.");
+        CommandValidate.check(width <= 150, "The width of the image must be 150 or lower.");
 
         boolean isUrl = false;
 
@@ -134,8 +134,6 @@ public class ReadimageCommand extends LineEditingCommand {
 
         } catch (MalformedURLException e) {
             throw new CommandException("The provided URL was not valid.");
-        } catch (ImageTooWideException e) {
-            throw new CommandException("The image is too large. Max width allowed is " + ImageMessage.MAX_WIDTH + " pixels.");
         } catch (ImageReadException e) {
             throw new CommandException("The plugin was unable to read the image. Be sure that the format is supported.");
         } catch (IOException e) {
