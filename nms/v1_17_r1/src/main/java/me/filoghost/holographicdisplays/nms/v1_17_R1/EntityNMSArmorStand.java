@@ -230,7 +230,7 @@ public class EntityNMSArmorStand extends EntityArmorStand implements NMSArmorSta
 
         try {
             VEHICLE_FIELD.set(passenger, this);
-            ((Entity) this).at /* passengers */ = ImmutableList.of(this);
+            ((Entity) this).at /* passengers */ = ImmutableList.of(passengerEntity);
         } catch (ReflectiveOperationException e) {
             DebugLogger.cannotSetPassenger(e);
         }
