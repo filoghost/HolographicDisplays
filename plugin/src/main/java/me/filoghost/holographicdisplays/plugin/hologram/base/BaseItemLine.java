@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.handler.PickupHandler;
+import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.common.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.common.nms.SpawnFailedException;
 import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
@@ -15,7 +16,6 @@ import me.filoghost.holographicdisplays.common.nms.entity.NMSItem;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -55,17 +55,30 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
         this.pickupHandler = pickupHandler;
     }
 
-    public @NotNull ItemStack getItemStack() {
+    public @Nullable ItemStack getItemStack() {
         return itemStack;
     }
 
-    public void setItemStack(@NotNull ItemStack itemStack) {
-        Preconditions.notNull(itemStack, "itemStack");
-        Preconditions.checkArgument(0 < itemStack.getAmount() && itemStack.getAmount() <= 64, "Item must have amount between 1 and 64");
+    public void setItemStack(@Nullable ItemStack itemStack) {
+        if (itemStack != null) {
+            Preconditions.checkArgument(0 < itemStack.getAmount() && itemStack.getAmount() <= 64, "itemStack's amount must be between 1 and 64");
+        }
         this.itemStack = itemStack;
 
+        if (itemStack == null) {
+            // Despawn the entity (if existing) since the item shouldn't be visible
+            despawnItem();
+            return;
+        }
+
         if (itemEntity != null) {
+            // Simply update the existing entity
             itemEntity.setItemStackNMS(itemStack);
+        } else {
+            // Spawn the entity, if it needs to be spawned
+            if (super.isSpawned()) {
+                spawnItem(getWorld(), getX(), getY(), getZ());
+            }
         }
     }
 
@@ -74,9 +87,7 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
         super.spawnEntities(world, x, y, z);
 
         if (itemStack != null) {
-            itemEntity = getNMSManager().spawnNMSItem(world, x, y + getItemSpawnOffset(), z, this, itemStack);
-            itemVehicleEntity = getNMSManager().spawnNMSArmorStand(world, x, y + getItemSpawnOffset(), z, this);
-            itemVehicleEntity.setPassengerNMS(itemEntity);
+            spawnItem(world, x, y, z);
         }
     }
 
@@ -96,6 +107,22 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
     public void despawnEntities() {
         super.despawnEntities();
 
+        despawnItem();
+    }
+
+    private void spawnItem(World world, double x, double y, double z) {
+        if (world != null) {
+            try {
+                itemEntity = getNMSManager().spawnNMSItem(world, x, y + getItemSpawnOffset(), z, this, itemStack);
+                itemVehicleEntity = getNMSManager().spawnNMSArmorStand(world, x, y + getItemSpawnOffset(), z, this);
+                itemVehicleEntity.setPassengerNMS(itemEntity);
+            } catch (SpawnFailedException e) {
+                DebugLogger.handleSpawnFail(e, this);
+            }
+        }
+    }
+
+    private void despawnItem() {
         if (itemVehicleEntity != null) {
             itemVehicleEntity.killEntityNMS();
             itemVehicleEntity = null;
