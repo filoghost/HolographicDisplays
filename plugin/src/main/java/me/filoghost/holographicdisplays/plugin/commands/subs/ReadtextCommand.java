@@ -8,18 +8,15 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.CommandContext;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
-import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
-import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.disk.HologramLineParser;
 import me.filoghost.holographicdisplays.plugin.disk.HologramLoadException;
-import me.filoghost.holographicdisplays.plugin.event.InternalHologramEditEvent;
+import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.util.FileUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -32,16 +29,14 @@ import java.util.List;
 
 public class ReadtextCommand extends LineEditingCommand {
 
-    private final InternalHologramManager internalHologramManager;
-    private final ConfigManager configManager;
+    private final InternalHologramEditor hologramEditor;
 
-    public ReadtextCommand(InternalHologramManager internalHologramManager, ConfigManager configManager) {
+    public ReadtextCommand(InternalHologramEditor hologramEditor) {
         super("readtext", "readlines");
         setMinArgs(2);
         setUsageArgs("<hologram> <fileWithExtension>");
 
-        this.internalHologramManager = internalHologramManager;
-        this.configManager = configManager;
+        this.hologramEditor = hologramEditor;
     }
 
     @Override
@@ -60,47 +55,46 @@ public class ReadtextCommand extends LineEditingCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
+        InternalHologram hologram = hologramEditor.getHologram(args[0]);
         String fileName = args[1];
 
+        Path fileToRead = hologramEditor.getUserReadableFile(fileName);
+        List<String> serializedLines;
+
         try {
-            Path targetFile = HologramCommandValidate.getUserReadableFile(configManager.getRootDataFolder(), fileName);
-            List<String> serializedLines = Files.readAllLines(targetFile);
-
-            int linesAmount = serializedLines.size();
-            if (linesAmount > 40) {
-                DisplayFormat.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
-                linesAmount = 40;
-            }
-
-            List<InternalHologramLine> linesToAdd = new ArrayList<>();
-            for (int i = 0; i < linesAmount; i++) {
-                try {
-                    InternalHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i));
-                    linesToAdd.add(line);
-                } catch (HologramLoadException e) {
-                    throw new CommandException("Error at line " + (i + 1) + ": " + e.getMessage());
-                }
-            }
-
-            hologram.setLines(linesToAdd);
-
-            configManager.saveHologramDatabase(internalHologramManager);
-
-            if (isImageExtension(FileUtils.getExtension(fileName))) {
-                DisplayFormat.sendWarning(sender, "The read file has an image's extension."
-                        + " If it is an image, you should use /" + context.getRootLabel() + " readimage.");
-            }
-
-            sender.sendMessage(ColorScheme.PRIMARY + "The lines were pasted into the hologram.");
-            Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
-
+            serializedLines = Files.readAllLines(fileToRead);
         } catch (IOException e) {
             throw new CommandException("I/O exception while reading the file. Is it in use?");
         }
+
+        int linesAmount = serializedLines.size();
+        if (linesAmount > 40) {
+            DisplayFormat.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
+            linesAmount = 40;
+        }
+
+        List<InternalHologramLine> newLines = new ArrayList<>();
+        for (int i = 0; i < linesAmount; i++) {
+            try {
+                InternalHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i));
+                newLines.add(line);
+            } catch (HologramLoadException e) {
+                throw new CommandException("Error at line " + (i + 1) + ": " + e.getMessage());
+            }
+        }
+
+        hologram.setLines(newLines);
+        hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
+
+        if (isSupportedImageExtension(FileUtils.getExtension(fileToRead))) {
+            DisplayFormat.sendWarning(sender, "The read file has an image's extension."
+                    + " If it is an image, you should use /" + context.getRootLabel() + " readimage.");
+        }
+
+        sender.sendMessage(ColorScheme.PRIMARY + "The lines were pasted into the hologram.");
     }
 
-    private boolean isImageExtension(String extension) {
+    private boolean isSupportedImageExtension(String extension) {
         return Arrays.asList("jpg", "png", "jpeg", "gif").contains(extension.toLowerCase());
     }
 

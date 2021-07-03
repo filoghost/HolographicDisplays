@@ -8,32 +8,31 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
-import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.command.CommandSender;
 
 public class InfoCommand extends LineEditingCommand implements QuickEditCommand {
 
     private final HologramCommandManager commandManager;
-    private final InternalHologramManager internalHologramManager;
+    private final InternalHologramEditor hologramEditor;
 
-    public InfoCommand(HologramCommandManager commandManager, InternalHologramManager internalHologramManager) {
+    public InfoCommand(HologramCommandManager commandManager, InternalHologramEditor hologramEditor) {
         super("info", "details");
         setMinArgs(1);
         setUsageArgs("<hologram>");
         setDescription("Shows the lines of a hologram.");
 
         this.commandManager = commandManager;
-        this.internalHologramManager = internalHologramManager;
+        this.hologramEditor = hologramEditor;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
+        InternalHologram hologram = hologramEditor.getHologram(args[0]);
 
         sender.sendMessage("");
         DisplayFormat.sendTitle(sender, "Lines of the hologram '" + hologram.getName() + "'");

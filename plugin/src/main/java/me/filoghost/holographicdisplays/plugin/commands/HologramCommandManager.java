@@ -9,9 +9,7 @@ import me.filoghost.fcommons.command.CommandContext;
 import me.filoghost.fcommons.command.sub.SubCommand;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.sub.SubCommandManager;
-import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.commands.subs.AddlineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.AlignCommand;
@@ -35,6 +33,7 @@ import me.filoghost.holographicdisplays.plugin.commands.subs.SetlineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.TeleportCommand;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import net.md_5.bungee.api.ChatColor;
@@ -58,27 +57,28 @@ public class HologramCommandManager extends SubCommandManager {
 
     public HologramCommandManager(ConfigManager configManager, InternalHologramManager internalHologramManager, NMSManager nmsManager) {
         setName("holograms");
+        InternalHologramEditor hologramEditor = new InternalHologramEditor(internalHologramManager, configManager);
         this.helpCommand = new HelpCommand(this);
         this.subCommands = new ArrayList<>();
 
-        subCommands.add(new AddlineCommand(this, internalHologramManager, configManager));
-        subCommands.add(new CreateCommand(internalHologramManager, configManager));
-        subCommands.add(new DeleteCommand(internalHologramManager, configManager));
-        subCommands.add(new EditCommand(this, internalHologramManager));
-        subCommands.add(new ListCommand(internalHologramManager));
-        subCommands.add(new NearCommand(internalHologramManager));
-        subCommands.add(new TeleportCommand(internalHologramManager));
-        subCommands.add(new MovehereCommand(internalHologramManager, configManager));
-        subCommands.add(new AlignCommand(internalHologramManager, configManager));
-        subCommands.add(new CopyCommand(internalHologramManager, configManager));
+        subCommands.add(new AddlineCommand(this, hologramEditor));
+        subCommands.add(new CreateCommand(hologramEditor));
+        subCommands.add(new DeleteCommand(hologramEditor));
+        subCommands.add(new EditCommand(this, hologramEditor));
+        subCommands.add(new ListCommand(hologramEditor));
+        subCommands.add(new NearCommand(hologramEditor));
+        subCommands.add(new TeleportCommand(hologramEditor));
+        subCommands.add(new MovehereCommand(hologramEditor));
+        subCommands.add(new AlignCommand(hologramEditor));
+        subCommands.add(new CopyCommand(hologramEditor));
         subCommands.add(new ReloadCommand());
 
-        subCommands.add(new RemovelineCommand(this, internalHologramManager, configManager));
-        subCommands.add(new SetlineCommand(this, internalHologramManager, configManager));
-        subCommands.add(new InsertlineCommand(this, internalHologramManager, configManager));
-        subCommands.add(new ReadtextCommand(internalHologramManager, configManager));
-        subCommands.add(new ReadimageCommand(internalHologramManager, configManager));
-        subCommands.add(new InfoCommand(this, internalHologramManager));
+        subCommands.add(new RemovelineCommand(this, hologramEditor));
+        subCommands.add(new SetlineCommand(this, hologramEditor));
+        subCommands.add(new InsertlineCommand(this, hologramEditor));
+        subCommands.add(new ReadtextCommand(hologramEditor));
+        subCommands.add(new ReadimageCommand(hologramEditor));
+        subCommands.add(new InfoCommand(this, hologramEditor));
 
         subCommands.add(new DebugCommand(nmsManager));
         subCommands.add(helpCommand);
@@ -175,7 +175,7 @@ public class HologramCommandManager extends SubCommandManager {
 
     @Override
     protected void sendExecutionErrorMessage(CommandContext context, String errorMessage) {
-        context.getSender().sendMessage(ColorScheme.ERROR + Utils.formatExceptionMessage(errorMessage));
+        context.getSender().sendMessage(ColorScheme.ERROR + errorMessage);
     }
 
     @Override

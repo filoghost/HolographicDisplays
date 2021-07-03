@@ -9,28 +9,21 @@ import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
-import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
-import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
-import me.filoghost.holographicdisplays.plugin.event.InternalHologramEditEvent;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class InsertlineCommand extends LineEditingCommand implements QuickEditCommand {
 
     private final HologramCommandManager commandManager;
-    private final InternalHologramManager internalHologramManager;
-    private final ConfigManager configManager;
+    private final InternalHologramEditor hologramEditor;
 
-    public InsertlineCommand(
-            HologramCommandManager commandManager,
-            InternalHologramManager internalHologramManager,
-            ConfigManager configManager) {
+    public InsertlineCommand(HologramCommandManager commandManager, InternalHologramEditor hologramEditor) {
         super("insertline");
         setMinArgs(3);
         setUsageArgs("<hologram> <lineNumber> <text>");
@@ -40,13 +33,12 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
                 "the first line of the hologram.");
 
         this.commandManager = commandManager;
-        this.internalHologramManager = internalHologramManager;
-        this.configManager = configManager;
+        this.hologramEditor = hologramEditor;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
+        InternalHologram hologram = hologramEditor.getHologram(args[0]);
         int insertAfterIndex = CommandValidate.parseInteger(args[1]);
         String serializedLine = Strings.joinFrom(" ", args, 2);
 
@@ -55,12 +47,10 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
         CommandValidate.check(insertAfterIndex >= 0 && insertAfterIndex <= oldLinesAmount,
                 "The number must be between 0 and " + hologram.getLineCount() + "(amount of lines of the hologram).");
 
-        InternalHologramLine line = HologramCommandValidate.parseHologramLine(hologram, serializedLine);
+        InternalHologramLine line = hologramEditor.parseHologramLine(hologram, serializedLine);
+
         hologram.insertLine(insertAfterIndex, line);
-
-        configManager.saveHologramDatabase(internalHologramManager);
-
-        Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
+        hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         if (insertAfterIndex == 0) {
             sender.sendMessage(ColorScheme.PRIMARY + "Line inserted before first line.");

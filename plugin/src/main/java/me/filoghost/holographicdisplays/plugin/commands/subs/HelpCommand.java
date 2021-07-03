@@ -6,9 +6,9 @@
 package me.filoghost.holographicdisplays.plugin.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;

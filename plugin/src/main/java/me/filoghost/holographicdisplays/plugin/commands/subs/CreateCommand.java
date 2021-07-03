@@ -9,25 +9,22 @@ import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
-import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
-import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 public class CreateCommand extends HologramSubCommand {
 
-    private final InternalHologramManager internalHologramManager;
-    private final ConfigManager configManager;
+    private final InternalHologramEditor hologramEditor;
 
-    public CreateCommand(InternalHologramManager internalHologramManager, ConfigManager configManager) {
+    public CreateCommand(InternalHologramEditor hologramEditor) {
         super("create");
         setMinArgs(1);
         setUsageArgs("<hologramName> [text]");
@@ -36,8 +33,7 @@ public class CreateCommand extends HologramSubCommand {
                 "be alphanumeric. The name will be used as reference to",
                 "that hologram for editing commands.");
 
-        this.internalHologramManager = internalHologramManager;
-        this.configManager = configManager;
+        this.hologramEditor = hologramEditor;
     }
 
     @SuppressWarnings("deprecation")
@@ -48,24 +44,24 @@ public class CreateCommand extends HologramSubCommand {
 
         CommandValidate.check(hologramName.matches("[a-zA-Z0-9_\\-]+"),
                 "The name must contain only alphanumeric chars, underscores and hyphens.");
-        CommandValidate.check(!internalHologramManager.isExistingHologram(hologramName),
+        CommandValidate.check(hologramEditor.getHologram(hologramName) == null,
                 "A hologram with that name already exists.");
 
-        Location spawnLoc = player.getLocation();
+        Location spawnLocation = player.getLocation();
         boolean moveUp = player.isOnGround();
 
         if (moveUp) {
-            spawnLoc.add(0.0, 1.2, 0.0);
+            spawnLocation.add(0.0, 1.2, 0.0);
         }
 
-        InternalHologram hologram = internalHologramManager.createHologram(spawnLoc, hologramName);
+        InternalHologram hologram = hologramEditor.create(spawnLocation, hologramName);
         InternalHologramLine line;
 
         if (args.length > 1) {
             String text = Strings.joinFrom(" ", args, 1);
             CommandValidate.check(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
 
-            line = HologramCommandValidate.parseHologramLine(hologram, text);
+            line = hologramEditor.parseHologramLine(hologram, text);
             player.sendMessage(ColorScheme.SECONDARY_DARKER + "(Change the lines with /" + context.getRootLabel()
                     + " edit " + hologram.getName() + ")");
         } else {
@@ -75,11 +71,9 @@ public class CreateCommand extends HologramSubCommand {
         }
 
         hologram.addLine(line);
+        hologramEditor.saveChanges(hologram, ChangeType.CREATE);
 
-        configManager.saveHologramDatabase(internalHologramManager);
-        Location look = player.getLocation();
-        look.setPitch(90);
-        player.teleport(look, TeleportCause.PLUGIN);
+        hologramEditor.teleportLookingDown(player, player.getLocation());
         player.sendMessage(ColorScheme.PRIMARY + "You created a hologram named '" + hologram.getName() + "'.");
 
         if (moveUp) {

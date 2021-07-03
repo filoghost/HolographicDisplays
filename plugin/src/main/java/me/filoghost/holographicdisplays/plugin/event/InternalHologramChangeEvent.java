@@ -9,18 +9,24 @@ import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologra
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class InternalHologramEditEvent extends Event {
+public class InternalHologramChangeEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
     private final InternalHologram hologram;
+    private final ChangeType changeType;
 
-    public InternalHologramEditEvent(InternalHologram hologram) {
+    public InternalHologramChangeEvent(InternalHologram hologram, ChangeType changeType) {
         this.hologram = hologram;
+        this.changeType = changeType;
     }
 
     public InternalHologram getHologram() {
         return hologram;
+    }
+
+    public ChangeType getChangeType() {
+        return changeType;
     }
 
     @Override
@@ -30,6 +36,16 @@ public class InternalHologramEditEvent extends Event {
 
     public static HandlerList getHandlerList() {
         return handlers;
+    }
+
+
+    public enum ChangeType {
+
+        CREATE,
+        EDIT_LINES,
+        EDIT_LOCATION,
+        DELETE
+
     }
 
 }

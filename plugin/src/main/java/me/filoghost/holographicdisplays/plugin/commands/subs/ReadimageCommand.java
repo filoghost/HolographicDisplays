@@ -10,18 +10,15 @@ import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
-import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
-import me.filoghost.holographicdisplays.plugin.event.InternalHologramEditEvent;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalTextLine;
 import me.filoghost.holographicdisplays.plugin.image.ImageMessage;
 import me.filoghost.holographicdisplays.plugin.image.ImageReadException;
 import me.filoghost.holographicdisplays.plugin.image.ImageReader;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -32,20 +29,19 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class ReadimageCommand extends LineEditingCommand {
 
-    private final InternalHologramManager internalHologramManager;
-    private final ConfigManager configManager;
+    private final InternalHologramEditor hologramEditor;
 
-    public ReadimageCommand(InternalHologramManager internalHologramManager, ConfigManager configManager) {
+    public ReadimageCommand(InternalHologramEditor hologramEditor) {
         super("readimage", "image");
         setMinArgs(3);
         setUsageArgs("<hologram> <imageWithExtension> <width>");
 
-        this.internalHologramManager = internalHologramManager;
-        this.configManager = configManager;
+        this.hologramEditor = hologramEditor;
     }
 
     @Override
@@ -69,20 +65,11 @@ public class ReadimageCommand extends LineEditingCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        boolean append = false;
-        List<String> newArgs = new ArrayList<>();
-
-        for (String arg : args) {
-            if (arg.equalsIgnoreCase("-a") || arg.equalsIgnoreCase("-append")) {
-                append = true;
-            } else {
-                newArgs.add(arg);
-            }
-        }
-
+        List<String> newArgs = new ArrayList<>(Arrays.asList(args));
+        boolean append = extractAppendFlag(newArgs);
         args = newArgs.toArray(new String[0]);
 
-        InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
+        InternalHologram hologram = hologramEditor.getHologram(args[0]);
 
         int width = CommandValidate.parseInteger(args[2]);
         CommandValidate.check(width >= 2, "The width of the image must be 2 or greater.");
@@ -90,48 +77,21 @@ public class ReadimageCommand extends LineEditingCommand {
 
         boolean isUrl = false;
 
-        try {
-            String fileName = args[1];
-            BufferedImage image;
+        String fileName = args[1];
+        BufferedImage image;
 
+        try {
             if (fileName.startsWith("http://") || fileName.startsWith("https://")) {
                 isUrl = true;
                 image = ImageReader.readImage(new URL(fileName));
             } else {
-
                 if (fileName.matches(".*[a-zA-Z0-9\\-]+\\.[a-zA-Z0-9\\-]{1,4}/.+")) {
                     DisplayFormat.sendWarning(sender, "The image path seems to be an URL. If so, please use http:// or https:// in the path.");
                 }
 
-                Path targetImage = HologramCommandValidate.getUserReadableFile(configManager.getRootDataFolder(), fileName);
+                Path targetImage = hologramEditor.getUserReadableFile(fileName);
                 image = ImageReader.readImage(targetImage);
             }
-
-            ImageMessage imageMessage = new ImageMessage(image, width);
-            List<InternalTextLine> newLines = new ArrayList<>();
-            for (String newLine : imageMessage.getLines()) {
-                newLines.add(hologram.createTextLine(newLine, newLine));
-            }
-
-            if (!append) {
-                hologram.clearLines();
-            }
-            hologram.addLines(newLines);
-
-            if (newLines.size() < 5) {
-                DisplayFormat.sendTip(sender, "The image has a very low height."
-                        + " You can increase it by increasing the width, it will scale automatically.");
-            }
-
-            configManager.saveHologramDatabase(internalHologramManager);
-
-            if (append) {
-                sender.sendMessage(ColorScheme.PRIMARY + "The image was appended int the end of the hologram.");
-            } else {
-                sender.sendMessage(ColorScheme.PRIMARY + "The image was drawn in the hologram.");
-            }
-            Bukkit.getPluginManager().callEvent(new InternalHologramEditEvent(hologram));
-
         } catch (MalformedURLException e) {
             throw new CommandException("The provided URL was not valid.");
         } catch (ImageReadException e) {
@@ -140,6 +100,43 @@ public class ReadimageCommand extends LineEditingCommand {
             Log.warning("Error while reading an image", e);
             throw new CommandException("I/O exception while reading the image. " + (isUrl ? "Is the URL valid?" : "Is it in use?"));
         }
+
+        ImageMessage imageMessage = new ImageMessage(image, width);
+        List<InternalTextLine> newLines = new ArrayList<>();
+        for (String newLine : imageMessage.getLines()) {
+            newLines.add(hologram.createTextLine(newLine, newLine));
+        }
+
+        if (newLines.size() < 5) {
+            DisplayFormat.sendTip(sender, "The image has a very low height."
+                    + " You can increase it by increasing the width, it will scale automatically.");
+        }
+
+        if (!append) {
+            hologram.clearLines();
+        }
+        hologram.addLines(newLines);
+        hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
+
+        if (append) {
+            sender.sendMessage(ColorScheme.PRIMARY + "The image was appended int the end of the hologram.");
+        } else {
+            sender.sendMessage(ColorScheme.PRIMARY + "The image was drawn in the hologram.");
+        }
+    }
+
+    private boolean extractAppendFlag(List<String> args) {
+        Iterator<String> iterator = args.iterator();
+
+        while (iterator.hasNext()) {
+            String arg = iterator.next();
+            if (arg.equalsIgnoreCase("-a") || arg.equalsIgnoreCase("-append")) {
+                iterator.remove();
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

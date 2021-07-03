@@ -8,11 +8,11 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -21,15 +21,15 @@ public class ListCommand extends HologramSubCommand {
 
     private static final int HOLOGRAMS_PER_PAGE = 10;
 
-    private final InternalHologramManager internalHologramManager;
+    private final InternalHologramEditor hologramEditor;
 
-    public ListCommand(InternalHologramManager internalHologramManager) {
+    public ListCommand(InternalHologramEditor hologramEditor) {
         super("list");
         setMinArgs(0);
         setUsageArgs("[page]");
         setDescription("Lists all the existing holograms.");
 
-        this.internalHologramManager = internalHologramManager;
+        this.hologramEditor = hologramEditor;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ListCommand extends HologramSubCommand {
         int page = args.length > 0 ? CommandValidate.parseInteger(args[0]) : 1;
         CommandValidate.check(page >= 1, "Page number must be 1 or greater.");
 
-        List<InternalHologram> holograms = internalHologramManager.getHolograms();
+        List<InternalHologram> holograms = hologramEditor.getHolograms();
         int totalPages = holograms.size() / HOLOGRAMS_PER_PAGE;
         if (holograms.size() % HOLOGRAMS_PER_PAGE != 0) {
             totalPages++;

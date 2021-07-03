@@ -8,7 +8,6 @@ package me.filoghost.holographicdisplays.plugin.bridge.protocollib;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.common.Utils;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.ProtocolPacketSettings;
@@ -97,10 +96,16 @@ public class ProtocolLibHook {
         }
 
         Location playerLocation = player.getLocation();
-        double distanceSquared = Utils.distanceSquared(playerLocation.getX(), hologram.getX(), playerLocation.getZ(), hologram.getZ());
+        double distanceSquared = distanceSquared(playerLocation.getX(), hologram.getX(), playerLocation.getZ(), hologram.getZ());
 
         // Approximate, more checks are done for single entities
         return distanceSquared < 128 * 128;
+    }
+
+    private static double distanceSquared(double locX1, double locX2, double locZ1, double locZ2) {
+        double xDiff = locX1 - locX2;
+        double zDiff = locZ1 - locZ2;
+        return xDiff * xDiff + zDiff * zDiff;
     }
 
     public static boolean isEnabled() {

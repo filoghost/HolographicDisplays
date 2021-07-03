@@ -10,7 +10,8 @@ import java.nio.file.Path;
 
 public class FileUtils {
 
-    public static String getExtension(String fileName) {
+    public static String getExtension(Path file) {
+        String fileName = file.getFileName().toString();
         int lastFullStop = fileName.lastIndexOf('.');
         if (lastFullStop >= 0) {
             return fileName.substring(lastFullStop + 1);

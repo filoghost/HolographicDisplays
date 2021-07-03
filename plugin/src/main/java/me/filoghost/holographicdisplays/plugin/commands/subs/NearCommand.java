@@ -8,11 +8,11 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,15 +22,15 @@ import java.util.List;
 
 public class NearCommand extends HologramSubCommand {
 
-    private final InternalHologramManager internalHologramManager;
+    private final InternalHologramEditor hologramEditor;
 
-    public NearCommand(InternalHologramManager internalHologramManager) {
+    public NearCommand(InternalHologramEditor hologramEditor) {
         super("near");
         setMinArgs(1);
         setUsageArgs("<radius>");
         setDescription("Get a list of near holograms.");
 
-        this.internalHologramManager = internalHologramManager;
+        this.hologramEditor = hologramEditor;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class NearCommand extends HologramSubCommand {
         int radiusSquared = radius * radius;
         List<InternalHologram> nearHolograms = new ArrayList<>();
 
-        for (InternalHologram hologram : internalHologramManager.getHolograms()) {
+        for (InternalHologram hologram : hologramEditor.getHolograms()) {
             if (hologram.getWorld().equals(world) && hologram.getLocation().distanceSquared(player.getLocation()) <= radiusSquared) {
                 nearHolograms.add(hologram);
             }

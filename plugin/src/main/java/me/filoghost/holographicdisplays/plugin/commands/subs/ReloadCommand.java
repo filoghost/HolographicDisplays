@@ -6,10 +6,10 @@
 package me.filoghost.holographicdisplays.plugin.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.event.HolographicDisplaysReloadEvent;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.log.PrintableErrorCollector;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

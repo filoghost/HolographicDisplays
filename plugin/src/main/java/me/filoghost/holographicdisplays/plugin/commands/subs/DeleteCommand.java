@@ -7,36 +7,32 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
-import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
-import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.command.CommandSender;
 
 public class DeleteCommand extends HologramSubCommand {
 
-    private final InternalHologramManager internalHologramManager;
-    private final ConfigManager configManager;
+    private final InternalHologramEditor hologramEditor;
 
-    public DeleteCommand(InternalHologramManager internalHologramManager, ConfigManager configManager) {
+    public DeleteCommand(InternalHologramEditor hologramEditor) {
         super("delete", "remove");
         setMinArgs(1);
         setUsageArgs("<hologram>");
         setDescription("Deletes a hologram. Cannot be undone.");
 
-        this.internalHologramManager = internalHologramManager;
-        this.configManager = configManager;
+        this.hologramEditor = hologramEditor;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
+        InternalHologram hologram = hologramEditor.getHologram(args[0]);
 
-        internalHologramManager.deleteHologram(hologram);
-
-        configManager.saveHologramDatabase(internalHologramManager);
+        hologramEditor.delete(hologram);
+        hologramEditor.saveChanges(hologram, ChangeType.DELETE);
 
         sender.sendMessage(ColorScheme.PRIMARY + "You deleted the hologram '" + hologram.getName() + "'.");
     }

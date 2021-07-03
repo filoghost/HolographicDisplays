@@ -7,13 +7,12 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
-import me.filoghost.holographicdisplays.plugin.commands.HologramCommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -28,21 +27,21 @@ import java.util.List;
 public class EditCommand extends HologramSubCommand {
 
     private final HologramCommandManager commandManager;
-    private final InternalHologramManager internalHologramManager;
+    private final InternalHologramEditor hologramEditor;
 
-    public EditCommand(HologramCommandManager commandManager, InternalHologramManager internalHologramManager) {
+    public EditCommand(HologramCommandManager commandManager, InternalHologramEditor hologramEditor) {
         super("edit");
         setMinArgs(1);
         setUsageArgs("<hologram>");
         setDescription("Shows the commands to manipulate an existing hologram.");
 
         this.commandManager = commandManager;
-        this.internalHologramManager = internalHologramManager;
+        this.hologramEditor = hologramEditor;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = HologramCommandValidate.getInternalHologram(internalHologramManager, args[0]);
+        InternalHologram hologram = hologramEditor.getHologram(args[0]);
 
         sender.sendMessage("");
         DisplayFormat.sendTitle(sender, "How to edit the hologram '" + hologram.getName() + "'");
