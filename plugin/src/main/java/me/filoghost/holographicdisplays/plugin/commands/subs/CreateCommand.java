@@ -59,8 +59,6 @@ public class CreateCommand extends HologramSubCommand {
 
         if (args.length > 1) {
             String text = Strings.joinFrom(" ", args, 1);
-            CommandValidate.check(!text.equalsIgnoreCase("{empty}"), "The first line should not be empty.");
-
             line = hologramEditor.parseHologramLine(hologram, text);
             player.sendMessage(ColorScheme.SECONDARY_DARKER + "(Change the lines with /" + context.getRootLabel()
                     + " edit " + hologram.getName() + ")");

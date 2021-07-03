@@ -30,6 +30,10 @@ public class DefaultPlaceholders {
         HolographicDisplays plugin = HolographicDisplays.getInstance();
         placeholderRegistry.unregisterAll(plugin);
 
+        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "empty", Integer.MAX_VALUE, (argument) -> {
+            return "";
+        });
+
         placeholderRegistry.registerGlobalPlaceholder(plugin, "rainbow", new AnimationPlaceholder(4, toStringList(
                 ChatColor.RED,
                 ChatColor.GOLD,

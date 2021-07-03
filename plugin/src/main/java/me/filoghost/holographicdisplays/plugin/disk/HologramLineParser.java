@@ -19,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 public class HologramLineParser {
 
     private static final String ICON_PREFIX = "icon:";
-    private static final String EMPTY_LINE_PLACEHOLDER = "{empty}";
 
     public static InternalHologramLine parseLine(InternalHologram hologram, String serializedLine) throws HologramLoadException {
         InternalHologramLine hologramLine;
@@ -30,13 +29,7 @@ public class HologramLineParser {
             hologramLine = hologram.createItemLine(icon, serializedLine);
 
         } else {
-            String displayText;
-            if (serializedLine.trim().equalsIgnoreCase(EMPTY_LINE_PLACEHOLDER)) {
-                displayText = "";
-            } else {
-                displayText = DisplayFormat.apply(serializedLine);
-            }
-
+            String displayText = DisplayFormat.apply(serializedLine);
             hologramLine = hologram.createTextLine(displayText, serializedLine);
         }
 
