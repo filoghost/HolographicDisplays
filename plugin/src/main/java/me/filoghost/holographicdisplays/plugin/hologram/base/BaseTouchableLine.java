@@ -65,12 +65,15 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
     public void setTouchHandler(@Nullable TouchHandler touchHandler) {
         this.touchHandler = touchHandler;
 
-        if (touchHandler != null && slimeEntity == null && super.isSpawned()) {
-            // If the touch handler was null before and no entity has been spawned, spawn it now
-            spawnSlime(getWorld(), getX(), getY(), getZ());
-        } else if (touchHandler == null) {
-            // Opposite case, the touch handler was not null and an entity was spawned, but now it's useless
+        if (touchHandler == null) {
+            // Despawn the entity (if existing) since there is no touch handler
             despawnSlime();
+            return;
+        }
+
+        if (slimeEntity == null && super.isSpawned()) {
+            // Spawn the entity since it's not spawned
+            spawnSlime(getWorld(), getX(), getY(), getZ());
         }
     }
 
@@ -101,8 +104,6 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
     }
 
     private void spawnSlime(World world, double x, double y, double z) {
-        despawnSlime();
-
         if (world != null) {
             try {
                 slimeEntity = getNMSManager().spawnNMSSlime(world, x, getSlimeSpawnY(y), z, this);
