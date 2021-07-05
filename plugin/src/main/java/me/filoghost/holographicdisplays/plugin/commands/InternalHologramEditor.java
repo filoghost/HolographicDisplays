@@ -51,8 +51,7 @@ public class InternalHologramEditor {
         }
 
         message = Strings.capitalizeFirst(message);
-        char lastChar = message.charAt(message.length() - 1);
-        if (Character.isLetterOrDigit(lastChar)) {
+        if (!Strings.hasSentenceEnding(message)) {
             message = message + ".";
         }
         return message;

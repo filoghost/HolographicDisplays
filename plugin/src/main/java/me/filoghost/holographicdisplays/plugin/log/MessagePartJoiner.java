@@ -51,7 +51,7 @@ class MessagePartJoiner {
     }
 
     private void appendMessagePart(String messagePart) {
-        if (previousMessagePart == null || hasSentenceEnding(previousMessagePart)) {
+        if (previousMessagePart == null || Strings.hasSentenceEnding(previousMessagePart)) {
             output.append(Strings.capitalizeFirst(messagePart));
         } else {
             output.append(messagePart);
@@ -63,7 +63,7 @@ class MessagePartJoiner {
             return;
         }
 
-        if (hasSentenceEnding(previousMessagePart)) {
+        if (Strings.hasSentenceEnding(previousMessagePart)) {
             output.append(" ");
             this.appendedFirstSentenceSeparator = false;
 
@@ -74,15 +74,6 @@ class MessagePartJoiner {
         } else {
             output.append(", ");
         }
-    }
-
-    private boolean hasSentenceEnding(String s) {
-        if (Strings.isEmpty(s)) {
-            return false;
-        }
-
-        char lastChar = s.charAt(s.length() - 1);
-        return lastChar == '.' || lastChar == '?' || lastChar == '!';
     }
 
     private String build() {
