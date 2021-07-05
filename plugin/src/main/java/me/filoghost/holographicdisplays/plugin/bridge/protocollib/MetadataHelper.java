@@ -38,7 +38,9 @@ class MetadataHelper {
 
 
     MetadataHelper() {
-        if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_14_R1)) {
+        if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_17_R1)) {
+            itemSlotIndex = 8;
+        } else if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_14_R1)) {
             itemSlotIndex = 7;
         } else if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_10_R1)) {
             itemSlotIndex = 6;
@@ -48,7 +50,9 @@ class MetadataHelper {
             itemSlotIndex = 10;
         }
 
-        if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_15_R1)) {
+        if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_17_R1)) {
+            armorStandStatusIndex = 15;
+        } else if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_15_R1)) {
             armorStandStatusIndex = 14;
         } else {
             armorStandStatusIndex = 11;

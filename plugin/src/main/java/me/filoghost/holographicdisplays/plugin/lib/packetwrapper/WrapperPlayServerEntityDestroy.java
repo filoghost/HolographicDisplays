@@ -56,4 +56,11 @@ public class WrapperPlayServerEntityDestroy extends AbstractPacket {
         setEntities(Ints.toArray(entities));
     }
 
+    /**
+     * Set the entity that will be destroyed. To be used from Minecraft 1.17 and higher.
+     */
+    public void setEntity(Integer entity) {
+        handle.getIntegers().write(0, entity);
+    }
+
 }

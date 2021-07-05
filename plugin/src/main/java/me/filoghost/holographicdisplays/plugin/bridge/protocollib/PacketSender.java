@@ -185,9 +185,18 @@ class PacketSender {
 
 
     private void sendDestroyEntitiesPacket(Player player, List<Integer> ids) {
-        WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
-        packet.setEntities(ids);
-        packet.sendPacket(player);
+        if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_17_R1)) {
+            // Requires multiple packets
+            for (Integer id : ids) {
+                WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
+                packet.setEntity(id);
+                packet.sendPacket(player);
+            }
+        } else {
+            WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
+            packet.setEntities(ids);
+            packet.sendPacket(player);
+        }
     }
 
 
