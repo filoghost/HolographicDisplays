@@ -19,9 +19,10 @@ import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTra
 import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
 import me.filoghost.holographicdisplays.plugin.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
-import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.disk.HologramDatabase;
+import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.disk.upgrade.LegacySymbolsUpgrade;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
@@ -125,12 +126,15 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         TickingTask tickingTask = new TickingTask(tickClock, placeholderLineTracker);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, tickingTask, 0, 1);
 
-        HologramCommandManager commandManager = new HologramCommandManager(configManager, internalHologramManager, nmsManager);
+        HologramCommandManager commandManager = new HologramCommandManager(
+                this,
+                new InternalHologramEditor(internalHologramManager, configManager),
+                nmsManager);
         commandManager.register(this);
 
         registerListener(new InteractListener(nmsManager));
         registerListener(new SpawnListener(nmsManager));
-        registerListener(new ChunkListener(nmsManager, internalHologramManager, apiHologramManager));
+        registerListener(new ChunkListener(this, nmsManager, internalHologramManager, apiHologramManager));
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
         registerListener(updateNotificationListener);
 
@@ -143,7 +147,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         int pluginID = 3123;
         new MetricsLite(this, pluginID);
 
-        updateNotificationListener.runAsyncUpdateCheck();
+        updateNotificationListener.runAsyncUpdateCheck(this);
 
         if (errorCollector.hasErrors()) {
             errorCollector.logToConsole();
@@ -160,7 +164,7 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
     }
 
     public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
-        DefaultPlaceholders.resetAndRegister(placeholderRegistry, animationRegistry, bungeeServerTracker);
+        DefaultPlaceholders.resetAndRegister(this, placeholderRegistry, animationRegistry, bungeeServerTracker);
 
         internalHologramManager.clearAll();
 

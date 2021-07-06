@@ -7,7 +7,6 @@ package me.filoghost.holographicdisplays.plugin.listener;
 
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.entity.NMSEntity;
-import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.Bukkit;
@@ -18,14 +17,21 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.plugin.Plugin;
 
 public class ChunkListener implements Listener {
 
+    private final Plugin plugin;
     private final NMSManager nmsManager;
     private final InternalHologramManager internalHologramManager;
     private final APIHologramManager apiHologramManager;
 
-    public ChunkListener(NMSManager nmsManager, InternalHologramManager internalHologramManager, APIHologramManager apiHologramManager) {
+    public ChunkListener(
+            Plugin plugin,
+            NMSManager nmsManager,
+            InternalHologramManager internalHologramManager,
+            APIHologramManager apiHologramManager) {
+        this.plugin = plugin;
         this.nmsManager = nmsManager;
         this.internalHologramManager = internalHologramManager;
         this.apiHologramManager = apiHologramManager;
@@ -57,7 +63,7 @@ public class ChunkListener implements Listener {
         if (Bukkit.isPrimaryThread()) {
             onChunkLoad(chunk);
         } else {
-            Bukkit.getScheduler().runTask(HolographicDisplays.getInstance(), () -> onChunkLoad(chunk));
+            Bukkit.getScheduler().runTask(plugin, () -> onChunkLoad(chunk));
         }
     }
 

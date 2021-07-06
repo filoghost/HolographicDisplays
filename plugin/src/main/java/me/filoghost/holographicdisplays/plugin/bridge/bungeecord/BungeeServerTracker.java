@@ -10,7 +10,6 @@ import me.filoghost.fcommons.ping.MinecraftServerPinger;
 import me.filoghost.fcommons.ping.PingParseException;
 import me.filoghost.fcommons.ping.PingResponse;
 import me.filoghost.holographicdisplays.common.DebugLogger;
-import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.disk.ServerAddress;
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import org.bukkit.Bukkit;
@@ -28,14 +27,16 @@ public class BungeeServerTracker {
 
     private static final long UNTRACK_AFTER_TIME_WITHOUT_REQUESTS = TimeUnit.MINUTES.toMillis(10);
 
+    private final Plugin plugin;
     private final ConcurrentMap<String, TrackedServer> trackedServers;
     private final BungeeMessenger bungeeMessenger;
 
     private int taskID = -1;
 
     public BungeeServerTracker(Plugin plugin) {
-        trackedServers = new ConcurrentHashMap<>();
-        bungeeMessenger = BungeeMessenger.registerNew(plugin, this::updateServerInfoFromBungee);
+        this.plugin = plugin;
+        this.trackedServers = new ConcurrentHashMap<>();
+        this.bungeeMessenger = BungeeMessenger.registerNew(plugin, this::updateServerInfoFromBungee);
     }
 
     public void restart(int updateInterval, TimeUnit timeUnit) {
@@ -45,8 +46,11 @@ public class BungeeServerTracker {
             Bukkit.getScheduler().cancelTask(taskID);
         }
 
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(HolographicDisplays.getInstance(),
-                this::runPeriodicUpdateTask, 1, timeUnit.toSeconds(updateInterval) * 20L);
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
+                plugin,
+                this::runPeriodicUpdateTask,
+                1,
+                timeUnit.toSeconds(updateInterval) * 20L);
     }
 
     public ServerInfo getCurrentServerInfo(@NotNull String serverName) {
@@ -64,7 +68,7 @@ public class BungeeServerTracker {
         removeUnusedServers();
 
         if (Settings.pingerEnabled) {
-            Bukkit.getScheduler().runTaskAsynchronously(HolographicDisplays.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 for (TrackedServer trackedServer : trackedServers.values()) {
                     updateServerInfoWithPinger(trackedServer);
                 }

@@ -31,11 +31,9 @@ import me.filoghost.holographicdisplays.plugin.commands.subs.ReloadCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.RemovelineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.SetlineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.TeleportCommand;
-import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -52,12 +50,13 @@ import java.util.logging.Level;
 
 public class HologramCommandManager extends SubCommandManager {
 
+    private final HolographicDisplays holographicDisplays;
     private final List<HologramSubCommand> subCommands;
     private final HelpCommand helpCommand;
 
-    public HologramCommandManager(ConfigManager configManager, InternalHologramManager internalHologramManager, NMSManager nmsManager) {
+    public HologramCommandManager(HolographicDisplays holographicDisplays, InternalHologramEditor hologramEditor, NMSManager nmsManager) {
         setName("holograms");
-        InternalHologramEditor hologramEditor = new InternalHologramEditor(internalHologramManager, configManager);
+        this.holographicDisplays = holographicDisplays;
         this.helpCommand = new HelpCommand(this);
         this.subCommands = new ArrayList<>();
 
@@ -71,7 +70,7 @@ public class HologramCommandManager extends SubCommandManager {
         subCommands.add(new MovehereCommand(hologramEditor));
         subCommands.add(new AlignCommand(hologramEditor));
         subCommands.add(new CopyCommand(hologramEditor));
-        subCommands.add(new ReloadCommand());
+        subCommands.add(new ReloadCommand(holographicDisplays));
 
         subCommands.add(new RemovelineCommand(this, hologramEditor));
         subCommands.add(new SetlineCommand(this, hologramEditor));
@@ -148,7 +147,7 @@ public class HologramCommandManager extends SubCommandManager {
     @Override
     protected void sendNoArgsMessage(CommandContext context) {
         CommandSender sender = context.getSender();
-        String version = HolographicDisplays.getInstance().getDescription().getVersion();
+        String version = holographicDisplays.getDescription().getVersion();
         sender.sendMessage(ColorScheme.PRIMARY_DARKER + "Server is running " + ColorScheme.PRIMARY + "Holographic Displays "
                 + ColorScheme.PRIMARY_DARKER + "v" + version + " by " + ColorScheme.PRIMARY + "filoghost");
         if (helpCommand.hasPermission(sender)) {

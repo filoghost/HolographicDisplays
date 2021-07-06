@@ -17,15 +17,19 @@ import org.bukkit.command.ConsoleCommandSender;
 
 public class ReloadCommand extends HologramSubCommand {
 
-    public ReloadCommand() {
+    private final HolographicDisplays holographicDisplays;
+
+    public ReloadCommand(HolographicDisplays holographicDisplays) {
         super("reload");
         setDescription("Reloads the holograms from the database.");
+
+        this.holographicDisplays = holographicDisplays;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) {
         PrintableErrorCollector errorCollector = new PrintableErrorCollector();
-        HolographicDisplays.getInstance().load(false, errorCollector);
+        holographicDisplays.load(false, errorCollector);
 
         if (!errorCollector.hasErrors()) {
             sender.sendMessage(ColorScheme.PRIMARY + "Configuration reloaded successfully.");

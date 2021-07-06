@@ -15,15 +15,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.Nullable;
 
 public class UpdateNotificationListener implements Listener {
 
     // The new version found by the updater, null if there is no new version
-    private String newVersion;
+    private @Nullable String newVersion;
 
-    public void runAsyncUpdateCheck() {
+    public void runAsyncUpdateCheck(HolographicDisplays holographicDisplays) {
         if (Settings.updateNotification) {
-            UpdateChecker.run(HolographicDisplays.getInstance(), 75097, newVersion -> {
+            UpdateChecker.run(holographicDisplays, 75097, newVersion -> {
                 this.newVersion = newVersion;
                 Log.info("Found a new version available: " + newVersion);
                 Log.info("Download it on Bukkit Dev:");

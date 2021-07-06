@@ -6,13 +6,13 @@
 package me.filoghost.holographicdisplays.plugin.placeholder.internal;
 
 import me.filoghost.fcommons.collection.CollectionUtils;
-import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.ServerInfo;
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.Plugin;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -24,10 +24,10 @@ public class DefaultPlaceholders {
     private static final String NO_SERVER_SPECIFIED_ERROR = "[No server specified]";
 
     public static void resetAndRegister(
+            Plugin plugin,
             PlaceholderRegistry placeholderRegistry,
             AnimationRegistry animationRegistry,
             BungeeServerTracker bungeeServerTracker) {
-        HolographicDisplays plugin = HolographicDisplays.getInstance();
         placeholderRegistry.unregisterAll(plugin);
 
         placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "empty", Integer.MAX_VALUE, (argument) -> {
