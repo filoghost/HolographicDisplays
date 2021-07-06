@@ -159,8 +159,7 @@
 
         <!-- Whitespace -->
         <module name="RegexpSinglelineJava">
-            <!-- Tolerate one trailing space, except immediately after curly braces, left parenthesis and semicolon -->
-            <property name="format" value="([^\s]\s{2,}|[}{(;]\s+)$"/>
+            <property name="format" value="\s+$"/>
             <property name="minimum" value="0"/>
             <property name="maximum" value="0"/>
             <property name="ignoreComments" value="true"/>

@@ -81,7 +81,7 @@ public class VersionNMSManager implements NMSManager {
             nmsEntity.setRemoved(RemovalReason.b /* DISCARDED */);
             throw new SpawnFailedException(SpawnFailedException.CHUNK_NOT_LOADED);
         }
-        
+
         try {
             nmsWorld.G.a(nmsEntity) /* entityManager.addNewEntity() */;
         } catch (Exception e) {
