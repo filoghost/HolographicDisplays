@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
-import me.filoghost.holographicdisplays.api.handler.TouchHandler;
+import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APITextLine;
 import org.bukkit.entity.Player;

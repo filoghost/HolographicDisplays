@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.api;
 
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import org.bukkit.Location;

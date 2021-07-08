@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class NewPickupHandlerAdapter implements me.filoghost.holographicdisplays.api.handler.PickupHandler {
+public class NewPickupHandlerAdapter implements me.filoghost.holographicdisplays.api.hologram.PickupHandler {
 
     private final PickupHandler v2PickupHandler;
 

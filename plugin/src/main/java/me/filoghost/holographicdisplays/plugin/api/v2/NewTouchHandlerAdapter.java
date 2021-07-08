@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class NewTouchHandlerAdapter implements me.filoghost.holographicdisplays.api.handler.TouchHandler {
+public class NewTouchHandlerAdapter implements me.filoghost.holographicdisplays.api.hologram.TouchHandler {
 
     private final TouchHandler v2TouchHandler;
 

@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.api.v2;
 
-import me.filoghost.holographicdisplays.api.handler.TouchHandler;
+import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")

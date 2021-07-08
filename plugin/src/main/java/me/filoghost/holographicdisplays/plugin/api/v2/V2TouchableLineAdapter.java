@@ -21,8 +21,8 @@ abstract class V2TouchableLineAdapter extends V2HologramLineAdapter implements T
     }
 
     public void onNewTouchHandlerChange(
-            me.filoghost.holographicdisplays.api.handler.TouchHandler previous,
-            me.filoghost.holographicdisplays.api.handler.TouchHandler current) {
+            me.filoghost.holographicdisplays.api.hologram.TouchHandler previous,
+            me.filoghost.holographicdisplays.api.hologram.TouchHandler current) {
         if (previous != current) {
             v2TouchHandler = null; // Clear the field to force a new lazy initialization
         }
@@ -36,7 +36,7 @@ abstract class V2TouchableLineAdapter extends V2HologramLineAdapter implements T
             // Adapter created from the getTouchHandler() method, simply unwrap it
             newTouchableLine.setTouchHandler(((V2TouchHandlerAdapter) v2TouchHandler).getNewTouchHandler());
         } else {
-            me.filoghost.holographicdisplays.api.handler.TouchHandler newTouchHandler = newTouchableLine.getTouchHandler();
+            me.filoghost.holographicdisplays.api.hologram.TouchHandler newTouchHandler = newTouchableLine.getTouchHandler();
 
             // Adapt the old v2 handler to the new API, creating a new instance only if the wrapped handler changed
             if (!(newTouchHandler instanceof NewTouchHandlerAdapter)
@@ -51,7 +51,7 @@ abstract class V2TouchableLineAdapter extends V2HologramLineAdapter implements T
     public TouchHandler getTouchHandler() {
         // Lazy initialization
         if (v2TouchHandler == null) {
-            me.filoghost.holographicdisplays.api.handler.TouchHandler newTouchHandler = newTouchableLine.getTouchHandler();
+            me.filoghost.holographicdisplays.api.hologram.TouchHandler newTouchHandler = newTouchableLine.getTouchHandler();
 
             if (newTouchHandler == null) {
                 // Keep it null

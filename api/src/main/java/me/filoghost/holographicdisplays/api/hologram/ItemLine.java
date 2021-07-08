@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.api.line;
+package me.filoghost.holographicdisplays.api.hologram;
 
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;

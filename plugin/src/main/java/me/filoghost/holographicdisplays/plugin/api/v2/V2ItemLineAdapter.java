@@ -22,8 +22,8 @@ public class V2ItemLineAdapter extends V2TouchableLineAdapter implements ItemLin
     }
 
     public void onNewPickupHandlerChange(
-            me.filoghost.holographicdisplays.api.handler.PickupHandler previous,
-            me.filoghost.holographicdisplays.api.handler.PickupHandler current) {
+            me.filoghost.holographicdisplays.api.hologram.PickupHandler previous,
+            me.filoghost.holographicdisplays.api.hologram.PickupHandler current) {
         if (previous != current) {
             v2PickupHandler = null; // Clear the field to force a new lazy initialization
         }
@@ -37,7 +37,7 @@ public class V2ItemLineAdapter extends V2TouchableLineAdapter implements ItemLin
             // Adapter created from the getPickupHandler() method, simply unwrap it
             newItemLine.setPickupHandler(((V2PickupHandlerAdapter) v2PickupHandler).getNewPickupHandler());
         } else {
-            me.filoghost.holographicdisplays.api.handler.PickupHandler newPickupHandler = newItemLine.getPickupHandler();
+            me.filoghost.holographicdisplays.api.hologram.PickupHandler newPickupHandler = newItemLine.getPickupHandler();
 
             // Adapt the old v2 handler to the new API, creating a new instance only if the wrapped handler changed
             if (!(newPickupHandler instanceof NewPickupHandlerAdapter)
@@ -52,7 +52,7 @@ public class V2ItemLineAdapter extends V2TouchableLineAdapter implements ItemLin
     public PickupHandler getPickupHandler() {
         // Lazy initialization
         if (v2PickupHandler == null) {
-            me.filoghost.holographicdisplays.api.handler.PickupHandler newPickupHandler = newItemLine.getPickupHandler();
+            me.filoghost.holographicdisplays.api.hologram.PickupHandler newPickupHandler = newItemLine.getPickupHandler();
 
             if (newPickupHandler == null) {
                 // Keep it null

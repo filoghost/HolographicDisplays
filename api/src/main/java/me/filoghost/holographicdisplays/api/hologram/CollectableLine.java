@@ -3,9 +3,8 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.api.line;
+package me.filoghost.holographicdisplays.api.hologram;
 
-import me.filoghost.holographicdisplays.api.handler.PickupHandler;
 import org.jetbrains.annotations.Nullable;
 
 /**

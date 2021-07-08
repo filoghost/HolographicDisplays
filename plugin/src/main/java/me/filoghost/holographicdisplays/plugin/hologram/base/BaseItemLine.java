@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.api.handler.PickupHandler;
+import me.filoghost.holographicdisplays.api.hologram.PickupHandler;
 import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.common.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.common.nms.SpawnFailedException;

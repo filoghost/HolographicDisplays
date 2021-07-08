@@ -5,9 +5,9 @@
  */
 package me.filoghost.example.powerups;
 
-import me.filoghost.holographicdisplays.api.Hologram;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
-import me.filoghost.holographicdisplays.api.line.ItemLine;
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.ItemLine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
