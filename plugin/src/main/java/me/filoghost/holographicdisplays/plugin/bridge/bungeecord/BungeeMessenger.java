@@ -25,15 +25,15 @@ public class BungeeMessenger implements PluginMessageListener {
     private static final String REDISBUNGEE_CHANNEL = "legacy:redisbungee";
 
     private final Plugin plugin;
-    private final PlayerCountCallback playerCountCallback;
+    private final PlayerCountListener playerCountListener;
 
-    private BungeeMessenger(Plugin plugin, PlayerCountCallback playerCountCallback) {
+    private BungeeMessenger(Plugin plugin, PlayerCountListener playerCountListener) {
         this.plugin = plugin;
-        this.playerCountCallback = playerCountCallback;
+        this.playerCountListener = playerCountListener;
     }
 
-    public static BungeeMessenger registerNew(Plugin plugin, PlayerCountCallback playerCountCallback) {
-        BungeeMessenger bungeeMessenger = new BungeeMessenger(plugin, playerCountCallback);
+    public static BungeeMessenger registerNew(Plugin plugin, PlayerCountListener playerCountListener) {
+        BungeeMessenger bungeeMessenger = new BungeeMessenger(plugin, playerCountListener);
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, BUNGEECORD_CHANNEL);
         Bukkit.getMessenger().registerIncomingPluginChannel(plugin, BUNGEECORD_CHANNEL, bungeeMessenger);
@@ -60,7 +60,7 @@ public class BungeeMessenger implements PluginMessageListener {
 
             String server = in.readUTF();
             int online = in.readInt();
-            playerCountCallback.onReceive(server, online);
+            playerCountListener.onReceive(server, online);
         } catch (IOException e) {
             Log.warning("Error while decoding player count from BungeeCord.", e);
         }
@@ -94,7 +94,7 @@ public class BungeeMessenger implements PluginMessageListener {
     }
 
 
-    public interface PlayerCountCallback {
+    public interface PlayerCountListener {
 
         void onReceive(String serverName, int playerCount);
 
