@@ -26,9 +26,6 @@ public class SettingsModel implements MappedConfig {
     @Path("images.transparency.space")
     String transparencySymbol = " [|] ";
 
-    @Path("images.transparency.color")
-    String transparencyColor = "&7";
-
     @Path("bungee.refresh-seconds")
     int bungeeRefreshSeconds = 3;
 
@@ -88,7 +85,8 @@ public class SettingsModel implements MappedConfig {
                 "using-RedisBungee",
                 "bungee-online-format",
                 "bungee-offline-format",
-                "precise-hologram-movement"
+                "precise-hologram-movement",
+                "images.transparency.color"
         );
 
         boolean modified = false;

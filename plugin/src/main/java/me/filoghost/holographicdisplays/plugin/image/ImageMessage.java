@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.image;
 
+import me.filoghost.fcommons.Colors;
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.Nullable;
@@ -53,35 +54,26 @@ public class ImageMessage {
 
     private List<String> toChatLines(BufferedImage image) {
         List<String> lines = new ArrayList<>(image.getHeight());
-        ChatColor transparencyColor = Settings.transparencyColor;
         String transparencySymbol = Settings.transparencySymbol;
         String imageSymbol = Settings.imageSymbol;
 
         for (int y = 0; y < image.getHeight(); y++) {
             StringBuilder line = new StringBuilder();
-            ChatColor previousColor = null;
 
             for (int x = 0; x < image.getWidth(); x++) {
-                ChatColor currentColor = getClosestChatColor(image, x, y);
-                String symbol;
+                ChatColor pixelColor = getClosestChatColor(image, x, y);
 
-                if (currentColor == null) {
-                    // Use the transparent char
-                    currentColor = transparencyColor;
-                    symbol = transparencySymbol;
+                if (pixelColor == null) {
+                    // "null" means transparent is the closest color
+                    line.append(ChatColor.RESET);
+                    line.append(transparencySymbol);
                 } else {
-                    symbol = imageSymbol;
+                    line.append(pixelColor);
+                    line.append(imageSymbol);
                 }
-
-                if (currentColor != previousColor) {
-                    // Append the different color and save it
-                    line.append(currentColor);
-                    previousColor = currentColor;
-                }
-                line.append(symbol);
             }
 
-            lines.add(line.toString());
+            lines.add(Colors.optimize(line.toString()));
         }
 
         return lines;

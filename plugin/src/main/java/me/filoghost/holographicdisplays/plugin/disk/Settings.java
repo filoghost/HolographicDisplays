@@ -10,7 +10,6 @@ import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
-import org.bukkit.ChatColor;
 
 import java.time.DateTimeException;
 import java.time.ZoneId;
@@ -27,7 +26,6 @@ public class Settings {
 
     public static String imageSymbol;
     public static String transparencySymbol;
-    public static ChatColor transparencyColor;
 
     public static int bungeeRefreshSeconds;
     public static boolean useRedisBungee;
@@ -47,7 +45,6 @@ public class Settings {
 
         imageSymbol = DisplayFormat.apply(config.imageSymbol);
         transparencySymbol = DisplayFormat.apply(config.transparencySymbol);
-        transparencyColor = parseTransparencyColor(config.transparencyColor, errorCollector);
 
         bungeeRefreshSeconds = parseBungeeRefreshInterval(config.bungeeRefreshSeconds, errorCollector);
         useRedisBungee = config.useRedisBungee;
@@ -88,19 +85,6 @@ public class Settings {
         }
 
         return timeFormat;
-    }
-
-    private static ChatColor parseTransparencyColor(String transparencyColor, ErrorCollector errorCollector) {
-        transparencyColor = transparencyColor.replace('&', ChatColor.COLOR_CHAR);
-
-        for (ChatColor chatColor : ChatColor.values()) {
-            if (chatColor.toString().equals(transparencyColor)) {
-                return chatColor;
-            }
-        }
-
-        errorCollector.add("chat color for transparency in the configuration is not valid, light gray (&7) will be used");
-        return ChatColor.GRAY;
     }
 
     private static int parseBungeeRefreshInterval(int interval, ErrorCollector errorCollector) {
