@@ -28,6 +28,16 @@ class StringWithPlaceholdersTest {
         assertThat(s.containsPlaceholders()).isEqualTo(expectedContainsPlaceholders);
     }
 
+    @ParameterizedTest(name = "[{index}] {0} -> {1}")
+    @MethodSource("replacementsTestArguments")
+    void partialReplacements(String input, String expectedOutput) {
+        boolean expectedContainsPlaceholders = expectedOutput.contains("#");
+        StringWithPlaceholders s = new StringWithPlaceholders(input);
+
+        assertThat(s.partiallyReplacePlaceholders(occurrence -> "#").toString()).isEqualTo(expectedOutput);
+        assertThat(s.containsPlaceholders()).isEqualTo(expectedContainsPlaceholders);
+    }
+
     static Stream<Arguments> replacementsTestArguments() {
         return Stream.of(
                 Arguments.of("", ""),
