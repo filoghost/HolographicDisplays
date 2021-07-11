@@ -43,8 +43,8 @@ public class Settings {
         timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone, errorCollector);
         updateNotification = config.updateNotification;
 
-        imageSymbol = DisplayFormat.apply(config.imageSymbol);
-        transparencySymbol = DisplayFormat.apply(config.transparencySymbol);
+        imageSymbol = DisplayFormat.apply(config.imageRenderingSolidPixel);
+        transparencySymbol = DisplayFormat.apply(config.imageRenderingTransparentPixel);
 
         bungeeRefreshSeconds = parseBungeeRefreshInterval(config.bungeeRefreshSeconds, errorCollector);
         useRedisBungee = config.useRedisBungee;

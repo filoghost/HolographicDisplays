@@ -20,11 +20,11 @@ public class SettingsModel implements MappedConfig {
     @Path("quick-edit-commands")
     boolean quickEditCommands = true;
 
-    @Path("images.symbol")
-    String imageSymbol = "[x]";
+    @Path("image-rendering.solid-pixel")
+    String imageRenderingSolidPixel = "[x]";
 
-    @Path("images.transparency.space")
-    String transparencySymbol = " [|] ";
+    @Path("image-rendering.transparent-pixel")
+    String imageRenderingTransparentPixel = "&7 [|] ";
 
     @Path("bungee.refresh-seconds")
     int bungeeRefreshSeconds = 3;
@@ -77,7 +77,25 @@ public class SettingsModel implements MappedConfig {
     }
 
     @Override
-    public boolean beforeSave(Config rawConfig) {
+    public boolean beforeLoad(Config rawConfig) {
+        boolean modified = false;
+
+        if (rawConfig.contains("images") && !rawConfig.contains("image-rendering")) {
+            String oldTransparencyColor = rawConfig.getString("images.transparency.color");
+            String oldTransparencySpace = rawConfig.getString("images.transparency.space");
+            String oldSolidSymbol = rawConfig.getString("images.symbol");
+
+            if (oldTransparencyColor != null && oldTransparencySpace != null) {
+                rawConfig.setString("image-rendering.transparent-pixel", oldTransparencyColor + oldTransparencySpace);
+                modified = true;
+            }
+
+            if (oldSolidSymbol != null) {
+                rawConfig.setString("image-rendering.solid-pixel", oldSolidSymbol);
+                modified = true;
+            }
+        }
+
         List<String> pathsToRemove = Arrays.asList(
                 "vertical-spacing",
                 "time-format",
@@ -86,13 +104,12 @@ public class SettingsModel implements MappedConfig {
                 "bungee-online-format",
                 "bungee-offline-format",
                 "precise-hologram-movement",
-                "images.transparency.color"
+                "images"
         );
 
-        boolean modified = false;
 
         for (String path : pathsToRemove) {
-            if (rawConfig.get(path) != null) {
+            if (rawConfig.contains(path)) {
                 rawConfig.remove(path);
                 modified = true;
             }
