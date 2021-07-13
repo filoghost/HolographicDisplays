@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.commands.subs;
 
+import me.filoghost.fcommons.Colors;
 import me.filoghost.fcommons.command.CommandContext;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
@@ -104,7 +105,7 @@ public class ReadimageCommand extends LineEditingCommand {
         ImageMessage imageMessage = new ImageMessage(image, width);
         List<InternalTextLine> newLines = new ArrayList<>();
         for (String newLine : imageMessage.getLines()) {
-            newLines.add(hologram.createTextLine(newLine, newLine));
+            newLines.add(hologram.createTextLine(newLine, Colors.uncolorize(newLine)));
         }
 
         if (newLines.size() < 5) {
