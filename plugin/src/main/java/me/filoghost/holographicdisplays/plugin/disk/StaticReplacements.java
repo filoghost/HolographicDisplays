@@ -30,7 +30,7 @@ public class StaticReplacements {
 
         for (Entry<ConfigPath, String> entry : replacementsSection.toMap(ConfigType.STRING).entrySet()) {
             String target = entry.getKey().asRawKey();
-            String replacement = Colors.addColors(entry.getValue());
+            String replacement = Colors.colorize(entry.getValue());
 
             if (target.length() == 0) {
                 errorCollector.add("error in \"" + config.getSourceFile() + "\":"

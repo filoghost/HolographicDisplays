@@ -20,7 +20,7 @@ public class DisplayFormat {
 
         input = StaticReplacements.searchAndReplace(input);
         input = input.replace("&u", "{rainbow}");
-        input = Colors.addColors(input);
+        input = Colors.colorize(input);
         return input;
     }
 
