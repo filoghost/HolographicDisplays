@@ -86,7 +86,7 @@ public class ReadimageCommand extends LineEditingCommand {
                 image = ImageReader.readImage(new URL(fileName));
             } else {
                 if (fileName.matches(".*[a-zA-Z0-9\\-]+\\.[a-zA-Z0-9\\-]{1,4}/.+")) {
-                    DisplayFormat.sendWarning(sender, "The image path seems to be an URL. If so, please use http:// or https:// in the path.");
+                    DisplayFormat.sendWarning(sender, "The image path seems to be an URL. If so, please use the http[s]:// prefix.");
                 }
 
                 Path targetImage = hologramEditor.getUserReadableFile(fileName);
