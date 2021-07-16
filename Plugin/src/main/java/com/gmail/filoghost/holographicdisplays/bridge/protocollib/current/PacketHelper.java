@@ -129,12 +129,9 @@ public class PacketHelper {
 	
 	public void sendDestroyEntitiesPacket(Player player, List<Integer> ids) {
 		if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_17_R1)) {
-			// Requires multiple packets
-			for (Integer id : ids) {
-				WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
-				packet.setEntity_1_17(id);
-				packet.sendPacket(player);
-			}
+			WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
+			packet.setEntities_1_17(ids);
+			packet.sendPacket(player);
 		} else {
 			WrapperPlayServerEntityDestroy packet = new WrapperPlayServerEntityDestroy();
 			packet.setEntities(ids);
