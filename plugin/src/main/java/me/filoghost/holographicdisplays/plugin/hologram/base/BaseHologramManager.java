@@ -24,9 +24,8 @@ public abstract class BaseHologramManager<H extends StandardHologram> {
     }
 
     public void deleteHologram(H hologram) {
-        Preconditions.checkArgument(hologram.isDeleted(), "hologram must be deleted first");
-        holograms.remove(hologram);
         hologram.setDeleted();
+        holograms.remove(hologram);
     }
 
     public List<H> getHolograms() {
