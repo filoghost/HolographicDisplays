@@ -84,7 +84,7 @@ public class AnimationRegistry implements PlaceholderFactory {
                 lines.set(i, DisplayFormat.apply(lines.get(i)));
             }
 
-            int refreshIntervalTicks = Math.min((int) (speed * 20.0), 1);
+            int refreshIntervalTicks = Math.max((int) (speed * 20.0), 1);
             animationsByFilename.put(fileName, new AnimationPlaceholder(refreshIntervalTicks, lines));
             DebugLogger.info("Successfully loaded animation \"" + fileName + "\", speed = " + speed + ".");
 
