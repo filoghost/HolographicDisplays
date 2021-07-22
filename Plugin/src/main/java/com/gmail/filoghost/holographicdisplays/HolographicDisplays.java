@@ -243,7 +243,12 @@ public class HolographicDisplays extends JavaPlugin {
 				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Holographic Displays] Detected old unsupported version of ProtocolLib, support disabled. You must use ProtocolLib 4.4.0 or higher.");
 				return;
 			}
-			
+
+			if (NMSVersion.isGreaterEqualThan(NMSVersion.v1_17_R1) && !VersionUtils.isVersionGreaterEqual(versionNumbers, "4.7")) {
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Holographic Displays] The minimum ProtocolLib version for this Minecraft version is 4.7.0, support disabled.");
+				return;
+			}
+
 		} catch (Exception e) {
 			ConsoleLogger.log(Level.WARNING, "Could not detect ProtocolLib version (" + e.getClass().getName() + ": " + e.getMessage() + "), enabling support anyway and hoping for the best. If you get errors, please contact the author.");
 		}

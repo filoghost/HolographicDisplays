@@ -17,6 +17,7 @@
 
 package com.gmail.filoghost.holographicdisplays.bridge.protocollib.current.packet;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.comphenix.protocol.PacketType;
@@ -25,24 +26,16 @@ import com.google.common.primitives.Ints;
 
 public class WrapperPlayServerEntityDestroy extends AbstractPacket {
     public static final PacketType TYPE = PacketType.Play.Server.ENTITY_DESTROY;
-    
+
     public WrapperPlayServerEntityDestroy() {
         super(new PacketContainer(TYPE), TYPE);
         handle.getModifier().writeDefaults();
     }
-    
+
     public WrapperPlayServerEntityDestroy(PacketContainer packet) {
         super(packet, TYPE);
     }
-    
-    /**
-     * Retrieve the IDs of the entities that will be destroyed.
-     * @return The current entities.
-    */
-    public List<Integer> getEntities() {
-        return Ints.asList(handle.getIntegerArrays().read(0));
-    }
-    
+
     /**
      * Set the entities that will be destroyed.
      * @param value - new value.
@@ -50,7 +43,7 @@ public class WrapperPlayServerEntityDestroy extends AbstractPacket {
     public void setEntities(int[] entities) {
         handle.getIntegerArrays().write(0, entities);
     }
-    
+
     /**
      * Set the entities that will be destroyed.
      * @param value - new value.
@@ -60,7 +53,11 @@ public class WrapperPlayServerEntityDestroy extends AbstractPacket {
     }
 
     public void setEntity_1_17(Integer entity) {
-        handle.getIntegers().write(0, entity);
+        if (handle.getIntegers().size() > 0) {
+            handle.getIntegers().write(0, entity);
+        } else {
+            handle.getIntLists().write(0, Collections.singletonList(entity));
+        }
     }
 
 }
