@@ -56,15 +56,19 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
 
     @Override
     public @Nullable ItemStack getItemStack() {
-        return itemStack;
+        return clone(itemStack);
     }
 
     public void setItemStack(@Nullable ItemStack itemStack) {
         if (itemStack != null) {
             Preconditions.checkArgument(0 < itemStack.getAmount() && itemStack.getAmount() <= 64, "itemStack's amount must be between 1 and 64");
         }
-        this.itemStack = itemStack;
+        this.itemStack = clone(itemStack);
         setChanged();
+    }
+
+    private ItemStack clone(@Nullable ItemStack itemStack) {
+        return itemStack != null ? itemStack.clone() : null;
     }
 
     @Override
