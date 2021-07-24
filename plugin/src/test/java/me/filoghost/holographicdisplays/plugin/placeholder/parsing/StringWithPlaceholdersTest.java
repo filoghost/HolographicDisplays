@@ -22,7 +22,7 @@ class StringWithPlaceholdersTest {
     @MethodSource("replacementsTestArguments")
     void replacements(String input, String expectedOutput) {
         boolean expectedContainsPlaceholders = expectedOutput.contains("#");
-        StringWithPlaceholders s = new StringWithPlaceholders(input);
+        StringWithPlaceholders s = StringWithPlaceholders.of(input);
 
         assertThat(s.replacePlaceholders(occurrence -> "#")).isEqualTo(expectedOutput);
         assertThat(s.containsPlaceholders()).isEqualTo(expectedContainsPlaceholders);
@@ -32,9 +32,9 @@ class StringWithPlaceholdersTest {
     @MethodSource("replacementsTestArguments")
     void partialReplacements(String input, String expectedOutput) {
         boolean expectedContainsPlaceholders = expectedOutput.contains("#");
-        StringWithPlaceholders s = new StringWithPlaceholders(input);
+        StringWithPlaceholders s = StringWithPlaceholders.of(input);
 
-        assertThat(s.partiallyReplacePlaceholders(occurrence -> "#").toString()).isEqualTo(expectedOutput);
+        assertThat(s.partiallyReplacePlaceholders(occurrence -> "#").getUnreplacedString()).isEqualTo(expectedOutput);
         assertThat(s.containsPlaceholders()).isEqualTo(expectedContainsPlaceholders);
     }
 
@@ -54,14 +54,14 @@ class StringWithPlaceholdersTest {
     @Test
     void skipReplacing() {
         String input = "{p} a {p} b {p}";
-        StringWithPlaceholders s = new StringWithPlaceholders(input);
+        StringWithPlaceholders s = StringWithPlaceholders.of(input);
         assertThat(s.replacePlaceholders(occurrence -> null)).isEqualTo(input);
     }
 
     @ParameterizedTest(name = "[{index}] {0} -> {1}, {2}, {3}")
     @MethodSource("parsingTestArguments")
     void parsing(String input, String expectedPluginName, String expectedIdentifier, String expectedArgument) {
-        StringWithPlaceholders s = new StringWithPlaceholders(input);
+        StringWithPlaceholders s = StringWithPlaceholders.of(input);
 
         List<PlaceholderOccurrence> placeholders = new ArrayList<>();
         s.replacePlaceholders(occurrence -> {

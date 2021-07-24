@@ -5,24 +5,12 @@
  */
 package me.filoghost.holographicdisplays.common.hologram;
 
-import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
-public interface StandardHologram {
-
-    World getWorld();
-
-    double getX();
-
-    double getY();
-
-    double getZ();
-
-    boolean isInChunk(Chunk chunk);
+public interface StandardHologram extends StandardHologramComponent {
 
     List<? extends StandardHologramLine> getLines();
 
@@ -31,19 +19,5 @@ public interface StandardHologram {
     Plugin getCreatorPlugin();
 
     boolean isVisibleTo(Player player);
-
-    void refresh();
-
-    void refresh(boolean forceRespawn);
-
-    void refresh(boolean forceRespawn, boolean isChunkLoaded);
-
-    void despawnEntities();
-
-    boolean isDeleted();
-
-    void setDeleted();
-
-    String toFormattedString();
 
 }

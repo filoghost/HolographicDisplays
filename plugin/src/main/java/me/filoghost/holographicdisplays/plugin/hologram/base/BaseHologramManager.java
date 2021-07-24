@@ -5,9 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
-import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
-import org.bukkit.Chunk;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,15 +36,6 @@ public abstract class BaseHologramManager<H extends StandardHologram> {
             H hologram = iterator.next();
             iterator.remove();
             hologram.setDeleted();
-        }
-    }
-
-    public void onChunkLoad(Chunk chunk) {
-        // Load the holograms in that chunk
-        for (H hologram : holograms) {
-            if (hologram.isInChunk(chunk)) {
-                hologram.refresh(false, true);
-            }
         }
     }
 

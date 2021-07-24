@@ -6,20 +6,13 @@
 package me.filoghost.holographicdisplays.common.hologram;
 
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 
-import java.util.Collection;
-
-public interface StandardHologramLine {
+public interface StandardHologramLine extends StandardHologramComponent {
 
     StandardHologram getHologram();
 
-    void respawn(World world, double x, double y, double z);
-
-    void despawn();
+    void setLocation(World world, double x, double y, double z);
 
     double getHeight();
-
-    void collectTrackedEntityIDs(Player player, Collection<Integer> collector);
 
 }

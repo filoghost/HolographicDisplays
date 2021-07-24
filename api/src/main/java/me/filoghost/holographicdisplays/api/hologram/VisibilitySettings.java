@@ -11,8 +11,6 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Settings to manage the visibility of a hologram to players. Allows to set both the default visibility and the
  * visibility to a specific player.
- * <p>
- * <b>Warning</b>: changing the visibility requires ProtocolLib, otherwise methods of this class have no effect.
  *
  * @since 1
  */

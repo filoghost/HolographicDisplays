@@ -177,8 +177,6 @@ public interface Hologram {
 
     /**
      * Returns the {@link VisibilitySettings} of this hologram.
-     * <br><b style = "color: red">Note</b>: the usage of the VisibilitySettings requires ProtocolLib.
-     * Without the plugin, holograms will be always visible.
      *
      * @return the VisibilitySettings of this hologram
      * @since 1

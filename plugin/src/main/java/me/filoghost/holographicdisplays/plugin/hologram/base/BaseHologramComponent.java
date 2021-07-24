@@ -6,36 +6,28 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import org.bukkit.Chunk;
+import me.filoghost.holographicdisplays.common.hologram.StandardHologramComponent;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class BaseHologramComponent {
+public abstract class BaseHologramComponent implements StandardHologramComponent {
 
     private World world;
     private double x, y, z;
     private int chunkX, chunkZ;
+    private boolean deleted;
 
-    public boolean isInChunk(Chunk chunk) {
-        return world != null
-                && chunk.getWorld() == world
-                && chunk.getX() == chunkX
-                && chunk.getZ() == chunkZ;
-    }
-
-    public boolean isInLoadedChunk() {
-        return world.isChunkLoaded(chunkX, chunkZ);
-    }
-
-    public @NotNull Location getLocation() {
+    public final @NotNull Location getLocation() {
         return new Location(world, x, y, z);
     }
 
-    protected void setLocation(Location location) {
+    protected final void setLocation(Location location) {
         setLocation(location.getWorld(), location.getX(), location.getY(), location.getZ());
     }
 
+    @MustBeInvokedByOverriders
     protected void setLocation(World world, double x, double y, double z) {
         Preconditions.notNull(world, "world");
 
@@ -43,29 +35,68 @@ public abstract class BaseHologramComponent {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.chunkX = floor(x) >> 4;
-        this.chunkZ = floor(z) >> 4;
+        this.chunkX = getChunkCoord(x);
+        this.chunkZ = getChunkCoord(z);
     }
 
-    private static int floor(double num) {
-        int floor = (int) num;
-        return floor == num ? floor : floor - (int) (Double.doubleToRawLongBits(num) >>> 63);
+    private int getChunkCoord(double locationCoord) {
+        return Location.locToBlock(locationCoord) >> 4;
     }
 
-    public @NotNull World getWorld() {
+    @Override
+    public final World getWorld() {
         return world;
     }
 
-    public double getX() {
+    @Override
+    public final double getX() {
         return x;
     }
 
-    public double getY() {
+    @Override
+    public final double getY() {
         return y;
     }
 
-    public double getZ() {
+    @Override
+    public final double getZ() {
         return z;
+    }
+
+    @Override
+    public final int getChunkX() {
+        return chunkX;
+    }
+
+    @Override
+    public final int getChunkZ() {
+        return chunkZ;
+    }
+
+    @Override
+    public final boolean isDeleted() {
+        return deleted;
+    }
+
+    @Override
+    public final void setDeleted() {
+        deleted = true;
+    }
+
+    protected final void checkNotDeleted() {
+        Preconditions.checkState(!deleted, "not usable after being deleted");
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        // Use the default identity comparison: two different instances are never equal
+        return super.equals(obj);
+    }
+
+    @Override
+    public final int hashCode() {
+        // Use the default identity hash code: each instance has a different hash code
+        return super.hashCode();
     }
 
 }

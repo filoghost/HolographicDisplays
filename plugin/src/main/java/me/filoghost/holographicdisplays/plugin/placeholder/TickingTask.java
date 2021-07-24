@@ -5,22 +5,34 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder;
 
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
+import me.filoghost.fcommons.logging.Log;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 
 public class TickingTask implements Runnable {
 
     private final TickClock tickClock;
-    private final PlaceholderLineTracker placeholderLineTracker;
+    private final LineTrackerManager lineTrackerManager;
 
-    public TickingTask(TickClock tickClock, PlaceholderLineTracker placeholderLineTracker) {
+    private long lastErrorLogTick;
+
+    public TickingTask(TickClock tickClock, LineTrackerManager lineTrackerManager) {
         this.tickClock = tickClock;
-        this.placeholderLineTracker = placeholderLineTracker;
+        this.lineTrackerManager = lineTrackerManager;
     }
 
     @Override
     public void run() {
         tickClock.incrementTick();
-        placeholderLineTracker.updateEntitiesWithGlobalPlaceholders();
+
+        try {
+            lineTrackerManager.updateTrackersAndSendChanges();
+        } catch (Throwable t) {
+            // Avoid spamming the console, log the error at most once every 20 ticks
+            if (tickClock.getCurrentTick() - lastErrorLogTick >= 20) {
+                lastErrorLogTick = tickClock.getCurrentTick();
+                Log.severe("Error while ticking holograms", t);
+            }
+        }
     }
 
 }

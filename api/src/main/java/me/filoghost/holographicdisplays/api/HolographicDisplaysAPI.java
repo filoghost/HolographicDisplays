@@ -9,7 +9,6 @@ import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -96,16 +95,5 @@ public interface HolographicDisplaysAPI {
      * @since 1
      */
     void unregisterPlaceholders();
-
-    /**
-     * Checks if an entity is part of a hologram.
-     *
-     * @param entity the entity to check
-     * @return if the entity is part of a hologram
-     * @since 1
-     */
-    static boolean isHologramEntity(@NotNull Entity entity) {
-        return HolographicDisplaysAPIProvider.getImplementation().isHologramEntity(entity);
-    }
 
 }

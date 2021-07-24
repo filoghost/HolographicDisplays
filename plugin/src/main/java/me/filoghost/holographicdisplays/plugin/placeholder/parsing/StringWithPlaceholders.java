@@ -5,32 +5,38 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.parsing;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class StringWithPlaceholders {
+public final class StringWithPlaceholders {
 
     private static final char PLACEHOLDER_END_CHAR = '}';
     private static final char PLACEHOLDER_START_CHAR = '{';
 
-    private final String string;
+    private final @NotNull String string;
     private final List<StringPart> stringParts;
 
-    public StringWithPlaceholders(String string) {
+    @Contract("null -> null; !null -> !null")
+    public static StringWithPlaceholders of(@Nullable String string) {
+        return string != null ? new StringWithPlaceholders(string) : null;
+    }
+
+    public StringWithPlaceholders(@NotNull String string) {
         this.string = string;
         this.stringParts = splitToParts(string);
     }
 
-    private StringWithPlaceholders(String string, List<StringPart> stringParts) {
+    private StringWithPlaceholders(@NotNull String string, @Nullable List<StringPart> stringParts) {
         this.string = string;
         this.stringParts = stringParts;
     }
 
-    @Override
-    public String toString() {
+    public String getUnreplacedString() {
         return string;
     }
 
@@ -164,6 +170,24 @@ public class StringWithPlaceholders {
         }
 
         return stringParts;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        StringWithPlaceholders other = (StringWithPlaceholders) obj;
+        return this.string.equals(other.string);
+    }
+
+    @Override
+    public int hashCode() {
+        return string.hashCode();
     }
 
 

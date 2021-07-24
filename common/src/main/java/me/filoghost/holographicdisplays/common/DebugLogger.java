@@ -6,8 +6,6 @@
 package me.filoghost.holographicdisplays.common;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.common.nms.SpawnFailedException;
 
 public class DebugLogger {
 
@@ -46,22 +44,6 @@ public class DebugLogger {
         if (debug) {
             Log.severe(PREFIX + msg, thrown);
         }
-    }
-
-    public static void handleSpawnFail(SpawnFailedException exception, StandardHologramLine parentHologramLine) {
-        severe("Couldn't spawn entity for this hologram: " + parentHologramLine.getHologram(), exception);
-    }
-
-    public static void cannotSetPassenger(Throwable t) {
-        severe("Couldn't set passenger", t);
-    }
-
-    public static void cannotSetArmorStandAsMarker(Throwable t) {
-        severe("Couldn't set armor stand as marker", t);
-    }
-
-    public static void cannotSetPassengerPitchYawDelta(Throwable t) {
-        severe("Couldn't set passenger pitch/yaw delta", t);
     }
 
 }

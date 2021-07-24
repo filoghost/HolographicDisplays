@@ -5,13 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.listener;
 
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.common.nms.entity.NMSEntity;
-import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -22,32 +18,16 @@ import org.bukkit.plugin.Plugin;
 public class ChunkListener implements Listener {
 
     private final Plugin plugin;
-    private final NMSManager nmsManager;
-    private final InternalHologramManager internalHologramManager;
-    private final APIHologramManager apiHologramManager;
+    private final LineTrackerManager lineTrackerManager;
 
-    public ChunkListener(
-            Plugin plugin,
-            NMSManager nmsManager,
-            InternalHologramManager internalHologramManager,
-            APIHologramManager apiHologramManager) {
+    public ChunkListener(Plugin plugin, LineTrackerManager lineTrackerManager) {
         this.plugin = plugin;
-        this.nmsManager = nmsManager;
-        this.internalHologramManager = internalHologramManager;
-        this.apiHologramManager = apiHologramManager;
+        this.lineTrackerManager = lineTrackerManager;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
-        for (Entity entity : event.getChunk().getEntities()) {
-            if (!entity.isDead()) {
-                NMSEntity entityBase = nmsManager.getNMSEntityBase(entity);
-
-                if (entityBase != null) {
-                    entityBase.getHologramLine().getHologram().despawnEntities();
-                }
-            }
-        }
+        lineTrackerManager.onChunkUnload(event.getChunk());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -68,8 +48,7 @@ public class ChunkListener implements Listener {
     }
 
     private void onChunkLoad(Chunk chunk) {
-        internalHologramManager.onChunkLoad(chunk);
-        apiHologramManager.onChunkLoad(chunk);
+        lineTrackerManager.onChunkLoad(chunk);
     }
 
 }

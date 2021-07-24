@@ -7,11 +7,10 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramAdapter;
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -34,14 +33,13 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     protected APIHologram(
             Location location,
             Plugin plugin,
-            NMSManager nmsManager,
             APIHologramManager apiHologramManager,
-            PlaceholderLineTracker placeholderLineTracker) {
-        super(location, nmsManager, placeholderLineTracker);
+            LineTrackerManager lineTrackerManager) {
+        super(location, lineTrackerManager);
         Preconditions.notNull(plugin, "plugin");
         this.plugin = plugin;
         this.apiHologramManager = apiHologramManager;
-        this.visibilitySettings = new DefaultVisibilitySettings(this);
+        this.visibilitySettings = new DefaultVisibilitySettings();
         this.creationTimestamp = System.currentTimeMillis();
         this.v2Adapter = new V2HologramAdapter(this);
     }
@@ -103,7 +101,6 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
         }
 
         this.allowPlaceholders = allowPlaceholders;
-        refresh(true);
     }
 
     @Override
@@ -146,11 +143,6 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     @Override
     public void delete() {
         apiHologramManager.deleteHologram(this);
-    }
-
-    @Override
-    public String toFormattedString() {
-        return plugin.getName() + "@" + Integer.toHexString(hashCode());
     }
 
     public V2HologramAdapter getV2Adapter() {

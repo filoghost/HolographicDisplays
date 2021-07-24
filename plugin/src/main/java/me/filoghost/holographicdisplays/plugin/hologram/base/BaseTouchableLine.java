@@ -7,16 +7,12 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
-import me.filoghost.holographicdisplays.common.DebugLogger;
 import me.filoghost.holographicdisplays.common.hologram.StandardTouchableLine;
-import me.filoghost.holographicdisplays.common.nms.SpawnFailedException;
-import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.common.nms.entity.NMSSlime;
-import org.bukkit.World;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -26,15 +22,9 @@ import java.util.WeakHashMap;
  */
 public abstract class BaseTouchableLine extends BaseHologramLine implements StandardTouchableLine {
 
-    private static final double SLIME_HEIGHT = 0.5;
-
     private static final Map<Player, Long> lastClickByPlayer = new WeakHashMap<>();
 
     private TouchHandler touchHandler;
-
-    private NMSSlime slimeEntity;
-    private NMSArmorStand slimeVehicleEntity;
-
 
     protected BaseTouchableLine(BaseHologram<?> hologram) {
         super(hologram);
@@ -42,6 +32,10 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
 
     @Override
     public void onTouch(Player player) {
+        if (player.getGameMode() == GameMode.SPECTATOR) {
+            return;
+        }
+
         if (touchHandler == null || !getHologram().isVisibleTo(player)) {
             return;
         }
@@ -62,97 +56,19 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
         }
     }
 
+    @Override
+    public boolean hasTouchHandler() {
+        return touchHandler != null;
+    }
+
+    @MustBeInvokedByOverriders
     public void setTouchHandler(@Nullable TouchHandler touchHandler) {
         this.touchHandler = touchHandler;
-
-        if (touchHandler == null) {
-            // Despawn the entity (if existing) since there is no touch handler
-            despawnSlime();
-            return;
-        }
-
-        if (slimeEntity == null && super.isSpawned()) {
-            // Spawn the entity since it's not spawned
-            spawnSlime(getWorld(), getX(), getY(), getZ());
-        }
+        setChanged();
     }
 
     public @Nullable TouchHandler getTouchHandler() {
-        return this.touchHandler;
-    }
-
-    @Override
-    public void spawnEntities(World world, double x, double y, double z) throws SpawnFailedException {
-        if (touchHandler != null) {
-            spawnSlime(world, x, y, z);
-        }
-    }
-
-    @Override
-    public void teleportEntities(double x, double y, double z) {
-        if (slimeVehicleEntity != null) {
-            slimeVehicleEntity.setLocationNMS(x, getSlimeSpawnY(y), z);
-        }
-        if (slimeEntity != null) {
-            slimeEntity.setLocationNMS(x, getSlimeSpawnY(y), z);
-        }
-    }
-
-    @Override
-    public void despawnEntities() {
-        despawnSlime();
-    }
-
-    private void spawnSlime(World world, double x, double y, double z) {
-        if (world != null) {
-            try {
-                slimeEntity = getNMSManager().spawnNMSSlime(world, x, getSlimeSpawnY(y), z, this);
-                slimeVehicleEntity = getNMSManager().spawnNMSArmorStand(world, x, getSlimeSpawnY(y), z, this);
-                slimeVehicleEntity.setPassengerNMS(slimeEntity);
-            } catch (SpawnFailedException e) {
-                DebugLogger.handleSpawnFail(e, this);
-            }
-        }
-    }
-
-    private void despawnSlime() {
-        if (slimeEntity != null) {
-            slimeEntity.killEntityNMS();
-            slimeEntity = null;
-        }
-
-        if (slimeVehicleEntity != null) {
-            slimeVehicleEntity.killEntityNMS();
-            slimeVehicleEntity = null;
-        }
-    }
-
-    private double getSlimeSpawnY(double y) {
-        return y + ((getHeight() - SLIME_HEIGHT) / 2) + getSlimeSpawnOffset();
-    }
-
-    private double getSlimeSpawnOffset() {
-        return 0;
-    }
-
-    @Override
-    public void collectTrackedEntityIDs(Player player, Collection<Integer> collector) {
-        if (slimeVehicleEntity != null && slimeVehicleEntity.isTrackedBy(player)) {
-            collector.add(slimeVehicleEntity.getIdNMS());
-        }
-        if (slimeEntity != null && slimeEntity.isTrackedBy(player)) {
-            collector.add(slimeEntity.getIdNMS());
-        }
-    }
-
-    @Override
-    public NMSArmorStand getNMSSlimeVehicle() {
-        return slimeVehicleEntity;
-    }
-
-    @Override
-    public NMSSlime getNMSSlime() {
-        return slimeEntity;
+        return touchHandler;
     }
 
 }

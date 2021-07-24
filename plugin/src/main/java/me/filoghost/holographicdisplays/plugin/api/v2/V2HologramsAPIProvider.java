@@ -114,7 +114,7 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
     @Override
     public boolean isHologramEntity(Entity bukkitEntity) {
         Preconditions.notNull(bukkitEntity, "bukkitEntity");
-        return nmsManager.isNMSEntityBase(bukkitEntity);
+        return false;
     }
 
 }

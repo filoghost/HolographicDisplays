@@ -8,9 +8,8 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
 import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -22,41 +21,20 @@ import java.util.List;
 
 public abstract class BaseHologram<T extends StandardHologramLine> extends BaseHologramComponent implements StandardHologram {
 
-    private final NMSManager nmsManager;
-    private final PlaceholderLineTracker placeholderLineTracker;
+    private final LineTrackerManager lineTrackerManager;
     private final List<T> lines;
     private final List<T> unmodifiableLinesView;
 
-    private boolean deleted;
-
-    public BaseHologram(Location location, NMSManager nmsManager, PlaceholderLineTracker placeholderLineTracker) {
-        this.placeholderLineTracker = placeholderLineTracker;
+    public BaseHologram(Location location, LineTrackerManager lineTrackerManager) {
         Preconditions.notNull(location, "location");
         this.setLocation(location);
-        this.nmsManager = nmsManager;
+        this.lineTrackerManager = lineTrackerManager;
         this.lines = new ArrayList<>();
         this.unmodifiableLinesView = Collections.unmodifiableList(lines);
     }
 
-    protected final NMSManager getNMSManager() {
-        return nmsManager;
-    }
-
-    protected final PlaceholderLineTracker getPlaceholderLineTracker() {
-        return placeholderLineTracker;
-    }
-
-    @Override
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    @Override
-    public void setDeleted() {
-        if (!deleted) {
-            deleted = true;
-            despawnEntities();
-        }
+    protected final LineTrackerManager getTrackerManager() {
+        return lineTrackerManager;
     }
 
     @Override
@@ -68,29 +46,29 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
         checkNotDeleted();
 
         lines.add(line);
-        refresh();
+        updateLineLocations();
     }
 
     public void addLines(List<? extends T> newLines) {
         checkNotDeleted();
 
         lines.addAll(newLines);
-        refresh();
+        updateLineLocations();
     }
 
     public void insertLine(int afterIndex, T line) {
         checkNotDeleted();
 
         lines.add(afterIndex, line);
-        refresh();
+        updateLineLocations();
     }
 
     public void setLine(int index, T line) {
         checkNotDeleted();
 
         T previousLine = lines.set(index, line);
-        previousLine.despawn();
-        refresh();
+        previousLine.setDeleted();
+        updateLineLocations();
     }
 
     public void setLines(List<T> newLines) {
@@ -98,22 +76,22 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
 
         clearLines();
         lines.addAll(newLines);
-        refresh();
+        updateLineLocations();
     }
 
     public void removeLine(int index) {
         checkNotDeleted();
 
-        lines.remove(index).despawn();
-        refresh();
+        lines.remove(index).setDeleted();
+        updateLineLocations();
     }
 
     public void removeLine(T line) {
         checkNotDeleted();
 
         lines.remove(line);
-        line.despawn();
-        refresh();
+        line.setDeleted();
+        updateLineLocations();
     }
 
     public void clearLines() {
@@ -123,7 +101,7 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
         while (iterator.hasNext()) {
             T line = iterator.next();
             iterator.remove();
-            line.despawn();
+            line.setDeleted();
         }
 
         // No need to refresh, since there are no lines
@@ -145,35 +123,14 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
         Preconditions.notNull(world, "world");
 
         setLocation(world, x, y, z);
-        refresh();
+        updateLineLocations();
     }
 
-    @Override
-    public void refresh() {
-        refresh(false);
-    }
-
-    @Override
-    public void refresh(boolean forceRespawn) {
-        refresh(forceRespawn, isInLoadedChunk());
-    }
-
-    @Override
-    public void refresh(boolean forceRespawn, boolean isChunkLoaded) {
-        checkNotDeleted();
-
-        if (isChunkLoaded) {
-            respawnEntities(forceRespawn);
-        } else {
-            despawnEntities();
-        }
-    }
-
-    /*
+    /**
      * When spawning at a location, the top part of the first line should be exactly on that location.
      * The second line is below the first, and so on.
      */
-    private void respawnEntities(boolean forceRespawn) {
+    private void updateLineLocations() {
         double currentLineY = getY();
 
         for (int i = 0; i < lines.size(); i++) {
@@ -184,32 +141,13 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
                 currentLineY -= Settings.spaceBetweenLines;
             }
 
-            if (forceRespawn) {
-                line.despawn();
-            }
-            line.respawn(getWorld(), getX(), currentLineY, getZ());
+            line.setLocation(getWorld(), getX(), currentLineY, getZ());
         }
-    }
-
-    @Override
-    public void despawnEntities() {
-        for (T line : lines) {
-            line.despawn();
-        }
-    }
-
-    private void checkNotDeleted() {
-        Preconditions.checkState(!deleted, "hologram is not usable after being deleted");
     }
 
     @Override
     public String toString() {
-        return "BaseHologram [location=" + getLocation() + ", lines=" + lines + ", deleted=" + deleted + "]";
+        return "BaseHologram [location=" + getLocation() + ", lines=" + lines + ", deleted=" + isDeleted() + "]";
     }
-
-    /*
-     * Object.equals() and Object.hashCode() are not overridden:
-     * two holograms are equal only if they are the same exact instance.
-     */
 
 }

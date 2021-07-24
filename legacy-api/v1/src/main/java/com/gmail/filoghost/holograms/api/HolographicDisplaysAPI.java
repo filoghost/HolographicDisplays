@@ -77,7 +77,7 @@ public class HolographicDisplaysAPI {
 
     @Deprecated
     public static boolean isHologramEntity(Entity bukkitEntity) {
-        return me.filoghost.holographicdisplays.api.HolographicDisplaysAPI.isHologramEntity(bukkitEntity);
+        return false;
     }
 
 }

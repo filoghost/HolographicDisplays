@@ -6,22 +6,22 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.holographicdisplays.common.hologram.StandardTextLine;
-import me.filoghost.holographicdisplays.common.nms.SpawnFailedException;
-import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.TextLineTracker;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
 
 public abstract class BaseTextLine extends BaseTouchableLine implements StandardTextLine {
 
     private String text;
-    private NMSArmorStand textEntity;
 
     public BaseTextLine(BaseHologram<?> hologram, String text) {
         super(hologram);
         setText(text);
+    }
+
+    @Override
+    protected TextLineTracker createTracker(LineTrackerManager trackerManager) {
+        return trackerManager.startTracking(this);
     }
 
     @Override
@@ -31,66 +31,12 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
 
     public void setText(@Nullable String text) {
         this.text = text;
-
-        if (textEntity != null) {
-            textEntity.setCustomNameNMS(text);
-            getPlaceholderLineTracker().onTextLineChange(this);
-        }
-    }
-
-    @Override
-    public void spawnEntities(World world, double x, double y, double z) throws SpawnFailedException {
-        super.spawnEntities(world, x, y, z);
-
-        textEntity = getNMSManager().spawnNMSArmorStand(world, x, y + getTextSpawnOffset(), z, this);
-
-        if (text != null && !text.isEmpty()) {
-            textEntity.setCustomNameNMS(text);
-        }
-
-        getPlaceholderLineTracker().onTextLineChange(this);
-    }
-
-    @Override
-    public void teleportEntities(double x, double y, double z) {
-        super.teleportEntities(x, y, z);
-
-        if (textEntity != null) {
-            textEntity.setLocationNMS(x, y + getTextSpawnOffset(), z);
-        }
-    }
-
-    @Override
-    public void despawnEntities() {
-        super.despawnEntities();
-
-        if (textEntity != null) {
-            textEntity.killEntityNMS();
-            textEntity = null;
-        }
+        setChanged();
     }
 
     @Override
     public double getHeight() {
         return 0.23;
-    }
-
-    @Override
-    public void collectTrackedEntityIDs(Player player, Collection<Integer> collector) {
-        super.collectTrackedEntityIDs(player, collector);
-
-        if (textEntity != null && textEntity.isTrackedBy(player)) {
-            collector.add(textEntity.getIdNMS());
-        }
-    }
-
-    @Override
-    public NMSArmorStand getNMSArmorStand() {
-        return textEntity;
-    }
-
-    private double getTextSpawnOffset() {
-        return -0.29;
     }
 
     @Override

@@ -12,25 +12,20 @@ import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.common.nms.ProtocolPacketSettings;
 import me.filoghost.holographicdisplays.plugin.api.current.DefaultHolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramsAPIProvider;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
-import me.filoghost.holographicdisplays.plugin.bridge.protocollib.ProtocolLibHook;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
-import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.disk.HologramDatabase;
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.disk.upgrade.LegacySymbolsUpgrade;
-import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.listener.ChunkListener;
-import me.filoghost.holographicdisplays.plugin.listener.InteractListener;
-import me.filoghost.holographicdisplays.plugin.listener.SpawnListener;
+import me.filoghost.holographicdisplays.plugin.listener.PlayerQuitListener;
 import me.filoghost.holographicdisplays.plugin.listener.UpdateNotificationListener;
 import me.filoghost.holographicdisplays.plugin.log.PrintableErrorCollector;
 import me.filoghost.holographicdisplays.plugin.placeholder.TickClock;
@@ -38,7 +33,6 @@ import me.filoghost.holographicdisplays.plugin.placeholder.TickingTask;
 import me.filoghost.holographicdisplays.plugin.placeholder.internal.AnimationRegistry;
 import me.filoghost.holographicdisplays.plugin.placeholder.internal.DefaultPlaceholders;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion;
 import org.bstats.bukkit.MetricsLite;
@@ -48,16 +42,16 @@ import org.bukkit.ChatColor;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacketSettings {
+public class HolographicDisplays extends FCommonsPlugin {
 
     private static HolographicDisplays instance;
 
     private ConfigManager configManager;
     private InternalHologramManager internalHologramManager;
-    private APIHologramManager apiHologramManager;
     private BungeeServerTracker bungeeServerTracker;
     private AnimationRegistry animationRegistry;
     private PlaceholderRegistry placeholderRegistry;
+    private LineTrackerManager lineTrackerManager;
 
     @Override
     public void onCheckedEnable() throws PluginEnableException {
@@ -91,12 +85,13 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
                     "This can be caused by edits to plugin.yml or other plugins.");
         }
 
+        PrintableErrorCollector errorCollector = new PrintableErrorCollector();
+
         NMSManager nmsManager;
         try {
-            nmsManager = NMSVersion.createNMSManager(this);
-            nmsManager.setup();
-        } catch (Exception e) {
-            throw new PluginEnableException(e, "Couldn't initialize the NMS manager.");
+            nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
+        } catch (Throwable t) {
+            throw new PluginEnableException(t, "Couldn't initialize the NMS manager.");
         }
 
         configManager = new ConfigManager(getDataFolder().toPath());
@@ -105,11 +100,9 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
         placeholderRegistry = new PlaceholderRegistry();
         TickClock tickClock = new TickClock();
         PlaceholderTracker placeholderTracker = new PlaceholderTracker(placeholderRegistry, tickClock);
-        PlaceholderLineTracker placeholderLineTracker = new PlaceholderLineTracker(placeholderTracker);
-        internalHologramManager = new InternalHologramManager(nmsManager, placeholderLineTracker);
-        apiHologramManager = new APIHologramManager(nmsManager, placeholderLineTracker);
-
-        PrintableErrorCollector errorCollector = new PrintableErrorCollector();
+        lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker);
+        internalHologramManager = new InternalHologramManager(lineTrackerManager);
+        APIHologramManager apiHologramManager = new APIHologramManager(lineTrackerManager);
 
         // Run only once at startup, before anything else
         try {
@@ -120,21 +113,16 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
 
         load(true, errorCollector);
 
-        ProtocolLibHook.setup(this, nmsManager, this, placeholderLineTracker, errorCollector);
         PlaceholderAPIHook.setup();
 
-        TickingTask tickingTask = new TickingTask(tickClock, placeholderLineTracker);
+        TickingTask tickingTask = new TickingTask(tickClock, lineTrackerManager);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, tickingTask, 0, 1);
 
-        HologramCommandManager commandManager = new HologramCommandManager(
-                this,
-                new InternalHologramEditor(internalHologramManager, configManager),
-                nmsManager);
+        HologramCommandManager commandManager = new HologramCommandManager(this, internalHologramManager, configManager);
         commandManager.register(this);
 
-        registerListener(new InteractListener(nmsManager));
-        registerListener(new SpawnListener(nmsManager));
-        registerListener(new ChunkListener(this, nmsManager, internalHologramManager, apiHologramManager));
+        registerListener(new PlayerQuitListener(lineTrackerManager));
+        registerListener(new ChunkListener(this, lineTrackerManager));
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
         registerListener(updateNotificationListener);
 
@@ -189,25 +177,11 @@ public class HolographicDisplays extends FCommonsPlugin implements ProtocolPacke
 
     @Override
     public void onDisable() {
-        if (internalHologramManager != null) {
-            for (InternalHologram hologram : internalHologramManager.getHolograms()) {
-                hologram.despawnEntities();
-            }
-        }
-        if (apiHologramManager != null) {
-            for (APIHologram hologram : apiHologramManager.getHolograms()) {
-                hologram.despawnEntities();
-            }
-        }
+        lineTrackerManager.clearTrackedPlayers();
     }
 
     public static HolographicDisplays getInstance() {
         return instance;
-    }
-
-    @Override
-    public boolean sendAccurateLocationPackets() {
-        return ProtocolLibHook.isEnabled();
     }
 
 }

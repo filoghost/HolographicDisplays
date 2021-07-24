@@ -9,7 +9,6 @@ import me.filoghost.fcommons.command.CommandContext;
 import me.filoghost.fcommons.command.sub.SubCommand;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.sub.SubCommandManager;
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.commands.subs.AddlineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.AlignCommand;
@@ -31,9 +30,11 @@ import me.filoghost.holographicdisplays.plugin.commands.subs.ReloadCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.RemovelineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.SetlineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.TeleportCommand;
+import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -54,8 +55,12 @@ public class HologramCommandManager extends SubCommandManager {
     private final List<HologramSubCommand> subCommands;
     private final HelpCommand helpCommand;
 
-    public HologramCommandManager(HolographicDisplays holographicDisplays, InternalHologramEditor hologramEditor, NMSManager nmsManager) {
+    public HologramCommandManager(
+            HolographicDisplays holographicDisplays,
+            InternalHologramManager internalHologramManager,
+            ConfigManager configManager) {
         setName("holograms");
+        InternalHologramEditor hologramEditor = new InternalHologramEditor(internalHologramManager, configManager);
         this.holographicDisplays = holographicDisplays;
         this.helpCommand = new HelpCommand(this);
         this.subCommands = new ArrayList<>();
@@ -79,7 +84,7 @@ public class HologramCommandManager extends SubCommandManager {
         subCommands.add(new ReadimageCommand(hologramEditor));
         subCommands.add(new InfoCommand(this, hologramEditor));
 
-        subCommands.add(new DebugCommand(nmsManager));
+        subCommands.add(new DebugCommand());
         subCommands.add(helpCommand);
     }
 

@@ -5,122 +5,50 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_17_R1;
 
-import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
-import me.filoghost.holographicdisplays.common.hologram.StandardItemLine;
+import me.filoghost.fcommons.logging.ErrorCollector;
+import me.filoghost.fcommons.logging.Log;
+import me.filoghost.fcommons.reflection.ReflectField;
+import me.filoghost.holographicdisplays.common.nms.EntityID;
+import me.filoghost.holographicdisplays.common.nms.FallbackEntityIDGenerator;
+import me.filoghost.holographicdisplays.common.nms.NMSErrors;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.common.nms.ProtocolPacketSettings;
-import me.filoghost.holographicdisplays.common.nms.SpawnFailedException;
-import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.common.nms.entity.NMSEntity;
-import me.filoghost.holographicdisplays.common.nms.entity.NMSItem;
-import net.minecraft.server.level.WorldServer;
-import net.minecraft.util.MathHelper;
+import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Entity.RemovalReason;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
-import org.bukkit.inventory.ItemStack;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
 public class VersionNMSManager implements NMSManager {
 
-    private final ProtocolPacketSettings protocolPacketSettings;
+    private static final ReflectField<AtomicInteger> ENTITY_ID_COUNTER_FIELD = ReflectField.lookup(AtomicInteger.class, Entity.class, "b");
+    private final Supplier<Integer> entityIDGenerator;
 
-    public VersionNMSManager(ProtocolPacketSettings protocolPacketSettings) {
-        this.protocolPacketSettings = protocolPacketSettings;
+    public VersionNMSManager(ErrorCollector errorCollector) {
+        this.entityIDGenerator = getEntityIDGenerator(errorCollector);
+
+        // Force initialization of class to eventually throw exceptions early
+        DataWatcherKey.ENTITY_STATUS.getKeyIndex();
     }
 
-    @Override
-    public void setup() {}
-
-    @Override
-    public NMSItem spawnNMSItem(
-            World bukkitWorld, double x, double y, double z,
-            StandardItemLine parentHologramLine,
-            ItemStack stack) throws SpawnFailedException {
-        WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-        EntityNMSItem item = new EntityNMSItem(nmsWorld, parentHologramLine);
-        item.setLocationNMS(x, y, z);
-        item.setItemStackNMS(stack);
-        addEntityToWorld(nmsWorld, item);
-        return item;
-    }
-
-    @Override
-    public EntityNMSSlime spawnNMSSlime(
-            World bukkitWorld, double x, double y, double z,
-            StandardHologramLine parentHologramLine) throws SpawnFailedException {
-        WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-        EntityNMSSlime slime = new EntityNMSSlime(nmsWorld, parentHologramLine);
-        slime.setLocationNMS(x, y, z);
-        addEntityToWorld(nmsWorld, slime);
-        return slime;
-    }
-
-    @Override
-    public NMSArmorStand spawnNMSArmorStand(
-            World world, double x, double y, double z,
-            StandardHologramLine parentHologramLine) throws SpawnFailedException {
-        WorldServer nmsWorld = ((CraftWorld) world).getHandle();
-        EntityNMSArmorStand armorStand = new EntityNMSArmorStand(nmsWorld, parentHologramLine, protocolPacketSettings);
-        armorStand.setLocationNMS(x, y, z);
-        addEntityToWorld(nmsWorld, armorStand);
-        return armorStand;
-    }
-
-    private void addEntityToWorld(WorldServer nmsWorld, Entity nmsEntity) throws SpawnFailedException {
-        Preconditions.checkState(Bukkit.isPrimaryThread(), "Async entity add");
-
-        final int chunkX = MathHelper.floor(nmsEntity.locX() / 16.0);
-        final int chunkZ = MathHelper.floor(nmsEntity.locZ() / 16.0);
-
-        if (!nmsWorld.isChunkLoaded(chunkX, chunkZ)) {
-            // This should never happen
-            nmsEntity.setRemoved(RemovalReason.b /* DISCARDED */);
-            throw new SpawnFailedException(SpawnFailedException.CHUNK_NOT_LOADED);
-        }
-
+    private Supplier<Integer> getEntityIDGenerator(ErrorCollector errorCollector) {
         try {
-            nmsWorld.G.a(nmsEntity) /* entityManager.addNewEntity() */;
-        } catch (Exception e) {
-            nmsEntity.setRemoved(RemovalReason.b /* DISCARDED */);
-            throw new SpawnFailedException(SpawnFailedException.REGISTER_ENTITY_FAIL, e);
+            AtomicInteger nmsEntityIDCounter = ENTITY_ID_COUNTER_FIELD.getStatic();
+            return nmsEntityIDCounter::incrementAndGet;
+        } catch (ReflectiveOperationException e) {
+            Log.warning(NMSErrors.GETTING_ENTITY_ID_GENERATOR_SHORT, e);
+            errorCollector.add(NMSErrors.GETTING_ENTITY_ID_GENERATOR_LONG);
+            return new FallbackEntityIDGenerator();
         }
     }
 
     @Override
-    public boolean isNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
-        return ((CraftEntity) bukkitEntity).getHandle() instanceof NMSEntity;
+    public EntityID newEntityID() {
+        return new EntityID(entityIDGenerator);
     }
 
     @Override
-    public NMSEntity getNMSEntityBase(org.bukkit.entity.Entity bukkitEntity) {
-        Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
-
-        if (nmsEntity instanceof NMSEntity) {
-            return (NMSEntity) nmsEntity;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public NMSEntity getNMSEntityBaseFromID(org.bukkit.World bukkitWorld, int entityID) {
-        WorldServer nmsWorld = ((CraftWorld) bukkitWorld).getHandle();
-        Entity nmsEntity = nmsWorld.getEntity(entityID);
-
-        if (nmsEntity instanceof NMSEntity) {
-            return (NMSEntity) nmsEntity;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public Object createCustomNameNMSObject(String customName) {
-        return EntityNMSArmorStand.createCustomNameNMSObject(customName);
+    public NMSPacketList createPacketList() {
+        return new VersionNMSPacketList();
     }
 
 }

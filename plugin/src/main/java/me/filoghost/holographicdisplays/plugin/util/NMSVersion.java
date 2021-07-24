@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.plugin.util;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.common.nms.ProtocolPacketSettings;
 import org.bukkit.Bukkit;
 
 import java.util.regex.Matcher;
@@ -19,32 +19,41 @@ import java.util.regex.Pattern;
 public enum NMSVersion {
 
     // Not using shorter method reference syntax here because it initializes the class, causing a ClassNotFoundException
-    v1_8_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_8_R2.VersionNMSManager(packetSettings)),
-    v1_8_R3(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_8_R3.VersionNMSManager(packetSettings)),
-    v1_9_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_9_R1.VersionNMSManager(packetSettings)),
-    v1_9_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_9_R2.VersionNMSManager(packetSettings)),
-    v1_10_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_10_R1.VersionNMSManager(packetSettings)),
-    v1_11_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_11_R1.VersionNMSManager(packetSettings)),
-    v1_12_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_12_R1.VersionNMSManager(packetSettings)),
-    v1_13_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_13_R1.VersionNMSManager(packetSettings)),
-    v1_13_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_13_R2.VersionNMSManager(packetSettings)),
-    v1_14_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_14_R1.VersionNMSManager(packetSettings)),
-    v1_15_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_15_R1.VersionNMSManager(packetSettings)),
-    v1_16_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager(packetSettings)),
-    v1_16_R2(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager(packetSettings)),
-    v1_16_R3(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager(packetSettings)),
-    v1_17_R1(packetSettings -> new me.filoghost.holographicdisplays.nms.v1_17_R1.VersionNMSManager(packetSettings));
+    v1_8_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_8_R2.VersionNMSManager()),
+    v1_8_R3((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_8_R3.VersionNMSManager()),
+    v1_9_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_9_R1.VersionNMSManager()),
+    v1_9_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_9_R2.VersionNMSManager()),
+    v1_10_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_10_R1.VersionNMSManager()),
+    v1_11_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_11_R1.VersionNMSManager()),
+    v1_12_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_12_R1.VersionNMSManager()),
+    v1_13_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_13_R1.VersionNMSManager()),
+    v1_13_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_13_R2.VersionNMSManager()),
+    v1_14_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_14_R1.VersionNMSManager()),
+    v1_15_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_15_R1.VersionNMSManager()),
+    v1_16_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager()),
+    v1_16_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager()),
+    v1_16_R3((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager()),
+    v1_17_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_17_R1.VersionNMSManager(errorCollector));
 
     private static final NMSVersion CURRENT_VERSION = extractCurrentVersion();
 
-    private final NMSManagerConstructor nmsManagerConstructor;
+    private final NMSManagerFactory nmsManagerFactory;
 
-    NMSVersion(NMSManagerConstructor nmsManagerConstructor) {
-        this.nmsManagerConstructor = nmsManagerConstructor;
+    NMSVersion(NMSManagerFactory nmsManagerFactory) {
+        this.nmsManagerFactory = nmsManagerFactory;
     }
 
-    public static NMSManager createNMSManager(ProtocolPacketSettings protocolPacketSettings) {
-        return getValid().nmsManagerConstructor.create(protocolPacketSettings);
+    public NMSManager createNMSManager(ErrorCollector errorCollector) {
+        return nmsManagerFactory.create(errorCollector);
+    }
+
+    public static NMSVersion getCurrent() {
+        Preconditions.checkState(isValid(), "Current version is not valid");
+        return CURRENT_VERSION;
+    }
+
+    public static boolean isValid() {
+        return CURRENT_VERSION != null;
     }
 
     private static NMSVersion extractCurrentVersion() {
@@ -61,23 +70,10 @@ public enum NMSVersion {
         }
     }
 
-    public static boolean isValid() {
-        return CURRENT_VERSION != null;
-    }
 
-    private static NMSVersion getValid() {
-        Preconditions.checkState(isValid(), "Current version is not valid");
-        return CURRENT_VERSION;
-    }
+    private interface NMSManagerFactory {
 
-    public static boolean isGreaterEqualThan(NMSVersion other) {
-        return getValid().ordinal() >= other.ordinal();
-    }
-
-
-    private interface NMSManagerConstructor {
-
-        NMSManager create(ProtocolPacketSettings protocolPacketSettings);
+        NMSManager create(ErrorCollector errorCollector);
 
     }
 

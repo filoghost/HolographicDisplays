@@ -11,7 +11,6 @@ import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvi
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
-import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
@@ -42,13 +41,6 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
 
         return apiInstanceCache.computeIfAbsent(plugin, pluginKey ->
                 new DefaultHolographicDisplaysAPI(pluginKey, apiHologramManager, placeholderRegistry));
-    }
-
-    @Override
-    public boolean isHologramEntity(Entity entity) {
-        Preconditions.notNull(entity, "entity");
-
-        return nmsManager.isNMSEntityBase(entity);
     }
 
 }

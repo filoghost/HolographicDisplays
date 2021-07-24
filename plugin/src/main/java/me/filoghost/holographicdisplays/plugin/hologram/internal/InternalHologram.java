@@ -5,10 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.internal;
 
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,8 +17,8 @@ public class InternalHologram extends BaseHologram<InternalHologramLine> {
 
     private final String name;
 
-    protected InternalHologram(Location location, String name, NMSManager nmsManager, PlaceholderLineTracker placeholderLineTracker) {
-        super(location, nmsManager, placeholderLineTracker);
+    protected InternalHologram(Location location, String name, LineTrackerManager lineTrackerManager) {
+        super(location, lineTrackerManager);
         this.name = name;
     }
 
@@ -43,11 +42,6 @@ public class InternalHologram extends BaseHologram<InternalHologramLine> {
     @Override
     public boolean isVisibleTo(Player player) {
         return true;
-    }
-
-    @Override
-    public String toFormattedString() {
-        return name;
     }
 
     @Override

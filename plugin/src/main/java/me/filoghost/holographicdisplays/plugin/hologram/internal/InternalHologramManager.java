@@ -5,23 +5,20 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.internal;
 
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramManager;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Location;
 
 public class InternalHologramManager extends BaseHologramManager<InternalHologram> {
 
-    private final NMSManager nmsManager;
-    private final PlaceholderLineTracker placeholderLineTracker;
+    private final LineTrackerManager lineTrackerManager;
 
-    public InternalHologramManager(NMSManager nmsManager, PlaceholderLineTracker placeholderLineTracker) {
-        this.nmsManager = nmsManager;
-        this.placeholderLineTracker = placeholderLineTracker;
+    public InternalHologramManager(LineTrackerManager lineTrackerManager) {
+        this.lineTrackerManager = lineTrackerManager;
     }
 
     public InternalHologram createHologram(Location source, String name) {
-        InternalHologram hologram = new InternalHologram(source, name, nmsManager, placeholderLineTracker);
+        InternalHologram hologram = new InternalHologram(source, name, lineTrackerManager);
         super.addHologram(hologram);
         return hologram;
     }
@@ -33,10 +30,6 @@ public class InternalHologramManager extends BaseHologramManager<InternalHologra
             }
         }
         return null;
-    }
-
-    public boolean isExistingHologram(String name) {
-        return getHologramByName(name) != null;
     }
 
 }

@@ -6,9 +6,8 @@
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramManager;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderLineTracker;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
@@ -19,16 +18,14 @@ import java.util.List;
 
 public class APIHologramManager extends BaseHologramManager<APIHologram> {
 
-    private final NMSManager nmsManager;
-    private final PlaceholderLineTracker placeholderLineTracker;
+    private final LineTrackerManager lineTrackerManager;
 
-    public APIHologramManager(NMSManager nmsManager, PlaceholderLineTracker placeholderLineTracker) {
-        this.nmsManager = nmsManager;
-        this.placeholderLineTracker = placeholderLineTracker;
+    public APIHologramManager(LineTrackerManager lineTrackerManager) {
+        this.lineTrackerManager = lineTrackerManager;
     }
 
     public APIHologram createHologram(Location source, Plugin plugin) {
-        APIHologram hologram = new APIHologram(source, plugin, nmsManager, this, placeholderLineTracker);
+        APIHologram hologram = new APIHologram(source, plugin, this, lineTrackerManager);
         super.addHologram(hologram);
         return hologram;
     }

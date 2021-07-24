@@ -5,16 +5,13 @@
  */
 package me.filoghost.holographicdisplays.common.hologram;
 
-import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
-import me.filoghost.holographicdisplays.common.nms.entity.NMSItem;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public interface StandardItemLine extends StandardTouchableLine {
 
+    ItemStack getItemStack();
+
     void onPickup(Player player);
-
-    NMSItem getNMSItem();
-
-    NMSArmorStand getNMSItemVehicle();
 
 }

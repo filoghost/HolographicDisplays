@@ -5,14 +5,10 @@
  */
 package me.filoghost.holographicdisplays.common.hologram;
 
-import me.filoghost.holographicdisplays.common.nms.entity.NMSArmorStand;
-
 public interface StandardTextLine extends StandardTouchableLine {
 
     String getText();
 
     boolean isAllowPlaceholders();
-
-    NMSArmorStand getNMSArmorStand();
 
 }

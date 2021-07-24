@@ -8,8 +8,13 @@ package me.filoghost.holographicdisplays.plugin.api.v2;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APITextLine;
+import me.filoghost.holographicdisplays.plugin.test.TestAPIHologramsManager;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +24,12 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings("deprecation")
 class V2TouchableLineAdapterTest {
 
-    APIHologram hologram = mock(APIHologram.class);
+    APIHologramManager apiHologramManager = new TestAPIHologramsManager();
+
+    APIHologram hologram = apiHologramManager.createHologram(
+            new Location(mock(World.class), 0, 0, 0),
+            mock(Plugin.class)
+    );
 
     @Test
     void setNullV2TouchHandler() {

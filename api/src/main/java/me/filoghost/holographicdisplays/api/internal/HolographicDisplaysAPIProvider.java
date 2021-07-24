@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.api.internal;
 
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
-import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
@@ -30,7 +29,5 @@ public abstract class HolographicDisplaysAPIProvider {
     }
 
     public abstract HolographicDisplaysAPI getHolographicDisplaysAPI(Plugin plugin);
-
-    public abstract boolean isHologramEntity(Entity entity);
 
 }
