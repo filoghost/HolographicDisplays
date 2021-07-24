@@ -88,7 +88,6 @@ public final class StringWithPlaceholders {
                         output.setLength(0);
                     }
                     newStringParts.add(placeholderStringPart);
-                    output.append(placeholderStringPart.nonReplacedString);
                     fullOutput.append(placeholderStringPart.nonReplacedString);
                 }
             } else {

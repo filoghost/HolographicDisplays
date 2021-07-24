@@ -35,6 +35,7 @@ class StringWithPlaceholdersTest {
         StringWithPlaceholders s = StringWithPlaceholders.of(input);
 
         assertThat(s.partiallyReplacePlaceholders(occurrence -> "#").getUnreplacedString()).isEqualTo(expectedOutput);
+        assertThat(s.partiallyReplacePlaceholders(occurrence -> null).replacePlaceholders(occurrence -> "#")).isEqualTo(expectedOutput);
         assertThat(s.containsPlaceholders()).isEqualTo(expectedContainsPlaceholders);
     }
 
