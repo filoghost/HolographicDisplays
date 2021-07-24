@@ -73,7 +73,10 @@ abstract class LocationBasedLineTracker<T extends StandardHologramLine> extends 
         double diffX = Math.abs(playerLocation.getX() - locationX);
         double diffZ = Math.abs(playerLocation.getZ() - locationZ);
 
-        return playerLocation.getWorld() == world && diffX <= (double) ENTITY_VIEW_RANGE && diffZ <= (double) ENTITY_VIEW_RANGE;
+        return playerLocation.getWorld() == world
+                && diffX <= (double) ENTITY_VIEW_RANGE
+                && diffZ <= (double) ENTITY_VIEW_RANGE
+                && line.getHologram().isVisibleTo(player);
     }
 
     @MustBeInvokedByOverriders
