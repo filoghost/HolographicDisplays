@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @since 1
  */
+@FunctionalInterface
 public interface TouchHandler {
 
     /**
