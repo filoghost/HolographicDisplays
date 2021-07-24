@@ -30,7 +30,6 @@ public interface Hologram {
      */
     @NotNull TextLine appendTextLine(@Nullable String text);
 
-
     /**
      * Appends an item line to end of this hologram.
      *
@@ -39,7 +38,6 @@ public interface Hologram {
      * @since 1
      */
     @NotNull ItemLine appendItemLine(@NotNull ItemStack itemStack);
-
 
     /**
      * Inserts a text line in this hologram.
@@ -52,7 +50,6 @@ public interface Hologram {
      */
     @NotNull TextLine insertTextLine(int index, @Nullable String text);
 
-
     /**
      * Inserts an item line in this hologram.
      *
@@ -63,7 +60,6 @@ public interface Hologram {
      * @since 1
      */
     @NotNull ItemLine insertItemLine(int index, @NotNull ItemStack itemStack);
-
 
     /**
      * Finds the element at a given index in the lines.
@@ -84,14 +80,12 @@ public interface Hologram {
      */
     void removeLine(int index);
 
-
     /**
      * Removes all the lines from this hologram.
      *
      * @since 1
      */
     void clearLines();
-
 
     /**
      * Checks the amount of lines of the hologram.
@@ -101,7 +95,6 @@ public interface Hologram {
      */
     int getLineCount();
 
-
     /**
      * The physical height of the hologram, counting all the lines. Since: v2.1.4
      *
@@ -110,7 +103,6 @@ public interface Hologram {
      */
     double getHeight();
 
-
     /**
      * Teleports a hologram to the given location.
      *
@@ -118,7 +110,6 @@ public interface Hologram {
      * @since 1
      */
     void teleport(@NotNull Location location);
-
 
     /**
      * Teleports a hologram to the given location.
@@ -140,13 +131,20 @@ public interface Hologram {
     @NotNull Location getLocation();
 
     /**
+     * Returns the world.
+     *
+     * @return the world of the hologram
+     * @since 1
+     */
+    @NotNull World getWorld();
+
+    /**
      * Returns the X coordinate.
      *
      * @return the X coordinate of the hologram
      * @since 1
      */
     double getX();
-
 
     /**
      * Returns the Y coordinate.
@@ -156,7 +154,6 @@ public interface Hologram {
      */
     double getY();
 
-
     /**
      * Returns the Z coordinate.
      *
@@ -165,16 +162,6 @@ public interface Hologram {
      */
     double getZ();
 
-
-    /**
-     * Returns the world.
-     *
-     * @return the world of the hologram
-     * @since 1
-     */
-    @NotNull World getWorld();
-
-
     /**
      * Returns the {@link VisibilitySettings} of this hologram.
      *
@@ -182,7 +169,6 @@ public interface Hologram {
      * @since 1
      */
     @NotNull VisibilitySettings getVisibilitySettings();
-
 
     /**
      * Returns when the hologram was created. Useful for removing old holograms.
@@ -218,7 +204,6 @@ public interface Hologram {
      * @since 1
      */
     void delete();
-
 
     /**
      * Checks if a hologram was deleted.
