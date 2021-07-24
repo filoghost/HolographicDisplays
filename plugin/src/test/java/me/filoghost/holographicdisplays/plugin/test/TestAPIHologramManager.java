@@ -11,9 +11,9 @@ import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderT
 
 import static org.mockito.Mockito.*;
 
-public class TestAPIHologramsManager extends APIHologramManager {
+public class TestAPIHologramManager extends APIHologramManager {
 
-    public TestAPIHologramsManager() {
+    public TestAPIHologramManager() {
         super(new LineTrackerManager(new TestNMSManager(), mock(PlaceholderTracker.class)));
     }
 

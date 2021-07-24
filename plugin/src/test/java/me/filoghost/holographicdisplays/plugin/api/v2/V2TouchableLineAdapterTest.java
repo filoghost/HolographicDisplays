@@ -10,30 +10,28 @@ import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APITextLine;
-import me.filoghost.holographicdisplays.plugin.test.TestAPIHologramsManager;
+import me.filoghost.holographicdisplays.plugin.test.Mocks;
+import me.filoghost.holographicdisplays.plugin.test.TestAPIHologramManager;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @SuppressWarnings("deprecation")
 class V2TouchableLineAdapterTest {
 
-    APIHologramManager apiHologramManager = new TestAPIHologramsManager();
+    APIHologramManager apiHologramManager = new TestAPIHologramManager();
 
     APIHologram hologram = apiHologramManager.createHologram(
-            new Location(mock(World.class), 0, 0, 0),
-            mock(Plugin.class)
+            new Location(Mocks.WORLD, 0, 0, 0),
+            Mocks.PLUGIN
     );
 
     @Test
     void setNullV2TouchHandler() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
         ExampleNewTouchHandler newTouchHandler = new ExampleNewTouchHandler();
 
@@ -46,7 +44,7 @@ class V2TouchableLineAdapterTest {
 
     @Test
     void setNullNewTouchHandler() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
         ExampleV2TouchHandler v2TouchHandler = new ExampleV2TouchHandler();
 
@@ -69,7 +67,7 @@ class V2TouchableLineAdapterTest {
 
     @Test
     void setNewGetV2TouchHandler() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
         ExampleNewTouchHandler newTouchHandler = new ExampleNewTouchHandler();
 
@@ -80,7 +78,7 @@ class V2TouchableLineAdapterTest {
 
     @Test
     void setV2GetNewTouchHandler() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
         ExampleV2TouchHandler v2TouchHandler = new ExampleV2TouchHandler();
 
@@ -91,7 +89,7 @@ class V2TouchableLineAdapterTest {
 
     @Test
     void repeatedGetV2TouchHandlerShouldReturnSameInstance() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
 
         newLine.setTouchHandler(new ExampleNewTouchHandler());
@@ -103,7 +101,7 @@ class V2TouchableLineAdapterTest {
 
     @Test
     void repeatedSetV2TouchHandlerShouldNotChangeNewTouchHandlerInstance() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
         ExampleV2TouchHandler v2TouchHandler = new ExampleV2TouchHandler();
 
@@ -117,7 +115,7 @@ class V2TouchableLineAdapterTest {
 
     @Test
     void repeatedSetNewTouchHandlerShouldNotChangeV2TouchHandlerInstance() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
         ExampleNewTouchHandler v2TouchHandler = new ExampleNewTouchHandler();
 
@@ -131,7 +129,7 @@ class V2TouchableLineAdapterTest {
 
     @Test
     void v2TouchHandlerChangesWhenNewTouchHandlerChanges() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
 
         newLine.setTouchHandler(new ExampleNewTouchHandler());
@@ -144,7 +142,7 @@ class V2TouchableLineAdapterTest {
 
     @Test
     void newTouchHandlerChangesWhenV2TouchHandlerChanges() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
 
         v2Line.setTouchHandler(new ExampleV2TouchHandler());
@@ -157,7 +155,7 @@ class V2TouchableLineAdapterTest {
 
     @Test
     void preserveTouchHandlerInstancesWhenUsingNewAPI() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
         ExampleV2TouchHandler v2TouchHandler = new ExampleV2TouchHandler();
 
@@ -174,7 +172,7 @@ class V2TouchableLineAdapterTest {
 
     @Test
     void preserveTouchHandlerInstancesWhenUsingV2API() {
-        APITextLine newLine = new APITextLine(hologram, "");
+        APITextLine newLine = hologram.appendTextLine("");
         TextLine v2Line = newLine.getV2Adapter();
         ExampleNewTouchHandler newTouchHandler = new ExampleNewTouchHandler();
 
