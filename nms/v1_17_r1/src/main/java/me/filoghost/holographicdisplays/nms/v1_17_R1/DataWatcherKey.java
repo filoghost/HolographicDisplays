@@ -26,12 +26,12 @@ class DataWatcherKey<T> {
     static DataWatcherKey<ItemStack> ITEM_STACK = new DataWatcherKey<>(8, ITEM_STACK_SERIALIZER);
     static DataWatcherKey<Byte> ARMOR_STAND_STATUS = new DataWatcherKey<>(15, BYTE_SERIALIZER);
 
-    private final int keyIndex;
+    private final int index;
     private final DataWatcherSerializer<T> serializer;
     private final int serializerTypeID;
 
-    private DataWatcherKey(int keyIndex, DataWatcherSerializer<T> serializer) {
-        this.keyIndex = keyIndex;
+    private DataWatcherKey(int index, DataWatcherSerializer<T> serializer) {
+        this.index = index;
         this.serializer = serializer;
         this.serializerTypeID = DataWatcherRegistry.b(serializer);
         if (serializerTypeID < 0) {
@@ -39,8 +39,8 @@ class DataWatcherKey<T> {
         }
     }
 
-    int getKeyIndex() {
-        return keyIndex;
+    int getIndex() {
+        return index;
     }
 
     DataWatcherSerializer<T> getSerializer() {

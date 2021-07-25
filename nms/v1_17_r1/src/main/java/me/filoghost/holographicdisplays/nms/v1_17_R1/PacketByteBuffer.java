@@ -37,17 +37,14 @@ class PacketByteBuffer extends PacketDataSerializer {
         super.a(array);
     }
 
-    void writeDataWatcherEntries(DataWatcherEntry<?>... dataWatcherEntries) {
-        for (DataWatcherEntry<?> dataWatcherItem : dataWatcherEntries) {
-            writeDataWatcherEntry(dataWatcherItem);
-        }
-        writeByte(255); // End of data watcher entries
+    <T> void writeDataWatcherEntry(DataWatcherKey<T> key, T value) {
+        writeByte(key.getIndex());
+        writeVarInt(key.getSerializerTypeID());
+        key.getSerializer().a(this, value);
     }
 
-    private <T> void writeDataWatcherEntry(DataWatcherEntry<T> dataWatcherItem) {
-        writeByte(dataWatcherItem.getKey().getKeyIndex());
-        writeVarInt(dataWatcherItem.getKey().getSerializerTypeID());
-        dataWatcherItem.getKey().getSerializer().a(this, dataWatcherItem.getValue());
+    void writeDataWatcherEntriesEnd() {
+        writeByte(255);
     }
 
 }

@@ -26,7 +26,7 @@ public class VersionNMSManager implements NMSManager {
         this.entityIDGenerator = getEntityIDGenerator(errorCollector);
 
         // Force initialization of class to eventually throw exceptions early
-        DataWatcherKey.ENTITY_STATUS.getKeyIndex();
+        DataWatcherKey.ENTITY_STATUS.getIndex();
     }
 
     private Supplier<Integer> getEntityIDGenerator(ErrorCollector errorCollector) {
