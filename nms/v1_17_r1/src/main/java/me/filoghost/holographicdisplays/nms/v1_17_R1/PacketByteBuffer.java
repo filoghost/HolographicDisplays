@@ -13,8 +13,11 @@ import java.util.UUID;
 
 class PacketByteBuffer extends PacketDataSerializer {
 
+    private static final PacketByteBuffer INSTANCE = new PacketByteBuffer();
+
     static PacketByteBuffer get() {
-        return new PacketByteBuffer(); // TODO try to clear and re-use a single instance
+        INSTANCE.clear();
+        return INSTANCE;
     }
 
     private PacketByteBuffer() {
