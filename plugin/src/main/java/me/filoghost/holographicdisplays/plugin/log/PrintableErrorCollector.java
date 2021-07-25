@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.log;
 
 import me.filoghost.fcommons.ExceptionUtils;
+import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.config.exception.ConfigSyntaxException;
 import me.filoghost.fcommons.logging.ErrorCollector;
@@ -21,7 +22,7 @@ public class PrintableErrorCollector extends ErrorCollector {
 
     private static final String ERROR_PREFIX = ChatColor.RED + "[HolographicDisplays] ";
 
-    public void logErrorCount() {
+    public void logSummaryToConsole() {
         Bukkit.getConsoleSender().sendMessage(ERROR_PREFIX
                 + "Encountered " + getErrorsCount() + " error(s) on load. "
                 + "Check previous console logs for more information.");
@@ -29,63 +30,71 @@ public class PrintableErrorCollector extends ErrorCollector {
 
     @Override
     public void logToConsole() {
-        StringBuilder output = new StringBuilder();
+        List<String> outputLines = new ArrayList<>();
 
         if (errors.size() > 0) {
-            output.append(ERROR_PREFIX).append("Encountered ").append(errors.size()).append(" error(s) on load:\n");
-            output.append(" \n");
+            outputLines.add(ERROR_PREFIX + "Encountered " + errors.size() + " error(s) on load:");
+            outputLines.add(" ");
 
-            int index = 1;
-            for (ErrorLog error : errors) {
-                ErrorPrintInfo printFormat = getErrorPrintInfo(index, error);
-                printError(output, printFormat);
-                index++;
+            for (int i = 0; i < errors.size(); i++) {
+                ErrorDisplayInfo errorDisplayInfo = getDisplayInfo(errors.get(i));
+                displayError(outputLines, i + 1, errorDisplayInfo);
             }
         }
 
-        Bukkit.getConsoleSender().sendMessage(output.toString());
+        Bukkit.getConsoleSender().sendMessage(String.join(ChatColor.RESET + "\n", outputLines));
     }
 
-    private ErrorPrintInfo getErrorPrintInfo(int index, ErrorLog error) {
-        List<String> message = new ArrayList<>(error.getMessage().asList());
+    private ErrorDisplayInfo getDisplayInfo(ErrorLog error) {
+        List<String> messageParts = new ArrayList<>(error.getMessage());
         String details = null;
-        Throwable cause = error.getCause();
+        Throwable exception = error.getCause();
 
-        // Recursively inspect the cause until an unknown or null exception is found
+        // Inspect the exception cause chain until an unknown exception or the last one in the chain
         while (true) {
-            if (cause instanceof ConfigSyntaxException) {
-                message.add(cause.getMessage());
-                details = ((ConfigSyntaxException) cause).getSyntaxErrorDetails();
-                cause = null; // Do not print stacktrace for syntax exceptions
+            if (exception instanceof ConfigSyntaxException) {
+                // Stop inspecting the cause chain, only show details instead of stack traces for syntax exceptions
+                messageParts.add(exception.getMessage());
+                details = ((ConfigSyntaxException) exception).getSyntaxErrorDetails();
+                break;
 
-            } else if (cause instanceof ConfigException || cause instanceof HologramLoadException) {
-                message.add(cause.getMessage());
-                cause = cause.getCause(); // Print the cause (or nothing if null), not our "known" exception
+            } else if (exception instanceof ConfigException || exception instanceof HologramLoadException) {
+                // Known exceptions, add the message and inspect the cause
+                messageParts.add(exception.getMessage());
+                exception = exception.getCause();
 
             } else {
-                return new ErrorPrintInfo(index, message, details, cause);
+                // Unknown exception or last one in the chain
+                break;
             }
         }
+
+        return new ErrorDisplayInfo(messageParts, details, exception);
     }
 
-    private static void printError(StringBuilder output, ErrorPrintInfo error) {
-        output.append(ChatColor.YELLOW).append(error.getIndex()).append(") ");
-        output.append(ChatColor.WHITE).append(MessagePartJoiner.join(error.getMessage()));
+    private static void displayError(List<String> outputLines, int index, ErrorDisplayInfo errorDisplayInfo) {
+        StringBuilder message = new MessagePartJoiner(errorDisplayInfo.getMessageParts()).getOutput();
+        if (!Strings.hasSentenceEnding(message.toString())) {
+            message.append(".");
+        }
+        if (errorDisplayInfo.getDetails() != null) {
+            message.append(" Details:");
+        }
 
-        if (error.getDetails() != null) {
-            output.append(". Details:\n");
-            output.append(ChatColor.YELLOW).append(error.getDetails()).append("\n");
-        } else {
-            output.append(".\n");
+        outputLines.add("" + ChatColor.YELLOW + index + ") " + ChatColor.WHITE + message);
+
+        if (errorDisplayInfo.getDetails() != null) {
+            outputLines.add(ChatColor.YELLOW + errorDisplayInfo.getDetails());
         }
-        if (error.getCause() != null) {
-            output.append(ChatColor.DARK_GRAY);
-            output.append("--------[ Exception details ]--------\n");
-            output.append(ExceptionUtils.getStackTraceOutput(error.getCause()));
-            output.append("-------------------------------------\n");
+
+        if (errorDisplayInfo.getException() != null) {
+            outputLines.add(ChatColor.DARK_GRAY + "------------[ Exception details ]------------");
+            for (String stackTraceLine : ExceptionUtils.getStackTraceOutputLines(errorDisplayInfo.getException())) {
+                outputLines.add(ChatColor.DARK_GRAY + stackTraceLine);
+            }
+            outputLines.add(ChatColor.DARK_GRAY + "---------------------------------------------");
         }
-        output.append(" \n");
-        output.append(ChatColor.RESET);
+        outputLines.add(" ");
     }
 
 }

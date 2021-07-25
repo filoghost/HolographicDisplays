@@ -139,7 +139,7 @@ public class HolographicDisplays extends FCommonsPlugin {
 
         if (errorCollector.hasErrors()) {
             errorCollector.logToConsole();
-            Bukkit.getScheduler().runTaskLater(this, errorCollector::logErrorCount, 10L);
+            Bukkit.getScheduler().runTaskLater(this, errorCollector::logSummaryToConsole, 10L);
         }
     }
 

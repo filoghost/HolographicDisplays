@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.nms.v1_17_R1;
 
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.fcommons.logging.Log;
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.FallbackEntityIDGenerator;
@@ -35,8 +34,7 @@ public class VersionNMSManager implements NMSManager {
             AtomicInteger nmsEntityIDCounter = ENTITY_ID_COUNTER_FIELD.getStatic();
             return nmsEntityIDCounter::incrementAndGet;
         } catch (ReflectiveOperationException e) {
-            Log.warning(NMSErrors.GETTING_ENTITY_ID_GENERATOR_SHORT, e);
-            errorCollector.add(NMSErrors.GETTING_ENTITY_ID_GENERATOR_LONG);
+            errorCollector.add(e, NMSErrors.EXCEPTION_GETTING_ENTITY_ID_GENERATOR);
             return new FallbackEntityIDGenerator();
         }
     }

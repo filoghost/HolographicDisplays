@@ -16,31 +16,11 @@ class MessagePartJoiner {
     private String previousMessagePart;
     private boolean appendedFirstSentenceSeparator;
 
-    public static String join(List<String> messageParts) {
-        int estimateLength = getEstimateLength(messageParts);
-        MessagePartJoiner errorMessageBuilder = new MessagePartJoiner(estimateLength);
+    MessagePartJoiner(List<String> messageParts) {
+        this.output = new StringBuilder();
         for (String messagePart : messageParts) {
-            errorMessageBuilder.append(messagePart);
+            append(messagePart);
         }
-        return errorMessageBuilder.build();
-    }
-
-    private static int getEstimateLength(List<String> messageParts) {
-        int estimateLength = 0;
-
-        // Length of message parts
-        for (String messagePart : messageParts) {
-            estimateLength += messagePart.length();
-        }
-
-        // Length of separators in between
-        estimateLength += (messageParts.size() - 1) * 2;
-
-        return estimateLength;
-    }
-
-    private MessagePartJoiner(int estimateLength) {
-        output = new StringBuilder(estimateLength);
     }
 
     private void append(String messagePart) {
@@ -76,8 +56,8 @@ class MessagePartJoiner {
         }
     }
 
-    private String build() {
-        return output.toString();
+    StringBuilder getOutput() {
+        return output;
     }
 
 }
