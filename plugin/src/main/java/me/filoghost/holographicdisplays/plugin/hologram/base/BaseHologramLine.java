@@ -30,7 +30,8 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
         return hologram;
     }
 
-    protected void setChanged() {
+    @Override
+    public void setChanged() {
         tracker.setLineChanged();
     }
 

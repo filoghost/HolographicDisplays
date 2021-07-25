@@ -15,4 +15,6 @@ public interface StandardHologramLine extends StandardHologramComponent {
 
     double getHeight();
 
+    void setChanged();
+
 }

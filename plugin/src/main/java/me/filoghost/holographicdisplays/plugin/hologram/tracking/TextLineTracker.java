@@ -20,6 +20,7 @@ public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
 
     private final DisplayText displayText;
     private boolean displayTextChanged;
+    private boolean allowPlaceholders;
 
     public TextLineTracker(StandardTextLine line, NMSManager nmsManager, PlaceholderTracker placeholderTracker) {
         super(line, nmsManager);
@@ -29,6 +30,10 @@ public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
 
     @Override
     protected boolean updatePlaceholders() {
+        if (!allowPlaceholders) {
+            return false;
+        }
+
         boolean placeholdersChanged = displayText.updateGlobalReplacements();
         if (placeholdersChanged) {
             displayTextChanged = true; // Mark as changed to trigger a packet send with updated placeholders
@@ -46,6 +51,12 @@ public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
             this.displayText.set(displayText);
             this.displayTextChanged = true;
         }
+
+        boolean allowPlaceholders = line.isAllowPlaceholders();
+        if (this.allowPlaceholders != allowPlaceholders) {
+            this.allowPlaceholders = allowPlaceholders;
+            this.displayTextChanged = true;
+        }
     }
 
     @MustBeInvokedByOverriders
@@ -60,7 +71,9 @@ public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
     protected void addSpawnPackets(NMSPacketList packetList) {
         super.addSpawnPackets(packetList);
 
-        if (displayText.containsIndividualPlaceholders()) {
+        if (!allowPlaceholders) {
+            packetList.addArmorStandSpawnPackets(armorStandEntityID, locationX, getArmorStandLocationY(), locationZ, displayText.get());
+        } else if (displayText.containsIndividualPlaceholders()) {
             packetList.addArmorStandSpawnPackets(armorStandEntityID, locationX, getArmorStandLocationY(), locationZ, displayText::getWithIndividualReplacements);
         } else {
             packetList.addArmorStandSpawnPackets(armorStandEntityID, locationX, getArmorStandLocationY(), locationZ, displayText.getWithGlobalReplacements());
@@ -79,7 +92,9 @@ public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
         super.addChangesPackets(packetList);
 
         if (displayTextChanged) {
-            if (displayText.containsIndividualPlaceholders()) {
+            if (!allowPlaceholders) {
+                packetList.addArmorStandNameChangePackets(armorStandEntityID, displayText.get());
+            } else if (displayText.containsIndividualPlaceholders()) {
                 packetList.addArmorStandNameChangePackets(armorStandEntityID, displayText::getWithIndividualReplacements);
             } else {
                 packetList.addArmorStandNameChangePackets(armorStandEntityID, displayText.getWithGlobalReplacements());

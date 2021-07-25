@@ -26,7 +26,7 @@ class DisplayText {
 
     void set(@Nullable String textString) {
         textWithoutReplacements = StringWithPlaceholders.of(textString);
-        textWithGlobalReplacements = null;
+        textWithGlobalReplacements = textWithoutReplacements;
     }
 
     String get() {

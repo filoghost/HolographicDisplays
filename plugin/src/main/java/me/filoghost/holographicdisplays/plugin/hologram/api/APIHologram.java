@@ -101,6 +101,9 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
         }
 
         this.allowPlaceholders = allowPlaceholders;
+        for (APIHologramLine line : getLines()) {
+            line.setChanged();
+        }
     }
 
     @Override
