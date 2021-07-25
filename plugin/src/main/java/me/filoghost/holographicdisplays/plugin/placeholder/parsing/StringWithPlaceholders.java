@@ -5,38 +5,41 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.parsing;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public final class StringWithPlaceholders {
 
+    private static final StringWithPlaceholders NULL_INSTANCE = new StringWithPlaceholders(null, null);
+
     private static final char PLACEHOLDER_END_CHAR = '}';
     private static final char PLACEHOLDER_START_CHAR = '{';
 
-    private final @NotNull String string;
-    private final List<StringPart> stringParts;
+    private final @Nullable String string;
+    private final @Nullable List<StringPart> stringParts;
 
-    @Contract("null -> null; !null -> !null")
-    public static StringWithPlaceholders of(@Nullable String string) {
-        return string != null ? new StringWithPlaceholders(string) : null;
+    public static @NotNull StringWithPlaceholders of(@Nullable String string) {
+        if (string == null) {
+            return NULL_INSTANCE;
+        }
+        return new StringWithPlaceholders(string);
     }
 
-    public StringWithPlaceholders(@NotNull String string) {
-        this.string = string;
-        this.stringParts = splitToParts(string);
+    private StringWithPlaceholders(@NotNull String string) {
+        this(string, splitToParts(string));
     }
 
-    private StringWithPlaceholders(@NotNull String string, @Nullable List<StringPart> stringParts) {
+    private StringWithPlaceholders(@Nullable String string, @Nullable List<StringPart> stringParts) {
         this.string = string;
         this.stringParts = stringParts;
     }
 
-    public String getUnreplacedString() {
+    public @Nullable String getUnreplacedString() {
         return string;
     }
 
@@ -45,7 +48,7 @@ public final class StringWithPlaceholders {
     }
 
     public boolean anyMatch(Predicate<PlaceholderOccurrence> filter) {
-        if (stringParts == null) {
+        if (!containsPlaceholders()) {
             return false;
         }
 
@@ -61,7 +64,7 @@ public final class StringWithPlaceholders {
         return false;
     }
 
-    public StringWithPlaceholders partiallyReplacePlaceholders(PlaceholderReplaceFunction replaceFunction) {
+    public @NotNull StringWithPlaceholders partiallyReplacePlaceholders(PlaceholderReplaceFunction replaceFunction) {
         if (!containsPlaceholders()) {
             return this;
         }
@@ -104,7 +107,7 @@ public final class StringWithPlaceholders {
         return new StringWithPlaceholders(fullOutput.toString(), newStringParts);
     }
 
-    public String replacePlaceholders(PlaceholderReplaceFunction replaceFunction) {
+    public @Nullable String replacePlaceholders(PlaceholderReplaceFunction replaceFunction) {
         if (!containsPlaceholders()) {
             return string;
         }
@@ -117,7 +120,7 @@ public final class StringWithPlaceholders {
         return output.toString();
     }
 
-    private @Nullable List<StringPart> splitToParts(String string) {
+    private static @Nullable List<StringPart> splitToParts(@NotNull String string) {
         int placeholderStartIndex = -1;
         int lastAppendIndex = 0;
         List<StringPart> stringParts = null; // Lazy initialization
@@ -181,12 +184,12 @@ public final class StringWithPlaceholders {
         }
 
         StringWithPlaceholders other = (StringWithPlaceholders) obj;
-        return this.string.equals(other.string);
+        return Objects.equals(this.string, other.string);
     }
 
     @Override
     public int hashCode() {
-        return string.hashCode();
+        return Objects.hashCode(string);
     }
 
 

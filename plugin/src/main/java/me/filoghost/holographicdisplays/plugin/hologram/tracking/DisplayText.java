@@ -10,6 +10,7 @@ import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOc
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -17,24 +18,41 @@ import java.util.Objects;
 class DisplayText {
 
     private final PlaceholderTracker placeholderTracker;
-    private @Nullable StringWithPlaceholders textWithoutReplacements;
-    private @Nullable StringWithPlaceholders textWithGlobalReplacements;
+    private @NotNull StringWithPlaceholders textWithoutReplacements;
+    private @NotNull StringWithPlaceholders textWithGlobalReplacements;
 
     DisplayText(PlaceholderTracker placeholderTracker) {
         this.placeholderTracker = placeholderTracker;
+        this.textWithoutReplacements = StringWithPlaceholders.of(null);
+        this.textWithGlobalReplacements = StringWithPlaceholders.of(null);
     }
 
-    void set(@Nullable String textString) {
+    void setWithoutReplacements(@Nullable String textString) {
         textWithoutReplacements = StringWithPlaceholders.of(textString);
         textWithGlobalReplacements = textWithoutReplacements;
     }
 
-    String get() {
-        return textWithoutReplacements != null ? textWithoutReplacements.getUnreplacedString() : null;
+    String getWithoutReplacements() {
+        return textWithoutReplacements.getUnreplacedString();
+    }
+
+    String getWithGlobalReplacements() {
+        return textWithGlobalReplacements.getUnreplacedString();
+    }
+
+    String getWithIndividualReplacements(Player player) {
+        String textWithIndividualReplacements = textWithGlobalReplacements.replacePlaceholders((PlaceholderOccurrence occurrence) ->
+                placeholderTracker.updateAndGetIndividualReplacement(occurrence, player));
+
+        if (PlaceholderAPIHook.isEnabled() && PlaceholderAPIHook.containsPlaceholders(textWithIndividualReplacements)) {
+            textWithIndividualReplacements = PlaceholderAPIHook.replacePlaceholders(player, textWithIndividualReplacements);
+        }
+
+        return textWithIndividualReplacements;
     }
 
     boolean updateGlobalReplacements() {
-        if (textWithoutReplacements == null || !textWithoutReplacements.containsPlaceholders()) {
+        if (!textWithoutReplacements.containsPlaceholders()) {
             return false;
         }
 
@@ -49,42 +67,7 @@ class DisplayText {
         return true;
     }
 
-    String getWithGlobalReplacements() {
-        if (containsIndividualPlaceholders()) {
-            throw new IllegalStateException("contains individual placeholders");
-        }
-
-        if (textWithoutReplacements == null || !textWithoutReplacements.containsPlaceholders()) {
-            return textWithoutReplacements.getUnreplacedString();
-        }
-
-        return textWithGlobalReplacements.getUnreplacedString();
-    }
-
-    String getWithIndividualReplacements(Player player) {
-        if (!containsIndividualPlaceholders()) {
-            throw new IllegalStateException("does not contain individual placeholders");
-        }
-
-        if (textWithoutReplacements == null || !textWithoutReplacements.containsPlaceholders()) {
-            return textWithoutReplacements.getUnreplacedString();
-        }
-
-        String text = textWithGlobalReplacements.replacePlaceholders((PlaceholderOccurrence occurrence) ->
-                placeholderTracker.updateAndGetIndividualReplacement(occurrence, player));
-
-        if (PlaceholderAPIHook.isEnabled() && PlaceholderAPIHook.containsPlaceholders(text)) {
-            text = PlaceholderAPIHook.replacePlaceholders(player, text);
-        }
-
-        return text;
-    }
-
     boolean containsIndividualPlaceholders() {
-        if (textWithoutReplacements == null) {
-            return false;
-        }
-
         return placeholderTracker.containsIndividualPlaceholders(textWithoutReplacements)
                 || PlaceholderAPIHook.containsPlaceholders(textWithoutReplacements.getUnreplacedString());
     }

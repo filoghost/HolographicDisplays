@@ -47,8 +47,8 @@ public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
         super.detectChanges();
 
         String displayText = line.getText();
-        if (!Objects.equals(this.displayText.get(), displayText)) {
-            this.displayText.set(displayText);
+        if (!Objects.equals(this.displayText.getWithoutReplacements(), displayText)) {
+            this.displayText.setWithoutReplacements(displayText);
             this.displayTextChanged = true;
         }
 
@@ -72,7 +72,7 @@ public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
         super.addSpawnPackets(packetList);
 
         if (!allowPlaceholders) {
-            packetList.addArmorStandSpawnPackets(armorStandEntityID, locationX, getArmorStandLocationY(), locationZ, displayText.get());
+            packetList.addArmorStandSpawnPackets(armorStandEntityID, locationX, getArmorStandLocationY(), locationZ, displayText.getWithoutReplacements());
         } else if (displayText.containsIndividualPlaceholders()) {
             packetList.addArmorStandSpawnPackets(armorStandEntityID, locationX, getArmorStandLocationY(), locationZ, displayText::getWithIndividualReplacements);
         } else {
@@ -93,7 +93,7 @@ public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
 
         if (displayTextChanged) {
             if (!allowPlaceholders) {
-                packetList.addArmorStandNameChangePackets(armorStandEntityID, displayText.get());
+                packetList.addArmorStandNameChangePackets(armorStandEntityID, displayText.getWithoutReplacements());
             } else if (displayText.containsIndividualPlaceholders()) {
                 packetList.addArmorStandNameChangePackets(armorStandEntityID, displayText::getWithIndividualReplacements);
             } else {
