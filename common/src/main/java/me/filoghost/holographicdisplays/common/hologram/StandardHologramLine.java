@@ -6,15 +6,16 @@
 package me.filoghost.holographicdisplays.common.hologram;
 
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 public interface StandardHologramLine extends StandardHologramComponent {
-
-    StandardHologram getHologram();
 
     void setLocation(World world, double x, double y, double z);
 
     double getHeight();
 
     void setChanged();
+
+    boolean isVisibleTo(Player player);
 
 }

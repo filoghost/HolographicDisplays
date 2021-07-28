@@ -78,8 +78,9 @@ public abstract class BaseHologramComponent implements StandardHologramComponent
         return deleted;
     }
 
+    @MustBeInvokedByOverriders
     @Override
-    public final void setDeleted() {
+    public void setDeleted() {
         deleted = true;
     }
 

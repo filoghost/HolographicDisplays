@@ -26,8 +26,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
 
     protected abstract LineTracker<?> createTracker(LineTrackerManager trackerManager);
 
-    @Override
-    public final StandardHologram getHologram() {
+    protected final StandardHologram getHologram() {
         return hologram;
     }
 
@@ -44,6 +43,11 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     public final void setLocation(World world, double x, double y, double z) {
         super.setLocation(world, x, y, z);
         setChanged();
+    }
+
+    @Override
+    public boolean isVisibleTo(Player player) {
+        return hologram.isVisibleTo(player);
     }
 
 }

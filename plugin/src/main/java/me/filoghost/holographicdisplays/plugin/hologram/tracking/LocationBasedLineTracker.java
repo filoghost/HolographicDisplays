@@ -76,7 +76,7 @@ abstract class LocationBasedLineTracker<T extends StandardHologramLine> extends 
         return playerLocation.getWorld() == world
                 && diffX <= (double) ENTITY_VIEW_RANGE
                 && diffZ <= (double) ENTITY_VIEW_RANGE
-                && line.getHologram().isVisibleTo(player);
+                && line.isVisibleTo(player);
     }
 
     @MustBeInvokedByOverriders

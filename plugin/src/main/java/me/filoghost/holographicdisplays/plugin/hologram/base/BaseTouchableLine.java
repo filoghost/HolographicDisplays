@@ -37,7 +37,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
                 || !isTrackedPlayer(player)
                 || player.getGameMode() == GameMode.SPECTATOR
                 || touchHandler == null
-                || !getHologram().isVisibleTo(player)) {
+                || !isVisibleTo(player)) {
             return;
         }
 

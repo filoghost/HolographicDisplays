@@ -108,6 +108,14 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
     }
 
     @Override
+    public final void setDeleted() {
+        super.setDeleted();
+        for (T line : lines) {
+            line.setDeleted();
+        }
+    }
+
+    @Override
     public int getLineCount() {
         return lines.size();
     }

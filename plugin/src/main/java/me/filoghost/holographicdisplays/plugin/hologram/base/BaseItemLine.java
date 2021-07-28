@@ -33,7 +33,7 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
 
     @Override
     public void onPickup(Player player) {
-        if (pickupHandler == null || !getHologram().isVisibleTo(player)) {
+        if (pickupHandler == null || !isVisibleTo(player)) {
             return;
         }
 

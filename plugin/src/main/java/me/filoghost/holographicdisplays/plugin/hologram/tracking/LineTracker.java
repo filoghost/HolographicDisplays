@@ -103,7 +103,7 @@ public abstract class LineTracker<T extends StandardHologramLine> {
     }
 
     final boolean shouldBeRemoved() {
-        return line.isDeleted() || line.getHologram().isDeleted();
+        return line.isDeleted();
     }
 
     @MustBeInvokedByOverriders
