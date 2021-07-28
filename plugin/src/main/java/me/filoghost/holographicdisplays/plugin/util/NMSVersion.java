@@ -14,7 +14,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The NMS version is the name of the main package under net.minecraft.server, for example "v1_13_R2".
+ * The package name used by version-dependent Bukkit classes and NMS classes (before 1.17), for example "v1_13_R2".
+ * Different versions usually imply internal changes that require multiple implementations.
  */
 public enum NMSVersion {
 
