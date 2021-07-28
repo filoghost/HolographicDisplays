@@ -25,8 +25,8 @@ public class ItemLineTracker extends TouchableLineTracker<StandardItemLine> {
     private boolean spawnItemEntities;
     private boolean spawnItemEntitiesChanged;
 
-    public ItemLineTracker(StandardItemLine line, NMSManager nmsManager) {
-        super(line, nmsManager);
+    public ItemLineTracker(StandardItemLine line, NMSManager nmsManager, LineTouchListener lineTouchListener) {
+        super(line, nmsManager, lineTouchListener);
         this.vehicleEntityID = nmsManager.newEntityID();
         this.itemEntityID = nmsManager.newEntityID();
     }

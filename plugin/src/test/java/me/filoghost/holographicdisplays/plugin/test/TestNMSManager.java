@@ -6,9 +6,11 @@
 package me.filoghost.holographicdisplays.plugin.test;
 
 import me.filoghost.holographicdisplays.common.nms.EntityID;
+import me.filoghost.holographicdisplays.common.nms.PacketListener;
 import me.filoghost.holographicdisplays.common.nms.FallbackEntityIDGenerator;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import org.bukkit.entity.Player;
 
 import java.util.function.Supplier;
 
@@ -32,6 +34,16 @@ public class TestNMSManager implements NMSManager {
     @Override
     public NMSPacketList createPacketList() {
         return packetList;
+    }
+
+    @Override
+    public void injectPacketListener(Player player, PacketListener packetListener) {
+
+    }
+
+    @Override
+    public void uninjectPacketListener(Player player) {
+
     }
 
 }

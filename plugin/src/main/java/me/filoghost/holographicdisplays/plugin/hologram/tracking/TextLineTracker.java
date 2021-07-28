@@ -22,8 +22,12 @@ public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
     private boolean displayTextChanged;
     private boolean allowPlaceholders;
 
-    public TextLineTracker(StandardTextLine line, NMSManager nmsManager, PlaceholderTracker placeholderTracker) {
-        super(line, nmsManager);
+    public TextLineTracker(
+            StandardTextLine line,
+            NMSManager nmsManager,
+            LineTouchListener lineTouchListener,
+            PlaceholderTracker placeholderTracker) {
+        super(line, nmsManager, lineTouchListener);
         this.armorStandEntityID = nmsManager.newEntityID();
         this.displayText = new DisplayText(placeholderTracker);
     }

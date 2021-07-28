@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.test;
 
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTouchListener;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 
@@ -14,7 +15,7 @@ import static org.mockito.Mockito.*;
 public class TestAPIHologramManager extends APIHologramManager {
 
     public TestAPIHologramManager() {
-        super(new LineTrackerManager(new TestNMSManager(), mock(PlaceholderTracker.class)));
+        super(new LineTrackerManager(new TestNMSManager(), mock(PlaceholderTracker.class), new LineTouchListener()));
     }
 
 }

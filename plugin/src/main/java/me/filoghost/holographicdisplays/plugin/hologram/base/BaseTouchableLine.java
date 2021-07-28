@@ -32,11 +32,12 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
 
     @Override
     public void onTouch(Player player) {
-        if (player.getGameMode() == GameMode.SPECTATOR) {
-            return;
-        }
-
-        if (touchHandler == null || !getHologram().isVisibleTo(player)) {
+        if (isDeleted()
+                || !player.isOnline()
+                || !isTrackedPlayer(player)
+                || player.getGameMode() == GameMode.SPECTATOR
+                || touchHandler == null
+                || !getHologram().isVisibleTo(player)) {
             return;
         }
 

@@ -15,16 +15,25 @@ public abstract class TouchableLineTracker<T extends StandardTouchableLine> exte
 
     private static final double SLIME_HEIGHT = 0.5;
 
+    private final LineTouchListener lineTouchListener;
     private final EntityID vehicleEntityID;
     private final EntityID slimeEntityID;
 
     private boolean spawnSlimeEntities;
     private boolean spawnSlimeEntitiesChanged;
 
-    public TouchableLineTracker(T line, NMSManager nmsManager) {
+    public TouchableLineTracker(T line, NMSManager nmsManager, LineTouchListener lineTouchListener) {
         super(line, nmsManager);
         this.vehicleEntityID = nmsManager.newEntityID();
         this.slimeEntityID = nmsManager.newEntityID();
+        this.lineTouchListener = lineTouchListener;
+    }
+
+    @MustBeInvokedByOverriders
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        lineTouchListener.unregisterLine(slimeEntityID);
     }
 
     @MustBeInvokedByOverriders
@@ -36,6 +45,11 @@ public abstract class TouchableLineTracker<T extends StandardTouchableLine> exte
         if (this.spawnSlimeEntities != spawnSlimeEntities) {
             this.spawnSlimeEntities = spawnSlimeEntities;
             this.spawnSlimeEntitiesChanged = true;
+            if (spawnSlimeEntities) {
+                lineTouchListener.registerLine(slimeEntityID, line);
+            } else {
+                lineTouchListener.unregisterLine(slimeEntityID);
+            }
         }
     }
 

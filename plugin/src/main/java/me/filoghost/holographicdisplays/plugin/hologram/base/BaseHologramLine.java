@@ -11,6 +11,7 @@ import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 public abstract class BaseHologramLine extends BaseHologramComponent implements StandardHologramLine {
 
@@ -31,8 +32,12 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     }
 
     @Override
-    public void setChanged() {
+    public final void setChanged() {
         tracker.setLineChanged();
+    }
+
+    protected final boolean isTrackedPlayer(Player player) {
+        return tracker.isTrackedPlayer(player);
     }
 
     @Override

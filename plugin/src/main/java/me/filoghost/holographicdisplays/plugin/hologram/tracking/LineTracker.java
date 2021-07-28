@@ -10,6 +10,7 @@ import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,7 +37,7 @@ public abstract class LineTracker<T extends StandardHologramLine> {
         lineChanged = true;
     }
 
-    final void updateAndSendChanges(Collection<? extends Player> onlinePlayers) {
+    final void updateAndSendPackets(Collection<? extends Player> onlinePlayers) {
         boolean sendChangesPackets = false;
 
         // First, detect the changes if the flag is on and set it off
@@ -61,7 +62,7 @@ public abstract class LineTracker<T extends StandardHologramLine> {
         }
 
         // Finally, add/remove tracked players sending them the full spawn/destroy packets
-        updateTrackedPlayers(onlinePlayers);
+        updateTrackedPlayersAndSendPackets(onlinePlayers);
     }
 
     protected abstract void detectChanges();
@@ -70,9 +71,9 @@ public abstract class LineTracker<T extends StandardHologramLine> {
 
     protected abstract boolean updatePlaceholders();
 
-    private void updateTrackedPlayers(Collection<? extends Player> onlinePlayers) {
+    private void updateTrackedPlayersAndSendPackets(Collection<? extends Player> onlinePlayers) {
         if (!isActive()) {
-            clearTrackedPlayers();
+            clearTrackedPlayersAndSendPackets();
             return;
         }
 
@@ -101,8 +102,13 @@ public abstract class LineTracker<T extends StandardHologramLine> {
         }
     }
 
-    final boolean isDeleted() {
+    final boolean shouldBeRemoved() {
         return line.isDeleted() || line.getHologram().isDeleted();
+    }
+
+    @MustBeInvokedByOverriders
+    public void onRemoval() {
+        clearTrackedPlayersAndSendPackets();
     }
 
     protected abstract boolean isActive();
@@ -113,11 +119,15 @@ public abstract class LineTracker<T extends StandardHologramLine> {
         return !trackedPlayers.isEmpty();
     }
 
+    public final boolean isTrackedPlayer(Player player) {
+        return trackedPlayers.contains(player);
+    }
+
     protected final void removeTrackedPlayer(Player player) {
         trackedPlayers.remove(player);
     }
 
-    protected final void clearTrackedPlayers() {
+    protected final void clearTrackedPlayersAndSendPackets() {
         if (!hasTrackedPlayers()) {
             return;
         }

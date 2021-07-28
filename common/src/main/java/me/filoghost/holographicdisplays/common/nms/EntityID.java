@@ -36,4 +36,8 @@ public class EntityID {
         return uuid;
     }
 
+    public boolean hasInitializedNumericID() {
+        return numericID != null;
+    }
+
 }

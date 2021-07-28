@@ -21,27 +21,29 @@ public class LineTrackerManager {
 
     private final NMSManager nmsManager;
     private final PlaceholderTracker placeholderTracker;
+    private final LineTouchListener lineTouchListener;
     private final Collection<LineTracker<?>> lineTrackers;
 
-    public LineTrackerManager(NMSManager nmsManager, PlaceholderTracker placeholderTracker) {
+    public LineTrackerManager(NMSManager nmsManager, PlaceholderTracker placeholderTracker, LineTouchListener lineTouchListener) {
         this.nmsManager = nmsManager;
         this.placeholderTracker = placeholderTracker;
+        this.lineTouchListener = lineTouchListener;
         this.lineTrackers = new LinkedList<>();
     }
 
     public TextLineTracker startTracking(StandardTextLine line) {
-        TextLineTracker tracker = new TextLineTracker(line, nmsManager, placeholderTracker);
+        TextLineTracker tracker = new TextLineTracker(line, nmsManager, lineTouchListener, placeholderTracker);
         lineTrackers.add(tracker);
         return tracker;
     }
 
     public ItemLineTracker startTracking(StandardItemLine line) {
-        ItemLineTracker tracker = new ItemLineTracker(line, nmsManager);
+        ItemLineTracker tracker = new ItemLineTracker(line, nmsManager, lineTouchListener);
         lineTrackers.add(tracker);
         return tracker;
     }
 
-    public void updateTrackersAndSendChanges() {
+    public void updateTrackersAndSendPackets() {
         Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
 
         Iterator<LineTracker<?>> iterator = lineTrackers.iterator();
@@ -49,19 +51,19 @@ public class LineTrackerManager {
             LineTracker<?> lineTracker = iterator.next();
 
             // Remove deleted trackers, sending destroy packets to tracked players
-            if (lineTracker.isDeleted()) {
-                lineTracker.clearTrackedPlayers();
+            if (lineTracker.shouldBeRemoved()) {
                 iterator.remove();
+                lineTracker.onRemoval();
                 continue;
             }
 
-            lineTracker.updateAndSendChanges(onlinePlayers);
+            lineTracker.updateAndSendPackets(onlinePlayers);
         }
     }
 
-    public void clearTrackedPlayers() {
+    public void clearTrackedPlayersAndSendPackets() {
         for (LineTracker<?> tracker : lineTrackers) {
-            tracker.clearTrackedPlayers();
+            tracker.clearTrackedPlayersAndSendPackets();
         }
     }
 
