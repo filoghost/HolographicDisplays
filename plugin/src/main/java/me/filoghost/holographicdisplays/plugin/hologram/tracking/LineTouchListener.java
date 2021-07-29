@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.hologram.StandardTouchableLine;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.PacketListener;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTouchableLine;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class LineTouchListener implements PacketListener {
 
-    private final ConcurrentMap<Integer, StandardTouchableLine> linesByEntityID;
+    private final ConcurrentMap<Integer, BaseTouchableLine> linesByEntityID;
 
     // It is necessary to queue async touch events to process them from the main thread.
     // Use a set to avoid duplicate touch events to the same line.
@@ -30,7 +30,7 @@ public class LineTouchListener implements PacketListener {
 
     @Override
     public boolean onAsyncEntityInteract(Player player, int entityID) {
-        StandardTouchableLine line = linesByEntityID.get(entityID);
+        BaseTouchableLine line = linesByEntityID.get(entityID);
         if (line != null) {
             queuedTouchEvents.add(new TouchEvent(player, line));
             return true;
@@ -46,7 +46,7 @@ public class LineTouchListener implements PacketListener {
         queuedTouchEvents.clear();
     }
 
-    public void registerLine(EntityID touchableEntityID, StandardTouchableLine line) {
+    public void registerLine(EntityID touchableEntityID, BaseTouchableLine line) {
         linesByEntityID.put(touchableEntityID.getNumericID(), line);
     }
 
@@ -60,9 +60,9 @@ public class LineTouchListener implements PacketListener {
     private static class TouchEvent {
 
         private final Player player;
-        private final StandardTouchableLine line;
+        private final BaseTouchableLine line;
 
-        TouchEvent(Player player, StandardTouchableLine line) {
+        TouchEvent(Player player, BaseTouchableLine line) {
             this.player = player;
             this.line = line;
         }

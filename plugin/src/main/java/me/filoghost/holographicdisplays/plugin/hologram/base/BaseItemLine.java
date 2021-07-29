@@ -8,7 +8,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.hologram.PickupHandler;
-import me.filoghost.holographicdisplays.common.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.ItemLineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.GameMode;
@@ -17,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseItemLine extends BaseTouchableLine implements StandardItemLine {
+public abstract class BaseItemLine extends BaseTouchableLine {
 
     private ItemStack itemStack;
     private PickupHandler pickupHandler;
@@ -32,7 +31,6 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
         return trackerManager.startTracking(this);
     }
 
-    @Override
     public void onPickup(Player player) {
         if (isDeleted()
                 || !player.isOnline()
@@ -46,7 +44,7 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
         try {
             pickupHandler.onPickup(player);
         } catch (Throwable t) {
-            Log.warning("The plugin " + getHologram().getCreatorPlugin().getName() + " generated an exception"
+            Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
                     + " when the player " + player.getName() + " picked up an item from a hologram.", t);
         }
     }
@@ -60,7 +58,6 @@ public abstract class BaseItemLine extends BaseTouchableLine implements Standard
         this.pickupHandler = pickupHandler;
     }
 
-    @Override
     public @Nullable ItemStack getItemStack() {
         return clone(itemStack);
     }

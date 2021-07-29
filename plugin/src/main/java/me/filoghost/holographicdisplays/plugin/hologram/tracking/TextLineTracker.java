@@ -5,16 +5,16 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
 
-public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
+public class TextLineTracker extends TouchableLineTracker<BaseTextLine> {
 
     private final EntityID armorStandEntityID;
 
@@ -23,7 +23,7 @@ public class TextLineTracker extends TouchableLineTracker<StandardTextLine> {
     private boolean allowPlaceholders;
 
     public TextLineTracker(
-            StandardTextLine line,
+            BaseTextLine line,
             NMSManager nmsManager,
             LineTouchListener lineTouchListener,
             PlaceholderTracker placeholderTracker) {

@@ -5,13 +5,13 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.hologram.StandardTouchableLine;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTouchableLine;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-public abstract class TouchableLineTracker<T extends StandardTouchableLine> extends LocationBasedLineTracker<T> {
+public abstract class TouchableLineTracker<T extends BaseTouchableLine> extends LocationBasedLineTracker<T> {
 
     private static final double SLIME_HEIGHT = 0.5;
 
@@ -41,7 +41,7 @@ public abstract class TouchableLineTracker<T extends StandardTouchableLine> exte
     protected void detectChanges() {
         super.detectChanges();
 
-        boolean spawnSlimeEntities = line.hasTouchHandler();
+        boolean spawnSlimeEntities = line.getTouchHandler() != null;
         if (this.spawnSlimeEntities != spawnSlimeEntities) {
             this.spawnSlimeEntities = spawnSlimeEntities;
             this.spawnSlimeEntitiesChanged = true;

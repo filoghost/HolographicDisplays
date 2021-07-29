@@ -6,13 +6,12 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.common.hologram.StandardHologramComponent;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class BaseHologramComponent implements StandardHologramComponent {
+public abstract class BaseHologramComponent {
 
     private World world;
     private double x, y, z;
@@ -43,43 +42,35 @@ public abstract class BaseHologramComponent implements StandardHologramComponent
         return Location.locToBlock(locationCoord) >> 4;
     }
 
-    @Override
     public final World getWorld() {
         return world;
     }
 
-    @Override
     public final double getX() {
         return x;
     }
 
-    @Override
     public final double getY() {
         return y;
     }
 
-    @Override
     public final double getZ() {
         return z;
     }
 
-    @Override
     public final int getChunkX() {
         return chunkX;
     }
 
-    @Override
     public final int getChunkZ() {
         return chunkZ;
     }
 
-    @Override
     public final boolean isDeleted() {
         return deleted;
     }
 
     @MustBeInvokedByOverriders
-    @Override
     public void setDeleted() {
         deleted = true;
     }

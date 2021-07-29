@@ -5,16 +5,16 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.hologram.StandardItemLine;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
 
-public class ItemLineTracker extends TouchableLineTracker<StandardItemLine> {
+public class ItemLineTracker extends TouchableLineTracker<BaseItemLine> {
 
     private final EntityID vehicleEntityID;
     private final EntityID itemEntityID;
@@ -25,7 +25,7 @@ public class ItemLineTracker extends TouchableLineTracker<StandardItemLine> {
     private boolean spawnItemEntities;
     private boolean spawnItemEntitiesChanged;
 
-    public ItemLineTracker(StandardItemLine line, NMSManager nmsManager, LineTouchListener lineTouchListener) {
+    public ItemLineTracker(BaseItemLine line, NMSManager nmsManager, LineTouchListener lineTouchListener) {
         super(line, nmsManager, lineTouchListener);
         this.vehicleEntityID = nmsManager.newEntityID();
         this.itemEntityID = nmsManager.newEntityID();

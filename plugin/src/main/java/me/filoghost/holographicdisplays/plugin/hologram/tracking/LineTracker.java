@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class LineTracker<T extends StandardHologramLine> {
+public abstract class LineTracker<T extends BaseHologramLine> {
 
     protected final T line;
     private final Set<Player> trackedPlayers;

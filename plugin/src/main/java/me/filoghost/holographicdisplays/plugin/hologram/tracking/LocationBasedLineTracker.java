@@ -5,16 +5,16 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-abstract class LocationBasedLineTracker<T extends StandardHologramLine> extends LineTracker<T> {
+abstract class LocationBasedLineTracker<T extends BaseHologramLine> extends LineTracker<T> {
 
     private static final int ENTITY_VIEW_RANGE = 64;
 

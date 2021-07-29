@@ -5,12 +5,11 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
-import me.filoghost.holographicdisplays.common.hologram.StandardTextLine;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.TextLineTracker;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseTextLine extends BaseTouchableLine implements StandardTextLine {
+public abstract class BaseTextLine extends BaseTouchableLine {
 
     private String text;
 
@@ -19,12 +18,13 @@ public abstract class BaseTextLine extends BaseTouchableLine implements Standard
         setText(text);
     }
 
+    public abstract boolean isAllowPlaceholders();
+
     @Override
     protected TextLineTracker createTracker(LineTrackerManager trackerManager) {
         return trackerManager.startTracking(this);
     }
 
-    @Override
     public @Nullable String getText() {
         return text;
     }

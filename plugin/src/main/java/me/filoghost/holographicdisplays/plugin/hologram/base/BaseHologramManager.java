@@ -5,14 +5,12 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
-import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class BaseHologramManager<H extends StandardHologram> {
+public abstract class BaseHologramManager<H extends BaseHologram<?>> {
 
     private final List<H> holograms = new ArrayList<>();
     private final List<H> unmodifiableHologramsView = Collections.unmodifiableList(holograms);

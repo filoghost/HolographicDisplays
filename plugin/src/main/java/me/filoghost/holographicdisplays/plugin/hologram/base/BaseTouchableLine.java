@@ -7,7 +7,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
-import me.filoghost.holographicdisplays.common.hologram.StandardTouchableLine;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
@@ -20,7 +19,7 @@ import java.util.WeakHashMap;
  * Useful class that implements StandardTouchableLine. The downside is that subclasses must extend this, and cannot extend other classes.
  * But all the current items are touchable.
  */
-public abstract class BaseTouchableLine extends BaseHologramLine implements StandardTouchableLine {
+public abstract class BaseTouchableLine extends BaseHologramLine {
 
     private static final Map<Player, Long> lastClickByPlayer = new WeakHashMap<>();
 
@@ -30,7 +29,6 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
         super(hologram);
     }
 
-    @Override
     public void onTouch(Player player) {
         if (isDeleted()
                 || !player.isOnline()
@@ -52,24 +50,19 @@ public abstract class BaseTouchableLine extends BaseHologramLine implements Stan
         try {
             touchHandler.onTouch(player);
         } catch (Throwable t) {
-            Log.warning("The plugin " + getHologram().getCreatorPlugin().getName() + " generated an exception"
+            Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
                     + " when the player " + player.getName() + " touched a hologram.", t);
         }
     }
 
-    @Override
-    public boolean hasTouchHandler() {
-        return touchHandler != null;
+    public @Nullable TouchHandler getTouchHandler() {
+        return touchHandler;
     }
 
     @MustBeInvokedByOverriders
     public void setTouchHandler(@Nullable TouchHandler touchHandler) {
         this.touchHandler = touchHandler;
         setChanged();
-    }
-
-    public @Nullable TouchHandler getTouchHandler() {
-        return touchHandler;
     }
 
 }

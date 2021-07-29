@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.internal;
 
-import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.EditableHologramLine;
 
-public interface InternalHologramLine extends StandardHologramLine {
+public interface InternalHologramLine extends EditableHologramLine {
 
     String getSerializedConfigValue();
 

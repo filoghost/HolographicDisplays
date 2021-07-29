@@ -6,14 +6,16 @@
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.holographicdisplays.api.hologram.HologramLine;
-import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.EditableHologramLine;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramLineAdapter;
 import org.jetbrains.annotations.NotNull;
 
-public interface APIHologramLine extends HologramLine, StandardHologramLine {
+public interface APIHologramLine extends HologramLine, EditableHologramLine {
 
     @Override
     @NotNull APIHologram getParent();
+
+    void setChanged();
 
     @Override
     default void removeLine() {

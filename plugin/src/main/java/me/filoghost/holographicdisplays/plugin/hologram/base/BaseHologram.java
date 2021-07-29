@@ -6,12 +6,12 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
-import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class BaseHologram<T extends StandardHologramLine> extends BaseHologramComponent implements StandardHologram {
+public abstract class BaseHologram<T extends EditableHologramLine> extends BaseHologramComponent {
 
     private final LineTrackerManager lineTrackerManager;
     private final List<T> lines;
@@ -33,11 +33,14 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
         this.unmodifiableLinesView = Collections.unmodifiableList(lines);
     }
 
+    protected abstract boolean isVisibleTo(Player player);
+
+    public abstract Plugin getCreatorPlugin();
+
     protected final LineTrackerManager getTrackerManager() {
         return lineTrackerManager;
     }
 
-    @Override
     public List<T> getLines() {
         return unmodifiableLinesView;
     }
@@ -115,7 +118,6 @@ public abstract class BaseHologram<T extends StandardHologramLine> extends BaseH
         }
     }
 
-    @Override
     public int getLineCount() {
         return lines.size();
     }

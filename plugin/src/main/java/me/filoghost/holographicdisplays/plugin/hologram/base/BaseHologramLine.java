@@ -6,14 +6,13 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.common.hologram.StandardHologram;
-import me.filoghost.holographicdisplays.common.hologram.StandardHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
-public abstract class BaseHologramLine extends BaseHologramComponent implements StandardHologramLine {
+public abstract class BaseHologramLine extends BaseHologramComponent implements EditableHologramLine {
 
     private final BaseHologram<?> hologram;
     private final LineTracker<?> tracker;
@@ -26,11 +25,6 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
 
     protected abstract LineTracker<?> createTracker(LineTrackerManager trackerManager);
 
-    protected final StandardHologram getHologram() {
-        return hologram;
-    }
-
-    @Override
     public final void setChanged() {
         tracker.setLineChanged();
     }
@@ -45,9 +39,12 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
         setChanged();
     }
 
-    @Override
-    public boolean isVisibleTo(Player player) {
+    public final boolean isVisibleTo(Player player) {
         return hologram.isVisibleTo(player);
+    }
+
+    public final Plugin getCreatorPlugin() {
+        return hologram.getCreatorPlugin();
     }
 
 }
