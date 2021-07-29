@@ -32,14 +32,16 @@ public class APIItemLine extends BaseItemLine implements ItemLine, APITouchableL
 
     @Override
     public void setTouchHandler(@Nullable TouchHandler touchHandler) {
-        v2Adapter.onNewTouchHandlerChange(getTouchHandler(), touchHandler);
+        TouchHandler oldTouchHandler = getTouchHandler();
         super.setTouchHandler(touchHandler);
+        v2Adapter.onNewTouchHandlerChange(oldTouchHandler, touchHandler);
     }
 
     @Override
     public void setPickupHandler(@Nullable PickupHandler pickupHandler) {
-        v2Adapter.onNewPickupHandlerChange(getPickupHandler(), pickupHandler);
+        PickupHandler oldPickupHandler = getPickupHandler();
         super.setPickupHandler(pickupHandler);
+        v2Adapter.onNewPickupHandlerChange(oldPickupHandler, pickupHandler);
     }
 
     @Override

@@ -49,6 +49,8 @@ public abstract class BaseItemLine extends BaseTouchableLine {
 
     @MustBeInvokedByOverriders
     public void setPickupHandler(@Nullable PickupHandler pickupHandler) {
+        checkNotDeleted();
+
         this.pickupHandler = pickupHandler;
     }
 
@@ -57,6 +59,8 @@ public abstract class BaseItemLine extends BaseTouchableLine {
     }
 
     public void setItemStack(@Nullable ItemStack itemStack) {
+        checkNotDeleted();
+
         if (itemStack != null) {
             Preconditions.checkArgument(0 < itemStack.getAmount() && itemStack.getAmount() <= 64, "itemStack's amount must be between 1 and 64");
         }

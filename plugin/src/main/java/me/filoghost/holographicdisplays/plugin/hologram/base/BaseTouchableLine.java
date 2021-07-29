@@ -51,6 +51,8 @@ public abstract class BaseTouchableLine extends BaseHologramLine {
 
     @MustBeInvokedByOverriders
     public void setTouchHandler(@Nullable TouchHandler touchHandler) {
+        checkNotDeleted();
+
         this.touchHandler = touchHandler;
         setChanged();
     }

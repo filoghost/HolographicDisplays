@@ -30,6 +30,8 @@ public abstract class BaseTextLine extends BaseTouchableLine {
     }
 
     public void setText(@Nullable String text) {
+        checkNotDeleted();
+
         this.text = text;
         setChanged();
     }

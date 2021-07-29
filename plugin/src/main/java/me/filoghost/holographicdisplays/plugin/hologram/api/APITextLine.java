@@ -35,8 +35,9 @@ public class APITextLine extends BaseTextLine implements TextLine, APITouchableL
 
     @Override
     public void setTouchHandler(@Nullable TouchHandler touchHandler) {
-        v2Adapter.onNewTouchHandlerChange(getTouchHandler(), touchHandler);
+        TouchHandler oldTouchHandler = getTouchHandler();
         super.setTouchHandler(touchHandler);
+        v2Adapter.onNewTouchHandlerChange(oldTouchHandler, touchHandler);
     }
 
     @Override
