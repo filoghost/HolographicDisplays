@@ -36,6 +36,7 @@ import me.filoghost.holographicdisplays.plugin.placeholder.internal.DefaultPlace
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion;
+import me.filoghost.holographicdisplays.plugin.util.NMSVersion.UnknownVersionException;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -76,12 +77,6 @@ public class HolographicDisplays extends FCommonsPlugin {
                     "You are probably running CraftBukkit instead of Spigot.");
         }
 
-        if (!NMSVersion.isValid()) {
-            throw new PluginEnableException(
-                    "Holographic Displays does not support this server version.",
-                    "Supported Spigot versions: from 1.8.3 to 1.17.");
-        }
-
         if (getCommand("holograms") == null) {
             throw new PluginEnableException(
                     "Holographic Displays was unable to register the command \"holograms\".",
@@ -92,6 +87,10 @@ public class HolographicDisplays extends FCommonsPlugin {
 
         try {
             nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
+        } catch (UnknownVersionException e) {
+            throw new PluginEnableException(
+                    "Holographic Displays does not support this server version.",
+                    "Supported Spigot versions: from 1.8.3 to 1.17.");
         } catch (Throwable t) {
             throw new PluginEnableException(t, "Couldn't initialize the NMS manager.");
         }

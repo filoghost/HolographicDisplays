@@ -5,7 +5,6 @@
  */
 package me.filoghost.holographicdisplays.plugin.util;
 
-import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import org.bukkit.Bukkit;
@@ -48,13 +47,11 @@ public enum NMSVersion {
         return nmsManagerFactory.create(errorCollector);
     }
 
-    public static NMSVersion getCurrent() {
-        Preconditions.checkState(isValid(), "Current version is not valid");
+    public static NMSVersion getCurrent() throws UnknownVersionException {
+        if (CURRENT_VERSION == null) {
+            throw new UnknownVersionException();
+        }
         return CURRENT_VERSION;
-    }
-
-    public static boolean isValid() {
-        return CURRENT_VERSION != null;
     }
 
     private static NMSVersion extractCurrentVersion() {
@@ -77,5 +74,7 @@ public enum NMSVersion {
         NMSManager create(ErrorCollector errorCollector);
 
     }
+
+    public static class UnknownVersionException extends Exception {}
 
 }
