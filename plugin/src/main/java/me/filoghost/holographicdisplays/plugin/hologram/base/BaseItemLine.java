@@ -10,7 +10,6 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.hologram.PickupHandler;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.ItemLineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
@@ -32,12 +31,7 @@ public abstract class BaseItemLine extends BaseTouchableLine {
     }
 
     public void onPickup(Player player) {
-        if (isDeleted()
-                || !player.isOnline()
-                || !isTrackedPlayer(player)
-                || player.getGameMode() == GameMode.SPECTATOR
-                || pickupHandler == null
-                || !isVisibleTo(player)) {
+        if (pickupHandler == null || !canInteract(player)) {
             return;
         }
 

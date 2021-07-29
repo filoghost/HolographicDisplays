@@ -7,7 +7,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
@@ -26,12 +25,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine {
     }
 
     public void onTouch(Player player) {
-        if (isDeleted()
-                || !player.isOnline()
-                || !isTrackedPlayer(player)
-                || player.getGameMode() == GameMode.SPECTATOR
-                || touchHandler == null
-                || !isVisibleTo(player)) {
+        if (touchHandler == null || !canInteract(player)) {
             return;
         }
 

@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -45,6 +46,14 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
 
     public final Plugin getCreatorPlugin() {
         return hologram.getCreatorPlugin();
+    }
+
+    protected boolean canInteract(Player player) {
+        return !isDeleted()
+                && player.isOnline()
+                && player.getGameMode() != GameMode.SPECTATOR
+                && isTrackedPlayer(player)
+                && isVisibleTo(player);
     }
 
 }
