@@ -6,9 +6,9 @@
 package me.filoghost.holographicdisplays.nms.v1_11_R1;
 
 import me.filoghost.holographicdisplays.common.nms.EntityID;
-import me.filoghost.holographicdisplays.common.nms.PacketListener;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.common.nms.PacketListener;
 import org.bukkit.entity.Player;
 
 public class VersionNMSManager implements NMSManager {

@@ -6,10 +6,10 @@
 package me.filoghost.holographicdisplays.plugin.test;
 
 import me.filoghost.holographicdisplays.common.nms.EntityID;
-import me.filoghost.holographicdisplays.common.nms.PacketListener;
 import me.filoghost.holographicdisplays.common.nms.FallbackEntityIDGenerator;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.common.nms.PacketListener;
 import org.bukkit.entity.Player;
 
 import java.util.function.Supplier;

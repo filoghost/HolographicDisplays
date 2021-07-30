@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
+import me.filoghost.holographicdisplays.api.hologram.ItemLine;
 import me.filoghost.holographicdisplays.api.hologram.PickupHandler;
 import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
-import me.filoghost.holographicdisplays.api.hologram.ItemLine;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2ItemLineAdapter;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
