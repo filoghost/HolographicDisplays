@@ -11,19 +11,19 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 class V2TouchHandlerAdapter implements com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler {
 
-    private final TouchHandler newTouchHandler;
+    private final TouchHandler v3TouchHandler;
 
-    V2TouchHandlerAdapter(TouchHandler newTouchHandler) {
-        this.newTouchHandler = newTouchHandler;
+    V2TouchHandlerAdapter(TouchHandler v3TouchHandler) {
+        this.v3TouchHandler = v3TouchHandler;
     }
 
     @Override
     public void onTouch(Player player) {
-        newTouchHandler.onTouch(player);
+        v3TouchHandler.onTouch(player);
     }
 
-    public TouchHandler getNewTouchHandler() {
-        return newTouchHandler;
+    public TouchHandler getV3TouchHandler() {
+        return v3TouchHandler;
     }
 
     @Override
@@ -36,17 +36,17 @@ class V2TouchHandlerAdapter implements com.gmail.filoghost.holographicdisplays.a
         }
 
         V2TouchHandlerAdapter other = (V2TouchHandlerAdapter) obj;
-        return this.newTouchHandler.equals(other.newTouchHandler);
+        return this.v3TouchHandler.equals(other.v3TouchHandler);
     }
 
     @Override
     public final int hashCode() {
-        return newTouchHandler.hashCode();
+        return v3TouchHandler.hashCode();
     }
 
     @Override
     public final String toString() {
-        return newTouchHandler.toString();
+        return v3TouchHandler.toString();
     }
 
 }

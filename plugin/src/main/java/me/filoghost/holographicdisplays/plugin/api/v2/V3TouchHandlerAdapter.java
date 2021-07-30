@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class NewTouchHandlerAdapter implements me.filoghost.holographicdisplays.api.hologram.TouchHandler {
+public class V3TouchHandlerAdapter implements me.filoghost.holographicdisplays.api.hologram.TouchHandler {
 
     private final TouchHandler v2TouchHandler;
 
-    public NewTouchHandlerAdapter(TouchHandler v2TouchHandler) {
+    public V3TouchHandlerAdapter(TouchHandler v2TouchHandler) {
         this.v2TouchHandler = v2TouchHandler;
     }
 
@@ -32,11 +32,11 @@ public class NewTouchHandlerAdapter implements me.filoghost.holographicdisplays.
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof NewTouchHandlerAdapter)) {
+        if (!(obj instanceof V3TouchHandlerAdapter)) {
             return false;
         }
 
-        NewTouchHandlerAdapter other = (NewTouchHandlerAdapter) obj;
+        V3TouchHandlerAdapter other = (V3TouchHandlerAdapter) obj;
         return this.v2TouchHandler.equals(other.v2TouchHandler);
     }
 

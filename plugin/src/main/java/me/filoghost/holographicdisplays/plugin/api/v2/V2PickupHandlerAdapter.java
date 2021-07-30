@@ -11,19 +11,19 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 class V2PickupHandlerAdapter implements com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler {
 
-    private final PickupHandler newPickupHandler;
+    private final PickupHandler v3PickupHandler;
 
-    V2PickupHandlerAdapter(PickupHandler newPickupHandler) {
-        this.newPickupHandler = newPickupHandler;
+    V2PickupHandlerAdapter(PickupHandler v3PickupHandler) {
+        this.v3PickupHandler = v3PickupHandler;
     }
 
     @Override
     public void onPickup(Player player) {
-        newPickupHandler.onPickup(player);
+        v3PickupHandler.onPickup(player);
     }
 
-    public PickupHandler getNewPickupHandler() {
-        return newPickupHandler;
+    public PickupHandler getV3PickupHandler() {
+        return v3PickupHandler;
     }
 
     @Override
@@ -36,17 +36,17 @@ class V2PickupHandlerAdapter implements com.gmail.filoghost.holographicdisplays.
         }
 
         V2PickupHandlerAdapter other = (V2PickupHandlerAdapter) obj;
-        return this.newPickupHandler.equals(other.newPickupHandler);
+        return this.v3PickupHandler.equals(other.v3PickupHandler);
     }
 
     @Override
     public final int hashCode() {
-        return newPickupHandler.hashCode();
+        return v3PickupHandler.hashCode();
     }
 
     @Override
     public final String toString() {
-        return newPickupHandler.toString();
+        return v3PickupHandler.toString();
     }
 
 }

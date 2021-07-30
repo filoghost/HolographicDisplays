@@ -13,15 +13,15 @@ import org.bukkit.inventory.ItemStack;
 @SuppressWarnings("deprecation")
 public class V2ItemLineAdapter extends V2TouchableLineAdapter implements ItemLine {
 
-    private final APIItemLine newItemLine;
+    private final APIItemLine v3ItemLine;
     private PickupHandler v2PickupHandler;
 
-    public V2ItemLineAdapter(APIItemLine newItemLine) {
-        super(newItemLine);
-        this.newItemLine = newItemLine;
+    public V2ItemLineAdapter(APIItemLine v3ItemLine) {
+        super(v3ItemLine);
+        this.v3ItemLine = v3ItemLine;
     }
 
-    public void onNewPickupHandlerChange(
+    public void onV3PickupHandlerChange(
             me.filoghost.holographicdisplays.api.hologram.PickupHandler previous,
             me.filoghost.holographicdisplays.api.hologram.PickupHandler current) {
         if (previous != current) {
@@ -32,17 +32,17 @@ public class V2ItemLineAdapter extends V2TouchableLineAdapter implements ItemLin
     @Override
     public void setPickupHandler(PickupHandler v2PickupHandler) {
         if (v2PickupHandler == null) {
-            newItemLine.setPickupHandler(null);
+            v3ItemLine.setPickupHandler(null);
         } else if (v2PickupHandler instanceof V2PickupHandlerAdapter) {
-            // Adapter created from the getPickupHandler() method, simply unwrap it
-            newItemLine.setPickupHandler(((V2PickupHandlerAdapter) v2PickupHandler).getNewPickupHandler());
+            // Adapter created from the getter method, simply unwrap it
+            v3ItemLine.setPickupHandler(((V2PickupHandlerAdapter) v2PickupHandler).getV3PickupHandler());
         } else {
-            me.filoghost.holographicdisplays.api.hologram.PickupHandler newPickupHandler = newItemLine.getPickupHandler();
+            me.filoghost.holographicdisplays.api.hologram.PickupHandler v3PickupHandler = v3ItemLine.getPickupHandler();
 
             // Adapt the old v2 handler to the new API, creating a new instance only if the wrapped handler changed
-            if (!(newPickupHandler instanceof NewPickupHandlerAdapter)
-                    || ((NewPickupHandlerAdapter) newPickupHandler).getV2PickupHandler() != v2PickupHandler) {
-                newItemLine.setPickupHandler(new NewPickupHandlerAdapter(v2PickupHandler));
+            if (!(v3PickupHandler instanceof V3PickupHandlerAdapter)
+                    || ((V3PickupHandlerAdapter) v3PickupHandler).getV2PickupHandler() != v2PickupHandler) {
+                v3ItemLine.setPickupHandler(new V3PickupHandlerAdapter(v2PickupHandler));
             }
         }
         this.v2PickupHandler = v2PickupHandler;
@@ -52,16 +52,16 @@ public class V2ItemLineAdapter extends V2TouchableLineAdapter implements ItemLin
     public PickupHandler getPickupHandler() {
         // Lazy initialization
         if (v2PickupHandler == null) {
-            me.filoghost.holographicdisplays.api.hologram.PickupHandler newPickupHandler = newItemLine.getPickupHandler();
+            me.filoghost.holographicdisplays.api.hologram.PickupHandler v3PickupHandler = v3ItemLine.getPickupHandler();
 
-            if (newPickupHandler == null) {
+            if (v3PickupHandler == null) {
                 // Keep it null
-            } else if (newPickupHandler instanceof NewPickupHandlerAdapter) {
-                // Adapter created from the setPickupHandler() method, simply unwrap it
-                v2PickupHandler = ((NewPickupHandlerAdapter) newPickupHandler).getV2PickupHandler();
+            } else if (v3PickupHandler instanceof V3PickupHandlerAdapter) {
+                // Adapter created from the setter method, simply unwrap it
+                v2PickupHandler = ((V3PickupHandlerAdapter) v3PickupHandler).getV2PickupHandler();
             } else {
                 // Adapt the new handler to the old v2 API
-                v2PickupHandler = new V2PickupHandlerAdapter(newPickupHandler);
+                v2PickupHandler = new V2PickupHandlerAdapter(v3PickupHandler);
             }
         }
         return v2PickupHandler;
@@ -69,12 +69,12 @@ public class V2ItemLineAdapter extends V2TouchableLineAdapter implements ItemLin
 
     @Override
     public ItemStack getItemStack() {
-        return newItemLine.getItemStack();
+        return v3ItemLine.getItemStack();
     }
 
     @Override
     public void setItemStack(ItemStack itemStack) {
-        newItemLine.setItemStack(itemStack);
+        v3ItemLine.setItemStack(itemStack);
     }
 
 }

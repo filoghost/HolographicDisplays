@@ -18,120 +18,120 @@ import org.bukkit.inventory.ItemStack;
 @SuppressWarnings("deprecation")
 public class V2HologramAdapter implements Hologram {
 
-    private final APIHologram newHologram;
+    private final APIHologram v3Hologram;
 
-    public V2HologramAdapter(APIHologram newHologram) {
-        this.newHologram = newHologram;
+    public V2HologramAdapter(APIHologram v3Hologram) {
+        this.v3Hologram = v3Hologram;
     }
 
     @Override
     public TextLine appendTextLine(String text) {
-        return newHologram.appendTextLine(text).getV2Adapter();
+        return v3Hologram.appendTextLine(text).getV2Adapter();
     }
 
     @Override
     public ItemLine appendItemLine(ItemStack itemStack) {
-        return newHologram.appendItemLine(itemStack).getV2Adapter();
+        return v3Hologram.appendItemLine(itemStack).getV2Adapter();
     }
 
     @Override
     public TextLine insertTextLine(int index, String text) {
-        return newHologram.insertTextLine(index, text).getV2Adapter();
+        return v3Hologram.insertTextLine(index, text).getV2Adapter();
     }
 
     @Override
     public ItemLine insertItemLine(int index, ItemStack itemStack) {
-        return newHologram.insertItemLine(index, itemStack).getV2Adapter();
+        return v3Hologram.insertItemLine(index, itemStack).getV2Adapter();
     }
 
     @Override
     public HologramLine getLine(int index) {
-        return newHologram.getLine(index).getV2Adapter();
+        return v3Hologram.getLine(index).getV2Adapter();
     }
 
     @Override
     public void removeLine(int index) {
-        newHologram.removeLine(index);
+        v3Hologram.removeLine(index);
     }
 
     @Override
     public void clearLines() {
-        newHologram.clearLines();
+        v3Hologram.clearLines();
     }
 
     @Override
     public int size() {
-        return newHologram.getLineCount();
+        return v3Hologram.getLineCount();
     }
 
     @Override
     public double getHeight() {
-        return newHologram.getHeight();
+        return v3Hologram.getHeight();
     }
 
     @Override
     public void teleport(Location location) {
-        newHologram.teleport(location);
+        v3Hologram.teleport(location);
     }
 
     @Override
     public void teleport(World world, double x, double y, double z) {
-        newHologram.teleport(world, x, y, z);
+        v3Hologram.teleport(world, x, y, z);
     }
 
     @Override
     public Location getLocation() {
-        return newHologram.getLocation();
+        return v3Hologram.getLocation();
     }
 
     @Override
     public double getX() {
-        return newHologram.getX();
+        return v3Hologram.getX();
     }
 
     @Override
     public double getY() {
-        return newHologram.getY();
+        return v3Hologram.getY();
     }
 
     @Override
     public double getZ() {
-        return newHologram.getZ();
+        return v3Hologram.getZ();
     }
 
     @Override
     public World getWorld() {
-        return newHologram.getWorld();
+        return v3Hologram.getWorld();
     }
 
     @Override
     public VisibilityManager getVisibilityManager() {
-        return newHologram.getVisibilitySettings().getV2Adapter();
+        return v3Hologram.getVisibilitySettings().getV2Adapter();
     }
 
     @Override
     public long getCreationTimestamp() {
-        return newHologram.getCreationTimestamp();
+        return v3Hologram.getCreationTimestamp();
     }
 
     @Override
     public boolean isAllowPlaceholders() {
-        return newHologram.isAllowPlaceholders();
+        return v3Hologram.isAllowPlaceholders();
     }
 
     @Override
     public void setAllowPlaceholders(boolean allowPlaceholders) {
-        newHologram.setAllowPlaceholders(allowPlaceholders);
+        v3Hologram.setAllowPlaceholders(allowPlaceholders);
     }
 
     @Override
     public void delete() {
-        newHologram.delete();
+        v3Hologram.delete();
     }
 
     @Override
     public boolean isDeleted() {
-        return newHologram.isDeleted();
+        return v3Hologram.isDeleted();
     }
 
     @Override
@@ -144,17 +144,17 @@ public class V2HologramAdapter implements Hologram {
         }
 
         V2HologramAdapter other = (V2HologramAdapter) obj;
-        return this.newHologram.equals(other.newHologram);
+        return this.v3Hologram.equals(other.v3Hologram);
     }
 
     @Override
     public final int hashCode() {
-        return newHologram.hashCode();
+        return v3Hologram.hashCode();
     }
 
     @Override
     public final String toString() {
-        return newHologram.toString();
+        return v3Hologram.toString();
     }
 
 }

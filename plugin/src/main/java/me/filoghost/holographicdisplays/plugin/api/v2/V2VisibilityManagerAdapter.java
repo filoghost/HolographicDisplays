@@ -13,45 +13,45 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 public class V2VisibilityManagerAdapter implements VisibilityManager {
 
-    private final DefaultVisibilitySettings newVisibilitySettings;
+    private final DefaultVisibilitySettings v3VisibilitySettings;
 
-    public V2VisibilityManagerAdapter(DefaultVisibilitySettings newVisibilitySettings) {
-        this.newVisibilitySettings = newVisibilitySettings;
+    public V2VisibilityManagerAdapter(DefaultVisibilitySettings v3VisibilitySettings) {
+        this.v3VisibilitySettings = v3VisibilitySettings;
     }
 
     @Override
     public boolean isVisibleByDefault() {
-        return newVisibilitySettings.getDefaultVisibility() == Visibility.VISIBLE;
+        return v3VisibilitySettings.getDefaultVisibility() == Visibility.VISIBLE;
     }
 
     @Override
     public void setVisibleByDefault(boolean visibleByDefault) {
-        newVisibilitySettings.setDefaultVisibility(visibleByDefault ? Visibility.VISIBLE : Visibility.HIDDEN);
+        v3VisibilitySettings.setDefaultVisibility(visibleByDefault ? Visibility.VISIBLE : Visibility.HIDDEN);
     }
 
     @Override
     public void showTo(Player player) {
-        newVisibilitySettings.setIndividualVisibility(player, Visibility.VISIBLE);
+        v3VisibilitySettings.setIndividualVisibility(player, Visibility.VISIBLE);
     }
 
     @Override
     public void hideTo(Player player) {
-        newVisibilitySettings.setIndividualVisibility(player, Visibility.HIDDEN);
+        v3VisibilitySettings.setIndividualVisibility(player, Visibility.HIDDEN);
     }
 
     @Override
     public boolean isVisibleTo(Player player) {
-        return newVisibilitySettings.isVisibleTo(player);
+        return v3VisibilitySettings.isVisibleTo(player);
     }
 
     @Override
     public void resetVisibility(Player player) {
-        newVisibilitySettings.resetIndividualVisibility(player);
+        v3VisibilitySettings.resetIndividualVisibility(player);
     }
 
     @Override
     public void resetVisibilityAll() {
-        newVisibilitySettings.resetIndividualVisibilityAll();
+        v3VisibilitySettings.resetIndividualVisibilityAll();
     }
 
     @Override
@@ -64,17 +64,17 @@ public class V2VisibilityManagerAdapter implements VisibilityManager {
         }
 
         V2VisibilityManagerAdapter other = (V2VisibilityManagerAdapter) obj;
-        return this.newVisibilitySettings.equals(other.newVisibilitySettings);
+        return this.v3VisibilitySettings.equals(other.v3VisibilitySettings);
     }
 
     @Override
     public final int hashCode() {
-        return newVisibilitySettings.hashCode();
+        return v3VisibilitySettings.hashCode();
     }
 
     @Override
     public final String toString() {
-        return newVisibilitySettings.toString();
+        return v3VisibilitySettings.toString();
     }
 
 }

@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class NewPickupHandlerAdapter implements me.filoghost.holographicdisplays.api.hologram.PickupHandler {
+public class V3PickupHandlerAdapter implements me.filoghost.holographicdisplays.api.hologram.PickupHandler {
 
     private final PickupHandler v2PickupHandler;
 
-    public NewPickupHandlerAdapter(PickupHandler v2PickupHandler) {
+    public V3PickupHandlerAdapter(PickupHandler v2PickupHandler) {
         this.v2PickupHandler = v2PickupHandler;
     }
 
@@ -32,11 +32,11 @@ public class NewPickupHandlerAdapter implements me.filoghost.holographicdisplays
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof NewPickupHandlerAdapter)) {
+        if (!(obj instanceof V3PickupHandlerAdapter)) {
             return false;
         }
 
-        NewPickupHandlerAdapter other = (NewPickupHandlerAdapter) obj;
+        V3PickupHandlerAdapter other = (V3PickupHandlerAdapter) obj;
         return this.v2PickupHandler.equals(other.v2PickupHandler);
     }
 
