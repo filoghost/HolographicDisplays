@@ -9,7 +9,6 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider;
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
@@ -27,12 +26,10 @@ import java.util.List;
 public class V2HologramsAPIProvider extends HologramsAPIProvider {
 
     private final APIHologramManager apiHologramManager;
-    private final NMSManager nmsManager;
     private final PlaceholderRegistry placeholderRegistry;
 
-    public V2HologramsAPIProvider(APIHologramManager apiHologramManager, NMSManager nmsManager, PlaceholderRegistry placeholderRegistry) {
+    public V2HologramsAPIProvider(APIHologramManager apiHologramManager, PlaceholderRegistry placeholderRegistry) {
         this.apiHologramManager = apiHologramManager;
-        this.nmsManager = nmsManager;
         this.placeholderRegistry = placeholderRegistry;
     }
 

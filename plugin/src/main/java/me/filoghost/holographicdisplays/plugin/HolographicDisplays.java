@@ -135,7 +135,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         // Enable the APIs
         HolographicDisplaysAPIProvider.setImplementation(
                 new DefaultHolographicDisplaysAPIProvider(apiHologramManager, nmsManager, placeholderRegistry));
-        enableLegacyAPI(apiHologramManager, nmsManager, placeholderRegistry);
+        enableLegacyAPI(apiHologramManager, placeholderRegistry);
 
         // Register bStats metrics
         int pluginID = 3123;
@@ -150,11 +150,8 @@ public class HolographicDisplays extends FCommonsPlugin {
     }
 
     @SuppressWarnings("deprecation")
-    private void enableLegacyAPI(APIHologramManager apiHologramManager, NMSManager nmsManager, PlaceholderRegistry placeholderRegistry) {
-        HologramsAPIProvider.setImplementation(new V2HologramsAPIProvider(
-                apiHologramManager,
-                nmsManager,
-                placeholderRegistry));
+    private void enableLegacyAPI(APIHologramManager apiHologramManager, PlaceholderRegistry placeholderRegistry) {
+        HologramsAPIProvider.setImplementation(new V2HologramsAPIProvider(apiHologramManager, placeholderRegistry));
     }
 
     public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
