@@ -11,20 +11,20 @@ import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramLine;
 @SuppressWarnings("deprecation")
 public abstract class V2HologramLineAdapter implements HologramLine {
 
-    private final APIHologramLine v3HologramLine;
+    private final APIHologramLine v3Line;
 
-    public V2HologramLineAdapter(APIHologramLine v3HologramLine) {
-        this.v3HologramLine = v3HologramLine;
+    public V2HologramLineAdapter(APIHologramLine v3Line) {
+        this.v3Line = v3Line;
     }
 
     @Override
     public V2HologramAdapter getParent() {
-        return v3HologramLine.getParent().getV2Adapter();
+        return v3Line.getParent().getV2Adapter();
     }
 
     @Override
     public void removeLine() {
-        v3HologramLine.removeLine();
+        v3Line.removeLine();
     }
 
     @Override
@@ -37,17 +37,17 @@ public abstract class V2HologramLineAdapter implements HologramLine {
         }
 
         V2HologramLineAdapter other = (V2HologramLineAdapter) obj;
-        return this.v3HologramLine.equals(other.v3HologramLine);
+        return this.v3Line.equals(other.v3Line);
     }
 
     @Override
     public final int hashCode() {
-        return v3HologramLine.hashCode();
+        return v3Line.hashCode();
     }
 
     @Override
     public final String toString() {
-        return v3HologramLine.toString();
+        return v3Line.toString();
     }
 
 }

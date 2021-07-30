@@ -9,12 +9,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Interface to handle items being picked up by players.
+ * Interface to handle hologram lines being picked up by players.
  *
  * @since 1
  */
 @FunctionalInterface
-public interface PickupHandler {
+public interface PickupListener {
 
     /**
      * Called when a player picks up the item.

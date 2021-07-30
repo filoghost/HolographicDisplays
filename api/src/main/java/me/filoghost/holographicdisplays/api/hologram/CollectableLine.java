@@ -8,26 +8,26 @@ package me.filoghost.holographicdisplays.api.hologram;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A line of a Hologram that can be picked up.
+ * A hologram line that can be "picked up" by a nearby player.
  *
  * @since 1
  */
 public interface CollectableLine extends HologramLine {
 
     /**
-     * Sets the PickupHandler for this line.
+     * Sets the pickup listener.
      *
-     * @param pickupHandler the new PickupHandler, can be null.
+     * @param pickupListener the new pickup listener
      * @since 1
      */
-    void setPickupHandler(@Nullable PickupHandler pickupHandler);
+    void setPickupListener(@Nullable PickupListener pickupListener);
 
     /**
-     * Returns the current PickupHandler of this line.
+     * Returns the current pickup listener.
      *
-     * @return the current PickupHandler, can be null.
+     * @return the current pickup listener
      * @since 1
      */
-    @Nullable PickupHandler getPickupHandler();
+    @Nullable PickupListener getPickupListener();
 
 }

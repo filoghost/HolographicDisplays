@@ -6,20 +6,21 @@
 package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
+import me.filoghost.holographicdisplays.api.hologram.ClickListener;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class V3TouchHandlerAdapter implements me.filoghost.holographicdisplays.api.hologram.TouchHandler {
+public class V3ClickListenerAdapter implements ClickListener {
 
     private final TouchHandler v2TouchHandler;
 
-    public V3TouchHandlerAdapter(TouchHandler v2TouchHandler) {
+    public V3ClickListenerAdapter(TouchHandler v2TouchHandler) {
         this.v2TouchHandler = v2TouchHandler;
     }
 
     @Override
-    public void onTouch(@NotNull Player player) {
+    public void onClick(@NotNull Player player) {
         v2TouchHandler.onTouch(player);
     }
 
@@ -32,11 +33,11 @@ public class V3TouchHandlerAdapter implements me.filoghost.holographicdisplays.a
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof V3TouchHandlerAdapter)) {
+        if (!(obj instanceof V3ClickListenerAdapter)) {
             return false;
         }
 
-        V3TouchHandlerAdapter other = (V3TouchHandlerAdapter) obj;
+        V3ClickListenerAdapter other = (V3ClickListenerAdapter) obj;
         return this.v2TouchHandler.equals(other.v2TouchHandler);
     }
 

@@ -6,15 +6,15 @@
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.holographicdisplays.api.hologram.ItemLine;
-import me.filoghost.holographicdisplays.api.hologram.PickupHandler;
-import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
+import me.filoghost.holographicdisplays.api.hologram.PickupListener;
+import me.filoghost.holographicdisplays.api.hologram.ClickListener;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2ItemLineAdapter;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class APIItemLine extends BaseItemLine implements ItemLine, APITouchableLine {
+public class APIItemLine extends BaseItemLine implements ItemLine, APIClickableLine {
 
     private final APIHologram parent;
     private final V2ItemLineAdapter v2Adapter;
@@ -31,17 +31,17 @@ public class APIItemLine extends BaseItemLine implements ItemLine, APITouchableL
     }
 
     @Override
-    public void setTouchHandler(@Nullable TouchHandler touchHandler) {
-        TouchHandler oldTouchHandler = getTouchHandler();
-        super.setTouchHandler(touchHandler);
-        v2Adapter.onV3TouchHandlerChange(oldTouchHandler, touchHandler);
+    public void setClickListener(@Nullable ClickListener clickListener) {
+        ClickListener oldClickListener = getClickListener();
+        super.setClickListener(clickListener);
+        v2Adapter.onV3ClickListenerChange(oldClickListener, clickListener);
     }
 
     @Override
-    public void setPickupHandler(@Nullable PickupHandler pickupHandler) {
-        PickupHandler oldPickupHandler = getPickupHandler();
-        super.setPickupHandler(pickupHandler);
-        v2Adapter.onV3PickupHandlerChange(oldPickupHandler, pickupHandler);
+    public void setPickupListener(@Nullable PickupListener pickupListener) {
+        PickupListener oldPickupListener = getPickupListener();
+        super.setPickupListener(pickupListener);
+        v2Adapter.onV3PickupListenerChange(oldPickupListener, pickupListener);
     }
 
     @Override

@@ -11,21 +11,21 @@ import me.filoghost.holographicdisplays.plugin.hologram.api.APITextLine;
 @SuppressWarnings("deprecation")
 public class V2TextLineAdapter extends V2TouchableLineAdapter implements TextLine {
 
-    private final APITextLine v3TextLine;
+    private final APITextLine v3Line;
 
-    public V2TextLineAdapter(APITextLine v3TextLine) {
-        super(v3TextLine);
-        this.v3TextLine = v3TextLine;
+    public V2TextLineAdapter(APITextLine v3Line) {
+        super(v3Line);
+        this.v3Line = v3Line;
     }
 
     @Override
     public String getText() {
-        return v3TextLine.getText();
+        return v3Line.getText();
     }
 
     @Override
     public void setText(String text) {
-        v3TextLine.setText(text);
+        v3Line.setText(text);
     }
 
 }

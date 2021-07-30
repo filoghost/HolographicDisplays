@@ -5,14 +5,14 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
+import me.filoghost.holographicdisplays.api.hologram.ClickListener;
 import me.filoghost.holographicdisplays.api.hologram.TextLine;
-import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2TextLineAdapter;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class APITextLine extends BaseTextLine implements TextLine, APITouchableLine {
+public class APITextLine extends BaseTextLine implements TextLine, APIClickableLine {
 
     private final APIHologram parent;
     private final V2TextLineAdapter v2Adapter;
@@ -34,10 +34,10 @@ public class APITextLine extends BaseTextLine implements TextLine, APITouchableL
     }
 
     @Override
-    public void setTouchHandler(@Nullable TouchHandler touchHandler) {
-        TouchHandler oldTouchHandler = getTouchHandler();
-        super.setTouchHandler(touchHandler);
-        v2Adapter.onV3TouchHandlerChange(oldTouchHandler, touchHandler);
+    public void setClickListener(@Nullable ClickListener clickListener) {
+        ClickListener oldClickListener = getClickListener();
+        super.setClickListener(clickListener);
+        v2Adapter.onV3ClickListenerChange(oldClickListener, clickListener);
     }
 
     @Override

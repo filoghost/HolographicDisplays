@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
+import me.filoghost.holographicdisplays.api.hologram.ClickListener;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
@@ -18,14 +18,14 @@ public abstract class BaseTouchableLine extends BaseHologramLine {
 
     private static final Map<Player, Long> lastClickByPlayer = new WeakHashMap<>();
 
-    private TouchHandler touchHandler;
+    private ClickListener clickListener;
 
     protected BaseTouchableLine(BaseHologram<?> hologram) {
         super(hologram);
     }
 
     public void onTouch(Player player) {
-        if (touchHandler == null || !canInteract(player)) {
+        if (clickListener == null || !canInteract(player)) {
             return;
         }
 
@@ -38,22 +38,22 @@ public abstract class BaseTouchableLine extends BaseHologramLine {
         lastClickByPlayer.put(player, now);
 
         try {
-            touchHandler.onTouch(player);
+            clickListener.onClick(player);
         } catch (Throwable t) {
             Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
                     + " when the player " + player.getName() + " touched a hologram.", t);
         }
     }
 
-    public @Nullable TouchHandler getTouchHandler() {
-        return touchHandler;
+    public @Nullable ClickListener getClickListener() {
+        return clickListener;
     }
 
     @MustBeInvokedByOverriders
-    public void setTouchHandler(@Nullable TouchHandler touchHandler) {
+    public void setClickListener(@Nullable ClickListener clickListener) {
         checkNotDeleted();
 
-        this.touchHandler = touchHandler;
+        this.clickListener = clickListener;
         setChanged();
     }
 

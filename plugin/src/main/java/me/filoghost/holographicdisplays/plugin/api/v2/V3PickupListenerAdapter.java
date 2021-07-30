@@ -6,15 +6,16 @@
 package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
+import me.filoghost.holographicdisplays.api.hologram.PickupListener;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class V3PickupHandlerAdapter implements me.filoghost.holographicdisplays.api.hologram.PickupHandler {
+public class V3PickupListenerAdapter implements PickupListener {
 
     private final PickupHandler v2PickupHandler;
 
-    public V3PickupHandlerAdapter(PickupHandler v2PickupHandler) {
+    public V3PickupListenerAdapter(PickupHandler v2PickupHandler) {
         this.v2PickupHandler = v2PickupHandler;
     }
 
@@ -32,11 +33,11 @@ public class V3PickupHandlerAdapter implements me.filoghost.holographicdisplays.
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof V3PickupHandlerAdapter)) {
+        if (!(obj instanceof V3PickupListenerAdapter)) {
             return false;
         }
 
-        V3PickupHandlerAdapter other = (V3PickupHandlerAdapter) obj;
+        V3PickupListenerAdapter other = (V3PickupListenerAdapter) obj;
         return this.v2PickupHandler.equals(other.v2PickupHandler);
     }
 

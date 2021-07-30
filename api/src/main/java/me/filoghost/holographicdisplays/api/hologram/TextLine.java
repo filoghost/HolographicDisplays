@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @since 1
  */
-public interface TextLine extends TouchableLine {
+public interface TextLine extends ClickableLine {
 
     /**
      * Returns the current text of this TextLine.

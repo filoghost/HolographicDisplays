@@ -52,7 +52,7 @@ public class PowerUps extends JavaPlugin implements Listener {
             hologram.appendTextLine(ChatColor.AQUA + "" + ChatColor.BOLD + "Speed PowerUp");
             ItemLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
 
-            icon.setPickupHandler((Player player) -> {
+            icon.setPickupListener((Player player) -> {
                 // Play an effect
                 player.playEffect(hologram.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
 

@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.api.hologram.PickupHandler;
+import me.filoghost.holographicdisplays.api.hologram.PickupListener;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.ItemLineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class BaseItemLine extends BaseTouchableLine {
 
     private ItemStack itemStack;
-    private PickupHandler pickupHandler;
+    private PickupListener pickupListener;
 
     public BaseItemLine(BaseHologram<?> hologram, ItemStack itemStack) {
         super(hologram);
@@ -31,27 +31,27 @@ public abstract class BaseItemLine extends BaseTouchableLine {
     }
 
     public void onPickup(Player player) {
-        if (pickupHandler == null || !canInteract(player)) {
+        if (pickupListener == null || !canInteract(player)) {
             return;
         }
 
         try {
-            pickupHandler.onPickup(player);
+            pickupListener.onPickup(player);
         } catch (Throwable t) {
             Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
                     + " when the player " + player.getName() + " picked up an item from a hologram.", t);
         }
     }
 
-    public @Nullable PickupHandler getPickupHandler() {
-        return pickupHandler;
+    public @Nullable PickupListener getPickupListener() {
+        return pickupListener;
     }
 
     @MustBeInvokedByOverriders
-    public void setPickupHandler(@Nullable PickupHandler pickupHandler) {
+    public void setPickupListener(@Nullable PickupListener pickupListener) {
         checkNotDeleted();
 
-        this.pickupHandler = pickupHandler;
+        this.pickupListener = pickupListener;
     }
 
     public @Nullable ItemStack getItemStack() {

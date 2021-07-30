@@ -41,7 +41,7 @@ public abstract class TouchableLineTracker<T extends BaseTouchableLine> extends 
     protected void detectChanges() {
         super.detectChanges();
 
-        boolean spawnSlimeEntities = line.getTouchHandler() != null;
+        boolean spawnSlimeEntities = line.getClickListener() != null;
         if (this.spawnSlimeEntities != spawnSlimeEntities) {
             this.spawnSlimeEntities = spawnSlimeEntities;
             this.spawnSlimeEntitiesChanged = true;

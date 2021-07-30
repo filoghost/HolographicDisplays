@@ -5,25 +5,26 @@
  */
 package me.filoghost.holographicdisplays.plugin.api.v2;
 
-import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
+import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
+import me.filoghost.holographicdisplays.api.hologram.ClickListener;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
-class V2TouchHandlerAdapter implements com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler {
+class V2TouchHandlerAdapter implements TouchHandler {
 
-    private final TouchHandler v3TouchHandler;
+    private final ClickListener v3ClickListener;
 
-    V2TouchHandlerAdapter(TouchHandler v3TouchHandler) {
-        this.v3TouchHandler = v3TouchHandler;
+    V2TouchHandlerAdapter(ClickListener v3ClickListener) {
+        this.v3ClickListener = v3ClickListener;
     }
 
     @Override
     public void onTouch(Player player) {
-        v3TouchHandler.onTouch(player);
+        v3ClickListener.onClick(player);
     }
 
-    public TouchHandler getV3TouchHandler() {
-        return v3TouchHandler;
+    public ClickListener getV3ClickListener() {
+        return v3ClickListener;
     }
 
     @Override
@@ -36,17 +37,17 @@ class V2TouchHandlerAdapter implements com.gmail.filoghost.holographicdisplays.a
         }
 
         V2TouchHandlerAdapter other = (V2TouchHandlerAdapter) obj;
-        return this.v3TouchHandler.equals(other.v3TouchHandler);
+        return this.v3ClickListener.equals(other.v3ClickListener);
     }
 
     @Override
     public final int hashCode() {
-        return v3TouchHandler.hashCode();
+        return v3ClickListener.hashCode();
     }
 
     @Override
     public final String toString() {
-        return v3TouchHandler.toString();
+        return v3ClickListener.toString();
     }
 
 }

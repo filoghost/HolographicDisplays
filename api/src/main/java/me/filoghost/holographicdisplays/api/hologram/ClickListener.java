@@ -9,19 +9,19 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Interface to handle touch holograms.
+ * Interface to handle clickable hologram lines.
  *
  * @since 1
  */
 @FunctionalInterface
-public interface TouchHandler {
+public interface ClickListener {
 
     /**
-     * Called when a player interacts with the hologram (right click).
+     * Called when a player clicks on a hologram line.
      *
-     * @param player the player who interacts
+     * @param player the player who clicked
      * @since 1
      */
-    void onTouch(@NotNull Player player);
+    void onClick(@NotNull Player player);
 
 }

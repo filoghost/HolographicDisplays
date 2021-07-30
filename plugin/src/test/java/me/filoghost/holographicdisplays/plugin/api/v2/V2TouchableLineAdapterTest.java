@@ -5,8 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.api.v2;
 
+import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
-import me.filoghost.holographicdisplays.api.hologram.TouchHandler;
+import me.filoghost.holographicdisplays.api.hologram.ClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APITextLine;
@@ -33,30 +34,30 @@ class V2TouchableLineAdapterTest {
     void setNullV2TouchHandler() {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
-        ExampleV3TouchHandler v3TouchHandler = new ExampleV3TouchHandler();
+        ExampleV3ClickListener v3ClickListener = new ExampleV3ClickListener();
 
-        v3Line.setTouchHandler(v3TouchHandler);
+        v3Line.setClickListener(v3ClickListener);
         v2Line.setTouchHandler(null);
 
         assertThat(v2Line.getTouchHandler()).isNull();
-        assertThat(v3Line.getTouchHandler()).isNull();
+        assertThat(v3Line.getClickListener()).isNull();
     }
 
     @Test
-    void setNullV3TouchHandler() {
+    void setNullV3ClickListener() {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
         ExampleV2TouchHandler v2TouchHandler = new ExampleV2TouchHandler();
 
         v2Line.setTouchHandler(v2TouchHandler);
-        v3Line.setTouchHandler(null);
+        v3Line.setClickListener(null);
 
         assertThat(v2Line.getTouchHandler()).isNull();
-        assertThat(v3Line.getTouchHandler()).isNull();
+        assertThat(v3Line.getClickListener()).isNull();
     }
 
     @Test
-    void setV2GetV2TouchHandler() {
+    void setThenGetV2TouchHandler() {
         TextLine v2Line = new APITextLine(hologram, "").getV2Adapter();
         ExampleV2TouchHandler v2TouchHandler = new ExampleV2TouchHandler();
 
@@ -66,25 +67,25 @@ class V2TouchableLineAdapterTest {
     }
 
     @Test
-    void setV3GetV2TouchHandler() {
+    void setV3ClickListenerThenGetV2TouchHandler() {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
-        ExampleV3TouchHandler v3TouchHandler = new ExampleV3TouchHandler();
+        ExampleV3ClickListener v3ClickListener = new ExampleV3ClickListener();
 
-        v3Line.setTouchHandler(v3TouchHandler);
+        v3Line.setClickListener(v3ClickListener);
 
         assertThat(v2Line.getTouchHandler()).isNotNull();
     }
 
     @Test
-    void setV2GetV3TouchHandler() {
+    void setV2TouchHandlerThenGetV3ClickListener() {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
         ExampleV2TouchHandler v2TouchHandler = new ExampleV2TouchHandler();
 
         v2Line.setTouchHandler(v2TouchHandler);
 
-        assertThat(v3Line.getTouchHandler()).isNotNull();
+        assertThat(v3Line.getClickListener()).isNotNull();
     }
 
     @Test
@@ -92,7 +93,7 @@ class V2TouchableLineAdapterTest {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
 
-        v3Line.setTouchHandler(new ExampleV3TouchHandler());
+        v3Line.setClickListener(new ExampleV3ClickListener());
         assertThat(v2Line.getTouchHandler()).isSameAs(v2Line.getTouchHandler());
 
         v2Line.setTouchHandler(new ExampleV2TouchHandler());
@@ -100,103 +101,103 @@ class V2TouchableLineAdapterTest {
     }
 
     @Test
-    void repeatedSetV2TouchHandlerShouldNotChangeV3TouchHandlerInstance() {
+    void repeatedSetV2TouchHandlerShouldNotChangeV3ClickListenerInstance() {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
         ExampleV2TouchHandler v2TouchHandler = new ExampleV2TouchHandler();
 
         v2Line.setTouchHandler(v2TouchHandler);
-        TouchHandler v3TouchHandlerA = v3Line.getTouchHandler();
+        ClickListener v3ClickListenerA = v3Line.getClickListener();
         v2Line.setTouchHandler(v2TouchHandler);
-        TouchHandler v3TouchHandlerB = v3Line.getTouchHandler();
+        ClickListener v3ClickListenerB = v3Line.getClickListener();
 
-        assertThat(v3TouchHandlerA).isSameAs(v3TouchHandlerB);
+        assertThat(v3ClickListenerA).isSameAs(v3ClickListenerB);
     }
 
     @Test
-    void repeatedSetV3TouchHandlerShouldNotChangeV2TouchHandlerInstance() {
+    void repeatedSetV3ClickListenerShouldNotChangeV2TouchHandlerInstance() {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
-        ExampleV3TouchHandler v2TouchHandler = new ExampleV3TouchHandler();
+        ExampleV3ClickListener v2TouchHandler = new ExampleV3ClickListener();
 
-        v3Line.setTouchHandler(v2TouchHandler);
-        com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler v2TouchHandlerA = v2Line.getTouchHandler();
-        v3Line.setTouchHandler(v2TouchHandler);
-        com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler v2TouchHandlerB = v2Line.getTouchHandler();
+        v3Line.setClickListener(v2TouchHandler);
+        TouchHandler v2TouchHandlerA = v2Line.getTouchHandler();
+        v3Line.setClickListener(v2TouchHandler);
+        TouchHandler v2TouchHandlerB = v2Line.getTouchHandler();
 
         assertThat(v2TouchHandlerA).isSameAs(v2TouchHandlerB);
     }
 
     @Test
-    void v2TouchHandlerChangesWhenV3TouchHandlerChanges() {
+    void v2TouchHandlerChangesWhenV3ClickListenerChanges() {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
 
-        v3Line.setTouchHandler(new ExampleV3TouchHandler());
-        com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler v2TouchHandlerA = v2Line.getTouchHandler();
-        v3Line.setTouchHandler(new ExampleV3TouchHandler());
-        com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler v2TouchHandlerB = v2Line.getTouchHandler();
+        v3Line.setClickListener(new ExampleV3ClickListener());
+        TouchHandler v2TouchHandlerA = v2Line.getTouchHandler();
+        v3Line.setClickListener(new ExampleV3ClickListener());
+        TouchHandler v2TouchHandlerB = v2Line.getTouchHandler();
 
         assertThat(v2TouchHandlerA).isNotSameAs(v2TouchHandlerB);
     }
 
     @Test
-    void v3TouchHandlerChangesWhenV2TouchHandlerChanges() {
+    void v3ClickListenerChangesWhenV2TouchHandlerChanges() {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
 
         v2Line.setTouchHandler(new ExampleV2TouchHandler());
-        TouchHandler v3TouchHandlerA = v3Line.getTouchHandler();
+        ClickListener v3ClickListenerA = v3Line.getClickListener();
         v2Line.setTouchHandler(new ExampleV2TouchHandler());
-        TouchHandler v3TouchHandlerB = v3Line.getTouchHandler();
+        ClickListener v3ClickListenerB = v3Line.getClickListener();
 
-        assertThat(v3TouchHandlerA).isNotSameAs(v3TouchHandlerB);
+        assertThat(v3ClickListenerA).isNotSameAs(v3ClickListenerB);
     }
 
     @Test
-    void preserveTouchHandlerInstancesWhenUsingV3API() {
+    void preserveInstancesWhenUsingV3API() {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
         ExampleV2TouchHandler v2TouchHandler = new ExampleV2TouchHandler();
 
         v2Line.setTouchHandler(v2TouchHandler);
 
-        TouchHandler v3TouchHandler = v3Line.getTouchHandler();
+        ClickListener v3ClickListener = v3Line.getClickListener();
         v2Line.setTouchHandler(null); // This also clears the adapter
-        v3Line.setTouchHandler(v3TouchHandler); // Return to the initial value
+        v3Line.setClickListener(v3ClickListener); // Return to the initial value
 
         // Instances should be the same
         assertThat(v2Line.getTouchHandler()).isSameAs(v2TouchHandler);
-        assertThat(v3Line.getTouchHandler()).isSameAs(v3TouchHandler);
+        assertThat(v3Line.getClickListener()).isSameAs(v3ClickListener);
     }
 
     @Test
-    void preserveTouchHandlerInstancesWhenUsingV2API() {
+    void preserveInstancesWhenUsingV2API() {
         APITextLine v3Line = hologram.appendTextLine("");
         TextLine v2Line = v3Line.getV2Adapter();
-        ExampleV3TouchHandler v3TouchHandler = new ExampleV3TouchHandler();
+        ExampleV3ClickListener v3ClickListener = new ExampleV3ClickListener();
 
-        v3Line.setTouchHandler(v3TouchHandler);
+        v3Line.setClickListener(v3ClickListener);
 
-        com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler v2TouchHandler = v2Line.getTouchHandler();
+        TouchHandler v2TouchHandler = v2Line.getTouchHandler();
         v2Line.setTouchHandler(null); // This also clears the adapter
         v2Line.setTouchHandler(v2TouchHandler); // Return to the initial value
 
         // Instances should be the same
         assertThat(v2Line.getTouchHandler()).isSameAs(v2TouchHandler);
-        assertThat(v3Line.getTouchHandler()).isSameAs(v3TouchHandler);
+        assertThat(v3Line.getClickListener()).isSameAs(v3ClickListener);
     }
 
 
-    private static class ExampleV3TouchHandler implements TouchHandler {
+    private static class ExampleV3ClickListener implements ClickListener {
 
         @Override
-        public void onTouch(@NotNull Player player) {}
+        public void onClick(@NotNull Player player) {}
 
     }
 
 
-    private static class ExampleV2TouchHandler implements com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler {
+    private static class ExampleV2TouchHandler implements TouchHandler {
 
         @Override
         public void onTouch(Player player) {}

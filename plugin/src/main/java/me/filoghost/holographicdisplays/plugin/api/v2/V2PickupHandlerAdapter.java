@@ -5,25 +5,26 @@
  */
 package me.filoghost.holographicdisplays.plugin.api.v2;
 
-import me.filoghost.holographicdisplays.api.hologram.PickupHandler;
+import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
+import me.filoghost.holographicdisplays.api.hologram.PickupListener;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
-class V2PickupHandlerAdapter implements com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler {
+class V2PickupHandlerAdapter implements PickupHandler {
 
-    private final PickupHandler v3PickupHandler;
+    private final PickupListener v3PickupListener;
 
-    V2PickupHandlerAdapter(PickupHandler v3PickupHandler) {
-        this.v3PickupHandler = v3PickupHandler;
+    V2PickupHandlerAdapter(PickupListener v3PickupListener) {
+        this.v3PickupListener = v3PickupListener;
     }
 
     @Override
     public void onPickup(Player player) {
-        v3PickupHandler.onPickup(player);
+        v3PickupListener.onPickup(player);
     }
 
-    public PickupHandler getV3PickupHandler() {
-        return v3PickupHandler;
+    public PickupListener getV3PickupListener() {
+        return v3PickupListener;
     }
 
     @Override
@@ -36,17 +37,17 @@ class V2PickupHandlerAdapter implements com.gmail.filoghost.holographicdisplays.
         }
 
         V2PickupHandlerAdapter other = (V2PickupHandlerAdapter) obj;
-        return this.v3PickupHandler.equals(other.v3PickupHandler);
+        return this.v3PickupListener.equals(other.v3PickupListener);
     }
 
     @Override
     public final int hashCode() {
-        return v3PickupHandler.hashCode();
+        return v3PickupListener.hashCode();
     }
 
     @Override
     public final String toString() {
-        return v3PickupHandler.toString();
+        return v3PickupListener.toString();
     }
 
 }

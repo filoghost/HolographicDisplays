@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @since 1
  */
-public interface ItemLine extends CollectableLine, TouchableLine {
+public interface ItemLine extends CollectableLine, ClickableLine {
 
     /**
      * Returns the ItemStack of this ItemLine.
