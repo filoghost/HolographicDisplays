@@ -23,7 +23,7 @@ import me.filoghost.holographicdisplays.plugin.disk.Settings;
 import me.filoghost.holographicdisplays.plugin.disk.upgrade.LegacySymbolsUpgrade;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
-import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTouchListener;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.listener.ChunkListener;
 import me.filoghost.holographicdisplays.plugin.listener.PlayerListener;
@@ -101,8 +101,8 @@ public class HolographicDisplays extends FCommonsPlugin {
         placeholderRegistry = new PlaceholderRegistry();
         TickClock tickClock = new TickClock();
         PlaceholderTracker placeholderTracker = new PlaceholderTracker(placeholderRegistry, tickClock);
-        LineTouchListener lineTouchListener = new LineTouchListener();
-        lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineTouchListener);
+        LineClickListener lineClickListener = new LineClickListener();
+        lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener);
         internalHologramManager = new InternalHologramManager(lineTrackerManager);
         APIHologramManager apiHologramManager = new APIHologramManager(lineTrackerManager);
 
@@ -118,16 +118,16 @@ public class HolographicDisplays extends FCommonsPlugin {
         PlaceholderAPIHook.setup();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            nmsManager.injectPacketListener(player, lineTouchListener);
+            nmsManager.injectPacketListener(player, lineClickListener);
         }
 
-        TickingTask tickingTask = new TickingTask(tickClock, lineTrackerManager, lineTouchListener);
+        TickingTask tickingTask = new TickingTask(tickClock, lineTrackerManager, lineClickListener);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, tickingTask, 0, 1);
 
         HologramCommandManager commandManager = new HologramCommandManager(this, internalHologramManager, configManager);
         commandManager.register(this);
 
-        registerListener(new PlayerListener(nmsManager, lineTrackerManager, lineTouchListener));
+        registerListener(new PlayerListener(nmsManager, lineTrackerManager, lineClickListener));
         registerListener(new ChunkListener(this, lineTrackerManager));
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
         registerListener(updateNotificationListener);

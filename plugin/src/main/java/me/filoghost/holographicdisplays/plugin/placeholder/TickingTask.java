@@ -6,21 +6,21 @@
 package me.filoghost.holographicdisplays.plugin.placeholder;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTouchListener;
+import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 
 public class TickingTask implements Runnable {
 
     private final TickClock tickClock;
     private final LineTrackerManager lineTrackerManager;
-    private final LineTouchListener lineTouchListener;
+    private final LineClickListener lineClickListener;
 
     private long lastErrorLogTick;
 
-    public TickingTask(TickClock tickClock, LineTrackerManager lineTrackerManager, LineTouchListener lineTouchListener) {
+    public TickingTask(TickClock tickClock, LineTrackerManager lineTrackerManager, LineClickListener lineClickListener) {
         this.tickClock = tickClock;
         this.lineTrackerManager = lineTrackerManager;
-        this.lineTouchListener = lineTouchListener;
+        this.lineClickListener = lineClickListener;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class TickingTask implements Runnable {
             }
         }
 
-        lineTouchListener.processQueuedTouchEvents();
+        lineClickListener.processQueuedClickEvents();
     }
 
 }

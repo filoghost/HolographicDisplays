@@ -14,7 +14,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
 
-public class TextLineTracker extends TouchableLineTracker<BaseTextLine> {
+public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
 
     private final EntityID armorStandEntityID;
 
@@ -25,9 +25,9 @@ public class TextLineTracker extends TouchableLineTracker<BaseTextLine> {
     public TextLineTracker(
             BaseTextLine line,
             NMSManager nmsManager,
-            LineTouchListener lineTouchListener,
+            LineClickListener lineClickListener,
             PlaceholderTracker placeholderTracker) {
-        super(line, nmsManager, lineTouchListener);
+        super(line, nmsManager, lineClickListener);
         this.armorStandEntityID = nmsManager.newEntityID();
         this.displayText = new DisplayText(placeholderTracker);
     }

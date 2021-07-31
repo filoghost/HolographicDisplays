@@ -14,17 +14,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public abstract class BaseTouchableLine extends BaseHologramLine {
+public abstract class BaseClickableLine extends BaseHologramLine {
 
     private static final Map<Player, Long> lastClickByPlayer = new WeakHashMap<>();
 
     private ClickListener clickListener;
 
-    protected BaseTouchableLine(BaseHologram<?> hologram) {
+    protected BaseClickableLine(BaseHologram<?> hologram) {
         super(hologram);
     }
 
-    public void onTouch(Player player) {
+    public void onClick(Player player) {
         if (clickListener == null || !canInteract(player)) {
             return;
         }
@@ -41,7 +41,7 @@ public abstract class BaseTouchableLine extends BaseHologramLine {
             clickListener.onClick(player);
         } catch (Throwable t) {
             Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
-                    + " when the player " + player.getName() + " touched a hologram.", t);
+                    + " when the player " + player.getName() + " clicked a hologram.", t);
         }
     }
 

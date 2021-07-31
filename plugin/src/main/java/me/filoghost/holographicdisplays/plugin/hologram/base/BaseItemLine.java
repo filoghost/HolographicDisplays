@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseItemLine extends BaseTouchableLine {
+public abstract class BaseItemLine extends BaseClickableLine {
 
     private ItemStack itemStack;
     private PickupListener pickupListener;

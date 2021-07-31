@@ -8,32 +8,32 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTouchableLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableLine;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-public abstract class TouchableLineTracker<T extends BaseTouchableLine> extends LocationBasedLineTracker<T> {
+public abstract class ClickableLineTracker<T extends BaseClickableLine> extends LocationBasedLineTracker<T> {
 
     private static final double SLIME_HEIGHT = 0.5;
 
-    private final LineTouchListener lineTouchListener;
+    private final LineClickListener lineClickListener;
     private final EntityID vehicleEntityID;
     private final EntityID slimeEntityID;
 
     private boolean spawnSlimeEntities;
     private boolean spawnSlimeEntitiesChanged;
 
-    public TouchableLineTracker(T line, NMSManager nmsManager, LineTouchListener lineTouchListener) {
+    public ClickableLineTracker(T line, NMSManager nmsManager, LineClickListener lineClickListener) {
         super(line, nmsManager);
         this.vehicleEntityID = nmsManager.newEntityID();
         this.slimeEntityID = nmsManager.newEntityID();
-        this.lineTouchListener = lineTouchListener;
+        this.lineClickListener = lineClickListener;
     }
 
     @MustBeInvokedByOverriders
     @Override
     public void onRemoval() {
         super.onRemoval();
-        lineTouchListener.unregisterLine(slimeEntityID);
+        lineClickListener.unregisterLine(slimeEntityID);
     }
 
     @MustBeInvokedByOverriders
@@ -46,9 +46,9 @@ public abstract class TouchableLineTracker<T extends BaseTouchableLine> extends 
             this.spawnSlimeEntities = spawnSlimeEntities;
             this.spawnSlimeEntitiesChanged = true;
             if (spawnSlimeEntities) {
-                lineTouchListener.registerLine(slimeEntityID, line);
+                lineClickListener.registerLine(slimeEntityID, line);
             } else {
-                lineTouchListener.unregisterLine(slimeEntityID);
+                lineClickListener.unregisterLine(slimeEntityID);
             }
         }
     }

@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.PacketListener;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTouchableLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableLine;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -15,54 +15,55 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class LineTouchListener implements PacketListener {
+public class LineClickListener implements PacketListener {
 
-    private final ConcurrentMap<Integer, BaseTouchableLine> linesByEntityID;
+    private final ConcurrentMap<Integer, BaseClickableLine> linesByEntityID;
 
-    // It is necessary to queue async touch events to process them from the main thread.
-    // Use a set to avoid duplicate touch events to the same line.
-    private final Set<TouchEvent> queuedTouchEvents;
+    // It is necessary to queue async click events to process them from the main thread.
+    // Use a set to avoid duplicate click events to the same line.
+    private final Set<ClickEvent> queuedClickEvents;
 
-    public LineTouchListener() {
+    public LineClickListener() {
         linesByEntityID = new ConcurrentHashMap<>();
-        queuedTouchEvents = new HashSet<>();
+        queuedClickEvents = new HashSet<>();
     }
 
     @Override
     public boolean onAsyncEntityInteract(Player player, int entityID) {
-        BaseTouchableLine line = linesByEntityID.get(entityID);
+        BaseClickableLine line = linesByEntityID.get(entityID);
         if (line != null) {
-            queuedTouchEvents.add(new TouchEvent(player, line));
+            queuedClickEvents.add(new ClickEvent(player, line));
             return true;
         } else {
             return false;
         }
     }
 
-    public void processQueuedTouchEvents() {
-        for (TouchEvent touchEvent : queuedTouchEvents) {
-            touchEvent.line.onTouch(touchEvent.player);
+    // This method is called from the main thread
+    public void processQueuedClickEvents() {
+        for (ClickEvent clickEvent : queuedClickEvents) {
+            clickEvent.line.onClick(clickEvent.player);
         }
-        queuedTouchEvents.clear();
+        queuedClickEvents.clear();
     }
 
-    public void registerLine(EntityID touchableEntityID, BaseTouchableLine line) {
-        linesByEntityID.put(touchableEntityID.getNumericID(), line);
+    public void registerLine(EntityID clickableEntityID, BaseClickableLine line) {
+        linesByEntityID.put(clickableEntityID.getNumericID(), line);
     }
 
-    public void unregisterLine(EntityID touchableEntityID) {
-        if (touchableEntityID.hasInitializedNumericID()) {
-            linesByEntityID.remove(touchableEntityID.getNumericID());
+    public void unregisterLine(EntityID clickableEntityID) {
+        if (clickableEntityID.hasInitializedNumericID()) {
+            linesByEntityID.remove(clickableEntityID.getNumericID());
         }
     }
 
 
-    private static class TouchEvent {
+    private static class ClickEvent {
 
         private final Player player;
-        private final BaseTouchableLine line;
+        private final BaseClickableLine line;
 
-        TouchEvent(Player player, BaseTouchableLine line) {
+        ClickEvent(Player player, BaseClickableLine line) {
             this.player = player;
             this.line = line;
         }
@@ -76,8 +77,7 @@ public class LineTouchListener implements PacketListener {
                 return false;
             }
 
-            TouchEvent other = (TouchEvent) obj;
-
+            ClickEvent other = (ClickEvent) obj;
             return this.player.equals(other.player) && this.line.equals(other.line);
         }
 

@@ -9,7 +9,7 @@ import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerMana
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.TextLineTracker;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseTextLine extends BaseTouchableLine {
+public abstract class BaseTextLine extends BaseClickableLine {
 
     private String text;
 

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
 
-public class ItemLineTracker extends TouchableLineTracker<BaseItemLine> {
+public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
 
     private final EntityID vehicleEntityID;
     private final EntityID itemEntityID;
@@ -25,8 +25,8 @@ public class ItemLineTracker extends TouchableLineTracker<BaseItemLine> {
     private boolean spawnItemEntities;
     private boolean spawnItemEntitiesChanged;
 
-    public ItemLineTracker(BaseItemLine line, NMSManager nmsManager, LineTouchListener lineTouchListener) {
-        super(line, nmsManager, lineTouchListener);
+    public ItemLineTracker(BaseItemLine line, NMSManager nmsManager, LineClickListener lineClickListener) {
+        super(line, nmsManager, lineClickListener);
         this.vehicleEntityID = nmsManager.newEntityID();
         this.itemEntityID = nmsManager.newEntityID();
     }
