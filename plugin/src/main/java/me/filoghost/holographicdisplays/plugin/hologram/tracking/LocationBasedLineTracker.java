@@ -91,14 +91,14 @@ abstract class LocationBasedLineTracker<T extends BaseHologramLine> extends Line
 
     @Override
     protected final void onChunkLoad(Chunk chunk) {
-        if (this.chunkX == chunk.getX() && this.chunkZ == chunk.getZ()) {
+        if (this.world == chunk.getWorld() && this.chunkX == chunk.getX() && this.chunkZ == chunk.getZ()) {
             this.chunkLoaded = true;
         }
     }
 
     @Override
     protected final void onChunkUnload(Chunk chunk) {
-        if (this.chunkX == chunk.getX() && this.chunkZ == chunk.getZ()) {
+        if (this.world == chunk.getWorld() && this.chunkX == chunk.getX() && this.chunkZ == chunk.getZ()) {
             this.chunkLoaded = false;
         }
     }
