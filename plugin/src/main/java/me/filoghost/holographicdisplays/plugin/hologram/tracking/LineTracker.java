@@ -46,7 +46,7 @@ public abstract class LineTracker<T extends BaseHologramLine> {
         lineChanged = true;
     }
 
-    final void updateAndSendPackets(Collection<? extends Player> onlinePlayers) {
+    protected final void update(Collection<? extends Player> onlinePlayers) {
         boolean sendChangesPackets = false;
 
         // First, detect the changes if the flag is on and set it off

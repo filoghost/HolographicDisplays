@@ -28,7 +28,7 @@ public class TickingTask implements Runnable {
         tickClock.incrementTick();
 
         try {
-            lineTrackerManager.updateTrackersAndSendPackets();
+            lineTrackerManager.update();
         } catch (Throwable t) {
             // Catch all types of Throwable because we're using NMS code
             if (tickClock.getCurrentTick() - lastErrorLogTick >= 20) {

@@ -43,21 +43,21 @@ public class LineTrackerManager {
         return tracker;
     }
 
-    public void updateTrackersAndSendPackets() {
+    public void update() {
         Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
 
         Iterator<LineTracker<?>> iterator = lineTrackers.iterator();
         while (iterator.hasNext()) {
             LineTracker<?> lineTracker = iterator.next();
 
-            // Remove deleted trackers, sending destroy packets to tracked players
+            // Remove deleted trackers
             if (lineTracker.shouldBeRemoved()) {
                 iterator.remove();
                 lineTracker.onRemoval();
                 continue;
             }
 
-            lineTracker.updateAndSendPackets(onlinePlayers);
+            lineTracker.update(onlinePlayers);
         }
     }
 
