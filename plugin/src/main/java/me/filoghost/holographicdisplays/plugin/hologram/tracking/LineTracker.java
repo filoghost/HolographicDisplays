@@ -33,6 +33,15 @@ public abstract class LineTracker<T extends BaseHologramLine> {
         this.nmsManager = nmsManager;
     }
 
+    final boolean shouldBeRemoved() {
+        return line.isDeleted();
+    }
+
+    @MustBeInvokedByOverriders
+    public void onRemoval() {
+        clearTrackedPlayersAndSendPackets();
+    }
+
     public final void setLineChanged() {
         lineChanged = true;
     }
@@ -100,15 +109,6 @@ public abstract class LineTracker<T extends BaseHologramLine> {
                 }
             }
         }
-    }
-
-    final boolean shouldBeRemoved() {
-        return line.isDeleted();
-    }
-
-    @MustBeInvokedByOverriders
-    public void onRemoval() {
-        clearTrackedPlayersAndSendPackets();
     }
 
     protected abstract boolean isActive();
