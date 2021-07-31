@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.common.nms.PacketListener;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableLine;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -25,7 +25,7 @@ public class LineClickListener implements PacketListener {
 
     public LineClickListener() {
         linesByEntityID = new ConcurrentHashMap<>();
-        queuedClickEvents = new HashSet<>();
+        queuedClickEvents = Collections.newSetFromMap(new ConcurrentHashMap<>());
     }
 
     @Override
