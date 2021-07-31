@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.image;
 
 import me.filoghost.fcommons.Colors;
-import me.filoghost.holographicdisplays.plugin.disk.Settings;
+import me.filoghost.holographicdisplays.plugin.config.Settings;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.Nullable;
 

@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.disk.upgrade;
+package me.filoghost.holographicdisplays.plugin.config.upgrade;
 
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.config.Config;
@@ -14,7 +14,7 @@ import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.exception.ConfigLoadException;
 import me.filoghost.fcommons.config.exception.ConfigSaveException;
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
+import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import java.io.IOException;

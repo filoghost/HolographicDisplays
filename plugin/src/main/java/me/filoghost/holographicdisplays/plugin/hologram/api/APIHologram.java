@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramAdapter;
-import me.filoghost.holographicdisplays.plugin.disk.Settings;
+import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Location;

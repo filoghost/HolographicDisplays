@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.listener;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.Permissions;
-import me.filoghost.holographicdisplays.plugin.disk.Settings;
+import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.updatechecker.UpdateChecker;
 import org.bukkit.entity.Player;

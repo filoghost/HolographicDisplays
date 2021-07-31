@@ -11,7 +11,7 @@ import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.config.exception.ConfigSyntaxException;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.ErrorLog;
-import me.filoghost.holographicdisplays.plugin.disk.HologramLoadException;
+import me.filoghost.holographicdisplays.plugin.config.HologramLoadException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 

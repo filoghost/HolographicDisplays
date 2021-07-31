@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.bridge.bungeecord;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.disk.Settings;
+import me.filoghost.holographicdisplays.plugin.config.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;

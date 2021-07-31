@@ -7,7 +7,7 @@
 package me.filoghost.holographicdisplays.plugin.format;
 
 import me.filoghost.fcommons.Colors;
-import me.filoghost.holographicdisplays.plugin.disk.StaticReplacements;
+import me.filoghost.holographicdisplays.plugin.config.StaticReplacements;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

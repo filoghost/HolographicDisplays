@@ -10,7 +10,7 @@ import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
 import me.filoghost.holographicdisplays.common.DebugLogger;
-import me.filoghost.holographicdisplays.plugin.disk.ConfigManager;
+import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 
 import java.io.IOException;

@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.bridge.bungeecord;
 
 import me.filoghost.fcommons.Strings;
-import me.filoghost.holographicdisplays.plugin.disk.Settings;
+import me.filoghost.holographicdisplays.plugin.config.Settings;
 
 public class ServerInfo {
 
