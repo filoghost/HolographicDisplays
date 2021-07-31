@@ -46,7 +46,8 @@ public abstract class LineTracker<T extends BaseHologramLine> {
         lineChanged = true;
     }
 
-    protected final void update(Collection<? extends Player> onlinePlayers) {
+    @MustBeInvokedByOverriders
+    protected void update(Collection<? extends Player> onlinePlayers) {
         boolean sendChangesPackets = false;
 
         // First, detect the changes if the flag is on and set it off
@@ -115,8 +116,12 @@ public abstract class LineTracker<T extends BaseHologramLine> {
 
     protected abstract boolean shouldTrackPlayer(Player player);
 
-    private boolean hasTrackedPlayers() {
+    protected final boolean hasTrackedPlayers() {
         return !trackedPlayers.isEmpty();
+    }
+
+    protected final Set<Player> getTrackedPlayers() {
+        return trackedPlayers;
     }
 
     public final boolean isTrackedPlayer(Player player) {

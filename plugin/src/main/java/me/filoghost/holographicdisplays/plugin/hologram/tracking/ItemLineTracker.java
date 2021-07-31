@@ -9,9 +9,11 @@ import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
+import java.util.Collection;
 import java.util.Objects;
 
 public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
@@ -29,6 +31,20 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
         super(line, nmsManager, lineClickListener);
         this.vehicleEntityID = nmsManager.newEntityID();
         this.itemEntityID = nmsManager.newEntityID();
+    }
+
+    @MustBeInvokedByOverriders
+    @Override
+    protected void update(Collection<? extends Player> onlinePlayers) {
+        super.update(onlinePlayers);
+
+        if (spawnItemEntities && hasTrackedPlayers()) {
+            for (Player trackedPlayer : getTrackedPlayers()) {
+                if (CollisionHelper.isInPickupRange(trackedPlayer, locationX, locationY, locationZ)) {
+                    line.onPickup(trackedPlayer);
+                }
+            }
+        }
     }
 
     @Override
