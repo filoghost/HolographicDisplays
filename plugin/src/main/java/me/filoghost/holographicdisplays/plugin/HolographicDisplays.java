@@ -23,9 +23,9 @@ import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.LegacySymbolsUpgrade;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
-import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.listener.ChunkListener;
+import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.listener.PlayerListener;
 import me.filoghost.holographicdisplays.plugin.listener.UpdateNotificationListener;
 import me.filoghost.holographicdisplays.plugin.log.PrintableErrorCollector;
@@ -70,7 +70,6 @@ public class HolographicDisplays extends FCommonsPlugin {
         System.setProperty("HolographicDisplaysLoaded", "true");
         instance = this;
 
-        // The bungee chat API is required
         if (!FeatureSupport.CHAT_COMPONENTS) {
             throw new PluginEnableException(
                     "Holographic Displays requires the new chat API.",
@@ -85,6 +84,7 @@ public class HolographicDisplays extends FCommonsPlugin {
 
         PrintableErrorCollector errorCollector = new PrintableErrorCollector();
 
+        // Initialize class fields
         try {
             nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
         } catch (UnknownVersionException e) {
@@ -104,45 +104,50 @@ public class HolographicDisplays extends FCommonsPlugin {
         LineClickListener lineClickListener = new LineClickListener();
         lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener);
         internalHologramManager = new InternalHologramManager(lineTrackerManager);
-        APIHologramManager apiHologramManager = new APIHologramManager(lineTrackerManager);
 
-        // Run only once at startup, before anything else
+        // Run only once at startup, before loading the configuration
         try {
             LegacySymbolsUpgrade.run(configManager, errorCollector);
         } catch (ConfigException e) {
             errorCollector.add(e, "couldn't automatically convert symbols file to the new format");
         }
 
+        // Load the configuration
         load(true, errorCollector);
 
-        PlaceholderAPIHook.setup();
-
+        // Add packet listener for currently online players (may happen if the plugin is disabled and re-enabled)
         for (Player player : Bukkit.getOnlinePlayers()) {
             nmsManager.injectPacketListener(player, lineClickListener);
         }
 
-        TickingTask tickingTask = new TickingTask(tickClock, lineTrackerManager, lineClickListener);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, tickingTask, 0, 1);
+        // Commands
+        new HologramCommandManager(this, internalHologramManager, configManager).register(this);
 
-        HologramCommandManager commandManager = new HologramCommandManager(this, internalHologramManager, configManager);
-        commandManager.register(this);
-
+        // Listeners
         registerListener(new PlayerListener(nmsManager, lineTrackerManager, lineClickListener));
         registerListener(new ChunkListener(this, lineTrackerManager));
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
         registerListener(updateNotificationListener);
 
+        // Tasks
+        TickingTask tickingTask = new TickingTask(tickClock, lineTrackerManager, lineClickListener);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, tickingTask, 0, 1);
+        updateNotificationListener.runAsyncUpdateCheck(this);
+
         // Enable the APIs
+        APIHologramManager apiHologramManager = new APIHologramManager(lineTrackerManager);
         HolographicDisplaysAPIProvider.setImplementation(
                 new DefaultHolographicDisplaysAPIProvider(apiHologramManager, nmsManager, placeholderRegistry));
         enableLegacyAPI(apiHologramManager, placeholderRegistry);
+
+        // Setup external plugin hooks
+        PlaceholderAPIHook.setup();
 
         // Register bStats metrics
         int pluginID = 3123;
         new MetricsLite(this, pluginID);
 
-        updateNotificationListener.runAsyncUpdateCheck(this);
-
+        // Log all loading errors at the end
         if (errorCollector.hasErrors()) {
             errorCollector.logToConsole();
             Bukkit.getScheduler().runTaskLater(this, errorCollector::logSummaryToConsole, 10L);
@@ -181,6 +186,7 @@ public class HolographicDisplays extends FCommonsPlugin {
     @Override
     public void onDisable() {
         lineTrackerManager.clearTrackedPlayersAndSendPackets();
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             nmsManager.uninjectPacketListener(player);
         }
