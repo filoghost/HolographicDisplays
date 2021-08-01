@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.plugin.listener;
 
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

@@ -9,6 +9,7 @@ import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
+import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 

@@ -23,7 +23,7 @@ import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.LegacySymbolsUpgrade;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
-import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineClickListener;
+import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.listener.ChunkListener;
 import me.filoghost.holographicdisplays.plugin.listener.PlayerListener;

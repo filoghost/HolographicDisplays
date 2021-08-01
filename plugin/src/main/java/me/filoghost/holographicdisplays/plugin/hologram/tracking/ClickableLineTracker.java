@@ -9,6 +9,7 @@ import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableLine;
+import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 public abstract class ClickableLineTracker<T extends BaseClickableLine> extends LocationBasedLineTracker<T> {

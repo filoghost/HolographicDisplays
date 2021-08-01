@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.placeholder;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineClickListener;
+import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 
 public class TickingTask implements Runnable {

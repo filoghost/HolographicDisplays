@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.hologram.tracking;
+package me.filoghost.holographicdisplays.plugin.listener;
 
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.PacketListener;
