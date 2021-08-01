@@ -49,7 +49,7 @@ class EntityMetadataNMSPacket extends VersionNMSPacket {
             return this;
         }
 
-        Builder setMarkerArmorStand() {
+        Builder setArmorStandMarker() {
             setInvisible();
             packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.ARMOR_STAND_STATUS, (byte) (0x01 | 0x08 | 0x10)); // Small, no base plate, marker
             return this;
@@ -75,7 +75,7 @@ class EntityMetadataNMSPacket extends VersionNMSPacket {
             return this;
         }
 
-        Builder setSmallSlime() {
+        Builder setSlimeSmall() {
             packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.SLIME_SIZE, 1);
             return this;
         }

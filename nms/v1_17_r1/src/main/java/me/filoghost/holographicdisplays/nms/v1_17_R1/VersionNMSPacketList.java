@@ -24,7 +24,7 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
     public void addArmorStandSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ) {
         add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.ARMOR_STAND, locationX, locationY, locationZ));
         add(EntityMetadataNMSPacket.builder(entityID)
-                .setMarkerArmorStand()
+                .setArmorStandMarker()
                 .build()
         );
     }
@@ -33,7 +33,7 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
     public void addArmorStandSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ, String customName) {
         add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.ARMOR_STAND, locationX, locationY, locationZ));
         add(EntityMetadataNMSPacket.builder(entityID)
-                .setMarkerArmorStand()
+                .setArmorStandMarker()
                 .setCustomName(customName)
                 .build()
         );
@@ -43,7 +43,7 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
     public void addArmorStandSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ, IndividualCustomName individualCustomName) {
         add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.ARMOR_STAND, locationX, locationY, locationZ));
         add(new IndividualNMSPacket(player -> EntityMetadataNMSPacket.builder(entityID)
-                .setMarkerArmorStand()
+                .setArmorStandMarker()
                 .setCustomName(individualCustomName.get(player))
                 .build()
         ));
@@ -87,7 +87,7 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
         add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.SLIME, locationX, locationY, locationZ));
         add(EntityMetadataNMSPacket.builder(entityID)
                 .setInvisible()
-                .setSmallSlime() // Required for a correct client-side collision box
+                .setSlimeSmall() // Required for a correct client-side collision box
                 .build()
         );
     }
