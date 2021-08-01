@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.hologram.ClickListener;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +26,7 @@ public abstract class BaseClickableLine extends BaseHologramLine {
     }
 
     public void onClick(Player player) {
-        if (clickListener == null || !canInteract(player)) {
+        if (clickListener == null || !canInteract(player) || !isInClickRange(player)) {
             return;
         }
 
@@ -43,6 +44,17 @@ public abstract class BaseClickableLine extends BaseHologramLine {
             Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
                     + " when the player " + player.getName() + " clicked a hologram.", t);
         }
+    }
+
+    private boolean isInClickRange(Player player) {
+        Location playerLocation = player.getLocation();
+
+        double xDiff = playerLocation.getX() - this.getX();
+        double yDiff = playerLocation.getY() + 1.3 - this.getY(); // Use shoulder height
+        double zDiff = playerLocation.getZ() - this.getZ();
+
+        double distanceSquared = (xDiff * xDiff) + (yDiff * yDiff) + (zDiff * zDiff);
+        return distanceSquared < 5 * 5;
     }
 
     public @Nullable ClickListener getClickListener() {
