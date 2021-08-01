@@ -75,6 +75,11 @@ class EntityMetadataNMSPacket extends VersionNMSPacket {
             return this;
         }
 
+        Builder setSmallSlime() {
+            packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.SLIME_SIZE, 1);
+            return this;
+        }
+
         EntityMetadataNMSPacket build() {
             packetByteBuffer.writeDataWatcherEntriesEnd();
             return new EntityMetadataNMSPacket(packetByteBuffer);

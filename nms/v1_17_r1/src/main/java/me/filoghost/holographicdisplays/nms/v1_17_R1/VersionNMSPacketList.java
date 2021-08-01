@@ -87,6 +87,7 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
         add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.SLIME, locationX, locationY, locationZ));
         add(EntityMetadataNMSPacket.builder(entityID)
                 .setInvisible()
+                .setSmallSlime() // Required for a correct client-side collision box
                 .build()
         );
     }
