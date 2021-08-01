@@ -52,6 +52,22 @@ class StringWithPlaceholdersTest {
         );
     }
 
+    @ParameterizedTest(name = "[{index}] {0} -> {1}")
+    @MethodSource("replaceLiteralPartsTestArguments")
+    void replaceLiteralParts(String input, String expectedOutput) {
+        StringWithPlaceholders s = StringWithPlaceholders.of(input);
+        assertThat(s.replaceLiteralParts(literalPart -> "_")).isEqualTo(expectedOutput);
+    }
+
+    static Stream<Arguments> replaceLiteralPartsTestArguments() {
+        return Stream.of(
+                Arguments.of(" {p} ", "_{p}_"),
+                Arguments.of("{p} {p} abc {p}", "{p}_{p}_{p}"),
+                Arguments.of("{p}{p}", "{p}{p}"),
+                Arguments.of(" {{p}} ", "_{p}_")
+        );
+    }
+
     @Test
     void skipReplacing() {
         String input = "{p} a {p} b {p}";

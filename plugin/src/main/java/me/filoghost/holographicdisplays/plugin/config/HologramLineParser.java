@@ -12,6 +12,7 @@ import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologra
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParseException;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParser;
+import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -29,7 +30,8 @@ public class HologramLineParser {
             hologramLine = hologram.createItemLine(icon, serializedLine);
 
         } else {
-            String displayText = DisplayFormat.apply(serializedLine);
+            // Don't apply display format inside placeholders
+            String displayText = StringWithPlaceholders.of(serializedLine).replaceLiteralParts(DisplayFormat::apply);
             hologramLine = hologram.createTextLine(displayText, serializedLine);
         }
 

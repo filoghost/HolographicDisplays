@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public final class StringWithPlaceholders {
@@ -27,11 +28,7 @@ public final class StringWithPlaceholders {
         if (string == null) {
             return NULL_INSTANCE;
         }
-        return new StringWithPlaceholders(string);
-    }
-
-    private StringWithPlaceholders(@NotNull String string) {
-        this(string, splitToParts(string));
+        return new StringWithPlaceholders(string, splitToParts(string));
     }
 
     private StringWithPlaceholders(@Nullable String string, @Nullable List<StringPart> stringParts) {
@@ -91,7 +88,7 @@ public final class StringWithPlaceholders {
                         output.setLength(0);
                     }
                     newStringParts.add(placeholderStringPart);
-                    fullOutput.append(placeholderStringPart.nonReplacedString);
+                    fullOutput.append(placeholderStringPart.unreplacedString);
                 }
             } else {
                 LiteralStringPart literalStringPart = (LiteralStringPart) part;
@@ -118,6 +115,26 @@ public final class StringWithPlaceholders {
         }
 
         return output.toString();
+    }
+
+    public String replaceLiteralParts(Function<String, String> transformFunction) {
+        if (!containsPlaceholders() || string == null) {
+            return transformFunction.apply(string);
+        }
+
+        StringBuilder stringOutput = new StringBuilder(string.length());
+
+        for (StringPart part : stringParts) {
+            if (part instanceof LiteralStringPart) {
+                LiteralStringPart literalStringPart = (LiteralStringPart) part;
+                String transformedPart = transformFunction.apply(literalStringPart.literalString);
+                stringOutput.append(transformedPart);
+            } else {
+                stringOutput.append(((PlaceholderStringPart) part).unreplacedString);
+            }
+        }
+
+        return stringOutput.toString();
     }
 
     private static @Nullable List<StringPart> splitToParts(@NotNull String string) {
@@ -219,11 +236,11 @@ public final class StringWithPlaceholders {
     private static class PlaceholderStringPart implements StringPart {
 
         private final PlaceholderOccurrence placeholderOccurrence;
-        private final String nonReplacedString;
+        private final String unreplacedString;
 
-        PlaceholderStringPart(PlaceholderOccurrence placeholderOccurrence, String nonReplacedString) {
+        PlaceholderStringPart(PlaceholderOccurrence placeholderOccurrence, String unreplacedString) {
             this.placeholderOccurrence = placeholderOccurrence;
-            this.nonReplacedString = nonReplacedString;
+            this.unreplacedString = unreplacedString;
         }
 
         @Override
@@ -232,8 +249,8 @@ public final class StringWithPlaceholders {
             if (replacement != null) {
                 return replacement;
             } else {
-                // If no replacement is provided, leave the unparsed placeholder string
-                return nonReplacedString;
+                // If no replacement is provided, leave the unreplaced placeholder string
+                return unreplacedString;
             }
         }
 
