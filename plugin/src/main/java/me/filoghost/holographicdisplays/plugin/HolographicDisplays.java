@@ -20,6 +20,7 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.config.HologramDatabase;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
+import me.filoghost.holographicdisplays.plugin.config.upgrade.LegacyAnimationsUpgrade;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.LegacySymbolsUpgrade;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
@@ -42,6 +43,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class HolographicDisplays extends FCommonsPlugin {
@@ -107,6 +109,11 @@ public class HolographicDisplays extends FCommonsPlugin {
             LegacySymbolsUpgrade.run(configManager, errorCollector);
         } catch (ConfigException e) {
             errorCollector.add(e, "couldn't automatically convert symbols file to the new format");
+        }
+        try {
+            LegacyAnimationsUpgrade.run(configManager, errorCollector);
+        } catch (IOException e) {
+            errorCollector.add(e, "couldn't automatically convert animation files to the new format");
         }
 
         // Load the configuration

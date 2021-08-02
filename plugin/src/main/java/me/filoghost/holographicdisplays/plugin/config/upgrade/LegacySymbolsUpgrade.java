@@ -67,7 +67,7 @@ public class LegacySymbolsUpgrade {
         }
 
         try {
-            Files.move(oldFile, oldFile.resolveSibling("symbols.yml.backup"));
+            Files.move(oldFile, LegacyUpgradeUtils.getBackupFile(oldFile));
         } catch (IOException e) {
             errorCollector.add(e, "couldn't rename " + oldFile.getFileName());
         }
