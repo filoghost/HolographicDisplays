@@ -5,6 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.internal;
 
+import com.google.common.collect.ImmutableList;
+import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
 
 import java.util.List;
@@ -12,12 +14,13 @@ import java.util.List;
 public class AnimationPlaceholder implements Placeholder {
 
     private final int refreshIntervalTicks;
-    private final List<String> frames;
+    private final ImmutableList<String> frames;
     private int currentIndex;
 
     public AnimationPlaceholder(int refreshIntervalTicks, List<String> frames) {
-        this.frames = frames;
+        Preconditions.notEmpty(frames, "frames");
         this.refreshIntervalTicks = refreshIntervalTicks;
+        this.frames = ImmutableList.copyOf(frames);
     }
 
     @Override

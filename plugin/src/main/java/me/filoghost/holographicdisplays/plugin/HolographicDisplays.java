@@ -31,7 +31,7 @@ import me.filoghost.holographicdisplays.plugin.listener.UpdateNotificationListen
 import me.filoghost.holographicdisplays.plugin.log.PrintableErrorCollector;
 import me.filoghost.holographicdisplays.plugin.placeholder.TickClock;
 import me.filoghost.holographicdisplays.plugin.placeholder.TickingTask;
-import me.filoghost.holographicdisplays.plugin.placeholder.internal.AnimationRegistry;
+import me.filoghost.holographicdisplays.plugin.placeholder.internal.AnimationPlaceholderFactory;
 import me.filoghost.holographicdisplays.plugin.placeholder.internal.DefaultPlaceholders;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
@@ -42,7 +42,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class HolographicDisplays extends FCommonsPlugin {
@@ -53,7 +52,6 @@ public class HolographicDisplays extends FCommonsPlugin {
     private ConfigManager configManager;
     private InternalHologramManager internalHologramManager;
     private BungeeServerTracker bungeeServerTracker;
-    private AnimationRegistry animationRegistry;
     private PlaceholderRegistry placeholderRegistry;
     private LineTrackerManager lineTrackerManager;
 
@@ -97,7 +95,6 @@ public class HolographicDisplays extends FCommonsPlugin {
 
         configManager = new ConfigManager(getDataFolder().toPath());
         bungeeServerTracker = new BungeeServerTracker(this);
-        animationRegistry = new AnimationRegistry();
         placeholderRegistry = new PlaceholderRegistry();
         TickClock tickClock = new TickClock();
         PlaceholderTracker placeholderTracker = new PlaceholderTracker(placeholderRegistry, tickClock);
@@ -160,21 +157,17 @@ public class HolographicDisplays extends FCommonsPlugin {
     }
 
     public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
-        DefaultPlaceholders.resetAndRegister(this, placeholderRegistry, animationRegistry, bungeeServerTracker);
-
         internalHologramManager.clearAll();
 
         configManager.reloadStaticReplacements(errorCollector);
         configManager.reloadMainSettings(errorCollector);
-        HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
-        try {
-            animationRegistry.loadAnimations(configManager, errorCollector);
-        } catch (IOException | ConfigException e) {
-            errorCollector.add(e, "failed to load animation files");
-        }
+
+        AnimationPlaceholderFactory animationPlaceholderFactory = configManager.loadAnimations(errorCollector);
+        DefaultPlaceholders.resetAndRegister(this, placeholderRegistry, animationPlaceholderFactory, bungeeServerTracker);
 
         bungeeServerTracker.restart(Settings.bungeeRefreshSeconds, TimeUnit.SECONDS);
 
+        HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
         if (deferHologramsCreation) {
             // For the initial load: holograms are loaded later, when the worlds are ready
             Bukkit.getScheduler().runTask(this, () -> hologramDatabase.createHolograms(internalHologramManager, errorCollector));

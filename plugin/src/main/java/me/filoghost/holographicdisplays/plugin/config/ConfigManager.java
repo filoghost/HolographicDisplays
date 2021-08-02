@@ -11,12 +11,21 @@ import me.filoghost.fcommons.config.ConfigErrors;
 import me.filoghost.fcommons.config.ConfigLoader;
 import me.filoghost.fcommons.config.FileConfig;
 import me.filoghost.fcommons.config.exception.ConfigException;
+import me.filoghost.fcommons.config.exception.ConfigLoadException;
+import me.filoghost.fcommons.config.exception.ConfigSaveException;
 import me.filoghost.fcommons.config.mapped.MappedConfigLoader;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.placeholder.internal.AnimationPlaceholder;
+import me.filoghost.holographicdisplays.plugin.placeholder.internal.AnimationPlaceholderFactory;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class ConfigManager extends BaseConfigManager {
 
@@ -67,6 +76,45 @@ public class ConfigManager extends BaseConfigManager {
         }
     }
 
+    public AnimationPlaceholderFactory loadAnimations(ErrorCollector errorCollector) {
+        Map<String, AnimationPlaceholder> animationsByFileName = new HashMap<>();
+        Path animationsFolder = getAnimationsFolder();
+
+        try {
+            if (!Files.isDirectory(animationsFolder)) {
+                Files.createDirectories(animationsFolder);
+                try {
+                    Path exampleAnimationFile = animationsFolder.resolve("example.yml");
+                    getConfigLoader(exampleAnimationFile).createDefault();
+                } catch (ConfigSaveException e) {
+                    errorCollector.add(e, "could not add example animation file");
+                }
+            }
+
+            try (Stream<Path> animationFiles = Files.list(animationsFolder)) {
+                animationFiles.filter(this::isYamlFile).forEach(file -> {
+                    try {
+                        String fileName = file.getFileName().toString();
+                        AnimationPlaceholder animationPlaceholder = loadAnimation(file);
+                        animationsByFileName.put(fileName, animationPlaceholder);
+                    } catch (ConfigLoadException e) {
+                        logConfigInitException(errorCollector, file, e);
+                    }
+                });
+            }
+        } catch (IOException e) {
+            errorCollector.add(e, "error loading animation files");
+        }
+
+        return new AnimationPlaceholderFactory(animationsByFileName);
+    }
+
+    private AnimationPlaceholder loadAnimation(Path animationFile) throws ConfigLoadException {
+        MappedConfigLoader<AnimationConfig> animationConfigLoader = getMappedConfigLoader(animationFile, AnimationConfig.class);
+        AnimationConfig animationConfig = animationConfigLoader.load();
+        return new AnimationPlaceholder(animationConfig.getIntervalTicks(), animationConfig.getFrames());
+    }
+
     public void reloadStaticReplacements(ErrorCollector errorCollector) {
         FileConfig staticReplacementsConfig;
 
@@ -84,12 +132,16 @@ public class ConfigManager extends BaseConfigManager {
         return getRootDataFolder().resolve("animations");
     }
 
-    public ConfigLoader getExampleAnimationLoader() {
-        return getConfigLoader(getAnimationsFolder().resolve("example.txt"));
+    private boolean isYamlFile(Path file) {
+        if (!Files.isRegularFile(file)) {
+            return false;
+        }
+        String fileName = file.getFileName().toString().toLowerCase();
+        return fileName.endsWith(".yml") || fileName.endsWith(".yaml");
     }
 
     private void logConfigInitException(ErrorCollector errorCollector, Path file, ConfigException e) {
-        errorCollector.add(e, "error while initializing config file \"" + formatPath(file) + "\"");
+        errorCollector.add(e, "error while loading config file \"" + formatPath(file) + "\"");
     }
 
     private String formatPath(Path path) {

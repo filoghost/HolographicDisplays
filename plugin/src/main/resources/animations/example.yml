@@ -1,0 +1,7 @@
+interval-seconds: 0.5
+animation-frames:
+  - "This is an example."
+  - "This line will change every 0.5 seconds..."
+  - "because it's an animation."
+  - "You just have to put {animation: example.yml} in a hologram..."
+  - "to see this animated text."

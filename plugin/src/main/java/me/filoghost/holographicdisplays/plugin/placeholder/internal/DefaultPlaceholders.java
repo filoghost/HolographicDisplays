@@ -26,7 +26,7 @@ public class DefaultPlaceholders {
     public static void resetAndRegister(
             Plugin plugin,
             PlaceholderRegistry placeholderRegistry,
-            AnimationRegistry animationRegistry,
+            AnimationPlaceholderFactory animationPlaceholderFactory,
             BungeeServerTracker bungeeServerTracker) {
         placeholderRegistry.unregisterAll(plugin);
 
@@ -47,7 +47,7 @@ public class DefaultPlaceholders {
             return Settings.timeFormat.format(Instant.now());
         });
 
-        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "animation", animationRegistry);
+        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "animation", animationPlaceholderFactory);
 
         placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "world", new WorldPlayersPlaceholderFactory());
 
