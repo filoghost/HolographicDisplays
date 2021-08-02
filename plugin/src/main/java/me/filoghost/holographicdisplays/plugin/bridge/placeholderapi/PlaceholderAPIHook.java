@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.bridge.placeholderapi;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.filoghost.fcommons.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -22,6 +23,10 @@ public class PlaceholderAPIHook {
     }
 
     public static boolean containsPlaceholders(String text) {
+        if (Strings.isEmpty(text)) {
+            return false;
+        }
+
         int firstIndex = text.indexOf('%');
         if (firstIndex < 0) {
             return false;
