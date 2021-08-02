@@ -22,7 +22,13 @@ public class PlaceholderAPIHook {
     }
 
     public static boolean containsPlaceholders(String text) {
-        return PlaceholderAPI.containsPlaceholders(text);
+        int firstIndex = text.indexOf('%');
+        if (firstIndex < 0) {
+            return false;
+        }
+
+        int lastIndex = text.lastIndexOf('%');
+        return lastIndex - firstIndex >= 2; // At least one character between the two indexes
     }
 
     public static String replacePlaceholders(Player player, String text) {
