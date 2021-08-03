@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin.config.upgrade;
 import me.filoghost.fcommons.config.Config;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
+import me.filoghost.holographicdisplays.plugin.util.FileUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,8 +50,8 @@ public class LegacyAnimationsUpgrade {
             }
 
             String newFileName = oldFile.getFileName().toString();
-            if (LegacyUpgradeUtils.hasFileExtension(newFileName, "txt")) {
-                newFileName = LegacyUpgradeUtils.removeFileExtension(newFileName);
+            if (FileUtils.hasFileExtension(newFileName, "txt")) {
+                newFileName = FileUtils.removeFileExtension(newFileName);
             }
             newFileName += ".yml";
             Path newFile = oldFile.resolveSibling(newFileName);

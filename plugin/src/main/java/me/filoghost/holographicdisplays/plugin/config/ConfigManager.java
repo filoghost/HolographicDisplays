@@ -19,6 +19,7 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.placeholder.internal.AnimationPlaceholder;
 import me.filoghost.holographicdisplays.plugin.placeholder.internal.AnimationPlaceholderFactory;
+import me.filoghost.holographicdisplays.plugin.util.FileUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -136,8 +137,8 @@ public class ConfigManager extends BaseConfigManager {
         if (!Files.isRegularFile(file)) {
             return false;
         }
-        String fileName = file.getFileName().toString().toLowerCase();
-        return fileName.endsWith(".yml") || fileName.endsWith(".yaml");
+
+        return FileUtils.hasFileExtension(file, "yml", "yaml");
     }
 
     private void logConfigInitException(ErrorCollector errorCollector, Path file, ConfigException e) {

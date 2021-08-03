@@ -86,16 +86,12 @@ public class ReadtextCommand extends LineEditingCommand {
         hologram.setLines(newLines);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
-        if (isSupportedImageExtension(FileUtils.getExtension(fileToRead))) {
+        if (FileUtils.hasFileExtension(fileToRead, "jpg", "png", "jpeg", "gif")) {
             DisplayFormat.sendWarning(sender, "The read file has an image's extension."
                     + " If it is an image, you should use /" + context.getRootLabel() + " readimage.");
         }
 
         sender.sendMessage(ColorScheme.PRIMARY + "The lines were pasted into the hologram.");
-    }
-
-    private boolean isSupportedImageExtension(String extension) {
-        return Arrays.asList("jpg", "png", "jpeg", "gif").contains(extension.toLowerCase());
     }
 
 }
