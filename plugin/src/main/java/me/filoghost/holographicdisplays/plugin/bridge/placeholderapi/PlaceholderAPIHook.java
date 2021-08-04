@@ -22,7 +22,7 @@ public class PlaceholderAPIHook {
         enabled = true;
     }
 
-    public static boolean containsPlaceholders(String text) {
+    public static boolean containsPlaceholderPattern(String text) {
         if (Strings.isEmpty(text)) {
             return false;
         }

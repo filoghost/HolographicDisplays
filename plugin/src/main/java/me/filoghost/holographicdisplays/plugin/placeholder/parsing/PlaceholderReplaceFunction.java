@@ -5,9 +5,13 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.parsing;
 
+import org.jetbrains.annotations.Nullable;
+
 @FunctionalInterface
 public interface PlaceholderReplaceFunction {
 
-    String getReplacement(PlaceholderOccurrence placeholderOccurrence);
+    PlaceholderReplaceFunction NO_REPLACEMENTS = placeholderOccurrence -> null;
+
+    @Nullable String getReplacement(PlaceholderOccurrence placeholderOccurrence);
 
 }

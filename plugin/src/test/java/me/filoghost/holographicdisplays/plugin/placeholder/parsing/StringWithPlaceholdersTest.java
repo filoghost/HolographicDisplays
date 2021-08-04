@@ -34,7 +34,7 @@ class StringWithPlaceholdersTest {
         boolean expectedContainsPlaceholders = expectedOutput.contains("#");
         StringWithPlaceholders s = StringWithPlaceholders.of(input);
 
-        assertThat(s.partiallyReplacePlaceholders(occurrence -> "#").getUnreplacedString()).isEqualTo(expectedOutput);
+        assertThat(s.partiallyReplacePlaceholders(occurrence -> "#").getString()).isEqualTo(expectedOutput);
         assertThat(s.partiallyReplacePlaceholders(occurrence -> null).replacePlaceholders(occurrence -> "#")).isEqualTo(expectedOutput);
         assertThat(s.containsPlaceholders()).isEqualTo(expectedContainsPlaceholders);
     }
@@ -82,7 +82,7 @@ class StringWithPlaceholdersTest {
 
         List<PlaceholderOccurrence> placeholders = new ArrayList<>();
         s.replacePlaceholders(occurrence -> {
-            placeholders.add(occurrence); // Just save occurrences
+            placeholders.add(occurrence); // Just collect occurrences
             return null;
         });
         assertThat(placeholders).hasSize(1);

@@ -102,7 +102,7 @@ public class PlaceholderTracker {
     }
 
     public boolean containsIndividualPlaceholders(StringWithPlaceholders textWithPlaceholders) {
-        return textWithPlaceholders.anyMatch(occurrence -> {
+        return textWithPlaceholders.anyPlaceholderMatch(occurrence -> {
             PlaceholderExpansion placeholderExpansion = registry.find(occurrence);
             return placeholderExpansion != null && placeholderExpansion.isIndividual();
         });
