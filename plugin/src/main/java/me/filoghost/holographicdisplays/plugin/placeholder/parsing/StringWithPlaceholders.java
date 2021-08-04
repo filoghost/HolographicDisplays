@@ -40,12 +40,22 @@ public final class StringWithPlaceholders {
         return string;
     }
 
-    public boolean containsPlaceholders() {
-        return string != null && stringParts != null;
+    public boolean containsUnreplacedPlaceholders() {
+        if (string == null || stringParts == null) {
+            return false;
+        }
+
+        for (StringPart stringPart : stringParts) {
+            if (stringPart instanceof PlaceholderPart) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean anyPlaceholderMatch(Predicate<PlaceholderOccurrence> filter) {
-        if (!containsPlaceholders()) {
+        if (stringParts == null) {
             return false;
         }
 
@@ -62,7 +72,7 @@ public final class StringWithPlaceholders {
     }
 
     public boolean anyLiteralPartMatch(Predicate<String> filter) {
-        if (!containsPlaceholders()) {
+        if (stringParts == null) {
             return filter.test(string);
         }
 
@@ -78,7 +88,7 @@ public final class StringWithPlaceholders {
     }
 
     public @NotNull StringWithPlaceholders partiallyReplacePlaceholders(PlaceholderReplaceFunction replaceFunction) {
-        if (!containsPlaceholders()) {
+        if (stringParts == null) {
             return this;
         }
 
@@ -110,7 +120,7 @@ public final class StringWithPlaceholders {
     }
 
     public String replaceParts(PlaceholderReplaceFunction placeholderReplaceFunction, UnaryOperator<String> literalPartReplaceFunction) {
-        if (!containsPlaceholders()) {
+        if (string == null || stringParts == null) {
             return literalPartReplaceFunction.apply(string);
         }
 

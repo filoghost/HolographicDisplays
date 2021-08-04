@@ -60,7 +60,7 @@ class DisplayText {
     }
 
     boolean updateGlobalReplacements() {
-        if (!textWithoutReplacements.containsPlaceholders()) {
+        if (!textWithoutReplacements.containsUnreplacedPlaceholders()) {
             return false;
         }
 
