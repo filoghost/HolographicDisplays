@@ -29,16 +29,23 @@ public class PlaceholderTracker {
     // the corresponding entry is removed from the map automatically.
     private final WeakHashMap<PlaceholderOccurrence, TrackedPlaceholder> activePlaceholders;
 
+    private volatile boolean registryChanged;
+
     public PlaceholderTracker(PlaceholderRegistry registry, TickClock tickClock) {
         this.registry = registry;
         this.tickClock = tickClock;
         this.exceptionHandler = new PlaceholderExceptionHandler(tickClock);
         this.activePlaceholders = new WeakHashMap<>();
 
-        registry.setChangeListener(this::onRegistryChange);
+        registry.setChangeListener(() -> registryChanged = true);
     }
 
-    private void onRegistryChange() {
+    public void update() {
+        if (!registryChanged) {
+            return;
+        }
+        registryChanged = false;
+
         // Remove entries whose placeholder expansion sources are outdated
         activePlaceholders.entrySet().removeIf(entry -> {
             PlaceholderOccurrence placeholderOccurrence = entry.getKey();
@@ -107,6 +114,5 @@ public class PlaceholderTracker {
             return placeholderExpansion != null && placeholderExpansion.isIndividual();
         });
     }
-
 
 }

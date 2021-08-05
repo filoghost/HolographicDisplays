@@ -134,7 +134,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         registerListener(updateNotificationListener);
 
         // Tasks
-        TickingTask tickingTask = new TickingTask(tickClock, lineTrackerManager, lineClickListener);
+        TickingTask tickingTask = new TickingTask(tickClock, placeholderTracker, lineTrackerManager, lineClickListener);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, tickingTask, 0, 1);
         updateNotificationListener.runAsyncUpdateCheck(this);
 

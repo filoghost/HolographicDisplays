@@ -8,17 +8,24 @@ package me.filoghost.holographicdisplays.plugin.placeholder;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
+import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 
 public class TickingTask implements Runnable {
 
     private final TickClock tickClock;
+    private final PlaceholderTracker placeholderTracker;
     private final LineTrackerManager lineTrackerManager;
     private final LineClickListener lineClickListener;
 
     private long lastErrorLogTick;
 
-    public TickingTask(TickClock tickClock, LineTrackerManager lineTrackerManager, LineClickListener lineClickListener) {
+    public TickingTask(
+            TickClock tickClock,
+            PlaceholderTracker placeholderTracker,
+            LineTrackerManager lineTrackerManager,
+            LineClickListener lineClickListener) {
         this.tickClock = tickClock;
+        this.placeholderTracker = placeholderTracker;
         this.lineTrackerManager = lineTrackerManager;
         this.lineClickListener = lineClickListener;
     }
@@ -26,6 +33,9 @@ public class TickingTask implements Runnable {
     @Override
     public void run() {
         tickClock.incrementTick();
+
+        // Update placeholder tracker before updating hologram lines
+        placeholderTracker.update();
 
         try {
             lineTrackerManager.update();
