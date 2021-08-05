@@ -12,6 +12,7 @@ import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -131,6 +132,31 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
 
         height += Settings.spaceBetweenLines * (lines.size() - 1);
         return height;
+    }
+
+    @Override
+    public @NotNull Location getLocation() {
+        return getHologramLocation().toBukkitLocation();
+    }
+
+    @Override
+    public @NotNull World getWorld() {
+        return getHologramLocation().getWorld();
+    }
+
+    @Override
+    public double getX() {
+        return getHologramLocation().getX();
+    }
+
+    @Override
+    public double getY() {
+        return getHologramLocation().getY();
+    }
+
+    @Override
+    public double getZ() {
+        return getHologramLocation().getZ();
     }
 
     @Override

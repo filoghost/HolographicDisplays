@@ -12,6 +12,7 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
+import me.filoghost.holographicdisplays.plugin.hologram.base.HologramLocation;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import org.bukkit.command.CommandSender;
 
@@ -54,11 +55,11 @@ public class ListCommand extends HologramSubCommand {
         for (int i = fromIndex; i < toIndex; i++) {
             if (i < holograms.size()) {
                 InternalHologram hologram = holograms.get(i);
+                HologramLocation location = hologram.getHologramLocation();
                 sender.sendMessage(ColorScheme.SECONDARY_DARKER + "- " + ColorScheme.SECONDARY_BOLD + hologram.getName()
-                        + " " + ColorScheme.SECONDARY_DARKER + "at x: " + (int) hologram.getX()
-                        + ", y: " + (int) hologram.getY()
-                        + ", z: " + (int) hologram.getZ()
-                        + " (lines: " + hologram.getLineCount() + ", world: \"" + hologram.getWorld().getName() + "\")");
+                        + " " + ColorScheme.SECONDARY_DARKER + "at"
+                        + " x: " + location.getBlockX() + ", y: " + location.getBlockY() + ", z: " + location.getBlockZ()
+                        + " (lines: " + hologram.getLineCount() + ", world: \"" + location.getWorld().getName() + "\")");
             }
         }
 

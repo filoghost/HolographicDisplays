@@ -6,65 +6,11 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseHologramComponent {
 
-    private World world;
-    private double x, y, z;
-    private int chunkX, chunkZ;
     private boolean deleted;
-
-    public final @NotNull Location getLocation() {
-        return new Location(world, x, y, z);
-    }
-
-    protected final void setLocation(Location location) {
-        setLocation(location.getWorld(), location.getX(), location.getY(), location.getZ());
-    }
-
-    @MustBeInvokedByOverriders
-    protected void setLocation(World world, double x, double y, double z) {
-        Preconditions.notNull(world, "world");
-
-        this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.chunkX = getChunkCoord(x);
-        this.chunkZ = getChunkCoord(z);
-    }
-
-    private int getChunkCoord(double locationCoord) {
-        return Location.locToBlock(locationCoord) >> 4;
-    }
-
-    public final World getWorld() {
-        return world;
-    }
-
-    public final double getX() {
-        return x;
-    }
-
-    public final double getY() {
-        return y;
-    }
-
-    public final double getZ() {
-        return z;
-    }
-
-    public final int getChunkX() {
-        return chunkX;
-    }
-
-    public final int getChunkZ() {
-        return chunkZ;
-    }
 
     public final boolean isDeleted() {
         return deleted;

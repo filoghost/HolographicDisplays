@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.plugin.config;
 
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.config.ConfigSection;
+import me.filoghost.holographicdisplays.plugin.hologram.base.HologramLocation;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
@@ -42,7 +43,7 @@ public class HologramConfig {
             serializedLines.add(line.getSerializedConfigValue());
         }
 
-        this.serializedLocation = serializeLocation(hologram.getLocation());
+        this.serializedLocation = serializeLocation(hologram.getHologramLocation());
     }
 
     public ConfigSection toConfigSection() {
@@ -77,11 +78,11 @@ public class HologramConfig {
         return hologram;
     }
 
-    private String serializeLocation(Location loc) {
-        return loc.getWorld().getName()
-                + ", " + LOCATION_NUMBER_FORMAT.format(loc.getX())
-                + ", " + LOCATION_NUMBER_FORMAT.format(loc.getY())
-                + ", " + LOCATION_NUMBER_FORMAT.format(loc.getZ());
+    private String serializeLocation(HologramLocation location) {
+        return location.getWorld().getName()
+                + ", " + LOCATION_NUMBER_FORMAT.format(location.getX())
+                + ", " + LOCATION_NUMBER_FORMAT.format(location.getY())
+                + ", " + LOCATION_NUMBER_FORMAT.format(location.getZ());
     }
 
     private Location deserializeLocation(String serializedLocation) throws HologramLoadException {

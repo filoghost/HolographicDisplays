@@ -18,6 +18,8 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     private final BaseHologram<?> hologram;
     private final LineTracker<?> tracker;
 
+    private double x, y, z;
+
     protected BaseHologramLine(BaseHologram<?> hologram) {
         Preconditions.notNull(hologram, "parent hologram");
         this.hologram = hologram;
@@ -35,9 +37,31 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     }
 
     @Override
-    public final void setLocation(World world, double x, double y, double z) {
-        super.setLocation(world, x, y, z);
+    public final void setLocation(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
         setChanged();
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getZ() {
+        return z;
+    }
+
+    public World getWorld() {
+        return hologram.getHologramLocation().getWorld();
+    }
+
+    public boolean isInLoadedChunk() {
+        return hologram.getHologramLocation().isInLoadedChunk();
     }
 
     public final boolean isVisibleTo(Player player) {
@@ -54,10 +78,6 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
                 && player.getGameMode() != GameMode.SPECTATOR
                 && isTrackedPlayer(player)
                 && isVisibleTo(player);
-    }
-
-    public boolean isInLoadedChunk() {
-        return hologram.isInLoadedChunk();
     }
 
 }

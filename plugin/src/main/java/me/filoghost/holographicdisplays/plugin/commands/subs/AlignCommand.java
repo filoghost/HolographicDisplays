@@ -12,6 +12,7 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
+import me.filoghost.holographicdisplays.plugin.hologram.base.HologramLocation;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -36,18 +37,19 @@ public class AlignCommand extends HologramSubCommand {
 
         CommandValidate.check(hologram != referenceHologram, "The holograms must not be the same.");
 
-        Location newLocation = hologram.getLocation();
+        HologramLocation referenceLocation = referenceHologram.getHologramLocation();
+        Location newLocation = hologram.getHologramLocation().toBukkitLocation();
 
         String axis = args[0];
         if (axis.equalsIgnoreCase("x")) {
-            newLocation.setX(referenceHologram.getX());
+            newLocation.setX(referenceLocation.getX());
         } else if (axis.equalsIgnoreCase("y")) {
-            newLocation.setY(referenceHologram.getY());
+            newLocation.setY(referenceLocation.getY());
         } else if (axis.equalsIgnoreCase("z")) {
-            newLocation.setZ(referenceHologram.getZ());
+            newLocation.setZ(referenceLocation.getZ());
         } else if (axis.equalsIgnoreCase("xz")) {
-            newLocation.setX(referenceHologram.getX());
-            newLocation.setZ(referenceHologram.getZ());
+            newLocation.setX(referenceLocation.getX());
+            newLocation.setZ(referenceLocation.getZ());
         } else {
             throw new CommandException("You must specify either X, Y, Z or XZ, " + axis + " is not a valid axis.");
         }

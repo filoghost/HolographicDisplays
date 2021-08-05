@@ -12,6 +12,7 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
+import me.filoghost.holographicdisplays.plugin.hologram.base.HologramLocation;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -40,11 +41,11 @@ public class NearCommand extends HologramSubCommand {
         CommandValidate.check(radius > 0, "Radius must be at least 1.");
 
         World world = player.getWorld();
-        int radiusSquared = radius * radius;
         List<InternalHologram> nearHolograms = new ArrayList<>();
 
         for (InternalHologram hologram : hologramEditor.getHolograms()) {
-            if (hologram.getWorld().equals(world) && hologram.getLocation().distanceSquared(player.getLocation()) <= radiusSquared) {
+            HologramLocation location = hologram.getHologramLocation();
+            if (location.getWorld().equals(world) && location.distance(player.getLocation()) <= radius) {
                 nearHolograms.add(hologram);
             }
         }
@@ -53,11 +54,10 @@ public class NearCommand extends HologramSubCommand {
 
         DisplayFormat.sendTitle(player, "Near holograms");
         for (InternalHologram nearHologram : nearHolograms) {
+            HologramLocation location = nearHologram.getHologramLocation();
             player.sendMessage(ColorScheme.SECONDARY_DARKER + "- "
                     + ColorScheme.SECONDARY_BOLD + nearHologram.getName() + " " + ColorScheme.SECONDARY_DARKER + "at"
-                    + " x: " + (int) nearHologram.getX() + ","
-                    + " y: " + (int) nearHologram.getY() + ","
-                    + " z: " + (int) nearHologram.getZ()
+                    + " x: " + location.getBlockX() + ", y: " + location.getBlockY() + ", z: " + location.getBlockZ()
                     + " (lines: " + nearHologram.getLineCount() + ")");
         }
     }

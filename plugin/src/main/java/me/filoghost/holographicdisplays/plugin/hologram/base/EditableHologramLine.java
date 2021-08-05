@@ -5,11 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
-import org.bukkit.World;
-
 public interface EditableHologramLine {
 
-    void setLocation(World world, double x, double y, double z);
+    void setLocation(double x, double y, double z);
 
     double getHeight();
 
