@@ -6,6 +6,9 @@
 package me.filoghost.holographicdisplays.api.internal;
 
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
@@ -29,5 +32,9 @@ public abstract class HolographicDisplaysAPIProvider {
     }
 
     public abstract HolographicDisplaysAPI getHolographicDisplaysAPI(Plugin plugin);
+
+    public abstract HologramPosition createHologramPosition(World world, double x, double y, double z);
+
+    public abstract HologramPosition createHologramPosition(Location location);
 
 }

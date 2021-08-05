@@ -8,6 +8,8 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
+import me.filoghost.holographicdisplays.plugin.util.CachedBoolean;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -21,17 +23,20 @@ import java.util.List;
 
 public abstract class BaseHologram<T extends EditableHologramLine> extends BaseHologramComponent {
 
-    private final HologramLocation location;
     private final List<T> lines;
     private final List<T> unmodifiableLinesView;
     private final LineTrackerManager lineTrackerManager;
 
-    public BaseHologram(Location location, LineTrackerManager lineTrackerManager) {
-        Preconditions.notNull(location, "location");
-        this.location = new HologramLocation(location);
+    private World world;
+    private double x, y, z;
+    private int chunkX, chunkZ;
+    private final CachedBoolean isInLoadedChunk = new CachedBoolean(() -> world.isChunkLoaded(chunkX, chunkZ));
+
+    public BaseHologram(BaseHologramPosition position, LineTrackerManager lineTrackerManager) {
         this.lines = new ArrayList<>();
         this.unmodifiableLinesView = Collections.unmodifiableList(lines);
         this.lineTrackerManager = lineTrackerManager;
+        setPosition(position.getWorld(), position.getX(), position.getY(), position.getZ());
     }
 
     protected abstract boolean isVisibleTo(Player player);
@@ -123,20 +128,58 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
         return lines.size();
     }
 
-    public void teleport(@NotNull Location location) {
+    public BaseHologramPosition getBasePosition() {
+        return new BaseHologramPosition(getPositionWorld(), getPositionX(), getPositionY(), getPositionZ());
+    }
+
+    public @NotNull World getPositionWorld() {
+        return world;
+    }
+
+    public double getPositionX() {
+        return x;
+    }
+
+    public double getPositionY() {
+        return y;
+    }
+
+    public double getPositionZ() {
+        return z;
+    }
+
+    public void setPosition(@NotNull BaseHologramPosition position) {
+        Preconditions.notNull(position, "position");
+        setPosition(position.getWorld(), position.getX(), position.getY(), position.getZ());
+    }
+
+    public void setPosition(@NotNull Location location) {
+        Preconditions.notNull(location, "location");
+        setPosition(location.getWorld(), location.getX(), location.getY(), location.getZ());
+    }
+
+    public void setPosition(@NotNull World world, double x, double y, double z) {
+        Preconditions.notNull(world, "world");
         checkNotDeleted();
-        this.location.set(location);
+
+        this.x = x;
+        this.y = y;
+        this.z = z;
+
+        int chunkX = getChunkCoordinate(x);
+        int chunkZ = getChunkCoordinate(z);
+        if (this.world != world || this.chunkX != chunkX || this.chunkZ != chunkZ) {
+            this.world = world;
+            this.chunkX = chunkX;
+            this.chunkZ = chunkZ;
+            this.isInLoadedChunk.invalidate();
+        }
+
         updateLineLocations();
     }
 
-    public void teleport(@NotNull World world, double x, double y, double z) {
-        checkNotDeleted();
-        this.location.set(world, x, y, z);
-        updateLineLocations();
-    }
-
-    public HologramLocation getHologramLocation() {
-        return location;
+    private int getChunkCoordinate(double positionCoordinate) {
+        return Location.locToBlock(positionCoordinate) >> 4;
     }
 
     /**
@@ -144,7 +187,7 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
      * The second line is below the first, and so on.
      */
     private void updateLineLocations() {
-        double currentLineY = location.getY();
+        double currentLineY = y;
 
         for (int i = 0; i < lines.size(); i++) {
             T line = lines.get(i);
@@ -154,13 +197,29 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
                 currentLineY -= Settings.spaceBetweenLines;
             }
 
-            line.setLocation(location.getX(), currentLineY, location.getZ());
+            line.setLocation(x, currentLineY, z);
         }
+    }
+
+    protected void onChunkLoad(Chunk chunk) {
+        if (world == chunk.getWorld() && chunkX == chunk.getX() && chunkZ == chunk.getZ()) {
+            isInLoadedChunk.set(true);
+        }
+    }
+
+    protected void onChunkUnload(Chunk chunk) {
+        if (world == chunk.getWorld() && chunkX == chunk.getX() && chunkZ == chunk.getZ()) {
+            isInLoadedChunk.set(false);
+        }
+    }
+
+    protected boolean isInLoadedChunk() {
+        return isInLoadedChunk.get();
     }
 
     @Override
     public String toString() {
-        return "BaseHologram [location=" + location + ", lines=" + lines + ", deleted=" + isDeleted() + "]";
+        return "Hologram [position=" + getBasePosition() + ", lines=" + lines + ", deleted=" + isDeleted() + "]";
     }
 
 }

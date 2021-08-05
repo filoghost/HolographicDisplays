@@ -57,11 +57,11 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     }
 
     public World getWorld() {
-        return hologram.getHologramLocation().getWorld();
+        return hologram.getPositionWorld();
     }
 
     public boolean isInLoadedChunk() {
-        return hologram.getHologramLocation().isInLoadedChunk();
+        return hologram.isInLoadedChunk();
     }
 
     public final boolean isVisibleTo(Player player) {

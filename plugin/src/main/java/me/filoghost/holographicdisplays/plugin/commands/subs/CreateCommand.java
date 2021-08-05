@@ -13,10 +13,10 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -47,14 +47,14 @@ public class CreateCommand extends HologramSubCommand {
         CommandValidate.check(hologramEditor.getHologram(hologramName) == null,
                 "A hologram with that name already exists.");
 
-        Location spawnLocation = player.getLocation();
+        BaseHologramPosition spawnPosition = new BaseHologramPosition(player.getLocation());
         boolean moveUp = player.isOnGround();
 
         if (moveUp) {
-            spawnLocation.add(0.0, 1.2, 0.0);
+            spawnPosition.add(0, 1.2, 0);
         }
 
-        InternalHologram hologram = hologramEditor.create(spawnLocation, hologramName);
+        InternalHologram hologram = hologramEditor.create(spawnPosition, hologramName);
         InternalHologramLine line;
 
         if (args.length > 1) {

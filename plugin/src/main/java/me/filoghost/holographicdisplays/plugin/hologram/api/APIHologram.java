@@ -7,12 +7,12 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramAdapter;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -32,11 +32,11 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     private boolean allowPlaceholders;
 
     protected APIHologram(
-            Location location,
+            BaseHologramPosition position,
             Plugin plugin,
             APIHologramManager apiHologramManager,
             LineTrackerManager lineTrackerManager) {
-        super(location, lineTrackerManager);
+        super(position, lineTrackerManager);
         Preconditions.notNull(plugin, "plugin");
         this.plugin = plugin;
         this.apiHologramManager = apiHologramManager;
@@ -135,28 +135,13 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
 
     @Override
-    public @NotNull Location getLocation() {
-        return getHologramLocation().toBukkitLocation();
+    public @NotNull HologramPosition getPosition() {
+        return new APIHologramPosition(getPositionWorld(), getPositionX(), getPositionY(), getPositionZ());
     }
 
     @Override
-    public @NotNull World getWorld() {
-        return getHologramLocation().getWorld();
-    }
-
-    @Override
-    public double getX() {
-        return getHologramLocation().getX();
-    }
-
-    @Override
-    public double getY() {
-        return getHologramLocation().getY();
-    }
-
-    @Override
-    public double getZ() {
-        return getHologramLocation().getZ();
+    public void setPosition(@NotNull HologramPosition position) {
+        super.setPosition(position.getWorld(), position.getX(), position.getY(), position.getZ());
     }
 
     @Override

@@ -54,7 +54,7 @@ public class PowerUps extends JavaPlugin implements Listener {
 
             icon.setPickupListener((Player player) -> {
                 // Play an effect
-                player.playEffect(hologram.getLocation(), Effect.MOBSPAWNER_FLAMES, null);
+                player.playEffect(hologram.getPosition().toLocation(), Effect.MOBSPAWNER_FLAMES, null);
 
                 // 30 seconds of speed II
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * 20, 1), true);

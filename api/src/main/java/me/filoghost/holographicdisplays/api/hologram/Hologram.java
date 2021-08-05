@@ -104,63 +104,71 @@ public interface Hologram {
     double getHeight();
 
     /**
-     * Teleports a hologram to the given location.
+     * Returns the hologram position.
      *
-     * @param location the new location
+     * @return the hologram position
      * @since 1
      */
-    void teleport(@NotNull Location location);
+    @NotNull HologramPosition getPosition();
 
     /**
-     * Teleports a hologram to the given location.
+     * Returns the world of the hologram position.
      *
-     * @param world the world where the hologram should be teleported, use {@link #getWorld()} to teleport it in the same world.
+     * @return the world of the hologram position
+     * @since 1
+     */
+    @NotNull World getPositionWorld();
+
+    /**
+     * Returns the X coordinate of the hologram position.
+     *
+     * @return the X coordinate of the hologram position
+     * @since 1
+     */
+    double getPositionX();
+
+    /**
+     * Returns the Y coordinate of the hologram position.
+     *
+     * @return the Y coordinate of the hologram position
+     * @since 1
+     */
+    double getPositionY();
+
+    /**
+     * Returns the Z coordinate of the hologram position.
+     *
+     * @return the Z coordinate of the hologram position
+     * @since 1
+     */
+    double getPositionZ();
+
+    /**
+     * Moves the hologram to the given position.
+     *
+     * @param position the new position
+     * @since 1
+     */
+    void setPosition(@NotNull HologramPosition position);
+
+    /**
+     * Moves the hologram to the given position.
+     *
+     * @param world the world where the hologram should be moved
      * @param x the X coordinate
      * @param y the Y coordinate
      * @param z the Z coordinate
      * @since 1
      */
-    void teleport(@NotNull World world, double x, double y, double z);
+    void setPosition(@NotNull World world, double x, double y, double z);
 
     /**
-     * Returns the position of the hologram.
+     * Moves the hologram to the given position.
      *
-     * @return the Location of the hologram
+     * @param location the new position
      * @since 1
      */
-    @NotNull Location getLocation();
-
-    /**
-     * Returns the world.
-     *
-     * @return the world of the hologram
-     * @since 1
-     */
-    @NotNull World getWorld();
-
-    /**
-     * Returns the X coordinate.
-     *
-     * @return the X coordinate of the hologram
-     * @since 1
-     */
-    double getX();
-
-    /**
-     * Returns the Y coordinate.
-     *
-     * @return the Y coordinate of the hologram
-     * @since 1
-     */
-    double getY();
-
-    /**
-     * Returns the Z coordinate.
-     *
-     * @return the Z coordinate of the hologram
-     * @since 1
-     */
-    double getZ();
+    void setPosition(@NotNull Location location);
 
     /**
      * Returns the {@link VisibilitySettings} of this hologram.

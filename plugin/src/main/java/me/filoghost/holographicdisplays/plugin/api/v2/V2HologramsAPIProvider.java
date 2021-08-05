@@ -11,6 +11,7 @@ import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplac
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -40,7 +41,7 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
         Preconditions.notNull(source.getWorld(), "source's world");
         Preconditions.checkState(Bukkit.isPrimaryThread(), "async hologram creation");
 
-        return apiHologramManager.createHologram(source, plugin).getV2Adapter();
+        return apiHologramManager.createHologram(new BaseHologramPosition(source), plugin).getV2Adapter();
     }
 
     @Override

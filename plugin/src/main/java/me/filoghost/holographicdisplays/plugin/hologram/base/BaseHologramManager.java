@@ -41,13 +41,13 @@ public abstract class BaseHologramManager<H extends BaseHologram<?>> {
 
     public void onChunkLoad(Chunk chunk) {
         for (H hologram : holograms) {
-            hologram.getHologramLocation().onChunkLoad(chunk);
+            hologram.onChunkLoad(chunk);
         }
     }
 
     public void onChunkUnload(Chunk chunk) {
         for (H hologram : holograms) {
-            hologram.getHologramLocation().onChunkUnload(chunk);
+            hologram.onChunkUnload(chunk);
         }
     }
 

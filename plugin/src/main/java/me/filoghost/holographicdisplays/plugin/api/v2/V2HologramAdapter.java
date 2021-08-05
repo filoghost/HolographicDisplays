@@ -71,37 +71,37 @@ public class V2HologramAdapter implements Hologram {
 
     @Override
     public void teleport(Location location) {
-        v3Hologram.teleport(location);
+        v3Hologram.setPosition(location);
     }
 
     @Override
     public void teleport(World world, double x, double y, double z) {
-        v3Hologram.teleport(world, x, y, z);
+        v3Hologram.setPosition(world, x, y, z);
     }
 
     @Override
     public Location getLocation() {
-        return v3Hologram.getHologramLocation().toBukkitLocation();
+        return new Location(v3Hologram.getPositionWorld(), v3Hologram.getPositionX(), v3Hologram.getPositionY(), v3Hologram.getPositionZ());
     }
 
     @Override
     public double getX() {
-        return v3Hologram.getHologramLocation().getX();
+        return v3Hologram.getPositionX();
     }
 
     @Override
     public double getY() {
-        return v3Hologram.getHologramLocation().getY();
+        return v3Hologram.getPositionY();
     }
 
     @Override
     public double getZ() {
-        return v3Hologram.getHologramLocation().getZ();
+        return v3Hologram.getPositionZ();
     }
 
     @Override
     public World getWorld() {
-        return v3Hologram.getHologramLocation().getWorld();
+        return v3Hologram.getPositionWorld();
     }
 
     @Override

@@ -12,9 +12,8 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
-import me.filoghost.holographicdisplays.plugin.hologram.base.HologramLocation;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
 public class AlignCommand extends HologramSubCommand {
@@ -37,24 +36,24 @@ public class AlignCommand extends HologramSubCommand {
 
         CommandValidate.check(hologram != referenceHologram, "The holograms must not be the same.");
 
-        HologramLocation referenceLocation = referenceHologram.getHologramLocation();
-        Location newLocation = hologram.getHologramLocation().toBukkitLocation();
+        BaseHologramPosition referencePosition = referenceHologram.getBasePosition();
+        BaseHologramPosition newPosition = hologram.getBasePosition();
 
         String axis = args[0];
         if (axis.equalsIgnoreCase("x")) {
-            newLocation.setX(referenceLocation.getX());
+            newPosition.setX(referencePosition.getX());
         } else if (axis.equalsIgnoreCase("y")) {
-            newLocation.setY(referenceLocation.getY());
+            newPosition.setY(referencePosition.getY());
         } else if (axis.equalsIgnoreCase("z")) {
-            newLocation.setZ(referenceLocation.getZ());
+            newPosition.setZ(referencePosition.getZ());
         } else if (axis.equalsIgnoreCase("xz")) {
-            newLocation.setX(referenceLocation.getX());
-            newLocation.setZ(referenceLocation.getZ());
+            newPosition.setX(referencePosition.getX());
+            newPosition.setZ(referencePosition.getZ());
         } else {
             throw new CommandException("You must specify either X, Y, Z or XZ, " + axis + " is not a valid axis.");
         }
 
-        hologram.teleport(newLocation);
+        hologram.setPosition(newPosition);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LOCATION);
 
         sender.sendMessage(ColorScheme.PRIMARY + "Hologram \"" + hologram.getName() + "\""

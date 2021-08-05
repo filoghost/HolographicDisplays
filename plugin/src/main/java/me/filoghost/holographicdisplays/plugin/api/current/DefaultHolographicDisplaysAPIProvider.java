@@ -7,10 +7,14 @@ package me.filoghost.holographicdisplays.plugin.api.current;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramPosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
@@ -41,6 +45,16 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
 
         return apiInstanceCache.computeIfAbsent(plugin, pluginKey ->
                 new DefaultHolographicDisplaysAPI(pluginKey, apiHologramManager, placeholderRegistry));
+    }
+
+    @Override
+    public HologramPosition createHologramPosition(World world, double x, double y, double z) {
+        return new APIHologramPosition(world, x, y, z);
+    }
+
+    @Override
+    public HologramPosition createHologramPosition(Location location) {
+        return new APIHologramPosition(location);
     }
 
 }
