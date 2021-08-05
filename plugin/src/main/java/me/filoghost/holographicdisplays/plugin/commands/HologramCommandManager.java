@@ -132,7 +132,7 @@ public class HologramCommandManager extends SubCommandManager {
                 usageArgs = "";
             }
 
-            String usage = "/" + commandContext.getRootLabel() + " " + subCommand.getName() + " " + hologram + " ";
+            String usage = "/" + commandContext.getRootLabel() + " " + subCommand.getName() + " " + hologram.getName() + " ";
             message.append("[" + quickEditCommand.getActionName() + "]").color(ChatColor.DARK_AQUA)
                     .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, usage))
                     .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(
