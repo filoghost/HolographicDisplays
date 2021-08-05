@@ -11,7 +11,6 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -71,18 +70,6 @@ public class LineTrackerManager {
     public void onPlayerQuit(Player player) {
         for (LineTracker<?> tracker : lineTrackers) {
             tracker.removeTrackedPlayer(player);
-        }
-    }
-
-    public void onChunkLoad(Chunk chunk) {
-        for (LineTracker<?> tracker : lineTrackers) {
-            tracker.onChunkLoad(chunk);
-        }
-    }
-
-    public void onChunkUnload(Chunk chunk) {
-        for (LineTracker<?> tracker : lineTrackers) {
-            tracker.onChunkUnload(chunk);
         }
     }
 

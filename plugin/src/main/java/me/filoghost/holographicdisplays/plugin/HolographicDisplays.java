@@ -103,6 +103,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         LineClickListener lineClickListener = new LineClickListener();
         lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener);
         internalHologramManager = new InternalHologramManager(lineTrackerManager);
+        APIHologramManager apiHologramManager = new APIHologramManager(lineTrackerManager);
 
         // Run only once at startup, before loading the configuration
         try {
@@ -129,7 +130,7 @@ public class HolographicDisplays extends FCommonsPlugin {
 
         // Listeners
         registerListener(new PlayerListener(nmsManager, lineTrackerManager, lineClickListener));
-        registerListener(new ChunkListener(this, lineTrackerManager));
+        registerListener(new ChunkListener(this, internalHologramManager, apiHologramManager));
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
         registerListener(updateNotificationListener);
 
@@ -139,7 +140,6 @@ public class HolographicDisplays extends FCommonsPlugin {
         updateNotificationListener.runAsyncUpdateCheck(this);
 
         // Enable the APIs
-        APIHologramManager apiHologramManager = new APIHologramManager(lineTrackerManager);
         HolographicDisplaysAPIProvider.setImplementation(
                 new DefaultHolographicDisplaysAPIProvider(apiHologramManager, nmsManager, placeholderRegistry));
         enableLegacyAPI(apiHologramManager, placeholderRegistry);

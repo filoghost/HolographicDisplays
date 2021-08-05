@@ -8,7 +8,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
-import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -82,7 +81,7 @@ public abstract class LineTracker<T extends BaseHologramLine> {
     protected abstract boolean updatePlaceholders();
 
     private void updateTrackedPlayersAndSendPackets(Collection<? extends Player> onlinePlayers) {
-        if (!isActive()) {
+        if (!line.isInLoadedChunk()) {
             clearTrackedPlayersAndSendPackets();
             return;
         }
@@ -111,8 +110,6 @@ public abstract class LineTracker<T extends BaseHologramLine> {
             }
         }
     }
-
-    protected abstract boolean isActive();
 
     protected abstract boolean shouldTrackPlayer(Player player);
 
@@ -154,9 +151,5 @@ public abstract class LineTracker<T extends BaseHologramLine> {
     protected abstract void addDestroyPackets(NMSPacketList packetList);
 
     protected abstract void addChangesPackets(NMSPacketList packetList);
-
-    protected abstract void onChunkLoad(Chunk chunk);
-
-    protected abstract void onChunkUnload(Chunk chunk);
 
 }

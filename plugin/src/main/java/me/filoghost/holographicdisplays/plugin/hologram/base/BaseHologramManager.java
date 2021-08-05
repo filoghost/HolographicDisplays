@@ -5,6 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
+import org.bukkit.Chunk;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -34,6 +36,18 @@ public abstract class BaseHologramManager<H extends BaseHologram<?>> {
             H hologram = iterator.next();
             iterator.remove();
             hologram.setDeleted();
+        }
+    }
+
+    public void onChunkLoad(Chunk chunk) {
+        for (H hologram : holograms) {
+            hologram.onChunkLoad(chunk);
+        }
+    }
+
+    public void onChunkUnload(Chunk chunk) {
+        for (H hologram : holograms) {
+            hologram.onChunkUnload(chunk);
         }
     }
 

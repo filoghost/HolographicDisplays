@@ -5,7 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.listener;
 
-import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
@@ -18,16 +19,19 @@ import org.bukkit.plugin.Plugin;
 public class ChunkListener implements Listener {
 
     private final Plugin plugin;
-    private final LineTrackerManager lineTrackerManager;
+    private final InternalHologramManager internalHologramManager;
+    private final APIHologramManager apiHologramManager;
 
-    public ChunkListener(Plugin plugin, LineTrackerManager lineTrackerManager) {
+    public ChunkListener(Plugin plugin, InternalHologramManager internalHologramManager, APIHologramManager apiHologramManager) {
         this.plugin = plugin;
-        this.lineTrackerManager = lineTrackerManager;
+        this.internalHologramManager = internalHologramManager;
+        this.apiHologramManager = apiHologramManager;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
-        lineTrackerManager.onChunkUnload(event.getChunk());
+        internalHologramManager.onChunkUnload(event.getChunk());
+        apiHologramManager.onChunkUnload(event.getChunk());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -48,7 +52,8 @@ public class ChunkListener implements Listener {
     }
 
     private void onChunkLoad(Chunk chunk) {
-        lineTrackerManager.onChunkLoad(chunk);
+        internalHologramManager.onChunkLoad(chunk);
+        apiHologramManager.onChunkLoad(chunk);
     }
 
 }

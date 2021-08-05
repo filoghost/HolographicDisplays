@@ -56,4 +56,8 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
                 && isVisibleTo(player);
     }
 
+    public boolean isInLoadedChunk() {
+        return hologram.isInLoadedChunk();
+    }
+
 }

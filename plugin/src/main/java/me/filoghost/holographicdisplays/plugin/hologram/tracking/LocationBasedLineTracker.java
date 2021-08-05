@@ -8,7 +8,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -22,38 +21,21 @@ abstract class LocationBasedLineTracker<T extends BaseHologramLine> extends Line
     protected double locationX;
     protected double locationY;
     protected double locationZ;
-    private int chunkX;
-    private int chunkZ;
-    private boolean chunkLoaded;
     private boolean locationChanged;
 
     LocationBasedLineTracker(T line, NMSManager nmsManager) {
         super(line, nmsManager);
     }
 
-    @Override
-    protected final boolean isActive() {
-        return chunkLoaded;
-    }
-
     @MustBeInvokedByOverriders
     @Override
     protected void detectChanges() {
         World world = line.getWorld();
-        int chunkX = line.getChunkX();
-        int chunkZ = line.getChunkZ();
-        if (this.world != world || this.chunkX != chunkX || this.chunkZ != chunkZ) {
-            this.world = world;
-            this.chunkX = chunkX;
-            this.chunkZ = chunkZ;
-            this.chunkLoaded = world != null && world.isChunkLoaded(chunkX, chunkZ);
-            this.locationChanged = true;
-        }
-
         double locationX = line.getX();
         double locationY = line.getY();
         double locationZ = line.getZ();
-        if (this.locationX != locationX || this.locationY != locationY || this.locationZ != locationZ) {
+        if (this.world != world || this.locationX != locationX || this.locationY != locationY || this.locationZ != locationZ) {
+            this.world = world;
             this.locationX = locationX;
             this.locationY = locationY;
             this.locationZ = locationZ;
@@ -88,19 +70,5 @@ abstract class LocationBasedLineTracker<T extends BaseHologramLine> extends Line
     }
 
     protected abstract void addLocationChangePackets(NMSPacketList packetList);
-
-    @Override
-    protected final void onChunkLoad(Chunk chunk) {
-        if (this.world == chunk.getWorld() && this.chunkX == chunk.getX() && this.chunkZ == chunk.getZ()) {
-            this.chunkLoaded = true;
-        }
-    }
-
-    @Override
-    protected final void onChunkUnload(Chunk chunk) {
-        if (this.world == chunk.getWorld() && this.chunkX == chunk.getX() && this.chunkZ == chunk.getZ()) {
-            this.chunkLoaded = false;
-        }
-    }
 
 }

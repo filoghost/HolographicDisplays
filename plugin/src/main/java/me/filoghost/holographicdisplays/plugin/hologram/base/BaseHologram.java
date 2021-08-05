@@ -8,6 +8,8 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
+import me.filoghost.holographicdisplays.plugin.util.CachedBoolean;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -24,6 +26,7 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
     private final LineTrackerManager lineTrackerManager;
     private final List<T> lines;
     private final List<T> unmodifiableLinesView;
+    private final CachedBoolean isInLoadedChunk;
 
     public BaseHologram(Location location, LineTrackerManager lineTrackerManager) {
         Preconditions.notNull(location, "location");
@@ -31,6 +34,7 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
         this.lineTrackerManager = lineTrackerManager;
         this.lines = new ArrayList<>();
         this.unmodifiableLinesView = Collections.unmodifiableList(lines);
+        this.isInLoadedChunk = new CachedBoolean(() -> getWorld().isChunkLoaded(getChunkX(), getChunkZ()));
     }
 
     protected abstract boolean isVisibleTo(Player player);
@@ -133,7 +137,24 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
         Preconditions.notNull(world, "world");
 
         setLocation(world, x, y, z);
+        this.isInLoadedChunk.invalidate();
         updateLineLocations();
+    }
+
+    protected final void onChunkLoad(Chunk chunk) {
+        if (this.getWorld() == chunk.getWorld() && this.getChunkX() == chunk.getX() && this.getChunkZ() == chunk.getZ()) {
+            this.isInLoadedChunk.set(true);
+        }
+    }
+
+    protected final void onChunkUnload(Chunk chunk) {
+        if (this.getWorld() == chunk.getWorld() && this.getChunkX() == chunk.getX() && this.getChunkZ() == chunk.getZ()) {
+            this.isInLoadedChunk.set(false);
+        }
+    }
+
+    public boolean isInLoadedChunk() {
+        return isInLoadedChunk.get();
     }
 
     /**
