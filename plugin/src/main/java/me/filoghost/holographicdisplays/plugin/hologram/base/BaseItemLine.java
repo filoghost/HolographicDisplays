@@ -79,7 +79,9 @@ public abstract class BaseItemLine extends BaseClickableLine {
 
     @Override
     public String toString() {
-        return "ItemLine [itemStack=" + itemStack + "]";
+        return "ItemLine{"
+                + "itemStack=" + itemStack
+                + "}";
     }
 
 }

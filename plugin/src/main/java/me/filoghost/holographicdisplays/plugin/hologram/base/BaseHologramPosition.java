@@ -101,12 +101,12 @@ public class BaseHologramPosition {
 
     @Override
     public String toString() {
-        return "HologramPosition ["
+        return "HologramPosition{"
                 + "world=" + world
                 + ", x=" + x
                 + ", y=" + y
                 + ", z=" + z
-                + "]";
+                + "}";
     }
 
 }

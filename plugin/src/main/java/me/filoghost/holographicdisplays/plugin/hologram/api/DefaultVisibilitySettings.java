@@ -87,16 +87,16 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
         visibilityByPlayer.clear();
     }
 
-    @Override
-    public String toString() {
-        return "VisibilitySettings ["
-                + "defaultVisibility=" + defaultVisibility
-                + ", visibilityByPlayer=" + visibilityByPlayer
-                + "]";
-    }
-
     public V2VisibilityManagerAdapter getV2Adapter() {
         return v2Adapter;
+    }
+
+    @Override
+    public String toString() {
+        return "DefaultVisibilitySettings{"
+                + "defaultVisibility=" + defaultVisibility
+                + ", visibilityByPlayer=" + visibilityByPlayer
+                + "}";
     }
 
 }

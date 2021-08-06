@@ -46,7 +46,10 @@ public class InternalHologram extends BaseHologram<InternalHologramLine> {
 
     @Override
     public String toString() {
-        return "InternalHologram [name=" + name + ", super=" + super.toString() + "]";
+        return "InternalHologram{"
+                + "name=" + name
+                + ", super=" + super.toString()
+                + "}";
     }
 
 }

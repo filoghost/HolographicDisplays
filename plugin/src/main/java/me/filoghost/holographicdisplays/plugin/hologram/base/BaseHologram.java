@@ -219,7 +219,11 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
 
     @Override
     public String toString() {
-        return "Hologram [position=" + getBasePosition() + ", lines=" + lines + ", deleted=" + isDeleted() + "]";
+        return "Hologram{"
+                + "position=" + getBasePosition()
+                + ", lines=" + lines
+                + ", deleted=" + isDeleted()
+                + "}";
     }
 
 }

@@ -43,7 +43,9 @@ public abstract class BaseTextLine extends BaseClickableLine {
 
     @Override
     public String toString() {
-        return "TextLine [text=" + text + "]";
+        return "TextLine{"
+                + "text=" + text
+                + "}";
     }
 
 }
