@@ -9,7 +9,6 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramPosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
@@ -23,18 +22,13 @@ import java.util.WeakHashMap;
 public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAPIProvider {
 
     private final APIHologramManager apiHologramManager;
-    private final NMSManager nmsManager;
     private final PlaceholderRegistry placeholderRegistry;
 
     // Optimization: avoid creating a new instance every time a plugin requires it, in case it never stores a reference
     private final Map<Plugin, HolographicDisplaysAPI> apiInstanceCache;
 
-    public DefaultHolographicDisplaysAPIProvider(
-            APIHologramManager apiHologramManager,
-            NMSManager nmsManager,
-            PlaceholderRegistry placeholderRegistry) {
+    public DefaultHolographicDisplaysAPIProvider(APIHologramManager apiHologramManager, PlaceholderRegistry placeholderRegistry) {
         this.apiHologramManager = apiHologramManager;
-        this.nmsManager = nmsManager;
         this.placeholderRegistry = placeholderRegistry;
         this.apiInstanceCache = new WeakHashMap<>();
     }
