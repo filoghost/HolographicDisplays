@@ -21,6 +21,7 @@ import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.config.HologramDatabase;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.LegacyAnimationsUpgrade;
+import me.filoghost.holographicdisplays.plugin.config.upgrade.LegacyDatabaseUpgrade;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.LegacySymbolsUpgrade;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
@@ -115,6 +116,11 @@ public class HolographicDisplays extends FCommonsPlugin {
             LegacyAnimationsUpgrade.run(configManager, errorCollector);
         } catch (IOException e) {
             errorCollector.add(e, "couldn't automatically convert animation files to the new format");
+        }
+        try {
+            LegacyDatabaseUpgrade.run(configManager);
+        } catch (ConfigException | IOException e) {
+            errorCollector.add(e, "couldn't automatically convert database file to the new format");
         }
 
         // Load the configuration

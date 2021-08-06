@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.config;
 
-import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.config.ConfigSection;
+import me.filoghost.fcommons.config.exception.ConfigValueException;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
@@ -14,25 +14,19 @@ import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologra
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class HologramConfig {
 
-    private static final DecimalFormat POSITION_NUMBER_FORMAT
-            = new DecimalFormat("0.000", DecimalFormatSymbols.getInstance(Locale.ROOT));
-
     private final String name;
     private final List<String> serializedLines;
-    private final String serializedPosition;
+    private final ConfigSection positionConfigSection;
 
     public HologramConfig(String name, ConfigSection configSection) {
         this.name = name;
         this.serializedLines = configSection.getStringList("lines");
-        this.serializedPosition = configSection.getString("location");
+        this.positionConfigSection = configSection.getConfigSection("position");
     }
 
     public HologramConfig(InternalHologram hologram) {
@@ -42,25 +36,30 @@ public class HologramConfig {
             serializedLines.add(line.getSerializedConfigValue());
         }
 
-        this.serializedPosition = serializePosition(hologram.getBasePosition());
+        BaseHologramPosition position = hologram.getBasePosition();
+        this.positionConfigSection = new ConfigSection();
+        positionConfigSection.setString("world", position.getWorld().getName());
+        positionConfigSection.setDouble("x", position.getX());
+        positionConfigSection.setDouble("y", position.getY());
+        positionConfigSection.setDouble("z", position.getZ());
     }
 
     public ConfigSection toConfigSection() {
         ConfigSection configSection = new ConfigSection();
         configSection.setStringList("lines", serializedLines);
-        configSection.setString("location", serializedPosition);
+        configSection.setConfigSection("position", positionConfigSection);
         return configSection;
     }
 
-    public InternalHologram createHologram(InternalHologramManager internalHologramManager) throws HologramLoadException {
+    public void createHologram(InternalHologramManager internalHologramManager) throws HologramLoadException {
         if (serializedLines == null || serializedLines.size() == 0) {
             throw new HologramLoadException("at least one line is required");
         }
-        if (serializedPosition == null) {
-            throw new HologramLoadException("no location set");
+        if (positionConfigSection == null) {
+            throw new HologramLoadException("no position set");
         }
 
-        BaseHologramPosition position = deserializePosition(serializedPosition);
+        BaseHologramPosition position = parsePosition();
         InternalHologram hologram = internalHologramManager.createHologram(position, name);
         List<InternalHologramLine> lines = new ArrayList<>();
 
@@ -74,41 +73,24 @@ public class HologramConfig {
         }
 
         hologram.setLines(lines);
-        return hologram;
     }
 
-    private String serializePosition(BaseHologramPosition position) {
-        return position.getWorld().getName()
-                + ", " + POSITION_NUMBER_FORMAT.format(position.getX())
-                + ", " + POSITION_NUMBER_FORMAT.format(position.getY())
-                + ", " + POSITION_NUMBER_FORMAT.format(position.getZ());
-    }
-
-    private BaseHologramPosition deserializePosition(String serializedPosition) throws HologramLoadException {
-        String[] parts = Strings.splitAndTrim(serializedPosition, ",");
-
-        if (parts.length != 4) {
-            throw new HologramLoadException("hologram \"" + name + "\" has an invalid location format:"
-                    + " it must be \"world, x, y, z\"");
-        }
-
+    private BaseHologramPosition parsePosition() throws HologramLoadException {
         try {
-            String worldName = parts[0];
-            double x = Double.parseDouble(parts[1]);
-            double y = Double.parseDouble(parts[2]);
-            double z = Double.parseDouble(parts[3]);
+            String worldName = positionConfigSection.getRequiredString("world");
+            double x = positionConfigSection.getRequiredDouble("x");
+            double y = positionConfigSection.getRequiredDouble("y");
+            double z = positionConfigSection.getRequiredDouble("z");
 
             World world = Bukkit.getWorld(worldName);
             if (world == null) {
-                throw new HologramLoadException("hologram \"" + name + "\""
-                        + " was in the world \"" + worldName + "\" but it wasn't loaded");
+                throw new HologramLoadException("world \"" + worldName + "\" is not currently loaded");
             }
 
             return new BaseHologramPosition(world, x, y, z);
 
-        } catch (NumberFormatException ex) {
-            throw new HologramLoadException("hologram \"" + name + "\""
-                    + " has an invalid location format: invalid number");
+        } catch (ConfigValueException e) {
+            throw new HologramLoadException("invalid position attribute \"" + e.getConfigPath() + "\"", e);
         }
     }
 
