@@ -41,7 +41,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
 
         if (spawnItemEntities && hasTrackedPlayers()) {
             for (Player trackedPlayer : getTrackedPlayers()) {
-                if (CollisionHelper.isInPickupRange(trackedPlayer, locationX, locationY, locationZ)) {
+                if (CollisionHelper.isInPickupRange(trackedPlayer, positionX, positionY, positionZ)) {
                     line.onPickup(trackedPlayer);
                 }
             }
@@ -118,17 +118,17 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addLocationChangePackets(NMSPacketList packetList) {
-        super.addLocationChangePackets(packetList);
+    protected void addPositionChangePackets(NMSPacketList packetList) {
+        super.addPositionChangePackets(packetList);
 
         if (spawnItemEntities) {
-            packetList.addTeleportPackets(vehicleEntityID, locationX, getItemLocationY(), locationZ);
+            packetList.addTeleportPackets(vehicleEntityID, positionX, getItemPositionY(), positionZ);
         }
     }
 
     private void addItemSpawnPackets(NMSPacketList packetList) {
-        packetList.addArmorStandSpawnPackets(vehicleEntityID, locationX, getItemLocationY(), locationZ);
-        packetList.addItemSpawnPackets(itemEntityID, locationX, getItemLocationY(), locationZ, itemStack);
+        packetList.addArmorStandSpawnPackets(vehicleEntityID, positionX, getItemPositionY(), positionZ);
+        packetList.addItemSpawnPackets(itemEntityID, positionX, getItemPositionY(), positionZ, itemStack);
         packetList.addMountPackets(vehicleEntityID, itemEntityID);
     }
 
@@ -136,8 +136,8 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
         packetList.addEntityDestroyPackets(itemEntityID, vehicleEntityID);
     }
 
-    private double getItemLocationY() {
-        return locationY;
+    private double getItemPositionY() {
+        return positionY;
     }
 
 }

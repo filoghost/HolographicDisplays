@@ -13,7 +13,7 @@ class EntityLivingSpawnNMSPacket extends VersionNMSPacket {
 
     private final Packet<?> rawPacket;
 
-    EntityLivingSpawnNMSPacket(EntityID entityID, int entityTypeID, double locationX, double locationY, double locationZ) {
+    EntityLivingSpawnNMSPacket(EntityID entityID, int entityTypeID, double positionX, double positionY, double positionZ) {
         PacketByteBuffer packetByteBuffer = PacketByteBuffer.get();
 
         packetByteBuffer.writeVarInt(entityID.getNumericID());
@@ -21,9 +21,9 @@ class EntityLivingSpawnNMSPacket extends VersionNMSPacket {
         packetByteBuffer.writeVarInt(entityTypeID);
 
         // Position
-        packetByteBuffer.writeDouble(locationX);
-        packetByteBuffer.writeDouble(locationY);
-        packetByteBuffer.writeDouble(locationZ);
+        packetByteBuffer.writeDouble(positionX);
+        packetByteBuffer.writeDouble(positionY);
+        packetByteBuffer.writeDouble(positionZ);
 
         // Rotation
         packetByteBuffer.writeByte(0);

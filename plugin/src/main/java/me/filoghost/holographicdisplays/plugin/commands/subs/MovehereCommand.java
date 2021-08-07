@@ -35,7 +35,7 @@ public class MovehereCommand extends HologramSubCommand {
         InternalHologram hologram = hologramEditor.getHologram(args[0]);
 
         hologram.setPosition(player.getLocation());
-        hologramEditor.saveChanges(hologram, ChangeType.EDIT_LOCATION);
+        hologramEditor.saveChanges(hologram, ChangeType.EDIT_POSITION);
 
         hologramEditor.teleportLookingDown(player, player.getLocation());
         player.sendMessage(ColorScheme.PRIMARY + "You moved the hologram '" + hologram.getName() + "' near to you.");

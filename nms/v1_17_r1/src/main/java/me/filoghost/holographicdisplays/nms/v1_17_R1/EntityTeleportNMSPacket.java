@@ -13,15 +13,15 @@ class EntityTeleportNMSPacket extends VersionNMSPacket {
 
     private final Packet<?> rawPacket;
 
-    EntityTeleportNMSPacket(EntityID entityID, double locationX, double locationY, double locationZ) {
+    EntityTeleportNMSPacket(EntityID entityID, double positionX, double positionY, double positionZ) {
         PacketByteBuffer packetByteBuffer = PacketByteBuffer.get();
 
         packetByteBuffer.writeVarInt(entityID.getNumericID());
 
-        // Location
-        packetByteBuffer.writeDouble(locationX);
-        packetByteBuffer.writeDouble(locationY);
-        packetByteBuffer.writeDouble(locationZ);
+        // Position
+        packetByteBuffer.writeDouble(positionX);
+        packetByteBuffer.writeDouble(positionY);
+        packetByteBuffer.writeDouble(positionZ);
 
         // Rotation
         packetByteBuffer.writeByte(0);

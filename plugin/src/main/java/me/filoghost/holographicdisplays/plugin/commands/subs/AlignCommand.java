@@ -54,7 +54,7 @@ public class AlignCommand extends HologramSubCommand {
         }
 
         hologram.setPosition(newPosition);
-        hologramEditor.saveChanges(hologram, ChangeType.EDIT_LOCATION);
+        hologramEditor.saveChanges(hologram, ChangeType.EDIT_POSITION);
 
         sender.sendMessage(ColorScheme.PRIMARY + "Hologram \"" + hologram.getName() + "\""
                 + " aligned to the hologram \"" + referenceHologram.getName() + "\""

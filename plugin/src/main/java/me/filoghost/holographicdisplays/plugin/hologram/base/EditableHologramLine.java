@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 public interface EditableHologramLine {
 
-    void setLocation(double x, double y, double z);
+    void setPosition(double x, double y, double z);
 
     double getHeight();
 

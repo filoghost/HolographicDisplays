@@ -43,7 +43,7 @@ public class InternalHologramChangeEvent extends Event {
 
         CREATE,
         EDIT_LINES,
-        EDIT_LOCATION,
+        EDIT_POSITION,
         DELETE
 
     }

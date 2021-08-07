@@ -77,11 +77,11 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
         super.addSpawnPackets(packetList);
 
         if (!allowPlaceholders) {
-            packetList.addArmorStandSpawnPackets(armorStandEntityID, locationX, getArmorStandLocationY(), locationZ, displayText.getWithoutReplacements());
+            packetList.addArmorStandSpawnPackets(armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText.getWithoutReplacements());
         } else if (displayText.containsIndividualPlaceholders()) {
-            packetList.addArmorStandSpawnPackets(armorStandEntityID, locationX, getArmorStandLocationY(), locationZ, displayText::getWithIndividualReplacements);
+            packetList.addArmorStandSpawnPackets(armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText::getWithIndividualReplacements);
         } else {
-            packetList.addArmorStandSpawnPackets(armorStandEntityID, locationX, getArmorStandLocationY(), locationZ, displayText.getWithGlobalReplacements());
+            packetList.addArmorStandSpawnPackets(armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText.getWithGlobalReplacements());
         }
     }
 
@@ -109,13 +109,13 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addLocationChangePackets(NMSPacketList packetList) {
-        super.addLocationChangePackets(packetList);
-        packetList.addTeleportPackets(armorStandEntityID, locationX, getArmorStandLocationY(), locationZ);
+    protected void addPositionChangePackets(NMSPacketList packetList) {
+        super.addPositionChangePackets(packetList);
+        packetList.addTeleportPackets(armorStandEntityID, positionX, getArmorStandPositionY(), positionZ);
     }
 
-    private double getArmorStandLocationY() {
-        return locationY - 0.29;
+    private double getArmorStandPositionY() {
+        return positionY - 0.29;
     }
 
 }

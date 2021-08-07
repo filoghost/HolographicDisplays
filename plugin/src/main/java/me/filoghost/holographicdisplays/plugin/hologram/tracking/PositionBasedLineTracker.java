@@ -12,37 +12,37 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-abstract class LocationBasedLineTracker<T extends BaseHologramLine> extends LineTracker<T> {
+abstract class PositionBasedLineTracker<T extends BaseHologramLine> extends LineTracker<T> {
 
     private static final int ENTITY_VIEW_RANGE = 64;
 
-    protected double locationX;
-    protected double locationY;
-    protected double locationZ;
-    private boolean locationChanged;
+    protected double positionX;
+    protected double positionY;
+    protected double positionZ;
+    private boolean positionChanged;
 
-    LocationBasedLineTracker(T line, NMSManager nmsManager) {
+    PositionBasedLineTracker(T line, NMSManager nmsManager) {
         super(line, nmsManager);
     }
 
     @MustBeInvokedByOverriders
     @Override
     protected void detectChanges() {
-        double locationX = line.getX();
-        double locationY = line.getY();
-        double locationZ = line.getZ();
-        if (this.locationX != locationX || this.locationY != locationY || this.locationZ != locationZ) {
-            this.locationX = locationX;
-            this.locationY = locationY;
-            this.locationZ = locationZ;
-            this.locationChanged = true;
+        double positionX = line.getX();
+        double positionY = line.getY();
+        double positionZ = line.getZ();
+        if (this.positionX != positionX || this.positionY != positionY || this.positionZ != positionZ) {
+            this.positionX = positionX;
+            this.positionY = positionY;
+            this.positionZ = positionZ;
+            this.positionChanged = true;
         }
     }
 
     @MustBeInvokedByOverriders
     @Override
     protected void clearDetectedChanges() {
-        this.locationChanged = false;
+        this.positionChanged = false;
     }
 
     @Override
@@ -52,8 +52,8 @@ abstract class LocationBasedLineTracker<T extends BaseHologramLine> extends Line
             return false;
         }
 
-        double diffX = Math.abs(playerLocation.getX() - locationX);
-        double diffZ = Math.abs(playerLocation.getZ() - locationZ);
+        double diffX = Math.abs(playerLocation.getX() - positionX);
+        double diffZ = Math.abs(playerLocation.getZ() - positionZ);
 
         return diffX <= (double) ENTITY_VIEW_RANGE
                 && diffZ <= (double) ENTITY_VIEW_RANGE
@@ -63,11 +63,11 @@ abstract class LocationBasedLineTracker<T extends BaseHologramLine> extends Line
     @MustBeInvokedByOverriders
     @Override
     protected void addChangesPackets(NMSPacketList packetList) {
-        if (locationChanged) {
-            addLocationChangePackets(packetList);
+        if (positionChanged) {
+            addPositionChangePackets(packetList);
         }
     }
 
-    protected abstract void addLocationChangePackets(NMSPacketList packetList);
+    protected abstract void addPositionChangePackets(NMSPacketList packetList);
 
 }

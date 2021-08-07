@@ -10,25 +10,25 @@ import org.bukkit.inventory.ItemStack;
 
 public interface NMSPacketList {
 
-    void addArmorStandSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ);
+    void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ);
 
-    void addArmorStandSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ, String customName);
+    void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, String customName);
 
-    void addArmorStandSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ, IndividualCustomName individualCustomName);
+    void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, IndividualCustomName individualCustomName);
 
     void addArmorStandNameChangePackets(EntityID entityID, String customName);
 
     void addArmorStandNameChangePackets(EntityID entityID, IndividualCustomName individualCustomName);
 
-    void addItemSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ, ItemStack itemStack);
+    void addItemSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, ItemStack itemStack);
 
     void addItemStackChangePackets(EntityID entityID, ItemStack itemStack);
 
-    void addSlimeSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ);
+    void addSlimeSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ);
 
     void addEntityDestroyPackets(EntityID... entityIDs);
 
-    void addTeleportPackets(EntityID entityID, double locationX, double locationY, double locationZ);
+    void addTeleportPackets(EntityID entityID, double positionX, double positionY, double positionZ);
 
     void addMountPackets(EntityID vehicleEntityID, EntityID passengerEntityID);
 

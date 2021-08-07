@@ -38,7 +38,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     }
 
     @Override
-    public final void setLocation(double x, double y, double z) {
+    public final void setPosition(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;

@@ -59,21 +59,21 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
         checkNotDeleted();
 
         lines.add(line);
-        updateLineLocations();
+        updateLinePositions();
     }
 
     public void addLines(List<? extends T> newLines) {
         checkNotDeleted();
 
         lines.addAll(newLines);
-        updateLineLocations();
+        updateLinePositions();
     }
 
     public void insertLine(int afterIndex, T line) {
         checkNotDeleted();
 
         lines.add(afterIndex, line);
-        updateLineLocations();
+        updateLinePositions();
     }
 
     public void setLine(int index, T line) {
@@ -81,7 +81,7 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
 
         T previousLine = lines.set(index, line);
         previousLine.setDeleted();
-        updateLineLocations();
+        updateLinePositions();
     }
 
     public void setLines(List<T> newLines) {
@@ -89,14 +89,14 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
 
         clearLines();
         lines.addAll(newLines);
-        updateLineLocations();
+        updateLinePositions();
     }
 
     public void removeLine(int index) {
         checkNotDeleted();
 
         lines.remove(index).setDeleted();
-        updateLineLocations();
+        updateLinePositions();
     }
 
     public void removeLine(T line) {
@@ -104,7 +104,7 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
 
         lines.remove(line);
         line.setDeleted();
-        updateLineLocations();
+        updateLinePositions();
     }
 
     public void clearLines() {
@@ -190,7 +190,7 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
             this.isInLoadedChunk.invalidate();
         }
 
-        updateLineLocations();
+        updateLinePositions();
     }
 
     private int getChunkCoordinate(double positionCoordinate) {
@@ -201,7 +201,7 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
      * When spawning at a location, the top part of the first line should be exactly on that location.
      * The second line is below the first, and so on.
      */
-    private void updateLineLocations() {
+    private void updateLinePositions() {
         double currentLineY = y;
 
         for (int i = 0; i < lines.size(); i++) {
@@ -212,7 +212,7 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
                 currentLineY -= Settings.spaceBetweenLines;
             }
 
-            line.setLocation(x, currentLineY, z);
+            line.setPosition(x, currentLineY, z);
         }
     }
 

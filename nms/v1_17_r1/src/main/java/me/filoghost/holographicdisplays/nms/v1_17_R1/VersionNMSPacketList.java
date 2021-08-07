@@ -21,8 +21,8 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
     private static final boolean USE_ENTITY_LIST_DESTROY_PACKET = useEntityListDestroyPacket();
 
     @Override
-    public void addArmorStandSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ) {
-        add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.ARMOR_STAND, locationX, locationY, locationZ));
+    public void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ) {
+        add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.ARMOR_STAND, positionX, positionY, positionZ));
         add(EntityMetadataNMSPacket.builder(entityID)
                 .setArmorStandMarker()
                 .build()
@@ -30,8 +30,8 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
     }
 
     @Override
-    public void addArmorStandSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ, String customName) {
-        add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.ARMOR_STAND, locationX, locationY, locationZ));
+    public void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, String customName) {
+        add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.ARMOR_STAND, positionX, positionY, positionZ));
         add(EntityMetadataNMSPacket.builder(entityID)
                 .setArmorStandMarker()
                 .setCustomName(customName)
@@ -40,8 +40,8 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
     }
 
     @Override
-    public void addArmorStandSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ, IndividualCustomName individualCustomName) {
-        add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.ARMOR_STAND, locationX, locationY, locationZ));
+    public void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, IndividualCustomName individualCustomName) {
+        add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.ARMOR_STAND, positionX, positionY, positionZ));
         add(new IndividualNMSPacket(player -> EntityMetadataNMSPacket.builder(entityID)
                 .setArmorStandMarker()
                 .setCustomName(individualCustomName.get(player))
@@ -66,8 +66,8 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
     }
 
     @Override
-    public void addItemSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ, ItemStack itemStack) {
-        add(new EntitySpawnNMSPacket(entityID, EntityTypeID.ITEM, locationX, locationY, locationZ));
+    public void addItemSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, ItemStack itemStack) {
+        add(new EntitySpawnNMSPacket(entityID, EntityTypeID.ITEM, positionX, positionY, positionZ));
         add(EntityMetadataNMSPacket.builder(entityID)
                 .setItemStack(itemStack)
                 .build()
@@ -83,8 +83,8 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
     }
 
     @Override
-    public void addSlimeSpawnPackets(EntityID entityID, double locationX, double locationY, double locationZ) {
-        add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.SLIME, locationX, locationY, locationZ));
+    public void addSlimeSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ) {
+        add(new EntityLivingSpawnNMSPacket(entityID, EntityTypeID.SLIME, positionX, positionY, positionZ));
         add(EntityMetadataNMSPacket.builder(entityID)
                 .setInvisible()
                 .setSlimeSmall() // Required for a correct client-side collision box
@@ -104,8 +104,8 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
     }
 
     @Override
-    public void addTeleportPackets(EntityID entityID, double locationX, double locationY, double locationZ) {
-        add(new EntityTeleportNMSPacket(entityID, locationX, locationY, locationZ));
+    public void addTeleportPackets(EntityID entityID, double positionX, double positionY, double positionZ) {
+        add(new EntityTeleportNMSPacket(entityID, positionX, positionY, positionZ));
     }
 
     @Override

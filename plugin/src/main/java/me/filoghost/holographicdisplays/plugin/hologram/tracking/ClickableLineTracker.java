@@ -12,7 +12,7 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-public abstract class ClickableLineTracker<T extends BaseClickableLine> extends LocationBasedLineTracker<T> {
+public abstract class ClickableLineTracker<T extends BaseClickableLine> extends PositionBasedLineTracker<T> {
 
     private static final double SLIME_HEIGHT = 0.5;
 
@@ -93,15 +93,15 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addLocationChangePackets(NMSPacketList packetList) {
+    protected void addPositionChangePackets(NMSPacketList packetList) {
         if (spawnSlimeEntities) {
-            packetList.addTeleportPackets(vehicleEntityID, locationX, getSlimeLocationY(), locationZ);
+            packetList.addTeleportPackets(vehicleEntityID, positionX, getSlimePositionY(), positionZ);
         }
     }
 
     private void addSlimeSpawnPackets(NMSPacketList packetList) {
-        packetList.addArmorStandSpawnPackets(vehicleEntityID, locationX, getSlimeLocationY(), locationZ);
-        packetList.addSlimeSpawnPackets(slimeEntityID, locationX, getSlimeLocationY(), locationZ);
+        packetList.addArmorStandSpawnPackets(vehicleEntityID, positionX, getSlimePositionY(), positionZ);
+        packetList.addSlimeSpawnPackets(slimeEntityID, positionX, getSlimePositionY(), positionZ);
         packetList.addMountPackets(vehicleEntityID, slimeEntityID);
     }
 
@@ -109,8 +109,8 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
         packetList.addEntityDestroyPackets(slimeEntityID, vehicleEntityID);
     }
 
-    private double getSlimeLocationY() {
-        return locationY + ((line.getHeight() - SLIME_HEIGHT) / 2);
+    private double getSlimePositionY() {
+        return positionY + ((line.getHeight() - SLIME_HEIGHT) / 2);
     }
 
 }
