@@ -13,6 +13,7 @@ import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 
 public abstract class LegacyUpgrade implements LegacyUpgradeTask {
 
@@ -62,6 +63,17 @@ public abstract class LegacyUpgrade implements LegacyUpgradeTask {
         } catch (IOException e) {
             errorCollector.add(e, "error while copying file \"" + configManager.formatPath(file) + "\""
                     + " to \"" + configManager.formatPath(backupsFolder) + "\"");
+        }
+
+        Path readMeFile = backupsFolder.resolve("README.txt");
+        if (!Files.isRegularFile(readMeFile)) {
+            try {
+                Files.write(readMeFile, Collections.singletonList(
+                        "This folder is used to backup configuration files before automatically upgrading them to a newer format."
+                ));
+            } catch (IOException ignore) {
+                // The file is not important
+            }
         }
     }
 
