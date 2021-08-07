@@ -11,8 +11,8 @@ import me.filoghost.fcommons.config.ConfigErrors;
 import me.filoghost.fcommons.config.ConfigLoader;
 import me.filoghost.fcommons.config.ConfigPath;
 import me.filoghost.fcommons.config.ConfigSection;
+import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.config.exception.ConfigLoadException;
-import me.filoghost.fcommons.config.exception.ConfigSaveException;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -22,19 +22,31 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class LegacySymbolsUpgrade {
+public class SymbolsLegacyUpgrade extends LegacyUpgrade {
 
-    public static void run(ConfigManager configManager, ErrorCollector errorCollector) throws ConfigLoadException, ConfigSaveException {
-        Path oldFile = configManager.getRootDataFolder().resolve("symbols.yml");
+    private final Path oldFile;
+
+    public SymbolsLegacyUpgrade(ConfigManager configManager, ErrorCollector errorCollector) {
+        super(configManager, errorCollector);
+        this.oldFile = configManager.getRootDataFolder().resolve("symbols.yml");
+    }
+
+    @Override
+    protected Path getFile() {
+        return oldFile;
+    }
+
+    @Override
+    public void run() throws IOException, ConfigException {
         ConfigLoader newConfigLoader = configManager.getConfigLoader("custom-placeholders.yml");
         Path newFile = newConfigLoader.getFile();
 
         if (!Files.isRegularFile(oldFile)) {
-            return; // Old file doesn't exist, ignore upgrade
+            return; // Old file doesn't exist, nothing to upgrade
         }
 
         if (Files.isRegularFile(newFile)) {
-            return; // Already created, do not override
+            return; // Already existing, do not override
         }
 
         Config newConfig = new Config();
@@ -55,37 +67,32 @@ public class LegacySymbolsUpgrade {
 
             // Ignore bad line
             if (!line.contains(":")) {
-                errorCollector.add("couldn't convert invalid line in " + oldFile.getFileName() + ": " + line);
                 continue;
             }
 
-            String[] parts = Strings.splitAndTrim(line, ":", 2);
-            String placeholder = unquote(parts[0]);
-            String replacement = StringEscapeUtils.unescapeJava(unquote(parts[1]));
+            String[] placeholderAndReplacement = Strings.splitAndTrim(line, ":", 2);
+            String placeholder = unquote(placeholderAndReplacement[0]);
+            String replacement = StringEscapeUtils.unescapeJava(unquote(placeholderAndReplacement[1]));
 
             placeholdersSection.setString(ConfigPath.literal(placeholder), replacement);
         }
 
-        try {
-            Files.move(oldFile, LegacyUpgradeUtils.getBackupFile(oldFile));
-        } catch (IOException e) {
-            errorCollector.add(e, "couldn't rename " + oldFile.getFileName());
-        }
+        createBackupFile(oldFile);
         newConfigLoader.save(newConfig);
+        Files.delete(oldFile);
     }
 
     private static String unquote(String input) {
         if (input.length() < 2) {
-            // Too short, cannot be a quoted string
+            // Too short to be a quoted string
             return input;
         }
-        if (input.startsWith("'") && input.endsWith("'")) {
-            return input.substring(1, input.length() - 1);
-        } else if (input.startsWith("\"") && input.endsWith("\"")) {
-            return input.substring(1, input.length() - 1);
-        }
 
-        return input;
+        if ((input.startsWith("'") && input.endsWith("'")) || (input.startsWith("\"") && input.endsWith("\""))) {
+            return input.substring(1, input.length() - 1);
+        } else {
+            return input;
+        }
     }
 
 }

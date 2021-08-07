@@ -145,7 +145,7 @@ public class ConfigManager extends BaseConfigManager {
         errorCollector.add(e, "error while loading config file \"" + formatPath(file) + "\"");
     }
 
-    private String formatPath(Path path) {
+    public String formatPath(Path path) {
         return ConfigErrors.formatPath(getRootDataFolder(), path);
     }
 

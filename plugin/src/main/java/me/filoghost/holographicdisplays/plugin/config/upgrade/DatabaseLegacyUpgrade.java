@@ -11,20 +11,30 @@ import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.ConfigType;
 import me.filoghost.fcommons.config.ConfigValue;
 import me.filoghost.fcommons.config.FileConfig;
-import me.filoghost.fcommons.config.exception.ConfigLoadException;
-import me.filoghost.fcommons.config.exception.ConfigSaveException;
+import me.filoghost.fcommons.config.exception.ConfigException;
+import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 
-import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.file.Path;
 
-public class LegacyDatabaseUpgrade {
+public class DatabaseLegacyUpgrade extends LegacyUpgrade implements LegacyUpgradeTask {
 
-    public static void run(ConfigManager configManager) throws ConfigLoadException, ConfigSaveException, IOException {
-        ConfigLoader databaseConfigLoader = configManager.getConfigLoader("database.yml");
+    private final ConfigLoader databaseConfigLoader;
 
+    public DatabaseLegacyUpgrade(ConfigManager configManager, ErrorCollector errorCollector) {
+        super(configManager, errorCollector);
+        this.databaseConfigLoader = configManager.getConfigLoader("database.yml");
+    }
+
+    @Override
+    public Path getFile() {
+        return databaseConfigLoader.getFile();
+    }
+
+    @Override
+    public void run() throws ConfigException {
         if (!databaseConfigLoader.fileExists()) {
-            return; // Database doesn't exist yet, nothing to convert
+            return; // Database file doesn't exist, nothing to upgrade
         }
 
         FileConfig databaseConfig = databaseConfigLoader.load();
@@ -42,12 +52,12 @@ public class LegacyDatabaseUpgrade {
         }
 
         if (changed) {
-            Files.copy(databaseConfigLoader.getFile(), LegacyUpgradeUtils.getBackupFile(databaseConfigLoader.getFile()));
+            createBackupFile(databaseConfigLoader.getFile());
             databaseConfigLoader.save(databaseConfig);
         }
     }
 
-    private static ConfigSection convertLegacySerializedLocation(String legacySerializedLocation) {
+    private ConfigSection convertLegacySerializedLocation(String legacySerializedLocation) {
         String[] legacyLocationParts = Strings.splitAndTrim(legacySerializedLocation, ",");
 
         ConfigSection positionSection = new ConfigSection();

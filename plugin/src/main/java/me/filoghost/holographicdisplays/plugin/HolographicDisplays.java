@@ -8,7 +8,6 @@ package me.filoghost.holographicdisplays.plugin;
 import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider;
 import me.filoghost.fcommons.FCommonsPlugin;
 import me.filoghost.fcommons.FeatureSupport;
-import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
@@ -20,9 +19,9 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.config.HologramDatabase;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
-import me.filoghost.holographicdisplays.plugin.config.upgrade.LegacyAnimationsUpgrade;
-import me.filoghost.holographicdisplays.plugin.config.upgrade.LegacyDatabaseUpgrade;
-import me.filoghost.holographicdisplays.plugin.config.upgrade.LegacySymbolsUpgrade;
+import me.filoghost.holographicdisplays.plugin.config.upgrade.AnimationsLegacyUpgrade;
+import me.filoghost.holographicdisplays.plugin.config.upgrade.DatabaseLegacyUpgrade;
+import me.filoghost.holographicdisplays.plugin.config.upgrade.SymbolsLegacyUpgrade;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
@@ -44,7 +43,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class HolographicDisplays extends FCommonsPlugin {
@@ -107,21 +105,9 @@ public class HolographicDisplays extends FCommonsPlugin {
         APIHologramManager apiHologramManager = new APIHologramManager(lineTrackerManager);
 
         // Run only once at startup, before loading the configuration
-        try {
-            LegacySymbolsUpgrade.run(configManager, errorCollector);
-        } catch (ConfigException e) {
-            errorCollector.add(e, "couldn't automatically convert symbols file to the new format");
-        }
-        try {
-            LegacyAnimationsUpgrade.run(configManager, errorCollector);
-        } catch (IOException e) {
-            errorCollector.add(e, "couldn't automatically convert animation files to the new format");
-        }
-        try {
-            LegacyDatabaseUpgrade.run(configManager);
-        } catch (ConfigException | IOException e) {
-            errorCollector.add(e, "couldn't automatically convert database file to the new format");
-        }
+        new SymbolsLegacyUpgrade(configManager, errorCollector).tryRun();
+        new AnimationsLegacyUpgrade(configManager, errorCollector).tryRun();
+        new DatabaseLegacyUpgrade(configManager, errorCollector).tryRun();
 
         // Load the configuration
         load(true, errorCollector);
