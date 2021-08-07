@@ -29,7 +29,7 @@ public class ReloadCommand extends HologramSubCommand {
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) {
         PrintableErrorCollector errorCollector = new PrintableErrorCollector();
-        holographicDisplays.load(false, errorCollector);
+        holographicDisplays.load(errorCollector);
 
         if (!errorCollector.hasErrors()) {
             sender.sendMessage(ColorScheme.PRIMARY + "Configuration reloaded successfully.");

@@ -35,6 +35,8 @@ public abstract class HolographicDisplaysAPIProvider {
 
     public abstract HologramPosition createHologramPosition(World world, double x, double y, double z);
 
+    public abstract HologramPosition createHologramPosition(String worldName, double x, double y, double z);
+
     public abstract HologramPosition createHologramPosition(Location location);
 
 }

@@ -11,8 +11,6 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPositio
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +36,7 @@ public class HologramConfig {
 
         BaseHologramPosition position = hologram.getBasePosition();
         this.positionConfigSection = new ConfigSection();
-        positionConfigSection.setString("world", position.getWorld().getName());
+        positionConfigSection.setString("world", position.getWorldName());
         positionConfigSection.setDouble("x", position.getX());
         positionConfigSection.setDouble("y", position.getY());
         positionConfigSection.setDouble("z", position.getZ());
@@ -81,14 +79,7 @@ public class HologramConfig {
             double x = positionConfigSection.getRequiredDouble("x");
             double y = positionConfigSection.getRequiredDouble("y");
             double z = positionConfigSection.getRequiredDouble("z");
-
-            World world = Bukkit.getWorld(worldName);
-            if (world == null) {
-                throw new HologramLoadException("world \"" + worldName + "\" is not currently loaded");
-            }
-
-            return new BaseHologramPosition(world, x, y, z);
-
+            return new BaseHologramPosition(worldName, x, y, z);
         } catch (ConfigValueException e) {
             throw new HologramLoadException("invalid position attribute \"" + e.getConfigPath() + "\"", e);
         }

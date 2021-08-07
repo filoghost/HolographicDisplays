@@ -59,7 +59,7 @@ public class ListCommand extends HologramSubCommand {
                 sender.sendMessage(ColorScheme.SECONDARY_DARKER + "- " + ColorScheme.SECONDARY_BOLD + hologram.getName()
                         + " " + ColorScheme.SECONDARY_DARKER + "at"
                         + " x: " + position.getBlockX() + ", y: " + position.getBlockY() + ", z: " + position.getBlockZ()
-                        + " (lines: " + hologram.getLineCount() + ", world: \"" + position.getWorld().getName() + "\")");
+                        + " (lines: " + hologram.getLineCount() + ", world: \"" + position.getWorldName() + "\")");
             }
         }
 

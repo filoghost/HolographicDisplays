@@ -6,19 +6,23 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Locale;
 
 public class BaseHologramPosition {
 
-    private World world;
+    private String worldName;
     private double x, y, z;
 
-    public BaseHologramPosition(World world, double x, double y, double z) {
-        Preconditions.notNull(world, "world");
-        this.world = world;
+    public BaseHologramPosition(String worldName, double x, double y, double z) {
+        Preconditions.notNull(worldName, "worldName");
+        this.worldName = worldName;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -27,19 +31,32 @@ public class BaseHologramPosition {
     public BaseHologramPosition(Location location) {
         Preconditions.notNull(location, "location");
         Preconditions.notNull(location.getWorld(), "location's world");
-        this.world = location.getWorld();
+        this.worldName = location.getWorld().getName();
         this.x = location.getX();
         this.y = location.getY();
         this.z = location.getZ();
     }
 
-    public @NotNull World getWorld() {
-        return world;
+    public @NotNull String getWorldName() {
+        return worldName;
+    }
+
+    public void setWorldName(@NotNull String worldName) {
+        Preconditions.notNull(worldName, "worldName");
+        this.worldName = worldName;
+    }
+
+    public boolean isInWorld(World world) {
+        return world != null && isSameWorld(world, this.worldName);
+    }
+
+    public @Nullable World getWorldIfLoaded() {
+        return Bukkit.getWorld(worldName);
     }
 
     public void setWorld(@NotNull World world) {
         Preconditions.notNull(world, "world");
-        this.world = world;
+        this.worldName = world.getName();
     }
 
     public double getX() {
@@ -96,17 +113,22 @@ public class BaseHologramPosition {
     }
 
     public @NotNull Location toLocation() {
-        return new Location(world, x, y, z);
+        return new Location(getWorldIfLoaded(), x, y, z);
     }
 
     @Override
     public String toString() {
         return "HologramPosition{"
-                + "world=" + world
+                + "worldName=" + worldName
                 + ", x=" + x
                 + ", y=" + y
                 + ", z=" + z
                 + "}";
+    }
+
+    static boolean isSameWorld(World world, String worldName) {
+        // Use the same comparison used by Bukkit.getWorld(...)
+        return world.getName().toLowerCase(Locale.ENGLISH).equals(worldName.toLowerCase(Locale.ENGLISH));
     }
 
 }

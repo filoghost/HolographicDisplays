@@ -14,6 +14,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.plugin.Plugin;
 
 public class ChunkListener implements Listener {
@@ -26,6 +28,16 @@ public class ChunkListener implements Listener {
         this.plugin = plugin;
         this.internalHologramManager = internalHologramManager;
         this.apiHologramManager = apiHologramManager;
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onWorldLoad(WorldUnloadEvent event) {
+        internalHologramManager.onWorldLoad(event.getWorld());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onWorldLoad(WorldLoadEvent event) {
+        internalHologramManager.onWorldUnload(event.getWorld());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

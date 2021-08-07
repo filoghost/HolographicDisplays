@@ -136,12 +136,12 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
 
     @Override
     public @NotNull HologramPosition getPosition() {
-        return new APIHologramPosition(getPositionWorld(), getPositionX(), getPositionY(), getPositionZ());
+        return new APIHologramPosition(getPositionWorldName(), getPositionX(), getPositionY(), getPositionZ());
     }
 
     @Override
     public void setPosition(@NotNull HologramPosition position) {
-        super.setPosition(position.getWorld(), position.getX(), position.getY(), position.getZ());
+        super.setPosition(position.getWorldName(), position.getX(), position.getY(), position.getZ());
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseHologramLine extends BaseHologramComponent implements EditableHologramLine {
 
@@ -44,6 +45,10 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
         setChanged();
     }
 
+    public @Nullable World getWorldIfLoaded() {
+        return hologram.getPositionWorldIfLoaded();
+    }
+
     public double getX() {
         return x;
     }
@@ -54,10 +59,6 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
 
     public double getZ() {
         return z;
-    }
-
-    public World getWorld() {
-        return hologram.getPositionWorld();
     }
 
     public boolean isInLoadedChunk() {

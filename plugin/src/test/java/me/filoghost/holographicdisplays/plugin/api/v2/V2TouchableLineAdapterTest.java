@@ -10,12 +10,13 @@ import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.api.hologram.ClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APITextLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.test.Mocks;
 import me.filoghost.holographicdisplays.plugin.test.TestAPIHologramManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -26,9 +27,14 @@ class V2TouchableLineAdapterTest {
     APIHologramManager apiHologramManager = new TestAPIHologramManager();
 
     APIHologram hologram = apiHologramManager.createHologram(
-            new BaseHologramPosition(Mocks.WORLD, 0, 0, 0),
+            new BaseHologramPosition("world", 0, 0, 0),
             Mocks.PLUGIN
     );
+
+    @BeforeAll
+    static void beforeAll() {
+        Mocks.prepareEnvironment();
+    }
 
     @Test
     void setNullV2TouchHandler() {

@@ -9,7 +9,6 @@ import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -17,7 +16,6 @@ abstract class LocationBasedLineTracker<T extends BaseHologramLine> extends Line
 
     private static final int ENTITY_VIEW_RANGE = 64;
 
-    private World world;
     protected double locationX;
     protected double locationY;
     protected double locationZ;
@@ -30,12 +28,10 @@ abstract class LocationBasedLineTracker<T extends BaseHologramLine> extends Line
     @MustBeInvokedByOverriders
     @Override
     protected void detectChanges() {
-        World world = line.getWorld();
         double locationX = line.getX();
         double locationY = line.getY();
         double locationZ = line.getZ();
-        if (this.world != world || this.locationX != locationX || this.locationY != locationY || this.locationZ != locationZ) {
-            this.world = world;
+        if (this.locationX != locationX || this.locationY != locationY || this.locationZ != locationZ) {
             this.locationX = locationX;
             this.locationY = locationY;
             this.locationZ = locationZ;
@@ -52,11 +48,14 @@ abstract class LocationBasedLineTracker<T extends BaseHologramLine> extends Line
     @Override
     protected final boolean shouldTrackPlayer(Player player) {
         Location playerLocation = player.getLocation();
+        if (playerLocation.getWorld() != line.getWorldIfLoaded()) {
+            return false;
+        }
+
         double diffX = Math.abs(playerLocation.getX() - locationX);
         double diffZ = Math.abs(playerLocation.getZ() - locationZ);
 
-        return playerLocation.getWorld() == world
-                && diffX <= (double) ENTITY_VIEW_RANGE
+        return diffX <= (double) ENTITY_VIEW_RANGE
                 && diffZ <= (double) ENTITY_VIEW_RANGE
                 && line.isVisibleTo(player);
     }

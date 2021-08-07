@@ -110,7 +110,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         new DatabaseLegacyUpgrade(configManager, errorCollector).tryRun();
 
         // Load the configuration
-        load(true, errorCollector);
+        load(errorCollector);
 
         // Add packet listener for currently online players (may happen if the plugin is disabled and re-enabled)
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -155,7 +155,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         HologramsAPIProvider.setImplementation(new V2HologramsAPIProvider(apiHologramManager, placeholderRegistry));
     }
 
-    public void load(boolean deferHologramsCreation, ErrorCollector errorCollector) {
+    public void load(ErrorCollector errorCollector) {
         internalHologramManager.clearAll();
 
         configManager.reloadStaticReplacements(errorCollector);
@@ -167,12 +167,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         bungeeServerTracker.restart(Settings.bungeeRefreshSeconds, TimeUnit.SECONDS);
 
         HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
-        if (deferHologramsCreation) {
-            // For the initial load: holograms are loaded later, when the worlds are ready
-            Bukkit.getScheduler().runTask(this, () -> hologramDatabase.createHolograms(internalHologramManager, errorCollector));
-        } else {
-            hologramDatabase.createHolograms(internalHologramManager, errorCollector);
-        }
+        hologramDatabase.createHolograms(internalHologramManager, errorCollector);
     }
 
     @Override

@@ -112,12 +112,12 @@ public interface Hologram {
     @NotNull HologramPosition getPosition();
 
     /**
-     * Returns the world of the hologram position.
+     * Returns the world name of the hologram position.
      *
-     * @return the world of the hologram position
+     * @return the world name of the hologram position
      * @since 1
      */
-    @NotNull World getPositionWorld();
+    @NotNull String getPositionWorldName();
 
     /**
      * Returns the X coordinate of the hologram position.
@@ -150,6 +150,17 @@ public interface Hologram {
      * @since 1
      */
     void setPosition(@NotNull HologramPosition position);
+
+    /**
+     * Moves the hologram to the given position.
+     *
+     * @param worldName the world name where the hologram should be moved
+     * @param x the X coordinate
+     * @param y the Y coordinate
+     * @param z the Z coordinate
+     * @since 1
+     */
+    void setPosition(@NotNull String worldName, double x, double y, double z);
 
     /**
      * Moves the hologram to the given position.

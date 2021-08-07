@@ -43,7 +43,13 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
 
     @Override
     public HologramPosition createHologramPosition(World world, double x, double y, double z) {
-        return new APIHologramPosition(world, x, y, z);
+        Preconditions.notNull(world, "world");
+        return new APIHologramPosition(world.getName(), x, y, z);
+    }
+
+    @Override
+    public HologramPosition createHologramPosition(String worldName, double x, double y, double z) {
+        return new APIHologramPosition(worldName, x, y, z);
     }
 
     @Override

@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import org.bukkit.Chunk;
+import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +37,18 @@ public abstract class BaseHologramManager<H extends BaseHologram<?>> {
             H hologram = iterator.next();
             iterator.remove();
             hologram.setDeleted();
+        }
+    }
+
+    public void onWorldLoad(World world) {
+        for (H hologram : holograms) {
+            hologram.onWorldLoad(world);
+        }
+    }
+
+    public void onWorldUnload(World world) {
+        for (H hologram : holograms) {
+            hologram.onWorldUnload(world);
         }
     }
 

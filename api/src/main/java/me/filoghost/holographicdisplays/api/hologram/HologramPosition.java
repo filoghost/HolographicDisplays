@@ -9,6 +9,7 @@ import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvi
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface HologramPosition {
 
@@ -16,11 +17,19 @@ public interface HologramPosition {
         return HolographicDisplaysAPIProvider.getImplementation().createHologramPosition(world, x, y, z);
     }
 
+    static @NotNull HologramPosition create(@NotNull String worldName, double x, double y, double z) {
+        return HolographicDisplaysAPIProvider.getImplementation().createHologramPosition(worldName, x, y, z);
+    }
+
     static @NotNull HologramPosition fromLocation(@NotNull Location location) {
         return HolographicDisplaysAPIProvider.getImplementation().createHologramPosition(location);
     }
 
-    @NotNull World getWorld();
+    @NotNull String getWorldName();
+
+    void setWorldName(@NotNull String worldName);
+
+    @Nullable World getWorldIfLoaded();
 
     void setWorld(@NotNull World world);
 
