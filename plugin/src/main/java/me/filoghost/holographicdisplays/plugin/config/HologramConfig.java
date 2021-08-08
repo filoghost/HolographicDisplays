@@ -30,7 +30,7 @@ public class HologramConfig {
     public HologramConfig(InternalHologram hologram) {
         this.name = hologram.getName();
         this.serializedLines = new ArrayList<>();
-        for (InternalHologramLine line : hologram.getLines().getAll()) {
+        for (InternalHologramLine line : hologram.getLines()) {
             serializedLines.add(line.getSerializedConfigValue());
         }
 

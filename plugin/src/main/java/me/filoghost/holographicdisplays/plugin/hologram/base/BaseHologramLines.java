@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class BaseHologramLines<T extends EditableHologramLine> {
+public class BaseHologramLines<T extends EditableHologramLine> implements Iterable<T> {
 
     private final BaseHologram hologram;
     private final List<T> lines;
@@ -24,16 +24,17 @@ public class BaseHologramLines<T extends EditableHologramLine> {
         this.unmodifiableLinesView = Collections.unmodifiableList(lines);
     }
 
+    @Override
+    public Iterator<T> iterator() {
+        return unmodifiableLinesView.iterator();
+    }
+
     public int size() {
         return lines.size();
     }
 
     public boolean isEmpty() {
         return lines.isEmpty();
-    }
-
-    public List<T> getAll() {
-        return unmodifiableLinesView;
     }
 
     public T get(int index) {

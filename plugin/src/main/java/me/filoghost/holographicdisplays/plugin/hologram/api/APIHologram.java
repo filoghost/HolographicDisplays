@@ -133,7 +133,7 @@ public class APIHologram extends BaseHologram implements Hologram {
         }
 
         this.allowPlaceholders = allowPlaceholders;
-        for (APIHologramLine line : lines.getAll()) {
+        for (APIHologramLine line : lines) {
             line.setChanged();
         }
     }
@@ -156,7 +156,7 @@ public class APIHologram extends BaseHologram implements Hologram {
 
         double height = 0.0;
 
-        for (APIHologramLine line : lines.getAll()) {
+        for (APIHologramLine line : lines) {
             height += line.getHeight();
         }
 

@@ -37,7 +37,7 @@ public class CopyCommand extends HologramSubCommand {
         InternalHologram toHologram = hologramEditor.getHologram(args[1]);
 
         List<InternalHologramLine> clonedLines = new ArrayList<>();
-        for (InternalHologramLine line : fromHologram.getLines().getAll()) {
+        for (InternalHologramLine line : fromHologram.getLines()) {
             clonedLines.add(hologramEditor.parseHologramLine(toHologram, line.getSerializedConfigValue()));
         }
 
