@@ -47,11 +47,11 @@ public interface HolographicDisplaysAPI {
     /**
      * Creates a hologram at given location.
      *
-     * @param source the location where it will appear
+     * @param location the location where it will appear
      * @return the created hologram
      * @since 1
      */
-    @NotNull Hologram createHologram(@NotNull Location source);
+    @NotNull Hologram createHologram(@NotNull Location location);
 
     /**
      * Returns all the active holograms. A hologram is no longer active after {@link Hologram#delete()} is invoked.

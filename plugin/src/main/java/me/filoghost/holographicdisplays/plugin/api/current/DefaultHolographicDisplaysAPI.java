@@ -32,12 +32,12 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public @NotNull Hologram createHologram(@NotNull Location source) {
-        Preconditions.notNull(source, "source");
-        Preconditions.notNull(source.getWorld(), "source's world");
+    public @NotNull Hologram createHologram(@NotNull Location location) {
+        Preconditions.notNull(location, "location");
+        Preconditions.notNull(location.getWorld(), "location's world");
         Preconditions.checkState(Bukkit.isPrimaryThread(), "Async hologram creation");
 
-        return apiHologramManager.createHologram(new BaseHologramPosition(source), plugin);
+        return apiHologramManager.createHologram(new BaseHologramPosition(location), plugin);
     }
 
     @Override
