@@ -38,7 +38,7 @@ public class AddlineCommand extends LineEditingCommand implements QuickEditComma
 
         InternalHologramLine line = hologramEditor.parseHologramLine(hologram, serializedLine);
 
-        hologram.addLine(line);
+        hologram.getLines().add(line);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         sender.sendMessage(ColorScheme.PRIMARY + "Line added.");

@@ -114,9 +114,9 @@ public class ReadimageCommand extends LineEditingCommand {
         }
 
         if (!append) {
-            hologram.clearLines();
+            hologram.getLines().clear();
         }
-        hologram.addLines(newLines);
+        hologram.getLines().addAll(newLines);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         if (append) {

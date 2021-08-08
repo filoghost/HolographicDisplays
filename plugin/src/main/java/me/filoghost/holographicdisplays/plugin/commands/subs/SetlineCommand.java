@@ -38,13 +38,15 @@ public class SetlineCommand extends LineEditingCommand implements QuickEditComma
         String serializedLine = Strings.joinFrom(" ", args, 2);
 
         int lineNumber = CommandValidate.parseInteger(args[1]);
-        CommandValidate.check(lineNumber >= 1 && lineNumber <= hologram.getLineCount(),
-                "The line number must be between 1 and " + hologram.getLineCount() + ".");
+        int linesAmount = hologram.getLines().size();
+
+        CommandValidate.check(lineNumber >= 1 && lineNumber <= linesAmount,
+                "The line number must be between 1 and " + linesAmount + ".");
         int index = lineNumber - 1;
 
         InternalHologramLine line = hologramEditor.parseHologramLine(hologram, serializedLine);
 
-        hologram.setLine(index, line);
+        hologram.getLines().set(index, line);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         sender.sendMessage(ColorScheme.PRIMARY + "Line " + lineNumber + " changed.");

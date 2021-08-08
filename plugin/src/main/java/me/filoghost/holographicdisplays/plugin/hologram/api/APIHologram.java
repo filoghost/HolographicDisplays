@@ -11,6 +11,7 @@ import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramAdapter;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLines;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.entity.Player;
@@ -19,10 +20,9 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+public class APIHologram extends BaseHologram implements Hologram {
 
-public class APIHologram extends BaseHologram<APIHologramLine> implements Hologram {
-
+    private final BaseHologramLines<APIHologramLine> lines;
     private final Plugin plugin;
     private final APIHologramManager apiHologramManager;
     private final DefaultVisibilitySettings visibilitySettings;
@@ -38,6 +38,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
             LineTrackerManager lineTrackerManager) {
         super(position, lineTrackerManager);
         Preconditions.notNull(plugin, "plugin");
+        this.lines = new BaseHologramLines<>(this);
         this.plugin = plugin;
         this.apiHologramManager = apiHologramManager;
         this.visibilitySettings = new DefaultVisibilitySettings();
@@ -46,14 +47,24 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     }
 
     @Override
+    protected BaseHologramLines<APIHologramLine> getLines() {
+        return lines;
+    }
+
+    @Override
     public Plugin getCreatorPlugin() {
         return plugin;
     }
 
     @Override
+    public @NotNull APIHologramLine getLine(int index) {
+        return lines.get(index);
+    }
+
+    @Override
     public @NotNull APITextLine appendTextLine(@Nullable String text) {
-        APITextLine line = createTextLine(text);
-        addLine(line);
+        APITextLine line = new APITextLine(this, text);
+        lines.add(line);
         return line;
     }
 
@@ -61,15 +72,15 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     public @NotNull APIItemLine appendItemLine(@NotNull ItemStack itemStack) {
         Preconditions.notNull(itemStack, "itemStack");
 
-        APIItemLine line = createItemLine(itemStack);
-        addLine(line);
+        APIItemLine line = new APIItemLine(this, itemStack);
+        lines.add(line);
         return line;
     }
 
     @Override
     public @NotNull APITextLine insertTextLine(int index, @Nullable String text) {
-        APITextLine line = createTextLine(text);
-        addLine(line);
+        APITextLine line = new APITextLine(this, text);
+        lines.add(line);
         return line;
     }
 
@@ -77,22 +88,34 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
     public @NotNull APIItemLine insertItemLine(int index, @NotNull ItemStack itemStack) {
         Preconditions.notNull(itemStack, "itemStack");
 
-        APIItemLine line = createItemLine(itemStack);
-        addLine(line);
+        APIItemLine line = new APIItemLine(this, itemStack);
+        lines.add(line);
         return line;
     }
 
-    private APITextLine createTextLine(String text) {
-        return new APITextLine(this, text);
+    @Override
+    public void removeLine(int index) {
+        checkNotDeleted();
+
+        lines.remove(index);
     }
 
-    private APIItemLine createItemLine(ItemStack itemStack) {
-        return new APIItemLine(this, itemStack);
+    public void removeLine(APIHologramLine line) {
+        checkNotDeleted();
+
+        lines.remove(line);
     }
 
     @Override
-    public @NotNull APIHologramLine getLine(int index) {
-        return getLines().get(index);
+    public void clearLines() {
+        checkNotDeleted();
+
+        lines.clear();
+    }
+
+    @Override
+    public int getLineCount() {
+        return getLines().size();
     }
 
     @Override
@@ -102,7 +125,7 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
         }
 
         this.allowPlaceholders = allowPlaceholders;
-        for (APIHologramLine line : getLines()) {
+        for (APIHologramLine line : lines.getAll()) {
             line.setChanged();
         }
     }
@@ -119,14 +142,13 @@ public class APIHologram extends BaseHologram<APIHologramLine> implements Hologr
 
     @Override
     public double getHeight() {
-        List<APIHologramLine> lines = getLines();
         if (lines.isEmpty()) {
             return 0;
         }
 
         double height = 0.0;
 
-        for (APIHologramLine line : lines) {
+        for (APIHologramLine line : lines.getAll()) {
             height += line.getHeight();
         }
 

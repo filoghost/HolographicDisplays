@@ -13,7 +13,7 @@ public abstract class BaseTextLine extends BaseClickableLine {
 
     private String text;
 
-    public BaseTextLine(BaseHologram<?> hologram, String text) {
+    public BaseTextLine(BaseHologram hologram, String text) {
         super(hologram);
         setText(text);
     }

@@ -16,12 +16,12 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseHologramLine extends BaseHologramComponent implements EditableHologramLine {
 
-    private final BaseHologram<?> hologram;
+    private final BaseHologram hologram;
     private final LineTracker<?> tracker;
 
     private double x, y, z;
 
-    protected BaseHologramLine(BaseHologram<?> hologram) {
+    protected BaseHologramLine(BaseHologram hologram) {
         Preconditions.notNull(hologram, "parent hologram");
         this.hologram = hologram;
         this.tracker = createTracker(hologram.getTrackerManager());

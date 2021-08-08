@@ -21,7 +21,7 @@ public abstract class BaseClickableLine extends BaseHologramLine {
 
     private ClickListener clickListener;
 
-    protected BaseClickableLine(BaseHologram<?> hologram) {
+    protected BaseClickableLine(BaseHologram hologram) {
         super(hologram);
     }
 

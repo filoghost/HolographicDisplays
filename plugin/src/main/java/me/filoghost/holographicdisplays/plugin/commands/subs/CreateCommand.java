@@ -68,7 +68,7 @@ public class CreateCommand extends HologramSubCommand {
             line = hologram.createTextLine(defaultText, defaultText.replace(ChatColor.COLOR_CHAR, '&'));
         }
 
-        hologram.addLine(line);
+        hologram.getLines().add(line);
         hologramEditor.saveChanges(hologram, ChangeType.CREATE);
 
         hologramEditor.teleportLookingDown(player, player.getLocation());

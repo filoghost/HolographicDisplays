@@ -58,7 +58,7 @@ public class NearCommand extends HologramSubCommand {
             player.sendMessage(ColorScheme.SECONDARY_DARKER + "- "
                     + ColorScheme.SECONDARY_BOLD + nearHologram.getName() + " " + ColorScheme.SECONDARY_DARKER + "at"
                     + " x: " + position.getBlockX() + ", y: " + position.getBlockY() + ", z: " + position.getBlockZ()
-                    + " (lines: " + nearHologram.getLineCount() + ")");
+                    + " (lines: " + nearHologram.getLines().size() + ")");
         }
     }
 

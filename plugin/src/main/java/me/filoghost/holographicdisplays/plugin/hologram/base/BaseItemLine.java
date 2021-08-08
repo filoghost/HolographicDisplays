@@ -20,7 +20,7 @@ public abstract class BaseItemLine extends BaseClickableLine {
     private ItemStack itemStack;
     private PickupListener pickupListener;
 
-    public BaseItemLine(BaseHologram<?> hologram, ItemStack itemStack) {
+    public BaseItemLine(BaseHologram hologram, ItemStack itemStack) {
         super(hologram);
         setItemStack(itemStack);
     }

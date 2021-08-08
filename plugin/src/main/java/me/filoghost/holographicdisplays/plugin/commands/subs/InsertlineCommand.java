@@ -42,14 +42,14 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
         int insertAfterIndex = CommandValidate.parseInteger(args[1]);
         String serializedLine = Strings.joinFrom(" ", args, 2);
 
-        int oldLinesAmount = hologram.getLineCount();
+        int oldLinesAmount = hologram.getLines().size();
 
         CommandValidate.check(insertAfterIndex >= 0 && insertAfterIndex <= oldLinesAmount,
-                "The number must be between 0 and " + hologram.getLineCount() + "(amount of lines of the hologram).");
+                "The number must be between 0 and " + oldLinesAmount + " (amount of lines of the hologram).");
 
         InternalHologramLine line = hologramEditor.parseHologramLine(hologram, serializedLine);
 
-        hologram.insertLine(insertAfterIndex, line);
+        hologram.getLines().insert(insertAfterIndex, line);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         if (insertAfterIndex == 0) {
