@@ -31,7 +31,7 @@ public interface HolographicDisplaysAPI {
      * It can be used it to require a minimum version, as features may be added (rarely removed) in future versions. The
      * first version of the API is 1.
      * <p>
-     * The API version is independent from the normal plugin version.
+     * The API version is independent of the normal plugin version.
      *
      * @return the current API version
      * @since 1
