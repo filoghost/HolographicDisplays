@@ -85,12 +85,15 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
         updateLinePositions();
     }
 
-    public void remove(T line) {
+    public boolean remove(T line) {
         checkNotDeleted();
 
-        lines.remove(line);
-        line.setDeleted();
-        updateLinePositions();
+        boolean removed = lines.remove(line);
+        if (removed) {
+            line.setDeleted();
+            updateLinePositions();
+        }
+        return removed;
     }
 
     public void clear() {

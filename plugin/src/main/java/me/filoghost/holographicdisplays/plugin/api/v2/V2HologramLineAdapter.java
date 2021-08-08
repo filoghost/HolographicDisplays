@@ -24,7 +24,7 @@ public abstract class V2HologramLineAdapter implements HologramLine {
 
     @Override
     public void removeLine() {
-        v3Line.removeLine();
+        v3Line.getParent().removeLine(v3Line);
     }
 
     @Override

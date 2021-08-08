@@ -81,6 +81,15 @@ public interface Hologram {
     void removeLine(int index);
 
     /**
+     * Removes a line.
+     *
+     * @param line the line to be removed.
+     * @return if the hologram contained the line
+     * @since 1
+     */
+    boolean removeLine(@NotNull HologramLine line);
+
+    /**
      * Removes all the lines from this hologram.
      *
      * @since 1

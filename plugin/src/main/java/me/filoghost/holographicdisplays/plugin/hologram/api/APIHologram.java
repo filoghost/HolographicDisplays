@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.HologramLine;
 import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramAdapter;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
@@ -106,10 +107,15 @@ public class APIHologram extends BaseHologram implements Hologram {
         lines.remove(index);
     }
 
-    public void removeLine(APIHologramLine line) {
+    @Override
+    public boolean removeLine(HologramLine line) {
         checkNotDeleted();
 
-        lines.remove(line);
+        if (line instanceof APIHologramLine) {
+            return lines.remove((APIHologramLine) line);
+        } else {
+            return false;
+        }
     }
 
     @Override

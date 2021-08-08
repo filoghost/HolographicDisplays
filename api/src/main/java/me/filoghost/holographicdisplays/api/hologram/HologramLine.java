@@ -22,12 +22,4 @@ public interface HologramLine {
      */
     @NotNull Hologram getParent();
 
-    /**
-     * Removes this line from the parent Hologram.
-     * Do not call if the Hologram has been deleted, an exception will be thrown.
-     *
-     * @since 1
-     */
-    void removeLine();
-
 }
