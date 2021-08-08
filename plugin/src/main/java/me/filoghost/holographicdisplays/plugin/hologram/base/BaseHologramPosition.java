@@ -17,10 +17,18 @@ import java.util.Locale;
 
 public class BaseHologramPosition {
 
-    private String worldName;
+    private @NotNull String worldName;
     private double x, y, z;
 
-    public BaseHologramPosition(String worldName, double x, double y, double z) {
+    public BaseHologramPosition(BaseHologramPosition position) {
+        Preconditions.notNull(position, "position");
+        this.worldName = position.worldName;
+        this.x = position.x;
+        this.y = position.y;
+        this.z = position.z;
+    }
+
+    public BaseHologramPosition(@NotNull String worldName, double x, double y, double z) {
         Preconditions.notNull(worldName, "worldName");
         this.worldName = worldName;
         this.x = x;
@@ -47,7 +55,12 @@ public class BaseHologramPosition {
     }
 
     public boolean isInWorld(World world) {
-        return world != null && isSameWorld(world, this.worldName);
+        return world != null && isInWorld(world.getName());
+    }
+
+    public boolean isInWorld(String worldName) {
+        // Use the same comparison used by Bukkit.getWorld(...)
+        return worldName != null && worldName.toLowerCase(Locale.ENGLISH).equals(this.worldName.toLowerCase(Locale.ENGLISH));
     }
 
     public @Nullable World getWorldIfLoaded() {
@@ -89,6 +102,13 @@ public class BaseHologramPosition {
         this.z += z;
     }
 
+    public void set(String worldName, double x, double y, double z) {
+        this.worldName = worldName;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
     public int getBlockX() {
         return Location.locToBlock(x);
     }
@@ -124,11 +144,6 @@ public class BaseHologramPosition {
                 + ", y=" + y
                 + ", z=" + z
                 + "}";
-    }
-
-    static boolean isSameWorld(World world, String worldName) {
-        // Use the same comparison used by Bukkit.getWorld(...)
-        return world.getName().toLowerCase(Locale.ENGLISH).equals(worldName.toLowerCase(Locale.ENGLISH));
     }
 
 }

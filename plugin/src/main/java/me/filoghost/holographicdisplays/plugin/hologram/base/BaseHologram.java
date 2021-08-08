@@ -8,8 +8,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
-import me.filoghost.holographicdisplays.plugin.util.CachedBoolean;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -22,25 +20,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 public abstract class BaseHologram<T extends EditableHologramLine> extends BaseHologramComponent {
 
+    private final WorldAwareHologramPosition position;
     private final List<T> lines;
     private final List<T> unmodifiableLinesView;
     private final LineTrackerManager lineTrackerManager;
 
-    private @Nullable World world;
-    private String worldName;
-    private double x, y, z;
-    private int chunkX, chunkZ;
-    private final CachedBoolean isInLoadedChunk = new CachedBoolean(() -> world != null && world.isChunkLoaded(chunkX, chunkZ));
-
     public BaseHologram(BaseHologramPosition position, LineTrackerManager lineTrackerManager) {
+        this.position = new WorldAwareHologramPosition(position);
         this.lines = new ArrayList<>();
         this.unmodifiableLinesView = Collections.unmodifiableList(lines);
         this.lineTrackerManager = lineTrackerManager;
-        setPosition(position);
     }
 
     protected abstract boolean isVisibleTo(Player player);
@@ -133,27 +125,27 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
     }
 
     public BaseHologramPosition getBasePosition() {
-        return new BaseHologramPosition(getPositionWorldName(), getPositionX(), getPositionY(), getPositionZ());
+        return position.toBasePosition();
     }
 
     public @Nullable World getPositionWorldIfLoaded() {
-        return world;
+        return position.getWorldIfLoaded();
     }
 
     public @NotNull String getPositionWorldName() {
-        return worldName;
+        return position.getWorldName();
     }
 
     public double getPositionX() {
-        return x;
+        return position.getX();
     }
 
     public double getPositionY() {
-        return y;
+        return position.getY();
     }
 
     public double getPositionZ() {
-        return z;
+        return position.getZ();
     }
 
     public void setPosition(@NotNull BaseHologramPosition position) {
@@ -176,25 +168,8 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
         Preconditions.notNull(worldName, "worldName");
         checkNotDeleted();
 
-        this.x = x;
-        this.y = y;
-        this.z = z;
-
-        int chunkX = getChunkCoordinate(x);
-        int chunkZ = getChunkCoordinate(z);
-        if (!Objects.equals(this.worldName, worldName) || this.chunkX != chunkX || this.chunkZ != chunkZ) {
-            this.world = Bukkit.getWorld(worldName);
-            this.worldName = worldName;
-            this.chunkX = chunkX;
-            this.chunkZ = chunkZ;
-            this.isInLoadedChunk.invalidate();
-        }
-
+        position.set(worldName, x, y, z);
         updateLinePositions();
-    }
-
-    private int getChunkCoordinate(double positionCoordinate) {
-        return Location.locToBlock(positionCoordinate) >> 4;
     }
 
     /**
@@ -202,7 +177,7 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
      * The second line is below the first, and so on.
      */
     private void updateLinePositions() {
-        double currentLineY = y;
+        double currentLineY = position.getY();
 
         for (int i = 0; i < lines.size(); i++) {
             T line = lines.get(i);
@@ -212,44 +187,34 @@ public abstract class BaseHologram<T extends EditableHologramLine> extends BaseH
                 currentLineY -= Settings.spaceBetweenLines;
             }
 
-            line.setPosition(x, currentLineY, z);
+            line.setPosition(position.getX(), currentLineY, position.getZ());
         }
     }
 
     protected void onWorldLoad(World world) {
-        if (BaseHologramPosition.isSameWorld(world, this.worldName)) {
-            this.world = world;
-            isInLoadedChunk.invalidate();
-        }
+        position.onWorldLoad(world);
     }
 
     protected void onWorldUnload(World world) {
-        if (BaseHologramPosition.isSameWorld(world, this.worldName)) {
-            this.world = null;
-            isInLoadedChunk.set(false);
-        }
+        position.onWorldUnload(world);
     }
 
     protected void onChunkLoad(Chunk chunk) {
-        if (world == chunk.getWorld() && chunkX == chunk.getX() && chunkZ == chunk.getZ()) {
-            isInLoadedChunk.set(true);
-        }
+        position.onChunkLoad(chunk);
     }
 
     protected void onChunkUnload(Chunk chunk) {
-        if (world == chunk.getWorld() && chunkX == chunk.getX() && chunkZ == chunk.getZ()) {
-            isInLoadedChunk.set(false);
-        }
+        position.onChunkUnload(chunk);
     }
 
     protected boolean isInLoadedChunk() {
-        return isInLoadedChunk.get();
+        return position.isChunkLoaded();
     }
 
     @Override
     public String toString() {
         return "Hologram{"
-                + "position=" + getBasePosition()
+                + "position=" + position
                 + ", lines=" + lines
                 + ", deleted=" + isDeleted()
                 + "}";
