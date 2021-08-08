@@ -63,6 +63,8 @@ public class APIHologram extends BaseHologram implements Hologram {
 
     @Override
     public @NotNull APITextLine appendTextLine(@Nullable String text) {
+        checkNotDeleted();
+
         APITextLine line = new APITextLine(this, text);
         lines.add(line);
         return line;
@@ -71,6 +73,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     @Override
     public @NotNull APIItemLine appendItemLine(@NotNull ItemStack itemStack) {
         Preconditions.notNull(itemStack, "itemStack");
+        checkNotDeleted();
 
         APIItemLine line = new APIItemLine(this, itemStack);
         lines.add(line);
@@ -79,6 +82,8 @@ public class APIHologram extends BaseHologram implements Hologram {
 
     @Override
     public @NotNull APITextLine insertTextLine(int index, @Nullable String text) {
+        checkNotDeleted();
+
         APITextLine line = new APITextLine(this, text);
         lines.add(line);
         return line;
@@ -87,6 +92,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     @Override
     public @NotNull APIItemLine insertItemLine(int index, @NotNull ItemStack itemStack) {
         Preconditions.notNull(itemStack, "itemStack");
+        checkNotDeleted();
 
         APIItemLine line = new APIItemLine(this, itemStack);
         lines.add(line);
@@ -120,6 +126,8 @@ public class APIHologram extends BaseHologram implements Hologram {
 
     @Override
     public void setAllowPlaceholders(boolean allowPlaceholders) {
+        checkNotDeleted();
+
         if (this.allowPlaceholders == allowPlaceholders) {
             return;
         }
