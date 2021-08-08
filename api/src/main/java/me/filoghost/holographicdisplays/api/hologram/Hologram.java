@@ -72,7 +72,7 @@ public interface Hologram {
     @NotNull HologramLine getLine(int index);
 
     /**
-     * Removes a line at a given index. Since: v2.0.1
+     * Removes a line at a given index.
      *
      * @param index the index of the line, that should be between 0 and size() - 1.
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
@@ -96,7 +96,7 @@ public interface Hologram {
     int getLineCount();
 
     /**
-     * The physical height of the hologram, counting all the lines. Since: v2.1.4
+     * The physical height of the hologram, counting all the lines.
      *
      * @return the height of the hologram, counting all the lines and the gaps between them
      * @since 1
