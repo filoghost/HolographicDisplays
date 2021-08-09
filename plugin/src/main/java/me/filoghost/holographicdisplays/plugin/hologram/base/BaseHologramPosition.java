@@ -96,10 +96,11 @@ public class BaseHologramPosition {
         this.z = z;
     }
 
-    public void add(double x, double y, double z) {
+    public BaseHologramPosition add(double x, double y, double z) {
         this.x += x;
         this.y += y;
         this.z += z;
+        return this;
     }
 
     public void set(String worldName, double x, double y, double z) {

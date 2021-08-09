@@ -45,7 +45,7 @@ public interface HologramPosition {
 
     void setZ(double z);
 
-    void add(double x, double y, double z);
+    HologramPosition add(double x, double y, double z);
 
     int getBlockX();
 

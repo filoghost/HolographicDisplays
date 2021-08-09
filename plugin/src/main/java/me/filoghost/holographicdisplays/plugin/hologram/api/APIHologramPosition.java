@@ -19,4 +19,10 @@ public class APIHologramPosition extends BaseHologramPosition implements Hologra
         super(location);
     }
 
+    @Override
+    public APIHologramPosition add(double x, double y, double z) {
+        super.add(x, y, z);
+        return this;
+    }
+
 }
