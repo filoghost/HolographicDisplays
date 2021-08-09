@@ -180,6 +180,7 @@ public class HolographicDisplays extends JavaPlugin {
 		for (PluginHologram hologram : PluginHologramManager.getHolograms()) {
 			hologram.despawnEntities();
 		}
+		Bukkit.getScheduler().cancelTasks(this);
 	}
 	
 	public static NMSManager getNMSManager() {
