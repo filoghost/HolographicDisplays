@@ -81,8 +81,8 @@ public class VersionNMSManager implements NMSManager {
     }
 
     /*
-     * Modifying the pipeline in the main thread can cause deadlocks, delays and other concurrency issues.
-     * Thanks to ProtocolLib for this insight.
+     * Modifying the pipeline in the main thread can cause deadlocks, delays and other concurrency issues,
+     * which can be avoided by using the event loop. Thanks to ProtocolLib for this insight.
      */
     private void modifyPipeline(Player player, Consumer<ChannelPipeline> pipelineModifierTask) {
         PlayerConnection playerConnection = ((CraftPlayer) player).getHandle().b;
