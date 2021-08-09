@@ -17,7 +17,7 @@ public abstract class AbstractNMSPacketList implements NMSPacketList {
     private @Nullable NMSPacket singlePacket;
     private @Nullable List<NMSPacket> multiplePackets;
 
-    protected void add(NMSPacket packet) {
+    protected final void add(NMSPacket packet) {
         if (multiplePackets != null) {
             multiplePackets.add(packet);
         } else if (singlePacket != null) {
@@ -31,7 +31,7 @@ public abstract class AbstractNMSPacketList implements NMSPacketList {
     }
 
     @Override
-    public void sendTo(Player player) {
+    public final void sendTo(Player player) {
         if (multiplePackets != null) {
             for (NMSPacket packet : multiplePackets) {
                 packet.sendTo(player);

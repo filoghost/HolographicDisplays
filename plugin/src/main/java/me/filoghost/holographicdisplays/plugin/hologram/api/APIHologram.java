@@ -108,7 +108,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     }
 
     @Override
-    public boolean removeLine(HologramLine line) {
+    public boolean removeLine(@NotNull HologramLine line) {
         checkNotDeleted();
 
         if (line instanceof APIHologramLine) {

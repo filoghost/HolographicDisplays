@@ -172,7 +172,7 @@ public enum NBTType {
 
     /**
      * Returns whether this tag type is primitive, meaning that it is not a {@link NBTByteArray}, {@link NBTIntArray},
-     * {@link NBTList}, {@link NBTCompound} or {@link NBTEnd}.
+     * {@link NBTList}, {@link NBTCompound}.
      *
      * @return whether this type is numeric
      */
@@ -181,7 +181,7 @@ public enum NBTType {
     }
 
     /**
-     * Returns whether this tag type is is an array type such as {@link NBTByteArray} or {@link NBTIntArray}.
+     * Returns whether this tag type is an array type such as {@link NBTByteArray} or {@link NBTIntArray}.
      *
      * @return whether this type is an array type
      */

@@ -21,12 +21,12 @@ class DataWatcherKey<T> {
     private static final DataWatcherSerializer<ItemStack> ITEM_STACK_SERIALIZER = DataWatcherRegistry.g;
     private static final DataWatcherSerializer<Optional<IChatBaseComponent>> OPTIONAL_CHAT_COMPONENT_SERIALIZER = DataWatcherRegistry.f;
 
-    static DataWatcherKey<Byte> ENTITY_STATUS = new DataWatcherKey<>(0, BYTE_SERIALIZER);
-    static DataWatcherKey<Optional<IChatBaseComponent>> CUSTOM_NAME = new DataWatcherKey<>(2, OPTIONAL_CHAT_COMPONENT_SERIALIZER);
-    static DataWatcherKey<Boolean> CUSTOM_NAME_VISIBILITY = new DataWatcherKey<>(3, BOOLEAN_SERIALIZER);
-    static DataWatcherKey<ItemStack> ITEM_STACK = new DataWatcherKey<>(8, ITEM_STACK_SERIALIZER);
-    static DataWatcherKey<Byte> ARMOR_STAND_STATUS = new DataWatcherKey<>(15, BYTE_SERIALIZER);
-    static DataWatcherKey<Integer> SLIME_SIZE = new DataWatcherKey<>(16, INT_SERIALIZER);
+    static final DataWatcherKey<Byte> ENTITY_STATUS = new DataWatcherKey<>(0, BYTE_SERIALIZER);
+    static final DataWatcherKey<Optional<IChatBaseComponent>> CUSTOM_NAME = new DataWatcherKey<>(2, OPTIONAL_CHAT_COMPONENT_SERIALIZER);
+    static final DataWatcherKey<Boolean> CUSTOM_NAME_VISIBILITY = new DataWatcherKey<>(3, BOOLEAN_SERIALIZER);
+    static final DataWatcherKey<ItemStack> ITEM_STACK = new DataWatcherKey<>(8, ITEM_STACK_SERIALIZER);
+    static final DataWatcherKey<Byte> ARMOR_STAND_STATUS = new DataWatcherKey<>(15, BYTE_SERIALIZER);
+    static final DataWatcherKey<Integer> SLIME_SIZE = new DataWatcherKey<>(16, INT_SERIALIZER);
 
     private final int index;
     private final DataWatcherSerializer<T> serializer;

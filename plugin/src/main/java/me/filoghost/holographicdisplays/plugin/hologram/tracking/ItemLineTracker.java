@@ -111,7 +111,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
                 addItemDestroyPackets(packetList);
             }
         } else if (itemStackChanged) {
-            // Only send item changes if full spawn/destroy packets we not sent
+            // Only send item changes if full spawn/destroy packets were not sent
             packetList.addItemStackChangePackets(itemEntityID, itemStack);
         }
     }

@@ -57,7 +57,7 @@ public final class NBTCompound extends NBTTag {
      * Returns a tag named with the given key.
      *
      * @param key the key
-     * @return a byte
+     * @return a tag
      * @throws NoSuchElementException if there is no tag with given name
      */
     public NBTTag getTag(String key) {
@@ -83,10 +83,10 @@ public final class NBTCompound extends NBTTag {
     }
 
     /**
-     * Returns an short named with the given key.
+     * Returns a short named with the given key.
      *
      * @param key the key
-     * @return an short
+     * @return a short
      * @throws NoSuchElementException if there is no short with given name
      */
     public short getShort(String key) {
@@ -113,10 +113,10 @@ public final class NBTCompound extends NBTTag {
     }
 
     /**
-     * Returns an long named with the given key.
+     * Returns a long named with the given key.
      *
      * @param key the key
-     * @return an long
+     * @return a long
      * @throws NoSuchElementException if there is no long with given name
      */
     public long getLong(String key) {
@@ -128,7 +128,7 @@ public final class NBTCompound extends NBTTag {
     }
 
     /**
-     * Returns float named with the given key.
+     * Returns a float named with the given key.
      *
      * @param key the key
      * @return a float
@@ -214,10 +214,10 @@ public final class NBTCompound extends NBTTag {
     }
 
     /**
-     * Returns a list named with the given key.
+     * Returns a compound named with the given key.
      *
      * @param key the key
-     * @return a list
+     * @return a compound
      * @throws NoSuchElementException if there is no compound with given name
      */
     public Map<String, NBTTag> getCompound(String key) {
@@ -243,7 +243,7 @@ public final class NBTCompound extends NBTTag {
      * Returns an int array named with the given key.
      *
      * @param key the key
-     * @return a int array
+     * @return an int array
      * @throws NoSuchElementException if there is no int array with given name
      */
     public int[] getIntArray(String key) {
@@ -258,7 +258,7 @@ public final class NBTCompound extends NBTTag {
      * Returns a long array named with the given key.
      *
      * @param key the key
-     * @return a int array
+     * @return a long array
      * @throws NoSuchElementException if there is no int array with given name
      */
     public long[] getLongArray(String key) {

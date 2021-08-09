@@ -217,7 +217,7 @@ public interface Hologram {
 
     /**
      * Sets if the hologram should track and replace placeholders.
-     * By default if will not track them.
+     * By default, it will not track them.
      *
      * @param allowPlaceholders if the hologram should track placeholders
      * @since 1
