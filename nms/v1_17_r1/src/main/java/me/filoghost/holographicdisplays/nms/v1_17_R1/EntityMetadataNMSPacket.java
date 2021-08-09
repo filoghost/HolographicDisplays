@@ -5,16 +5,9 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_17_R1;
 
-import me.filoghost.fcommons.Strings;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
-import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
-import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_17_R1.util.CraftChatMessage;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Optional;
 
 class EntityMetadataNMSPacket extends VersionNMSPacket {
 
@@ -29,59 +22,21 @@ class EntityMetadataNMSPacket extends VersionNMSPacket {
         return rawPacket;
     }
 
-    public static Builder builder(EntityID entityID) {
-        return new Builder(entityID);
+    public static DataWatcherPacketBuilder<EntityMetadataNMSPacket> builder(EntityID entityID) {
+        PacketByteBuffer packetByteBuffer = PacketByteBuffer.get();
+        packetByteBuffer.writeVarInt(entityID.getNumericID());
+        return new Builder(packetByteBuffer);
     }
 
 
-    static class Builder {
+    private static class Builder extends DataWatcherPacketBuilder<EntityMetadataNMSPacket> {
 
-        private final PacketByteBuffer packetByteBuffer;
-
-        private Builder(EntityID entityID) {
-            this.packetByteBuffer = PacketByteBuffer.get();
-
-            packetByteBuffer.writeVarInt(entityID.getNumericID());
+        private Builder(PacketByteBuffer packetByteBuffer) {
+            super(packetByteBuffer);
         }
 
-        Builder setInvisible() {
-            packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.ENTITY_STATUS, (byte) 0x20); // Invisible
-            return this;
-        }
-
-        Builder setArmorStandMarker() {
-            setInvisible();
-            packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.ARMOR_STAND_STATUS, (byte) (0x01 | 0x08 | 0x10)); // Small, no base plate, marker
-            return this;
-        }
-
-        Builder setCustomName(String customName) {
-            packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.CUSTOM_NAME, getCustomNameDataWatcherValue(customName));
-            packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.CUSTOM_NAME_VISIBILITY, !Strings.isEmpty(customName));
-            return this;
-        }
-
-        private Optional<IChatBaseComponent> getCustomNameDataWatcherValue(String customName) {
-            customName = Strings.truncate(customName, 300);
-            if (!Strings.isEmpty(customName)) {
-                return Optional.of(CraftChatMessage.fromString(customName, false, true)[0]);
-            } else {
-                return Optional.empty();
-            }
-        }
-
-        Builder setItemStack(ItemStack itemStack) {
-            packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.ITEM_STACK, CraftItemStack.asNMSCopy(itemStack));
-            return this;
-        }
-
-        Builder setSlimeSmall() {
-            packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.SLIME_SIZE, 1);
-            return this;
-        }
-
-        EntityMetadataNMSPacket build() {
-            packetByteBuffer.writeDataWatcherEntriesEnd();
+        @Override
+        EntityMetadataNMSPacket createPacket(PacketByteBuffer packetByteBuffer) {
             return new EntityMetadataNMSPacket(packetByteBuffer);
         }
 

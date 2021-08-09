@@ -20,19 +20,19 @@ public enum NMSVersion {
 
     // Not using shorter method reference syntax here because it initializes the class, causing a ClassNotFoundException
     v1_8_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_8_R2.VersionNMSManager()),
-    v1_8_R3((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_8_R3.VersionNMSManager()),
+    v1_8_R3((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_8_R3.VersionNMSManager(errorCollector)),
     v1_9_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_9_R1.VersionNMSManager()),
-    v1_9_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_9_R2.VersionNMSManager()),
-    v1_10_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_10_R1.VersionNMSManager()),
-    v1_11_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_11_R1.VersionNMSManager()),
-    v1_12_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_12_R1.VersionNMSManager()),
+    v1_9_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_9_R2.VersionNMSManager(errorCollector)),
+    v1_10_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_10_R1.VersionNMSManager(errorCollector)),
+    v1_11_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_11_R1.VersionNMSManager(errorCollector)),
+    v1_12_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_12_R1.VersionNMSManager(errorCollector)),
     v1_13_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_13_R1.VersionNMSManager()),
-    v1_13_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_13_R2.VersionNMSManager()),
-    v1_14_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_14_R1.VersionNMSManager()),
-    v1_15_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_15_R1.VersionNMSManager()),
-    v1_16_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager()),
-    v1_16_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager()),
-    v1_16_R3((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager()),
+    v1_13_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_13_R2.VersionNMSManager(errorCollector)),
+    v1_14_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_14_R1.VersionNMSManager(errorCollector)),
+    v1_15_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_15_R1.VersionNMSManager(errorCollector)),
+    v1_16_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager(errorCollector)),
+    v1_16_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager(errorCollector)),
+    v1_16_R3((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager(errorCollector)),
     v1_17_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_17_R1.VersionNMSManager(errorCollector));
 
     private static final NMSVersion CURRENT_VERSION = extractCurrentVersion();

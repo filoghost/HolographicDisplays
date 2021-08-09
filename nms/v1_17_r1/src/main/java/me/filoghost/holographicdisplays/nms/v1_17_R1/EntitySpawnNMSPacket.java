@@ -30,7 +30,11 @@ class EntitySpawnNMSPacket extends VersionNMSPacket {
         packetByteBuffer.writeByte(0);
 
         // Object data
-        packetByteBuffer.writeInt(0);
+        if (entityTypeID == EntityTypeID.ITEM) {
+            packetByteBuffer.writeInt(1); // Velocity is present and zero (otherwise by default a random velocity is applied)
+        } else {
+            packetByteBuffer.writeInt(0);
+        }
 
         // Velocity
         packetByteBuffer.writeShort(0);
