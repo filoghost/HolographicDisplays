@@ -71,7 +71,7 @@ public class CreateCommand extends HologramSubCommand {
         hologramEditor.saveChanges(hologram, ChangeType.CREATE);
 
         hologramEditor.teleportLookingDown(player, player.getLocation());
-        player.sendMessage(ColorScheme.PRIMARY + "You created a hologram named '" + hologram.getName() + "'.");
+        player.sendMessage(ColorScheme.PRIMARY + "You created a hologram named \"" + hologram.getName() + "\".");
 
         if (moveUp) {
             player.sendMessage(ColorScheme.SECONDARY_DARKER + "(You were on the ground,"

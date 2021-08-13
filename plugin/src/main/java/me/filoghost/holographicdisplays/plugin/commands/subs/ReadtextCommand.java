@@ -48,8 +48,8 @@ public class ReadtextCommand extends LineEditingCommand {
                 "3) Each line will be a line in the hologram",
                 "4) Do " + getFullUsageText(context),
                 "",
-                "Example: you have a file named 'info.txt', and you want",
-                "to paste it in the hologram named 'test'. In this case you",
+                "Example: you have a file named \"info.txt\", and you want",
+                "to paste it in the hologram named \"test\". In this case you",
                 "would execute " + ChatColor.YELLOW + "/" + context.getRootLabel() + " " + getName() + " test info.txt");
     }
 

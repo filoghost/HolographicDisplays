@@ -34,7 +34,7 @@ public class DeleteCommand extends HologramSubCommand {
         hologramEditor.delete(hologram);
         hologramEditor.saveChanges(hologram, ChangeType.DELETE);
 
-        sender.sendMessage(ColorScheme.PRIMARY + "You deleted the hologram '" + hologram.getName() + "'.");
+        sender.sendMessage(ColorScheme.PRIMARY + "You deleted the hologram \"" + hologram.getName() + "\".");
     }
 
 }

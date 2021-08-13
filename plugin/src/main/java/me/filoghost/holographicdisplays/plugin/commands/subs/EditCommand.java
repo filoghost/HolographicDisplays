@@ -44,7 +44,7 @@ public class EditCommand extends HologramSubCommand {
         InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
 
         sender.sendMessage("");
-        DisplayFormat.sendTitle(sender, "How to edit the hologram '" + hologram.getName() + "'");
+        DisplayFormat.sendTitle(sender, "How to edit the hologram \"" + hologram.getName() + "\"");
         for (HologramSubCommand subCommand : commandManager.getSubCommands()) {
             if (subCommand instanceof LineEditingCommand) {
                 String usage = subCommand.getFullUsageText(context).replace("<hologram>", hologram.getName());
