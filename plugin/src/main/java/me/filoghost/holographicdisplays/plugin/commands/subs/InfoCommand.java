@@ -24,7 +24,7 @@ public class InfoCommand extends LineEditingCommand implements QuickEditCommand 
         super("info", "details");
         setMinArgs(1);
         setUsageArgs("<hologram>");
-        setDescription("Shows the lines of a hologram.");
+        setDescription("Lists the lines of a hologram.");
 
         this.commandManager = commandManager;
         this.hologramEditor = hologramEditor;

@@ -43,7 +43,7 @@ public class CreateCommand extends HologramSubCommand {
         String hologramName = args[0];
 
         CommandValidate.check(hologramName.matches("[a-zA-Z0-9_\\-]+"),
-                "The name must contain only alphanumeric chars, underscores and hyphens.");
+                "The name must contain only alphanumeric characters, underscores and hyphens.");
         CommandValidate.check(!hologramEditor.hologramExists(hologramName), "A hologram with that name already exists.");
 
         BaseHologramPosition spawnPosition = new BaseHologramPosition(player.getLocation());
@@ -71,7 +71,7 @@ public class CreateCommand extends HologramSubCommand {
         hologramEditor.saveChanges(hologram, ChangeType.CREATE);
 
         hologramEditor.teleportLookingDown(player, player.getLocation());
-        player.sendMessage(ColorScheme.PRIMARY + "You created a hologram named \"" + hologram.getName() + "\".");
+        player.sendMessage(ColorScheme.PRIMARY + "Hologram named \"" + hologram.getName() + "\" created.");
 
         if (moveUp) {
             player.sendMessage(ColorScheme.SECONDARY_DARKER + "(You were on the ground,"

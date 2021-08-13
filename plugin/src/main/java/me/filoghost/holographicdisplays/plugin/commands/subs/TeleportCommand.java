@@ -24,7 +24,7 @@ public class TeleportCommand extends HologramSubCommand {
         super("teleport", "tp");
         setMinArgs(1);
         setUsageArgs("<hologram>");
-        setDescription("Teleports you to the given hologram.");
+        setDescription("Teleports to a hologram.");
 
         this.hologramEditor = hologramEditor;
     }
@@ -35,7 +35,7 @@ public class TeleportCommand extends HologramSubCommand {
         InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
 
         hologramEditor.teleportLookingDown(player, hologram.getBasePosition().toLocation());
-        player.sendMessage(ColorScheme.PRIMARY + "You were teleported to the hologram named \"" + hologram.getName() + "\".");
+        player.sendMessage(ColorScheme.PRIMARY + "Teleported to the hologram \"" + hologram.getName() + "\".");
     }
 
 }

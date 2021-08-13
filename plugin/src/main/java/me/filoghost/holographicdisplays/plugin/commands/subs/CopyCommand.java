@@ -26,7 +26,7 @@ public class CopyCommand extends HologramSubCommand {
         super("copy");
         setMinArgs(2);
         setUsageArgs("<fromHologram> <toHologram>");
-        setDescription("Copies the contents of a hologram into another one.");
+        setDescription("Copies the content from a hologram to another one, replacing it.");
 
         this.hologramEditor = hologramEditor;
     }
@@ -44,8 +44,8 @@ public class CopyCommand extends HologramSubCommand {
         toHologram.getLines().setAll(clonedLines);
         hologramEditor.saveChanges(toHologram, ChangeType.EDIT_LINES);
 
-        sender.sendMessage(ColorScheme.PRIMARY + "Hologram \"" + fromHologram.getName() + "\""
-                + " copied into hologram \"" + toHologram.getName() + "\".");
+        sender.sendMessage(ColorScheme.PRIMARY + "Lines of hologram \"" + fromHologram.getName() + "\""
+                + " copied to hologram \"" + toHologram.getName() + "\".");
     }
 
 }

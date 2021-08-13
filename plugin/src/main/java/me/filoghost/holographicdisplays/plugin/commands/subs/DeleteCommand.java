@@ -22,7 +22,7 @@ public class DeleteCommand extends HologramSubCommand {
         super("delete", "remove");
         setMinArgs(1);
         setUsageArgs("<hologram>");
-        setDescription("Deletes a hologram. Cannot be undone.");
+        setDescription("Deletes a hologram (cannot be undone!).");
 
         this.hologramEditor = hologramEditor;
     }
@@ -34,7 +34,7 @@ public class DeleteCommand extends HologramSubCommand {
         hologramEditor.delete(hologram);
         hologramEditor.saveChanges(hologram, ChangeType.DELETE);
 
-        sender.sendMessage(ColorScheme.PRIMARY + "You deleted the hologram \"" + hologram.getName() + "\".");
+        sender.sendMessage(ColorScheme.PRIMARY + "Hologram \"" + hologram.getName() + "\" deleted.");
     }
 
 }

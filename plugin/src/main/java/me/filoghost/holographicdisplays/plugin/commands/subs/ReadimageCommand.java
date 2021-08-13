@@ -99,7 +99,7 @@ public class ReadimageCommand extends LineEditingCommand {
             throw new CommandException("The plugin was unable to read the image. Be sure that the format is supported.");
         } catch (IOException e) {
             Log.warning("Error while reading an image", e);
-            throw new CommandException("I/O exception while reading the image. " + (isUrl ? "Is the URL valid?" : "Is it in use?"));
+            throw new CommandException("I/O error while reading the image. " + (isUrl ? "Is the URL valid?" : "Is it in use?"));
         }
 
         ImageMessage imageMessage = new ImageMessage(image, width);
@@ -120,9 +120,9 @@ public class ReadimageCommand extends LineEditingCommand {
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         if (append) {
-            sender.sendMessage(ColorScheme.PRIMARY + "The image was appended int the end of the hologram.");
+            sender.sendMessage(ColorScheme.PRIMARY + "Added the image at the end of the hologram.");
         } else {
-            sender.sendMessage(ColorScheme.PRIMARY + "The image was drawn in the hologram.");
+            sender.sendMessage(ColorScheme.PRIMARY + "Hologram content replaced with the image.");
         }
     }
 

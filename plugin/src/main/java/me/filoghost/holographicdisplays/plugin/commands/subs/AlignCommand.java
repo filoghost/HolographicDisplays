@@ -23,8 +23,8 @@ public class AlignCommand extends HologramSubCommand {
     public AlignCommand(InternalHologramEditor hologramEditor) {
         super("align");
         setMinArgs(3);
-        setUsageArgs("<X | Y | Z | XZ> <hologram> <referenceHologram>");
-        setDescription("Aligns the first hologram to the second, in the specified axis.");
+        setUsageArgs("<X | Y | Z | XZ> <hologramToAlign> <referenceHologram>");
+        setDescription("Aligns a hologram to another along the specified axis.");
 
         this.hologramEditor = hologramEditor;
     }

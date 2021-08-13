@@ -24,7 +24,7 @@ public class MovehereCommand extends HologramSubCommand {
         super("movehere");
         setMinArgs(1);
         setUsageArgs("<hologram>");
-        setDescription("Moves a hologram to your location.");
+        setDescription("Moves a hologram to your position.");
 
         this.hologramEditor = hologramEditor;
     }
@@ -38,7 +38,7 @@ public class MovehereCommand extends HologramSubCommand {
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_POSITION);
 
         hologramEditor.teleportLookingDown(player, player.getLocation());
-        player.sendMessage(ColorScheme.PRIMARY + "You moved the hologram \"" + hologram.getName() + "\" near to you.");
+        player.sendMessage(ColorScheme.PRIMARY + "Hologram \"" + hologram.getName() + "\" moved to your position.");
     }
 
 }

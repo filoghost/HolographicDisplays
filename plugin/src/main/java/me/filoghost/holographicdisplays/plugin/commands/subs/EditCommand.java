@@ -33,7 +33,7 @@ public class EditCommand extends HologramSubCommand {
         super("edit");
         setMinArgs(1);
         setUsageArgs("<hologram>");
-        setDescription("Shows the commands to manipulate an existing hologram.");
+        setDescription("Lists the commands to edit a hologram.");
 
         this.commandManager = commandManager;
         this.hologramEditor = hologramEditor;

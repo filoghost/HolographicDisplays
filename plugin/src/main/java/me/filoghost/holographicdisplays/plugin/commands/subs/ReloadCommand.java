@@ -21,7 +21,7 @@ public class ReloadCommand extends HologramSubCommand {
 
     public ReloadCommand(HolographicDisplays holographicDisplays) {
         super("reload");
-        setDescription("Reloads the holograms from the database.");
+        setDescription("Reloads the plugin, including the configuration and the holograms.");
 
         this.holographicDisplays = holographicDisplays;
     }
@@ -32,7 +32,7 @@ public class ReloadCommand extends HologramSubCommand {
         holographicDisplays.load(errorCollector);
 
         if (!errorCollector.hasErrors()) {
-            sender.sendMessage(ColorScheme.PRIMARY + "Configuration reloaded successfully.");
+            sender.sendMessage(ColorScheme.PRIMARY + "Plugin reloaded successfully.");
         } else {
             errorCollector.logToConsole();
             sender.sendMessage(ColorScheme.ERROR + "Plugin reloaded with " + errorCollector.getErrorsCount() + " error(s).");

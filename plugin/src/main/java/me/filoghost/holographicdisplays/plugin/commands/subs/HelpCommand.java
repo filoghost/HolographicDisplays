@@ -29,7 +29,7 @@ public class HelpCommand extends HologramSubCommand {
     public HelpCommand(HologramCommandManager commandManager) {
         super("help");
         setShowInHelpCommand(false);
-        setDescription("Show the list of commands.");
+        setDescription("Lists the main commands with a description.");
 
         this.commandManager = commandManager;
     }
@@ -72,7 +72,7 @@ public class HelpCommand extends HologramSubCommand {
                 .append(" Try to ", FormatRetention.NONE).color(ChatColor.GRAY)
                 .append("hover").color(ChatColor.WHITE).underlined(true)
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        TextComponent.fromLegacyText(ChatColor.LIGHT_PURPLE + "Hover on the commands to get info about them.")))
+                        TextComponent.fromLegacyText(ChatColor.LIGHT_PURPLE + "Hover on the commands to see the description.")))
                 .append(" or ", FormatRetention.NONE).color(ChatColor.GRAY)
                 .append("click").color(ChatColor.WHITE).underlined(true)
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,

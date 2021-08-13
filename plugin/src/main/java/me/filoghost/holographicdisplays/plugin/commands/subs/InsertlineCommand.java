@@ -28,9 +28,8 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
         setMinArgs(3);
         setUsageArgs("<hologram> <lineNumber> <text>");
         setDescription(
-                "Inserts a line after the specified index.",
-                "If the index is 0, the line will be put before",
-                "the first line of the hologram.");
+                "Inserts a line after the specified line number.",
+                "To insert at the top of the hologram, use \"0\" for the line number.");
 
         this.commandManager = commandManager;
         this.hologramEditor = hologramEditor;
@@ -45,7 +44,7 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
         int oldLinesAmount = hologram.getLines().size();
 
         CommandValidate.check(insertAfterIndex >= 0 && insertAfterIndex <= oldLinesAmount,
-                "The number must be between 0 and " + oldLinesAmount + " (amount of lines of the hologram).");
+                "The line number must be between 0 and " + oldLinesAmount + ".");
 
         InternalHologramLine line = hologramEditor.parseHologramLine(hologram, serializedLine);
 
@@ -53,12 +52,12 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         if (insertAfterIndex == 0) {
-            sender.sendMessage(ColorScheme.PRIMARY + "Line inserted before first line.");
+            sender.sendMessage(ColorScheme.PRIMARY + "Line inserted before the first line.");
         } else if (insertAfterIndex == oldLinesAmount) {
             sender.sendMessage(ColorScheme.PRIMARY + "Line appended at the end.");
             DisplayFormat.sendTip(sender, "You can use \"/" + context.getRootLabel() + " addline\" to append a line at the end.");
         } else {
-            sender.sendMessage(ColorScheme.PRIMARY + "Line inserted between lines " + insertAfterIndex
+            sender.sendMessage(ColorScheme.PRIMARY + "Line inserted between the lines " + insertAfterIndex
                     + " and " + (insertAfterIndex + 1) + ".");
         }
         commandManager.sendQuickEditCommands(context, hologram);

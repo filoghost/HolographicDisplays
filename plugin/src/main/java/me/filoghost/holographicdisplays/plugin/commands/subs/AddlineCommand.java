@@ -25,7 +25,7 @@ public class AddlineCommand extends LineEditingCommand implements QuickEditComma
         super("addline");
         setMinArgs(2);
         setUsageArgs("<hologram> <text>");
-        setDescription("Adds a line to an existing hologram.");
+        setDescription("Adds a line to a hologram.");
 
         this.commandManager = commandManager;
         this.hologramEditor = hologramEditor;

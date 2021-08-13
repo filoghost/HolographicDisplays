@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.CommandContext;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.config.HologramLineParser;
 import me.filoghost.holographicdisplays.plugin.config.HologramLoadException;
@@ -64,12 +65,13 @@ public class ReadtextCommand extends LineEditingCommand {
         try {
             serializedLines = Files.readAllLines(fileToRead);
         } catch (IOException e) {
-            throw new CommandException("I/O exception while reading the file. Is it in use?");
+            Log.warning("Error while reading a file", e);
+            throw new CommandException("I/O error while reading the file. Is it in use?");
         }
 
         int linesAmount = serializedLines.size();
         if (linesAmount > 40) {
-            DisplayFormat.sendWarning(sender, "The file contained more than 40 lines, that have been limited.");
+            DisplayFormat.sendWarning(sender, "The file is too long, only the first 40 lines will be used.");
             linesAmount = 40;
         }
 
@@ -87,11 +89,11 @@ public class ReadtextCommand extends LineEditingCommand {
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         if (FileUtils.hasFileExtension(fileToRead, "jpg", "png", "jpeg", "gif")) {
-            DisplayFormat.sendWarning(sender, "The read file has an image's extension."
-                    + " If it is an image, you should use /" + context.getRootLabel() + " readimage.");
+            DisplayFormat.sendWarning(sender, "It looks like the file is an image."
+                    + " If it is, you should use instead /" + context.getRootLabel() + " readimage.");
         }
 
-        sender.sendMessage(ColorScheme.PRIMARY + "The lines were pasted into the hologram.");
+        sender.sendMessage(ColorScheme.PRIMARY + "Hologram content replaced with " + linesAmount + " lines from the file.");
     }
 
 }
