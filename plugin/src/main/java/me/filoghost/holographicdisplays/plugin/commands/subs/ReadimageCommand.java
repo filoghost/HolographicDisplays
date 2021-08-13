@@ -70,7 +70,7 @@ public class ReadimageCommand extends LineEditingCommand {
         boolean append = extractAppendFlag(newArgs);
         args = newArgs.toArray(new String[0]);
 
-        InternalHologram hologram = hologramEditor.getHologram(args[0]);
+        InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
 
         int width = CommandValidate.parseInteger(args[2]);
         CommandValidate.check(width >= 2, "The width of the image must be 2 or greater.");

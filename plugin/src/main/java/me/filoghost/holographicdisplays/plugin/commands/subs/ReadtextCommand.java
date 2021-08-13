@@ -55,7 +55,7 @@ public class ReadtextCommand extends LineEditingCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = hologramEditor.getHologram(args[0]);
+        InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
         String fileName = args[1];
 
         Path fileToRead = hologramEditor.getUserReadableFile(fileName);

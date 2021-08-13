@@ -44,8 +44,7 @@ public class CreateCommand extends HologramSubCommand {
 
         CommandValidate.check(hologramName.matches("[a-zA-Z0-9_\\-]+"),
                 "The name must contain only alphanumeric chars, underscores and hyphens.");
-        CommandValidate.check(hologramEditor.getHologram(hologramName) == null,
-                "A hologram with that name already exists.");
+        CommandValidate.check(!hologramEditor.hologramExists(hologramName), "A hologram with that name already exists.");
 
         BaseHologramPosition spawnPosition = new BaseHologramPosition(player.getLocation());
         boolean moveUp = player.isOnGround();

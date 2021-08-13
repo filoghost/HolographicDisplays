@@ -33,8 +33,8 @@ public class CopyCommand extends HologramSubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram fromHologram = hologramEditor.getHologram(args[0]);
-        InternalHologram toHologram = hologramEditor.getHologram(args[1]);
+        InternalHologram fromHologram = hologramEditor.getExistingHologram(args[0]);
+        InternalHologram toHologram = hologramEditor.getExistingHologram(args[1]);
 
         List<InternalHologramLine> clonedLines = new ArrayList<>();
         for (InternalHologramLine line : fromHologram.getLines()) {

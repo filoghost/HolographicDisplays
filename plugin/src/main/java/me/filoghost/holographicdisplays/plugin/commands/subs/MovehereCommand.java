@@ -32,7 +32,7 @@ public class MovehereCommand extends HologramSubCommand {
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         Player player = CommandValidate.getPlayerSender(sender);
-        InternalHologram hologram = hologramEditor.getHologram(args[0]);
+        InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
 
         hologram.setPosition(player.getLocation());
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_POSITION);

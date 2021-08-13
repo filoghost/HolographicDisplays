@@ -32,7 +32,7 @@ public class TeleportCommand extends HologramSubCommand {
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
         Player player = CommandValidate.getPlayerSender(sender);
-        InternalHologram hologram = hologramEditor.getHologram(args[0]);
+        InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
 
         hologramEditor.teleportLookingDown(player, hologram.getBasePosition().toLocation());
         player.sendMessage(ColorScheme.PRIMARY + "You were teleported to the hologram named '" + hologram.getName() + "'.");

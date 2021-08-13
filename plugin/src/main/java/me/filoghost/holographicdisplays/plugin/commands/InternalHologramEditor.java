@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -58,7 +59,11 @@ public class InternalHologramEditor {
         return message;
     }
 
-    public InternalHologram getHologram(String hologramName) throws CommandException {
+    public boolean hologramExists(String hologramName) {
+        return internalHologramManager.getHologramByName(hologramName) != null;
+    }
+
+    public @NotNull InternalHologram getExistingHologram(String hologramName) throws CommandException {
         InternalHologram hologram = internalHologramManager.getHologramByName(hologramName);
         CommandValidate.notNull(hologram, "Cannot find a hologram named \"" + hologramName + "\".");
         return hologram;

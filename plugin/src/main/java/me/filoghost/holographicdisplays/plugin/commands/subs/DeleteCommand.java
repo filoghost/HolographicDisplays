@@ -29,7 +29,7 @@ public class DeleteCommand extends HologramSubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = hologramEditor.getHologram(args[0]);
+        InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
 
         hologramEditor.delete(hologram);
         hologramEditor.saveChanges(hologram, ChangeType.DELETE);

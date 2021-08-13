@@ -41,7 +41,7 @@ public class EditCommand extends HologramSubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = hologramEditor.getHologram(args[0]);
+        InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
 
         sender.sendMessage("");
         DisplayFormat.sendTitle(sender, "How to edit the hologram '" + hologram.getName() + "'");

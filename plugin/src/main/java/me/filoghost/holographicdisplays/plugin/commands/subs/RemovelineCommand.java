@@ -32,7 +32,7 @@ public class RemovelineCommand extends LineEditingCommand implements QuickEditCo
 
     @Override
     public void execute(CommandSender sender, String[] args, SubCommandContext context) throws CommandException {
-        InternalHologram hologram = hologramEditor.getHologram(args[0]);
+        InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
 
         int lineNumber = CommandValidate.parseInteger(args[1]);
         int linesAmount = hologram.getLines().size();
