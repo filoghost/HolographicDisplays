@@ -25,7 +25,8 @@ abstract class DataWatcherPacketBuilder<T> {
 
     DataWatcherPacketBuilder<T> setArmorStandMarker() {
         setInvisible();
-        packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.ARMOR_STAND_STATUS, (byte) (0x01 | 0x08 | 0x10)); // Small, no base plate, marker
+        packetByteBuffer.writeDataWatcherEntry(
+                DataWatcherKey.ARMOR_STAND_STATUS, (byte) (0x01 | 0x02 | 0x08 | 0x10)); // Small, no gravity, no base plate, marker
         return this;
     }
 

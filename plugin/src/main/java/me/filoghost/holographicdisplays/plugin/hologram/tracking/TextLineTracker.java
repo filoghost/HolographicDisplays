@@ -77,11 +77,14 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
         super.addSpawnPackets(packetList);
 
         if (!allowPlaceholders) {
-            packetList.addArmorStandSpawnPackets(armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText.getWithoutReplacements());
+            packetList.addArmorStandSpawnPackets(
+                    armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText.getWithoutReplacements());
         } else if (displayText.containsIndividualPlaceholders()) {
-            packetList.addArmorStandSpawnPackets(armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText::getWithIndividualReplacements);
+            packetList.addArmorStandSpawnPackets(
+                    armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText::getWithIndividualReplacements);
         } else {
-            packetList.addArmorStandSpawnPackets(armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText.getWithGlobalReplacements());
+            packetList.addArmorStandSpawnPackets(
+                    armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText.getWithGlobalReplacements());
         }
     }
 

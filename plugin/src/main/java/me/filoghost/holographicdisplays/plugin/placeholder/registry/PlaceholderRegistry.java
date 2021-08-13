@@ -36,7 +36,8 @@ public class PlaceholderRegistry {
         this.changeListener = changeListener;
     }
 
-    public void registerIndividualPlaceholderReplacer(Plugin plugin, String identifier, int refreshIntervalTicks, IndividualPlaceholderReplacer placeholderReplacer) {
+    public void registerIndividualPlaceholderReplacer(
+            Plugin plugin, String identifier, int refreshIntervalTicks, IndividualPlaceholderReplacer placeholderReplacer) {
         registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, placeholderReplacer));
     }
 
@@ -49,7 +50,8 @@ public class PlaceholderRegistry {
         registerExpansion(expansion);
     }
 
-    public void registerGlobalPlaceholderReplacer(Plugin plugin, String identifier, int refreshIntervalTicks, PlaceholderReplacer placeholderReplacer) {
+    public void registerGlobalPlaceholderReplacer(
+            Plugin plugin, String identifier, int refreshIntervalTicks, PlaceholderReplacer placeholderReplacer) {
         registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, placeholderReplacer));
     }
 

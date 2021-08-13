@@ -14,7 +14,8 @@ public interface NMSPacketList {
 
     void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, String customName);
 
-    void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, IndividualCustomName individualCustomName);
+    void addArmorStandSpawnPackets(
+            EntityID entityID, double positionX, double positionY, double positionZ, IndividualCustomName individualCustomName);
 
     void addArmorStandNameChangePackets(EntityID entityID, String customName);
 

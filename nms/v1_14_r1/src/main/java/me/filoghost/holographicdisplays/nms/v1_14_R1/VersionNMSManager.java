@@ -29,7 +29,8 @@ import java.util.function.Supplier;
 
 public class VersionNMSManager implements NMSManager {
 
-    private static final ReflectField<AtomicInteger> ENTITY_ID_COUNTER_FIELD = ReflectField.lookup(AtomicInteger.class, Entity.class, "entityCount");
+    private static final ReflectField<AtomicInteger> ENTITY_ID_COUNTER_FIELD =
+            ReflectField.lookup(AtomicInteger.class, Entity.class, "entityCount");
     private final Supplier<Integer> entityIDGenerator;
 
     public VersionNMSManager(ErrorCollector errorCollector) {

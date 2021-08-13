@@ -341,8 +341,7 @@ public final class MojangsonParser {
      * are met, the parser advances by one. If these conditions are not met, an exception is thrown.
      *
      * @param c the expected character
-     * @throws MojangsonParseException if {@link #currentChar()} does not equal {@code c} or if {@link #hasNext()}
-     * returns false
+     * @throws MojangsonParseException if {@link #currentChar()} does not equal {@code c} or if {@link #hasNext()} returns false
      */
     private void expectChar(char c) throws MojangsonParseException {
         skipWhitespace();

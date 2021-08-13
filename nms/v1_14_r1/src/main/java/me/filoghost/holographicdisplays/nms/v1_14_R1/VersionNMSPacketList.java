@@ -31,7 +31,8 @@ class VersionNMSPacketList extends AbstractNMSPacketList {
     }
 
     @Override
-    public void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, IndividualCustomName individualCustomName) {
+    public void addArmorStandSpawnPackets(
+            EntityID entityID, double positionX, double positionY, double positionZ, IndividualCustomName individualCustomName) {
         add(new IndividualNMSPacket(player -> EntityLivingSpawnNMSPacket.builder(
                         entityID, EntityTypeID.ARMOR_STAND, positionX, positionY, positionZ)
                 .setArmorStandMarker()

@@ -11,8 +11,8 @@
             checks="EqualsHashCode"
             files="[\\/]me[\\/]filoghost[\\/]holographicdisplays[\\/]plugin[\\/]lib[\\/]nbt[\\/].+\.java"/>
     <suppress
-            checks="LeftCurly|EmptyLineSeparator"
-            files="[\\/]me[\\/]filoghost[\\/]holographicdisplays[\\/]nms[\\/]\w+[\\/]Craft.+\.java"/>
+            checks="IllegalImport"
+            files="[\\/]me[\\/]filoghost[\\/]holographicdisplays[\\/]nms[\\/](v1_9_R2|v1_10_R1)[\\/].+\.java"/>
     <suppress
             checks="SummaryJavadoc"
             files="[\\/]com[\\/]gmail[\\/]filoghost[\\/](holograms|holographicdisplays)[\\/]api[\\/].+\.java"/>

@@ -58,7 +58,8 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
             sender.sendMessage(ColorScheme.PRIMARY + "Line appended at the end.");
             DisplayFormat.sendTip(sender, "You can use \"/" + context.getRootLabel() + " addline\" to append a line at the end.");
         } else {
-            sender.sendMessage(ColorScheme.PRIMARY + "Line inserted between lines " + insertAfterIndex + " and " + (insertAfterIndex + 1) + ".");
+            sender.sendMessage(ColorScheme.PRIMARY + "Line inserted between lines " + insertAfterIndex
+                    + " and " + (insertAfterIndex + 1) + ".");
         }
         commandManager.sendQuickEditCommands(context, hologram);
     }
