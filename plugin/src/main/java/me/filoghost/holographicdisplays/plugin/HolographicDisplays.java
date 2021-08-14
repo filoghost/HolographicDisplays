@@ -37,6 +37,7 @@ import me.filoghost.holographicdisplays.plugin.placeholder.internal.DefaultPlace
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion;
+import me.filoghost.holographicdisplays.plugin.util.NMSVersion.OutdatedVersionException;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion.UnknownVersionException;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
@@ -87,9 +88,9 @@ public class HolographicDisplays extends FCommonsPlugin {
         try {
             nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
         } catch (UnknownVersionException e) {
-            throw new PluginEnableException(
-                    "Holographic Displays does not support this server version.",
-                    "Supported Spigot versions: from 1.8.3 to 1.17.");
+            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.17.");
+        } catch (OutdatedVersionException e) {
+            throw new PluginEnableException("Holographic Displays only supports " + e.getMinimumSupportedVersion() + " and above.");
         } catch (Throwable t) {
             throw new PluginEnableException(t, "Couldn't initialize the NMS manager.");
         }

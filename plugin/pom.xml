@@ -36,17 +36,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>holographicdisplays-nms-v1_8_r2</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>holographicdisplays-nms-v1_8_r3</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>holographicdisplays-nms-v1_9_r1</artifactId>
         </dependency>
 
         <dependency>
@@ -67,11 +57,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>holographicdisplays-nms-v1_12_r1</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>holographicdisplays-nms-v1_13_r1</artifactId>
         </dependency>
 
         <dependency>

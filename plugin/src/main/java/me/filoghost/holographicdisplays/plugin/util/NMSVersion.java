@@ -19,23 +19,26 @@ import java.util.regex.Pattern;
 public enum NMSVersion {
 
     // Not using shorter method reference syntax here because it initializes the class, causing a ClassNotFoundException
-    v1_8_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_8_R2.VersionNMSManager()),
-    v1_8_R3((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_8_R3.VersionNMSManager(errorCollector)),
-    v1_9_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_9_R1.VersionNMSManager()),
-    v1_9_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_9_R2.VersionNMSManager(errorCollector)),
-    v1_10_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_10_R1.VersionNMSManager(errorCollector)),
-    v1_11_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_11_R1.VersionNMSManager(errorCollector)),
-    v1_12_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_12_R1.VersionNMSManager(errorCollector)),
-    v1_13_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_13_R1.VersionNMSManager()),
-    v1_13_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_13_R2.VersionNMSManager(errorCollector)),
-    v1_14_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_14_R1.VersionNMSManager(errorCollector)),
-    v1_15_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_15_R1.VersionNMSManager(errorCollector)),
-    v1_16_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager(errorCollector)),
-    v1_16_R2((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager(errorCollector)),
-    v1_16_R3((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager(errorCollector)),
-    v1_17_R1((errorCollector) -> new me.filoghost.holographicdisplays.nms.v1_17_R1.VersionNMSManager(errorCollector));
 
-    private static final NMSVersion CURRENT_VERSION = extractCurrentVersion();
+    /* 1.8 - 1.8.2     */ v1_8_R1(NMSManagerFactory.outdatedVersion("1.8.4")),
+    /* 1.8.3           */ v1_8_R2(NMSManagerFactory.outdatedVersion("1.8.4")),
+    /* 1.8.4 - 1.8.9   */ v1_8_R3(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_8_R3.VersionNMSManager(errorCollector)),
+    /* 1.9 - 1.9.3     */ v1_9_R1(NMSManagerFactory.outdatedVersion("1.9.4")),
+    /* 1.9.4           */ v1_9_R2(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_9_R2.VersionNMSManager(errorCollector)),
+    /* 1.10 - 1.10.2   */ v1_10_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_10_R1.VersionNMSManager(errorCollector)),
+    /* 1.11 - 1.11.2   */ v1_11_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_11_R1.VersionNMSManager(errorCollector)),
+    /* 1.12 - 1.12.2   */ v1_12_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_12_R1.VersionNMSManager(errorCollector)),
+    /* 1.13            */ v1_13_R1(NMSManagerFactory.outdatedVersion("1.13.1")),
+    /* 1.13.1 - 1.13.2 */ v1_13_R2(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_13_R2.VersionNMSManager(errorCollector)),
+    /* 1.14 - 1.14.4   */ v1_14_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_14_R1.VersionNMSManager(errorCollector)),
+    /* 1.15 - 1.15.2   */ v1_15_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_15_R1.VersionNMSManager(errorCollector)),
+    /* 1.16 - 1.16.1   */ v1_16_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager(errorCollector)),
+    /* 1.16.2 - 1.16.3 */ v1_16_R2(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager(errorCollector)),
+    /* 1.16.4 - 1.16.5 */ v1_16_R3(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager(errorCollector)),
+    /* 1.17 - ?        */ v1_17_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_17_R1.VersionNMSManager(errorCollector)),
+    /* Other versions  */ UNKNOWN(NMSManagerFactory.unknownVersion());
+
+    private static final NMSVersion CURRENT_VERSION = detectCurrentVersion();
 
     private final NMSManagerFactory nmsManagerFactory;
 
@@ -43,38 +46,62 @@ public enum NMSVersion {
         this.nmsManagerFactory = nmsManagerFactory;
     }
 
-    public NMSManager createNMSManager(ErrorCollector errorCollector) {
+    public NMSManager createNMSManager(ErrorCollector errorCollector) throws OutdatedVersionException, UnknownVersionException {
         return nmsManagerFactory.create(errorCollector);
     }
 
-    public static NMSVersion getCurrent() throws UnknownVersionException {
-        if (CURRENT_VERSION == null) {
-            throw new UnknownVersionException();
-        }
+    public static NMSVersion getCurrent() {
         return CURRENT_VERSION;
     }
 
-    private static NMSVersion extractCurrentVersion() {
+    private static NMSVersion detectCurrentVersion() {
         Matcher matcher = Pattern.compile("v\\d+_\\d+_R\\d+").matcher(Bukkit.getServer().getClass().getPackage().getName());
         if (!matcher.find()) {
-            return null;
+            return UNKNOWN;
         }
 
         String nmsVersionName = matcher.group();
         try {
             return valueOf(nmsVersionName);
         } catch (IllegalArgumentException e) {
-            return null; // Unknown version
+            return UNKNOWN;
         }
     }
 
 
+    @FunctionalInterface
     private interface NMSManagerFactory {
 
-        NMSManager create(ErrorCollector errorCollector);
+        NMSManager create(ErrorCollector errorCollector) throws UnknownVersionException, OutdatedVersionException;
+
+        static NMSManagerFactory unknownVersion() {
+            return errorCollector -> {
+                throw new UnknownVersionException();
+            };
+        }
+
+        static NMSManagerFactory outdatedVersion(String minimumSupportedVersion) {
+            return errorCollector -> {
+                throw new OutdatedVersionException(minimumSupportedVersion);
+            };
+        }
 
     }
 
     public static class UnknownVersionException extends Exception {}
+
+    public static class OutdatedVersionException extends Exception {
+
+        private final String minimumSupportedVersion;
+
+        public OutdatedVersionException(String minimumSupportedVersion) {
+            this.minimumSupportedVersion = minimumSupportedVersion;
+        }
+
+        public String getMinimumSupportedVersion() {
+            return minimumSupportedVersion;
+        }
+
+    }
 
 }

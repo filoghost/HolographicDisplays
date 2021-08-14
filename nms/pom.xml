@@ -14,14 +14,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>v1_8_r2</module>
         <module>v1_8_r3</module>
-        <module>v1_9_r1</module>
         <module>v1_9_r2</module>
         <module>v1_10_r1</module>
         <module>v1_11_r1</module>
         <module>v1_12_r1</module>
-        <module>v1_13_r1</module>
         <module>v1_13_r2</module>
         <module>v1_14_r1</module>
         <module>v1_15_r1</module>
