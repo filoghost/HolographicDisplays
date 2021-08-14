@@ -173,10 +173,14 @@ public class HolographicDisplays extends FCommonsPlugin {
 
     @Override
     public void onDisable() {
-        lineTrackerManager.clearTrackedPlayersAndSendPackets();
+        if (lineTrackerManager != null) {
+            lineTrackerManager.clearTrackedPlayersAndSendPackets();
+        }
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            nmsManager.uninjectPacketListener(player);
+        if (nmsManager != null) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                nmsManager.uninjectPacketListener(player);
+            }
         }
     }
 
