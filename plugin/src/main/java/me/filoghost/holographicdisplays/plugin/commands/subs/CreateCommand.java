@@ -16,7 +16,7 @@ import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -59,7 +59,7 @@ public class CreateCommand extends HologramSubCommand {
         if (args.length > 1) {
             String text = Strings.joinFrom(" ", args, 1);
             line = hologramEditor.parseHologramLine(hologram, text);
-            player.sendMessage(ColorScheme.SECONDARY_DARKER + "(Change the lines with /" + context.getRootLabel()
+            player.sendMessage(ColorScheme.SECONDARY_DARK + "(Change the lines with /" + context.getRootLabel()
                     + " edit " + hologram.getName() + ")");
         } else {
             String defaultText = "Default hologram. Change it with "
@@ -74,9 +74,9 @@ public class CreateCommand extends HologramSubCommand {
         player.sendMessage(ColorScheme.PRIMARY + "Hologram named \"" + hologram.getName() + "\" created.");
 
         if (moveUp) {
-            player.sendMessage(ColorScheme.SECONDARY_DARKER + "(You were on the ground,"
+            player.sendMessage(ColorScheme.SECONDARY_DARK + "(You were on the ground,"
                     + " the hologram was automatically moved up."
-                    + " If you use /" + context.getRootLabel() + " movehere " + hologram.getName() + ","
+                    + " If you use /" + context.getRootLabel() + " moveHere " + hologram.getName() + ","
                     + " the hologram will be moved to your feet)");
         }
     }

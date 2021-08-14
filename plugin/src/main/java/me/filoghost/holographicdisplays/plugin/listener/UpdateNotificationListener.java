@@ -39,9 +39,9 @@ public class UpdateNotificationListener implements Listener {
             Player player = event.getPlayer();
 
             if (player.hasPermission(Permissions.UPDATE_NOTIFICATION)) {
-                player.sendMessage(ColorScheme.PRIMARY_DARKER + "[HolographicDisplays] "
+                player.sendMessage(ColorScheme.PRIMARY_DARK + "[HolographicDisplays] "
                         + ColorScheme.PRIMARY + "Found an update: " + newVersion + ". Download:");
-                player.sendMessage(ColorScheme.PRIMARY_DARKER + ">> "
+                player.sendMessage(ColorScheme.PRIMARY_DARK + ">> "
                         + ColorScheme.PRIMARY + "https://dev.bukkit.org/projects/holographic-displays");
             }
         }

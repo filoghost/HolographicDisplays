@@ -10,7 +10,7 @@ import me.filoghost.fcommons.command.sub.SubCommand;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.sub.SubCommandManager;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
-import me.filoghost.holographicdisplays.plugin.commands.subs.AddlineCommand;
+import me.filoghost.holographicdisplays.plugin.commands.subs.AddLineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.AlignCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.CopyCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.CreateCommand;
@@ -19,16 +19,16 @@ import me.filoghost.holographicdisplays.plugin.commands.subs.DeleteCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.EditCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.HelpCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.InfoCommand;
-import me.filoghost.holographicdisplays.plugin.commands.subs.InsertlineCommand;
+import me.filoghost.holographicdisplays.plugin.commands.subs.InsertLineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.ListCommand;
-import me.filoghost.holographicdisplays.plugin.commands.subs.MovehereCommand;
+import me.filoghost.holographicdisplays.plugin.commands.subs.MoveHereCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.NearCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.QuickEditCommand;
-import me.filoghost.holographicdisplays.plugin.commands.subs.ReadimageCommand;
-import me.filoghost.holographicdisplays.plugin.commands.subs.ReadtextCommand;
+import me.filoghost.holographicdisplays.plugin.commands.subs.ReadImageCommand;
+import me.filoghost.holographicdisplays.plugin.commands.subs.ReadTextCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.ReloadCommand;
-import me.filoghost.holographicdisplays.plugin.commands.subs.RemovelineCommand;
-import me.filoghost.holographicdisplays.plugin.commands.subs.SetlineCommand;
+import me.filoghost.holographicdisplays.plugin.commands.subs.RemoveLineCommand;
+import me.filoghost.holographicdisplays.plugin.commands.subs.SetLineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.TeleportCommand;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
@@ -65,23 +65,23 @@ public class HologramCommandManager extends SubCommandManager {
         this.helpCommand = new HelpCommand(this);
         this.subCommands = new ArrayList<>();
 
-        subCommands.add(new AddlineCommand(this, hologramEditor));
+        subCommands.add(new AddLineCommand(this, hologramEditor));
         subCommands.add(new CreateCommand(hologramEditor));
         subCommands.add(new DeleteCommand(hologramEditor));
         subCommands.add(new EditCommand(this, hologramEditor));
         subCommands.add(new ListCommand(hologramEditor));
         subCommands.add(new NearCommand(hologramEditor));
         subCommands.add(new TeleportCommand(hologramEditor));
-        subCommands.add(new MovehereCommand(hologramEditor));
+        subCommands.add(new MoveHereCommand(hologramEditor));
         subCommands.add(new AlignCommand(hologramEditor));
         subCommands.add(new CopyCommand(hologramEditor));
         subCommands.add(new ReloadCommand(holographicDisplays));
 
-        subCommands.add(new RemovelineCommand(this, hologramEditor));
-        subCommands.add(new SetlineCommand(this, hologramEditor));
-        subCommands.add(new InsertlineCommand(this, hologramEditor));
-        subCommands.add(new ReadtextCommand(hologramEditor));
-        subCommands.add(new ReadimageCommand(hologramEditor));
+        subCommands.add(new RemoveLineCommand(this, hologramEditor));
+        subCommands.add(new SetLineCommand(this, hologramEditor));
+        subCommands.add(new InsertLineCommand(this, hologramEditor));
+        subCommands.add(new ReadTextCommand(hologramEditor));
+        subCommands.add(new ReadImageCommand(hologramEditor));
         subCommands.add(new InfoCommand(this, hologramEditor));
 
         subCommands.add(new DebugCommand());
@@ -95,11 +95,9 @@ public class HologramCommandManager extends SubCommandManager {
                 return subCommand;
             }
 
-            if (subCommand.getAliases() != null) {
-                for (String alias : subCommand.getAliases()) {
-                    if (alias.equalsIgnoreCase(name)) {
-                        return subCommand;
-                    }
+            for (String alias : subCommand.getAliases()) {
+                if (alias.equalsIgnoreCase(name)) {
+                    return subCommand;
                 }
             }
         }
@@ -153,10 +151,10 @@ public class HologramCommandManager extends SubCommandManager {
     protected void sendNoArgsMessage(CommandContext context) {
         CommandSender sender = context.getSender();
         String version = holographicDisplays.getDescription().getVersion();
-        sender.sendMessage(ColorScheme.PRIMARY_DARKER + "Server is running " + ColorScheme.PRIMARY + "Holographic Displays "
-                + ColorScheme.PRIMARY_DARKER + "v" + version + " by " + ColorScheme.PRIMARY + "filoghost");
+        sender.sendMessage(ColorScheme.PRIMARY_DARK + "Server is running " + ColorScheme.PRIMARY + "Holographic Displays "
+                + ColorScheme.PRIMARY_DARK + "v" + version + " by " + ColorScheme.PRIMARY + "filoghost");
         if (helpCommand.hasPermission(sender)) {
-            sender.sendMessage(ColorScheme.PRIMARY_DARKER + "Commands: " + ColorScheme.PRIMARY + helpCommand.getFullUsageText(context));
+            sender.sendMessage(ColorScheme.PRIMARY_DARK + "Commands: " + ColorScheme.PRIMARY + helpCommand.getFullUsageText(context));
         }
     }
 

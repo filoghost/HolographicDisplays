@@ -16,12 +16,12 @@ import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologra
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class MovehereCommand extends HologramSubCommand {
+public class MoveHereCommand extends HologramSubCommand {
 
     private final InternalHologramEditor hologramEditor;
 
-    public MovehereCommand(InternalHologramEditor hologramEditor) {
-        super("movehere");
+    public MoveHereCommand(InternalHologramEditor hologramEditor) {
+        super("moveHere");
         setMinArgs(1);
         setUsageArgs("<hologram>");
         setDescription("Moves a hologram to your position.");

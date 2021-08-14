@@ -18,7 +18,7 @@ import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.util.FileUtils;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
@@ -28,12 +28,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ReadtextCommand extends LineEditingCommand {
+public class ReadTextCommand extends LineEditingCommand {
 
     private final InternalHologramEditor hologramEditor;
 
-    public ReadtextCommand(InternalHologramEditor hologramEditor) {
-        super("readtext", "readlines");
+    public ReadTextCommand(InternalHologramEditor hologramEditor) {
+        super("readText", "readLines");
         setMinArgs(2);
         setUsageArgs("<hologram> <fileWithExtension>");
 
@@ -90,7 +90,7 @@ public class ReadtextCommand extends LineEditingCommand {
 
         if (FileUtils.hasFileExtension(fileToRead, "jpg", "png", "jpeg", "gif")) {
             DisplayFormat.sendWarning(sender, "It looks like the file is an image."
-                    + " If it is, you should use instead /" + context.getRootLabel() + " readimage.");
+                    + " If it is, you should use instead /" + context.getRootLabel() + " readImage.");
         }
 
         sender.sendMessage(ColorScheme.PRIMARY + "Hologram content replaced with " + linesAmount + " lines from the file.");

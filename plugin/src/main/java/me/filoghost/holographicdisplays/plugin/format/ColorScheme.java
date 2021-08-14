@@ -5,16 +5,16 @@
  */
 package me.filoghost.holographicdisplays.plugin.format;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 
 public class ColorScheme {
 
-    public static final String PRIMARY = "" + ChatColor.AQUA;
-    public static final String PRIMARY_DARKER = "" + ChatColor.DARK_AQUA;
+    public static final ChatColor PRIMARY = ChatColor.AQUA;
+    public static final ChatColor PRIMARY_DARK = ChatColor.DARK_AQUA;
 
-    public static final String SECONDARY = "" + ChatColor.WHITE;
+    public static final ChatColor SECONDARY = ChatColor.WHITE;
     public static final String SECONDARY_BOLD = "" + SECONDARY + ChatColor.BOLD;
-    public static final String SECONDARY_DARKER = "" + ChatColor.GRAY;
+    public static final ChatColor SECONDARY_DARK = ChatColor.GRAY;
 
     public static final String ERROR = "" + ChatColor.RED;
 

@@ -18,13 +18,13 @@ import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologra
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
 import org.bukkit.command.CommandSender;
 
-public class InsertlineCommand extends LineEditingCommand implements QuickEditCommand {
+public class InsertLineCommand extends LineEditingCommand implements QuickEditCommand {
 
     private final HologramCommandManager commandManager;
     private final InternalHologramEditor hologramEditor;
 
-    public InsertlineCommand(HologramCommandManager commandManager, InternalHologramEditor hologramEditor) {
-        super("insertline");
+    public InsertLineCommand(HologramCommandManager commandManager, InternalHologramEditor hologramEditor) {
+        super("insertLine");
         setMinArgs(3);
         setUsageArgs("<hologram> <lineNumber> <text>");
         setDescription(
@@ -55,7 +55,7 @@ public class InsertlineCommand extends LineEditingCommand implements QuickEditCo
             sender.sendMessage(ColorScheme.PRIMARY + "Line inserted before the first line.");
         } else if (insertAfterIndex == oldLinesAmount) {
             sender.sendMessage(ColorScheme.PRIMARY + "Line appended at the end.");
-            DisplayFormat.sendTip(sender, "You can use \"/" + context.getRootLabel() + " addline\" to append a line at the end.");
+            DisplayFormat.sendTip(sender, "You can use \"/" + context.getRootLabel() + " addLine\" to append a line at the end.");
         } else {
             sender.sendMessage(ColorScheme.PRIMARY + "Line inserted between the lines " + insertAfterIndex
                     + " and " + (insertAfterIndex + 1) + ".");

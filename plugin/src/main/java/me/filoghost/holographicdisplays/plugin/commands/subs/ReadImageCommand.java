@@ -20,7 +20,7 @@ import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalTextLin
 import me.filoghost.holographicdisplays.plugin.image.ImageMessage;
 import me.filoghost.holographicdisplays.plugin.image.ImageReadException;
 import me.filoghost.holographicdisplays.plugin.image.ImageReader;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.awt.image.BufferedImage;
@@ -33,12 +33,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class ReadimageCommand extends LineEditingCommand {
+public class ReadImageCommand extends LineEditingCommand {
 
     private final InternalHologramEditor hologramEditor;
 
-    public ReadimageCommand(InternalHologramEditor hologramEditor) {
-        super("readimage", "image");
+    public ReadImageCommand(InternalHologramEditor hologramEditor) {
+        super("readImage", "image");
         setMinArgs(3);
         setUsageArgs("<hologram> <imageWithExtension> <width>");
 

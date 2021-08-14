@@ -10,7 +10,6 @@ import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
-import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
@@ -54,11 +53,7 @@ public class NearCommand extends HologramSubCommand {
 
         DisplayFormat.sendTitle(player, "Near holograms");
         for (InternalHologram nearHologram : nearHolograms) {
-            BaseHologramPosition position = nearHologram.getBasePosition();
-            player.sendMessage(ColorScheme.SECONDARY_DARKER + "- "
-                    + ColorScheme.SECONDARY_BOLD + nearHologram.getName() + " " + ColorScheme.SECONDARY_DARKER + "at"
-                    + " x: " + position.getBlockX() + ", y: " + position.getBlockY() + ", z: " + position.getBlockZ()
-                    + " (lines: " + nearHologram.getLines().size() + ")");
+            DisplayFormat.sendHologramSummary(player, nearHologram, false);
         }
     }
 

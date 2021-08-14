@@ -15,13 +15,13 @@ import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import org.bukkit.command.CommandSender;
 
-public class RemovelineCommand extends LineEditingCommand implements QuickEditCommand {
+public class RemoveLineCommand extends LineEditingCommand implements QuickEditCommand {
 
     private final HologramCommandManager commandManager;
     private final InternalHologramEditor hologramEditor;
 
-    public RemovelineCommand(HologramCommandManager commandManager, InternalHologramEditor hologramEditor) {
-        super("removeline");
+    public RemoveLineCommand(HologramCommandManager commandManager, InternalHologramEditor hologramEditor) {
+        super("removeLine");
         setMinArgs(2);
         setUsageArgs("<hologram> <lineNumber>");
         setDescription("Removes a line from a hologram.");

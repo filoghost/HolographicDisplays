@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin.commands;
 import me.filoghost.fcommons.command.CommandContext;
 import me.filoghost.fcommons.command.sub.SubCommand;
 import me.filoghost.holographicdisplays.plugin.Permissions;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -70,7 +71,7 @@ public abstract class HologramSubCommand implements SubCommand {
         this.minArgs = minArgs;
     }
 
-    public final List<String> getAliases() {
+    public final @NotNull List<String> getAliases() {
         return aliases;
     }
 

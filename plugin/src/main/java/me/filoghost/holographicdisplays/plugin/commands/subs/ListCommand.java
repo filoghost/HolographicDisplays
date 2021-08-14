@@ -12,7 +12,6 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
 import org.bukkit.command.CommandSender;
 
@@ -44,22 +43,17 @@ public class ListCommand extends HologramSubCommand {
             totalPages++;
         }
 
-        CommandValidate.check(holograms.size() > 0,
+        CommandValidate.check(
+                holograms.size() > 0,
                 "There are no holograms yet. Create one with /" + context.getRootLabel() + " create.");
 
-        sender.sendMessage("");
         DisplayFormat.sendTitle(sender, "Holograms list " + ColorScheme.SECONDARY + "(Page " + page + " of " + totalPages + ")");
         int fromIndex = (page - 1) * HOLOGRAMS_PER_PAGE;
         int toIndex = fromIndex + HOLOGRAMS_PER_PAGE;
 
         for (int i = fromIndex; i < toIndex; i++) {
             if (i < holograms.size()) {
-                InternalHologram hologram = holograms.get(i);
-                BaseHologramPosition position = hologram.getBasePosition();
-                sender.sendMessage(ColorScheme.SECONDARY_DARKER + "- " + ColorScheme.SECONDARY_BOLD + hologram.getName()
-                        + " " + ColorScheme.SECONDARY_DARKER + "at"
-                        + " x: " + position.getBlockX() + ", y: " + position.getBlockY() + ", z: " + position.getBlockZ()
-                        + " (lines: " + hologram.getLines().size() + ", world: \"" + position.getWorldName() + "\")");
+                DisplayFormat.sendHologramSummary(sender, holograms.get(i), true);
             }
         }
 
