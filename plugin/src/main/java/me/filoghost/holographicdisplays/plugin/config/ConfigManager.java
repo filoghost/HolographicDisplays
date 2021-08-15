@@ -13,6 +13,7 @@ import me.filoghost.fcommons.config.FileConfig;
 import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.config.exception.ConfigLoadException;
 import me.filoghost.fcommons.config.exception.ConfigSaveException;
+import me.filoghost.fcommons.config.exception.ConfigValueException;
 import me.filoghost.fcommons.config.mapped.MappedConfigLoader;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
@@ -47,7 +48,7 @@ public class ConfigManager extends BaseConfigManager {
         try {
             mainConfig = mainConfigLoader.init();
         } catch (ConfigException e) {
-            logConfigInitException(errorCollector, mainConfigLoader.getFile(), e);
+            logConfigException(errorCollector, mainConfigLoader.getFile(), e);
             mainConfig = new SettingsModel(); // Fallback: use default values
         }
 
@@ -60,7 +61,7 @@ public class ConfigManager extends BaseConfigManager {
         try {
             databaseConfig = databaseConfigLoader.init();
         } catch (ConfigException e) {
-            logConfigInitException(errorCollector, databaseConfigLoader.getFile(), e);
+            logConfigException(errorCollector, databaseConfigLoader.getFile(), e);
             databaseConfig = new Config(); // Fallback: empty config
         }
 
@@ -96,10 +97,13 @@ public class ConfigManager extends BaseConfigManager {
                 animationFiles.filter(this::isYamlFile).forEach(file -> {
                     try {
                         String fileName = file.getFileName().toString();
-                        AnimationPlaceholder animationPlaceholder = loadAnimation(file);
+                        AnimationConfig animationConfig = loadAnimation(file);
+                        AnimationPlaceholder animationPlaceholder = new AnimationPlaceholder(
+                                animationConfig.getIntervalTicks(),
+                                animationConfig.getFrames());
                         animationsByFileName.put(fileName, animationPlaceholder);
-                    } catch (ConfigLoadException e) {
-                        logConfigInitException(errorCollector, file, e);
+                    } catch (ConfigException e) {
+                        logConfigException(errorCollector, file, e);
                     }
                 });
             }
@@ -110,10 +114,9 @@ public class ConfigManager extends BaseConfigManager {
         return new AnimationPlaceholderFactory(animationsByFileName);
     }
 
-    private AnimationPlaceholder loadAnimation(Path animationFile) throws ConfigLoadException {
-        MappedConfigLoader<AnimationConfig> animationConfigLoader = getMappedConfigLoader(animationFile, AnimationConfig.class);
-        AnimationConfig animationConfig = animationConfigLoader.load();
-        return new AnimationPlaceholder(animationConfig.getIntervalTicks(), animationConfig.getFrames());
+    private AnimationConfig loadAnimation(Path animationFile) throws ConfigLoadException, ConfigValueException {
+        FileConfig animationFileConfig = getConfigLoader(animationFile).load();
+        return new AnimationConfig(animationFileConfig);
     }
 
     public void reloadStaticReplacements(ErrorCollector errorCollector) {
@@ -122,7 +125,7 @@ public class ConfigManager extends BaseConfigManager {
         try {
             staticReplacementsConfig = staticReplacementsConfigLoader.init();
         } catch (ConfigException e) {
-            logConfigInitException(errorCollector, staticReplacementsConfigLoader.getFile(), e);
+            logConfigException(errorCollector, staticReplacementsConfigLoader.getFile(), e);
             staticReplacementsConfig = new FileConfig(staticReplacementsConfigLoader.getFile()); // Fallback: empty config
         }
 
@@ -141,7 +144,7 @@ public class ConfigManager extends BaseConfigManager {
         return FileUtils.hasFileExtension(file, "yml", "yaml");
     }
 
-    private void logConfigInitException(ErrorCollector errorCollector, Path file, ConfigException e) {
+    private void logConfigException(ErrorCollector errorCollector, Path file, ConfigException e) {
         errorCollector.add(e, "error while loading config file \"" + formatPath(file) + "\"");
     }
 

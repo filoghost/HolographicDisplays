@@ -5,18 +5,20 @@
  */
 package me.filoghost.holographicdisplays.plugin.config;
 
-import me.filoghost.fcommons.config.mapped.MappedConfig;
-import me.filoghost.fcommons.config.mapped.Path;
+import me.filoghost.fcommons.config.ConfigSection;
+import me.filoghost.fcommons.config.exception.ConfigValueException;
 
 import java.util.List;
 
-public class AnimationConfig implements MappedConfig {
+public class AnimationConfig {
 
-    @Path("interval-seconds")
-    private double intervalSeconds;
+    private final double intervalSeconds;
+    private final List<String> frames;
 
-    @Path("animation-frames")
-    private List<String> frames;
+    public AnimationConfig(ConfigSection configSection) throws ConfigValueException {
+        this.intervalSeconds = configSection.getRequiredDouble("interval-seconds");
+        this.frames = configSection.getRequiredStringList("animation-frames");
+    }
 
     public int getIntervalTicks() {
         return Math.max((int) (intervalSeconds * 20.0), 1);
