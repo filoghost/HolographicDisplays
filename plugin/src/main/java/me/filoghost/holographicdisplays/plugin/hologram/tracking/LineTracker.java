@@ -5,7 +5,6 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
 import org.bukkit.entity.Player;
@@ -19,17 +18,15 @@ public abstract class LineTracker<T extends BaseHologramLine> {
 
     protected final T line;
     private final Set<Player> trackedPlayers;
-    private final NMSManager nmsManager;
 
     /**
      * Flag to indicate that the line has changed in some way and there could be the need to send update packets.
      */
     private boolean lineChanged;
 
-    LineTracker(T line, NMSManager nmsManager) {
+    LineTracker(T line) {
         this.line = line;
         this.trackedPlayers = new HashSet<>();
-        this.nmsManager = nmsManager;
     }
 
     final boolean shouldBeRemoved() {
@@ -63,7 +60,7 @@ public abstract class LineTracker<T extends BaseHologramLine> {
         // Then, send the changes (if any) to already tracked players
         if (sendChangesPackets) {
             if (hasTrackedPlayers()) {
-                NMSPacketList packetList = nmsManager.createPacketList();
+                NMSPacketList packetList = new NMSPacketList();
                 addChangesPackets(packetList);
                 broadcastPackets(packetList);
             }
@@ -94,7 +91,7 @@ public abstract class LineTracker<T extends BaseHologramLine> {
             if (shouldTrackPlayer(player)) {
                 if (trackedPlayers.add(player)) {
                     if (spawnPacketList == null) {
-                        spawnPacketList = nmsManager.createPacketList();
+                        spawnPacketList = new NMSPacketList();
                         addSpawnPackets(spawnPacketList);
                     }
                     spawnPacketList.sendTo(player);
@@ -102,7 +99,7 @@ public abstract class LineTracker<T extends BaseHologramLine> {
             } else {
                 if (trackedPlayers.remove(player)) {
                     if (destroyPacketList == null) {
-                        destroyPacketList = nmsManager.createPacketList();
+                        destroyPacketList = new NMSPacketList();
                         addDestroyPackets(destroyPacketList);
                     }
                     destroyPacketList.sendTo(player);
@@ -134,7 +131,7 @@ public abstract class LineTracker<T extends BaseHologramLine> {
             return;
         }
 
-        NMSPacketList destroyPacketList = nmsManager.createPacketList();
+        NMSPacketList destroyPacketList = new NMSPacketList();
         addDestroyPackets(destroyPacketList);
         broadcastPackets(destroyPacketList);
         trackedPlayers.clear();

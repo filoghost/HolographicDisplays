@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.common.nms.entity.TextNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
 
-    private final EntityID armorStandEntityID;
+    private final TextNMSPacketEntity textEntity;
 
     private final DisplayText displayText;
     private boolean displayTextChanged;
@@ -29,7 +29,7 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
             LineClickListener lineClickListener,
             PlaceholderTracker placeholderTracker) {
         super(line, nmsManager, lineClickListener);
-        this.armorStandEntityID = nmsManager.newEntityID();
+        this.textEntity = nmsManager.newTextPacketEntity();
         this.displayText = new DisplayText(placeholderTracker);
     }
 
@@ -77,14 +77,14 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
         super.addSpawnPackets(packetList);
 
         if (!allowPlaceholders) {
-            packetList.addArmorStandSpawnPackets(
-                    armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText.getWithoutReplacements());
+            textEntity.addSpawnPackets(
+                    packetList, positionX, getTextPositionY(), positionZ, displayText.getWithoutReplacements());
         } else if (displayText.containsIndividualPlaceholders()) {
-            packetList.addArmorStandSpawnPackets(
-                    armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText::getWithIndividualReplacements);
+            textEntity.addSpawnPackets(
+                    packetList, positionX, getTextPositionY(), positionZ, displayText::getWithIndividualReplacements);
         } else {
-            packetList.addArmorStandSpawnPackets(
-                    armorStandEntityID, positionX, getArmorStandPositionY(), positionZ, displayText.getWithGlobalReplacements());
+            textEntity.addSpawnPackets(
+                    packetList, positionX, getTextPositionY(), positionZ, displayText.getWithGlobalReplacements());
         }
     }
 
@@ -92,7 +92,7 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
     @Override
     protected void addDestroyPackets(NMSPacketList packetList) {
         super.addDestroyPackets(packetList);
-        packetList.addEntityDestroyPackets(armorStandEntityID);
+        textEntity.addDestroyPackets(packetList);
     }
 
     @Override
@@ -101,11 +101,11 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
 
         if (displayTextChanged) {
             if (!allowPlaceholders) {
-                packetList.addArmorStandNameChangePackets(armorStandEntityID, displayText.getWithoutReplacements());
+                textEntity.addChangePackets(packetList, displayText.getWithoutReplacements());
             } else if (displayText.containsIndividualPlaceholders()) {
-                packetList.addArmorStandNameChangePackets(armorStandEntityID, displayText::getWithIndividualReplacements);
+                textEntity.addChangePackets(packetList, displayText::getWithIndividualReplacements);
             } else {
-                packetList.addArmorStandNameChangePackets(armorStandEntityID, displayText.getWithGlobalReplacements());
+                textEntity.addChangePackets(packetList, displayText.getWithGlobalReplacements());
             }
         }
     }
@@ -114,10 +114,10 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
     @Override
     protected void addPositionChangePackets(NMSPacketList packetList) {
         super.addPositionChangePackets(packetList);
-        packetList.addTeleportPackets(armorStandEntityID, positionX, getArmorStandPositionY(), positionZ);
+        textEntity.addTeleportPackets(packetList, positionX, getTextPositionY(), positionZ);
     }
 
-    private double getArmorStandPositionY() {
+    private double getTextPositionY() {
         return positionY - 0.29;
     }
 

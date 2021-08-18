@@ -5,7 +5,6 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
 import org.bukkit.Location;
@@ -21,8 +20,8 @@ abstract class PositionBasedLineTracker<T extends BaseHologramLine> extends Line
     protected double positionZ;
     private boolean positionChanged;
 
-    PositionBasedLineTracker(T line, NMSManager nmsManager) {
-        super(line, nmsManager);
+    PositionBasedLineTracker(T line) {
+        super(line);
     }
 
     @MustBeInvokedByOverriders

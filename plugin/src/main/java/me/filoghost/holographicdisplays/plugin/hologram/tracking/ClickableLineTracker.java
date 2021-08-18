@@ -5,28 +5,26 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.common.nms.entity.ClickableNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 public abstract class ClickableLineTracker<T extends BaseClickableLine> extends PositionBasedLineTracker<T> {
 
-    private static final double SLIME_HEIGHT = 0.5;
+    private static final double CLICKABLE_ENTITY_HEIGHT = 0.5;
 
+    private final ClickableNMSPacketEntity clickableEntity;
     private final LineClickListener lineClickListener;
-    private final EntityID vehicleEntityID;
-    private final EntityID slimeEntityID;
 
-    private boolean spawnSlimeEntities;
-    private boolean spawnSlimeEntitiesChanged;
+    private boolean spawnClickableEntity;
+    private boolean spawnClickableEntityChanged;
 
     public ClickableLineTracker(T line, NMSManager nmsManager, LineClickListener lineClickListener) {
-        super(line, nmsManager);
-        this.vehicleEntityID = nmsManager.newEntityID();
-        this.slimeEntityID = nmsManager.newEntityID();
+        super(line);
+        this.clickableEntity = nmsManager.newClickablePacketEntity();
         this.lineClickListener = lineClickListener;
     }
 
@@ -34,7 +32,7 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     @Override
     public void onRemoval() {
         super.onRemoval();
-        lineClickListener.unregisterLine(slimeEntityID);
+        lineClickListener.unregisterLine(clickableEntity.getID());
     }
 
     @MustBeInvokedByOverriders
@@ -42,14 +40,14 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     protected void detectChanges() {
         super.detectChanges();
 
-        boolean spawnSlimeEntities = line.getClickListener() != null;
-        if (this.spawnSlimeEntities != spawnSlimeEntities) {
-            this.spawnSlimeEntities = spawnSlimeEntities;
-            this.spawnSlimeEntitiesChanged = true;
-            if (spawnSlimeEntities) {
-                lineClickListener.registerLine(slimeEntityID, line);
+        boolean spawnClickableEntity = line.getClickListener() != null;
+        if (this.spawnClickableEntity != spawnClickableEntity) {
+            this.spawnClickableEntity = spawnClickableEntity;
+            this.spawnClickableEntityChanged = true;
+            if (spawnClickableEntity) {
+                lineClickListener.registerLine(clickableEntity.getID(), line);
             } else {
-                lineClickListener.unregisterLine(slimeEntityID);
+                lineClickListener.unregisterLine(clickableEntity.getID());
             }
         }
     }
@@ -58,22 +56,22 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     @Override
     protected void clearDetectedChanges() {
         super.clearDetectedChanges();
-        this.spawnSlimeEntitiesChanged = false;
+        this.spawnClickableEntityChanged = false;
     }
 
     @MustBeInvokedByOverriders
     @Override
     protected void addSpawnPackets(NMSPacketList packetList) {
-        if (spawnSlimeEntities) {
-            addSlimeSpawnPackets(packetList);
+        if (spawnClickableEntity) {
+            clickableEntity.addSpawnPackets(packetList, positionX, getClickablePositionY(), positionZ);
         }
     }
 
     @MustBeInvokedByOverriders
     @Override
     protected void addDestroyPackets(NMSPacketList packetList) {
-        if (spawnSlimeEntities) {
-            addSlimeDestroyPackets(packetList);
+        if (spawnClickableEntity) {
+            clickableEntity.addDestroyPackets(packetList);
         }
     }
 
@@ -82,11 +80,11 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     protected void addChangesPackets(NMSPacketList packetList) {
         super.addChangesPackets(packetList);
 
-        if (spawnSlimeEntitiesChanged) {
-            if (spawnSlimeEntities) {
-                addSlimeSpawnPackets(packetList);
+        if (spawnClickableEntityChanged) {
+            if (spawnClickableEntity) {
+                clickableEntity.addSpawnPackets(packetList, positionX, getClickablePositionY(), positionZ);
             } else {
-                addSlimeDestroyPackets(packetList);
+                clickableEntity.addDestroyPackets(packetList);
             }
         }
     }
@@ -94,23 +92,13 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     @MustBeInvokedByOverriders
     @Override
     protected void addPositionChangePackets(NMSPacketList packetList) {
-        if (spawnSlimeEntities) {
-            packetList.addTeleportPackets(vehicleEntityID, positionX, getSlimePositionY(), positionZ);
+        if (spawnClickableEntity) {
+            clickableEntity.addTeleportPackets(packetList, positionX, getClickablePositionY(), positionZ);
         }
     }
 
-    private void addSlimeSpawnPackets(NMSPacketList packetList) {
-        packetList.addArmorStandSpawnPackets(vehicleEntityID, positionX, getSlimePositionY(), positionZ);
-        packetList.addSlimeSpawnPackets(slimeEntityID, positionX, getSlimePositionY(), positionZ);
-        packetList.addMountPackets(vehicleEntityID, slimeEntityID);
-    }
-
-    private void addSlimeDestroyPackets(NMSPacketList packetList) {
-        packetList.addEntityDestroyPackets(slimeEntityID, vehicleEntityID);
-    }
-
-    private double getSlimePositionY() {
-        return positionY + ((line.getHeight() - SLIME_HEIGHT) / 2);
+    private double getClickablePositionY() {
+        return positionY + ((line.getHeight() - CLICKABLE_ENTITY_HEIGHT) / 2);
     }
 
 }

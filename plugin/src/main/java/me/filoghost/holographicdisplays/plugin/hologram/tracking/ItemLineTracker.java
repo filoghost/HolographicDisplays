@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.common.nms.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import org.bukkit.entity.Player;
@@ -19,19 +19,17 @@ import java.util.Objects;
 
 public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
 
-    private final EntityID vehicleEntityID;
-    private final EntityID itemEntityID;
+    private final ItemNMSPacketEntity itemEntity;
 
     private ItemStack itemStack;
     private boolean itemStackChanged;
 
-    private boolean spawnItemEntities;
-    private boolean spawnItemEntitiesChanged;
+    private boolean spawnItemEntity;
+    private boolean spawnItemEntityChanged;
 
     public ItemLineTracker(BaseItemLine line, NMSManager nmsManager, LineClickListener lineClickListener) {
         super(line, nmsManager, lineClickListener);
-        this.vehicleEntityID = nmsManager.newEntityID();
-        this.itemEntityID = nmsManager.newEntityID();
+        this.itemEntity = nmsManager.newItemPacketEntity();
     }
 
     @MustBeInvokedByOverriders
@@ -39,7 +37,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
     protected void update(Collection<? extends Player> onlinePlayers) {
         super.update(onlinePlayers);
 
-        if (spawnItemEntities && hasTrackedPlayers()) {
+        if (spawnItemEntity && hasTrackedPlayers()) {
             for (Player trackedPlayer : getTrackedPlayers()) {
                 if (CollisionHelper.isInPickupRange(trackedPlayer, positionX, positionY, positionZ)) {
                     line.onPickup(trackedPlayer);
@@ -64,10 +62,10 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
             this.itemStackChanged = true;
         }
 
-        boolean spawnItemEntities = itemStack != null;
-        if (this.spawnItemEntities != spawnItemEntities) {
-            this.spawnItemEntities = spawnItemEntities;
-            this.spawnItemEntitiesChanged = true;
+        boolean spawnItemEntity = itemStack != null;
+        if (this.spawnItemEntity != spawnItemEntity) {
+            this.spawnItemEntity = spawnItemEntity;
+            this.spawnItemEntityChanged = true;
         }
     }
 
@@ -76,7 +74,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
     protected void clearDetectedChanges() {
         super.clearDetectedChanges();
         this.itemStackChanged = false;
-        this.spawnItemEntitiesChanged = false;
+        this.spawnItemEntityChanged = false;
     }
 
     @MustBeInvokedByOverriders
@@ -84,8 +82,8 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
     protected void addSpawnPackets(NMSPacketList packetList) {
         super.addSpawnPackets(packetList);
 
-        if (spawnItemEntities) {
-            addItemSpawnPackets(packetList);
+        if (spawnItemEntity) {
+            itemEntity.addSpawnPackets(packetList, positionX, getItemPositionY(), positionZ, itemStack);
         }
     }
 
@@ -94,8 +92,8 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
     protected void addDestroyPackets(NMSPacketList packetList) {
         super.addDestroyPackets(packetList);
 
-        if (spawnItemEntities) {
-            addItemDestroyPackets(packetList);
+        if (spawnItemEntity) {
+            itemEntity.addDestroyPackets(packetList);
         }
     }
 
@@ -104,15 +102,15 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
     protected void addChangesPackets(NMSPacketList packetList) {
         super.addChangesPackets(packetList);
 
-        if (spawnItemEntitiesChanged) {
-            if (spawnItemEntities) {
-                addItemSpawnPackets(packetList);
+        if (spawnItemEntityChanged) {
+            if (spawnItemEntity) {
+                itemEntity.addSpawnPackets(packetList, positionX, getItemPositionY(), positionZ, itemStack);
             } else {
-                addItemDestroyPackets(packetList);
+                itemEntity.addDestroyPackets(packetList);
             }
         } else if (itemStackChanged) {
             // Only send item changes if full spawn/destroy packets were not sent
-            packetList.addItemStackChangePackets(itemEntityID, itemStack);
+            itemEntity.addChangePackets(packetList, itemStack);
         }
     }
 
@@ -121,19 +119,9 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
     protected void addPositionChangePackets(NMSPacketList packetList) {
         super.addPositionChangePackets(packetList);
 
-        if (spawnItemEntities) {
-            packetList.addTeleportPackets(vehicleEntityID, positionX, getItemPositionY(), positionZ);
+        if (spawnItemEntity) {
+            itemEntity.addTeleportPackets(packetList, positionX, getItemPositionY(), positionZ);
         }
-    }
-
-    private void addItemSpawnPackets(NMSPacketList packetList) {
-        packetList.addArmorStandSpawnPackets(vehicleEntityID, positionX, getItemPositionY(), positionZ);
-        packetList.addItemSpawnPackets(itemEntityID, positionX, getItemPositionY(), positionZ, itemStack);
-        packetList.addMountPackets(vehicleEntityID, itemEntityID);
-    }
-
-    private void addItemDestroyPackets(NMSPacketList packetList) {
-        packetList.addEntityDestroyPackets(itemEntityID, vehicleEntityID);
     }
 
     private double getItemPositionY() {

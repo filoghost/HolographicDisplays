@@ -5,13 +5,18 @@
  */
 package me.filoghost.holographicdisplays.common.nms;
 
+import me.filoghost.holographicdisplays.common.nms.entity.ClickableNMSPacketEntity;
+import me.filoghost.holographicdisplays.common.nms.entity.ItemNMSPacketEntity;
+import me.filoghost.holographicdisplays.common.nms.entity.TextNMSPacketEntity;
 import org.bukkit.entity.Player;
 
 public interface NMSManager {
 
-    EntityID newEntityID();
+    TextNMSPacketEntity newTextPacketEntity();
 
-    NMSPacketList createPacketList();
+    ItemNMSPacketEntity newItemPacketEntity();
+
+    ClickableNMSPacketEntity newClickablePacketEntity();
 
     void injectPacketListener(Player player, PacketListener packetListener);
 

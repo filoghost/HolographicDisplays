@@ -15,8 +15,10 @@ import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.FallbackEntityIDGenerator;
 import me.filoghost.holographicdisplays.common.nms.NMSErrors;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.common.nms.PacketListener;
+import me.filoghost.holographicdisplays.common.nms.entity.ClickableNMSPacketEntity;
+import me.filoghost.holographicdisplays.common.nms.entity.ItemNMSPacketEntity;
+import me.filoghost.holographicdisplays.common.nms.entity.TextNMSPacketEntity;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.NetworkManager;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
@@ -62,14 +64,23 @@ public class VersionNMSManager implements NMSManager {
         field.setStatic(value);
     }
 
-    @Override
-    public EntityID newEntityID() {
+    private EntityID newEntityID() {
         return new EntityID(entityIDGenerator);
     }
 
     @Override
-    public NMSPacketList createPacketList() {
-        return new VersionNMSPacketList();
+    public TextNMSPacketEntity newTextPacketEntity() {
+        return new VersionTextNMSPacketEntity(newEntityID());
+    }
+
+    @Override
+    public ItemNMSPacketEntity newItemPacketEntity() {
+        return new VersionItemNMSPacketEntity(newEntityID(), newEntityID());
+    }
+
+    @Override
+    public ClickableNMSPacketEntity newClickablePacketEntity() {
+        return new VersionClickableNMSPacketEntity(newEntityID(), newEntityID());
     }
 
     @Override

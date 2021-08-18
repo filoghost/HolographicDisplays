@@ -6,33 +6,38 @@
 package me.filoghost.holographicdisplays.common.nms;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
-public interface NMSPacketList {
+import java.util.ArrayList;
+import java.util.List;
 
-    void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ);
+public class NMSPacketList {
 
-    void addArmorStandSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, String customName);
+    // Lazily instantiate a list only when adding more than one element
+    private @Nullable NMSPacket singlePacket;
+    private @Nullable List<NMSPacket> multiplePackets;
 
-    void addArmorStandSpawnPackets(
-            EntityID entityID, double positionX, double positionY, double positionZ, IndividualCustomName individualCustomName);
+    public void add(NMSPacket packet) {
+        if (multiplePackets != null) {
+            multiplePackets.add(packet);
+        } else if (singlePacket != null) {
+            multiplePackets = new ArrayList<>();
+            multiplePackets.add(singlePacket);
+            multiplePackets.add(packet);
+            singlePacket = null;
+        } else {
+            singlePacket = packet;
+        }
+    }
 
-    void addArmorStandNameChangePackets(EntityID entityID, String customName);
-
-    void addArmorStandNameChangePackets(EntityID entityID, IndividualCustomName individualCustomName);
-
-    void addItemSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ, ItemStack itemStack);
-
-    void addItemStackChangePackets(EntityID entityID, ItemStack itemStack);
-
-    void addSlimeSpawnPackets(EntityID entityID, double positionX, double positionY, double positionZ);
-
-    void addEntityDestroyPackets(EntityID... entityIDs);
-
-    void addTeleportPackets(EntityID entityID, double positionX, double positionY, double positionZ);
-
-    void addMountPackets(EntityID vehicleEntityID, EntityID passengerEntityID);
-
-    void sendTo(Player player);
+    public void sendTo(Player player) {
+        if (multiplePackets != null) {
+            for (NMSPacket packet : multiplePackets) {
+                packet.sendTo(player);
+            }
+        } else if (singlePacket != null) {
+            singlePacket.sendTo(player);
+        }
+    }
 
 }

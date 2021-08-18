@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.common.nms;
 import org.bukkit.entity.Player;
 
 @FunctionalInterface
-public interface IndividualCustomName {
+public interface IndividualText {
 
     String get(Player player);
 
