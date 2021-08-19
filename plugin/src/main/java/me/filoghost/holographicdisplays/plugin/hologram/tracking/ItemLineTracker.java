@@ -39,7 +39,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
 
         if (spawnItemEntity && hasTrackedPlayers()) {
             for (Player trackedPlayer : getTrackedPlayers()) {
-                if (CollisionHelper.isInPickupRange(trackedPlayer, positionX, positionY, positionZ)) {
+                if (CollisionHelper.isInPickupRange(trackedPlayer, position)) {
                     line.onPickup(trackedPlayer);
                 }
             }
@@ -83,7 +83,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
         super.addSpawnPackets(packetList);
 
         if (spawnItemEntity) {
-            itemEntity.addSpawnPackets(packetList, positionX, positionY, positionZ, itemStack);
+            itemEntity.addSpawnPackets(packetList, position.getX(), position.getY(), position.getZ(), itemStack);
         }
     }
 
@@ -104,7 +104,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
 
         if (spawnItemEntityChanged) {
             if (spawnItemEntity) {
-                itemEntity.addSpawnPackets(packetList, positionX, positionY, positionZ, itemStack);
+                itemEntity.addSpawnPackets(packetList, position.getX(), position.getY(), position.getZ(), itemStack);
             } else {
                 itemEntity.addDestroyPackets(packetList);
             }
@@ -120,7 +120,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
         super.addPositionChangePackets(packetList);
 
         if (spawnItemEntity) {
-            itemEntity.addTeleportPackets(packetList, positionX, positionY, positionZ);
+            itemEntity.addTeleportPackets(packetList, position.getX(), position.getY(), position.getZ());
         }
     }
 

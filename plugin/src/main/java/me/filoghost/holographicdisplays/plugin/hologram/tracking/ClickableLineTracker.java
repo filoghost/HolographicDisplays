@@ -61,7 +61,7 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     @Override
     protected void addSpawnPackets(NMSPacketList packetList) {
         if (spawnClickableEntity) {
-            clickableEntity.addSpawnPackets(packetList, positionX, getClickablePositionY(), positionZ);
+            clickableEntity.addSpawnPackets(packetList, position.getX(), getClickablePositionY(), position.getZ());
         }
     }
 
@@ -80,7 +80,7 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
 
         if (spawnClickableEntityChanged) {
             if (spawnClickableEntity) {
-                clickableEntity.addSpawnPackets(packetList, positionX, getClickablePositionY(), positionZ);
+                clickableEntity.addSpawnPackets(packetList, position.getX(), getClickablePositionY(), position.getZ());
             } else {
                 clickableEntity.addDestroyPackets(packetList);
             }
@@ -91,12 +91,12 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     @Override
     protected void addPositionChangePackets(NMSPacketList packetList) {
         if (spawnClickableEntity) {
-            clickableEntity.addTeleportPackets(packetList, positionX, getClickablePositionY(), positionZ);
+            clickableEntity.addTeleportPackets(packetList, position.getX(), getClickablePositionY(), position.getZ());
         }
     }
 
     private double getClickablePositionY() {
-        return positionY + ((line.getHeight() - ClickableNMSPacketEntity.SLIME_HEIGHT) / 2);
+        return position.getY() + ((line.getHeight() - ClickableNMSPacketEntity.SLIME_HEIGHT) / 2);
     }
 
 }

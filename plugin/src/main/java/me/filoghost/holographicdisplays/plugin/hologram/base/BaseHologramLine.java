@@ -12,6 +12,7 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseHologramLine extends BaseHologramComponent implements EditableHologramLine {
@@ -19,7 +20,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     private final BaseHologram hologram;
     private final LineTracker<?> tracker;
 
-    private double x, y, z;
+    private BaseLinePosition position;
 
     protected BaseHologramLine(BaseHologram hologram) {
         Preconditions.notNull(hologram, "parent hologram");
@@ -39,26 +40,19 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
 
     @Override
     public final void setPosition(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        position = new BaseLinePosition(x, y, z);
         setChanged();
+    }
+
+    public @NotNull BaseLinePosition getPosition() {
+        if (position == null) {
+            throw new IllegalStateException("position not set");
+        }
+        return position;
     }
 
     public @Nullable World getWorldIfLoaded() {
         return hologram.getPositionWorldIfLoaded();
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public double getZ() {
-        return z;
     }
 
     public boolean isInLoadedChunk() {

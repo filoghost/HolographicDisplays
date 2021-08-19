@@ -48,10 +48,11 @@ public abstract class BaseClickableLine extends BaseHologramLine {
 
     private boolean isInClickRange(Player player) {
         Location playerLocation = player.getLocation();
+        BaseLinePosition position = this.getPosition();
 
-        double xDiff = playerLocation.getX() - this.getX();
-        double yDiff = playerLocation.getY() + 1.3 - this.getY(); // Use shoulder height
-        double zDiff = playerLocation.getZ() - this.getZ();
+        double xDiff = playerLocation.getX() - position.getX();
+        double yDiff = playerLocation.getY() + 1.3 - position.getY(); // Use shoulder height
+        double zDiff = playerLocation.getZ() - position.getZ();
 
         double distanceSquared = (xDiff * xDiff) + (yDiff * yDiff) + (zDiff * zDiff);
         return distanceSquared < 5 * 5;

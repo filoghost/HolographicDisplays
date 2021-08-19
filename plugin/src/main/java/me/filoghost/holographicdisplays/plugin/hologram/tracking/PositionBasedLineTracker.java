@@ -7,17 +7,18 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseLinePosition;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
+
+import java.util.Objects;
 
 abstract class PositionBasedLineTracker<T extends BaseHologramLine> extends LineTracker<T> {
 
     private static final int ENTITY_VIEW_RANGE = 64;
 
-    protected double positionX;
-    protected double positionY;
-    protected double positionZ;
+    protected BaseLinePosition position;
     private boolean positionChanged;
 
     PositionBasedLineTracker(T line) {
@@ -27,13 +28,9 @@ abstract class PositionBasedLineTracker<T extends BaseHologramLine> extends Line
     @MustBeInvokedByOverriders
     @Override
     protected void detectChanges() {
-        double positionX = line.getX();
-        double positionY = line.getY();
-        double positionZ = line.getZ();
-        if (this.positionX != positionX || this.positionY != positionY || this.positionZ != positionZ) {
-            this.positionX = positionX;
-            this.positionY = positionY;
-            this.positionZ = positionZ;
+        BaseLinePosition position = line.getPosition();
+        if (!Objects.equals(this.position, position)) {
+            this.position = position;
             this.positionChanged = true;
         }
     }
@@ -51,8 +48,8 @@ abstract class PositionBasedLineTracker<T extends BaseHologramLine> extends Line
             return false;
         }
 
-        double diffX = Math.abs(playerLocation.getX() - positionX);
-        double diffZ = Math.abs(playerLocation.getZ() - positionZ);
+        double diffX = Math.abs(playerLocation.getX() - position.getX());
+        double diffZ = Math.abs(playerLocation.getZ() - position.getZ());
 
         return diffX <= (double) ENTITY_VIEW_RANGE
                 && diffZ <= (double) ENTITY_VIEW_RANGE
