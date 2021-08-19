@@ -21,7 +21,8 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
 
     @Override
     public void addSpawnPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ) {
-        packetList.add(new EntitySpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, positionX, positionY, positionZ));
+        packetList.add(new EntitySpawnNMSPacket(
+                armorStandID, EntityTypeID.ARMOR_STAND, positionX, positionY + ARMOR_STAND_Y_OFFSET, positionZ));
         packetList.add(EntityMetadataNMSPacket.builder(armorStandID)
                 .setArmorStandMarker()
                 .build()
@@ -30,7 +31,8 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
 
     @Override
     public void addSpawnPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ, String text) {
-        packetList.add(new EntitySpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, positionX, positionY, positionZ));
+        packetList.add(new EntitySpawnNMSPacket(
+                armorStandID, EntityTypeID.ARMOR_STAND, positionX, positionY + ARMOR_STAND_Y_OFFSET, positionZ));
         packetList.add(EntityMetadataNMSPacket.builder(armorStandID)
                 .setArmorStandMarker()
                 .setCustomName(text)
@@ -41,7 +43,8 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
     @Override
     public void addSpawnPackets(
             NMSPacketList packetList, double positionX, double positionY, double positionZ, IndividualText individualText) {
-        packetList.add(new EntitySpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, positionX, positionY, positionZ));
+        packetList.add(new EntitySpawnNMSPacket(
+                armorStandID, EntityTypeID.ARMOR_STAND, positionX, positionY + ARMOR_STAND_Y_OFFSET, positionZ));
         packetList.add(new IndividualNMSPacket(player -> EntityMetadataNMSPacket.builder(armorStandID)
                 .setArmorStandMarker()
                 .setCustomName(individualText.get(player))
@@ -67,7 +70,7 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
 
     @Override
     public void addTeleportPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ) {
-        packetList.add(new EntityTeleportNMSPacket(armorStandID, positionX, positionY, positionZ));
+        packetList.add(new EntityTeleportNMSPacket(armorStandID, positionX, positionY + ARMOR_STAND_Y_OFFSET, positionZ));
     }
 
     @Override

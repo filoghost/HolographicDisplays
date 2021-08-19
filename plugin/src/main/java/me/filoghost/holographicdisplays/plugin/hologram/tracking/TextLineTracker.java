@@ -77,14 +77,11 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
         super.addSpawnPackets(packetList);
 
         if (!allowPlaceholders) {
-            textEntity.addSpawnPackets(
-                    packetList, positionX, getTextPositionY(), positionZ, displayText.getWithoutReplacements());
+            textEntity.addSpawnPackets(packetList, positionX, positionY, positionZ, displayText.getWithoutReplacements());
         } else if (displayText.containsIndividualPlaceholders()) {
-            textEntity.addSpawnPackets(
-                    packetList, positionX, getTextPositionY(), positionZ, displayText::getWithIndividualReplacements);
+            textEntity.addSpawnPackets(packetList, positionX, positionY, positionZ, displayText::getWithIndividualReplacements);
         } else {
-            textEntity.addSpawnPackets(
-                    packetList, positionX, getTextPositionY(), positionZ, displayText.getWithGlobalReplacements());
+            textEntity.addSpawnPackets(packetList, positionX, positionY, positionZ, displayText.getWithGlobalReplacements());
         }
     }
 
@@ -114,11 +111,7 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
     @Override
     protected void addPositionChangePackets(NMSPacketList packetList) {
         super.addPositionChangePackets(packetList);
-        textEntity.addTeleportPackets(packetList, positionX, getTextPositionY(), positionZ);
-    }
-
-    private double getTextPositionY() {
-        return positionY - 0.29;
+        textEntity.addTeleportPackets(packetList, positionX, positionY, positionZ);
     }
 
 }

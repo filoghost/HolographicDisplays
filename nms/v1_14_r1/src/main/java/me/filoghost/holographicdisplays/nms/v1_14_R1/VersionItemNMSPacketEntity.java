@@ -22,11 +22,13 @@ public class VersionItemNMSPacketEntity implements ItemNMSPacketEntity {
 
     @Override
     public void addSpawnPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ, ItemStack itemStack) {
-        packetList.add(EntityLivingSpawnNMSPacket.builder(vehicleID, EntityTypeID.ARMOR_STAND, positionX, positionY, positionZ)
+        packetList.add(EntityLivingSpawnNMSPacket.builder(
+                        vehicleID, EntityTypeID.ARMOR_STAND, positionX, positionY + ITEM_Y_OFFSET, positionZ)
                 .setArmorStandMarker()
                 .build()
         );
-        packetList.add(new EntitySpawnNMSPacket(itemID, EntityTypeID.ITEM, positionX, positionY, positionZ));
+        packetList.add(new EntitySpawnNMSPacket(
+                itemID, EntityTypeID.ITEM, positionX, positionY + ITEM_Y_OFFSET, positionZ));
         packetList.add(EntityMetadataNMSPacket.builder(itemID)
                 .setItemStack(itemStack)
                 .build()
@@ -44,7 +46,7 @@ public class VersionItemNMSPacketEntity implements ItemNMSPacketEntity {
 
     @Override
     public void addTeleportPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ) {
-        packetList.add(new EntityTeleportNMSPacket(vehicleID, positionX, positionY, positionZ));
+        packetList.add(new EntityTeleportNMSPacket(vehicleID, positionX, positionY + ITEM_Y_OFFSET, positionZ));
     }
 
     @Override

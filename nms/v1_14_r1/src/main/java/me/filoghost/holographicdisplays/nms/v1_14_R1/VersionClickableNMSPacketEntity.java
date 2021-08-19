@@ -26,11 +26,13 @@ public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity
 
     @Override
     public void addSpawnPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ) {
-        packetList.add(EntityLivingSpawnNMSPacket.builder(vehicleID, EntityTypeID.ARMOR_STAND, positionX, positionY, positionZ)
+        packetList.add(EntityLivingSpawnNMSPacket.builder(
+                        vehicleID, EntityTypeID.ARMOR_STAND, positionX, positionY + SLIME_Y_OFFSET, positionZ)
                 .setArmorStandMarker()
                 .build()
         );
-        packetList.add(EntityLivingSpawnNMSPacket.builder(slimeID, EntityTypeID.SLIME, positionX, positionY, positionZ)
+        packetList.add(EntityLivingSpawnNMSPacket.builder(
+                        slimeID, EntityTypeID.SLIME, positionX, positionY + SLIME_Y_OFFSET, positionZ)
                 .setInvisible()
                 .setSlimeSmall() // Required for a correct client-side collision box
                 .build()
@@ -40,7 +42,7 @@ public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity
 
     @Override
     public void addTeleportPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ) {
-        packetList.add(new EntityTeleportNMSPacket(vehicleID, positionX, positionY, positionZ));
+        packetList.add(new EntityTeleportNMSPacket(vehicleID, positionX, positionY + SLIME_Y_OFFSET, positionZ));
     }
 
     @Override

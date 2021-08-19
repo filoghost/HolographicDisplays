@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
+import me.filoghost.holographicdisplays.common.nms.entity.TextNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.TextLineTracker;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +39,7 @@ public abstract class BaseTextLine extends BaseClickableLine {
 
     @Override
     public double getHeight() {
-        return 0.23;
+        return TextNMSPacketEntity.ARMOR_STAND_TEXT_HEIGHT;
     }
 
     @Override

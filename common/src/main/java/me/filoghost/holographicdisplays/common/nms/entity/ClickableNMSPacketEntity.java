@@ -10,6 +10,9 @@ import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 
 public interface ClickableNMSPacketEntity extends NMSPacketEntity {
 
+    double SLIME_Y_OFFSET = 0;
+    double SLIME_HEIGHT = 0.5;
+
     EntityID getID();
 
     void addSpawnPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ);

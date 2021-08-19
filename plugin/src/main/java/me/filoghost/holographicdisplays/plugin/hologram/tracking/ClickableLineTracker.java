@@ -14,8 +14,6 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 public abstract class ClickableLineTracker<T extends BaseClickableLine> extends PositionBasedLineTracker<T> {
 
-    private static final double CLICKABLE_ENTITY_HEIGHT = 0.5;
-
     private final ClickableNMSPacketEntity clickableEntity;
     private final LineClickListener lineClickListener;
 
@@ -98,7 +96,7 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     }
 
     private double getClickablePositionY() {
-        return positionY + ((line.getHeight() - CLICKABLE_ENTITY_HEIGHT) / 2);
+        return positionY + ((line.getHeight() - ClickableNMSPacketEntity.SLIME_HEIGHT) / 2);
     }
 
 }

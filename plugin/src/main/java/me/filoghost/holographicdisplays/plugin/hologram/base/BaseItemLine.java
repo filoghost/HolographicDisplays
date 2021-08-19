@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.hologram.PickupListener;
+import me.filoghost.holographicdisplays.common.nms.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.ItemLineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.entity.Player;
@@ -75,7 +76,7 @@ public abstract class BaseItemLine extends BaseClickableLine {
 
     @Override
     public double getHeight() {
-        return 0.7;
+        return ItemNMSPacketEntity.ITEM_HEIGHT;
     }
 
     @Override
