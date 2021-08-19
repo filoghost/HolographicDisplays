@@ -34,7 +34,7 @@ public class HologramConfig {
             serializedLines.add(line.getSerializedConfigValue());
         }
 
-        BaseHologramPosition position = hologram.getBasePosition();
+        BaseHologramPosition position = hologram.getPosition();
         this.positionConfigSection = new ConfigSection();
         positionConfigSection.setString("world", position.getWorldName());
         positionConfigSection.setDouble("x", position.getX());

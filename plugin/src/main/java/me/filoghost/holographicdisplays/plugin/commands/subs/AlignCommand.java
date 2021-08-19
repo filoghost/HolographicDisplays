@@ -36,19 +36,19 @@ public class AlignCommand extends HologramSubCommand {
 
         CommandValidate.check(hologram != referenceHologram, "The holograms must not be the same.");
 
-        BaseHologramPosition referencePosition = referenceHologram.getBasePosition();
-        BaseHologramPosition newPosition = hologram.getBasePosition();
+        BaseHologramPosition referencePosition = referenceHologram.getPosition();
+        BaseHologramPosition newPosition = hologram.getPosition();
 
         String axis = args[0];
         if (axis.equalsIgnoreCase("x")) {
-            newPosition.setX(referencePosition.getX());
+            newPosition = newPosition.withX(referencePosition.getX());
         } else if (axis.equalsIgnoreCase("y")) {
-            newPosition.setY(referencePosition.getY());
+            newPosition = newPosition.withY(referencePosition.getY());
         } else if (axis.equalsIgnoreCase("z")) {
-            newPosition.setZ(referencePosition.getZ());
+            newPosition = newPosition.withZ(referencePosition.getZ());
         } else if (axis.equalsIgnoreCase("xz")) {
-            newPosition.setX(referencePosition.getX());
-            newPosition.setZ(referencePosition.getZ());
+            newPosition = newPosition.withX(referencePosition.getX());
+            newPosition = newPosition.withZ(referencePosition.getZ());
         } else {
             throw new CommandException("You must specify either X, Y, Z or XZ, " + axis + " is not a valid axis.");
         }

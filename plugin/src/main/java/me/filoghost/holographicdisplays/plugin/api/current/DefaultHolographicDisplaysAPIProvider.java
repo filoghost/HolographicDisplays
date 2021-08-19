@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
-import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -44,17 +44,17 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
     @Override
     public HologramPosition createHologramPosition(World world, double x, double y, double z) {
         Preconditions.notNull(world, "world");
-        return new APIHologramPosition(world.getName(), x, y, z);
+        return new BaseHologramPosition(world.getName(), x, y, z);
     }
 
     @Override
     public HologramPosition createHologramPosition(String worldName, double x, double y, double z) {
-        return new APIHologramPosition(worldName, x, y, z);
+        return new BaseHologramPosition(worldName, x, y, z);
     }
 
     @Override
     public HologramPosition createHologramPosition(Location location) {
-        return new APIHologramPosition(location);
+        return new BaseHologramPosition(location);
     }
 
 }

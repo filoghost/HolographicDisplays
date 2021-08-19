@@ -53,7 +53,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     }
 
     public @Nullable World getWorldIfLoaded() {
-        return hologram.getPositionWorldIfLoaded();
+        return hologram.getWorldIfLoaded();
     }
 
     public boolean isInLoadedChunk() {

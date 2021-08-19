@@ -27,25 +27,15 @@ public interface HologramPosition {
 
     @NotNull String getWorldName();
 
-    void setWorldName(@NotNull String worldName);
-
     @Nullable World getWorldIfLoaded();
-
-    void setWorld(@NotNull World world);
 
     double getX();
 
-    void setX(double x);
-
     double getY();
-
-    void setY(double y);
 
     double getZ();
 
-    void setZ(double z);
-
-    HologramPosition add(double x, double y, double z);
+    @NotNull HologramPosition add(double x, double y, double z);
 
     int getBlockX();
 

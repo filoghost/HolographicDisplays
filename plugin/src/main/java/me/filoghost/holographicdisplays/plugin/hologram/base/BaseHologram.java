@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -41,31 +42,15 @@ public abstract class BaseHologram extends BaseHologramComponent {
         getLines().setDeleted();
     }
 
-    public BaseHologramPosition getBasePosition() {
-        return position.toBasePosition();
+    public @NotNull BaseHologramPosition getPosition() {
+        return position.getPosition();
     }
 
-    public @Nullable World getPositionWorldIfLoaded() {
+    public @Nullable World getWorldIfLoaded() {
         return position.getWorldIfLoaded();
     }
 
-    public @NotNull String getPositionWorldName() {
-        return position.getWorldName();
-    }
-
-    public double getPositionX() {
-        return position.getX();
-    }
-
-    public double getPositionY() {
-        return position.getY();
-    }
-
-    public double getPositionZ() {
-        return position.getZ();
-    }
-
-    public void setPosition(@NotNull BaseHologramPosition position) {
+    public void setPosition(@NotNull HologramPosition position) {
         Preconditions.notNull(position, "position");
         setPosition(position.getWorldName(), position.getX(), position.getY(), position.getZ());
     }

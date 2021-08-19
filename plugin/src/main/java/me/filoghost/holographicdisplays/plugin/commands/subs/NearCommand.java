@@ -43,7 +43,7 @@ public class NearCommand extends HologramSubCommand {
         List<InternalHologram> nearHolograms = new ArrayList<>();
 
         for (InternalHologram hologram : hologramEditor.getHolograms()) {
-            BaseHologramPosition position = hologram.getBasePosition();
+            BaseHologramPosition position = hologram.getPosition();
             if (position.isInWorld(world) && position.distance(player.getLocation()) <= radius) {
                 nearHolograms.add(hologram);
             }

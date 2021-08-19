@@ -34,7 +34,7 @@ public class TeleportCommand extends HologramSubCommand {
         Player player = CommandValidate.getPlayerSender(sender);
         InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
 
-        hologramEditor.teleportLookingDown(player, hologram.getBasePosition().toLocation());
+        hologramEditor.teleportLookingDown(player, hologram.getPosition().toLocation());
         player.sendMessage(ColorScheme.PRIMARY + "Teleported to the hologram \"" + hologram.getName() + "\".");
     }
 

@@ -8,7 +8,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.HologramLine;
-import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramAdapter;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
@@ -168,16 +167,6 @@ public class APIHologram extends BaseHologram implements Hologram {
 
         height += Settings.spaceBetweenLines * (lines.size() - 1);
         return height;
-    }
-
-    @Override
-    public @NotNull HologramPosition getPosition() {
-        return new APIHologramPosition(getPositionWorldName(), getPositionX(), getPositionY(), getPositionZ());
-    }
-
-    @Override
-    public void setPosition(@NotNull HologramPosition position) {
-        super.setPosition(position.getWorldName(), position.getX(), position.getY(), position.getZ());
     }
 
     @Override

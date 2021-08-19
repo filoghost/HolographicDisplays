@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
+import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 
 import java.util.ArrayList;
@@ -114,7 +115,8 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
      * The second line is below the first, and so on.
      */
     protected void updateLinePositions() {
-        double currentLineY = hologram.getPositionY();
+        HologramPosition hologramPosition = hologram.getPosition();
+        double currentLineY = hologramPosition.getY();
 
         for (int i = 0; i < lines.size(); i++) {
             T line = lines.get(i);
@@ -124,7 +126,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
                 currentLineY -= Settings.spaceBetweenLines;
             }
 
-            line.setPosition(hologram.getPositionX(), currentLineY, hologram.getPositionZ());
+            line.setPosition(hologramPosition.getX(), currentLineY, hologramPosition.getZ());
         }
     }
 

@@ -50,7 +50,7 @@ public class CreateCommand extends HologramSubCommand {
         boolean moveUp = player.isOnGround();
 
         if (moveUp) {
-            spawnPosition.add(0, 1.2, 0);
+            spawnPosition = spawnPosition.add(0, 1.2, 0);
         }
 
         InternalHologram hologram = hologramEditor.create(spawnPosition, hologramName);
