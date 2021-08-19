@@ -83,7 +83,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
         super.addSpawnPackets(packetList);
 
         if (spawnItemEntity) {
-            itemEntity.addSpawnPackets(packetList, position.getX(), position.getY(), position.getZ(), itemStack);
+            itemEntity.addSpawnPackets(packetList, position, itemStack);
         }
     }
 
@@ -104,7 +104,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
 
         if (spawnItemEntityChanged) {
             if (spawnItemEntity) {
-                itemEntity.addSpawnPackets(packetList, position.getX(), position.getY(), position.getZ(), itemStack);
+                itemEntity.addSpawnPackets(packetList, position, itemStack);
             } else {
                 itemEntity.addDestroyPackets(packetList);
             }
@@ -120,7 +120,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
         super.addPositionChangePackets(packetList);
 
         if (spawnItemEntity) {
-            itemEntity.addTeleportPackets(packetList, position.getX(), position.getY(), position.getZ());
+            itemEntity.addTeleportPackets(packetList, position);
         }
     }
 

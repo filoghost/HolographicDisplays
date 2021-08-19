@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_15_R1;
 
+import me.filoghost.holographicdisplays.common.Position;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.common.nms.entity.ClickableNMSPacketEntity;
@@ -25,15 +26,13 @@ public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity
     }
 
     @Override
-    public void addSpawnPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ) {
-        packetList.add(new EntityLivingSpawnNMSPacket(
-                vehicleID, EntityTypeID.ARMOR_STAND, positionX, positionY + SLIME_Y_OFFSET, positionZ));
+    public void addSpawnPackets(NMSPacketList packetList, Position position) {
+        packetList.add(new EntityLivingSpawnNMSPacket(vehicleID, EntityTypeID.ARMOR_STAND, position, SLIME_Y_OFFSET));
         packetList.add(EntityMetadataNMSPacket.builder(vehicleID)
                 .setArmorStandMarker()
                 .build()
         );
-        packetList.add(new EntityLivingSpawnNMSPacket(
-                slimeID, EntityTypeID.SLIME, positionX, positionY + SLIME_Y_OFFSET, positionZ));
+        packetList.add(new EntityLivingSpawnNMSPacket(slimeID, EntityTypeID.SLIME, position, SLIME_Y_OFFSET));
         packetList.add(EntityMetadataNMSPacket.builder(slimeID)
                 .setInvisible()
                 .setSlimeSmall() // Required for a correct client-side collision box
@@ -43,8 +42,8 @@ public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity
     }
 
     @Override
-    public void addTeleportPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ) {
-        packetList.add(new EntityTeleportNMSPacket(vehicleID, positionX, positionY + SLIME_Y_OFFSET, positionZ));
+    public void addTeleportPackets(NMSPacketList packetList, Position position) {
+        packetList.add(new EntityTeleportNMSPacket(vehicleID, position, SLIME_Y_OFFSET));
     }
 
     @Override

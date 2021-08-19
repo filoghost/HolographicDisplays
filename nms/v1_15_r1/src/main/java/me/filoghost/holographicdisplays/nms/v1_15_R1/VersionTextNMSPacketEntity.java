@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_15_R1;
 
+import me.filoghost.holographicdisplays.common.Position;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.IndividualNMSPacket;
 import me.filoghost.holographicdisplays.common.nms.IndividualText;
@@ -20,9 +21,8 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
     }
 
     @Override
-    public void addSpawnPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ, String text) {
-        packetList.add(new EntityLivingSpawnNMSPacket(
-                armorStandID, EntityTypeID.ARMOR_STAND, positionX, positionY + ARMOR_STAND_Y_OFFSET, positionZ));
+    public void addSpawnPackets(NMSPacketList packetList, Position position, String text) {
+        packetList.add(new EntityLivingSpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, position, ARMOR_STAND_Y_OFFSET));
         packetList.add(EntityMetadataNMSPacket.builder(armorStandID)
                 .setArmorStandMarker()
                 .setCustomName(text)
@@ -31,14 +31,13 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
     }
 
     @Override
-    public void addSpawnPackets(
-            NMSPacketList packetList, double positionX, double positionY, double positionZ, IndividualText individualText) {
-        packetList.add(new EntityLivingSpawnNMSPacket(
-                armorStandID, EntityTypeID.ARMOR_STAND, positionX, positionY + ARMOR_STAND_Y_OFFSET, positionZ));
-        packetList.add(new IndividualNMSPacket(player -> EntityMetadataNMSPacket.builder(armorStandID)
-                .setArmorStandMarker()
-                .setCustomName(individualText.get(player))
-                .build()
+    public void addSpawnPackets(NMSPacketList packetList, Position position, IndividualText individualText) {
+        packetList.add(new EntityLivingSpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, position, ARMOR_STAND_Y_OFFSET));
+        packetList.add(new IndividualNMSPacket(player ->
+                EntityMetadataNMSPacket.builder(armorStandID)
+                        .setArmorStandMarker()
+                        .setCustomName(individualText.get(player))
+                        .build()
         ));
     }
 
@@ -52,15 +51,16 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
 
     @Override
     public void addChangePackets(NMSPacketList packetList, IndividualText individualText) {
-        packetList.add(new IndividualNMSPacket(player -> EntityMetadataNMSPacket.builder(armorStandID)
-                .setCustomName(individualText.get(player))
-                .build()
+        packetList.add(new IndividualNMSPacket(player ->
+                EntityMetadataNMSPacket.builder(armorStandID)
+                        .setCustomName(individualText.get(player))
+                        .build()
         ));
     }
 
     @Override
-    public void addTeleportPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ) {
-        packetList.add(new EntityTeleportNMSPacket(armorStandID, positionX, positionY + ARMOR_STAND_Y_OFFSET, positionZ));
+    public void addTeleportPackets(NMSPacketList packetList, Position position) {
+        packetList.add(new EntityTeleportNMSPacket(armorStandID, position, ARMOR_STAND_Y_OFFSET));
     }
 
     @Override

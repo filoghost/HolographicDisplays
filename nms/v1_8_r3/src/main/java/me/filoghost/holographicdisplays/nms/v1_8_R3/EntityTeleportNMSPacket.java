@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_8_R3;
 
+import me.filoghost.holographicdisplays.common.Position;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.Packet;
@@ -14,15 +15,15 @@ class EntityTeleportNMSPacket extends VersionNMSPacket {
 
     private final Packet<?> rawPacket;
 
-    EntityTeleportNMSPacket(EntityID entityID, double positionX, double positionY, double positionZ) {
+    EntityTeleportNMSPacket(EntityID entityID, Position position, double positionOffsetY) {
         PacketByteBuffer packetByteBuffer = PacketByteBuffer.get();
 
         packetByteBuffer.writeVarInt(entityID.getNumericID());
 
         // Position
-        packetByteBuffer.writeInt(MathHelper.floor(positionX * 32));
-        packetByteBuffer.writeInt(MathHelper.floor(positionY * 32));
-        packetByteBuffer.writeInt(MathHelper.floor(positionZ * 32));
+        packetByteBuffer.writeInt(MathHelper.floor(position.getX() * 32));
+        packetByteBuffer.writeInt(MathHelper.floor((position.getY() + positionOffsetY) * 32));
+        packetByteBuffer.writeInt(MathHelper.floor(position.getZ() * 32));
 
         // Rotation
         packetByteBuffer.writeByte(0);

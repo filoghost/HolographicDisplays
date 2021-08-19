@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.hologram.ClickListener;
+import me.filoghost.holographicdisplays.common.Position;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
@@ -48,7 +49,7 @@ public abstract class BaseClickableLine extends BaseHologramLine {
 
     private boolean isInClickRange(Player player) {
         Location playerLocation = player.getLocation();
-        BaseLinePosition position = this.getPosition();
+        Position position = this.getPosition();
 
         double xDiff = playerLocation.getX() - position.getX();
         double yDiff = playerLocation.getY() + 1.3 - position.getY(); // Use shoulder height

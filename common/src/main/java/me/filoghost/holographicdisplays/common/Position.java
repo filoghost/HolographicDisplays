@@ -3,13 +3,13 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.hologram.base;
+package me.filoghost.holographicdisplays.common;
 
-public final class BaseLinePosition {
+public final class Position {
 
     private final double x, y, z;
 
-    public BaseLinePosition(double x, double y, double z) {
+    public Position(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -27,6 +27,14 @@ public final class BaseLinePosition {
         return z;
     }
 
+    public Position addY(double y) {
+        if (y == 0) {
+            return this;
+        }
+
+        return new Position(this.x, this.y + y, this.z);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -36,7 +44,7 @@ public final class BaseLinePosition {
             return false;
         }
 
-        BaseLinePosition other = (BaseLinePosition) obj;
+        Position other = (Position) obj;
         return Double.doubleToLongBits(this.x) == Double.doubleToLongBits(other.x)
                 && Double.doubleToLongBits(this.y) == Double.doubleToLongBits(other.y)
                 && Double.doubleToLongBits(this.z) == Double.doubleToLongBits(other.z);

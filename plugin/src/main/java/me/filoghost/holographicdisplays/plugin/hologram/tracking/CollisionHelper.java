@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseLinePosition;
+import me.filoghost.holographicdisplays.common.Position;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -25,7 +25,7 @@ public class CollisionHelper {
     private static final double REQUIRED_DISTANCE_Z = REQUIRED_DISTANCE_X;
     private static final double REQUIRED_DISTANCE_Y = PLAYER_HEIGHT_RADIUS + PLAYER_GROW_HEIGHT + ITEM_HEIGHT_RADIUS;
 
-    public static boolean isInPickupRange(Player player, BaseLinePosition itemPosition) {
+    public static boolean isInPickupRange(Player player, Position itemPosition) {
         /*
          * Normally, the server determines if a player is picking up a dropped item
          * by checking if the bounding boxes of the player and the item intersect.

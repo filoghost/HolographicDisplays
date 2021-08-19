@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_15_R1;
 
+import me.filoghost.holographicdisplays.common.Position;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.common.nms.entity.ItemNMSPacketEntity;
@@ -21,15 +22,13 @@ public class VersionItemNMSPacketEntity implements ItemNMSPacketEntity {
     }
 
     @Override
-    public void addSpawnPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ, ItemStack itemStack) {
-        packetList.add(new EntityLivingSpawnNMSPacket(
-                vehicleID, EntityTypeID.ARMOR_STAND, positionX, positionY + ITEM_Y_OFFSET, positionZ));
+    public void addSpawnPackets(NMSPacketList packetList, Position position, ItemStack itemStack) {
+        packetList.add(new EntityLivingSpawnNMSPacket(vehicleID, EntityTypeID.ARMOR_STAND, position, ITEM_Y_OFFSET));
         packetList.add(EntityMetadataNMSPacket.builder(vehicleID)
                 .setArmorStandMarker()
                 .build()
         );
-        packetList.add(new EntitySpawnNMSPacket(
-                itemID, EntityTypeID.ITEM, positionX, positionY + ITEM_Y_OFFSET, positionZ));
+        packetList.add(new EntitySpawnNMSPacket(itemID, EntityTypeID.ITEM, position, ITEM_Y_OFFSET));
         packetList.add(EntityMetadataNMSPacket.builder(itemID)
                 .setItemStack(itemStack)
                 .build()
@@ -46,8 +45,8 @@ public class VersionItemNMSPacketEntity implements ItemNMSPacketEntity {
     }
 
     @Override
-    public void addTeleportPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ) {
-        packetList.add(new EntityTeleportNMSPacket(vehicleID, positionX, positionY + ITEM_Y_OFFSET, positionZ));
+    public void addTeleportPackets(NMSPacketList packetList, Position position) {
+        packetList.add(new EntityTeleportNMSPacket(vehicleID, position, ITEM_Y_OFFSET));
     }
 
     @Override

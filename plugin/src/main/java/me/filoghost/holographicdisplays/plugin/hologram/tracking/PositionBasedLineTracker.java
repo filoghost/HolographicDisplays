@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseLinePosition;
+import me.filoghost.holographicdisplays.common.Position;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
@@ -18,7 +18,7 @@ abstract class PositionBasedLineTracker<T extends BaseHologramLine> extends Line
 
     private static final int ENTITY_VIEW_RANGE = 64;
 
-    protected BaseLinePosition position;
+    protected Position position;
     private boolean positionChanged;
 
     PositionBasedLineTracker(T line) {
@@ -28,7 +28,7 @@ abstract class PositionBasedLineTracker<T extends BaseHologramLine> extends Line
     @MustBeInvokedByOverriders
     @Override
     protected void detectChanges() {
-        BaseLinePosition position = line.getPosition();
+        Position position = line.getPosition();
         if (!Objects.equals(this.position, position)) {
             this.position = position;
             this.positionChanged = true;

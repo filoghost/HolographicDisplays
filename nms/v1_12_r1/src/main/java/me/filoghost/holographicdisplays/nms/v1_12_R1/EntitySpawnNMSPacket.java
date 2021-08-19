@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_12_R1;
 
+import me.filoghost.holographicdisplays.common.Position;
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import net.minecraft.server.v1_12_R1.Packet;
 import net.minecraft.server.v1_12_R1.PacketPlayOutSpawnEntity;
@@ -13,7 +14,7 @@ class EntitySpawnNMSPacket extends VersionNMSPacket {
 
     private final Packet<?> rawPacket;
 
-    EntitySpawnNMSPacket(EntityID entityID, int entityTypeID, double positionX, double positionY, double positionZ) {
+    EntitySpawnNMSPacket(EntityID entityID, int entityTypeID, Position position, double positionOffsetY) {
         PacketByteBuffer packetByteBuffer = PacketByteBuffer.get();
 
         packetByteBuffer.writeVarInt(entityID.getNumericID());
@@ -21,9 +22,9 @@ class EntitySpawnNMSPacket extends VersionNMSPacket {
         packetByteBuffer.writeByte(entityTypeID);
 
         // Position
-        packetByteBuffer.writeDouble(positionX);
-        packetByteBuffer.writeDouble(positionY);
-        packetByteBuffer.writeDouble(positionZ);
+        packetByteBuffer.writeDouble(position.getX());
+        packetByteBuffer.writeDouble(position.getY() + positionOffsetY);
+        packetByteBuffer.writeDouble(position.getZ());
 
         // Rotation
         packetByteBuffer.writeByte(0);

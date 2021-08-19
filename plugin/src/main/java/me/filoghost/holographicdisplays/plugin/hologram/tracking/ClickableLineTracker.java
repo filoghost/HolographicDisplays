@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
+import me.filoghost.holographicdisplays.common.Position;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.common.nms.entity.ClickableNMSPacketEntity;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 public abstract class ClickableLineTracker<T extends BaseClickableLine> extends PositionBasedLineTracker<T> {
 
     private final ClickableNMSPacketEntity clickableEntity;
+    private final double positionOffsetY;
     private final LineClickListener lineClickListener;
 
     private boolean spawnClickableEntity;
@@ -23,6 +25,7 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     public ClickableLineTracker(T line, NMSManager nmsManager, LineClickListener lineClickListener) {
         super(line);
         this.clickableEntity = nmsManager.newClickablePacketEntity();
+        this.positionOffsetY = (line.getHeight() - ClickableNMSPacketEntity.SLIME_HEIGHT) / 2;
         this.lineClickListener = lineClickListener;
     }
 
@@ -61,7 +64,7 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     @Override
     protected void addSpawnPackets(NMSPacketList packetList) {
         if (spawnClickableEntity) {
-            clickableEntity.addSpawnPackets(packetList, position.getX(), getClickablePositionY(), position.getZ());
+            clickableEntity.addSpawnPackets(packetList, getClickableEntityPosition());
         }
     }
 
@@ -80,7 +83,7 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
 
         if (spawnClickableEntityChanged) {
             if (spawnClickableEntity) {
-                clickableEntity.addSpawnPackets(packetList, position.getX(), getClickablePositionY(), position.getZ());
+                clickableEntity.addSpawnPackets(packetList, getClickableEntityPosition());
             } else {
                 clickableEntity.addDestroyPackets(packetList);
             }
@@ -91,12 +94,12 @@ public abstract class ClickableLineTracker<T extends BaseClickableLine> extends 
     @Override
     protected void addPositionChangePackets(NMSPacketList packetList) {
         if (spawnClickableEntity) {
-            clickableEntity.addTeleportPackets(packetList, position.getX(), getClickablePositionY(), position.getZ());
+            clickableEntity.addTeleportPackets(packetList, getClickableEntityPosition());
         }
     }
 
-    private double getClickablePositionY() {
-        return position.getY() + ((line.getHeight() - ClickableNMSPacketEntity.SLIME_HEIGHT) / 2);
+    private Position getClickableEntityPosition() {
+        return position.addY(positionOffsetY);
     }
 
 }
