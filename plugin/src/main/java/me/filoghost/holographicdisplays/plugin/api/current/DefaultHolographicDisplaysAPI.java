@@ -12,7 +12,6 @@ import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +34,7 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     public @NotNull Hologram createHologram(@NotNull Location location) {
         Preconditions.notNull(location, "location");
         Preconditions.notNull(location.getWorld(), "location's world");
-        Preconditions.checkState(Bukkit.isPrimaryThread(), "Async hologram creation");
+        Preconditions.checkMainThread("async hologram creation");
 
         return apiHologramManager.createHologram(new BaseHologramPosition(location), plugin);
     }
