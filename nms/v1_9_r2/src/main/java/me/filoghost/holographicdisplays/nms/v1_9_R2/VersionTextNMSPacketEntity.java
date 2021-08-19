@@ -20,16 +20,6 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
     }
 
     @Override
-    public void addSpawnPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ) {
-        packetList.add(new EntitySpawnNMSPacket(
-                armorStandID, EntityTypeID.ARMOR_STAND, positionX, positionY + ARMOR_STAND_Y_OFFSET, positionZ));
-        packetList.add(EntityMetadataNMSPacket.builder(armorStandID)
-                .setArmorStandMarker()
-                .build()
-        );
-    }
-
-    @Override
     public void addSpawnPackets(NMSPacketList packetList, double positionX, double positionY, double positionZ, String text) {
         packetList.add(new EntitySpawnNMSPacket(
                 armorStandID, EntityTypeID.ARMOR_STAND, positionX, positionY + ARMOR_STAND_Y_OFFSET, positionZ));
