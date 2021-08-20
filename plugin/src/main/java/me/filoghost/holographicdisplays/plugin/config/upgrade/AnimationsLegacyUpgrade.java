@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 public class AnimationsLegacyUpgrade extends LegacyUpgrade {
@@ -60,7 +61,7 @@ public class AnimationsLegacyUpgrade extends LegacyUpgrade {
 
         // Remove the first line that only contains the speed
         String firstLine = lines.remove(0).trim();
-        if (!firstLine.toLowerCase().startsWith(SPEED_PREFIX)) {
+        if (!firstLine.toLowerCase(Locale.ROOT).startsWith(SPEED_PREFIX)) {
             return; // Not a valid animation
         }
 

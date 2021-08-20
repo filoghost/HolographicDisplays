@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public abstract class HologramSubCommand implements SubCommand {
 
@@ -29,7 +30,7 @@ public abstract class HologramSubCommand implements SubCommand {
     protected HologramSubCommand(String name, String... aliases) {
         this.name = name;
         this.aliases = aliases != null ? Arrays.asList(aliases) : Collections.emptyList();
-        this.permission = Permissions.COMMAND_BASE + name.toLowerCase();
+        this.permission = Permissions.COMMAND_BASE + name.toLowerCase(Locale.ROOT);
 
         this.showInHelpCommand = true;
     }

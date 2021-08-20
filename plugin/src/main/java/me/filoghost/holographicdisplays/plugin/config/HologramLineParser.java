@@ -17,6 +17,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Locale;
+
 public class HologramLineParser {
 
     private static final String ICON_PREFIX = "icon:";
@@ -24,7 +26,7 @@ public class HologramLineParser {
     public static InternalHologramLine parseLine(InternalHologram hologram, String serializedLine) throws HologramLoadException {
         InternalHologramLine hologramLine;
 
-        if (serializedLine.toLowerCase().startsWith(ICON_PREFIX)) {
+        if (serializedLine.toLowerCase(Locale.ROOT).startsWith(ICON_PREFIX)) {
             String serializedIcon = serializedLine.substring(ICON_PREFIX.length());
             ItemStack icon = parseItemStack(serializedIcon);
             hologramLine = hologram.createItemLine(icon, serializedLine);

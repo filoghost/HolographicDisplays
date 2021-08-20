@@ -105,7 +105,7 @@ public class InternalHologramEditor {
     }
 
     private static boolean isConfigFile(Path file) {
-        return Files.isRegularFile(file) && file.getFileName().toString().toLowerCase().endsWith(".yml");
+        return Files.isRegularFile(file) && FileUtils.hasFileExtension(file, "yml");
     }
 
 }
