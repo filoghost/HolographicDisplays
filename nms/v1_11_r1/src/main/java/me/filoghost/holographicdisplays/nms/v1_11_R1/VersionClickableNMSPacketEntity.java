@@ -13,11 +13,9 @@ import me.filoghost.holographicdisplays.common.nms.entity.ClickableNMSPacketEnti
 public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity {
 
     private final EntityID slimeID;
-    private final EntityID vehicleID;
 
-    public VersionClickableNMSPacketEntity(EntityID slimeID, EntityID vehicleID) {
+    public VersionClickableNMSPacketEntity(EntityID slimeID) {
         this.slimeID = slimeID;
-        this.vehicleID = vehicleID;
     }
 
     @Override
@@ -27,27 +25,21 @@ public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity
 
     @Override
     public void addSpawnPackets(NMSPacketList packetList, Position position) {
-        packetList.add(new EntitySpawnNMSPacket(vehicleID, EntityTypeID.ARMOR_STAND, position, SLIME_Y_OFFSET));
-        packetList.add(EntityMetadataNMSPacket.builder(vehicleID)
-                .setArmorStandMarker()
-                .build()
-        );
         packetList.add(EntityLivingSpawnNMSPacket.builder(slimeID, EntityTypeID.SLIME, position, SLIME_Y_OFFSET)
                 .setInvisible()
                 .setSlimeSmall() // Required for a correct client-side collision box
                 .build()
         );
-        packetList.add(new EntityMountNMSPacket(vehicleID, slimeID));
     }
 
     @Override
     public void addTeleportPackets(NMSPacketList packetList, Position position) {
-        packetList.add(new EntityTeleportNMSPacket(vehicleID, position, SLIME_Y_OFFSET));
+        packetList.add(new EntityTeleportNMSPacket(slimeID, position, SLIME_Y_OFFSET));
     }
 
     @Override
     public void addDestroyPackets(NMSPacketList packetList) {
-        packetList.add(new EntityDestroyNMSPacket(slimeID, vehicleID));
+        packetList.add(new EntityDestroyNMSPacket(slimeID));
     }
 
 }

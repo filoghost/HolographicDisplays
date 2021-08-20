@@ -83,7 +83,7 @@ public class VersionNMSManager implements NMSManager {
 
     @Override
     public ClickableNMSPacketEntity newClickablePacketEntity() {
-        return new VersionClickableNMSPacketEntity(newEntityID(), newEntityID());
+        return new VersionClickableNMSPacketEntity(newEntityID());
     }
 
     @Override
