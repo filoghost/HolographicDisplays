@@ -5,14 +5,14 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
-import me.filoghost.holographicdisplays.api.hologram.ClickListener;
-import me.filoghost.holographicdisplays.api.hologram.TextLine;
+import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
+import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2TextLineAdapter;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class APITextLine extends BaseTextLine implements TextLine, APIClickableLine {
+public class APITextLine extends BaseTextLine implements TextHologramLine, APIClickableLine {
 
     private final APIHologram parent;
     private final V2TextLineAdapter v2Adapter;
@@ -24,7 +24,7 @@ public class APITextLine extends BaseTextLine implements TextLine, APIClickableL
     }
 
     @Override
-    public @NotNull APIHologram getParent() {
+    public @NotNull APIHologram getHologram() {
         return parent;
     }
 

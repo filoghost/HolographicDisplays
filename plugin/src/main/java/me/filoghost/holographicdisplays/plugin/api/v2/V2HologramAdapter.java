@@ -19,9 +19,11 @@ import org.bukkit.inventory.ItemStack;
 public class V2HologramAdapter implements Hologram {
 
     private final APIHologram v3Hologram;
+    private final long creationTimestamp;
 
     public V2HologramAdapter(APIHologram v3Hologram) {
         this.v3Hologram = v3Hologram;
+        this.creationTimestamp = System.currentTimeMillis();
     }
 
     @Override
@@ -111,7 +113,7 @@ public class V2HologramAdapter implements Hologram {
 
     @Override
     public long getCreationTimestamp() {
-        return v3Hologram.getCreationTimestamp();
+        return creationTimestamp;
     }
 
     @Override

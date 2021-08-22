@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.api.hologram.ClickListener;
+import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
 import me.filoghost.holographicdisplays.common.Position;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

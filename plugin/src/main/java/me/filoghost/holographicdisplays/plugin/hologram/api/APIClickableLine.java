@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
-import me.filoghost.holographicdisplays.api.hologram.ClickableLine;
+import me.filoghost.holographicdisplays.api.hologram.line.ClickableHologramLine;
 
-public interface APIClickableLine extends ClickableLine, APIHologramLine {
+public interface APIClickableLine extends ClickableHologramLine, APIHologramLine {
 
 }

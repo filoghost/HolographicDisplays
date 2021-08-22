@@ -7,7 +7,7 @@ package me.filoghost.example.powerups;
 
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.hologram.ItemLine;
+import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -50,7 +50,7 @@ public class PowerUps extends JavaPlugin implements Listener {
             // Spawn the floating item with a label
             Hologram hologram = holographicDisplaysAPI.createHologram(event.getEntity().getLocation().add(0.0, 0.9, 0.0));
             hologram.appendTextLine(ChatColor.AQUA + "" + ChatColor.BOLD + "Speed PowerUp");
-            ItemLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
+            ItemHologramLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
 
             icon.setPickupListener((Player player) -> {
                 // Play an effect

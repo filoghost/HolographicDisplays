@@ -40,6 +40,17 @@ public interface HolographicDisplaysAPI {
         return 1;
     }
 
+    /**
+     * Returns the API instance for managing holograms and placeholders of the specified plugin.
+     * <p>
+     * Holograms and placeholders created by other plugins are completely separate, each API instance can only manage
+     * and retrieve the ones of the specified plugin. Unless for very specific reasons, a plugin should only use its own
+     * API instance.
+     *
+     * @param plugin the plugin using the API
+     * @return an API instance for the specified plugin
+     * @since 1
+     */
     static @NotNull HolographicDisplaysAPI get(@NotNull Plugin plugin) {
         return HolographicDisplaysAPIProvider.getImplementation().getHolographicDisplaysAPI(plugin);
     }
@@ -90,7 +101,7 @@ public interface HolographicDisplaysAPI {
     /**
      * Resets and removes all the registered placeholders.
      * <p>
-     * May be useful to invoke before registering all the placeholders of your plugin.
+     * Can be useful to reset placeholders before registering all of them.
      *
      * @since 1
      */

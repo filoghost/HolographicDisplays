@@ -3,27 +3,27 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.api.hologram;
+package me.filoghost.holographicdisplays.api.hologram.line;
 
 import org.jetbrains.annotations.Nullable;
 
 /**
  * @since 1
  */
-public interface TextLine extends ClickableLine {
+public interface TextHologramLine extends ClickableHologramLine {
 
     /**
-     * Returns the current text of this TextLine.
+     * Returns the currently displayed text.
      *
-     * @return the current text of this line.
+     * @return the currently displayed text.
      * @since 1
      */
     @Nullable String getText();
 
     /**
-     * Sets the text of this TextLine.
+     * Sets the displayed text.
      *
-     * @param text the new text of this line.
+     * @param text the new displayed text.
      * @since 1
      */
     void setText(@Nullable String text);

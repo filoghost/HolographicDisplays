@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.api.hologram;
+package me.filoghost.holographicdisplays.api.hologram.line;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -12,12 +12,12 @@ import org.jetbrains.annotations.Nullable;
  *
  * @since 1
  */
-public interface CollectableLine extends HologramLine {
+public interface CollectableHologramLine extends HologramLine {
 
     /**
      * Sets the pickup listener.
      *
-     * @param pickupListener the new pickup listener
+     * @param pickupListener the new pickup listener, null to unset
      * @since 1
      */
     void setPickupListener(@Nullable PickupListener pickupListener);
@@ -25,7 +25,7 @@ public interface CollectableLine extends HologramLine {
     /**
      * Returns the current pickup listener.
      *
-     * @return the current pickup listener
+     * @return the current pickup listener, null if not present
      * @since 1
      */
     @Nullable PickupListener getPickupListener();

@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
-import me.filoghost.holographicdisplays.api.hologram.PickupListener;
+import me.filoghost.holographicdisplays.api.hologram.line.PickupListener;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")

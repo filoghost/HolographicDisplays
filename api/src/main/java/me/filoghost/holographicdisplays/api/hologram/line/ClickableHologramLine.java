@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.api.hologram;
+package me.filoghost.holographicdisplays.api.hologram.line;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -12,12 +12,12 @@ import org.jetbrains.annotations.Nullable;
  *
  * @since 1
  */
-public interface ClickableLine extends HologramLine {
+public interface ClickableHologramLine extends HologramLine {
 
     /**
      * Sets the click listener.
      *
-     * @param clickListener the new click listener
+     * @param clickListener the new click listener, null to unset
      * @since 1
      */
     void setClickListener(@Nullable ClickListener clickListener);
@@ -25,7 +25,7 @@ public interface ClickableLine extends HologramLine {
     /**
      * Returns the current click listener.
      *
-     * @return the current click listener
+     * @return the current click listener, null if not present
      * @since 1
      */
     @Nullable ClickListener getClickListener();

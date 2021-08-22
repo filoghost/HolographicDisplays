@@ -3,8 +3,9 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.api.hologram;
+package me.filoghost.holographicdisplays.api.hologram.line;
 
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -20,6 +21,6 @@ public interface HologramLine {
      * @return the parent Hologram.
      * @since 1
      */
-    @NotNull Hologram getParent();
+    @NotNull Hologram getHologram();
 
 }

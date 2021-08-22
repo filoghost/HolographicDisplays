@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.api.hologram;
+package me.filoghost.holographicdisplays.api.hologram.line;
 
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @since 1
  */
-public interface ItemLine extends CollectableLine, ClickableLine {
+public interface ItemHologramLine extends CollectableHologramLine, ClickableHologramLine {
 
     /**
      * Returns the ItemStack of this ItemLine.

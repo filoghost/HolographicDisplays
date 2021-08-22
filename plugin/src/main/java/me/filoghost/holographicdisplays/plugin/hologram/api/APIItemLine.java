@@ -5,16 +5,16 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
-import me.filoghost.holographicdisplays.api.hologram.ItemLine;
-import me.filoghost.holographicdisplays.api.hologram.PickupListener;
-import me.filoghost.holographicdisplays.api.hologram.ClickListener;
+import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
+import me.filoghost.holographicdisplays.api.hologram.line.PickupListener;
+import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2ItemLineAdapter;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class APIItemLine extends BaseItemLine implements ItemLine, APIClickableLine {
+public class APIItemLine extends BaseItemLine implements ItemHologramLine, APIClickableLine {
 
     private final APIHologram parent;
     private final V2ItemLineAdapter v2Adapter;
@@ -26,7 +26,7 @@ public class APIItemLine extends BaseItemLine implements ItemLine, APIClickableL
     }
 
     @Override
-    public @NotNull APIHologram getParent() {
+    public @NotNull APIHologram getHologram() {
         return parent;
     }
 

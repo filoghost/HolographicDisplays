@@ -6,6 +6,9 @@
 package me.filoghost.holographicdisplays.api.hologram;
 
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLine;
+import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
+import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +31,7 @@ public interface Hologram {
      * @return the new TextLine appended
      * @since 1
      */
-    @NotNull TextLine appendTextLine(@Nullable String text);
+    @NotNull TextHologramLine appendTextLine(@Nullable String text);
 
     /**
      * Appends an item line to end of this hologram.
@@ -37,7 +40,7 @@ public interface Hologram {
      * @return the new ItemLine appended
      * @since 1
      */
-    @NotNull ItemLine appendItemLine(@NotNull ItemStack itemStack);
+    @NotNull ItemHologramLine appendItemLine(@NotNull ItemStack itemStack);
 
     /**
      * Inserts a text line in this hologram.
@@ -48,7 +51,7 @@ public interface Hologram {
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
      * @since 1
      */
-    @NotNull TextLine insertTextLine(int index, @Nullable String text);
+    @NotNull TextHologramLine insertTextLine(int index, @Nullable String text);
 
     /**
      * Inserts an item line in this hologram.
@@ -59,13 +62,13 @@ public interface Hologram {
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
      * @since 1
      */
-    @NotNull ItemLine insertItemLine(int index, @NotNull ItemStack itemStack);
+    @NotNull ItemHologramLine insertItemLine(int index, @NotNull ItemStack itemStack);
 
     /**
      * Finds the element at a given index in the lines.
      *
      * @param index the index of the line to retrieve.
-     * @return the hologram line at the given index, can be an {@link ItemLine} or a {@link TextLine}.
+     * @return the hologram line at the given index, can be an {@link ItemHologramLine} or a {@link TextHologramLine}.
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
      * @since 1
      */
@@ -165,14 +168,6 @@ public interface Hologram {
      * @since 1
      */
     @NotNull VisibilitySettings getVisibilitySettings();
-
-    /**
-     * Returns when the hologram was created. Useful for removing old holograms.
-     *
-     * @return the timestamp of when the hologram was created, in milliseconds
-     * @since 1
-     */
-    long getCreationTimestamp();
 
     /**
      * Checks if the hologram will track and replace placeholders.

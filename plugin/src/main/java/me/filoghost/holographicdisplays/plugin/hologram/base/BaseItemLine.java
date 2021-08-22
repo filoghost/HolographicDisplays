@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.api.hologram.PickupListener;
+import me.filoghost.holographicdisplays.api.hologram.line.PickupListener;
 import me.filoghost.holographicdisplays.common.nms.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.ItemLineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;

@@ -19,12 +19,12 @@ public abstract class V2HologramLineAdapter implements HologramLine {
 
     @Override
     public V2HologramAdapter getParent() {
-        return v3Line.getParent().getV2Adapter();
+        return v3Line.getHologram().getV2Adapter();
     }
 
     @Override
     public void removeLine() {
-        v3Line.getParent().removeLine(v3Line);
+        v3Line.getHologram().removeLine(v3Line);
     }
 
     @Override
