@@ -163,7 +163,7 @@ public class HolographicDisplays extends FCommonsPlugin {
     }
 
     public void load(ErrorCollector errorCollector) {
-        internalHologramManager.clearAll();
+        internalHologramManager.deleteHolograms();
 
         configManager.reloadStaticReplacements(errorCollector);
         configManager.reloadMainSettings(errorCollector);

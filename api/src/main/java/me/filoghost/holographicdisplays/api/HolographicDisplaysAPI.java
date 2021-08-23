@@ -72,6 +72,8 @@ public interface HolographicDisplaysAPI {
      */
     @NotNull Collection<Hologram> getHolograms();
 
+    void deleteHolograms();
+
     /**
      * @since 1
      */

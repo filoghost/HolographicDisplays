@@ -72,6 +72,11 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
+    public void deleteHolograms() {
+        apiHologramManager.deleteHologramsIf(apiHologram -> apiHologram.getCreatorPlugin().equals(plugin));
+    }
+
+    @Override
     public @NotNull Collection<String> getRegisteredPlaceholders() {
         return placeholderRegistry.getRegisteredIdentifiers(plugin);
     }

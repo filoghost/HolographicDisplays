@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public abstract class BaseHologramManager<H extends BaseHologram> {
 
@@ -22,16 +23,27 @@ public abstract class BaseHologramManager<H extends BaseHologram> {
         holograms.add(hologram);
     }
 
+    public List<H> getHolograms() {
+        return unmodifiableHologramsView;
+    }
+
     public void deleteHologram(H hologram) {
         hologram.setDeleted();
         holograms.remove(hologram);
     }
 
-    public List<H> getHolograms() {
-        return unmodifiableHologramsView;
+    public void deleteHologramsIf(Predicate<H> condition) {
+        Iterator<H> iterator = holograms.iterator();
+        while (iterator.hasNext()) {
+            H hologram = iterator.next();
+            if (condition.test(hologram)) {
+                iterator.remove();
+                hologram.setDeleted();
+            }
+        }
     }
 
-    public void clearAll() {
+    public void deleteHolograms() {
         Iterator<H> iterator = holograms.iterator();
         while (iterator.hasNext()) {
             H hologram = iterator.next();
