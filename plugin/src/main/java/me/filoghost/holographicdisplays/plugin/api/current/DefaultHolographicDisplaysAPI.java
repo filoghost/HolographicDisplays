@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin.api.current;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
@@ -37,6 +38,15 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
         Preconditions.checkMainThread("async hologram creation");
 
         return apiHologramManager.createHologram(new BaseHologramPosition(location), plugin);
+    }
+
+    @Override
+    public @NotNull Hologram createHologram(@NotNull HologramPosition position) {
+        Preconditions.notNull(position, "position");
+        Preconditions.notNull(position.getWorldName(), "position world name");
+        Preconditions.checkMainThread("async hologram creation");
+
+        return apiHologramManager.createHologram(new BaseHologramPosition(position), plugin);
     }
 
     @Override

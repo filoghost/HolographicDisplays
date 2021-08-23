@@ -38,6 +38,15 @@ public class BaseHologramPosition implements HologramPosition {
         this.z = location.getZ();
     }
 
+    public BaseHologramPosition(@NotNull HologramPosition position) {
+        Preconditions.notNull(position, "position");
+        Preconditions.notNull(position.getWorldName(), "position's worldName");
+        this.worldName = position.getWorldName();
+        this.x = position.getX();
+        this.y = position.getY();
+        this.z = position.getZ();
+    }
+
     @Override
     public @NotNull String getWorldName() {
         return worldName;
