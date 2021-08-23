@@ -7,7 +7,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
-import org.jetbrains.annotations.NotNull;
 
 public class APITextLine extends BaseTextLine implements TextHologramLine, APIClickableLine {
 
@@ -16,11 +15,6 @@ public class APITextLine extends BaseTextLine implements TextHologramLine, APICl
     public APITextLine(APIHologram parent, String text) {
         super(parent, text);
         this.parent = parent;
-    }
-
-    @Override
-    public @NotNull APIHologram getHologram() {
-        return parent;
     }
 
     @Override
