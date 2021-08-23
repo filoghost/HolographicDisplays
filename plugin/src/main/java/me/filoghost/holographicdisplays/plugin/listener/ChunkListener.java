@@ -31,13 +31,15 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onWorldLoad(WorldUnloadEvent event) {
-        internalHologramManager.onWorldLoad(event.getWorld());
+    public void onWorldUnload(WorldUnloadEvent event) {
+        internalHologramManager.onWorldUnload(event.getWorld());
+        apiHologramManager.onWorldUnload(event.getWorld());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onWorldLoad(WorldLoadEvent event) {
-        internalHologramManager.onWorldUnload(event.getWorld());
+        internalHologramManager.onWorldLoad(event.getWorld());
+        apiHologramManager.onWorldLoad(event.getWorld());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
