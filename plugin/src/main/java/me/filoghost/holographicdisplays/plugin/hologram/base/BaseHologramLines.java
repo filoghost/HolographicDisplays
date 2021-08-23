@@ -114,7 +114,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
      * The top part of the first line should be exactly on the Y position of the hologram.
      * The second line is below the first, and so on.
      */
-    protected void updateLinePositions() {
+    public void updateLinePositions() {
         HologramPosition hologramPosition = hologram.getPosition();
         double currentLineY = hologramPosition.getY();
 

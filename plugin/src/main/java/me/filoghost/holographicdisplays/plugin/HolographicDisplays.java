@@ -12,6 +12,7 @@ import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.api.current.DefaultHolographicDisplaysAPIProvider;
+import me.filoghost.holographicdisplays.plugin.api.v2.V2Hologram;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramManager;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramsAPIProvider;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
@@ -23,6 +24,7 @@ import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.AnimationsLegacyUpgrade;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.DatabaseLegacyUpgrade;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.SymbolsLegacyUpgrade;
+import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
@@ -53,10 +55,12 @@ public class HolographicDisplays extends FCommonsPlugin {
 
     private NMSManager nmsManager;
     private ConfigManager configManager;
-    private InternalHologramManager internalHologramManager;
     private BungeeServerTracker bungeeServerTracker;
     private PlaceholderRegistry placeholderRegistry;
     private LineTrackerManager lineTrackerManager;
+    private InternalHologramManager internalHologramManager;
+    private APIHologramManager apiHologramManager;
+    private V2HologramManager v2HologramManager;
 
     @Override
     public void onCheckedEnable() throws PluginEnableException {
@@ -104,8 +108,8 @@ public class HolographicDisplays extends FCommonsPlugin {
         LineClickListener lineClickListener = new LineClickListener();
         lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener);
         internalHologramManager = new InternalHologramManager(lineTrackerManager);
-        APIHologramManager apiHologramManager = new APIHologramManager(lineTrackerManager);
-        V2HologramManager v2HologramManager = new V2HologramManager(lineTrackerManager);
+        apiHologramManager = new APIHologramManager(lineTrackerManager);
+        v2HologramManager = new V2HologramManager(lineTrackerManager);
 
         // Run only once at startup, before loading the configuration
         new SymbolsLegacyUpgrade(configManager, errorCollector).tryRun();
@@ -171,6 +175,13 @@ public class HolographicDisplays extends FCommonsPlugin {
 
         HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
         hologramDatabase.createHolograms(internalHologramManager, errorCollector);
+
+        for (APIHologram hologram : apiHologramManager.getHolograms()) {
+            hologram.getLines().updateLinePositions();
+        }
+        for (V2Hologram hologram : v2HologramManager.getHolograms()) {
+            hologram.getLines().updateLinePositions();
+        }
     }
 
     @Override

@@ -26,7 +26,7 @@ public abstract class BaseHologram extends BaseHologramComponent {
         this.lineTrackerManager = lineTrackerManager;
     }
 
-    protected abstract BaseHologramLines<? extends EditableHologramLine> getLines();
+    public abstract BaseHologramLines<? extends EditableHologramLine> getLines();
 
     protected abstract boolean isVisibleTo(Player player);
 
