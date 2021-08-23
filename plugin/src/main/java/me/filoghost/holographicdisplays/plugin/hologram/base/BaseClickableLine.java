@@ -13,12 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-
 public abstract class BaseClickableLine extends BaseHologramLine {
-
-    private static final Map<Player, Long> lastClickByPlayer = new WeakHashMap<>();
 
     private ClickListener clickListener;
 
@@ -30,14 +25,6 @@ public abstract class BaseClickableLine extends BaseHologramLine {
         if (clickListener == null || !canInteract(player) || !isInClickRange(player)) {
             return;
         }
-
-        Long lastClick = lastClickByPlayer.get(player);
-        long now = System.currentTimeMillis();
-        if (lastClick != null && now - lastClick < 100) {
-            return;
-        }
-
-        lastClickByPlayer.put(player, now);
 
         try {
             clickListener.onClick(player);
