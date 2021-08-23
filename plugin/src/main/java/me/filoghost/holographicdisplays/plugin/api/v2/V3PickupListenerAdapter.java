@@ -28,27 +28,4 @@ public class V3PickupListenerAdapter implements PickupListener {
         return v2PickupHandler;
     }
 
-    @Override
-    public final boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof V3PickupListenerAdapter)) {
-            return false;
-        }
-
-        V3PickupListenerAdapter other = (V3PickupListenerAdapter) obj;
-        return this.v2PickupHandler.equals(other.v2PickupHandler);
-    }
-
-    @Override
-    public final int hashCode() {
-        return v2PickupHandler.hashCode();
-    }
-
-    @Override
-    public final String toString() {
-        return v2PickupHandler.toString();
-    }
-
 }

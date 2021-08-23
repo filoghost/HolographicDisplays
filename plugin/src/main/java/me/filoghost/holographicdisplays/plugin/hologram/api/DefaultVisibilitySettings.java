@@ -7,7 +7,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
-import me.filoghost.holographicdisplays.plugin.api.v2.V2VisibilityManagerAdapter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,12 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultVisibilitySettings implements VisibilitySettings {
 
-    private final V2VisibilityManagerAdapter v2Adapter;
     private Map<UUID, Visibility> visibilityByPlayer;
     private Visibility defaultVisibility;
 
     public DefaultVisibilitySettings() {
-        this.v2Adapter = new V2VisibilityManagerAdapter(this);
         this.defaultVisibility = Visibility.VISIBLE;
     }
 
@@ -85,10 +82,6 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
         }
 
         visibilityByPlayer.clear();
-    }
-
-    public V2VisibilityManagerAdapter getV2Adapter() {
-        return v2Adapter;
     }
 
     @Override

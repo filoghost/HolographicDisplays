@@ -28,27 +28,4 @@ public class V3ClickListenerAdapter implements ClickListener {
         return v2TouchHandler;
     }
 
-    @Override
-    public final boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof V3ClickListenerAdapter)) {
-            return false;
-        }
-
-        V3ClickListenerAdapter other = (V3ClickListenerAdapter) obj;
-        return this.v2TouchHandler.equals(other.v2TouchHandler);
-    }
-
-    @Override
-    public final int hashCode() {
-        return v2TouchHandler.hashCode();
-    }
-
-    @Override
-    public final String toString() {
-        return v2TouchHandler.toString();
-    }
-
 }

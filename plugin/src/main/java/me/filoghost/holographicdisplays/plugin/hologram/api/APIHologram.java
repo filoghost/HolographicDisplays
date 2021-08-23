@@ -8,8 +8,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.line.HologramLine;
-import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramAdapter;
-import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLines;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
@@ -26,7 +24,6 @@ public class APIHologram extends BaseHologram implements Hologram {
     private final Plugin plugin;
     private final APIHologramManager apiHologramManager;
     private final DefaultVisibilitySettings visibilitySettings;
-    private final V2HologramAdapter v2Adapter;
 
     private boolean allowPlaceholders;
 
@@ -41,7 +38,6 @@ public class APIHologram extends BaseHologram implements Hologram {
         this.plugin = plugin;
         this.apiHologramManager = apiHologramManager;
         this.visibilitySettings = new DefaultVisibilitySettings();
-        this.v2Adapter = new V2HologramAdapter(this);
     }
 
     @Override
@@ -153,18 +149,7 @@ public class APIHologram extends BaseHologram implements Hologram {
 
     @Override
     public double getHeight() {
-        if (lines.isEmpty()) {
-            return 0;
-        }
-
-        double height = 0.0;
-
-        for (APIHologramLine line : lines) {
-            height += line.getHeight();
-        }
-
-        height += Settings.spaceBetweenLines * (lines.size() - 1);
-        return height;
+        return lines.getHeight();
     }
 
     @Override
@@ -175,10 +160,6 @@ public class APIHologram extends BaseHologram implements Hologram {
     @Override
     public void delete() {
         apiHologramManager.deleteHologram(this);
-    }
-
-    public V2HologramAdapter getV2Adapter() {
-        return v2Adapter;
     }
 
 }

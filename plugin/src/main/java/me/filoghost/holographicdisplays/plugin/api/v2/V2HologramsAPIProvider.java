@@ -9,8 +9,6 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider;
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;
@@ -25,11 +23,11 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class V2HologramsAPIProvider extends HologramsAPIProvider {
 
-    private final APIHologramManager apiHologramManager;
+    private final V2HologramManager hologramManager;
     private final PlaceholderRegistry placeholderRegistry;
 
-    public V2HologramsAPIProvider(APIHologramManager apiHologramManager, PlaceholderRegistry placeholderRegistry) {
-        this.apiHologramManager = apiHologramManager;
+    public V2HologramsAPIProvider(V2HologramManager hologramManager, PlaceholderRegistry placeholderRegistry) {
+        this.hologramManager = hologramManager;
         this.placeholderRegistry = placeholderRegistry;
     }
 
@@ -40,7 +38,7 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
         Preconditions.notNull(source.getWorld(), "source's world");
         Preconditions.checkMainThread("async hologram creation");
 
-        return apiHologramManager.createHologram(new BaseHologramPosition(source), plugin).getV2Adapter();
+        return hologramManager.createHologram(new BaseHologramPosition(source), plugin);
     }
 
     @Override
@@ -48,9 +46,9 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
         Preconditions.notNull(plugin, "plugin");
         List<Hologram> ownedHolograms = new ArrayList<>();
 
-        for (APIHologram hologram : apiHologramManager.getHolograms()) {
+        for (V2Hologram hologram : hologramManager.getHolograms()) {
             if (hologram.getCreatorPlugin().equals(plugin)) {
-                ownedHolograms.add(hologram.getV2Adapter());
+                ownedHolograms.add(hologram);
             }
         }
 

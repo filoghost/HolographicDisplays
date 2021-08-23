@@ -130,6 +130,21 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
         }
     }
 
+    public double getHeight() {
+        if (isEmpty()) {
+            return 0;
+        }
+
+        double height = 0.0;
+
+        for (EditableHologramLine line : lines) {
+            height += line.getHeight();
+        }
+
+        height += Settings.spaceBetweenLines * (lines.size() - 1);
+        return height;
+    }
+
     public void setDeleted() {
         for (T line : lines) {
             line.setDeleted();

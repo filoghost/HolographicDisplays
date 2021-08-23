@@ -11,12 +11,12 @@ import me.filoghost.holographicdisplays.plugin.hologram.api.DefaultVisibilitySet
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
-public class V2VisibilityManagerAdapter implements VisibilityManager {
+public class V2VisibilityManager implements VisibilityManager {
 
     private final DefaultVisibilitySettings v3VisibilitySettings;
 
-    public V2VisibilityManagerAdapter(DefaultVisibilitySettings v3VisibilitySettings) {
-        this.v3VisibilitySettings = v3VisibilitySettings;
+    public V2VisibilityManager() {
+        this.v3VisibilitySettings = new DefaultVisibilitySettings();
     }
 
     @Override
@@ -52,29 +52,6 @@ public class V2VisibilityManagerAdapter implements VisibilityManager {
     @Override
     public void resetVisibilityAll() {
         v3VisibilitySettings.resetIndividualVisibilityAll();
-    }
-
-    @Override
-    public final boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof V2VisibilityManagerAdapter)) {
-            return false;
-        }
-
-        V2VisibilityManagerAdapter other = (V2VisibilityManagerAdapter) obj;
-        return this.v3VisibilitySettings.equals(other.v3VisibilitySettings);
-    }
-
-    @Override
-    public final int hashCode() {
-        return v3VisibilitySettings.hashCode();
-    }
-
-    @Override
-    public final String toString() {
-        return v3VisibilitySettings.toString();
     }
 
 }

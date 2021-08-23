@@ -12,6 +12,7 @@ import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.plugin.api.current.DefaultHolographicDisplaysAPIProvider;
+import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramManager;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramsAPIProvider;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
@@ -104,6 +105,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener);
         internalHologramManager = new InternalHologramManager(lineTrackerManager);
         APIHologramManager apiHologramManager = new APIHologramManager(lineTrackerManager);
+        V2HologramManager v2HologramManager = new V2HologramManager(lineTrackerManager);
 
         // Run only once at startup, before loading the configuration
         new SymbolsLegacyUpgrade(configManager, errorCollector).tryRun();
@@ -123,7 +125,7 @@ public class HolographicDisplays extends FCommonsPlugin {
 
         // Listeners
         registerListener(new PlayerListener(nmsManager, lineTrackerManager, lineClickListener));
-        registerListener(new ChunkListener(this, internalHologramManager, apiHologramManager));
+        registerListener(new ChunkListener(this, internalHologramManager, apiHologramManager, v2HologramManager));
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
         registerListener(updateNotificationListener);
 
@@ -135,7 +137,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         // Enable the APIs
         HolographicDisplaysAPIProvider.setImplementation(
                 new DefaultHolographicDisplaysAPIProvider(apiHologramManager, placeholderRegistry));
-        enableLegacyAPI(apiHologramManager, placeholderRegistry);
+        enableLegacyAPI(v2HologramManager, placeholderRegistry);
 
         // Setup external plugin hooks
         PlaceholderAPIHook.setup();
@@ -152,8 +154,8 @@ public class HolographicDisplays extends FCommonsPlugin {
     }
 
     @SuppressWarnings("deprecation")
-    private void enableLegacyAPI(APIHologramManager apiHologramManager, PlaceholderRegistry placeholderRegistry) {
-        HologramsAPIProvider.setImplementation(new V2HologramsAPIProvider(apiHologramManager, placeholderRegistry));
+    private void enableLegacyAPI(V2HologramManager hologramManager, PlaceholderRegistry placeholderRegistry) {
+        HologramsAPIProvider.setImplementation(new V2HologramsAPIProvider(hologramManager, placeholderRegistry));
     }
 
     public void load(ErrorCollector errorCollector) {

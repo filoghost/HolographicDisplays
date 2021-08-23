@@ -5,10 +5,12 @@
  */
 package me.filoghost.holographicdisplays.plugin.listener;
 
+import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -23,29 +25,41 @@ public class ChunkListener implements Listener {
     private final Plugin plugin;
     private final InternalHologramManager internalHologramManager;
     private final APIHologramManager apiHologramManager;
+    private final V2HologramManager v2HologramManager;
 
-    public ChunkListener(Plugin plugin, InternalHologramManager internalHologramManager, APIHologramManager apiHologramManager) {
+    public ChunkListener(
+            Plugin plugin,
+            InternalHologramManager internalHologramManager,
+            APIHologramManager apiHologramManager,
+            V2HologramManager v2HologramManager) {
         this.plugin = plugin;
         this.internalHologramManager = internalHologramManager;
         this.apiHologramManager = apiHologramManager;
+        this.v2HologramManager = v2HologramManager;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent event) {
-        internalHologramManager.onWorldUnload(event.getWorld());
-        apiHologramManager.onWorldUnload(event.getWorld());
+        World world = event.getWorld();
+        internalHologramManager.onWorldUnload(world);
+        apiHologramManager.onWorldUnload(world);
+        v2HologramManager.onWorldUnload(world);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onWorldLoad(WorldLoadEvent event) {
-        internalHologramManager.onWorldLoad(event.getWorld());
-        apiHologramManager.onWorldLoad(event.getWorld());
+        World world = event.getWorld();
+        internalHologramManager.onWorldLoad(world);
+        apiHologramManager.onWorldLoad(world);
+        v2HologramManager.onWorldLoad(world);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
-        internalHologramManager.onChunkUnload(event.getChunk());
-        apiHologramManager.onChunkUnload(event.getChunk());
+        Chunk chunk = event.getChunk();
+        internalHologramManager.onChunkUnload(chunk);
+        apiHologramManager.onChunkUnload(chunk);
+        v2HologramManager.onChunkUnload(chunk);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -68,6 +82,7 @@ public class ChunkListener implements Listener {
     private void onChunkLoad(Chunk chunk) {
         internalHologramManager.onChunkLoad(chunk);
         apiHologramManager.onChunkLoad(chunk);
+        v2HologramManager.onChunkLoad(chunk);
     }
 
 }

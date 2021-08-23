@@ -5,16 +5,16 @@
  */
 package me.filoghost.holographicdisplays.plugin.test;
 
-import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
-import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
+import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
+import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 
 import static org.mockito.Mockito.*;
 
-public class TestAPIHologramManager extends APIHologramManager {
+public class TestV2HologramManager extends V2HologramManager {
 
-    public TestAPIHologramManager() {
+    public TestV2HologramManager() {
         super(new LineTrackerManager(new TestNMSManager(), mock(PlaceholderTracker.class), new LineClickListener()));
     }
 
