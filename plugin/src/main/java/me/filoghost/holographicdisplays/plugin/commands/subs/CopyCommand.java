@@ -37,11 +37,11 @@ public class CopyCommand extends HologramSubCommand {
         InternalHologram toHologram = hologramEditor.getExistingHologram(args[1]);
 
         List<InternalHologramLine> clonedLines = new ArrayList<>();
-        for (InternalHologramLine line : fromHologram.getLines()) {
+        for (InternalHologramLine line : fromHologram.lines()) {
             clonedLines.add(hologramEditor.parseHologramLine(toHologram, line.getSerializedConfigValue()));
         }
 
-        toHologram.getLines().setAll(clonedLines);
+        toHologram.lines().setAll(clonedLines);
         hologramEditor.saveChanges(toHologram, ChangeType.EDIT_LINES);
 
         sender.sendMessage(ColorScheme.PRIMARY + "Lines of hologram \"" + fromHologram.getName() + "\""

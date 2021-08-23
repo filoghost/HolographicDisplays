@@ -30,7 +30,7 @@ public class HologramConfig {
     public HologramConfig(InternalHologram hologram) {
         this.name = hologram.getName();
         this.serializedLines = new ArrayList<>();
-        for (InternalHologramLine line : hologram.getLines()) {
+        for (InternalHologramLine line : hologram.lines()) {
             serializedLines.add(line.getSerializedConfigValue());
         }
 
@@ -70,7 +70,7 @@ public class HologramConfig {
             }
         }
 
-        hologram.getLines().addAll(lines);
+        hologram.lines().addAll(lines);
     }
 
     private BaseHologramPosition parsePosition() throws HologramLoadException {

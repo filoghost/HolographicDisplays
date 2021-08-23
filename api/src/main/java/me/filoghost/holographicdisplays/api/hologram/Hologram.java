@@ -6,119 +6,29 @@
 package me.filoghost.holographicdisplays.api.hologram;
 
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
-import me.filoghost.holographicdisplays.api.hologram.line.HologramLine;
-import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
-import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * An object made of various lines, that can be items or holograms.
- * Holographic lines appear as a nametag without any entity below.
- * To create one, please see {@link HolographicDisplaysAPI#createHologram(Location)}.
+ * Entity to manage a group of vertically aligned lines, which display floating text and items.
+ * To create one see {@link HolographicDisplaysAPI}.
  *
  * @since 1
  */
 public interface Hologram {
 
     /**
-     * Appends a text line to end of this hologram.
-     *
-     * @param text the content of the line, can be null for an empty line
-     * @return the new TextLine appended
-     * @since 1
-     */
-    @NotNull TextHologramLine appendTextLine(@Nullable String text);
-
-    /**
-     * Appends an item line to end of this hologram.
-     *
-     * @param itemStack the content of the line
-     * @return the new ItemLine appended
-     * @since 1
-     */
-    @NotNull ItemHologramLine appendItemLine(@NotNull ItemStack itemStack);
-
-    /**
-     * Inserts a text line in this hologram.
-     *
-     * @param index the line is inserted before this index. If 0, the new line will be inserted before the first line.
-     * @param text the content of the line, can be null for an empty line
-     * @return the new TextLine inserted
-     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
-     * @since 1
-     */
-    @NotNull TextHologramLine insertTextLine(int index, @Nullable String text);
-
-    /**
-     * Inserts an item line in this hologram.
-     *
-     * @param index the line is inserted before this index. If 0, the new line will be inserted before the first line.
-     * @param itemStack the content of the line
-     * @return the new ItemLine inserted
-     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
-     * @since 1
-     */
-    @NotNull ItemHologramLine insertItemLine(int index, @NotNull ItemStack itemStack);
-
-    /**
-     * Finds the element at a given index in the lines.
-     *
-     * @param index the index of the line to retrieve.
-     * @return the hologram line at the given index, can be an {@link ItemHologramLine} or a {@link TextHologramLine}.
-     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
-     * @since 1
-     */
-    @NotNull HologramLine getLine(int index);
-
-    /**
-     * Removes a line at a given index.
-     *
-     * @param index the index of the line, that should be between 0 and size() - 1.
-     * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
-     * @since 1
-     */
-    void removeLine(int index);
-
-    /**
-     * Removes a line.
-     *
-     * @param line the line to be removed.
-     * @return if the hologram contained the line
-     * @since 1
-     */
-    boolean removeLine(@NotNull HologramLine line);
-
-    /**
-     * Removes all the lines from this hologram.
+     * Returns the editable list of lines.
      *
      * @since 1
      */
-    void clearLines();
+    @NotNull HologramLines lines();
 
     /**
-     * Checks the amount of lines of the hologram.
+     * Returns the current position.
      *
-     * @return the amount of lines
-     * @since 1
-     */
-    int getLineCount();
-
-    /**
-     * The physical height of the hologram, counting all the lines.
-     *
-     * @return the height of the hologram, counting all the lines and the gaps between them
-     * @since 1
-     */
-    double getHeight();
-
-    /**
-     * Returns the hologram position.
-     *
-     * @return the hologram position
+     * @return the current position
      * @since 1
      */
     @NotNull HologramPosition getPosition();

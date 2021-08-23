@@ -44,7 +44,7 @@ public class V2Hologram extends BaseHologram implements Hologram {
     }
 
     @Override
-    public BaseHologramLines<V2HologramLine> getLines() {
+    public BaseHologramLines<V2HologramLine> lines() {
         return lines;
     }
 

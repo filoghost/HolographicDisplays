@@ -177,10 +177,10 @@ public class HolographicDisplays extends FCommonsPlugin {
         hologramDatabase.createHolograms(internalHologramManager, errorCollector);
 
         for (APIHologram hologram : apiHologramManager.getHolograms()) {
-            hologram.getLines().updateLinePositions();
+            hologram.lines().updatePositions();
         }
         for (V2Hologram hologram : v2HologramManager.getHolograms()) {
-            hologram.getLines().updateLinePositions();
+            hologram.lines().updatePositions();
         }
     }
 

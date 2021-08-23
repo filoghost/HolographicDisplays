@@ -15,7 +15,7 @@ public interface V2HologramLine extends HologramLine, EditableHologramLine {
 
     @Override
     default void removeLine() {
-        getParent().getLines().remove(this);
+        getParent().lines().remove(this);
     }
 
 }

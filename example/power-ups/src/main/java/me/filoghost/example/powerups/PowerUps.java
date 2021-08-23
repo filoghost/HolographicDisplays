@@ -49,10 +49,10 @@ public class PowerUps extends JavaPlugin implements Listener {
 
             // Spawn the floating item with a label
             Hologram hologram = holographicDisplaysAPI.createHologram(event.getEntity().getLocation().add(0.0, 0.9, 0.0));
-            hologram.appendTextLine(ChatColor.AQUA + "" + ChatColor.BOLD + "Speed PowerUp");
-            ItemHologramLine icon = hologram.appendItemLine(new ItemStack(Material.SUGAR));
+            hologram.lines().appendText(ChatColor.AQUA + "" + ChatColor.BOLD + "Speed PowerUp");
+            ItemHologramLine itemLine = hologram.lines().appendItem(new ItemStack(Material.SUGAR));
 
-            icon.setPickupListener((Player player) -> {
+            itemLine.setPickupListener((Player player) -> {
                 // Play an effect
                 player.playEffect(hologram.getPosition().toLocation(), Effect.MOBSPAWNER_FLAMES, null);
 

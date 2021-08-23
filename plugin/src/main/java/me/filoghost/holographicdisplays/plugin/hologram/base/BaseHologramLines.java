@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +39,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
         return lines.isEmpty();
     }
 
-    public T get(int index) {
+    public @NotNull T get(int index) {
         return lines.get(index);
     }
 
@@ -46,21 +47,21 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
         checkNotDeleted();
 
         lines.add(line);
-        updateLinePositions();
+        updatePositions();
     }
 
     public void addAll(List<? extends T> newLines) {
         checkNotDeleted();
 
         lines.addAll(newLines);
-        updateLinePositions();
+        updatePositions();
     }
 
-    public void insert(int afterIndex, T line) {
+    public void insert(int beforeIndex, T line) {
         checkNotDeleted();
 
-        lines.add(afterIndex, line);
-        updateLinePositions();
+        lines.add(beforeIndex, line);
+        updatePositions();
     }
 
     public void set(int index, T line) {
@@ -68,7 +69,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
 
         T previousLine = lines.set(index, line);
         previousLine.setDeleted();
-        updateLinePositions();
+        updatePositions();
     }
 
     public void setAll(List<T> newLines) {
@@ -76,14 +77,14 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
 
         clear();
         lines.addAll(newLines);
-        updateLinePositions();
+        updatePositions();
     }
 
     public void remove(int index) {
         checkNotDeleted();
 
         lines.remove(index).setDeleted();
-        updateLinePositions();
+        updatePositions();
     }
 
     public boolean remove(T line) {
@@ -92,7 +93,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
         boolean removed = lines.remove(line);
         if (removed) {
             line.setDeleted();
-            updateLinePositions();
+            updatePositions();
         }
         return removed;
     }
@@ -114,7 +115,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
      * The top part of the first line should be exactly on the Y position of the hologram.
      * The second line is below the first, and so on.
      */
-    public void updateLinePositions() {
+    public void updatePositions() {
         HologramPosition hologramPosition = hologram.getPosition();
         double currentLineY = hologramPosition.getY();
 
@@ -151,7 +152,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
         }
     }
 
-    private void checkNotDeleted() {
+    protected void checkNotDeleted() {
         hologram.checkNotDeleted();
     }
 

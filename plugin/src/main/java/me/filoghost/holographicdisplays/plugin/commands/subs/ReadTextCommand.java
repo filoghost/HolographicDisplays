@@ -85,7 +85,7 @@ public class ReadTextCommand extends LineEditingCommand {
             }
         }
 
-        hologram.getLines().setAll(newLines);
+        hologram.lines().setAll(newLines);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         if (FileUtils.hasFileExtension(fileToRead, "jpg", "png", "jpeg", "gif")) {
