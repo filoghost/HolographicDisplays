@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.common.nms.entity.ItemNMSPacketEntity;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import java.util.Collection;
 import java.util.Objects;
 
-public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
+public class ItemLineTracker extends ClickableLineTracker<BaseItemHologramLine> {
 
     private final ItemNMSPacketEntity itemEntity;
 
@@ -27,7 +27,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemLine> {
     private boolean spawnItemEntity;
     private boolean spawnItemEntityChanged;
 
-    public ItemLineTracker(BaseItemLine line, NMSManager nmsManager, LineClickListener lineClickListener) {
+    public ItemLineTracker(BaseItemHologramLine line, NMSManager nmsManager, LineClickListener lineClickListener) {
         super(line, nmsManager, lineClickListener);
         this.itemEntity = nmsManager.newItemPacketEntity();
     }

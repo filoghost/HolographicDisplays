@@ -6,13 +6,13 @@
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 
-public class APITextLine extends BaseTextLine implements TextHologramLine, APIClickableLine {
+public class APITextHologramLine extends BaseTextHologramLine implements TextHologramLine, APIClickableHologramLine {
 
     private final APIHologram parent;
 
-    public APITextLine(APIHologram parent, String text) {
+    public APITextHologramLine(APIHologram parent, String text) {
         super(parent, text);
         this.parent = parent;
     }

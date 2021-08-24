@@ -10,11 +10,11 @@ import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerMana
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.TextLineTracker;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseTextLine extends BaseClickableLine {
+public abstract class BaseTextHologramLine extends BaseClickableHologramLine {
 
     private String text;
 
-    public BaseTextLine(BaseHologram hologram, String text) {
+    public BaseTextHologramLine(BaseHologram hologram, String text) {
         super(hologram);
         setText(text);
     }

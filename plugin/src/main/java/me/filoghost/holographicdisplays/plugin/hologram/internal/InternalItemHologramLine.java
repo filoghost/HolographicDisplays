@@ -5,20 +5,16 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.internal;
 
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
+import org.bukkit.inventory.ItemStack;
 
-public class InternalTextLine extends BaseTextLine implements InternalHologramLine {
+public class InternalItemHologramLine extends BaseItemHologramLine implements InternalHologramLine {
 
     private final String serializedConfigValue;
 
-    protected InternalTextLine(InternalHologram hologram, String text, String serializedConfigValue) {
-        super(hologram, text);
+    protected InternalItemHologramLine(InternalHologram hologram, ItemStack itemStack, String serializedConfigValue) {
+        super(hologram, itemStack);
         this.serializedConfigValue = serializedConfigValue;
-    }
-
-    @Override
-    public boolean isAllowPlaceholders() {
-        return true;
     }
 
     @Override

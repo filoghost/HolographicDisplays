@@ -16,12 +16,12 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseItemLine extends BaseClickableLine {
+public abstract class BaseItemHologramLine extends BaseClickableHologramLine {
 
     private ItemStack itemStack;
     private PickupListener pickupListener;
 
-    public BaseItemLine(BaseHologram hologram, ItemStack itemStack) {
+    public BaseItemHologramLine(BaseHologram hologram, ItemStack itemStack) {
         super(hologram);
         setItemStack(itemStack);
     }

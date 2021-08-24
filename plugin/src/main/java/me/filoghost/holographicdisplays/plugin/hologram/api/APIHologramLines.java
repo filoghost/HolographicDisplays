@@ -28,7 +28,7 @@ public class APIHologramLines extends BaseHologramLines<APIHologramLine> impleme
     public @NotNull TextHologramLine appendText(@Nullable String text) {
         checkNotDeleted();
 
-        APITextLine line = new APITextLine(hologram, text);
+        APITextHologramLine line = new APITextHologramLine(hologram, text);
         super.add(line);
         return line;
     }
@@ -38,7 +38,7 @@ public class APIHologramLines extends BaseHologramLines<APIHologramLine> impleme
         Preconditions.notNull(itemStack, "itemStack");
         checkNotDeleted();
 
-        APIItemLine line = new APIItemLine(hologram, itemStack);
+        APIItemHologramLine line = new APIItemHologramLine(hologram, itemStack);
         super.add(line);
         return line;
     }
@@ -47,7 +47,7 @@ public class APIHologramLines extends BaseHologramLines<APIHologramLine> impleme
     public @NotNull TextHologramLine insertText(int beforeIndex, @Nullable String text) {
         checkNotDeleted();
 
-        APITextLine line = new APITextLine(hologram, text);
+        APITextHologramLine line = new APITextHologramLine(hologram, text);
         super.insert(beforeIndex, line);
         return line;
     }
@@ -57,7 +57,7 @@ public class APIHologramLines extends BaseHologramLines<APIHologramLine> impleme
         Preconditions.notNull(itemStack, "itemStack");
         checkNotDeleted();
 
-        APIItemLine line = new APIItemLine(hologram, itemStack);
+        APIItemHologramLine line = new APIItemHologramLine(hologram, itemStack);
         super.insert(beforeIndex, line);
         return line;
     }

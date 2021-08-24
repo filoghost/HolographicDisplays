@@ -8,10 +8,10 @@ package me.filoghost.holographicdisplays.plugin.api.v2;
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 
 @SuppressWarnings("deprecation")
-public class V2TextLine extends BaseTextLine implements TextLine, V2HologramLine {
+public class V2TextLine extends BaseTextHologramLine implements TextLine, V2HologramLine {
 
     private final V2Hologram parent;
 

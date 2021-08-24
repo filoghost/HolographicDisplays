@@ -9,11 +9,11 @@ import me.filoghost.holographicdisplays.common.Position;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.common.nms.entity.ClickableNMSPacketEntity;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-public abstract class ClickableLineTracker<T extends BaseClickableLine> extends PositionBasedLineTracker<T> {
+public abstract class ClickableLineTracker<T extends BaseClickableHologramLine> extends PositionBasedLineTracker<T> {
 
     private final ClickableNMSPacketEntity clickableEntity;
     private final double positionOffsetY;

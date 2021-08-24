@@ -6,12 +6,12 @@
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
 import org.bukkit.inventory.ItemStack;
 
-public class APIItemLine extends BaseItemLine implements ItemHologramLine, APIClickableLine {
+public class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLine, APIClickableHologramLine {
 
-    public APIItemLine(APIHologram parent, ItemStack itemStack) {
+    public APIItemHologramLine(APIHologram parent, ItemStack itemStack) {
         super(parent, itemStack);
     }
 

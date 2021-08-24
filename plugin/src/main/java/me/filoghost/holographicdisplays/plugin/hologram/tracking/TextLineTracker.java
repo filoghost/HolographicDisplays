@@ -8,14 +8,14 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
 import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
 import me.filoghost.holographicdisplays.common.nms.entity.TextNMSPacketEntity;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
 
-public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
+public class TextLineTracker extends ClickableLineTracker<BaseTextHologramLine> {
 
     private final TextNMSPacketEntity textEntity;
 
@@ -24,7 +24,7 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextLine> {
     private boolean allowPlaceholders;
 
     public TextLineTracker(
-            BaseTextLine line,
+            BaseTextHologramLine line,
             NMSManager nmsManager,
             LineClickListener lineClickListener,
             PlaceholderTracker placeholderTracker) {

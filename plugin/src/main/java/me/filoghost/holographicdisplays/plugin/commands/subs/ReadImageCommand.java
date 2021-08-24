@@ -16,7 +16,7 @@ import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalTextLine;
+import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalTextHologramLine;
 import me.filoghost.holographicdisplays.plugin.image.ImageMessage;
 import me.filoghost.holographicdisplays.plugin.image.ImageReadException;
 import me.filoghost.holographicdisplays.plugin.image.ImageReader;
@@ -103,7 +103,7 @@ public class ReadImageCommand extends LineEditingCommand {
         }
 
         ImageMessage imageMessage = new ImageMessage(image, width);
-        List<InternalTextLine> newLines = new ArrayList<>();
+        List<InternalTextHologramLine> newLines = new ArrayList<>();
         for (String newLine : imageMessage.getLines()) {
             newLines.add(hologram.createTextLine(newLine, Colors.uncolorize(newLine)));
         }

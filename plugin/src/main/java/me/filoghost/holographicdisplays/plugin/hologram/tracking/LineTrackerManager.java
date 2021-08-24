@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
 import org.bukkit.Bukkit;
@@ -31,13 +31,13 @@ public class LineTrackerManager {
         this.lineTrackers = new LinkedList<>();
     }
 
-    public TextLineTracker startTracking(BaseTextLine line) {
+    public TextLineTracker startTracking(BaseTextHologramLine line) {
         TextLineTracker tracker = new TextLineTracker(line, nmsManager, lineClickListener, placeholderTracker);
         lineTrackers.add(tracker);
         return tracker;
     }
 
-    public ItemLineTracker startTracking(BaseItemLine line) {
+    public ItemLineTracker startTracking(BaseItemHologramLine line) {
         ItemLineTracker tracker = new ItemLineTracker(line, nmsManager, lineClickListener);
         lineTrackers.add(tracker);
         return tracker;

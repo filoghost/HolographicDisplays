@@ -10,11 +10,11 @@ import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.PickupListener;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
 import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("deprecation")
-public class V2ItemLine extends BaseItemLine implements ItemLine, V2HologramLine {
+public class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2HologramLine {
 
     private final V2Hologram parent;
 

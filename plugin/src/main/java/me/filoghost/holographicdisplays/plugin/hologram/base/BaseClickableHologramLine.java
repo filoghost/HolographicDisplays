@@ -13,11 +13,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseClickableLine extends BaseHologramLine {
+public abstract class BaseClickableHologramLine extends BaseHologramLine {
 
     private ClickListener clickListener;
 
-    protected BaseClickableLine(BaseHologram hologram) {
+    protected BaseClickableHologramLine(BaseHologram hologram) {
         super(hologram);
     }
 

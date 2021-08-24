@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.listener;
 
 import me.filoghost.holographicdisplays.common.nms.EntityID;
 import me.filoghost.holographicdisplays.common.nms.PacketListener;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableHologramLine;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class LineClickListener implements PacketListener {
 
-    private final ConcurrentMap<Integer, BaseClickableLine> linesByEntityID;
+    private final ConcurrentMap<Integer, BaseClickableHologramLine> linesByEntityID;
 
     // It is necessary to queue async click events to process them from the main thread.
     // Use a set to avoid duplicate click events to the same line.
@@ -30,7 +30,7 @@ public class LineClickListener implements PacketListener {
 
     @Override
     public boolean onAsyncEntityInteract(Player player, int entityID) {
-        BaseClickableLine line = linesByEntityID.get(entityID);
+        BaseClickableHologramLine line = linesByEntityID.get(entityID);
         if (line != null) {
             queuedClickEvents.add(new ClickEvent(player, line));
             return true;
@@ -47,7 +47,7 @@ public class LineClickListener implements PacketListener {
         queuedClickEvents.clear();
     }
 
-    public void registerLine(EntityID clickableEntityID, BaseClickableLine line) {
+    public void registerLine(EntityID clickableEntityID, BaseClickableHologramLine line) {
         linesByEntityID.put(clickableEntityID.getNumericID(), line);
     }
 
@@ -61,9 +61,9 @@ public class LineClickListener implements PacketListener {
     private static class ClickEvent {
 
         private final Player player;
-        private final BaseClickableLine line;
+        private final BaseClickableHologramLine line;
 
-        ClickEvent(Player player, BaseClickableLine line) {
+        ClickEvent(Player player, BaseClickableHologramLine line) {
             this.player = player;
             this.line = line;
         }
