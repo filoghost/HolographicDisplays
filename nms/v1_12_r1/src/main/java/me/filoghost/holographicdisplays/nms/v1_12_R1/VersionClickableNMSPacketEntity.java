@@ -6,9 +6,9 @@
 package me.filoghost.holographicdisplays.nms.v1_12_R1;
 
 import me.filoghost.holographicdisplays.common.Position;
-import me.filoghost.holographicdisplays.common.nms.EntityID;
-import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
-import me.filoghost.holographicdisplays.common.nms.entity.ClickableNMSPacketEntity;
+import me.filoghost.holographicdisplays.nms.common.EntityID;
+import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
+import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
 
 public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity {
 

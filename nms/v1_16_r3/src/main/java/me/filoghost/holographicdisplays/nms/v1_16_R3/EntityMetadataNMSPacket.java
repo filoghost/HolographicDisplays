@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_16_R3;
 
-import me.filoghost.holographicdisplays.common.nms.EntityID;
+import me.filoghost.holographicdisplays.nms.common.EntityID;
 import net.minecraft.server.v1_16_R3.Packet;
 import net.minecraft.server.v1_16_R3.PacketPlayOutEntityMetadata;
 

@@ -3,10 +3,10 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.common.nms.entity;
+package me.filoghost.holographicdisplays.nms.common.entity;
 
 import me.filoghost.holographicdisplays.common.Position;
-import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
 import org.bukkit.inventory.ItemStack;
 
 public interface ItemNMSPacketEntity extends NMSPacketEntity {

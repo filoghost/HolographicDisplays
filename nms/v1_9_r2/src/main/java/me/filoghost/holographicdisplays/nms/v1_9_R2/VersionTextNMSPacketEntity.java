@@ -6,11 +6,11 @@
 package me.filoghost.holographicdisplays.nms.v1_9_R2;
 
 import me.filoghost.holographicdisplays.common.Position;
-import me.filoghost.holographicdisplays.common.nms.EntityID;
-import me.filoghost.holographicdisplays.common.nms.IndividualNMSPacket;
-import me.filoghost.holographicdisplays.common.nms.IndividualText;
-import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
-import me.filoghost.holographicdisplays.common.nms.entity.TextNMSPacketEntity;
+import me.filoghost.holographicdisplays.nms.common.EntityID;
+import me.filoghost.holographicdisplays.nms.common.IndividualNMSPacket;
+import me.filoghost.holographicdisplays.nms.common.IndividualText;
+import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
+import me.filoghost.holographicdisplays.nms.common.entity.TextNMSPacketEntity;
 
 class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
 

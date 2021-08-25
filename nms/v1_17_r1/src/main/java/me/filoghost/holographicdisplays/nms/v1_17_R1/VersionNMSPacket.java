@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_17_R1;
 
-import me.filoghost.holographicdisplays.common.nms.NMSPacket;
+import me.filoghost.holographicdisplays.nms.common.NMSPacket;
 import net.minecraft.network.protocol.Packet;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;

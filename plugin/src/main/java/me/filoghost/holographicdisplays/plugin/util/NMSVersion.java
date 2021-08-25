@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.util;
 
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
+import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import org.bukkit.Bukkit;
 
 import java.util.regex.Matcher;

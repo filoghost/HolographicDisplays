@@ -6,9 +6,9 @@
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.common.Position;
-import me.filoghost.holographicdisplays.common.nms.NMSManager;
-import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
-import me.filoghost.holographicdisplays.common.nms.entity.ClickableNMSPacketEntity;
+import me.filoghost.holographicdisplays.nms.common.NMSManager;
+import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
+import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;

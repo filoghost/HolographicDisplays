@@ -9,8 +9,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.fcommons.reflection.ReflectField;
-import me.filoghost.holographicdisplays.common.nms.NMSErrors;
-import me.filoghost.holographicdisplays.common.nms.PacketListener;
+import me.filoghost.holographicdisplays.nms.common.NMSErrors;
+import me.filoghost.holographicdisplays.nms.common.PacketListener;
 import net.minecraft.server.v1_10_R1.PacketPlayInUseEntity;
 import org.bukkit.entity.Player;
 

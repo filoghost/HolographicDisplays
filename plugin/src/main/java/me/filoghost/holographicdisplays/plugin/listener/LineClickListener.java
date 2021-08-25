@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.listener;
 
-import me.filoghost.holographicdisplays.common.nms.EntityID;
-import me.filoghost.holographicdisplays.common.nms.PacketListener;
+import me.filoghost.holographicdisplays.nms.common.EntityID;
+import me.filoghost.holographicdisplays.nms.common.PacketListener;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableHologramLine;
 import org.bukkit.entity.Player;
 

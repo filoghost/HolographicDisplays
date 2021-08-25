@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.nms.v1_17_R1;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.common.nms.EntityID;
-import me.filoghost.holographicdisplays.common.nms.NMSPacketList;
+import me.filoghost.holographicdisplays.nms.common.EntityID;
+import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntList;
 

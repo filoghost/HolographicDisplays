@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.nms.v1_8_R3;
 
 import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.holographicdisplays.common.Position;
-import me.filoghost.holographicdisplays.common.nms.EntityID;
+import me.filoghost.holographicdisplays.nms.common.EntityID;
 import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.Packet;

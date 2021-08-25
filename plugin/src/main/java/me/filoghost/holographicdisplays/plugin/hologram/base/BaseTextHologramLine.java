@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
-import me.filoghost.holographicdisplays.common.nms.entity.TextNMSPacketEntity;
+import me.filoghost.holographicdisplays.nms.common.entity.TextNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.TextLineTracker;
 import org.jetbrains.annotations.Nullable;

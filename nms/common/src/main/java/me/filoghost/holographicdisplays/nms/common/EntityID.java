@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.common.nms;
+package me.filoghost.holographicdisplays.nms.common;
 
 import org.jetbrains.annotations.Nullable;
 

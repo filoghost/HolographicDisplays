@@ -92,7 +92,7 @@
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>holographicdisplays-nms-interfaces</artifactId>
+                <artifactId>holographicdisplays-nms-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

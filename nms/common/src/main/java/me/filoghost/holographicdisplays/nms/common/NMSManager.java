@@ -3,11 +3,11 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.common.nms;
+package me.filoghost.holographicdisplays.nms.common;
 
-import me.filoghost.holographicdisplays.common.nms.entity.ClickableNMSPacketEntity;
-import me.filoghost.holographicdisplays.common.nms.entity.ItemNMSPacketEntity;
-import me.filoghost.holographicdisplays.common.nms.entity.TextNMSPacketEntity;
+import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
+import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
+import me.filoghost.holographicdisplays.nms.common.entity.TextNMSPacketEntity;
 import org.bukkit.entity.Player;
 
 public interface NMSManager {

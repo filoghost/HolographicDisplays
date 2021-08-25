@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.nms.v1_17_R1;
 
 import me.filoghost.holographicdisplays.common.Position;
-import me.filoghost.holographicdisplays.common.nms.EntityID;
+import me.filoghost.holographicdisplays.nms.common.EntityID;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutSpawnEntity;
 
