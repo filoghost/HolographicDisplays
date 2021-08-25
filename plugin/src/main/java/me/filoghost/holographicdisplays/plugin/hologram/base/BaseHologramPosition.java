@@ -31,7 +31,7 @@ public class BaseHologramPosition implements HologramPosition {
 
     public BaseHologramPosition(@NotNull Location location) {
         Preconditions.notNull(location, "location");
-        Preconditions.notNull(location.getWorld(), "location's world");
+        Preconditions.notNull(location.getWorld(), "location.getWorld()");
         this.worldName = location.getWorld().getName();
         this.x = location.getX();
         this.y = location.getY();
@@ -40,7 +40,7 @@ public class BaseHologramPosition implements HologramPosition {
 
     public BaseHologramPosition(@NotNull HologramPosition position) {
         Preconditions.notNull(position, "position");
-        Preconditions.notNull(position.getWorldName(), "position's worldName");
+        Preconditions.notNull(position.getWorldName(), "position.getWorldName()");
         this.worldName = position.getWorldName();
         this.x = position.getX();
         this.y = position.getY();

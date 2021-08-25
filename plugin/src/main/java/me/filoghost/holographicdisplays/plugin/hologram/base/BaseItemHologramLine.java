@@ -42,7 +42,7 @@ public abstract class BaseItemHologramLine extends BaseClickableHologramLine imp
 
         if (itemStack != null) {
             Preconditions.checkArgument(0 < itemStack.getAmount() && itemStack.getAmount() <= 64,
-                    "itemStack's amount must be between 1 and 64");
+                    "itemStack.getAmount() must be between 1 and 64");
         }
         this.itemStack = clone(itemStack);
         setChanged();

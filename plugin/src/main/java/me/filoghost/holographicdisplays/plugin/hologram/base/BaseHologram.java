@@ -57,7 +57,7 @@ public abstract class BaseHologram extends BaseHologramComponent {
 
     public void setPosition(@NotNull Location location) {
         Preconditions.notNull(location, "location");
-        Preconditions.notNull(location.getWorld(), "location's world");
+        Preconditions.notNull(location.getWorld(), "location.getWorld()");
         setPosition(location.getWorld().getName(), location.getX(), location.getY(), location.getZ());
     }
 

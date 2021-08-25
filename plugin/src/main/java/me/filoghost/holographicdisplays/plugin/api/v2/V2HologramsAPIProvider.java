@@ -35,7 +35,7 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
     public Hologram createHologram(Plugin plugin, Location source) {
         Preconditions.notNull(plugin, "plugin");
         Preconditions.notNull(source, "source");
-        Preconditions.notNull(source.getWorld(), "source's world");
+        Preconditions.notNull(source.getWorld(), "source.getWorld()");
         Preconditions.checkMainThread("async hologram creation");
 
         return hologramManager.createHologram(new BaseHologramPosition(source), plugin);
