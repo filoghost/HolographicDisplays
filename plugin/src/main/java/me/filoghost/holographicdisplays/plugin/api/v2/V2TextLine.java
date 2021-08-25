@@ -12,23 +12,23 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLin
 @SuppressWarnings("deprecation")
 public class V2TextLine extends BaseTextHologramLine implements TextLine, V2TouchableLine {
 
-    private final V2Hologram parent;
+    private final V2Hologram hologram;
 
     private TouchHandler touchHandler;
 
-    public V2TextLine(V2Hologram parent, String text) {
-        super(parent, text);
-        this.parent = parent;
+    public V2TextLine(V2Hologram hologram, String text) {
+        super(hologram, text);
+        this.hologram = hologram;
     }
 
     @Override
     public V2Hologram getParent() {
-        return parent;
+        return hologram;
     }
 
     @Override
     public boolean isAllowPlaceholders() {
-        return parent.isAllowPlaceholders();
+        return hologram.isAllowPlaceholders();
     }
 
     @Override

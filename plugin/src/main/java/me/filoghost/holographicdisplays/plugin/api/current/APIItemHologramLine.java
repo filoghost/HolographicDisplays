@@ -17,8 +17,8 @@ public class APIItemHologramLine extends BaseItemHologramLine implements ItemHol
     private PickupListener pickupListener;
     private ClickListener clickListener;
 
-    public APIItemHologramLine(APIHologram parent, ItemStack itemStack) {
-        super(parent, itemStack);
+    public APIItemHologramLine(APIHologram hologram, ItemStack itemStack) {
+        super(hologram, itemStack);
     }
 
     public @Nullable PickupListener getPickupListener() {

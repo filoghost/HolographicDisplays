@@ -12,18 +12,18 @@ import org.jetbrains.annotations.Nullable;
 
 public class APITextHologramLine extends BaseTextHologramLine implements TextHologramLine, APIClickableHologramLine {
 
-    private final APIHologram parent;
+    private final APIHologram hologram;
 
     private ClickListener clickListener;
 
-    public APITextHologramLine(APIHologram parent, String text) {
-        super(parent, text);
-        this.parent = parent;
+    public APITextHologramLine(APIHologram hologram, String text) {
+        super(hologram, text);
+        this.hologram = hologram;
     }
 
     @Override
     public boolean isAllowPlaceholders() {
-        return parent.isAllowPlaceholders();
+        return hologram.isAllowPlaceholders();
     }
 
     @Override

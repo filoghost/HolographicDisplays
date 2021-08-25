@@ -24,7 +24,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     private Position position;
 
     protected BaseHologramLine(BaseHologram hologram) {
-        Preconditions.notNull(hologram, "parent hologram");
+        Preconditions.notNull(hologram, "hologram");
         this.hologram = hologram;
         this.tracker = createTracker(hologram.getTrackerManager());
     }

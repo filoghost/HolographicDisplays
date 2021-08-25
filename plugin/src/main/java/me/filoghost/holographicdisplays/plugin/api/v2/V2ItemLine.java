@@ -14,19 +14,19 @@ import org.bukkit.inventory.ItemStack;
 @SuppressWarnings("deprecation")
 public class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2CollectableLine, V2TouchableLine {
 
-    private final V2Hologram parent;
+    private final V2Hologram hologram;
 
     private TouchHandler touchHandler;
     private PickupHandler pickupHandler;
 
-    public V2ItemLine(V2Hologram parent, ItemStack itemStack) {
-        super(parent, itemStack);
-        this.parent = parent;
+    public V2ItemLine(V2Hologram hologram, ItemStack itemStack) {
+        super(hologram, itemStack);
+        this.hologram = hologram;
     }
 
     @Override
     public V2Hologram getParent() {
-        return parent;
+        return hologram;
     }
 
     @Override
