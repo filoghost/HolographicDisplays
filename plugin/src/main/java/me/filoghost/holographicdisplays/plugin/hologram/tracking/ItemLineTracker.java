@@ -37,7 +37,7 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemHologramLine> 
     protected void update(Collection<? extends Player> onlinePlayers) {
         super.update(onlinePlayers);
 
-        if (spawnItemEntity && hasTrackedPlayers()) {
+        if (spawnItemEntity && hasTrackedPlayers() && line.hasPickupCallback()) {
             for (Player trackedPlayer : getTrackedPlayers()) {
                 if (CollisionHelper.isInPickupRange(trackedPlayer, position)) {
                     line.onPickup(trackedPlayer);

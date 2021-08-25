@@ -5,32 +5,19 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
-import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
 import me.filoghost.holographicdisplays.common.Position;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.MustBeInvokedByOverriders;
-import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseClickableHologramLine extends BaseHologramLine {
-
-    private ClickListener clickListener;
+public abstract class BaseClickableHologramLine extends BaseHologramLine implements Clickable {
 
     protected BaseClickableHologramLine(BaseHologram hologram) {
         super(hologram);
     }
 
     public void onClick(Player player) {
-        if (clickListener == null || !canInteract(player) || !isInClickRange(player)) {
-            return;
-        }
-
-        try {
-            clickListener.onClick(player);
-        } catch (Throwable t) {
-            Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
-                    + " when the player " + player.getName() + " clicked a hologram.", t);
+        if (hasClickCallback() && canInteract(player) && isInClickRange(player)) {
+            invokeClickCallback(player);
         }
     }
 
@@ -44,18 +31,6 @@ public abstract class BaseClickableHologramLine extends BaseHologramLine {
 
         double distanceSquared = (xDiff * xDiff) + (yDiff * yDiff) + (zDiff * zDiff);
         return distanceSquared < 5 * 5;
-    }
-
-    public @Nullable ClickListener getClickListener() {
-        return clickListener;
-    }
-
-    @MustBeInvokedByOverriders
-    public void setClickListener(@Nullable ClickListener clickListener) {
-        checkNotDeleted();
-
-        this.clickListener = clickListener;
-        setChanged();
     }
 
 }

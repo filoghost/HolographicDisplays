@@ -6,20 +6,16 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.api.hologram.line.PickupListener;
 import me.filoghost.holographicdisplays.common.nms.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.ItemLineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseItemHologramLine extends BaseClickableHologramLine {
+public abstract class BaseItemHologramLine extends BaseClickableHologramLine implements Collectable {
 
     private ItemStack itemStack;
-    private PickupListener pickupListener;
 
     public BaseItemHologramLine(BaseHologram hologram, ItemStack itemStack) {
         super(hologram);
@@ -32,27 +28,9 @@ public abstract class BaseItemHologramLine extends BaseClickableHologramLine {
     }
 
     public void onPickup(Player player) {
-        if (pickupListener == null || !canInteract(player)) {
-            return;
+        if (hasPickupCallback() && canInteract(player)) {
+            invokePickupCallback(player);
         }
-
-        try {
-            pickupListener.onPickup(player);
-        } catch (Throwable t) {
-            Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
-                    + " when the player " + player.getName() + " picked up an item from a hologram.", t);
-        }
-    }
-
-    public @Nullable PickupListener getPickupListener() {
-        return pickupListener;
-    }
-
-    @MustBeInvokedByOverriders
-    public void setPickupListener(@Nullable PickupListener pickupListener) {
-        checkNotDeleted();
-
-        this.pickupListener = pickupListener;
     }
 
     public @Nullable ItemStack getItemStack() {

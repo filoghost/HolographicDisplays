@@ -41,7 +41,7 @@ public abstract class ClickableLineTracker<T extends BaseClickableHologramLine> 
     protected void detectChanges() {
         super.detectChanges();
 
-        boolean spawnClickableEntity = line.getClickListener() != null;
+        boolean spawnClickableEntity = line.hasClickCallback();
         if (this.spawnClickableEntity != spawnClickableEntity) {
             this.spawnClickableEntity = spawnClickableEntity;
             this.spawnClickableEntityChanged = true;

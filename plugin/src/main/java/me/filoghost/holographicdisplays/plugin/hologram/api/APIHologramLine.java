@@ -7,9 +7,12 @@ package me.filoghost.holographicdisplays.plugin.hologram.api;
 
 import me.filoghost.holographicdisplays.api.hologram.line.HologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.EditableHologramLine;
+import org.bukkit.plugin.Plugin;
 
 public interface APIHologramLine extends HologramLine, EditableHologramLine {
 
     void setChanged();
+
+    Plugin getCreatorPlugin();
 
 }

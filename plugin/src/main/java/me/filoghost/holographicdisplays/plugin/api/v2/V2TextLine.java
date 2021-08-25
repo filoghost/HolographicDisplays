@@ -7,13 +7,14 @@ package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
-import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 
 @SuppressWarnings("deprecation")
-public class V2TextLine extends BaseTextHologramLine implements TextLine, V2HologramLine {
+public class V2TextLine extends BaseTextHologramLine implements TextLine, V2TouchableLine {
 
     private final V2Hologram parent;
+
+    private TouchHandler touchHandler;
 
     public V2TextLine(V2Hologram parent, String text) {
         super(parent, text);
@@ -32,17 +33,12 @@ public class V2TextLine extends BaseTextHologramLine implements TextLine, V2Holo
 
     @Override
     public void setTouchHandler(TouchHandler touchHandler) {
-        super.setClickListener(new V3ClickListenerAdapter(touchHandler));
+        this.touchHandler = touchHandler;
     }
 
     @Override
     public TouchHandler getTouchHandler() {
-        ClickListener clickListener = super.getClickListener();
-        if (clickListener instanceof V3ClickListenerAdapter) {
-            return ((V3ClickListenerAdapter) clickListener).getV2TouchHandler();
-        } else {
-            return null;
-        }
+        return touchHandler;
     }
 
 }

@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.internal;
 
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
+import org.bukkit.entity.Player;
 
 public class InternalTextHologramLine extends BaseTextHologramLine implements InternalHologramLine {
 
@@ -25,5 +26,13 @@ public class InternalTextHologramLine extends BaseTextHologramLine implements In
     public String getSerializedConfigValue() {
         return serializedConfigValue;
     }
+
+    @Override
+    public boolean hasClickCallback() {
+        return false;
+    }
+
+    @Override
+    public void invokeClickCallback(Player player) {}
 
 }

@@ -21,7 +21,7 @@ public class LineClickListener implements PacketListener {
 
     // It is necessary to queue async click events to process them from the main thread.
     // Use a set to avoid duplicate click events to the same line.
-    private final Set<ClickEvent> queuedClickEvents;
+    private final Set<QueuedClickEvent> queuedClickEvents;
 
     public LineClickListener() {
         linesByEntityID = new ConcurrentHashMap<>();
@@ -32,7 +32,7 @@ public class LineClickListener implements PacketListener {
     public boolean onAsyncEntityInteract(Player player, int entityID) {
         BaseClickableHologramLine line = linesByEntityID.get(entityID);
         if (line != null) {
-            queuedClickEvents.add(new ClickEvent(player, line));
+            queuedClickEvents.add(new QueuedClickEvent(player, line));
             return true;
         } else {
             return false;
@@ -41,8 +41,8 @@ public class LineClickListener implements PacketListener {
 
     // This method is called from the main thread
     public void processQueuedClickEvents() {
-        for (ClickEvent clickEvent : queuedClickEvents) {
-            clickEvent.line.onClick(clickEvent.player);
+        for (QueuedClickEvent queuedClickEvent : queuedClickEvents) {
+            queuedClickEvent.line.onClick(queuedClickEvent.player);
         }
         queuedClickEvents.clear();
     }
@@ -58,12 +58,12 @@ public class LineClickListener implements PacketListener {
     }
 
 
-    private static class ClickEvent {
+    private static class QueuedClickEvent {
 
         private final Player player;
         private final BaseClickableHologramLine line;
 
-        ClickEvent(Player player, BaseClickableHologramLine line) {
+        QueuedClickEvent(Player player, BaseClickableHologramLine line) {
             this.player = player;
             this.line = line;
         }
@@ -77,7 +77,7 @@ public class LineClickListener implements PacketListener {
                 return false;
             }
 
-            ClickEvent other = (ClickEvent) obj;
+            QueuedClickEvent other = (QueuedClickEvent) obj;
             return this.player.equals(other.player) && this.line.equals(other.line);
         }
 

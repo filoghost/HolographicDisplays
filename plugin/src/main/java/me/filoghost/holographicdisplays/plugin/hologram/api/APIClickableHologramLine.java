@@ -5,8 +5,28 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.api;
 
+import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.ClickableHologramLine;
+import me.filoghost.holographicdisplays.plugin.hologram.base.Clickable;
+import org.bukkit.entity.Player;
 
-public interface APIClickableHologramLine extends ClickableHologramLine, APIHologramLine {
+public interface APIClickableHologramLine extends ClickableHologramLine, APIHologramLine, Clickable {
+
+    @Override
+    default boolean hasClickCallback() {
+        return getClickListener() != null;
+    }
+
+    @Override
+    default void invokeClickCallback(Player player) {
+        try {
+            ClickListener clickListener = getClickListener();
+            if (clickListener != null) {
+                clickListener.onClick(player);
+            }
+        } catch (Throwable t) {
+            logClickCallbackException(getCreatorPlugin(), player, t);
+        }
+    }
 
 }

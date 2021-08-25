@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.internal;
 
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class InternalItemHologramLine extends BaseItemHologramLine implements InternalHologramLine {
@@ -21,5 +22,21 @@ public class InternalItemHologramLine extends BaseItemHologramLine implements In
     public String getSerializedConfigValue() {
         return serializedConfigValue;
     }
+
+    @Override
+    public boolean hasClickCallback() {
+        return false;
+    }
+
+    @Override
+    public void invokeClickCallback(Player player) {}
+
+    @Override
+    public boolean hasPickupCallback() {
+        return false;
+    }
+
+    @Override
+    public void invokePickupCallback(Player player) {}
 
 }
