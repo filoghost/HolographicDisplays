@@ -13,7 +13,7 @@ import me.filoghost.holographicdisplays.plugin.config.HologramLineParser;
 import me.filoghost.holographicdisplays.plugin.config.HologramLoadException;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
@@ -73,7 +73,7 @@ public class InternalHologramEditor {
         return internalHologramManager.getHolograms();
     }
 
-    public InternalHologram create(BaseHologramPosition spawnPosition, String hologramName) {
+    public InternalHologram create(ImmutablePosition spawnPosition, String hologramName) {
         return internalHologramManager.createHologram(spawnPosition, hologramName);
     }
 

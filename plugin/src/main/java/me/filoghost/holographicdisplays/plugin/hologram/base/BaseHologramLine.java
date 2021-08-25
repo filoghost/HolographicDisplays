@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.common.Position;
+import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTracker;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.GameMode;
@@ -21,7 +21,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     private final BaseHologram hologram;
     private final LineTracker<?> tracker;
 
-    private Position position;
+    private PositionCoordinates position;
 
     protected BaseHologramLine(BaseHologram hologram) {
         Preconditions.notNull(hologram, "hologram");
@@ -41,11 +41,11 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
 
     @Override
     public final void setPosition(double x, double y, double z) {
-        position = new Position(x, y, z);
+        position = new PositionCoordinates(x, y, z);
         setChanged();
     }
 
-    public @NotNull Position getPosition() {
+    public @NotNull PositionCoordinates getPosition() {
         if (position == null) {
             throw new IllegalStateException("position not set");
         }

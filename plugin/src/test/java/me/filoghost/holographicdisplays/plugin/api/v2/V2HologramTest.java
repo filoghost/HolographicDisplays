@@ -9,7 +9,7 @@ import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.test.Mocks;
 import me.filoghost.holographicdisplays.plugin.test.TestV2HologramManager;
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ class V2HologramTest {
     V2HologramManager hologramManager = new TestV2HologramManager();
 
     V2Hologram hologram = hologramManager.createHologram(
-            new BaseHologramPosition("world", 0, 0, 0),
+            new ImmutablePosition("world", 0, 0, 0),
             Mocks.PLUGIN
     );
 

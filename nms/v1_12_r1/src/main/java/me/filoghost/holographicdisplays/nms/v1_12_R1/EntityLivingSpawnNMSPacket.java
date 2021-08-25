@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.nms.v1_12_R1;
 
 import me.filoghost.fcommons.reflection.ReflectField;
-import me.filoghost.holographicdisplays.common.Position;
+import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
 import net.minecraft.server.v1_12_R1.DataWatcher;
 import net.minecraft.server.v1_12_R1.Packet;
@@ -35,7 +35,7 @@ class EntityLivingSpawnNMSPacket extends VersionNMSPacket {
     }
 
     public static DataWatcherPacketBuilder<EntityLivingSpawnNMSPacket> builder(
-            EntityID entityID, int entityTypeID, Position position, double positionOffsetY) {
+            EntityID entityID, int entityTypeID, PositionCoordinates position, double positionOffsetY) {
         PacketByteBuffer packetByteBuffer = PacketByteBuffer.get();
 
         packetByteBuffer.writeVarInt(entityID.getNumericID());

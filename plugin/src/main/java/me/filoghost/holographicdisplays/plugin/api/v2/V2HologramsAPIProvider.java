@@ -9,7 +9,7 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider;
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -38,7 +38,7 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
         Preconditions.notNull(source.getWorld(), "source.getWorld()");
         Preconditions.checkMainThread("async hologram creation");
 
-        return hologramManager.createHologram(new BaseHologramPosition(source), plugin);
+        return hologramManager.createHologram(new ImmutablePosition(source), plugin);
     }
 
     @Override

@@ -14,14 +14,14 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-class WorldAwareHologramPosition {
+class HologramPosition {
 
-    private @NotNull BaseHologramPosition position;
+    private @NotNull ImmutablePosition position;
     private @Nullable World world;
     private int chunkX, chunkZ;
     private final CachedBoolean chunkLoaded;
 
-    WorldAwareHologramPosition(@NotNull BaseHologramPosition position) {
+    HologramPosition(@NotNull ImmutablePosition position) {
         Preconditions.notNull(position, "position");
         this.position = position;
         this.world = Bukkit.getWorld(position.getWorldName());
@@ -35,7 +35,7 @@ class WorldAwareHologramPosition {
         int chunkX = getChunkCoordinate(x);
         int chunkZ = getChunkCoordinate(z);
 
-        position = new BaseHologramPosition(worldName, x, y, z);
+        position = new ImmutablePosition(worldName, x, y, z);
 
         if (worldChanged || this.chunkX != chunkX || this.chunkZ != chunkZ) {
             if (worldChanged) {
@@ -85,7 +85,7 @@ class WorldAwareHologramPosition {
         return world;
     }
 
-    @NotNull BaseHologramPosition getPosition() {
+    @NotNull ImmutablePosition getPosition() {
         return position;
     }
 

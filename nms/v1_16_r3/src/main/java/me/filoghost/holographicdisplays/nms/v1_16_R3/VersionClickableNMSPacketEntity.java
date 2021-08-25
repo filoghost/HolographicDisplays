@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_16_R3;
 
-import me.filoghost.holographicdisplays.common.Position;
+import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
 import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
 import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
@@ -24,7 +24,7 @@ public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity
     }
 
     @Override
-    public void addSpawnPackets(NMSPacketList packetList, Position position) {
+    public void addSpawnPackets(NMSPacketList packetList, PositionCoordinates position) {
         packetList.add(new EntityLivingSpawnNMSPacket(slimeID, EntityTypeID.SLIME, position, SLIME_Y_OFFSET));
         packetList.add(EntityMetadataNMSPacket.builder(slimeID)
                 .setInvisible()
@@ -34,7 +34,7 @@ public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity
     }
 
     @Override
-    public void addTeleportPackets(NMSPacketList packetList, Position position) {
+    public void addTeleportPackets(NMSPacketList packetList, PositionCoordinates position) {
         packetList.add(new EntityTeleportNMSPacket(slimeID, position, SLIME_Y_OFFSET));
     }
 

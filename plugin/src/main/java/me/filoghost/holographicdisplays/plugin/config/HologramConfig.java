@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.config;
 
 import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.exception.ConfigValueException;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
@@ -34,7 +34,7 @@ public class HologramConfig {
             serializedLines.add(line.getSerializedConfigValue());
         }
 
-        BaseHologramPosition position = hologram.getPosition();
+        ImmutablePosition position = hologram.getPosition();
         this.positionConfigSection = new ConfigSection();
         positionConfigSection.setString("world", position.getWorldName());
         positionConfigSection.setDouble("x", position.getX());
@@ -57,7 +57,7 @@ public class HologramConfig {
             throw new HologramLoadException("no position set");
         }
 
-        BaseHologramPosition position = parsePosition();
+        ImmutablePosition position = parsePosition();
         InternalHologram hologram = internalHologramManager.createHologram(position, name);
         List<InternalHologramLine> lines = new ArrayList<>();
 
@@ -73,13 +73,13 @@ public class HologramConfig {
         hologram.lines().addAll(lines);
     }
 
-    private BaseHologramPosition parsePosition() throws HologramLoadException {
+    private ImmutablePosition parsePosition() throws HologramLoadException {
         try {
             String worldName = positionConfigSection.getRequiredString("world");
             double x = positionConfigSection.getRequiredDouble("x");
             double y = positionConfigSection.getRequiredDouble("y");
             double z = positionConfigSection.getRequiredDouble("z");
-            return new BaseHologramPosition(worldName, x, y, z);
+            return new ImmutablePosition(worldName, x, y, z);
         } catch (ConfigValueException e) {
             throw new HologramLoadException("invalid position attribute \"" + e.getConfigPath() + "\"", e);
         }

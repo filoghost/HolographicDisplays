@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.api.hologram;
 
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.Position;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +32,7 @@ public interface Hologram {
      * @return the current position
      * @since 1
      */
-    @NotNull HologramPosition getPosition();
+    @NotNull Position getPosition();
 
     /**
      * Moves the hologram to the given position.
@@ -39,7 +40,7 @@ public interface Hologram {
      * @param position the new position
      * @since 1
      */
-    void setPosition(@NotNull HologramPosition position);
+    void setPosition(@NotNull Position position);
 
     /**
      * Moves the hologram to the given position.

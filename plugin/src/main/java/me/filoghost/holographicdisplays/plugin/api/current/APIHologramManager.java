@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.api.current;
 
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramManager;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.plugin.Plugin;
 
@@ -24,7 +24,7 @@ public class APIHologramManager extends BaseHologramManager<APIHologram> {
         this.lineTrackerManager = lineTrackerManager;
     }
 
-    public APIHologram createHologram(BaseHologramPosition position, Plugin plugin) {
+    public APIHologram createHologram(ImmutablePosition position, Plugin plugin) {
         APIHologram hologram = new APIHologram(position, plugin, this, lineTrackerManager);
         super.addHologram(hologram);
         return hologram;

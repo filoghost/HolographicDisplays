@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.api.current;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -24,7 +24,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     private boolean allowPlaceholders;
 
     protected APIHologram(
-            BaseHologramPosition position,
+            ImmutablePosition position,
             Plugin plugin,
             APIHologramManager apiHologramManager,
             LineTrackerManager lineTrackerManager) {

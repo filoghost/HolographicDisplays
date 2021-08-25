@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_11_R1;
 
-import me.filoghost.holographicdisplays.common.Position;
+import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
 import me.filoghost.holographicdisplays.nms.common.IndividualNMSPacket;
 import me.filoghost.holographicdisplays.nms.common.IndividualText;
@@ -21,7 +21,7 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
     }
 
     @Override
-    public void addSpawnPackets(NMSPacketList packetList, Position position, String text) {
+    public void addSpawnPackets(NMSPacketList packetList, PositionCoordinates position, String text) {
         packetList.add(new EntitySpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, position, ARMOR_STAND_Y_OFFSET));
         packetList.add(EntityMetadataNMSPacket.builder(armorStandID)
                 .setArmorStandMarker()
@@ -31,7 +31,7 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
     }
 
     @Override
-    public void addSpawnPackets(NMSPacketList packetList, Position position, IndividualText individualText) {
+    public void addSpawnPackets(NMSPacketList packetList, PositionCoordinates position, IndividualText individualText) {
         packetList.add(new EntitySpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, position, ARMOR_STAND_Y_OFFSET));
         packetList.add(new IndividualNMSPacket(player ->
                 EntityMetadataNMSPacket.builder(armorStandID)
@@ -59,7 +59,7 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
     }
 
     @Override
-    public void addTeleportPackets(NMSPacketList packetList, Position position) {
+    public void addTeleportPackets(NMSPacketList packetList, PositionCoordinates position) {
         packetList.add(new EntityTeleportNMSPacket(armorStandID, position, ARMOR_STAND_Y_OFFSET));
     }
 

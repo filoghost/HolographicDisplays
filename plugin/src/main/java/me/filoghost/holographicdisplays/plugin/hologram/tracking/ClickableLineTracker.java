@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.common.Position;
+import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
 import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
@@ -98,7 +98,7 @@ public abstract class ClickableLineTracker<T extends BaseClickableHologramLine> 
         }
     }
 
-    private Position getClickableEntityPosition() {
+    private PositionCoordinates getClickableEntityPosition() {
         return position.addY(positionOffsetY);
     }
 

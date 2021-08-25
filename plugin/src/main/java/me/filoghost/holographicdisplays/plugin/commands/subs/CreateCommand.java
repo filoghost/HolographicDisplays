@@ -13,7 +13,7 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import net.md_5.bungee.api.ChatColor;
@@ -46,7 +46,7 @@ public class CreateCommand extends HologramSubCommand {
                 "The name must contain only alphanumeric characters, underscores and hyphens.");
         CommandValidate.check(!hologramEditor.hologramExists(hologramName), "A hologram with that name already exists.");
 
-        BaseHologramPosition spawnPosition = new BaseHologramPosition(player.getLocation());
+        ImmutablePosition spawnPosition = new ImmutablePosition(player.getLocation());
         boolean moveUp = player.isOnGround();
 
         if (moveUp) {

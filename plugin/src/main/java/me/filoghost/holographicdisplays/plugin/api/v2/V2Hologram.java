@@ -12,7 +12,7 @@ import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLines;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -31,7 +31,7 @@ public class V2Hologram extends BaseHologram implements Hologram {
     private boolean allowPlaceholders;
 
     public V2Hologram(
-            BaseHologramPosition position,
+            ImmutablePosition position,
             Plugin plugin,
             LineTrackerManager lineTrackerManager,
             V2HologramManager hologramManager) {

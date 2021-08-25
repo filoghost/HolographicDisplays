@@ -8,9 +8,9 @@ package me.filoghost.holographicdisplays.plugin.api.current;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
+import me.filoghost.holographicdisplays.api.Position;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
@@ -36,16 +36,16 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
         Preconditions.notNull(location.getWorld(), "location.getWorld()");
         Preconditions.checkMainThread("async hologram creation");
 
-        return apiHologramManager.createHologram(new BaseHologramPosition(location), plugin);
+        return apiHologramManager.createHologram(new ImmutablePosition(location), plugin);
     }
 
     @Override
-    public @NotNull Hologram createHologram(@NotNull HologramPosition position) {
+    public @NotNull Hologram createHologram(@NotNull Position position) {
         Preconditions.notNull(position, "position");
         Preconditions.notNull(position.getWorldName(), "position world name");
         Preconditions.checkMainThread("async hologram creation");
 
-        return apiHologramManager.createHologram(new BaseHologramPosition(position), plugin);
+        return apiHologramManager.createHologram(new ImmutablePosition(position), plugin);
     }
 
     @Override

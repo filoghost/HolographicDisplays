@@ -11,7 +11,7 @@ import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -43,7 +43,7 @@ public class NearCommand extends HologramSubCommand {
         List<InternalHologram> nearHolograms = new ArrayList<>();
 
         for (InternalHologram hologram : hologramEditor.getHolograms()) {
-            BaseHologramPosition position = hologram.getPosition();
+            ImmutablePosition position = hologram.getPosition();
             if (position.isInWorld(world) && position.distance(player.getLocation()) <= radius) {
                 nearHolograms.add(hologram);
             }

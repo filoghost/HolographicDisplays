@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.api;
 
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import org.bukkit.Location;
@@ -65,7 +64,7 @@ public interface HolographicDisplaysAPI {
      */
     @NotNull Hologram createHologram(@NotNull Location location);
 
-    @NotNull Hologram createHologram(@NotNull HologramPosition position);
+    @NotNull Hologram createHologram(@NotNull Position position);
 
     /**
      * Returns all the active holograms. A hologram is no longer active after {@link Hologram#delete()} is invoked.

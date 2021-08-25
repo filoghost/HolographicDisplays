@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.internal.hologram;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLines;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +19,7 @@ public class InternalHologram extends BaseHologram {
     private final BaseHologramLines<InternalHologramLine> lines;
     private final String name;
 
-    protected InternalHologram(BaseHologramPosition position, String name, LineTrackerManager lineTrackerManager) {
+    protected InternalHologram(ImmutablePosition position, String name, LineTrackerManager lineTrackerManager) {
         super(position, lineTrackerManager);
         this.lines = new BaseHologramLines<>(this);
         this.name = name;
