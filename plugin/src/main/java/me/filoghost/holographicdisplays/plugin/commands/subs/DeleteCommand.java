@@ -11,7 +11,7 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import org.bukkit.command.CommandSender;
 
 public class DeleteCommand extends HologramSubCommand {

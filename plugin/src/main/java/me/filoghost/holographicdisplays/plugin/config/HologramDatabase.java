@@ -10,8 +10,8 @@ import me.filoghost.fcommons.config.ConfigPath;
 import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.ConfigType;
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
 
 import java.util.ArrayList;
 import java.util.List;

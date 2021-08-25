@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.placeholder.internal;
+package me.filoghost.holographicdisplays.plugin.internal.placeholder;
 
 import me.filoghost.fcommons.collection.CollectionUtils;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;

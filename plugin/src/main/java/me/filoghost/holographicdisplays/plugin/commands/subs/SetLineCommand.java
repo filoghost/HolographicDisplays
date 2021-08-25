@@ -13,8 +13,8 @@ import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import org.bukkit.command.CommandSender;
 
 public class SetLineCommand extends LineEditingCommand implements QuickEditCommand {

@@ -8,9 +8,9 @@ package me.filoghost.holographicdisplays.plugin.config;
 import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.exception.ConfigValueException;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramLine;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -17,9 +17,9 @@ import me.filoghost.fcommons.config.exception.ConfigValueException;
 import me.filoghost.fcommons.config.mapped.MappedConfigLoader;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
-import me.filoghost.holographicdisplays.plugin.placeholder.internal.AnimationPlaceholder;
-import me.filoghost.holographicdisplays.plugin.placeholder.internal.AnimationPlaceholderFactory;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.internal.placeholder.AnimationPlaceholder;
+import me.filoghost.holographicdisplays.plugin.internal.placeholder.AnimationPlaceholderFactory;
 import me.filoghost.holographicdisplays.plugin.util.FileUtils;
 
 import java.io.IOException;

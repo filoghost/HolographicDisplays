@@ -9,7 +9,6 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.HologramPosition;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
-import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramPosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;

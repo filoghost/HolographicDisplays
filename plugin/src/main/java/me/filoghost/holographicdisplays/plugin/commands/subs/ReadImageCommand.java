@@ -15,11 +15,11 @@ import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalTextHologramLine;
 import me.filoghost.holographicdisplays.plugin.image.ImageMessage;
 import me.filoghost.holographicdisplays.plugin.image.ImageReadException;
 import me.filoghost.holographicdisplays.plugin.image.ImageReader;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalTextHologramLine;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 

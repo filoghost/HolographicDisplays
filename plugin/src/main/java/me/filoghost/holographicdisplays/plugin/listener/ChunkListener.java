@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.listener;
 
+import me.filoghost.holographicdisplays.plugin.api.current.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramManager;
-import me.filoghost.holographicdisplays.plugin.hologram.api.APIHologramManager;
-import me.filoghost.holographicdisplays.plugin.hologram.internal.InternalHologramManager;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
