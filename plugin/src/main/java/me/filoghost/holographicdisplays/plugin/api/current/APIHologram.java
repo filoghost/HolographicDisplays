@@ -18,7 +18,7 @@ public class APIHologram extends BaseHologram implements Hologram {
 
     private final APIHologramLines lines;
     private final Plugin plugin;
-    private final APIHologramManager apiHologramManager;
+    private final APIHologramManager hologramManager;
     private final DefaultVisibilitySettings visibilitySettings;
 
     private boolean allowPlaceholders;
@@ -26,13 +26,13 @@ public class APIHologram extends BaseHologram implements Hologram {
     protected APIHologram(
             ImmutablePosition position,
             Plugin plugin,
-            APIHologramManager apiHologramManager,
+            APIHologramManager hologramManager,
             LineTrackerManager lineTrackerManager) {
         super(position, lineTrackerManager);
         Preconditions.notNull(plugin, "plugin");
         this.lines = new APIHologramLines(this);
         this.plugin = plugin;
-        this.apiHologramManager = apiHologramManager;
+        this.hologramManager = hologramManager;
         this.visibilitySettings = new DefaultVisibilitySettings();
     }
 
@@ -42,8 +42,13 @@ public class APIHologram extends BaseHologram implements Hologram {
     }
 
     @Override
-    public Plugin getCreatorPlugin() {
-        return plugin;
+    public @NotNull DefaultVisibilitySettings getVisibilitySettings() {
+        return visibilitySettings;
+    }
+
+    @Override
+    public boolean isAllowPlaceholders() {
+        return allowPlaceholders;
     }
 
     @Override
@@ -61,8 +66,8 @@ public class APIHologram extends BaseHologram implements Hologram {
     }
 
     @Override
-    public boolean isAllowPlaceholders() {
-        return allowPlaceholders;
+    public Plugin getCreatorPlugin() {
+        return plugin;
     }
 
     @Override
@@ -71,13 +76,8 @@ public class APIHologram extends BaseHologram implements Hologram {
     }
 
     @Override
-    public @NotNull DefaultVisibilitySettings getVisibilitySettings() {
-        return visibilitySettings;
-    }
-
-    @Override
     public void delete() {
-        apiHologramManager.deleteHologram(this);
+        hologramManager.deleteHologram(this);
     }
 
 }

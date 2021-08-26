@@ -27,6 +27,14 @@ public interface Hologram {
     @NotNull HologramLines lines();
 
     /**
+     * Returns the {@link VisibilitySettings} of this hologram.
+     *
+     * @return the VisibilitySettings of this hologram
+     * @since 1
+     */
+    @NotNull VisibilitySettings getVisibilitySettings();
+
+    /**
      * Returns the current position.
      *
      * @return the current position
@@ -71,14 +79,6 @@ public interface Hologram {
      * @since 1
      */
     void setPosition(@NotNull Location location);
-
-    /**
-     * Returns the {@link VisibilitySettings} of this hologram.
-     *
-     * @return the VisibilitySettings of this hologram
-     * @since 1
-     */
-    @NotNull VisibilitySettings getVisibilitySettings();
 
     /**
      * Checks if the hologram will track and replace placeholders.
