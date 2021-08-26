@@ -89,7 +89,7 @@ public class DisplayFormat {
     public static void sendHologramSummary(CommandSender sender, InternalHologram hologram, boolean showWorld) {
         ImmutablePosition position = hologram.getPosition();
         sender.sendMessage(ColorScheme.SECONDARY_DARK + "- " + ColorScheme.SECONDARY_BOLD + hologram.getName()
-                + ColorScheme.SECONDARY_DARK + " (" + hologram.lines().size() + " lines) at "
+                + ColorScheme.SECONDARY_DARK + " (" + hologram.getLines().size() + " lines) at "
                 + (showWorld ? "world: \"" + position.getWorldName() + "\", " : "")
                 + "x: " + position.getBlockX() + ", "
                 + "y: " + position.getBlockY() + ", "

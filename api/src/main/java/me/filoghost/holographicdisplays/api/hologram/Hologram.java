@@ -24,7 +24,7 @@ public interface Hologram {
      *
      * @since 1
      */
-    @NotNull HologramLines lines();
+    @NotNull HologramLines getLines();
 
     /**
      * Returns the {@link VisibilitySettings} of this hologram.

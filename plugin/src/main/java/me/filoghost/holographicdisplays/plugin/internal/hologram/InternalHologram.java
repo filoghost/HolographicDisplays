@@ -26,7 +26,7 @@ public class InternalHologram extends BaseHologram {
     }
 
     @Override
-    public BaseHologramLines<InternalHologramLine> lines() {
+    public BaseHologramLines<InternalHologramLine> getLines() {
         return lines;
     }
 

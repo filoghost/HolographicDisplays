@@ -26,7 +26,7 @@ public abstract class BaseHologram extends BaseHologramComponent {
         this.lineTrackerManager = lineTrackerManager;
     }
 
-    public abstract BaseHologramLines<? extends EditableHologramLine> lines();
+    public abstract BaseHologramLines<? extends EditableHologramLine> getLines();
 
     protected abstract boolean isVisibleTo(Player player);
 
@@ -39,7 +39,7 @@ public abstract class BaseHologram extends BaseHologramComponent {
     @Override
     public final void setDeleted() {
         super.setDeleted();
-        lines().setDeleted();
+        getLines().setDeleted();
     }
 
     public @NotNull ImmutablePosition getPosition() {
@@ -71,7 +71,7 @@ public abstract class BaseHologram extends BaseHologramComponent {
         checkNotDeleted();
 
         position.set(worldName, x, y, z);
-        lines().updatePositions();
+        getLines().updatePositions();
     }
 
     protected void onWorldLoad(World world) {
@@ -98,7 +98,7 @@ public abstract class BaseHologram extends BaseHologramComponent {
     public String toString() {
         return "Hologram{"
                 + "position=" + position
-                + ", lines=" + lines()
+                + ", lines=" + getLines()
                 + ", deleted=" + isDeleted()
                 + "}";
     }

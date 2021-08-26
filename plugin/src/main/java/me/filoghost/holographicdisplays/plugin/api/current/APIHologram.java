@@ -37,7 +37,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     }
 
     @Override
-    public @NotNull APIHologramLines lines() {
+    public @NotNull APIHologramLines getLines() {
         return lines;
     }
 
