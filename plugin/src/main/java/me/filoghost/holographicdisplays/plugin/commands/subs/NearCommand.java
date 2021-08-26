@@ -13,7 +13,6 @@ import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,12 +38,11 @@ public class NearCommand extends HologramSubCommand {
         int radius = CommandValidate.parseInteger(args[0]);
         CommandValidate.check(radius > 0, "Radius must be at least 1.");
 
-        World world = player.getWorld();
         List<InternalHologram> nearHolograms = new ArrayList<>();
 
         for (InternalHologram hologram : hologramEditor.getHolograms()) {
             ImmutablePosition position = hologram.getPosition();
-            if (position.isInWorld(world) && position.distance(player.getLocation()) <= radius) {
+            if (position.isInSameWorld(player) && position.distance(player) <= radius) {
                 nearHolograms.add(hologram);
             }
         }

@@ -8,6 +8,8 @@ package me.filoghost.holographicdisplays.api;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,15 +29,23 @@ public interface Position {
 
     @NotNull String getWorldName();
 
-    @Nullable World getWorldIfLoaded();
-
     double getX();
 
     double getY();
 
     double getZ();
 
-    @NotNull Position add(double x, double y, double z);
+    @Nullable World getWorldIfLoaded();
+
+    boolean isInSameWorld(@NotNull Position position);
+
+    boolean isInSameWorld(@NotNull Location location);
+
+    boolean isInSameWorld(@NotNull Entity entity);
+
+    boolean isInWorld(@Nullable World world);
+
+    boolean isInWorld(@Nullable String worldName);
 
     int getBlockX();
 
@@ -43,10 +53,24 @@ public interface Position {
 
     int getBlockZ();
 
+    @NotNull Position add(double x, double y, double z);
+
+    @NotNull Position subtract(double x, double y, double z);
+
+    double distance(@NotNull Position position);
+
     double distance(@NotNull Location location);
+
+    double distance(@NotNull Entity entity);
+
+    double distanceSquared(@NotNull Position position);
 
     double distanceSquared(@NotNull Location location);
 
+    double distanceSquared(@NotNull Entity entity);
+
     @NotNull Location toLocation();
+
+    @NotNull Vector toVector();
 
 }
