@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.placeholder.tracking;
 
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
 import me.filoghost.holographicdisplays.plugin.placeholder.StandardPlaceholder;
-import me.filoghost.holographicdisplays.plugin.placeholder.TickClock;
+import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderExpansion;
