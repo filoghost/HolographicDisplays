@@ -42,7 +42,7 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     @Override
     public @NotNull Hologram createHologram(@NotNull Position position) {
         Preconditions.notNull(position, "position");
-        Preconditions.notNull(position.getWorldName(), "position world name");
+        Preconditions.notNull(position.getWorldName(), "position.getWorldName()");
         Preconditions.checkMainThread("async hologram creation");
 
         return apiHologramManager.createHologram(new ImmutablePosition(position), plugin);
