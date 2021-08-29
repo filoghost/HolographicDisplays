@@ -22,7 +22,7 @@ public interface APICollectableHologramLine extends CollectableHologramLine, API
         try {
             PickupListener pickupListener = getPickupListener();
             if (pickupListener != null) {
-                pickupListener.onPickup(player);
+                pickupListener.onPickup(new SimpleHologramLinePickupEvent(player));
             }
         } catch (Throwable t) {
             logPickupCallbackException(getCreatorPlugin(), player, t);

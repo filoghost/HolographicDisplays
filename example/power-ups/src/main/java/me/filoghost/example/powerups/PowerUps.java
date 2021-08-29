@@ -7,13 +7,13 @@ package me.filoghost.example.powerups;
 
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLinePickupEvent;
 import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -52,12 +52,12 @@ public class PowerUps extends JavaPlugin implements Listener {
             hologram.getLines().appendText(ChatColor.AQUA + "" + ChatColor.BOLD + "Speed PowerUp");
             ItemHologramLine itemLine = hologram.getLines().appendItem(new ItemStack(Material.SUGAR));
 
-            itemLine.setPickupListener((Player player) -> {
+            itemLine.setPickupListener((HologramLinePickupEvent pickupEvent) -> {
                 // Play an effect
-                player.playEffect(hologram.getPosition().toLocation(), Effect.MOBSPAWNER_FLAMES, null);
+                pickupEvent.getPlayer().playEffect(hologram.getPosition().toLocation(), Effect.MOBSPAWNER_FLAMES, null);
 
                 // 30 seconds of speed II
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * 20, 1), true);
+                pickupEvent.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * 20, 1), true);
 
                 // Delete the hologram
                 hologram.delete();

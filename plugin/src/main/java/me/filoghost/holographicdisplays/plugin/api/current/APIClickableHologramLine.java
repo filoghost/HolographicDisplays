@@ -22,7 +22,7 @@ public interface APIClickableHologramLine extends ClickableHologramLine, APIHolo
         try {
             ClickListener clickListener = getClickListener();
             if (clickListener != null) {
-                clickListener.onClick(player);
+                clickListener.onClick(new SimpleHologramLineClickEvent(player));
             }
         } catch (Throwable t) {
             logClickCallbackException(getCreatorPlugin(), player, t);
