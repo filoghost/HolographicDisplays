@@ -253,15 +253,39 @@
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.9.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>3.1.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.0</version>
                     <configuration>
                         <sourceFileIncludes>
-                            <include>**/holographicdisplays/api/**/*.java</include>
+                            <include>**/me/filoghost/holographicdisplays/api/**/*.java</include>
                         </sourceFileIncludes>
                         <sourceFileExcludes>
-                            <exclude>**/holographicdisplays/api/internal/**/*.java</exclude>
+                            <exclude>**/me/filoghost/holographicdisplays/api/internal/**/*.java</exclude>
                         </sourceFileExcludes>
+                        <windowtitle>Holographic Displays API</windowtitle>
+                        <doctitle>Holographic Displays API &amp;ndash; ${project.version}</doctitle>
+                        <offlineLinks>
+                            <offlineLink>
+                                <url>https://javadoc.io/doc/org.jetbrains/annotations/latest</url>
+                                <location>${basedir}/javadoc/jetbrains-annotations</location>
+                            </offlineLink>
+                            <offlineLink>
+                                <url>https://hub.spigotmc.org/javadocs/spigot</url>
+                                <location>${basedir}/javadoc/spigot</location>
+                            </offlineLink>
+                        </offlineLinks>
                     </configuration>
                 </plugin>
 
@@ -376,4 +400,21 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
 </project>
