@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.api.placeholder;
 /**
  * @since 1
  */
-public interface Placeholder extends PlaceholderReplacer {
+public interface GlobalPlaceholder extends GlobalPlaceholderReplacer {
 
     /**
      * @since 1

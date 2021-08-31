@@ -9,7 +9,7 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.Position;
-import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacer;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;
@@ -49,7 +49,7 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull PlaceholderReplacer replacer) {
+    public void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacer replacer) {
         Preconditions.notEmpty(identifier, "identifier");
         for (char c : identifier.toCharArray()) {
             Preconditions.checkArgument(isValidIdentifierCharacter(c), "identifier contains invalid character '" + c + "'");

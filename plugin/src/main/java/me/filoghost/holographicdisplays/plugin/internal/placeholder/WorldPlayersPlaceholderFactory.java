@@ -6,19 +6,19 @@
 package me.filoghost.holographicdisplays.plugin.internal.placeholder;
 
 import me.filoghost.fcommons.Strings;
-import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
-import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-public class WorldPlayersPlaceholderFactory implements PlaceholderFactory {
+public class WorldPlayersPlaceholderFactory implements GlobalPlaceholderFactory {
 
     @Override
-    public Placeholder getPlaceholder(@Nullable String argument) {
+    public GlobalPlaceholder getPlaceholder(@Nullable String argument) {
         if (argument == null) {
-            return new StaticPlaceholder("[No world specified]");
+            return new ImmutablePlaceholder("[No world specified]");
         }
 
         String[] worldNames = Strings.splitAndTrim(argument, ",");
@@ -26,7 +26,7 @@ public class WorldPlayersPlaceholderFactory implements PlaceholderFactory {
     }
 
 
-    private static class WorldPlayersPlaceholder implements Placeholder {
+    private static class WorldPlayersPlaceholder implements GlobalPlaceholder {
 
         private final String[] worldNames;
 

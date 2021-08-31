@@ -5,15 +5,15 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 
-import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
-import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacer;
 
-class SimpleGlobalPlaceholder implements Placeholder {
+class SimpleGlobalPlaceholder implements GlobalPlaceholder {
 
     private final int refreshIntervalTicks;
-    private final PlaceholderReplacer placeholderReplacer;
+    private final GlobalPlaceholderReplacer placeholderReplacer;
 
-    SimpleGlobalPlaceholder(int refreshIntervalTicks, PlaceholderReplacer placeholderReplacer) {
+    SimpleGlobalPlaceholder(int refreshIntervalTicks, GlobalPlaceholderReplacer placeholderReplacer) {
         this.refreshIntervalTicks = refreshIntervalTicks;
         this.placeholderReplacer = placeholderReplacer;
     }

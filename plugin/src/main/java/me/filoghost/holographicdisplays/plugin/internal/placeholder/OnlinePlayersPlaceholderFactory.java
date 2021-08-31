@@ -6,13 +6,13 @@
 package me.filoghost.holographicdisplays.plugin.internal.placeholder;
 
 import me.filoghost.fcommons.Strings;
-import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
-import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
-public class OnlinePlayersPlaceholderFactory implements PlaceholderFactory {
+public class OnlinePlayersPlaceholderFactory implements GlobalPlaceholderFactory {
 
     private final BungeeServerTracker bungeeServerTracker;
 
@@ -21,7 +21,7 @@ public class OnlinePlayersPlaceholderFactory implements PlaceholderFactory {
     }
 
     @Override
-    public Placeholder getPlaceholder(@Nullable String argument) {
+    public GlobalPlaceholder getPlaceholder(@Nullable String argument) {
         if (argument == null) {
             // No argument specified, return online players in this server
             return new LocalOnlinePlayersPlaceholder();
@@ -32,7 +32,7 @@ public class OnlinePlayersPlaceholderFactory implements PlaceholderFactory {
     }
 
 
-    private static class LocalOnlinePlayersPlaceholder implements Placeholder {
+    private static class LocalOnlinePlayersPlaceholder implements GlobalPlaceholder {
 
         @Override
         public int getRefreshIntervalTicks() {
@@ -47,7 +47,7 @@ public class OnlinePlayersPlaceholderFactory implements PlaceholderFactory {
     }
 
 
-    private static class BungeeOnlinePlayersPlaceholder implements Placeholder {
+    private static class BungeeOnlinePlayersPlaceholder implements GlobalPlaceholder {
 
         private final String[] serverNames;
         private final BungeeServerTracker bungeeServerTracker;

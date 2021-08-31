@@ -5,13 +5,13 @@
  */
 package me.filoghost.holographicdisplays.plugin.internal.placeholder;
 
-import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
 
-public class StaticPlaceholder implements Placeholder {
+public class ImmutablePlaceholder implements GlobalPlaceholder {
 
     private final String text;
 
-    public StaticPlaceholder(String text) {
+    public ImmutablePlaceholder(String text) {
         this.text = text;
     }
 

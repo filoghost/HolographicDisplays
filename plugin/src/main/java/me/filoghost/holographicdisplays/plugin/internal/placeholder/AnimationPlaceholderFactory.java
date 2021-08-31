@@ -7,14 +7,14 @@ package me.filoghost.holographicdisplays.plugin.internal.placeholder;
 
 import me.filoghost.fcommons.collection.CaseInsensitiveHashMap;
 import me.filoghost.fcommons.collection.CaseInsensitiveMap;
-import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
-import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
 
 import java.util.Map;
 
-public class AnimationPlaceholderFactory implements PlaceholderFactory {
+public class AnimationPlaceholderFactory implements GlobalPlaceholderFactory {
 
-    private final CaseInsensitiveMap<Placeholder> animationsByFileName;
+    private final CaseInsensitiveMap<GlobalPlaceholder> animationsByFileName;
 
     public AnimationPlaceholderFactory(Map<String, AnimationPlaceholder> animationsByFileName) {
         this.animationsByFileName = new CaseInsensitiveHashMap<>();
@@ -22,12 +22,12 @@ public class AnimationPlaceholderFactory implements PlaceholderFactory {
     }
 
     @Override
-    public Placeholder getPlaceholder(String fileNameArgument) {
-        Placeholder placeholder = animationsByFileName.get(fileNameArgument);
+    public GlobalPlaceholder getPlaceholder(String fileNameArgument) {
+        GlobalPlaceholder placeholder = animationsByFileName.get(fileNameArgument);
         if (placeholder != null) {
             return placeholder;
         } else {
-            return new StaticPlaceholder("[Animation not found: " + fileNameArgument + "]");
+            return new ImmutablePlaceholder("[Animation not found: " + fileNameArgument + "]");
         }
     }
 

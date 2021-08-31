@@ -11,9 +11,9 @@ import com.google.common.collect.Table;
 import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplacer;
-import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
-import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
-import me.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacer;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderIdentifier;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PluginName;
@@ -51,15 +51,15 @@ public class PlaceholderRegistry {
     }
 
     public void registerGlobalPlaceholderReplacer(
-            Plugin plugin, String identifier, int refreshIntervalTicks, PlaceholderReplacer placeholderReplacer) {
+            Plugin plugin, String identifier, int refreshIntervalTicks, GlobalPlaceholderReplacer placeholderReplacer) {
         registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, placeholderReplacer));
     }
 
-    public void registerGlobalPlaceholder(Plugin plugin, String identifier, Placeholder placeholder) {
+    public void registerGlobalPlaceholder(Plugin plugin, String identifier, GlobalPlaceholder placeholder) {
         registerGlobalPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
     }
 
-    public void registerGlobalPlaceholderFactory(Plugin plugin, String identifier, PlaceholderFactory factory) {
+    public void registerGlobalPlaceholderFactory(Plugin plugin, String identifier, GlobalPlaceholderFactory factory) {
         PlaceholderExpansion expansion = new GlobalPlaceholderExpansion(plugin, identifier, factory);
         registerExpansion(expansion);
     }

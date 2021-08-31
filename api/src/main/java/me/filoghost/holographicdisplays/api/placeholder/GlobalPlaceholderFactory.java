@@ -10,11 +10,11 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @since 1
  */
-public interface PlaceholderFactory {
+public interface GlobalPlaceholderFactory {
 
     /**
      * @since 1
      */
-    @Nullable Placeholder getPlaceholder(@Nullable String argument);
+    @Nullable GlobalPlaceholder getPlaceholder(@Nullable String argument);
 
 }

@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 
-import me.filoghost.holographicdisplays.api.placeholder.Placeholder;
-import me.filoghost.holographicdisplays.api.placeholder.PlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
 import me.filoghost.holographicdisplays.plugin.placeholder.StandardPlaceholder;
 import org.bukkit.entity.Player;
@@ -16,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 
 class GlobalPlaceholderExpansion extends PlaceholderExpansion {
 
-    private final PlaceholderFactory placeholderFactory;
+    private final GlobalPlaceholderFactory placeholderFactory;
 
-    GlobalPlaceholderExpansion(Plugin plugin, String identifier, PlaceholderFactory placeholderFactory) {
+    GlobalPlaceholderExpansion(Plugin plugin, String identifier, GlobalPlaceholderFactory placeholderFactory) {
         super(plugin, identifier);
         this.placeholderFactory = placeholderFactory;
     }
@@ -30,7 +30,7 @@ class GlobalPlaceholderExpansion extends PlaceholderExpansion {
 
     @Override
     public @Nullable StandardPlaceholder createPlaceholder(String argument) throws PlaceholderException {
-        Placeholder placeholder;
+        GlobalPlaceholder placeholder;
         try {
             placeholder = placeholderFactory.getPlaceholder(argument);
         } catch (Throwable t) {
@@ -47,9 +47,9 @@ class GlobalPlaceholderExpansion extends PlaceholderExpansion {
 
     private static class GlobalStandardPlaceholder extends StandardPlaceholder {
 
-        private final @NotNull Placeholder placeholder;
+        private final @NotNull GlobalPlaceholder placeholder;
 
-        GlobalStandardPlaceholder(@NotNull Placeholder placeholder, @NotNull GlobalPlaceholderExpansion source) {
+        GlobalStandardPlaceholder(@NotNull GlobalPlaceholder placeholder, @NotNull GlobalPlaceholderExpansion source) {
             super(source);
             this.placeholder = placeholder;
         }
