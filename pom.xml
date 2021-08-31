@@ -395,7 +395,9 @@
                 </dependencies>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
+                    <!--suppress UnresolvedMavenProperty -->
                     <configLocation>${rootDir}/checkstyle/checkstyle.xml</configLocation>
+                    <!--suppress UnresolvedMavenProperty -->
                     <propertyExpansion>samedir=${rootDir}/checkstyle</propertyExpansion>
                     <sourceDirectories>
                         <sourceDirectory>${project.basedir}</sourceDirectory>
