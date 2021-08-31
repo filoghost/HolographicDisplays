@@ -16,6 +16,15 @@
         <spigot-api.version>1.8-R0.1-SNAPSHOT</spigot-api.version>
     </properties>
 
+    <modules>
+        <module>common</module>
+        <module>api</module>
+        <module>legacy-api</module>
+        <module>nms</module>
+        <module>plugin</module>
+        <module>example</module>
+    </modules>
+
     <url>https://dev.bukkit.org/projects/holographic-displays</url>
     <licenses>
         <license>
@@ -40,15 +49,6 @@
             <url>https://repo.codemc.io/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
-
-    <modules>
-        <module>common</module>
-        <module>api</module>
-        <module>legacy-api</module>
-        <module>nms</module>
-        <module>plugin</module>
-        <module>example</module>
-    </modules>
 
     <repositories>
         <repository>
