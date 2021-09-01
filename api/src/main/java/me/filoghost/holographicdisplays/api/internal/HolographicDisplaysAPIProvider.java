@@ -9,6 +9,8 @@ import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.Position;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
@@ -37,6 +39,10 @@ public abstract class HolographicDisplaysAPIProvider {
 
     public abstract Position createPosition(String worldName, double x, double y, double z);
 
-    public abstract Position createPosition(Location location);
+    public abstract Position getPosition(Location location);
+
+    public abstract Position getPosition(Entity entity);
+
+    public abstract Position getPosition(Block block);
 
 }

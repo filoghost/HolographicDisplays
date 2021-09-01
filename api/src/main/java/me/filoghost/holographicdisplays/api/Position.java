@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.api;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -15,16 +16,24 @@ import org.jetbrains.annotations.Nullable;
 
 public interface Position {
 
-    static @NotNull Position create(@NotNull World world, double x, double y, double z) {
+    static @NotNull Position of(@NotNull World world, double x, double y, double z) {
         return HolographicDisplaysAPIProvider.getImplementation().createPosition(world, x, y, z);
     }
 
-    static @NotNull Position create(@NotNull String worldName, double x, double y, double z) {
+    static @NotNull Position of(@NotNull String worldName, double x, double y, double z) {
         return HolographicDisplaysAPIProvider.getImplementation().createPosition(worldName, x, y, z);
     }
 
-    static @NotNull Position fromLocation(@NotNull Location location) {
-        return HolographicDisplaysAPIProvider.getImplementation().createPosition(location);
+    static @NotNull Position of(@NotNull Location location) {
+        return HolographicDisplaysAPIProvider.getImplementation().getPosition(location);
+    }
+
+    static @NotNull Position of(@NotNull Entity entity) {
+        return HolographicDisplaysAPIProvider.getImplementation().getPosition(entity);
+    }
+
+    static @NotNull Position of(@NotNull Block block) {
+        return HolographicDisplaysAPIProvider.getImplementation().getPosition(block);
     }
 
     @NotNull String getWorldName();

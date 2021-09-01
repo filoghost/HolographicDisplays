@@ -13,6 +13,8 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
@@ -43,7 +45,7 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
     @Override
     public Position createPosition(World world, double x, double y, double z) {
         Preconditions.notNull(world, "world");
-        return new ImmutablePosition(world.getName(), x, y, z);
+        return createPosition(world.getName(), x, y, z);
     }
 
     @Override
@@ -52,8 +54,19 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
     }
 
     @Override
-    public Position createPosition(Location location) {
+    public Position getPosition(Location location) {
         return new ImmutablePosition(location);
+    }
+
+    @Override
+    public Position getPosition(Entity entity) {
+        Preconditions.notNull(entity, "entity");
+        return getPosition(entity.getLocation());
+    }
+
+    @Override
+    public Position getPosition(Block block) {
+        return createPosition(block.getWorld(), block.getX(), block.getY(), block.getZ());
     }
 
 }
