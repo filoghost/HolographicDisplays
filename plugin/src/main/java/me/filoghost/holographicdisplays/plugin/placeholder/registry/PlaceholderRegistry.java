@@ -14,6 +14,7 @@ import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderRep
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderIdentifier;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PluginName;
@@ -96,12 +97,12 @@ public class PlaceholderRegistry {
         }
     }
 
-    public List<String> getRegisteredIdentifiers(Plugin plugin) {
+    public List<RegisteredPlaceholder> getRegisteredPlaceholders(Plugin plugin) {
         PluginName pluginName = new PluginName(plugin);
-        List<String> identifiers = new ArrayList<>();
+        List<RegisteredPlaceholder> identifiers = new ArrayList<>();
 
         for (PlaceholderExpansion expansion : placeholderExpansions.column(pluginName).values()) {
-            identifiers.add(expansion.getIdentifier().toString());
+            identifiers.add(expansion.asRegisteredPlaceholder());
         }
 
         return identifiers;

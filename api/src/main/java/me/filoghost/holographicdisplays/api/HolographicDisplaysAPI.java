@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.api;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -92,7 +93,7 @@ public interface HolographicDisplaysAPI {
      * @return a collection of placeholder identifiers
      * @since 1
      */
-    @NotNull Collection<String> getRegisteredPlaceholders();
+    @NotNull Collection<RegisteredPlaceholder> getRegisteredPlaceholders();
 
     /**
      * Unregisters a placeholder.
