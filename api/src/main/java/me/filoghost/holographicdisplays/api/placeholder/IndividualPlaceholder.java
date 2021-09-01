@@ -8,11 +8,6 @@ package me.filoghost.holographicdisplays.api.placeholder;
 /**
  * @since 1
  */
-public interface IndividualPlaceholder extends IndividualPlaceholderReplacer {
-
-    /**
-     * @since 1
-     */
-    int getRefreshIntervalTicks();
+public interface IndividualPlaceholder extends IndividualPlaceholderReplacer, Placeholder {
 
 }

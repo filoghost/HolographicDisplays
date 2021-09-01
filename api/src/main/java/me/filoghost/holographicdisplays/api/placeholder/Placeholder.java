@@ -5,9 +5,11 @@
  */
 package me.filoghost.holographicdisplays.api.placeholder;
 
-/**
- * @since 1
- */
-public interface GlobalPlaceholder extends GlobalPlaceholderReplacer, Placeholder {
+public interface Placeholder {
+
+    /**
+     * @since 1
+     */
+    int getRefreshIntervalTicks();
 
 }
