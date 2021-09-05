@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseItemHologramLine extends BaseClickableHologramLine implements Collectable {
+public abstract class BaseItemHologramLine extends BaseClickableHologramLine implements PickupCallbackProvider {
 
     private ItemStack itemStack;
 

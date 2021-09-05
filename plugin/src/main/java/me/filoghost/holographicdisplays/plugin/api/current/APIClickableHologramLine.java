@@ -7,10 +7,10 @@ package me.filoghost.holographicdisplays.plugin.api.current;
 
 import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.ClickableHologramLine;
-import me.filoghost.holographicdisplays.plugin.hologram.base.Clickable;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ClickCallbackProvider;
 import org.bukkit.entity.Player;
 
-public interface APIClickableHologramLine extends ClickableHologramLine, APIHologramLine, Clickable {
+public interface APIClickableHologramLine extends ClickableHologramLine, APIHologramLine, ClickCallbackProvider {
 
     @Override
     default boolean hasClickCallback() {

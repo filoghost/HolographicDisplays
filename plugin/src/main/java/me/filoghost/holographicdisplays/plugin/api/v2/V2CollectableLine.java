@@ -7,10 +7,10 @@ package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.CollectableLine;
-import me.filoghost.holographicdisplays.plugin.hologram.base.Collectable;
+import me.filoghost.holographicdisplays.plugin.hologram.base.PickupCallbackProvider;
 import org.bukkit.entity.Player;
 
-public interface V2CollectableLine extends CollectableLine, V2HologramLine, Collectable {
+public interface V2CollectableLine extends CollectableLine, V2HologramLine, PickupCallbackProvider {
 
     @Override
     default boolean hasPickupCallback() {

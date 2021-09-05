@@ -9,7 +9,7 @@ import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public abstract class BaseClickableHologramLine extends BaseHologramLine implements Clickable {
+public abstract class BaseClickableHologramLine extends BaseHologramLine implements ClickCallbackProvider {
 
     protected BaseClickableHologramLine(BaseHologram hologram) {
         super(hologram);

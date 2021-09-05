@@ -9,15 +9,15 @@ import me.filoghost.fcommons.logging.Log;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public interface Collectable {
+public interface ClickCallbackProvider {
 
-    boolean hasPickupCallback();
+    boolean hasClickCallback();
 
-    void invokePickupCallback(Player player);
+    void invokeClickCallback(Player player);
 
-    default void logPickupCallbackException(Plugin plugin, Player player, Throwable t) {
+    default void logClickCallbackException(Plugin plugin, Player player, Throwable t) {
         Log.warning("The plugin " + plugin.getName() + " generated an exception"
-                + " when the player " + player.getName() + " picked up an item from a hologram.", t);
+                + " when the player " + player.getName() + " clicked a hologram.", t);
     }
 
 }

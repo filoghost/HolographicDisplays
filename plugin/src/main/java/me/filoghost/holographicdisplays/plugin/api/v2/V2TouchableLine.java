@@ -7,10 +7,10 @@ package me.filoghost.holographicdisplays.plugin.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.TouchableLine;
-import me.filoghost.holographicdisplays.plugin.hologram.base.Clickable;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ClickCallbackProvider;
 import org.bukkit.entity.Player;
 
-public interface V2TouchableLine extends TouchableLine, V2HologramLine, Clickable {
+public interface V2TouchableLine extends TouchableLine, V2HologramLine, ClickCallbackProvider {
 
     @Override
     default boolean hasClickCallback() {
