@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.nms.common.entity;
 
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
-import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
+import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 
 public interface ClickableNMSPacketEntity extends NMSPacketEntity {
 
@@ -16,6 +16,6 @@ public interface ClickableNMSPacketEntity extends NMSPacketEntity {
 
     EntityID getID();
 
-    void addSpawnPackets(NMSPacketList packetList, PositionCoordinates position);
+    PacketGroup newSpawnPackets(PositionCoordinates position);
 
 }

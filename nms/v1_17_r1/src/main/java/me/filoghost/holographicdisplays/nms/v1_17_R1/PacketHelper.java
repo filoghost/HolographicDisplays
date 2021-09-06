@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.nms.v1_17_R1;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
-import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
+import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntList;
 
@@ -17,13 +17,21 @@ class PacketHelper {
 
     private static final boolean USE_ENTITY_LIST_DESTROY_PACKET = useEntityListDestroyPacket();
 
-    static void addDestroyPackets(NMSPacketList packetList, EntityID... entityIDs) {
+    static PacketGroup newDestroyPackets(EntityID entityID) {
         if (USE_ENTITY_LIST_DESTROY_PACKET) {
-            packetList.add(new EntityListDestroyNMSPacket(entityIDs));
+            return new EntityListDestroyNMSPacket(entityID);
         } else {
-            for (EntityID entityID : entityIDs) {
-                packetList.add(new EntityDestroyNMSPacket(entityID));
-            }
+            return new EntityDestroyNMSPacket(entityID);
+        }
+    }
+
+    static PacketGroup newDestroyPackets(EntityID entityID1, EntityID entityID2) {
+        if (USE_ENTITY_LIST_DESTROY_PACKET) {
+            return new EntityListDestroyNMSPacket(entityID1, entityID2);
+        } else {
+            return PacketGroup.of(
+                    new EntityDestroyNMSPacket(entityID1),
+                    new EntityDestroyNMSPacket(entityID2));
         }
     }
 

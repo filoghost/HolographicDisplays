@@ -7,7 +7,6 @@ package me.filoghost.holographicdisplays.nms.v1_17_R1;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketDataSerializer;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntList;
 
 import java.util.UUID;
 
@@ -28,16 +27,19 @@ class PacketByteBuffer extends PacketDataSerializer {
         super.d(i);
     }
 
+    void writeVarIntArray(int i1) {
+        writeVarInt(1);
+        writeVarInt(i1);
+    }
+
+    void writeVarIntArray(int i1, int i2) {
+        writeVarInt(2);
+        writeVarInt(i1);
+        writeVarInt(i2);
+    }
+
     void writeUUID(UUID uuid) {
         super.a(uuid);
-    }
-
-    void writeIntList(IntList intList) {
-        super.a(intList);
-    }
-
-    void writeIntArray(int... array) {
-        super.a(array);
     }
 
     <T> void writeDataWatcherEntry(DataWatcherKey<T> key, T value) {

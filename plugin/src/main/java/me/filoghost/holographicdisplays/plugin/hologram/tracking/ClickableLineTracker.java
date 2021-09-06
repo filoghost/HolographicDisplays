@@ -7,13 +7,12 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.nms.common.NMSManager;
-import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
 import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-public abstract class ClickableLineTracker<T extends BaseClickableHologramLine> extends PositionBasedLineTracker<T> {
+public abstract class ClickableLineTracker<T extends TrackedPlayer> extends PositionBasedLineTracker<T> {
 
     private final ClickableNMSPacketEntity clickableEntity;
     private final double positionOffsetY;
@@ -22,12 +21,14 @@ public abstract class ClickableLineTracker<T extends BaseClickableHologramLine> 
     private boolean spawnClickableEntity;
     private boolean spawnClickableEntityChanged;
 
-    public ClickableLineTracker(T line, NMSManager nmsManager, LineClickListener lineClickListener) {
-        super(line);
+    public ClickableLineTracker(BaseClickableHologramLine line, NMSManager nmsManager, LineClickListener lineClickListener) {
         this.clickableEntity = nmsManager.newClickablePacketEntity();
         this.positionOffsetY = (line.getHeight() - ClickableNMSPacketEntity.SLIME_HEIGHT) / 2;
         this.lineClickListener = lineClickListener;
     }
+
+    @Override
+    protected abstract BaseClickableHologramLine getLine();
 
     @MustBeInvokedByOverriders
     @Override
@@ -41,12 +42,12 @@ public abstract class ClickableLineTracker<T extends BaseClickableHologramLine> 
     protected void detectChanges() {
         super.detectChanges();
 
-        boolean spawnClickableEntity = line.hasClickCallback();
+        boolean spawnClickableEntity = getLine().hasClickCallback();
         if (this.spawnClickableEntity != spawnClickableEntity) {
             this.spawnClickableEntity = spawnClickableEntity;
             this.spawnClickableEntityChanged = true;
             if (spawnClickableEntity) {
-                lineClickListener.registerLine(clickableEntity.getID(), line);
+                lineClickListener.registerLine(clickableEntity.getID(), getLine());
             } else {
                 lineClickListener.unregisterLine(clickableEntity.getID());
             }
@@ -62,39 +63,39 @@ public abstract class ClickableLineTracker<T extends BaseClickableHologramLine> 
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addSpawnPackets(NMSPacketList packetList) {
+    protected void sendSpawnPackets(Viewers<T> viewers) {
         if (spawnClickableEntity) {
-            clickableEntity.addSpawnPackets(packetList, getClickableEntityPosition());
+            viewers.sendPackets(clickableEntity.newSpawnPackets(getClickableEntityPosition()));
         }
     }
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addDestroyPackets(NMSPacketList packetList) {
+    protected void sendDestroyPackets(Viewers<T> viewers) {
         if (spawnClickableEntity) {
-            clickableEntity.addDestroyPackets(packetList);
+            viewers.sendPackets(clickableEntity.newDestroyPackets());
         }
     }
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addChangesPackets(NMSPacketList packetList) {
-        super.addChangesPackets(packetList);
+    protected void sendChangesPackets(Viewers<T> viewers) {
+        super.sendChangesPackets(viewers);
 
         if (spawnClickableEntityChanged) {
             if (spawnClickableEntity) {
-                clickableEntity.addSpawnPackets(packetList, getClickableEntityPosition());
+                viewers.sendPackets(clickableEntity.newSpawnPackets(getClickableEntityPosition()));
             } else {
-                clickableEntity.addDestroyPackets(packetList);
+                viewers.sendPackets(clickableEntity.newDestroyPackets());
             }
         }
     }
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addPositionChangePackets(NMSPacketList packetList) {
+    protected void sendPositionChangePackets(Viewers<T> viewers) {
         if (spawnClickableEntity) {
-            clickableEntity.addTeleportPackets(packetList, getClickableEntityPosition());
+            viewers.sendPackets(clickableEntity.newTeleportPackets(getClickableEntityPosition()));
         }
     }
 

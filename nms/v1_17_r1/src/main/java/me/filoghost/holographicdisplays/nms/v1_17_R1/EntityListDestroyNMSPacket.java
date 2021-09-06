@@ -8,20 +8,23 @@ package me.filoghost.holographicdisplays.nms.v1_17_R1;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntArrayList;
 
 class EntityListDestroyNMSPacket extends VersionNMSPacket {
 
     private final Packet<?> rawPacket;
 
-    EntityListDestroyNMSPacket(EntityID... entityIDs) {
+    EntityListDestroyNMSPacket(EntityID entityID) {
         PacketByteBuffer packetByteBuffer = PacketByteBuffer.get();
 
-        IntArrayList entityIDsList = new IntArrayList(entityIDs.length);
-        for (EntityID entityID : entityIDs) {
-            entityIDsList.add(entityID.getNumericID());
-        }
-        packetByteBuffer.writeIntList(entityIDsList);
+        packetByteBuffer.writeVarIntArray(entityID.getNumericID());
+
+        this.rawPacket = new PacketPlayOutEntityDestroy(packetByteBuffer);
+    }
+
+    EntityListDestroyNMSPacket(EntityID entityID1, EntityID entityID2) {
+        PacketByteBuffer packetByteBuffer = PacketByteBuffer.get();
+
+        packetByteBuffer.writeVarIntArray(entityID1.getNumericID(), entityID2.getNumericID());
 
         this.rawPacket = new PacketPlayOutEntityDestroy(packetByteBuffer);
     }

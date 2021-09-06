@@ -9,6 +9,8 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.filoghost.fcommons.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PlaceholderAPIHook {
 
@@ -22,7 +24,7 @@ public class PlaceholderAPIHook {
         enabled = true;
     }
 
-    public static boolean containsPlaceholderPattern(String text) {
+    public static boolean containsPlaceholderPattern(@Nullable String text) {
         if (Strings.isEmpty(text)) {
             return false;
         }
@@ -36,7 +38,7 @@ public class PlaceholderAPIHook {
         return lastIndex - firstIndex >= 2; // At least one character between the two indexes
     }
 
-    public static String replacePlaceholders(Player player, String text) {
+    public static @NotNull String replacePlaceholders(@NotNull Player player, @NotNull String text) {
         return PlaceholderAPI.setPlaceholders(player, text);
     }
 

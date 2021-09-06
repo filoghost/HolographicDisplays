@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.nms.common.NMSManager;
-import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
 import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
@@ -17,8 +16,9 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import java.util.Collection;
 import java.util.Objects;
 
-public class ItemLineTracker extends ClickableLineTracker<BaseItemHologramLine> {
+public class ItemLineTracker extends ClickableLineTracker<TrackedPlayer> {
 
+    private final BaseItemHologramLine line;
     private final ItemNMSPacketEntity itemEntity;
 
     private ItemStack itemStack;
@@ -29,7 +29,13 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemHologramLine> 
 
     public ItemLineTracker(BaseItemHologramLine line, NMSManager nmsManager, LineClickListener lineClickListener) {
         super(line, nmsManager, lineClickListener);
+        this.line = line;
         this.itemEntity = nmsManager.newItemPacketEntity();
+    }
+
+    @Override
+    public BaseItemHologramLine getLine() {
+        return line;
     }
 
     @MustBeInvokedByOverriders
@@ -38,9 +44,9 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemHologramLine> 
         super.update(onlinePlayers);
 
         if (spawnItemEntity && hasTrackedPlayers() && line.hasPickupCallback()) {
-            for (Player trackedPlayer : getTrackedPlayers()) {
-                if (CollisionHelper.isInPickupRange(trackedPlayer, position)) {
-                    line.onPickup(trackedPlayer);
+            for (TrackedPlayer trackedPlayer : getTrackedPlayers()) {
+                if (CollisionHelper.isInPickupRange(trackedPlayer.getPlayer(), position)) {
+                    line.onPickup(trackedPlayer.getPlayer());
                 }
             }
         }
@@ -49,6 +55,11 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemHologramLine> 
     @Override
     protected boolean updatePlaceholders() {
         return false;
+    }
+
+    @Override
+    protected TrackedPlayer createTrackedPlayer(Player player) {
+        return new TrackedPlayer(player);
     }
 
     @MustBeInvokedByOverriders
@@ -79,48 +90,48 @@ public class ItemLineTracker extends ClickableLineTracker<BaseItemHologramLine> 
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addSpawnPackets(NMSPacketList packetList) {
-        super.addSpawnPackets(packetList);
+    protected void sendSpawnPackets(Viewers<TrackedPlayer> viewers) {
+        super.sendSpawnPackets(viewers);
 
         if (spawnItemEntity) {
-            itemEntity.addSpawnPackets(packetList, position, itemStack);
+            viewers.sendPackets(itemEntity.newSpawnPackets(position, itemStack));
         }
     }
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addDestroyPackets(NMSPacketList packetList) {
-        super.addDestroyPackets(packetList);
+    protected void sendDestroyPackets(Viewers<TrackedPlayer> viewers) {
+        super.sendDestroyPackets(viewers);
 
         if (spawnItemEntity) {
-            itemEntity.addDestroyPackets(packetList);
+            viewers.sendPackets(itemEntity.newDestroyPackets());
         }
     }
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addChangesPackets(NMSPacketList packetList) {
-        super.addChangesPackets(packetList);
+    protected void sendChangesPackets(Viewers<TrackedPlayer> viewers) {
+        super.sendChangesPackets(viewers);
 
         if (spawnItemEntityChanged) {
             if (spawnItemEntity) {
-                itemEntity.addSpawnPackets(packetList, position, itemStack);
+                viewers.sendPackets(itemEntity.newSpawnPackets(position, itemStack));
             } else {
-                itemEntity.addDestroyPackets(packetList);
+                viewers.sendPackets(itemEntity.newDestroyPackets());
             }
         } else if (itemStackChanged) {
             // Only send item changes if full spawn/destroy packets were not sent
-            itemEntity.addChangePackets(packetList, itemStack);
+            viewers.sendPackets(itemEntity.newChangePackets(itemStack));
         }
     }
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addPositionChangePackets(NMSPacketList packetList) {
-        super.addPositionChangePackets(packetList);
+    protected void sendPositionChangePackets(Viewers<TrackedPlayer> viewers) {
+        super.sendPositionChangePackets(viewers);
 
         if (spawnItemEntity) {
-            itemEntity.addTeleportPackets(packetList, position);
+            viewers.sendPackets(itemEntity.newTeleportPackets(position));
         }
     }
 

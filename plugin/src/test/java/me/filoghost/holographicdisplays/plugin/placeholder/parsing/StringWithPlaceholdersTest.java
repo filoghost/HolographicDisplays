@@ -25,17 +25,7 @@ class StringWithPlaceholdersTest {
         StringWithPlaceholders s = StringWithPlaceholders.of(input);
 
         assertThat(s.replacePlaceholders(occurrence -> "#")).isEqualTo(expectedOutput);
-        assertThat(s.containsUnreplacedPlaceholders()).isEqualTo(expectedContainsPlaceholders);
-    }
-
-    @ParameterizedTest(name = "[{index}] {0} -> {1}")
-    @MethodSource("replacementsTestArguments")
-    void partialReplacements(String input, String expectedOutput) {
-        StringWithPlaceholders s = StringWithPlaceholders.of(input);
-
-        assertThat(s.partiallyReplacePlaceholders(occurrence -> "#").getString()).isEqualTo(expectedOutput);
-        assertThat(s.partiallyReplacePlaceholders(occurrence -> null).replacePlaceholders(occurrence -> "#")).isEqualTo(expectedOutput);
-        assertThat(s.partiallyReplacePlaceholders(occurrence -> "#").containsUnreplacedPlaceholders()).isFalse();
+        assertThat(s.containsPlaceholders()).isEqualTo(expectedContainsPlaceholders);
     }
 
     static Stream<Arguments> replacementsTestArguments() {

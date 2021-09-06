@@ -7,9 +7,8 @@ package me.filoghost.holographicdisplays.nms.v1_8_R3;
 
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
-import me.filoghost.holographicdisplays.nms.common.IndividualNMSPacket;
-import me.filoghost.holographicdisplays.nms.common.IndividualText;
-import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
+import me.filoghost.holographicdisplays.nms.common.IndividualTextPacketGroup;
+import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 import me.filoghost.holographicdisplays.nms.common.entity.TextNMSPacketEntity;
 
 class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
@@ -21,51 +20,51 @@ class VersionTextNMSPacketEntity implements TextNMSPacketEntity {
     }
 
     @Override
-    public void addSpawnPackets(NMSPacketList packetList, PositionCoordinates position, String text) {
-        packetList.add(new EntitySpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, position, ARMOR_STAND_Y_OFFSET));
-        packetList.add(EntityMetadataNMSPacket.builder(armorStandID)
-                .setArmorStandMarker()
-                .setCustomName(text)
-                .build()
-        );
-    }
-
-    @Override
-    public void addSpawnPackets(NMSPacketList packetList, PositionCoordinates position, IndividualText individualText) {
-        packetList.add(new EntitySpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, position, ARMOR_STAND_Y_OFFSET));
-        packetList.add(new IndividualNMSPacket(player ->
+    public PacketGroup newSpawnPackets(PositionCoordinates position, String text) {
+        return PacketGroup.of(
+                new EntitySpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, position, ARMOR_STAND_Y_OFFSET),
                 EntityMetadataNMSPacket.builder(armorStandID)
                         .setArmorStandMarker()
-                        .setCustomName(individualText.get(player))
+                        .setCustomName(text)
                         .build()
-        ));
-    }
-
-    @Override
-    public void addChangePackets(NMSPacketList packetList, String text) {
-        packetList.add(EntityMetadataNMSPacket.builder(armorStandID)
-                .setCustomName(text)
-                .build()
         );
     }
 
     @Override
-    public void addChangePackets(NMSPacketList packetList, IndividualText individualText) {
-        packetList.add(new IndividualNMSPacket(player ->
-                EntityMetadataNMSPacket.builder(armorStandID)
-                        .setCustomName(individualText.get(player))
+    public IndividualTextPacketGroup newSpawnPackets(PositionCoordinates position) {
+        return IndividualTextPacketGroup.of(
+                new EntitySpawnNMSPacket(armorStandID, EntityTypeID.ARMOR_STAND, position, ARMOR_STAND_Y_OFFSET),
+                (String text) -> EntityMetadataNMSPacket.builder(armorStandID)
+                        .setArmorStandMarker()
+                        .setCustomName(text)
                         .build()
-        ));
+        );
     }
 
     @Override
-    public void addTeleportPackets(NMSPacketList packetList, PositionCoordinates position) {
-        packetList.add(new EntityTeleportNMSPacket(armorStandID, position, ARMOR_STAND_Y_OFFSET));
+    public PacketGroup newChangePackets(String text) {
+        return EntityMetadataNMSPacket.builder(armorStandID)
+                .setCustomName(text)
+                .build();
     }
 
     @Override
-    public void addDestroyPackets(NMSPacketList packetList) {
-        packetList.add(new EntityDestroyNMSPacket(armorStandID));
+    public IndividualTextPacketGroup newChangePackets() {
+        return IndividualTextPacketGroup.of(
+                (String text) -> EntityMetadataNMSPacket.builder(armorStandID)
+                        .setCustomName(text)
+                        .build()
+        );
+    }
+
+    @Override
+     public PacketGroup newTeleportPackets(PositionCoordinates position) {
+        return new EntityTeleportNMSPacket(armorStandID, position, ARMOR_STAND_Y_OFFSET);
+    }
+
+    @Override
+    public PacketGroup newDestroyPackets() {
+        return new EntityDestroyNMSPacket(armorStandID);
     }
 
 }

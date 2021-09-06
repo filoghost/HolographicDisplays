@@ -5,23 +5,24 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
+import me.filoghost.holographicdisplays.nms.common.IndividualTextPacketGroup;
 import me.filoghost.holographicdisplays.nms.common.NMSManager;
-import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
 import me.filoghost.holographicdisplays.nms.common.entity.TextNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
 
-public class TextLineTracker extends ClickableLineTracker<BaseTextHologramLine> {
+public class TextLineTracker extends ClickableLineTracker<TextLineTrackedPlayer> {
 
+    private final BaseTextHologramLine line;
     private final TextNMSPacketEntity textEntity;
 
     private final DisplayText displayText;
     private boolean displayTextChanged;
-    private boolean allowPlaceholders;
 
     public TextLineTracker(
             BaseTextHologramLine line,
@@ -29,21 +30,28 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextHologramLine> 
             LineClickListener lineClickListener,
             PlaceholderTracker placeholderTracker) {
         super(line, nmsManager, lineClickListener);
+        this.line = line;
         this.textEntity = nmsManager.newTextPacketEntity();
         this.displayText = new DisplayText(placeholderTracker);
     }
 
     @Override
-    protected boolean updatePlaceholders() {
-        if (!allowPlaceholders) {
-            return false;
-        }
+    public BaseTextHologramLine getLine() {
+        return line;
+    }
 
-        boolean placeholdersChanged = displayText.updateGlobalReplacements();
+    @Override
+    protected boolean updatePlaceholders() {
+        boolean placeholdersChanged = displayText.updateReplacements(getTrackedPlayers());
         if (placeholdersChanged) {
             displayTextChanged = true; // Mark as changed to trigger a packet send with updated placeholders
         }
         return placeholdersChanged;
+    }
+
+    @Override
+    protected TextLineTrackedPlayer createTrackedPlayer(Player player) {
+        return new TextLineTrackedPlayer(player, displayText);
     }
 
     @MustBeInvokedByOverriders
@@ -52,14 +60,14 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextHologramLine> 
         super.detectChanges();
 
         String displayText = line.getText();
-        if (!Objects.equals(this.displayText.getWithoutReplacements(), displayText)) {
-            this.displayText.setWithoutReplacements(displayText);
+        if (!Objects.equals(this.displayText.getUnreplacedText(), displayText)) {
+            this.displayText.setUnreplacedText(displayText);
             this.displayTextChanged = true;
         }
 
         boolean allowPlaceholders = line.isAllowPlaceholders();
-        if (this.allowPlaceholders != allowPlaceholders) {
-            this.allowPlaceholders = allowPlaceholders;
+        if (this.displayText.isAllowPlaceholders() != allowPlaceholders) {
+            this.displayText.setAllowPlaceholders(allowPlaceholders);
             this.displayTextChanged = true;
         }
     }
@@ -73,45 +81,35 @@ public class TextLineTracker extends ClickableLineTracker<BaseTextHologramLine> 
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addSpawnPackets(NMSPacketList packetList) {
-        super.addSpawnPackets(packetList);
+    protected void sendSpawnPackets(Viewers<TextLineTrackedPlayer> viewers) {
+        super.sendSpawnPackets(viewers);
 
-        if (!allowPlaceholders) {
-            textEntity.addSpawnPackets(packetList, position, displayText.getWithoutReplacements());
-        } else if (displayText.containsIndividualPlaceholders()) {
-            textEntity.addSpawnPackets(packetList, position, displayText::getWithIndividualReplacements);
-        } else {
-            textEntity.addSpawnPackets(packetList, position, displayText.getWithGlobalReplacements());
-        }
+        IndividualTextPacketGroup spawnPackets = textEntity.newSpawnPackets(position);
+        viewers.forEach(viewer -> viewer.sendTextPackets(spawnPackets));
     }
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addDestroyPackets(NMSPacketList packetList) {
-        super.addDestroyPackets(packetList);
-        textEntity.addDestroyPackets(packetList);
+    protected void sendDestroyPackets(Viewers<TextLineTrackedPlayer> viewers) {
+        super.sendDestroyPackets(viewers);
+        viewers.sendPackets(textEntity.newDestroyPackets());
     }
 
     @Override
-    protected void addChangesPackets(NMSPacketList packetList) {
-        super.addChangesPackets(packetList);
+    protected void sendChangesPackets(Viewers<TextLineTrackedPlayer> viewers) {
+        super.sendChangesPackets(viewers);
 
         if (displayTextChanged) {
-            if (!allowPlaceholders) {
-                textEntity.addChangePackets(packetList, displayText.getWithoutReplacements());
-            } else if (displayText.containsIndividualPlaceholders()) {
-                textEntity.addChangePackets(packetList, displayText::getWithIndividualReplacements);
-            } else {
-                textEntity.addChangePackets(packetList, displayText.getWithGlobalReplacements());
-            }
+            IndividualTextPacketGroup changePackets = textEntity.newChangePackets();
+            viewers.forEach(viewer -> viewer.sendTextPacketsIfNecessary(changePackets));
         }
     }
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addPositionChangePackets(NMSPacketList packetList) {
-        super.addPositionChangePackets(packetList);
-        textEntity.addTeleportPackets(packetList, position);
+    protected void sendPositionChangePackets(Viewers<TextLineTrackedPlayer> viewers) {
+        super.sendPositionChangePackets(viewers);
+        viewers.sendPackets(textEntity.newTeleportPackets(position));
     }
 
 }

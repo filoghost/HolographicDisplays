@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
+import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
@@ -13,39 +14,88 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Objects;
 
 class DisplayText {
 
     private final PlaceholderTracker placeholderTracker;
-    private @NotNull StringWithPlaceholders textWithoutReplacements;
-    private @NotNull StringWithPlaceholders textWithGlobalReplacements;
+
+    private @Nullable StringWithPlaceholders unreplacedText;
+    private boolean allowPlaceholders;
+    private @Nullable String globalText;
     private boolean containsPlaceholderAPIPattern;
 
     DisplayText(PlaceholderTracker placeholderTracker) {
         this.placeholderTracker = placeholderTracker;
-        this.textWithoutReplacements = StringWithPlaceholders.of(null);
-        this.textWithGlobalReplacements = textWithoutReplacements;
     }
 
-    void setWithoutReplacements(@Nullable String textString) {
-        textWithoutReplacements = StringWithPlaceholders.of(textString);
-        textWithGlobalReplacements = textWithoutReplacements;
-        containsPlaceholderAPIPattern = textWithoutReplacements.anyLiteralPartMatch(PlaceholderAPIHook::containsPlaceholderPattern);
+    boolean containsIndividualPlaceholders() {
+        if (!allowPlaceholders || unreplacedText == null) {
+            return false;
+        }
+        return containsPlaceholderAPIPattern || placeholderTracker.containsIndividualPlaceholders(unreplacedText); // TODO cache boolean value based on registry
     }
 
-    String getWithoutReplacements() {
-        return textWithoutReplacements.getString();
+    void setUnreplacedText(@Nullable String text) {
+        unreplacedText = text != null ? StringWithPlaceholders.of(text) : null;
+        globalText = null;
+        containsPlaceholderAPIPattern = unreplacedText != null
+                && unreplacedText.anyLiteralPartMatch(PlaceholderAPIHook::containsPlaceholderPattern);
     }
 
-    String getWithGlobalReplacements() {
-        return textWithGlobalReplacements.getString();
+    @Nullable String getUnreplacedText() {
+        return unreplacedText != null ? unreplacedText.getString() : null;
     }
 
-    String getWithIndividualReplacements(Player player) {
-        return textWithGlobalReplacements.replaceParts(
+    public boolean isAllowPlaceholders() {
+        return allowPlaceholders;
+    }
+
+    public void setAllowPlaceholders(boolean allowPlaceholders) {
+        this.allowPlaceholders = allowPlaceholders;
+    }
+
+    @Nullable String getGlobalText() {
+        return globalText;
+    }
+
+    public boolean updateReplacements(Collection<TextLineTrackedPlayer> trackedPlayers) {
+        boolean changed = false;
+
+        if (containsIndividualPlaceholders()) {
+            for (TextLineTrackedPlayer trackedPlayer : trackedPlayers) {
+                String individualText = computeIndividualText(trackedPlayer);
+                if (trackedPlayer.updateIndividualText(individualText)) {
+                    changed = true;
+                }
+            }
+        } else {
+            String globalText = computeGlobalText();
+            if (!Objects.equals(this.globalText, globalText)) {
+                this.globalText = globalText;
+                changed = true;
+            }
+        }
+
+        return changed;
+    }
+
+    private @Nullable String computeGlobalText() {
+        if (allowPlaceholders && unreplacedText != null && unreplacedText.containsPlaceholders()) {
+            return unreplacedText.replacePlaceholders(placeholderTracker::updateAndGetGlobalReplacement);
+        } else {
+            return unreplacedText != null ? unreplacedText.getString() : null;
+        }
+    }
+
+    public @NotNull String computeIndividualText(TrackedPlayer trackedPlayer) {
+        Preconditions.notNull(unreplacedText, "unreplacedText");
+        Player player = trackedPlayer.getPlayer();
+
+        return unreplacedText.replaceParts(
                 (PlaceholderOccurrence placeholderOccurrence) -> {
-                    return placeholderTracker.updateAndGetIndividualReplacement(placeholderOccurrence, player);
+                    return placeholderTracker.updateAndGetReplacement(placeholderOccurrence, player);
                 },
                 (String literalPart) -> {
                     if (containsPlaceholderAPIPattern
@@ -57,26 +107,6 @@ class DisplayText {
                     }
                 }
         );
-    }
-
-    boolean updateGlobalReplacements() {
-        if (!textWithoutReplacements.containsUnreplacedPlaceholders()) {
-            return false;
-        }
-
-        StringWithPlaceholders textWithGlobalReplacements =
-                textWithoutReplacements.partiallyReplacePlaceholders(placeholderTracker::updateAndGetGlobalReplacement);
-
-        if (Objects.equals(this.textWithGlobalReplacements, textWithGlobalReplacements)) {
-            return false;
-        }
-
-        this.textWithGlobalReplacements = textWithGlobalReplacements;
-        return true;
-    }
-
-    boolean containsIndividualPlaceholders() {
-        return containsPlaceholderAPIPattern || placeholderTracker.containsIndividualPlaceholders(textWithoutReplacements);
     }
 
 }

@@ -5,8 +5,6 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -14,21 +12,17 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
 
-abstract class PositionBasedLineTracker<T extends BaseHologramLine> extends LineTracker<T> {
+abstract class PositionBasedLineTracker<T extends TrackedPlayer> extends LineTracker<T> {
 
     private static final int ENTITY_VIEW_RANGE = 64;
 
     protected PositionCoordinates position;
     private boolean positionChanged;
 
-    PositionBasedLineTracker(T line) {
-        super(line);
-    }
-
     @MustBeInvokedByOverriders
     @Override
     protected void detectChanges() {
-        PositionCoordinates position = line.getPosition();
+        PositionCoordinates position = getLine().getPosition();
         if (!Objects.equals(this.position, position)) {
             this.position = position;
             this.positionChanged = true;
@@ -44,7 +38,7 @@ abstract class PositionBasedLineTracker<T extends BaseHologramLine> extends Line
     @Override
     protected final boolean shouldTrackPlayer(Player player) {
         Location playerLocation = player.getLocation();
-        if (playerLocation.getWorld() != line.getWorldIfLoaded()) {
+        if (playerLocation.getWorld() != getLine().getWorldIfLoaded()) {
             return false;
         }
 
@@ -53,17 +47,17 @@ abstract class PositionBasedLineTracker<T extends BaseHologramLine> extends Line
 
         return diffX <= (double) ENTITY_VIEW_RANGE
                 && diffZ <= (double) ENTITY_VIEW_RANGE
-                && line.isVisibleTo(player);
+                && getLine().isVisibleTo(player);
     }
 
     @MustBeInvokedByOverriders
     @Override
-    protected void addChangesPackets(NMSPacketList packetList) {
+    protected void sendChangesPackets(Viewers<T> viewers) {
         if (positionChanged) {
-            addPositionChangePackets(packetList);
+            sendPositionChangePackets(viewers);
         }
     }
 
-    protected abstract void addPositionChangePackets(NMSPacketList packetList);
+    protected abstract void sendPositionChangePackets(Viewers<T> viewers);
 
 }

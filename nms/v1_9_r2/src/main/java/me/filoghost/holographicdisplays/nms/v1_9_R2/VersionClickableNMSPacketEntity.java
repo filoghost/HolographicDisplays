@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.nms.v1_9_R2;
 
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
-import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
+import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
 
 public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity {
@@ -24,22 +24,21 @@ public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity
     }
 
     @Override
-    public void addSpawnPackets(NMSPacketList packetList, PositionCoordinates position) {
-        packetList.add(EntityLivingSpawnNMSPacket.builder(slimeID, EntityTypeID.SLIME, position, SLIME_Y_OFFSET)
+    public PacketGroup newSpawnPackets(PositionCoordinates position) {
+        return EntityLivingSpawnNMSPacket.builder(slimeID, EntityTypeID.SLIME, position, SLIME_Y_OFFSET)
                 .setInvisible()
                 .setSlimeSmall() // Required for a correct client-side collision box
-                .build()
-        );
+                .build();
     }
 
     @Override
-    public void addTeleportPackets(NMSPacketList packetList, PositionCoordinates position) {
-        packetList.add(new EntityTeleportNMSPacket(slimeID, position, SLIME_Y_OFFSET));
+    public PacketGroup newTeleportPackets(PositionCoordinates position) {
+        return new EntityTeleportNMSPacket(slimeID, position, SLIME_Y_OFFSET);
     }
 
     @Override
-    public void addDestroyPackets(NMSPacketList packetList) {
-        packetList.add(new EntityDestroyNMSPacket(slimeID));
+    public PacketGroup newDestroyPackets() {
+        return new EntityDestroyNMSPacket(slimeID);
     }
 
 }

@@ -57,21 +57,22 @@ public class PlaceholderTracker {
     }
 
     public @Nullable String updateAndGetGlobalReplacement(PlaceholderOccurrence placeholderOccurrence) {
-        return updateAndGetReplacement(placeholderOccurrence, null, false);
-    }
-
-    public @Nullable String updateAndGetIndividualReplacement(PlaceholderOccurrence placeholderOccurrence, Player player) {
-        return updateAndGetReplacement(placeholderOccurrence, player, true);
-    }
-
-    private @Nullable String updateAndGetReplacement(PlaceholderOccurrence placeholderOccurrence, Player player, boolean individual) {
         try {
             TrackedPlaceholder trackedPlaceholder = getTrackedPlaceholder(placeholderOccurrence);
-            if (trackedPlaceholder.isIndividual() == individual) {
-                return trackedPlaceholder.updateAndGetReplacement(player, tickClock.getCurrentTick());
-            } else {
+            if (trackedPlaceholder.isIndividual()) {
                 return null;
             }
+            return trackedPlaceholder.updateAndGetReplacement(null, tickClock.getCurrentTick());
+        } catch (PlaceholderException e) {
+            exceptionHandler.handle(e);
+            return "[Error]";
+        }
+    }
+
+    public @Nullable String updateAndGetReplacement(PlaceholderOccurrence placeholderOccurrence, Player player) {
+        try {
+            TrackedPlaceholder trackedPlaceholder = getTrackedPlaceholder(placeholderOccurrence);
+            return trackedPlaceholder.updateAndGetReplacement(player, tickClock.getCurrentTick());
         } catch (PlaceholderException e) {
             exceptionHandler.handle(e);
             return "[Error]";
@@ -108,7 +109,7 @@ public class PlaceholderTracker {
         }
     }
 
-    public boolean containsIndividualPlaceholders(StringWithPlaceholders textWithPlaceholders) {
+    public boolean containsIndividualPlaceholders(@NotNull StringWithPlaceholders textWithPlaceholders) {
         return textWithPlaceholders.anyPlaceholderMatch(occurrence -> {
             PlaceholderExpansion placeholderExpansion = registry.find(occurrence);
             return placeholderExpansion != null && placeholderExpansion.isIndividual();

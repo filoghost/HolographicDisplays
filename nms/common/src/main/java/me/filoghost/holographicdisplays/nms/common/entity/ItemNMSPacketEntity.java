@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.nms.common.entity;
 
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
-import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
+import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 import org.bukkit.inventory.ItemStack;
 
 public interface ItemNMSPacketEntity extends NMSPacketEntity {
@@ -14,8 +14,8 @@ public interface ItemNMSPacketEntity extends NMSPacketEntity {
     double ITEM_Y_OFFSET = 0;
     double ITEM_HEIGHT = 0.7;
 
-    void addSpawnPackets(NMSPacketList packetList, PositionCoordinates position, ItemStack itemStack);
+    PacketGroup newSpawnPackets(PositionCoordinates position, ItemStack itemStack);
 
-    void addChangePackets(NMSPacketList packetList, ItemStack itemStack);
+    PacketGroup newChangePackets(ItemStack itemStack);
 
 }

@@ -5,32 +5,33 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
-import me.filoghost.holographicdisplays.nms.common.NMSPacketList;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class LineTracker<T extends BaseHologramLine> {
+public abstract class LineTracker<T extends TrackedPlayer> {
 
-    protected final T line;
-    private final Set<Player> trackedPlayers;
+    private final Map<Player, T> trackedPlayers;
+    private final Viewers<T> trackedPlayersIterableView;
 
     /**
      * Flag to indicate that the line has changed in some way and there could be the need to send update packets.
      */
     private boolean lineChanged;
 
-    LineTracker(T line) {
-        this.line = line;
-        this.trackedPlayers = new HashSet<>();
+    protected LineTracker() {
+        this.trackedPlayers = new HashMap<>();
+        this.trackedPlayersIterableView = action -> trackedPlayers.values().forEach(action);
     }
 
+    protected abstract BaseHologramLine getLine();
+
     final boolean shouldBeRemoved() {
-        return line.isDeleted();
+        return getLine().isDeleted();
     }
 
     @MustBeInvokedByOverriders
@@ -60,15 +61,13 @@ public abstract class LineTracker<T extends BaseHologramLine> {
         // Then, send the changes (if any) to already tracked players
         if (sendChangesPackets) {
             if (hasTrackedPlayers()) {
-                NMSPacketList packetList = new NMSPacketList();
-                addChangesPackets(packetList);
-                broadcastPackets(packetList);
+                sendChangesPackets(trackedPlayersIterableView);
             }
             clearDetectedChanges();
         }
 
         // Finally, add/remove tracked players sending them the full spawn/destroy packets
-        updateTrackedPlayersAndSendPackets(onlinePlayers);
+        modifyTrackedPlayersAndSendPackets(onlinePlayers);
     }
 
     protected abstract void detectChanges();
@@ -77,36 +76,46 @@ public abstract class LineTracker<T extends BaseHologramLine> {
 
     protected abstract boolean updatePlaceholders();
 
-    private void updateTrackedPlayersAndSendPackets(Collection<? extends Player> onlinePlayers) {
-        if (!line.isInLoadedChunk()) {
+    private void modifyTrackedPlayersAndSendPackets(Collection<? extends Player> onlinePlayers) {
+        if (!getLine().isInLoadedChunk()) {
             clearTrackedPlayersAndSendPackets();
             return;
         }
 
         // Lazy initialization
-        NMSPacketList spawnPacketList = null;
-        NMSPacketList destroyPacketList = null;
+        MutableViewers<T> addedPlayers = null;
+        MutableViewers<T> removedPlayers = null;
 
         for (Player player : onlinePlayers) {
             if (shouldTrackPlayer(player)) {
-                if (trackedPlayers.add(player)) {
-                    if (spawnPacketList == null) {
-                        spawnPacketList = new NMSPacketList();
-                        addSpawnPackets(spawnPacketList);
+                if (!trackedPlayers.containsKey(player)) {
+                    T trackedPlayer = createTrackedPlayer(player);
+                    trackedPlayers.put(player, trackedPlayer);
+                    if (addedPlayers == null) {
+                        addedPlayers = new MutableViewers<>();
                     }
-                    spawnPacketList.sendTo(player);
+                    addedPlayers.add(trackedPlayer);
                 }
             } else {
-                if (trackedPlayers.remove(player)) {
-                    if (destroyPacketList == null) {
-                        destroyPacketList = new NMSPacketList();
-                        addDestroyPackets(destroyPacketList);
+                if (trackedPlayers.containsKey(player)) {
+                    T trackedPlayer = trackedPlayers.remove(player);
+                    if (removedPlayers == null) {
+                        removedPlayers = new MutableViewers<>();
                     }
-                    destroyPacketList.sendTo(player);
+                    removedPlayers.add(trackedPlayer);
                 }
             }
         }
+
+        if (addedPlayers != null) {
+            sendSpawnPackets(addedPlayers);
+        }
+        if (removedPlayers != null) {
+            sendDestroyPackets(removedPlayers);
+        }
     }
+
+    protected abstract T createTrackedPlayer(Player player);
 
     protected abstract boolean shouldTrackPlayer(Player player);
 
@@ -114,12 +123,12 @@ public abstract class LineTracker<T extends BaseHologramLine> {
         return !trackedPlayers.isEmpty();
     }
 
-    protected final Set<Player> getTrackedPlayers() {
-        return trackedPlayers;
+    protected final Collection<T> getTrackedPlayers() {
+        return trackedPlayers.values();
     }
 
     public final boolean isTrackedPlayer(Player player) {
-        return trackedPlayers.contains(player);
+        return trackedPlayers.containsKey(player);
     }
 
     protected final void removeTrackedPlayer(Player player) {
@@ -131,22 +140,14 @@ public abstract class LineTracker<T extends BaseHologramLine> {
             return;
         }
 
-        NMSPacketList destroyPacketList = new NMSPacketList();
-        addDestroyPackets(destroyPacketList);
-        broadcastPackets(destroyPacketList);
+        sendDestroyPackets(trackedPlayersIterableView);
         trackedPlayers.clear();
     }
 
-    private void broadcastPackets(NMSPacketList packetList) {
-        for (Player trackedPlayer : trackedPlayers) {
-            packetList.sendTo(trackedPlayer);
-        }
-    }
+    protected abstract void sendSpawnPackets(Viewers<T> viewers);
 
-    protected abstract void addSpawnPackets(NMSPacketList packetList);
+    protected abstract void sendDestroyPackets(Viewers<T> viewers);
 
-    protected abstract void addDestroyPackets(NMSPacketList packetList);
-
-    protected abstract void addChangesPackets(NMSPacketList packetList);
+    protected abstract void sendChangesPackets(Viewers<T> viewers);
 
 }

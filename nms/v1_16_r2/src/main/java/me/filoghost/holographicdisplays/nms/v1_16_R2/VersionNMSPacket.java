@@ -5,14 +5,14 @@
  */
 package me.filoghost.holographicdisplays.nms.v1_16_R2;
 
-import me.filoghost.holographicdisplays.nms.common.NMSPacket;
+import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 import net.minecraft.server.v1_16_R2.Packet;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
 
-abstract class VersionNMSPacket implements NMSPacket {
+abstract class VersionNMSPacket implements PacketGroup {
 
     @Override
     public void sendTo(Player player) {
