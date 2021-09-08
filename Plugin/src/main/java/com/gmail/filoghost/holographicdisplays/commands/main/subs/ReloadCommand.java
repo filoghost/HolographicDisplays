@@ -94,9 +94,7 @@ public class ReloadCommand extends HologramSubCommand {
 				}
 			}
 			
-			for (CraftHologram hologram : NamedHologramManager.getHolograms()) {
-				hologram.refreshAll();
-			}
+			for (CraftHologram hologram : NamedHologramManager.getHolograms()) hologram.refreshAll();
 			
 			long endMillis = System.currentTimeMillis();
 			
