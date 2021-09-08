@@ -68,16 +68,10 @@ public abstract class HologramSubCommand {
 	
 	
 	public final boolean isValidTrigger(String name) {
-		if (this.name.equalsIgnoreCase(name)) {
-			return true;
-		}
+		if (this.name.equalsIgnoreCase(name)) return true;
 		
 		if (aliases != null) {
-			for (String alias : aliases) {
-				if (alias.equalsIgnoreCase(name)) {
-					return true;
-				}
-			}
+			for (String alias : aliases) if (alias.equalsIgnoreCase(name)) return true;
 		}
 		
 		return false;
