@@ -73,9 +73,7 @@ public class HolographicDisplays extends JavaPlugin {
 	public void onEnable() {
 		
 		// Warn about plugin reloaders and the /reload command.
-		if (instance != null || System.getProperty("HolographicDisplaysLoaded") != null) {
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[HolographicDisplays] Please do not use /reload or plugin reloaders. Use the command \"/holograms reload\" instead. You will receive no support for doing this operation.");
-		}
+		if (instance != null || System.getProperty("HolographicDisplaysLoaded") != null) XBukkit.getConsoleSender().sendMessage(ChatColor.RED + "[HolographicDisplays] Please do not use /reload or plugin reloaders. Use the command \"/holograms reload\" instead. You will receive no support for doing this operation.");
 		
 		System.setProperty("HolographicDisplaysLoaded", "true");
 		instance = this;
@@ -174,12 +172,8 @@ public class HolographicDisplays extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		for (NamedHologram hologram : NamedHologramManager.getHolograms()) {
-			hologram.despawnEntities();
-		}
-		for (PluginHologram hologram : PluginHologramManager.getHolograms()) {
-			hologram.despawnEntities();
-		}
+		for (NamedHologram hologram : NamedHologramManager.getHolograms()) hologram.despawnEntities();
+		for (PluginHologram hologram : PluginHologramManager.getHolograms()) hologram.despawnEntities();
 	}
 	
 	public static NMSManager getNMSManager() {
@@ -225,17 +219,13 @@ public class HolographicDisplays extends JavaPlugin {
 	
 	
 	public void hookProtocolLib() {
-		if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-			return;
-		}
+		if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) return;
 
 		try {
 			String protocolVersion = Bukkit.getPluginManager().getPlugin("ProtocolLib").getDescription().getVersion();
 			Matcher versionNumbersMatcher = Pattern.compile("([0-9\\.])+").matcher(protocolVersion);
 			
-			if (!versionNumbersMatcher.find()) {
-				throw new IllegalArgumentException("could not find version numbers pattern");
-			}
+			if (!versionNumbersMatcher.find()) throw new IllegalArgumentException("could not find version numbers pattern");
 			
 			String versionNumbers = versionNumbersMatcher.group();
 			
