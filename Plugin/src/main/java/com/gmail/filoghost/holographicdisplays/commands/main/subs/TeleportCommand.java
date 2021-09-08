@@ -52,6 +52,10 @@ public class TeleportCommand extends HologramSubCommand {
 		Player player = CommandValidator.getPlayerSender(sender);
 		NamedHologram hologram = CommandValidator.getNamedHologram(args[0]);
 		
+		if (hologram == null) {
+			sender.sendMessage(Colors.ERROR + "Hologram " + args[0] + "does not exist!");
+			return;
+		}
 		Location loc = hologram.getLocation();
 		loc.setPitch(90);
 		player.teleport(loc, TeleportCause.PLUGIN);
