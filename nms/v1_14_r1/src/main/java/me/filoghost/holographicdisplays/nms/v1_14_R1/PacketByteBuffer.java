@@ -43,7 +43,7 @@ class PacketByteBuffer extends PacketDataSerializer {
     }
 
     void writeDataWatcherEntriesEnd() {
-        writeByte(255);
+        writeByte(0xFF);
     }
 
 }
