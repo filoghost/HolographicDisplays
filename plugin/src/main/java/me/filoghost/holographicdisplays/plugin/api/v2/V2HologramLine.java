@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 @SuppressWarnings("deprecation")
 public interface V2HologramLine extends HologramLine, EditableHologramLine {
 
+    @Override
     V2Hologram getParent();
 
     @Override

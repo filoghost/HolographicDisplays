@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin.config;
 import me.filoghost.fcommons.config.Config;
 import me.filoghost.fcommons.config.mapped.MappedConfig;
 import me.filoghost.fcommons.config.mapped.Path;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -66,7 +67,7 @@ public class SettingsModel implements MappedConfig {
     boolean debug = false;
 
     @Override
-    public List<String> getHeader() {
+    public @NotNull List<String> getHeader() {
         return Arrays.asList(
                 "",
                 "Plugin page: https://dev.bukkit.org/projects/holographic-displays",

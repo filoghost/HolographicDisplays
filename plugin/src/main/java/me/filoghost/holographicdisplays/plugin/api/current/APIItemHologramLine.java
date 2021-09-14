@@ -21,10 +21,12 @@ public class APIItemHologramLine extends BaseItemHologramLine implements ItemHol
         super(hologram, itemStack);
     }
 
+    @Override
     public @Nullable PickupListener getPickupListener() {
         return pickupListener;
     }
 
+    @Override
     public void setPickupListener(@Nullable PickupListener pickupListener) {
         checkNotDeleted();
 
