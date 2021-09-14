@@ -27,12 +27,13 @@ class PacketByteBuffer extends PacketDataSerializer {
         super.d(i);
     }
 
-    void writeUUID(UUID uuid) {
-        super.a(uuid);
+    void writeVarIntArray(int i1) {
+        writeVarInt(1);
+        writeVarInt(i1);
     }
 
-    void writeIntArray(int... array) {
-        super.a(array);
+    void writeUUID(UUID uuid) {
+        super.a(uuid);
     }
 
     <T> void writeDataWatcherEntry(DataWatcherKey<T> key, T value) {
