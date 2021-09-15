@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.plugin.util.CachedBoolean;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -19,7 +18,7 @@ class HologramPosition {
     private @NotNull ImmutablePosition position;
     private @Nullable World world;
     private int chunkX, chunkZ;
-    private final CachedBoolean chunkLoaded;
+    private @NotNull ChunkLoadState chunkLoadState;
 
     HologramPosition(@NotNull ImmutablePosition position) {
         Preconditions.notNull(position, "position");
@@ -27,7 +26,7 @@ class HologramPosition {
         this.world = Bukkit.getWorld(position.getWorldName());
         this.chunkX = getChunkCoordinate(position.getX());
         this.chunkZ = getChunkCoordinate(position.getZ());
-        this.chunkLoaded = new CachedBoolean(() -> world != null && world.isChunkLoaded(chunkX, chunkZ));
+        this.chunkLoadState = ChunkLoadState.UNKNOWN;
     }
 
     final void set(String worldName, double x, double y, double z) {
@@ -43,7 +42,7 @@ class HologramPosition {
             }
             this.chunkX = chunkX;
             this.chunkZ = chunkZ;
-            this.chunkLoaded.invalidate();
+            this.chunkLoadState = ChunkLoadState.UNKNOWN;
         }
     }
 
@@ -54,31 +53,44 @@ class HologramPosition {
     void onWorldLoad(World world) {
         if (position.isInWorld(world)) {
             this.world = world;
-            chunkLoaded.invalidate();
+            chunkLoadState = ChunkLoadState.UNKNOWN;
         }
     }
 
     void onWorldUnload(World world) {
         if (position.isInWorld(world)) {
             this.world = null;
-            chunkLoaded.set(false);
+            chunkLoadState = ChunkLoadState.NOT_LOADED;
         }
     }
 
     void onChunkLoad(Chunk chunk) {
-        if (world != null && world == chunk.getWorld() && chunkX == chunk.getX() && chunkZ == chunk.getZ()) {
-            chunkLoaded.set(true);
+        if (isInChunk(chunk)) {
+            chunkLoadState = ChunkLoadState.LOADED;
         }
     }
 
     void onChunkUnload(Chunk chunk) {
-        if (world != null && world == chunk.getWorld() && chunkX == chunk.getX() && chunkZ == chunk.getZ()) {
-            chunkLoaded.set(false);
+        if (isInChunk(chunk)) {
+            chunkLoadState = ChunkLoadState.NOT_LOADED;
         }
     }
 
+    private boolean isInChunk(Chunk chunk) {
+        return world != null && world == chunk.getWorld() && chunkX == chunk.getX() && chunkZ == chunk.getZ();
+    }
+
     boolean isChunkLoaded() {
-        return chunkLoaded.get();
+        // Compute state if unknown
+        if (chunkLoadState == ChunkLoadState.UNKNOWN) {
+            if (world != null && world.isChunkLoaded(chunkX, chunkZ)) {
+                chunkLoadState = ChunkLoadState.LOADED;
+            } else {
+                chunkLoadState = ChunkLoadState.NOT_LOADED;
+            }
+        }
+
+        return chunkLoadState == ChunkLoadState.LOADED;
     }
 
     @Nullable World getWorldIfLoaded() {
@@ -92,6 +104,15 @@ class HologramPosition {
     @Override
     public String toString() {
         return position.toString();
+    }
+
+
+    private enum ChunkLoadState {
+
+        LOADED,
+        NOT_LOADED,
+        UNKNOWN
+
     }
 
 }
