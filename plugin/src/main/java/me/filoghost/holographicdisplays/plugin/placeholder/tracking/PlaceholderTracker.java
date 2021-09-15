@@ -29,22 +29,21 @@ public class PlaceholderTracker {
     // the corresponding entry is removed from the map automatically.
     private final WeakHashMap<PlaceholderOccurrence, TrackedPlaceholder> activePlaceholders;
 
-    private volatile boolean registryChanged;
+    private long lastRegistryVersion;
 
     public PlaceholderTracker(PlaceholderRegistry registry, TickClock tickClock) {
         this.registry = registry;
         this.tickClock = tickClock;
         this.exceptionHandler = new PlaceholderExceptionHandler(tickClock);
         this.activePlaceholders = new WeakHashMap<>();
-
-        registry.setChangeListener(() -> registryChanged = true);
     }
 
     public void update() {
-        if (!registryChanged) {
+        long currentRegistryVersion = registry.getVersion();
+        if (lastRegistryVersion == currentRegistryVersion) {
             return;
         }
-        registryChanged = false;
+        lastRegistryVersion = currentRegistryVersion;
 
         // Remove entries whose placeholder expansion sources are outdated
         activePlaceholders.entrySet().removeIf(entry -> {
@@ -109,11 +108,15 @@ public class PlaceholderTracker {
         }
     }
 
-    public boolean containsIndividualPlaceholders(@NotNull StringWithPlaceholders textWithPlaceholders) {
-        return textWithPlaceholders.anyPlaceholderMatch(occurrence -> {
+    public boolean containsIndividualPlaceholders(@NotNull StringWithPlaceholders stringWithPlaceholders) {
+        return stringWithPlaceholders.anyPlaceholderMatch(occurrence -> {
             PlaceholderExpansion placeholderExpansion = registry.find(occurrence);
             return placeholderExpansion != null && placeholderExpansion.isIndividual();
         });
+    }
+
+    public long getRegistryVersion() {
+        return registry.getVersion();
     }
 
 }

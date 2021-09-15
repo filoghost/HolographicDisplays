@@ -8,12 +8,12 @@ package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
-import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
-import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplacer;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplacer;
 import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderIdentifier;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
@@ -23,18 +23,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class PlaceholderRegistry {
 
     private final Table<PlaceholderIdentifier, PluginName, PlaceholderExpansion> placeholderExpansions;
-    private Runnable changeListener;
+    private final AtomicLong version;
 
     public PlaceholderRegistry() {
         this.placeholderExpansions = HashBasedTable.create();
+        this.version = new AtomicLong();
     }
 
-    public void setChangeListener(Runnable changeListener) {
-        this.changeListener = changeListener;
+    public long getVersion() {
+        return version.get();
     }
 
     public void registerIndividualPlaceholderReplacer(
@@ -68,19 +70,19 @@ public class PlaceholderRegistry {
     private void registerExpansion(PlaceholderExpansion expansion) {
         placeholderExpansions.put(expansion.getIdentifier(), expansion.getPluginName(), expansion);
 
-        changeListener.run();
+        version.incrementAndGet();
     }
 
     public void unregisterAll(Plugin plugin) {
         placeholderExpansions.column(new PluginName(plugin)).clear();
 
-        changeListener.run();
+        version.incrementAndGet();
     }
 
     public void unregister(Plugin plugin, String identifier) {
         placeholderExpansions.remove(new PlaceholderIdentifier(identifier), new PluginName(plugin));
 
-        changeListener.run();
+        version.incrementAndGet();
     }
 
     public @Nullable PlaceholderExpansion find(PlaceholderOccurrence textOccurrence) {

@@ -25,6 +25,8 @@ class DisplayText {
     private boolean allowPlaceholders;
     private @Nullable String globalText;
     private boolean containsPlaceholderAPIPattern;
+    private @Nullable Boolean containsIndividualPlaceholders;
+    private long lastPlaceholderRegistryVersion;
 
     DisplayText(PlaceholderTracker placeholderTracker) {
         this.placeholderTracker = placeholderTracker;
@@ -34,7 +36,15 @@ class DisplayText {
         if (!allowPlaceholders || unreplacedText == null) {
             return false;
         }
-        return containsPlaceholderAPIPattern || placeholderTracker.containsIndividualPlaceholders(unreplacedText); // TODO cache boolean value based on registry
+        if (containsPlaceholderAPIPattern) {
+            return true;
+        }
+        long currentPlaceholderRegistryVersion = placeholderTracker.getRegistryVersion();
+        if (containsIndividualPlaceholders == null || lastPlaceholderRegistryVersion != currentPlaceholderRegistryVersion) {
+            containsIndividualPlaceholders = placeholderTracker.containsIndividualPlaceholders(unreplacedText);
+            lastPlaceholderRegistryVersion = currentPlaceholderRegistryVersion;
+        }
+        return containsIndividualPlaceholders;
     }
 
     void setUnreplacedText(@Nullable String text) {
@@ -42,6 +52,7 @@ class DisplayText {
         globalText = null;
         containsPlaceholderAPIPattern = unreplacedText != null
                 && unreplacedText.anyLiteralPartMatch(PlaceholderAPIHook::containsPlaceholderPattern);
+        containsIndividualPlaceholders = null;
     }
 
     @Nullable String getUnreplacedText() {
