@@ -187,7 +187,7 @@ public class HolographicDisplays extends FCommonsPlugin {
     @Override
     public void onDisable() {
         if (lineTrackerManager != null) {
-            lineTrackerManager.clearTrackedPlayersAndSendPackets();
+            lineTrackerManager.resetViewersAndSendDestroyPackets();
         }
 
         if (nmsManager != null) {

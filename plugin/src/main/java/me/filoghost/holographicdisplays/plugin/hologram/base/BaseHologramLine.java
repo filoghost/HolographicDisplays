@@ -35,8 +35,8 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
         tracker.setLineChanged();
     }
 
-    protected final boolean isTrackedPlayer(Player player) {
-        return tracker.isTrackedPlayer(player);
+    protected final boolean isViewer(Player player) {
+        return tracker.isViewer(player);
     }
 
     @Override
@@ -72,7 +72,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
         return !isDeleted()
                 && player.isOnline()
                 && player.getGameMode() != GameMode.SPECTATOR
-                && isTrackedPlayer(player)
+                && isViewer(player)
                 && isVisibleTo(player);
     }
 

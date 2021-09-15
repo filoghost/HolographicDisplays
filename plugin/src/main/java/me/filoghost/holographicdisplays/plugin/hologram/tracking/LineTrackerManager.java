@@ -61,15 +61,15 @@ public class LineTrackerManager {
         }
     }
 
-    public void clearTrackedPlayersAndSendPackets() {
+    public void resetViewersAndSendDestroyPackets() {
         for (LineTracker<?> tracker : lineTrackers) {
-            tracker.clearTrackedPlayersAndSendPackets();
+            tracker.resetViewersAndSendDestroyPackets();
         }
     }
 
     public void onPlayerQuit(Player player) {
         for (LineTracker<?> tracker : lineTrackers) {
-            tracker.removeTrackedPlayer(player);
+            tracker.removeViewer(player);
         }
     }
 

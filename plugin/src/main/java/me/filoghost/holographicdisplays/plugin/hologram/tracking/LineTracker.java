@@ -13,10 +13,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class LineTracker<T extends TrackedPlayer> {
+public abstract class LineTracker<T extends Viewer> {
 
-    private final Map<Player, T> trackedPlayers;
-    private final Viewers<T> trackedPlayersIterableView;
+    private final Map<Player, T> viewers;
+    private final Viewers<T> iterableViewers;
 
     /**
      * Flag to indicate that the line has changed in some way and there could be the need to send update packets.
@@ -24,8 +24,8 @@ public abstract class LineTracker<T extends TrackedPlayer> {
     private boolean lineChanged;
 
     protected LineTracker() {
-        this.trackedPlayers = new HashMap<>();
-        this.trackedPlayersIterableView = action -> trackedPlayers.values().forEach(action);
+        this.viewers = new HashMap<>();
+        this.iterableViewers = action -> viewers.values().forEach(action);
     }
 
     protected abstract BaseHologramLine getLine();
@@ -36,7 +36,7 @@ public abstract class LineTracker<T extends TrackedPlayer> {
 
     @MustBeInvokedByOverriders
     public void onRemoval() {
-        clearTrackedPlayersAndSendPackets();
+        resetViewersAndSendDestroyPackets();
     }
 
     public final void setLineChanged() {
@@ -60,14 +60,14 @@ public abstract class LineTracker<T extends TrackedPlayer> {
 
         // Then, send the changes (if any) to already tracked players
         if (sendChangesPackets) {
-            if (hasTrackedPlayers()) {
-                sendChangesPackets(trackedPlayersIterableView);
+            if (hasViewers()) {
+                sendChangesPackets(iterableViewers);
             }
             clearDetectedChanges();
         }
 
         // Finally, add/remove tracked players sending them the full spawn/destroy packets
-        modifyTrackedPlayersAndSendPackets(onlinePlayers);
+        modifyViewersAndSendPackets(onlinePlayers);
     }
 
     protected abstract void detectChanges();
@@ -76,9 +76,9 @@ public abstract class LineTracker<T extends TrackedPlayer> {
 
     protected abstract boolean updatePlaceholders();
 
-    private void modifyTrackedPlayersAndSendPackets(Collection<? extends Player> onlinePlayers) {
+    private void modifyViewersAndSendPackets(Collection<? extends Player> onlinePlayers) {
         if (!getLine().isInLoadedChunk()) {
-            clearTrackedPlayersAndSendPackets();
+            resetViewersAndSendDestroyPackets();
             return;
         }
 
@@ -88,21 +88,21 @@ public abstract class LineTracker<T extends TrackedPlayer> {
 
         for (Player player : onlinePlayers) {
             if (shouldTrackPlayer(player)) {
-                if (!trackedPlayers.containsKey(player)) {
-                    T trackedPlayer = createTrackedPlayer(player);
-                    trackedPlayers.put(player, trackedPlayer);
+                if (!viewers.containsKey(player)) {
+                    T viewer = createViewer(player);
+                    viewers.put(player, viewer);
                     if (addedPlayers == null) {
                         addedPlayers = new MutableViewers<>();
                     }
-                    addedPlayers.add(trackedPlayer);
+                    addedPlayers.add(viewer);
                 }
             } else {
-                if (trackedPlayers.containsKey(player)) {
-                    T trackedPlayer = trackedPlayers.remove(player);
+                if (viewers.containsKey(player)) {
+                    T viewer = viewers.remove(player);
                     if (removedPlayers == null) {
                         removedPlayers = new MutableViewers<>();
                     }
-                    removedPlayers.add(trackedPlayer);
+                    removedPlayers.add(viewer);
                 }
             }
         }
@@ -115,33 +115,33 @@ public abstract class LineTracker<T extends TrackedPlayer> {
         }
     }
 
-    protected abstract T createTrackedPlayer(Player player);
+    protected abstract T createViewer(Player player);
 
     protected abstract boolean shouldTrackPlayer(Player player);
 
-    protected final boolean hasTrackedPlayers() {
-        return !trackedPlayers.isEmpty();
+    protected final boolean hasViewers() {
+        return !viewers.isEmpty();
     }
 
-    protected final Collection<T> getTrackedPlayers() {
-        return trackedPlayers.values();
+    protected final Collection<T> getViewers() {
+        return viewers.values();
     }
 
-    public final boolean isTrackedPlayer(Player player) {
-        return trackedPlayers.containsKey(player);
+    public final boolean isViewer(Player player) {
+        return viewers.containsKey(player);
     }
 
-    protected final void removeTrackedPlayer(Player player) {
-        trackedPlayers.remove(player);
+    protected final void removeViewer(Player player) {
+        viewers.remove(player);
     }
 
-    protected final void clearTrackedPlayersAndSendPackets() {
-        if (!hasTrackedPlayers()) {
+    protected final void resetViewersAndSendDestroyPackets() {
+        if (!hasViewers()) {
             return;
         }
 
-        sendDestroyPackets(trackedPlayersIterableView);
-        trackedPlayers.clear();
+        sendDestroyPackets(iterableViewers);
+        viewers.clear();
     }
 
     protected abstract void sendSpawnPackets(Viewers<T> viewers);

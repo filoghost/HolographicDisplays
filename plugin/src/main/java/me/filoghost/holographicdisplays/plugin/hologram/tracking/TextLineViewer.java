@@ -11,14 +11,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-class TextLineTrackedPlayer extends TrackedPlayer {
+class TextLineViewer extends Viewer {
 
     private final DisplayText displayText;
 
     private String individualText;
     private String lastSentText;
 
-    TextLineTrackedPlayer(Player player, DisplayText displayText) {
+    TextLineViewer(Player player, DisplayText displayText) {
         super(player);
         this.displayText = displayText;
     }

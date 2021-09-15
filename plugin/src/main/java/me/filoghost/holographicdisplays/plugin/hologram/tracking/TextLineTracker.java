@@ -16,7 +16,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
 
-public class TextLineTracker extends ClickableLineTracker<TextLineTrackedPlayer> {
+public class TextLineTracker extends ClickableLineTracker<TextLineViewer> {
 
     private final BaseTextHologramLine line;
     private final TextNMSPacketEntity textEntity;
@@ -42,7 +42,7 @@ public class TextLineTracker extends ClickableLineTracker<TextLineTrackedPlayer>
 
     @Override
     protected boolean updatePlaceholders() {
-        boolean placeholdersChanged = displayText.updateReplacements(getTrackedPlayers());
+        boolean placeholdersChanged = displayText.updateReplacements(getViewers());
         if (placeholdersChanged) {
             displayTextChanged = true; // Mark as changed to trigger a packet send with updated placeholders
         }
@@ -50,8 +50,8 @@ public class TextLineTracker extends ClickableLineTracker<TextLineTrackedPlayer>
     }
 
     @Override
-    protected TextLineTrackedPlayer createTrackedPlayer(Player player) {
-        return new TextLineTrackedPlayer(player, displayText);
+    protected TextLineViewer createViewer(Player player) {
+        return new TextLineViewer(player, displayText);
     }
 
     @MustBeInvokedByOverriders
@@ -81,7 +81,7 @@ public class TextLineTracker extends ClickableLineTracker<TextLineTrackedPlayer>
 
     @MustBeInvokedByOverriders
     @Override
-    protected void sendSpawnPackets(Viewers<TextLineTrackedPlayer> viewers) {
+    protected void sendSpawnPackets(Viewers<TextLineViewer> viewers) {
         super.sendSpawnPackets(viewers);
 
         IndividualTextPacketGroup spawnPackets = textEntity.newSpawnPackets(position);
@@ -90,13 +90,13 @@ public class TextLineTracker extends ClickableLineTracker<TextLineTrackedPlayer>
 
     @MustBeInvokedByOverriders
     @Override
-    protected void sendDestroyPackets(Viewers<TextLineTrackedPlayer> viewers) {
+    protected void sendDestroyPackets(Viewers<TextLineViewer> viewers) {
         super.sendDestroyPackets(viewers);
         viewers.sendPackets(textEntity.newDestroyPackets());
     }
 
     @Override
-    protected void sendChangesPackets(Viewers<TextLineTrackedPlayer> viewers) {
+    protected void sendChangesPackets(Viewers<TextLineViewer> viewers) {
         super.sendChangesPackets(viewers);
 
         if (displayTextChanged) {
@@ -107,7 +107,7 @@ public class TextLineTracker extends ClickableLineTracker<TextLineTrackedPlayer>
 
     @MustBeInvokedByOverriders
     @Override
-    protected void sendPositionChangePackets(Viewers<TextLineTrackedPlayer> viewers) {
+    protected void sendPositionChangePackets(Viewers<TextLineViewer> viewers) {
         super.sendPositionChangePackets(viewers);
         viewers.sendPackets(textEntity.newTeleportPackets(position));
     }

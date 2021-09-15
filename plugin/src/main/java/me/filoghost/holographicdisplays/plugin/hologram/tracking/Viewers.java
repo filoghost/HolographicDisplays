@@ -9,7 +9,7 @@ import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 
 import java.util.function.Consumer;
 
-interface Viewers<T extends TrackedPlayer> {
+interface Viewers<T extends Viewer> {
 
     void forEach(Consumer<? super T> action);
 

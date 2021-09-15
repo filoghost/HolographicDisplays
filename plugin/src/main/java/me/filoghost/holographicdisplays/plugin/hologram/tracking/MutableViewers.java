@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class MutableViewers<T extends TrackedPlayer> implements Viewers<T> {
+public class MutableViewers<T extends Viewer> implements Viewers<T> {
 
     // Optimization: the viewer is frequently only a single player
     private T viewer;

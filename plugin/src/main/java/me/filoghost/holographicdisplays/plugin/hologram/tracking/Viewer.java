@@ -8,11 +8,11 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 import org.bukkit.entity.Player;
 
-class TrackedPlayer {
+class Viewer {
 
     private final Player player;
 
-    TrackedPlayer(Player player) {
+    Viewer(Player player) {
         this.player = player;
     }
 

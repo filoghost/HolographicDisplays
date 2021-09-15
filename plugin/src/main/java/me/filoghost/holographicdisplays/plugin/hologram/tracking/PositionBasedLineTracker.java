@@ -12,7 +12,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
 
-abstract class PositionBasedLineTracker<T extends TrackedPlayer> extends LineTracker<T> {
+abstract class PositionBasedLineTracker<T extends Viewer> extends LineTracker<T> {
 
     private static final int ENTITY_VIEW_RANGE = 64;
 

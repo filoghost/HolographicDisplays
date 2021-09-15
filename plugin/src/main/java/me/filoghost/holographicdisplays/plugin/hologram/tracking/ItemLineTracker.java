@@ -16,7 +16,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import java.util.Collection;
 import java.util.Objects;
 
-public class ItemLineTracker extends ClickableLineTracker<TrackedPlayer> {
+public class ItemLineTracker extends ClickableLineTracker<Viewer> {
 
     private final BaseItemHologramLine line;
     private final ItemNMSPacketEntity itemEntity;
@@ -43,10 +43,10 @@ public class ItemLineTracker extends ClickableLineTracker<TrackedPlayer> {
     protected void update(Collection<? extends Player> onlinePlayers) {
         super.update(onlinePlayers);
 
-        if (spawnItemEntity && hasTrackedPlayers() && line.hasPickupCallback()) {
-            for (TrackedPlayer trackedPlayer : getTrackedPlayers()) {
-                if (CollisionHelper.isInPickupRange(trackedPlayer.getPlayer(), position)) {
-                    line.onPickup(trackedPlayer.getPlayer());
+        if (spawnItemEntity && hasViewers() && line.hasPickupCallback()) {
+            for (Viewer viewer : getViewers()) {
+                if (CollisionHelper.isInPickupRange(viewer.getPlayer(), position)) {
+                    line.onPickup(viewer.getPlayer());
                 }
             }
         }
@@ -58,8 +58,8 @@ public class ItemLineTracker extends ClickableLineTracker<TrackedPlayer> {
     }
 
     @Override
-    protected TrackedPlayer createTrackedPlayer(Player player) {
-        return new TrackedPlayer(player);
+    protected Viewer createViewer(Player player) {
+        return new Viewer(player);
     }
 
     @MustBeInvokedByOverriders
@@ -90,7 +90,7 @@ public class ItemLineTracker extends ClickableLineTracker<TrackedPlayer> {
 
     @MustBeInvokedByOverriders
     @Override
-    protected void sendSpawnPackets(Viewers<TrackedPlayer> viewers) {
+    protected void sendSpawnPackets(Viewers<Viewer> viewers) {
         super.sendSpawnPackets(viewers);
 
         if (spawnItemEntity) {
@@ -100,7 +100,7 @@ public class ItemLineTracker extends ClickableLineTracker<TrackedPlayer> {
 
     @MustBeInvokedByOverriders
     @Override
-    protected void sendDestroyPackets(Viewers<TrackedPlayer> viewers) {
+    protected void sendDestroyPackets(Viewers<Viewer> viewers) {
         super.sendDestroyPackets(viewers);
 
         if (spawnItemEntity) {
@@ -110,7 +110,7 @@ public class ItemLineTracker extends ClickableLineTracker<TrackedPlayer> {
 
     @MustBeInvokedByOverriders
     @Override
-    protected void sendChangesPackets(Viewers<TrackedPlayer> viewers) {
+    protected void sendChangesPackets(Viewers<Viewer> viewers) {
         super.sendChangesPackets(viewers);
 
         if (spawnItemEntityChanged) {
@@ -127,7 +127,7 @@ public class ItemLineTracker extends ClickableLineTracker<TrackedPlayer> {
 
     @MustBeInvokedByOverriders
     @Override
-    protected void sendPositionChangePackets(Viewers<TrackedPlayer> viewers) {
+    protected void sendPositionChangePackets(Viewers<Viewer> viewers) {
         super.sendPositionChangePackets(viewers);
 
         if (spawnItemEntity) {

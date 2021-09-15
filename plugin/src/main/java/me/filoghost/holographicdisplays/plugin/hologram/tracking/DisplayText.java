@@ -60,13 +60,13 @@ class DisplayText {
         return globalText;
     }
 
-    public boolean updateReplacements(Collection<TextLineTrackedPlayer> trackedPlayers) {
+    public boolean updateReplacements(Collection<TextLineViewer> viewers) {
         boolean changed = false;
 
         if (containsIndividualPlaceholders()) {
-            for (TextLineTrackedPlayer trackedPlayer : trackedPlayers) {
-                String individualText = computeIndividualText(trackedPlayer);
-                if (trackedPlayer.updateIndividualText(individualText)) {
+            for (TextLineViewer viewer : viewers) {
+                String individualText = computeIndividualText(viewer);
+                if (viewer.updateIndividualText(individualText)) {
                     changed = true;
                 }
             }
@@ -89,9 +89,9 @@ class DisplayText {
         }
     }
 
-    public @NotNull String computeIndividualText(TrackedPlayer trackedPlayer) {
+    public @NotNull String computeIndividualText(Viewer viewer) {
         Preconditions.notNull(unreplacedText, "unreplacedText");
-        Player player = trackedPlayer.getPlayer();
+        Player player = viewer.getPlayer();
 
         return unreplacedText.replaceParts(
                 (PlaceholderOccurrence placeholderOccurrence) -> {
