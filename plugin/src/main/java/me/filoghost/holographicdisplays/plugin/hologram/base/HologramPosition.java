@@ -5,7 +5,6 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
-import me.filoghost.fcommons.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -21,7 +20,6 @@ class HologramPosition {
     private @NotNull ChunkLoadState chunkLoadState;
 
     HologramPosition(@NotNull ImmutablePosition position) {
-        Preconditions.notNull(position, "position");
         this.position = position;
         this.world = Bukkit.getWorld(position.getWorldName());
         this.chunkX = getChunkCoordinate(position.getX());
@@ -29,16 +27,16 @@ class HologramPosition {
         this.chunkLoadState = ChunkLoadState.UNKNOWN;
     }
 
-    final void set(String worldName, double x, double y, double z) {
-        boolean worldChanged = !position.isInWorld(worldName);
-        int chunkX = getChunkCoordinate(x);
-        int chunkZ = getChunkCoordinate(z);
+    final void set(@NotNull ImmutablePosition position) {
+        boolean worldChanged = !this.position.isInSameWorld(position);
+        int chunkX = getChunkCoordinate(position.getX());
+        int chunkZ = getChunkCoordinate(position.getZ());
 
-        position = new ImmutablePosition(worldName, x, y, z);
+        this.position = position;
 
         if (worldChanged || this.chunkX != chunkX || this.chunkZ != chunkZ) {
             if (worldChanged) {
-                this.world = Bukkit.getWorld(worldName);
+                this.world = position.getWorldIfLoaded();
             }
             this.chunkX = chunkX;
             this.chunkZ = chunkZ;
@@ -99,11 +97,6 @@ class HologramPosition {
 
     @NotNull ImmutablePosition getPosition() {
         return position;
-    }
-
-    @Override
-    public String toString() {
-        return position.toString();
     }
 
 

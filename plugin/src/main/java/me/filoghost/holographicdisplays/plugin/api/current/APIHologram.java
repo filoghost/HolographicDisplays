@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.api.current;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.holographicdisplays.api.Position;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
@@ -44,6 +45,11 @@ public class APIHologram extends BaseHologram implements Hologram {
     @Override
     public @NotNull DefaultVisibilitySettings getVisibilitySettings() {
         return visibilitySettings;
+    }
+
+    @Override
+    public void setPosition(@NotNull Position position) {
+        super.setPosition(ImmutablePosition.of(position));
     }
 
     @Override

@@ -55,7 +55,7 @@ public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAP
 
     @Override
     public Position getPosition(Location location) {
-        return new ImmutablePosition(location);
+        return ImmutablePosition.of(location);
     }
 
     @Override

@@ -31,22 +31,19 @@ public final class ImmutablePosition implements Position {
         this.z = z;
     }
 
-    public ImmutablePosition(@NotNull Location location) {
+    public static ImmutablePosition of(@NotNull Location location) {
         Preconditions.notNull(location, "location");
         Preconditions.notNull(location.getWorld(), "location.getWorld()");
-        this.worldName = location.getWorld().getName();
-        this.x = location.getX();
-        this.y = location.getY();
-        this.z = location.getZ();
+        return new ImmutablePosition(location.getWorld().getName(), location.getX(), location.getY(), location.getZ());
     }
 
-    public ImmutablePosition(@NotNull Position position) {
+    public static ImmutablePosition of(@NotNull Position position) {
         Preconditions.notNull(position, "position");
-        Preconditions.notNull(position.getWorldName(), "position.getWorldName()");
-        this.worldName = position.getWorldName();
-        this.x = position.getX();
-        this.y = position.getY();
-        this.z = position.getZ();
+        if (position instanceof ImmutablePosition) {
+            return (ImmutablePosition) position;
+        } else {
+            return new ImmutablePosition(position.getWorldName(), position.getX(), position.getY(), position.getZ());
+        }
     }
 
     @Override

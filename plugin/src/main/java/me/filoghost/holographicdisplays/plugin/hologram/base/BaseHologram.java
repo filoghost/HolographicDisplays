@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.api.Position;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -18,11 +17,11 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseHologram extends BaseHologramComponent {
 
-    private final HologramPosition position;
+    private final HologramPosition hologramPosition;
     private final LineTrackerManager lineTrackerManager;
 
     public BaseHologram(ImmutablePosition position, LineTrackerManager lineTrackerManager) {
-        this.position = new HologramPosition(position);
+        this.hologramPosition = new HologramPosition(position);
         this.lineTrackerManager = lineTrackerManager;
     }
 
@@ -43,16 +42,11 @@ public abstract class BaseHologram extends BaseHologramComponent {
     }
 
     public @NotNull ImmutablePosition getPosition() {
-        return position.getPosition();
+        return hologramPosition.getPosition();
     }
 
     public @Nullable World getWorldIfLoaded() {
-        return position.getWorldIfLoaded();
-    }
-
-    public void setPosition(@NotNull Position position) {
-        Preconditions.notNull(position, "position");
-        setPosition(position.getWorldName(), position.getX(), position.getY(), position.getZ());
+        return hologramPosition.getWorldIfLoaded();
     }
 
     public void setPosition(@NotNull Location location) {
@@ -68,36 +62,41 @@ public abstract class BaseHologram extends BaseHologramComponent {
 
     public void setPosition(@NotNull String worldName, double x, double y, double z) {
         Preconditions.notNull(worldName, "worldName");
+        setPosition(new ImmutablePosition(worldName, x, y, z));
+    }
+
+    public void setPosition(@NotNull ImmutablePosition position) {
+        Preconditions.notNull(position, "position");
         checkNotDeleted();
 
-        position.set(worldName, x, y, z);
+        hologramPosition.set(position);
         getLines().updatePositions();
     }
 
     protected void onWorldLoad(World world) {
-        position.onWorldLoad(world);
+        hologramPosition.onWorldLoad(world);
     }
 
     protected void onWorldUnload(World world) {
-        position.onWorldUnload(world);
+        hologramPosition.onWorldUnload(world);
     }
 
     protected void onChunkLoad(Chunk chunk) {
-        position.onChunkLoad(chunk);
+        hologramPosition.onChunkLoad(chunk);
     }
 
     protected void onChunkUnload(Chunk chunk) {
-        position.onChunkUnload(chunk);
+        hologramPosition.onChunkUnload(chunk);
     }
 
     protected boolean isInLoadedChunk() {
-        return position.isChunkLoaded();
+        return hologramPosition.isChunkLoaded();
     }
 
     @Override
     public String toString() {
         return "Hologram{"
-                + "position=" + position
+                + "position=" + hologramPosition.getPosition()
                 + ", lines=" + getLines()
                 + ", deleted=" + isDeleted()
                 + "}";

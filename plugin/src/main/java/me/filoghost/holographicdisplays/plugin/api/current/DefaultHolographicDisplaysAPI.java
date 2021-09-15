@@ -37,7 +37,7 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
         Preconditions.notNull(location.getWorld(), "location.getWorld()");
         Preconditions.checkMainThread("async hologram creation");
 
-        return apiHologramManager.createHologram(new ImmutablePosition(location), plugin);
+        return apiHologramManager.createHologram(ImmutablePosition.of(location), plugin);
     }
 
     @Override
@@ -46,7 +46,7 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
         Preconditions.notNull(position.getWorldName(), "position.getWorldName()");
         Preconditions.checkMainThread("async hologram creation");
 
-        return apiHologramManager.createHologram(new ImmutablePosition(position), plugin);
+        return apiHologramManager.createHologram(ImmutablePosition.of(position), plugin);
     }
 
     @Override
