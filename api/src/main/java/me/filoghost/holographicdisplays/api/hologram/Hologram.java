@@ -81,22 +81,14 @@ public interface Hologram {
     void setPosition(@NotNull Location location);
 
     /**
-     * Checks if the hologram will track and replace placeholders.
-     * This is false by default.
-     *
-     * @return if the hologram allows placeholders
      * @since 1
      */
-    boolean isAllowPlaceholders();
+    @NotNull ResolvePlaceholders getResolvePlaceholders();
 
     /**
-     * Sets if the hologram should track and replace placeholders.
-     * By default, it will not track them.
-     *
-     * @param allowPlaceholders if the hologram should track placeholders
      * @since 1
      */
-    void setAllowPlaceholders(boolean allowPlaceholders);
+    void setResolvePlaceholders(@NotNull ResolvePlaceholders resolvePlaceholders);
 
     /**
      * Deletes this hologram. Editing or teleporting the hologram when deleted

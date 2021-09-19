@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin.api.current;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.Position;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.ResolvePlaceholders;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
@@ -22,7 +23,7 @@ public class APIHologram extends BaseHologram implements Hologram {
     private final APIHologramManager hologramManager;
     private final DefaultVisibilitySettings visibilitySettings;
 
-    private boolean allowPlaceholders;
+    private @NotNull ResolvePlaceholders resolvePlaceholders;
 
     protected APIHologram(
             ImmutablePosition position,
@@ -35,6 +36,7 @@ public class APIHologram extends BaseHologram implements Hologram {
         this.plugin = plugin;
         this.hologramManager = hologramManager;
         this.visibilitySettings = new DefaultVisibilitySettings();
+        this.resolvePlaceholders = ResolvePlaceholders.DEFAULT;
     }
 
     @Override
@@ -53,19 +55,20 @@ public class APIHologram extends BaseHologram implements Hologram {
     }
 
     @Override
-    public boolean isAllowPlaceholders() {
-        return allowPlaceholders;
+    public @NotNull ResolvePlaceholders getResolvePlaceholders() {
+        return resolvePlaceholders;
     }
 
     @Override
-    public void setAllowPlaceholders(boolean allowPlaceholders) {
+    public void setResolvePlaceholders(@NotNull ResolvePlaceholders resolvePlaceholders) {
+        Preconditions.notNull(resolvePlaceholders, "resolvePlaceholders");
         checkNotDeleted();
 
-        if (this.allowPlaceholders == allowPlaceholders) {
+        if (this.resolvePlaceholders == resolvePlaceholders) {
             return;
         }
 
-        this.allowPlaceholders = allowPlaceholders;
+        this.resolvePlaceholders = resolvePlaceholders;
         for (APIHologramLine line : lines) {
             line.setChanged();
         }

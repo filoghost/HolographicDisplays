@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.api.current;
 
+import me.filoghost.holographicdisplays.api.hologram.ResolvePlaceholders;
 import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
@@ -23,7 +24,7 @@ public class APITextHologramLine extends BaseTextHologramLine implements TextHol
 
     @Override
     public boolean isAllowPlaceholders() {
-        return hologram.isAllowPlaceholders();
+        return hologram.getResolvePlaceholders() == ResolvePlaceholders.ALL;
     }
 
     @Override
