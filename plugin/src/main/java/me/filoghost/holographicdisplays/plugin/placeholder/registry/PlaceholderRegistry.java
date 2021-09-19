@@ -10,10 +10,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacementSupplier;
 import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplacementSupplier;
 import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderIdentifier;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
@@ -39,9 +39,9 @@ public class PlaceholderRegistry {
         return version.get();
     }
 
-    public void registerIndividualPlaceholderReplacer(
-            Plugin plugin, String identifier, int refreshIntervalTicks, IndividualPlaceholderReplacer placeholderReplacer) {
-        registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, placeholderReplacer));
+    public void registerIndividualPlaceholder(
+            Plugin plugin, String identifier, int refreshIntervalTicks, IndividualPlaceholderReplacementSupplier replacementSupplier) {
+        registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, replacementSupplier));
     }
 
     public void registerIndividualPlaceholder(Plugin plugin, String identifier, IndividualPlaceholder placeholder) {
@@ -53,9 +53,9 @@ public class PlaceholderRegistry {
         registerExpansion(expansion);
     }
 
-    public void registerGlobalPlaceholderReplacer(
-            Plugin plugin, String identifier, int refreshIntervalTicks, GlobalPlaceholderReplacer placeholderReplacer) {
-        registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, placeholderReplacer));
+    public void registerGlobalPlaceholder(
+            Plugin plugin, String identifier, int refreshIntervalTicks, GlobalPlaceholderReplacementSupplier replacementSupplier) {
+        registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, replacementSupplier));
     }
 
     public void registerGlobalPlaceholder(Plugin plugin, String identifier, GlobalPlaceholder placeholder) {

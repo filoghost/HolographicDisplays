@@ -9,7 +9,7 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.Position;
-import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacementSupplier;
 import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
@@ -50,15 +50,15 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacer replacer) {
+    public void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier) {
         Preconditions.notEmpty(identifier, "identifier");
         for (char c : identifier.toCharArray()) {
             Preconditions.checkArgument(isValidIdentifierCharacter(c), "identifier contains invalid character '" + c + "'");
         }
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
-        Preconditions.notNull(replacer, "replacer");
+        Preconditions.notNull(replacementSupplier, "replacementSupplier");
 
-        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, identifier, refreshIntervalTicks, replacer);
+        placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
     }
 
     private boolean isValidIdentifierCharacter(char c) {

@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.api;
 
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
-import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacer;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacementSupplier;
 import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
@@ -80,7 +80,7 @@ public interface HolographicDisplaysAPI {
     /**
      * @since 1
      */
-    void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacer replacer);
+    void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier);
 
     /**
      * @since 1

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 1
  */
 @FunctionalInterface
-public interface GlobalPlaceholderReplacer {
+public interface GlobalPlaceholderReplacementSupplier {
 
     /**
      * Callback for providing a placeholder replacement, given the argument of the placeholder (if present).

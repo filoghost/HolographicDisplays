@@ -8,6 +8,6 @@ package me.filoghost.holographicdisplays.api.placeholder;
 /**
  * @since 1
  */
-public interface IndividualPlaceholder extends IndividualPlaceholderReplacer, Placeholder {
+public interface IndividualPlaceholder extends IndividualPlaceholderReplacementSupplier, Placeholder {
 
 }

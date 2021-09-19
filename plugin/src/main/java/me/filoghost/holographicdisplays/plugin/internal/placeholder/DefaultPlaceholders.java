@@ -30,7 +30,7 @@ public class DefaultPlaceholders {
             BungeeServerTracker bungeeServerTracker) {
         placeholderRegistry.unregisterAll(plugin);
 
-        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "empty", Integer.MAX_VALUE, (argument) -> {
+        placeholderRegistry.registerGlobalPlaceholder(plugin, "empty", Integer.MAX_VALUE, (argument) -> {
             return "";
         });
 
@@ -43,7 +43,7 @@ public class DefaultPlaceholders {
                 ChatColor.LIGHT_PURPLE
         )));
 
-        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "time", 10, (argument) -> {
+        placeholderRegistry.registerGlobalPlaceholder(plugin, "time", 10, (argument) -> {
             return Settings.timeFormat.format(Instant.now());
         });
 
@@ -53,7 +53,7 @@ public class DefaultPlaceholders {
 
         placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "online", new OnlinePlayersPlaceholderFactory(bungeeServerTracker));
 
-        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "max_players", 20, (serverName) -> {
+        placeholderRegistry.registerGlobalPlaceholder(plugin, "max_players", 20, (serverName) -> {
             if (serverName == null) {
                 // No argument specified, return max players of this server
                 return String.valueOf(Bukkit.getMaxPlayers());
@@ -66,7 +66,7 @@ public class DefaultPlaceholders {
             return String.valueOf(bungeeServerTracker.getCurrentServerInfo(serverName).getMaxPlayers());
         });
 
-        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "status", 20, (serverName) -> {
+        placeholderRegistry.registerGlobalPlaceholder(plugin, "status", 20, (serverName) -> {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
@@ -83,7 +83,7 @@ public class DefaultPlaceholders {
             }
         });
 
-        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "motd", 20, (serverName) -> {
+        placeholderRegistry.registerGlobalPlaceholder(plugin, "motd", 20, (serverName) -> {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
@@ -95,7 +95,7 @@ public class DefaultPlaceholders {
             return bungeeServerTracker.getCurrentServerInfo(serverName).getMotdLine1();
         });
 
-        placeholderRegistry.registerGlobalPlaceholderReplacer(plugin, "motd2", 20, (serverName) -> {
+        placeholderRegistry.registerGlobalPlaceholder(plugin, "motd2", 20, (serverName) -> {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
@@ -107,11 +107,11 @@ public class DefaultPlaceholders {
             return bungeeServerTracker.getCurrentServerInfo(serverName).getMotdLine2();
         });
 
-        placeholderRegistry.registerIndividualPlaceholderReplacer(plugin, "player", Integer.MAX_VALUE, (player, argument) -> {
+        placeholderRegistry.registerIndividualPlaceholder(plugin, "player", Integer.MAX_VALUE, (player, argument) -> {
             return player.getName();
         });
 
-        placeholderRegistry.registerIndividualPlaceholderReplacer(plugin, "displayName", 20, (player, argument) -> {
+        placeholderRegistry.registerIndividualPlaceholder(plugin, "displayName", 20, (player, argument) -> {
             return player.getDisplayName();
         });
     }
