@@ -14,7 +14,7 @@ import me.filoghost.holographicdisplays.nms.common.PacketListener;
 import net.minecraft.server.v1_16_R3.PacketPlayInUseEntity;
 import org.bukkit.entity.Player;
 
-public class InboundPacketHandler extends ChannelInboundHandlerAdapter {
+class InboundPacketHandler extends ChannelInboundHandlerAdapter {
 
     public static final String HANDLER_NAME = "holographic_displays_listener";
     private static final ReflectField<Integer> ENTITY_ID_FIELD = ReflectField.lookup(int.class, PacketPlayInUseEntity.class, "a");
@@ -22,7 +22,7 @@ public class InboundPacketHandler extends ChannelInboundHandlerAdapter {
     private final Player player;
     private final PacketListener packetListener;
 
-    public InboundPacketHandler(Player player, PacketListener packetListener) {
+    InboundPacketHandler(Player player, PacketListener packetListener) {
         this.player = player;
         this.packetListener = packetListener;
     }

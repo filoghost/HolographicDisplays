@@ -11,12 +11,12 @@ import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
 import org.bukkit.inventory.ItemStack;
 
-public class VersionItemNMSPacketEntity implements ItemNMSPacketEntity {
+class VersionItemNMSPacketEntity implements ItemNMSPacketEntity {
 
     private final EntityID itemID;
     private final EntityID vehicleID;
 
-    public VersionItemNMSPacketEntity(EntityID itemID, EntityID vehicleID) {
+    VersionItemNMSPacketEntity(EntityID itemID, EntityID vehicleID) {
         this.itemID = itemID;
         this.vehicleID = vehicleID;
     }

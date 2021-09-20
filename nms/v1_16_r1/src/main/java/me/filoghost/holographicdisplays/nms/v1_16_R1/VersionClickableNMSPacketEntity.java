@@ -10,11 +10,11 @@ import me.filoghost.holographicdisplays.nms.common.EntityID;
 import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
 
-public class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity {
+class VersionClickableNMSPacketEntity implements ClickableNMSPacketEntity {
 
     private final EntityID slimeID;
 
-    public VersionClickableNMSPacketEntity(EntityID slimeID) {
+    VersionClickableNMSPacketEntity(EntityID slimeID) {
         this.slimeID = slimeID;
     }
 
