@@ -75,6 +75,7 @@ class DisplayText {
         boolean changed = false;
 
         if (containsIndividualPlaceholders()) {
+            this.globalText = null;
             for (TextLineViewer viewer : viewers) {
                 String individualText = computeIndividualText(viewer);
                 if (viewer.updateIndividualText(individualText)) {
