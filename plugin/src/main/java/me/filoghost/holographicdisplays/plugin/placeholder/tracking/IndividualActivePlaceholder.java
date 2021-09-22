@@ -14,13 +14,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.WeakHashMap;
 
-class TrackedIndividualPlaceholder extends TrackedPlaceholder {
+class IndividualActivePlaceholder extends ActivePlaceholder {
 
     private final @NotNull StandardPlaceholder placeholder;
     private final @NotNull PlaceholderOccurrence placeholderOccurrence;
     private final WeakHashMap<Player, ReplacementHolder> replacementHolderByPlayer;
 
-    TrackedIndividualPlaceholder(@NotNull StandardPlaceholder placeholder, @NotNull PlaceholderOccurrence placeholderOccurrence) {
+    IndividualActivePlaceholder(@NotNull StandardPlaceholder placeholder, @NotNull PlaceholderOccurrence placeholderOccurrence) {
         super(placeholder.getSource());
         this.placeholder = placeholder;
         this.placeholderOccurrence = placeholderOccurrence;

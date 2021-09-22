@@ -37,7 +37,7 @@ import me.filoghost.holographicdisplays.plugin.listener.UpdateNotificationListen
 import me.filoghost.holographicdisplays.plugin.log.PrintableErrorCollector;
 import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
+import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
 import me.filoghost.holographicdisplays.plugin.tick.TickingTask;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion.OutdatedVersionException;
@@ -104,7 +104,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         bungeeServerTracker = new BungeeServerTracker(this);
         placeholderRegistry = new PlaceholderRegistry();
         TickClock tickClock = new TickClock();
-        PlaceholderTracker placeholderTracker = new PlaceholderTracker(placeholderRegistry, tickClock);
+        ActivePlaceholderTracker placeholderTracker = new ActivePlaceholderTracker(placeholderRegistry, tickClock);
         LineClickListener lineClickListener = new LineClickListener();
         lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener);
         internalHologramManager = new InternalHologramManager(lineTrackerManager);

@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import me.filoghost.holographicdisplays.nms.common.entity.TextNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
+import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -28,7 +28,7 @@ public class TextLineTracker extends ClickableLineTracker<TextLineViewer> {
             BaseTextHologramLine line,
             NMSManager nmsManager,
             LineClickListener lineClickListener,
-            PlaceholderTracker placeholderTracker) {
+            ActivePlaceholderTracker placeholderTracker) {
         super(line, nmsManager, lineClickListener);
         this.line = line;
         this.textEntity = nmsManager.newTextPacketEntity();

@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.WeakHashMap;
 
-public class PlaceholderTracker {
+public class ActivePlaceholderTracker {
 
     private final PlaceholderRegistry registry;
     private final TickClock tickClock;
@@ -27,11 +27,11 @@ public class PlaceholderTracker {
 
     // Use WeakHashMap to ensure that when a PlaceholderOccurrence is no longer referenced in other objects
     // the corresponding entry is removed from the map automatically.
-    private final WeakHashMap<PlaceholderOccurrence, TrackedPlaceholder> activePlaceholders;
+    private final WeakHashMap<PlaceholderOccurrence, ActivePlaceholder> activePlaceholders;
 
     private long lastRegistryVersion;
 
-    public PlaceholderTracker(PlaceholderRegistry registry, TickClock tickClock) {
+    public ActivePlaceholderTracker(PlaceholderRegistry registry, TickClock tickClock) {
         this.registry = registry;
         this.tickClock = tickClock;
         this.exceptionHandler = new PlaceholderExceptionHandler(tickClock);
@@ -57,11 +57,11 @@ public class PlaceholderTracker {
 
     public @Nullable String updateAndGetGlobalReplacement(PlaceholderOccurrence placeholderOccurrence) {
         try {
-            TrackedPlaceholder trackedPlaceholder = getTrackedPlaceholder(placeholderOccurrence);
-            if (trackedPlaceholder.isIndividual()) {
+            ActivePlaceholder activePlaceholder = trackAndGetPlaceholder(placeholderOccurrence);
+            if (activePlaceholder.isIndividual()) {
                 return null;
             }
-            return trackedPlaceholder.updateAndGetReplacement(null, tickClock.getCurrentTick());
+            return activePlaceholder.updateAndGetReplacement(null, tickClock.getCurrentTick());
         } catch (PlaceholderException e) {
             exceptionHandler.handle(e);
             return "[Error]";
@@ -70,26 +70,26 @@ public class PlaceholderTracker {
 
     public @Nullable String updateAndGetReplacement(PlaceholderOccurrence placeholderOccurrence, Player player) {
         try {
-            TrackedPlaceholder trackedPlaceholder = getTrackedPlaceholder(placeholderOccurrence);
-            return trackedPlaceholder.updateAndGetReplacement(player, tickClock.getCurrentTick());
+            ActivePlaceholder activePlaceholder = trackAndGetPlaceholder(placeholderOccurrence);
+            return activePlaceholder.updateAndGetReplacement(player, tickClock.getCurrentTick());
         } catch (PlaceholderException e) {
             exceptionHandler.handle(e);
             return "[Error]";
         }
     }
 
-    private @NotNull TrackedPlaceholder getTrackedPlaceholder(PlaceholderOccurrence placeholderOccurrence) throws PlaceholderException {
-        TrackedPlaceholder trackedPlaceholder = activePlaceholders.get(placeholderOccurrence);
+    private @NotNull ActivePlaceholder trackAndGetPlaceholder(PlaceholderOccurrence placeholderOccurrence) throws PlaceholderException {
+        ActivePlaceholder activePlaceholder = activePlaceholders.get(placeholderOccurrence);
 
-        if (trackedPlaceholder == null) {
-            trackedPlaceholder = createTrackedPlaceholder(placeholderOccurrence);
-            activePlaceholders.put(placeholderOccurrence, trackedPlaceholder);
+        if (activePlaceholder == null) {
+            activePlaceholder = createActivePlaceholder(placeholderOccurrence);
+            activePlaceholders.put(placeholderOccurrence, activePlaceholder);
         }
 
-        return trackedPlaceholder;
+        return activePlaceholder;
     }
 
-    private TrackedPlaceholder createTrackedPlaceholder(PlaceholderOccurrence placeholderOccurrence) throws PlaceholderException {
+    private ActivePlaceholder createActivePlaceholder(PlaceholderOccurrence placeholderOccurrence) throws PlaceholderException {
         PlaceholderExpansion placeholderExpansion = registry.find(placeholderOccurrence);
         StandardPlaceholder placeholder;
 
@@ -100,11 +100,11 @@ public class PlaceholderTracker {
         }
 
         if (placeholder == null) {
-            return new TrackedNullPlaceholder(placeholderExpansion);
+            return new NullActivePlaceholder(placeholderExpansion);
         } else if (placeholder.isIndividual()) {
-            return new TrackedIndividualPlaceholder(placeholder, placeholderOccurrence);
+            return new IndividualActivePlaceholder(placeholder, placeholderOccurrence);
         } else {
-            return new TrackedGlobalPlaceholder(placeholder, placeholderOccurrence);
+            return new GlobalActivePlaceholder(placeholder, placeholderOccurrence);
         }
     }
 

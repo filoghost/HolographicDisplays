@@ -10,11 +10,11 @@ import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderE
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-abstract class TrackedPlaceholder {
+abstract class ActivePlaceholder {
 
     private final @Nullable PlaceholderExpansion source;
 
-    TrackedPlaceholder(@Nullable PlaceholderExpansion source) {
+    ActivePlaceholder(@Nullable PlaceholderExpansion source) {
         this.source = source;
     }
 

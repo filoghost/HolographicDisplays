@@ -9,7 +9,7 @@ import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
+import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -20,11 +20,11 @@ import java.util.LinkedList;
 public class LineTrackerManager {
 
     private final NMSManager nmsManager;
-    private final PlaceholderTracker placeholderTracker;
+    private final ActivePlaceholderTracker placeholderTracker;
     private final LineClickListener lineClickListener;
     private final Collection<LineTracker<?>> lineTrackers;
 
-    public LineTrackerManager(NMSManager nmsManager, PlaceholderTracker placeholderTracker, LineClickListener lineClickListener) {
+    public LineTrackerManager(NMSManager nmsManager, ActivePlaceholderTracker placeholderTracker, LineClickListener lineClickListener) {
         this.nmsManager = nmsManager;
         this.placeholderTracker = placeholderTracker;
         this.lineClickListener = lineClickListener;

@@ -9,9 +9,9 @@ import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderE
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-class TrackedNullPlaceholder extends TrackedPlaceholder {
+class NullActivePlaceholder extends ActivePlaceholder {
 
-    TrackedNullPlaceholder(@Nullable PlaceholderExpansion placeholderExpansion) {
+    NullActivePlaceholder(@Nullable PlaceholderExpansion placeholderExpansion) {
         super(placeholderExpansion);
     }
 

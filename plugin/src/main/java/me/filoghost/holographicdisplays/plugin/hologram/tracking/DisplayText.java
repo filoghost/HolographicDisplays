@@ -9,7 +9,7 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.PlaceholderTracker;
+import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +19,7 @@ import java.util.Objects;
 
 class DisplayText {
 
-    private final PlaceholderTracker placeholderTracker;
+    private final ActivePlaceholderTracker placeholderTracker;
 
     private @Nullable StringWithPlaceholders unreplacedText;
     private boolean allowPlaceholders;
@@ -28,7 +28,7 @@ class DisplayText {
     private @Nullable Boolean containsIndividualPlaceholders;
     private long lastPlaceholderRegistryVersion;
 
-    DisplayText(PlaceholderTracker placeholderTracker) {
+    DisplayText(ActivePlaceholderTracker placeholderTracker) {
         this.placeholderTracker = placeholderTracker;
     }
 

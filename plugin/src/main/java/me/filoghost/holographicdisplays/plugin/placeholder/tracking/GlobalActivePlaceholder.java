@@ -12,11 +12,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-class TrackedGlobalPlaceholder extends TrackedPlaceholder {
+class GlobalActivePlaceholder extends ActivePlaceholder {
 
     private final ReplacementHolder replacementHolder;
 
-    TrackedGlobalPlaceholder(@NotNull StandardPlaceholder placeholder, @NotNull PlaceholderOccurrence placeholderOccurrence) {
+    GlobalActivePlaceholder(@NotNull StandardPlaceholder placeholder, @NotNull PlaceholderOccurrence placeholderOccurrence) {
         super(placeholder.getSource());
         this.replacementHolder = new ReplacementHolder(placeholder, placeholderOccurrence);
     }
