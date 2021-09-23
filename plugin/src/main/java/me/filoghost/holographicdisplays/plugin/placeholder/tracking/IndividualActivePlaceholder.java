@@ -13,18 +13,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.WeakHashMap;
+import java.util.function.Function;
 
 class IndividualActivePlaceholder extends ActivePlaceholder {
 
-    private final @NotNull StandardPlaceholder placeholder;
-    private final @NotNull PlaceholderOccurrence placeholderOccurrence;
     private final WeakHashMap<Player, ReplacementHolder> replacementHolderByPlayer;
+    private final Function<Player, ReplacementHolder> mappingFunction;
 
     IndividualActivePlaceholder(@NotNull StandardPlaceholder placeholder, @NotNull PlaceholderOccurrence placeholderOccurrence) {
         super(placeholder.getSource());
-        this.placeholder = placeholder;
-        this.placeholderOccurrence = placeholderOccurrence;
         this.replacementHolderByPlayer = new WeakHashMap<>();
+        this.mappingFunction = key -> new ReplacementHolder(placeholder, placeholderOccurrence);
     }
 
     @Override
@@ -35,7 +34,7 @@ class IndividualActivePlaceholder extends ActivePlaceholder {
     @Override
     @Nullable String doUpdateAndGetReplacement(Player player, long currentTick) throws PlaceholderException {
         return replacementHolderByPlayer
-                .computeIfAbsent(player, key -> new ReplacementHolder(placeholder, placeholderOccurrence))
+                .computeIfAbsent(player, mappingFunction)
                 .updateAndGet(player, currentTick);
     }
 
