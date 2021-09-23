@@ -13,17 +13,28 @@ import org.jetbrains.annotations.Nullable;
 abstract class ActivePlaceholder {
 
     private final @Nullable PlaceholderExpansion source;
+    private long lastRequestTick;
 
     ActivePlaceholder(@Nullable PlaceholderExpansion source) {
         this.source = source;
+        this.lastRequestTick = -1;
     }
 
     final @Nullable PlaceholderExpansion getSource() {
         return source;
     }
 
+    final long getLastRequestTick() {
+        return lastRequestTick;
+    }
+
+    final @Nullable String updateAndGetReplacement(Player player, long currentTick) throws PlaceholderException {
+        this.lastRequestTick = currentTick;
+        return doUpdateAndGetReplacement(player, currentTick);
+    }
+
     abstract boolean isIndividual();
 
-    abstract @Nullable String updateAndGetReplacement(Player player, long currentTick) throws PlaceholderException;
+    abstract @Nullable String doUpdateAndGetReplacement(Player player, long currentTick) throws PlaceholderException;
 
 }

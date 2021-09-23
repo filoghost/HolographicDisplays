@@ -16,7 +16,7 @@ class NullActivePlaceholder extends ActivePlaceholder {
     }
 
     @Override
-    @Nullable String updateAndGetReplacement(Player player, long currentTick) {
+    @Nullable String doUpdateAndGetReplacement(Player player, long currentTick) {
         return null;
     }
 

@@ -34,8 +34,8 @@ public class TickingTask implements Runnable {
     public void run() {
         tickClock.incrementTick();
 
-        // Update placeholder tracker before updating hologram lines
-        placeholderTracker.update();
+        // Remove outdated entries before using them from line trackers
+        placeholderTracker.clearOutdatedEntries();
 
         try {
             lineTrackerManager.update();
@@ -47,6 +47,9 @@ public class TickingTask implements Runnable {
                 Log.severe("Error while ticking holograms", t);
             }
         }
+
+        // Remove entries which were not used by line trackers
+        placeholderTracker.clearUnusedEntries();
 
         lineClickListener.processQueuedClickEvents();
     }

@@ -7,27 +7,25 @@ package me.filoghost.holographicdisplays.plugin.placeholder.tracking;
 
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
 import me.filoghost.holographicdisplays.plugin.placeholder.StandardPlaceholder;
-import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderExpansion;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
+import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.WeakHashMap;
 
 public class ActivePlaceholderTracker {
 
     private final PlaceholderRegistry registry;
     private final TickClock tickClock;
     private final PlaceholderExceptionHandler exceptionHandler;
-
-    // Use WeakHashMap to ensure that when a PlaceholderOccurrence is no longer referenced in other objects
-    // the corresponding entry is removed from the map automatically.
-    private final WeakHashMap<PlaceholderOccurrence, ActivePlaceholder> activePlaceholders;
+    private final Map<PlaceholderOccurrence, ActivePlaceholder> activePlaceholders;
 
     private long lastRegistryVersion;
 
@@ -35,10 +33,10 @@ public class ActivePlaceholderTracker {
         this.registry = registry;
         this.tickClock = tickClock;
         this.exceptionHandler = new PlaceholderExceptionHandler(tickClock);
-        this.activePlaceholders = new WeakHashMap<>();
+        this.activePlaceholders = new HashMap<>();
     }
 
-    public void update() {
+    public void clearOutdatedEntries() {
         long currentRegistryVersion = registry.getVersion();
         if (lastRegistryVersion == currentRegistryVersion) {
             return;
@@ -53,6 +51,12 @@ public class ActivePlaceholderTracker {
 
             return !Objects.equals(currentSource, newSource);
         });
+    }
+
+    public void clearUnusedEntries() {
+        long currentTick = tickClock.getCurrentTick();
+        activePlaceholders.values().removeIf(
+                activePlaceholder -> currentTick - activePlaceholder.getLastRequestTick() >= 1);
     }
 
     public @Nullable String updateAndGetGlobalReplacement(PlaceholderOccurrence placeholderOccurrence) {
