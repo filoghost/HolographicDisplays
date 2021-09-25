@@ -16,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 public interface IndividualPlaceholderReplacementSupplier {
 
     /**
+     * @see IndividualPlaceholder#getReplacement(Player, String)
+     *
      * @since 1
      */
     @Nullable String getReplacement(@NotNull Player player, @Nullable String argument);
