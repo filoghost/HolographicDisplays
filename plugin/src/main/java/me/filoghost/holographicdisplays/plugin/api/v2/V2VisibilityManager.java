@@ -11,11 +11,11 @@ import me.filoghost.holographicdisplays.plugin.api.current.DefaultVisibilitySett
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
-public class V2VisibilityManager implements VisibilityManager {
+class V2VisibilityManager implements VisibilityManager {
 
     private final DefaultVisibilitySettings v3VisibilitySettings;
 
-    public V2VisibilityManager() {
+    V2VisibilityManager() {
         this.v3VisibilitySettings = new DefaultVisibilitySettings();
     }
 

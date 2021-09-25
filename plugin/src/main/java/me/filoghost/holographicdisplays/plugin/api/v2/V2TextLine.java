@@ -10,13 +10,13 @@ import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 
 @SuppressWarnings("deprecation")
-public class V2TextLine extends BaseTextHologramLine implements TextLine, V2TouchableLine {
+class V2TextLine extends BaseTextHologramLine implements TextLine, V2TouchableLine {
 
     private final V2Hologram hologram;
 
     private TouchHandler touchHandler;
 
-    public V2TextLine(V2Hologram hologram, String text) {
+    V2TextLine(V2Hologram hologram, String text) {
         super(hologram, text);
         this.hologram = hologram;
     }

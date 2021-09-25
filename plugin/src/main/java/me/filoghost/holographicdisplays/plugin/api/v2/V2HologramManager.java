@@ -18,7 +18,7 @@ public class V2HologramManager extends BaseHologramManager<V2Hologram> {
         this.lineTrackerManager = lineTrackerManager;
     }
 
-    public V2Hologram createHologram(ImmutablePosition position, Plugin plugin) {
+    V2Hologram createHologram(ImmutablePosition position, Plugin plugin) {
         V2Hologram hologram = new V2Hologram(position, plugin, lineTrackerManager, this);
         super.addHologram(hologram);
         return hologram;

@@ -11,13 +11,13 @@ import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 import org.jetbrains.annotations.Nullable;
 
-public class APITextHologramLine extends BaseTextHologramLine implements TextHologramLine, APIClickableHologramLine {
+class APITextHologramLine extends BaseTextHologramLine implements TextHologramLine, APIClickableHologramLine {
 
     private final APIHologram hologram;
 
     private ClickListener clickListener;
 
-    public APITextHologramLine(APIHologram hologram, String text) {
+    APITextHologramLine(APIHologram hologram, String text) {
         super(hologram, text);
         this.hologram = hologram;
     }

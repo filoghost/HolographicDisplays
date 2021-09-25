@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-public class APIHologram extends BaseHologram implements Hologram {
+class APIHologram extends BaseHologram implements Hologram {
 
     private final APIHologramLines lines;
     private final Plugin plugin;
@@ -25,7 +25,7 @@ public class APIHologram extends BaseHologram implements Hologram {
 
     private @NotNull ResolvePlaceholders resolvePlaceholders;
 
-    protected APIHologram(
+    APIHologram(
             ImmutablePosition position,
             Plugin plugin,
             APIHologramManager hologramManager,

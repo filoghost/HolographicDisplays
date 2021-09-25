@@ -8,11 +8,11 @@ package me.filoghost.holographicdisplays.plugin.api.current;
 import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickEvent;
 import org.bukkit.entity.Player;
 
-public class SimpleHologramLineClickEvent implements HologramLineClickEvent {
+class SimpleHologramLineClickEvent implements HologramLineClickEvent {
 
     private final Player player;
 
-    public SimpleHologramLineClickEvent(Player player) {
+    SimpleHologramLineClickEvent(Player player) {
         this.player = player;
     }
 

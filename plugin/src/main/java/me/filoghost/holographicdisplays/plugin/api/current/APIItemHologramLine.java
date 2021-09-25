@@ -12,12 +12,12 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLin
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLine, APIClickableHologramLine, APICollectableHologramLine {
+class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLine, APIClickableHologramLine, APICollectableHologramLine {
 
     private PickupListener pickupListener;
     private ClickListener clickListener;
 
-    public APIItemHologramLine(APIHologram hologram, ItemStack itemStack) {
+    APIItemHologramLine(APIHologram hologram, ItemStack itemStack) {
         super(hologram, itemStack);
     }
 

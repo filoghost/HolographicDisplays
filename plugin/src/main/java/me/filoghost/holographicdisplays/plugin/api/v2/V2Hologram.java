@@ -21,7 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 @SuppressWarnings("deprecation")
-public class V2Hologram extends BaseHologram implements Hologram {
+class V2Hologram extends BaseHologram implements Hologram {
 
     private final Plugin plugin;
     private final V2HologramManager hologramManager;
@@ -30,7 +30,7 @@ public class V2Hologram extends BaseHologram implements Hologram {
     private final long creationTimestamp;
     private boolean allowPlaceholders;
 
-    public V2Hologram(
+    V2Hologram(
             ImmutablePosition position,
             Plugin plugin,
             LineTrackerManager lineTrackerManager,

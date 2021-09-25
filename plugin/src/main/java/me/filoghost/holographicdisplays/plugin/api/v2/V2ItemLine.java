@@ -12,14 +12,14 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLin
 import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("deprecation")
-public class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2CollectableLine, V2TouchableLine {
+class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2CollectableLine, V2TouchableLine {
 
     private final V2Hologram hologram;
 
     private TouchHandler touchHandler;
     private PickupHandler pickupHandler;
 
-    public V2ItemLine(V2Hologram hologram, ItemStack itemStack) {
+    V2ItemLine(V2Hologram hologram, ItemStack itemStack) {
         super(hologram, itemStack);
         this.hologram = hologram;
     }

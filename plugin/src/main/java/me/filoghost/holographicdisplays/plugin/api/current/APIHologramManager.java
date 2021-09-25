@@ -24,13 +24,13 @@ public class APIHologramManager extends BaseHologramManager<APIHologram> {
         this.lineTrackerManager = lineTrackerManager;
     }
 
-    public APIHologram createHologram(ImmutablePosition position, Plugin plugin) {
+    APIHologram createHologram(ImmutablePosition position, Plugin plugin) {
         APIHologram hologram = new APIHologram(position, plugin, this, lineTrackerManager);
         super.addHologram(hologram);
         return hologram;
     }
 
-    public Collection<Hologram> getHologramsByPlugin(Plugin plugin) {
+    Collection<Hologram> getHologramsByPlugin(Plugin plugin) {
         List<Hologram> ownedHolograms = new ArrayList<>();
 
         for (APIHologram hologram : getHolograms()) {

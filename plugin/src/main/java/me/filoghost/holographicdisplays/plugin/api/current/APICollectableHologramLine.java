@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.api.hologram.line.PickupListener;
 import me.filoghost.holographicdisplays.plugin.hologram.base.PickupCallbackProvider;
 import org.bukkit.entity.Player;
 
-public interface APICollectableHologramLine extends CollectableHologramLine, APIHologramLine, PickupCallbackProvider {
+interface APICollectableHologramLine extends CollectableHologramLine, APIHologramLine, PickupCallbackProvider {
 
     @Override
     default boolean hasPickupCallback() {

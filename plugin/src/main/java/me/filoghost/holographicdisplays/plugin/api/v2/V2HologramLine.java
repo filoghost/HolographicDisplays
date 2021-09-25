@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.EditableHologramLin
 import org.bukkit.plugin.Plugin;
 
 @SuppressWarnings("deprecation")
-public interface V2HologramLine extends HologramLine, EditableHologramLine {
+interface V2HologramLine extends HologramLine, EditableHologramLine {
 
     @Override
     V2Hologram getParent();

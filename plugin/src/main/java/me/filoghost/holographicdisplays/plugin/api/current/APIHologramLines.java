@@ -15,11 +15,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class APIHologramLines extends BaseHologramLines<APIHologramLine> implements HologramLines {
+class APIHologramLines extends BaseHologramLines<APIHologramLine> implements HologramLines {
 
     private final APIHologram hologram;
 
-    public APIHologramLines(APIHologram hologram) {
+    APIHologramLines(APIHologram hologram) {
         super(hologram);
         this.hologram = hologram;
     }

@@ -11,10 +11,8 @@ import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.nms.common.NMSManager;
-import me.filoghost.holographicdisplays.plugin.api.current.APIHologram;
 import me.filoghost.holographicdisplays.plugin.api.current.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.api.current.DefaultHolographicDisplaysAPIProvider;
-import me.filoghost.holographicdisplays.plugin.api.v2.V2Hologram;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramManager;
 import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramsAPIProvider;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
@@ -26,6 +24,7 @@ import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.AnimationsLegacyUpgrade;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.DatabaseLegacyUpgrade;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.SymbolsLegacyUpgrade;
+import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.internal.placeholder.AnimationPlaceholderFactory;
@@ -35,9 +34,9 @@ import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.listener.PlayerListener;
 import me.filoghost.holographicdisplays.plugin.listener.UpdateNotificationListener;
 import me.filoghost.holographicdisplays.plugin.log.PrintableErrorCollector;
-import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
+import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import me.filoghost.holographicdisplays.plugin.tick.TickingTask;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion;
 import me.filoghost.holographicdisplays.plugin.util.NMSVersion.OutdatedVersionException;
@@ -176,10 +175,10 @@ public class HolographicDisplays extends FCommonsPlugin {
         HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
         hologramDatabase.createHolograms(internalHologramManager, errorCollector);
 
-        for (APIHologram hologram : apiHologramManager.getHolograms()) {
+        for (BaseHologram hologram : apiHologramManager.getHolograms()) {
             hologram.getLines().updatePositions();
         }
-        for (V2Hologram hologram : v2HologramManager.getHolograms()) {
+        for (BaseHologram hologram : v2HologramManager.getHolograms()) {
             hologram.getLines().updatePositions();
         }
     }
