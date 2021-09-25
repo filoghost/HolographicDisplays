@@ -5,9 +5,18 @@
  */
 package me.filoghost.holographicdisplays.api.placeholder;
 
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * @since 1
  */
-public interface IndividualPlaceholder extends IndividualPlaceholderReplacementSupplier, Placeholder {
+public interface IndividualPlaceholder extends Placeholder {
+
+    /**
+     * @since 1
+     */
+    @Nullable String getReplacement(@NotNull Player player, @Nullable String argument);
 
 }
