@@ -51,7 +51,7 @@ class TextLineViewer extends Viewer {
     }
 
     public boolean updateIndividualText(String individualText) {
-        if (!this.individualText.equals(individualText)) {
+        if (!Objects.equals(this.individualText, individualText)) {
             this.individualText = individualText;
             return true;
         } else {
