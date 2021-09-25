@@ -7,7 +7,12 @@ package me.filoghost.holographicdisplays.api;
 
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplacementSupplier;
 import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
@@ -80,7 +85,32 @@ public interface HolographicDisplaysAPI {
     /**
      * @since 1
      */
-    void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier);
+    void registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier);
+
+    /**
+     * @since 1
+     */
+    void registerGlobalPlaceholder(@NotNull String identifier, @NotNull GlobalPlaceholder placeholder);
+
+    /**
+     * @since 1
+     */
+    void registerGlobalPlaceholderFactory(@NotNull String identifier, @NotNull GlobalPlaceholderFactory placeholderFactory);
+
+    /**
+     * @since 1
+     */
+    void registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplacementSupplier replacementSupplier);
+
+    /**
+     * @since 1
+     */
+    void registerIndividualPlaceholder(@NotNull String identifier, @NotNull IndividualPlaceholder placeholder);
+
+    /**
+     * @since 1
+     */
+    void registerIndividualPlaceholderFactory(@NotNull String identifier, @NotNull IndividualPlaceholderFactory placeholderFactory);
 
     /**
      * @since 1

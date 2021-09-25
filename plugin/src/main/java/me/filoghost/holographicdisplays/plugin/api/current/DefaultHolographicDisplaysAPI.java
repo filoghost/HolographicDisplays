@@ -9,7 +9,12 @@ import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.Position;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplacementSupplier;
 import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
@@ -50,15 +55,60 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public void registerPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier) {
-        Preconditions.notEmpty(identifier, "identifier");
-        for (char c : identifier.toCharArray()) {
-            Preconditions.checkArgument(isValidIdentifierCharacter(c), "identifier contains invalid character '" + c + "'");
-        }
+    public void registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier) {
+        checkIdentifier(identifier);
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
         Preconditions.notNull(replacementSupplier, "replacementSupplier");
 
         placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
+    }
+
+    @Override
+    public void registerGlobalPlaceholder(@NotNull String identifier, @NotNull GlobalPlaceholder placeholder) {
+        checkIdentifier(identifier);
+        Preconditions.notNull(placeholder, "placeholder");
+
+        placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, placeholder);
+    }
+
+    @Override
+    public void registerGlobalPlaceholderFactory(@NotNull String identifier, @NotNull GlobalPlaceholderFactory placeholderFactory) {
+        checkIdentifier(identifier);
+        Preconditions.notNull(placeholderFactory, "placeholderFactory");
+
+        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, identifier, placeholderFactory);
+    }
+
+    @Override
+    public void registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplacementSupplier replacementSupplier) {
+        checkIdentifier(identifier);
+        Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
+        Preconditions.notNull(replacementSupplier, "replacementSupplier");
+
+        placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
+    }
+
+    @Override
+    public void registerIndividualPlaceholder(@NotNull String identifier, @NotNull IndividualPlaceholder placeholder) {
+        checkIdentifier(identifier);
+        Preconditions.notNull(placeholder, "placeholder");
+
+        placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, placeholder);
+    }
+
+    @Override
+    public void registerIndividualPlaceholderFactory(@NotNull String identifier, @NotNull IndividualPlaceholderFactory placeholderFactory) {
+        checkIdentifier(identifier);
+        Preconditions.notNull(placeholderFactory, "placeholderFactory");
+
+        placeholderRegistry.registerIndividualPlaceholderFactory(plugin, identifier, placeholderFactory);
+    }
+
+    private void checkIdentifier(String identifier) {
+        Preconditions.notEmpty(identifier, "identifier");
+        for (char c : identifier.toCharArray()) {
+            Preconditions.checkArgument(isValidIdentifierCharacter(c), "identifier contains invalid character '" + c + "'");
+        }
     }
 
     private boolean isValidIdentifierCharacter(char c) {
