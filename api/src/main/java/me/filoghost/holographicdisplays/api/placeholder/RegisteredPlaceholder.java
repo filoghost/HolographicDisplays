@@ -5,8 +5,10 @@
  */
 package me.filoghost.holographicdisplays.api.placeholder;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface RegisteredPlaceholder {
 
-    String getIdentifier();
+    @NotNull String getIdentifier();
 
 }

@@ -68,7 +68,7 @@ public class PlaceholderRegistry {
     }
 
     private void registerExpansion(PlaceholderExpansion expansion) {
-        placeholderExpansions.put(expansion.getIdentifier(), expansion.getPluginName(), expansion);
+        placeholderExpansions.put(expansion.getCaseInsensitiveIdentifier(), expansion.getPluginName(), expansion);
 
         version.incrementAndGet();
     }
@@ -101,13 +101,8 @@ public class PlaceholderRegistry {
 
     public List<RegisteredPlaceholder> getRegisteredPlaceholders(Plugin plugin) {
         PluginName pluginName = new PluginName(plugin);
-        List<RegisteredPlaceholder> identifiers = new ArrayList<>();
 
-        for (PlaceholderExpansion expansion : placeholderExpansions.column(pluginName).values()) {
-            identifiers.add(expansion.asRegisteredPlaceholder());
-        }
-
-        return identifiers;
+        return new ArrayList<>(placeholderExpansions.column(pluginName).values());
     }
 
     public boolean isRegisteredIdentifier(Plugin plugin, String identifier) {
