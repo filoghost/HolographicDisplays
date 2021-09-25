@@ -19,27 +19,24 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.function.Function;
 
 public class DefaultHolographicDisplaysAPIProvider extends HolographicDisplaysAPIProvider {
 
-    private final APIHologramManager apiHologramManager;
-    private final PlaceholderRegistry placeholderRegistry;
-
-    // Optimization: avoid creating a new instance every time a plugin requires it, in case it never stores a reference
-    private final Map<Plugin, HolographicDisplaysAPI> apiInstanceCache;
+    private final Map<Plugin, HolographicDisplaysAPI> apiCache;
+    private final Function<Plugin, HolographicDisplaysAPI> apiFactory;
 
     public DefaultHolographicDisplaysAPIProvider(APIHologramManager apiHologramManager, PlaceholderRegistry placeholderRegistry) {
-        this.apiHologramManager = apiHologramManager;
-        this.placeholderRegistry = placeholderRegistry;
-        this.apiInstanceCache = new WeakHashMap<>();
+        this.apiCache = new WeakHashMap<>();
+        this.apiFactory = plugin -> new DefaultHolographicDisplaysAPI(plugin, apiHologramManager, placeholderRegistry);
     }
 
     @Override
     public HolographicDisplaysAPI getHolographicDisplaysAPI(Plugin plugin) {
         Preconditions.notNull(plugin, "plugin");
 
-        return apiInstanceCache.computeIfAbsent(plugin, pluginKey ->
-                new DefaultHolographicDisplaysAPI(pluginKey, apiHologramManager, placeholderRegistry));
+        // Optimization: avoid creating a new instance every time a plugin requests it, in case it never stores a reference
+        return apiCache.computeIfAbsent(plugin, apiFactory);
     }
 
     @Override
