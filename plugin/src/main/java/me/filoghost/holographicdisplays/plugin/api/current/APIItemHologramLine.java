@@ -9,10 +9,11 @@ import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
 import me.filoghost.holographicdisplays.api.hologram.line.PickupListener;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLine, APIClickableHologramLine, APICollectableHologramLine {
+class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLine, APIClickableHologramLine {
 
     private PickupListener pickupListener;
     private ClickListener clickListener;
@@ -43,6 +44,22 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
     @Override
     public @Nullable ClickListener getClickListener() {
         return clickListener;
+    }
+
+    @Override
+    public boolean hasPickupCallback() {
+        return pickupListener != null;
+    }
+
+    @Override
+    public void invokePickupCallback(Player player) {
+        try {
+            if (pickupListener != null) {
+                pickupListener.onPickup(new SimpleHologramLinePickupEvent(player));
+            }
+        } catch (Throwable t) {
+            logPickupCallbackException(getCreatorPlugin(), player, t);
+        }
     }
 
 }
