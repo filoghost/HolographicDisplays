@@ -15,19 +15,19 @@ import org.jetbrains.annotations.Nullable;
 public interface ClickableHologramLine extends HologramLine {
 
     /**
-     * Sets the click listener.
-     *
-     * @param clickListener the new click listener, null to unset
-     * @since 1
-     */
-    void setClickListener(@Nullable ClickListener clickListener);
-
-    /**
      * Returns the current click listener.
      *
      * @return the current click listener, null if not present
      * @since 1
      */
     @Nullable ClickListener getClickListener();
+
+    /**
+     * Sets the click listener.
+     *
+     * @param clickListener the new click listener, null to unset
+     * @since 1
+     */
+    void setClickListener(@Nullable ClickListener clickListener);
 
 }

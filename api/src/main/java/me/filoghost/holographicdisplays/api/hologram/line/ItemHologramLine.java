@@ -30,19 +30,19 @@ public interface ItemHologramLine extends ClickableHologramLine {
     void setItemStack(@Nullable ItemStack itemStack);
 
     /**
-     * Sets the pickup listener.
-     *
-     * @param pickupListener the new pickup listener, null to unset
-     * @since 1
-     */
-    void setPickupListener(@Nullable PickupListener pickupListener);
-
-    /**
      * Returns the current pickup listener.
      *
      * @return the current pickup listener, null if not present
      * @since 1
      */
     @Nullable PickupListener getPickupListener();
+
+    /**
+     * Sets the pickup listener.
+     *
+     * @param pickupListener the new pickup listener, null to unset
+     * @since 1
+     */
+    void setPickupListener(@Nullable PickupListener pickupListener);
 
 }

@@ -35,15 +35,15 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
     }
 
     @Override
+    public @Nullable ClickListener getClickListener() {
+        return clickListener;
+    }
+
+    @Override
     public void setClickListener(@Nullable ClickListener clickListener) {
         checkNotDeleted();
 
         this.clickListener = clickListener;
-    }
-
-    @Override
-    public @Nullable ClickListener getClickListener() {
-        return clickListener;
     }
 
     @Override
