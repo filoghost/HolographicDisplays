@@ -21,4 +21,11 @@ class SimpleHologramLinePickupEvent implements HologramLinePickupEvent {
         return player;
     }
 
+    @Override
+    public String toString() {
+        return "HologramLinePickupEvent{"
+                + "player=" + player
+                + "}";
+    }
+
 }

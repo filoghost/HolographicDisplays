@@ -21,4 +21,11 @@ class SimpleHologramLineClickEvent implements HologramLineClickEvent {
         return player;
     }
 
+    @Override
+    public String toString() {
+        return "HologramLineClickEvent{"
+                + "player=" + player
+                + "}";
+    }
+
 }

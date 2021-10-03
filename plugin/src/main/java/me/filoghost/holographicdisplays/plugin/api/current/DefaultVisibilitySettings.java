@@ -86,7 +86,7 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
 
     @Override
     public String toString() {
-        return "DefaultVisibilitySettings{"
+        return "VisibilitySettings{"
                 + "defaultVisibility=" + defaultVisibility
                 + ", visibilityByPlayer=" + visibilityByPlayer
                 + "}";
