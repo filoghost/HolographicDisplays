@@ -9,57 +9,56 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Settings to manage the visibility of a hologram to players. Allows to set both the default visibility and the
- * visibility to a specific player.
+ * Settings to manage the visibility of a hologram to players. Allows to set a global visibility and an individual
+ * visibility for specific players.
  *
  * @since 1
  */
 public interface VisibilitySettings {
 
     /**
-     * Returns the default visibility of the hologram. The initial value is {@link Visibility#VISIBLE}, meaning that the
-     * hologram is visible to everyone.
+     * Returns the visibility of the hologram. The initial value is {@link Visibility#VISIBLE}.
      *
-     * @return the default visibility
+     * @return the visibility
      * @since 1
      */
-    @NotNull Visibility getDefaultVisibility();
+    @NotNull Visibility getVisibility();
 
     /**
-     * Sets the default visibility. This value affects player which do not have an individual visibility set with {@link
-     * #setIndividualVisibility(Player, Visibility)} and player whose individual visibility has been reset with {@link
-     * #resetIndividualVisibility(Player)}.
+     * Sets the visibility of the hologram. This value only affects player which do not have an individual visibility
+     * (see {@link #setIndividualVisibility(Player, Visibility)}).
      *
-     * @param defaultVisibility the new default visibility
+     * @param visibility the new visibility
      * @since 1
      */
-    void setDefaultVisibility(@NotNull Visibility defaultVisibility);
+    void setVisibility(@NotNull Visibility visibility);
 
     /**
-     * Sets the visibility for a specific player, overriding the default value ({@link #getDefaultVisibility()}).
-     * The individual visibility value can be reverted with {@link #resetIndividualVisibility(Player)}.
+     * Sets the visibility for a specific player, overriding the global value of ({@link #getVisibility()}).
+     * The individual visibility value can be removed with {@link #removeIndividualVisibility(Player)}.
      *
      * @since 1
      */
     void setIndividualVisibility(@NotNull Player player, @NotNull Visibility visibility);
 
     /**
-     * Resets the visibility for a specific player to the default value ({@link #getDefaultVisibility()}).
+     * Removes the individual visibility for a player. The visibility for the player would then be determined by the
+     * global visibility ({@link #getVisibility()}).
      *
      * @since 1
      */
-    void resetIndividualVisibility(@NotNull Player player);
+    void removeIndividualVisibility(@NotNull Player player);
 
     /**
-     * Resets the visibility for all players to the default value ({@link #getDefaultVisibility()}).
+     * Removes the individual visibility  all players which have one.
      *
      * @since 1
      */
-    void resetIndividualVisibilityAll();
+    void clearIndividualVisibilities();
 
     /**
-     * Checks if a hologram is visible to a player, taking into account the individual visibility for the specific
-     * player and the default visibility.
+     * Checks if a hologram is visible to a player, taking into account both the global visibility and the individual
+     * visibility of the player (if set).
      *
      * @param player the player
      * @return if the player can see the hologram

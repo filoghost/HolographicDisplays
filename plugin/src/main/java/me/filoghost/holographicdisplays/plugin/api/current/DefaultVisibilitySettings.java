@@ -16,34 +16,34 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultVisibilitySettings implements VisibilitySettings {
 
-    private Map<UUID, Visibility> visibilityByPlayer;
-    private Visibility defaultVisibility;
+    private Visibility globalVisibility;
+    private Map<UUID, Visibility> individualVisibilities;
 
     public DefaultVisibilitySettings() {
-        this.defaultVisibility = Visibility.VISIBLE;
+        this.globalVisibility = Visibility.VISIBLE;
     }
 
     @Override
-    public @NotNull Visibility getDefaultVisibility() {
-        return defaultVisibility;
+    public @NotNull Visibility getVisibility() {
+        return globalVisibility;
     }
 
     @Override
-    public void setDefaultVisibility(@NotNull Visibility defaultVisibility) {
-        if (this.defaultVisibility == defaultVisibility) {
+    public void setVisibility(@NotNull Visibility visibility) {
+        if (this.globalVisibility == visibility) {
             return;
         }
 
-        this.defaultVisibility = defaultVisibility;
+        this.globalVisibility = visibility;
     }
 
     @Override
     public void setIndividualVisibility(@NotNull Player player, @NotNull Visibility visibility) {
         // Lazy initialization
-        if (visibilityByPlayer == null) {
-            visibilityByPlayer = new ConcurrentHashMap<>();
+        if (individualVisibilities == null) {
+            individualVisibilities = new ConcurrentHashMap<>();
         }
-        visibilityByPlayer.put(player.getUniqueId(), visibility);
+        individualVisibilities.put(player.getUniqueId(), visibility);
     }
 
     @Override
@@ -54,41 +54,41 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
     }
 
     private Visibility getVisibility(Player player) {
-        if (visibilityByPlayer != null) {
-            Visibility visibility = visibilityByPlayer.get(player.getUniqueId());
+        if (individualVisibilities != null) {
+            Visibility visibility = individualVisibilities.get(player.getUniqueId());
             if (visibility != null) {
                 return visibility;
             }
         }
 
-        return defaultVisibility;
+        return globalVisibility;
     }
 
     @Override
-    public void resetIndividualVisibility(@NotNull Player player) {
+    public void removeIndividualVisibility(@NotNull Player player) {
         Preconditions.notNull(player, "player");
 
-        if (visibilityByPlayer == null) {
+        if (individualVisibilities == null) {
             return;
         }
 
-        visibilityByPlayer.remove(player.getUniqueId());
+        individualVisibilities.remove(player.getUniqueId());
     }
 
     @Override
-    public void resetIndividualVisibilityAll() {
-        if (visibilityByPlayer == null) {
+    public void clearIndividualVisibilities() {
+        if (individualVisibilities == null) {
             return;
         }
 
-        visibilityByPlayer.clear();
+        individualVisibilities.clear();
     }
 
     @Override
     public String toString() {
         return "VisibilitySettings{"
-                + "defaultVisibility=" + defaultVisibility
-                + ", visibilityByPlayer=" + visibilityByPlayer
+                + "globalVisibility=" + globalVisibility
+                + ", individualVisibilities=" + individualVisibilities
                 + "}";
     }
 
