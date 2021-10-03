@@ -21,12 +21,12 @@ class V2VisibilityManager implements VisibilityManager {
 
     @Override
     public boolean isVisibleByDefault() {
-        return v3VisibilitySettings.getDefaultVisibility() == Visibility.VISIBLE;
+        return v3VisibilitySettings.getVisibility() == Visibility.VISIBLE;
     }
 
     @Override
     public void setVisibleByDefault(boolean visibleByDefault) {
-        v3VisibilitySettings.setDefaultVisibility(visibleByDefault ? Visibility.VISIBLE : Visibility.HIDDEN);
+        v3VisibilitySettings.setVisibility(visibleByDefault ? Visibility.VISIBLE : Visibility.HIDDEN);
     }
 
     @Override
@@ -46,12 +46,12 @@ class V2VisibilityManager implements VisibilityManager {
 
     @Override
     public void resetVisibility(Player player) {
-        v3VisibilitySettings.resetIndividualVisibility(player);
+        v3VisibilitySettings.removeIndividualVisibility(player);
     }
 
     @Override
     public void resetVisibilityAll() {
-        v3VisibilitySettings.resetIndividualVisibilityAll();
+        v3VisibilitySettings.clearIndividualVisibilities();
     }
 
 }
