@@ -15,6 +15,7 @@
 package com.gmail.filoghost.holographicdisplays.object;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -61,6 +62,14 @@ public class DefaultBackendAPI extends BackendAPI {
 	public Collection<Hologram> getHolograms(Plugin plugin) {
 		Validator.notNull(plugin, "plugin");
 		return PluginHologramManager.getHolograms(plugin);
+	}
+
+	public Collection<Hologram> getHolographicDisplayHolograms() {
+		return Collections.unmodifiableList(NamedHologramManager.getHolograms());
+	}
+
+	public Hologram getHolographicDisplayHologram(String name) {
+		return NamedHologramManager.getHologram(name);
 	}
 
 	public Collection<String> getRegisteredPlaceholders(Plugin plugin) {

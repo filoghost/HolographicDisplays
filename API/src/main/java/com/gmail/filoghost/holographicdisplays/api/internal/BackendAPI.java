@@ -53,5 +53,7 @@ public abstract class BackendAPI {
 
 	public abstract boolean isHologramEntity(Entity bukkitEntity);	
 	
+	public abstract Collection<Hologram> getHolographicDisplayHolograms();
 
+	public abstract Hologram getHolographicDisplayHologram(String name);
 }

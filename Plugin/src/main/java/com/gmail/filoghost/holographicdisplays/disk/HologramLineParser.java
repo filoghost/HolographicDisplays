@@ -20,7 +20,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holographicdisplays.exception.HologramLineParseException;
-import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
+import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftHologramLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftItemLine;
 import com.gmail.filoghost.holographicdisplays.object.line.CraftTextLine;
@@ -32,7 +32,7 @@ import com.gmail.filoghost.holographicdisplays.util.nbt.parser.MojangsonParser;
 public class HologramLineParser {
 	
 	
-	public static CraftHologramLine parseLine(NamedHologram hologram, String serializedLine, boolean checkMaterialValidity) throws HologramLineParseException {
+	public static CraftHologramLine parseLine(CraftHologram hologram, String serializedLine, boolean checkMaterialValidity) throws HologramLineParseException {
 		CraftHologramLine hologramLine;
 		
 		if (serializedLine.toLowerCase().startsWith("icon:")) {

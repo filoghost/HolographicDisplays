@@ -22,12 +22,21 @@ import com.gmail.filoghost.holographicdisplays.api.line.HologramLine;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 
+import java.util.Collection;
+
 /**
  * An object made of various lines, that can be items or holograms.
  * Holographic lines appear as a nametag without any entity below.
  * To create one, please see {@link HologramsAPI#createHologram(org.bukkit.plugin.Plugin, Location)}.
  */
 public interface Hologram {
+	/**
+	 * Get the Hologram name when available
+	 * @return the name of the hologram, null when no name was specified
+	 */
+	default String getName() {
+		return null;
+	}
 	
 	/**
 	 * Appends a text line to end of this hologram.
@@ -45,8 +54,30 @@ public interface Hologram {
 	 * @return the new ItemLine appended
 	 */
 	public ItemLine appendItemLine(ItemStack itemStack);
-	
-	
+
+	/**
+	 * Appends multiple serialized lines and deserialize it.
+	 *
+	 * @param lines the lines to deserialize
+	 * @throws IllegalArgumentException when unable to parse the lines
+	 */
+	public void deserializeLines(Collection<String> lines) throws IllegalArgumentException;
+
+	/**
+	 * Appends a single line and deserialize the content
+	 *
+	 * @param line the line to deserialize
+	 * @throws IllegalArgumentException when unable to parse the line
+	 */
+	public void deserializeLine(String line) throws IllegalArgumentException;
+
+	/**
+	 * Serialize the lines and return it. The collection is a copy and modifications doesn't have effects
+	 *
+	 * @return copy of the serialized lines.
+	 */
+	public Collection<String> serializeLines();
+
 	/**
 	 * Inserts a text line in this hologram.
 	 * 

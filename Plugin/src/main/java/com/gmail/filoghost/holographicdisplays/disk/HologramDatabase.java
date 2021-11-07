@@ -17,10 +17,12 @@ package com.gmail.filoghost.holographicdisplays.disk;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
+import com.gmail.filoghost.holographicdisplays.object.CraftHologram;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -68,23 +70,25 @@ public class HologramDatabase {
 		Location loc = LocationSerializer.locationFromString(locationString);
 		
 		NamedHologram hologram = new NamedHologram(loc, name);
-
-		for (String line : lines) {
-			hologram.getLinesUnsafe().add(HologramLineParser.parseLine(hologram, line, false));
-		}
-		
+		addDeserializedLines(hologram, lines);
 		return hologram;
 	}
 	
 	public static String serializeHologramLine(CraftHologramLine line) {
 		return line.getSerializedConfigValue();
 	}
+
+	public static void addDeserializedLines(CraftHologram hologram, Collection<String> lines) throws HologramLineParseException {
+		for (String line : lines) {
+			hologram.getLinesUnsafe().add(HologramLineParser.parseLine(hologram, line, false));
+		}
+	}
 	
 	public static void deleteHologram(String name) {
 		config.set(name, null);
 	}
 	
-	public static void saveHologram(NamedHologram hologram) {		
+	public static void saveHologram(NamedHologram hologram) {
 		List<String> serializedLines = new ArrayList<>();
 		for (CraftHologramLine line : hologram.getLinesUnsafe()) {
 			serializedLines.add(serializeHologramLine(line));

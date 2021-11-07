@@ -15,8 +15,12 @@
 package com.gmail.filoghost.holographicdisplays.object;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import com.gmail.filoghost.holographicdisplays.disk.HologramDatabase;
+import com.gmail.filoghost.holographicdisplays.exception.HologramLineParseException;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -162,7 +166,36 @@ public class CraftHologram implements Hologram {
 		refreshSingleLines();
 		return line;
 	}
-	
+
+	@Override
+	public void deserializeLines(Collection<String> lines) throws IllegalArgumentException {
+		Validator.isTrue(!deleted, "hologram already deleted");
+		Validator.notNull(lines, "lines");
+
+		try {
+			HologramDatabase.addDeserializedLines(this, lines);
+		} catch (HologramLineParseException e) {
+			throw new IllegalArgumentException("Unable to deserialize lines", e);
+		}
+	}
+
+	@Override
+	public void deserializeLine(String line) {
+		Validator.isTrue(!deleted, "hologram already deleted");
+		Validator.notNull(line, "line");
+
+		deserializeLines(Collections.singleton(line));
+	}
+
+	@Override
+	public Collection<String> serializeLines() {
+		List<String> serialized = new ArrayList<>();
+		for (CraftHologramLine line : lines) {
+			serialized.add(HologramDatabase.serializeHologramLine(line));
+		}
+		return serialized;
+	}
+
 	@Override
 	public void removeLine(int index) {
 		Validator.isTrue(!deleted, "hologram already deleted");

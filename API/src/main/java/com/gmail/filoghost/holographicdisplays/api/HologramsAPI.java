@@ -57,6 +57,26 @@ public class HologramsAPI {
 	public static Collection<Hologram> getHolograms(Plugin plugin) {
 		return BackendAPI.getImplementation().getHolograms(plugin);
 	}
+
+	/**
+	 * Finds all the holograms owned by the HolographicDisplays itself
+	 *
+	 * @return the holograms created by HolographicDisplay. the Collection is a copy
+	 * and modifying it has no effect on the holograms.
+	 */
+	public static Collection<Hologram> getHolographicDisplayHolograms() {
+		return BackendAPI.getImplementation().getHolographicDisplayHolograms();
+	}
+
+	/**
+	 * Find the hologram specified by the name
+	 *
+	 * @param name the name of the hologram
+	 * @return the hologram created by HolographicDisplay, null when not found
+	 */
+	public static Hologram getHolographicDisplayHologram(String name) {
+		return BackendAPI.getImplementation().getHolographicDisplayHologram(name);
+	}
 	
 	
 	/**

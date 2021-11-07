@@ -26,6 +26,11 @@ public class NamedHologram extends CraftHologram {
 		setAllowPlaceholders(true);
 	}
 
+	/**
+	 * Get the Hologram name when available
+	 * @return the name of the hologram, null when no name was specified
+	 */
+	@Override
 	public String getName() {
 		return name;
 	}
