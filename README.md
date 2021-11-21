@@ -1,7 +1,7 @@
-Holographic Displays [Fork which minimizes your pain and suffering]
+Holographic Displays (Fork which minimizes your pain and suffering)
+===================
 
 I added command completions to this fork.
-===================
 
 Bukkit Dev Page: http://dev.bukkit.org/bukkit-plugins/holographic-displays
 
