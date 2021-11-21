@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gmail.filoghost.holographicdisplays.commands.CommandValidator;
+import com.gmail.filoghost.holographicdisplays.commands.StringUtil;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologram;
 import com.gmail.filoghost.holographicdisplays.object.NamedHologramManager;
 import org.bukkit.Bukkit;
@@ -54,7 +55,6 @@ import com.gmail.filoghost.holographicdisplays.commands.main.subs.TeleportComman
 import com.gmail.filoghost.holographicdisplays.exception.CommandException;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 public class HologramsCommandHandler implements CommandExecutor, TabCompleter {
 	private final List<String> completions = new ArrayList<String>();
@@ -166,15 +166,45 @@ public class HologramsCommandHandler implements CommandExecutor, TabCompleter {
 				completions.add("readline");
 				completions.add("readimage");
 				completions.add("info");
+
 			} else if (args.length == 2) {
-				if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("movehere") || args[0].equalsIgnoreCase("copy")
-				|| args[0].equalsIgnoreCase("addline") || args[0].equalsIgnoreCase("removeline") || args[0].equalsIgnoreCase("setline") || args[0].equalsIgnoreCase("insertline") || args[0].equalsIgnoreCase("readline") || args[0].equalsIgnoreCase("readimage") || args[0].equalsIgnoreCase("info")){
+				if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("movehere") || args[0].equalsIgnoreCase("copy") || args[0].equalsIgnoreCase("addline") || args[0].equalsIgnoreCase("removeline") || args[0].equalsIgnoreCase("setline") || args[0].equalsIgnoreCase("insertline") || args[0].equalsIgnoreCase("readline") || args[0].equalsIgnoreCase("readimage") || args[0].equalsIgnoreCase("info")){
 					for(final NamedHologram namedHologram : NamedHologramManager.getHolograms()){
 						completions.add(namedHologram.getName());
 					}
 				}else if(args[0].equalsIgnoreCase("create")){
 					completions.add("<Enter new hologram name>");
+					return completions;
 				}
+
+			} else if (args.length >= 3 && args[0].equalsIgnoreCase("create")) {
+				StringBuilder text = new StringBuilder();
+				for(int i=2; i<args.length; i++){
+					if(i==args.length-1){
+						text.append(args[i]);
+					}else{
+						text.append(args[i]).append(" ");
+					}
+
+				}
+				if(!addHologramTextCompletion(text.toString())){
+					return completions;
+				}
+
+			} else if (args.length >= 3 && args[0].equalsIgnoreCase("addline")) {
+				StringBuilder text = new StringBuilder();
+				for(int i=2; i<args.length; i++){
+					if(i==args.length-1){
+						text.append(args[i]);
+					}else{
+						text.append(args[i]).append(" ");
+					}
+
+				}
+				if(!addHologramTextCompletion(text.toString())){
+					return completions;
+				}
+
 			} else if (args.length == 3){
 				if(args[0].equalsIgnoreCase("removeline")){
 					try {
@@ -195,6 +225,7 @@ public class HologramsCommandHandler implements CommandExecutor, TabCompleter {
 					} catch (CommandException e) {
 						completions.add("<line number>");
 					}
+
 				}else if(args[0].equalsIgnoreCase("insertline")){
 					try {
 						NamedHologram hologram = CommandValidator.getNamedHologram(args[1]);
@@ -205,28 +236,7 @@ public class HologramsCommandHandler implements CommandExecutor, TabCompleter {
 						completions.add("<line number>");
 					}
 				}
-			} else if (args.length >= 3 && args[0].equalsIgnoreCase("create")) {
-				StringBuilder text = new StringBuilder();
-				for(int i=2; i<args.length; i++){
-					if(i==args.length-1){
-						text.append(args[i]);
-					}else{
-						text.append(args[i]).append(" ");
-					}
 
-				}
-				addHologramTextCompletion(text.toString());
-			} else if (args.length >= 3 && args[0].equalsIgnoreCase("addline")) {
-				StringBuilder text = new StringBuilder();
-				for(int i=3; i<args.length; i++){
-					if(i==args.length-1){
-						text.append(args[i]);
-					}else{
-						text.append(args[i]).append(" ");
-					}
-
-				}
-				addHologramTextCompletion(text.toString());
 			} else if (args.length >= 4 && args[0].equalsIgnoreCase("setline")) {
 				StringBuilder text = new StringBuilder();
 				for(int i=3; i<args.length; i++){
@@ -237,7 +247,10 @@ public class HologramsCommandHandler implements CommandExecutor, TabCompleter {
 					}
 
 				}
-				addHologramTextCompletion(text.toString());
+				if(!addHologramTextCompletion(text.toString())){
+					return completions;
+				}
+
 			} else if (args.length >= 4 && args[0].equalsIgnoreCase("insertline")) {
 				StringBuilder text = new StringBuilder();
 				for(int i=3; i<args.length; i++){
@@ -248,30 +261,46 @@ public class HologramsCommandHandler implements CommandExecutor, TabCompleter {
 					}
 
 				}
-				addHologramTextCompletion(text.toString());
+				if(!addHologramTextCompletion(text.toString())){
+					return completions;
+				}
+
 			}
 		}
 
-		StringUtil.copyPartialMatches(args[args.length - 1], completions, partialCompletions);
+		StringUtil.copyPartialMatches(args[args.length - 1], completions,partialCompletions);
 		return partialCompletions;
 	}
 
 
-	public final void addHologramTextCompletion(final String hologramText){
-		final String[] splitText = hologramText.split(" ");
-		final int argsLength = splitText.length;
+	public final boolean addHologramTextCompletion(final String hologramText){
+		ArrayList<String> splitText = new ArrayList<>(Arrays.asList(hologramText.split(" ")));
 
-		if(splitText.length>1 && splitText[0].contains("ICON:")){
+		if(hologramText.endsWith(" ")){
+			splitText.add(" ");
+		}
+
+
+		int argsLength = splitText.size();
+		if(hologramText.isEmpty()){
+			argsLength = 0;
+		}
+
+
+		if(argsLength > 1 && splitText.get(0).contains("ICON:")){
 			for (final Material material : Material.values()) {
 				completions.add(material.toString());
 			}
 		}else{
-			completions.add("<Enter text>");
-			if(splitText.length == 0){
+			if(argsLength == 0){
+				completions.add("<Enter text>");
 				completions.add("ICON:");
+			}else{
+				completions.add("<Enter text>");
+				return false;
 			}
 
 		}
-
+		return true;
 	}
 }
