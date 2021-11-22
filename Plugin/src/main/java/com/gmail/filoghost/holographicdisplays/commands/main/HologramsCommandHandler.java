@@ -163,7 +163,7 @@ public class HologramsCommandHandler implements CommandExecutor, TabCompleter {
 				completions.add("removeline");
 				completions.add("setline");
 				completions.add("insertline");
-				completions.add("readline");
+				completions.add("readtext");
 				completions.add("readimage");
 				completions.add("info");
 
