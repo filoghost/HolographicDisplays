@@ -35,7 +35,7 @@ public interface ItemHologramLine extends ClickableHologramLine {
      * @return the current pickup listener, null if not present
      * @since 1
      */
-    @Nullable PickupListener getPickupListener();
+    @Nullable HologramLinePickupListener getPickupListener();
 
     /**
      * Sets the pickup listener.
@@ -43,6 +43,6 @@ public interface ItemHologramLine extends ClickableHologramLine {
      * @param pickupListener the new pickup listener, null to unset
      * @since 1
      */
-    void setPickupListener(@Nullable PickupListener pickupListener);
+    void setPickupListener(@Nullable HologramLinePickupListener pickupListener);
 
 }

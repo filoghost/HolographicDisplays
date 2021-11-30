@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.api.current;
 
-import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.ClickableHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ClickCallbackProvider;
 import org.bukkit.entity.Player;
@@ -20,7 +20,7 @@ interface APIClickableHologramLine extends ClickableHologramLine, APIHologramLin
     @Override
     default void invokeClickCallback(Player player) {
         try {
-            ClickListener clickListener = getClickListener();
+            HologramLineClickListener clickListener = getClickListener();
             if (clickListener != null) {
                 clickListener.onClick(new SimpleHologramLineClickEvent(player));
             }

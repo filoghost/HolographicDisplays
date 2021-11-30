@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.api.current;
 
 import me.filoghost.holographicdisplays.api.hologram.ResolvePlaceholders;
-import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +15,7 @@ class APITextHologramLine extends BaseTextHologramLine implements TextHologramLi
 
     private final APIHologram hologram;
 
-    private ClickListener clickListener;
+    private HologramLineClickListener clickListener;
 
     APITextHologramLine(APIHologram hologram, String text) {
         super(hologram, text);
@@ -28,14 +28,14 @@ class APITextHologramLine extends BaseTextHologramLine implements TextHologramLi
     }
 
     @Override
-    public void setClickListener(@Nullable ClickListener clickListener) {
+    public void setClickListener(@Nullable HologramLineClickListener clickListener) {
         checkNotDeleted();
 
         this.clickListener = clickListener;
     }
 
     @Override
-    public @Nullable ClickListener getClickListener() {
+    public @Nullable HologramLineClickListener getClickListener() {
         return clickListener;
     }
 

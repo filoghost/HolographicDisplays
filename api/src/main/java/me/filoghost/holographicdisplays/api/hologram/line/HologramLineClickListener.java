@@ -8,16 +8,16 @@ package me.filoghost.holographicdisplays.api.hologram.line;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Interface to handle hologram lines being picked up by players.
+ * Interface to handle clickable hologram lines.
  *
  * @since 1
  */
 @FunctionalInterface
-public interface PickupListener {
+public interface HologramLineClickListener {
 
     /**
      * @since 1
      */
-    void onPickup(@NotNull HologramLinePickupEvent pickupEvent);
+    void onClick(@NotNull HologramLineClickEvent clickEvent);
 
 }
