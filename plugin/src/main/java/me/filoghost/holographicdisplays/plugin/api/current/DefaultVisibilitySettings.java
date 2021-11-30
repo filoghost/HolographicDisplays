@@ -24,12 +24,12 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
     }
 
     @Override
-    public @NotNull Visibility getVisibility() {
+    public @NotNull Visibility getGlobalVisibility() {
         return globalVisibility;
     }
 
     @Override
-    public void setVisibility(@NotNull Visibility visibility) {
+    public void setGlobalVisibility(@NotNull Visibility visibility) {
         if (this.globalVisibility == visibility) {
             return;
         }

@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.api.current;
 
-import me.filoghost.holographicdisplays.api.hologram.line.ClickListener;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
-import me.filoghost.holographicdisplays.api.hologram.line.PickupListener;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLinePickupListener;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,32 +15,32 @@ import org.jetbrains.annotations.Nullable;
 
 class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLine, APIClickableHologramLine {
 
-    private PickupListener pickupListener;
-    private ClickListener clickListener;
+    private HologramLinePickupListener pickupListener;
+    private HologramLineClickListener clickListener;
 
     APIItemHologramLine(APIHologram hologram, ItemStack itemStack) {
         super(hologram, itemStack);
     }
 
     @Override
-    public @Nullable PickupListener getPickupListener() {
+    public @Nullable HologramLinePickupListener getPickupListener() {
         return pickupListener;
     }
 
     @Override
-    public void setPickupListener(@Nullable PickupListener pickupListener) {
+    public void setPickupListener(@Nullable HologramLinePickupListener pickupListener) {
         checkNotDeleted();
 
         this.pickupListener = pickupListener;
     }
 
     @Override
-    public @Nullable ClickListener getClickListener() {
+    public @Nullable HologramLineClickListener getClickListener() {
         return clickListener;
     }
 
     @Override
-    public void setClickListener(@Nullable ClickListener clickListener) {
+    public void setClickListener(@Nullable HologramLineClickListener clickListener) {
         checkNotDeleted();
 
         this.clickListener = clickListener;

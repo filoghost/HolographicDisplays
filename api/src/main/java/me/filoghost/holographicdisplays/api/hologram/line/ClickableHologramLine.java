@@ -20,7 +20,7 @@ public interface ClickableHologramLine extends HologramLine {
      * @return the current click listener, null if not present
      * @since 1
      */
-    @Nullable ClickListener getClickListener();
+    @Nullable HologramLineClickListener getClickListener();
 
     /**
      * Sets the click listener.
@@ -28,6 +28,6 @@ public interface ClickableHologramLine extends HologramLine {
      * @param clickListener the new click listener, null to unset
      * @since 1
      */
-    void setClickListener(@Nullable ClickListener clickListener);
+    void setClickListener(@Nullable HologramLineClickListener clickListener);
 
 }

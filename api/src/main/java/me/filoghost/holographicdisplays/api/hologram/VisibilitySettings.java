@@ -22,7 +22,7 @@ public interface VisibilitySettings {
      * @return the visibility
      * @since 1
      */
-    @NotNull Visibility getVisibility();
+    @NotNull Visibility getGlobalVisibility();
 
     /**
      * Sets the visibility of the hologram. This value only affects player which do not have an individual visibility
@@ -31,10 +31,10 @@ public interface VisibilitySettings {
      * @param visibility the new visibility
      * @since 1
      */
-    void setVisibility(@NotNull Visibility visibility);
+    void setGlobalVisibility(@NotNull Visibility visibility);
 
     /**
-     * Sets the visibility for a specific player, overriding the global value of ({@link #getVisibility()}).
+     * Sets the visibility for a specific player, overriding the global value of ({@link #getGlobalVisibility()}).
      * The individual visibility value can be removed with {@link #removeIndividualVisibility(Player)}.
      *
      * @since 1
@@ -43,14 +43,14 @@ public interface VisibilitySettings {
 
     /**
      * Removes the individual visibility for a player. The visibility for the player would then be determined by the
-     * global visibility ({@link #getVisibility()}).
+     * global visibility ({@link #getGlobalVisibility()}).
      *
      * @since 1
      */
     void removeIndividualVisibility(@NotNull Player player);
 
     /**
-     * Removes the individual visibility  all players which have one.
+     * Removes the individual visibility of all players which have one.
      *
      * @since 1
      */

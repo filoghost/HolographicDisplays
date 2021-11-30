@@ -21,12 +21,12 @@ class V2VisibilityManager implements VisibilityManager {
 
     @Override
     public boolean isVisibleByDefault() {
-        return v3VisibilitySettings.getVisibility() == Visibility.VISIBLE;
+        return v3VisibilitySettings.getGlobalVisibility() == Visibility.VISIBLE;
     }
 
     @Override
     public void setVisibleByDefault(boolean visibleByDefault) {
-        v3VisibilitySettings.setVisibility(visibleByDefault ? Visibility.VISIBLE : Visibility.HIDDEN);
+        v3VisibilitySettings.setGlobalVisibility(visibleByDefault ? Visibility.VISIBLE : Visibility.HIDDEN);
     }
 
     @Override
