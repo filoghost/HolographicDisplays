@@ -35,7 +35,8 @@ public enum NMSVersion {
     /* 1.16 - 1.16.1   */ v1_16_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_16_R1.VersionNMSManager(errorCollector)),
     /* 1.16.2 - 1.16.3 */ v1_16_R2(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_16_R2.VersionNMSManager(errorCollector)),
     /* 1.16.4 - 1.16.5 */ v1_16_R3(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_16_R3.VersionNMSManager(errorCollector)),
-    /* 1.17 - ?        */ v1_17_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_17_R1.VersionNMSManager(errorCollector)),
+    /* 1.17            */ v1_17_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_17_R1.VersionNMSManager(errorCollector)),
+    /* 1.18 - ?        */ v1_18_R1(errorCollector -> new me.filoghost.holographicdisplays.nms.v1_18_R1.VersionNMSManager(errorCollector)),
     /* Other versions  */ UNKNOWN(NMSManagerFactory.unknownVersion());
 
     private static final NMSVersion CURRENT_VERSION = detectCurrentVersion();
