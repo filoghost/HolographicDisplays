@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.plugin.api.current;
 
-import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickListener;
-import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
-import me.filoghost.holographicdisplays.api.hologram.line.HologramLinePickupListener;
+import me.filoghost.holographicdisplays.api.beta.hologram.line.HologramLineClickListener;
+import me.filoghost.holographicdisplays.api.beta.hologram.line.ItemHologramLine;
+import me.filoghost.holographicdisplays.api.beta.hologram.line.HologramLinePickupListener;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

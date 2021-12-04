@@ -6,10 +6,10 @@
 package me.filoghost.holographicdisplays.plugin.api.current;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.api.hologram.HologramLines;
-import me.filoghost.holographicdisplays.api.hologram.line.HologramLine;
-import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
-import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
+import me.filoghost.holographicdisplays.api.beta.hologram.HologramLines;
+import me.filoghost.holographicdisplays.api.beta.hologram.line.HologramLine;
+import me.filoghost.holographicdisplays.api.beta.hologram.line.ItemHologramLine;
+import me.filoghost.holographicdisplays.api.beta.hologram.line.TextHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLines;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

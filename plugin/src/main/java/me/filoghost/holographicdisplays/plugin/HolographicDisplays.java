@@ -9,7 +9,7 @@ import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider
 import me.filoghost.fcommons.FCommonsPlugin;
 import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
+import me.filoghost.holographicdisplays.api.beta.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import me.filoghost.holographicdisplays.plugin.api.current.APIHologramManager;
 import me.filoghost.holographicdisplays.plugin.api.current.DefaultHolographicDisplaysAPIProvider;

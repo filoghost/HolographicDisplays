@@ -6,16 +6,16 @@
 package me.filoghost.holographicdisplays.plugin.api.current;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
-import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.Position;
-import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
-import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacementSupplier;
-import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
-import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplacementSupplier;
-import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
+import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.beta.Position;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
+import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;
