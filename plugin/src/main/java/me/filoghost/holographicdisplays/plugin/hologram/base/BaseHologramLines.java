@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.base;
 
-import me.filoghost.holographicdisplays.api.Position;
+import me.filoghost.holographicdisplays.api.beta.Position;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import org.jetbrains.annotations.NotNull;
 

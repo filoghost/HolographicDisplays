@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 
-import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
+import me.filoghost.holographicdisplays.api.beta.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
 import me.filoghost.holographicdisplays.plugin.placeholder.StandardPlaceholder;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderIdentifier;

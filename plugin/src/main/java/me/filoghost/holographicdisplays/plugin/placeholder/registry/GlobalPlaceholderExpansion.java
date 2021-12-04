@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 
-import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
-import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderFactory;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
 import me.filoghost.holographicdisplays.plugin.placeholder.StandardPlaceholder;
 import org.bukkit.entity.Player;

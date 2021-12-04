@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 
-import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
-import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplacementSupplier;
 
 class SimpleGlobalPlaceholder implements GlobalPlaceholder {
 

@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.api.current;
 
-import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickListener;
-import me.filoghost.holographicdisplays.api.hologram.line.ClickableHologramLine;
+import me.filoghost.holographicdisplays.api.beta.hologram.line.HologramLineClickListener;
+import me.filoghost.holographicdisplays.api.beta.hologram.line.ClickableHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ClickCallbackProvider;
 import org.bukkit.entity.Player;
 

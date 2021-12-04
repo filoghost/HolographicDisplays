@@ -10,7 +10,7 @@ import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.collection.CollectionUtils;
-import me.filoghost.holographicdisplays.api.placeholder.RegisteredPlaceholder;
+import me.filoghost.holographicdisplays.api.beta.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;

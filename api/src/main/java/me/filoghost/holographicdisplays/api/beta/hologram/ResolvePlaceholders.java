@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.api.hologram;
+package me.filoghost.holographicdisplays.api.beta.hologram;
 
 public enum ResolvePlaceholders {
 
