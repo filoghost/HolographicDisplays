@@ -95,7 +95,7 @@ class DisplayText {
 
     private @Nullable String computeGlobalText() {
         if (allowPlaceholders && unreplacedText != null && unreplacedText.containsPlaceholders()) {
-            return unreplacedText.replacePlaceholders(placeholderTracker::updateAndGetGlobalReplacement);
+            return unreplacedText.replacePlaceholders(placeholderTracker::computeGlobalReplacement);
         } else {
             return unreplacedText != null ? unreplacedText.getString() : null;
         }
@@ -107,7 +107,7 @@ class DisplayText {
 
         return unreplacedText.replaceParts(
                 (PlaceholderOccurrence placeholderOccurrence) -> {
-                    return placeholderTracker.updateAndGetReplacement(placeholderOccurrence, player);
+                    return placeholderTracker.computeReplacement(placeholderOccurrence, player);
                 },
                 (String literalPart) -> {
                     if (containsPlaceholderAPIPattern

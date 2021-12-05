@@ -32,10 +32,10 @@ class IndividualActivePlaceholder extends ActivePlaceholder {
     }
 
     @Override
-    @Nullable String doUpdateAndGetReplacement(Player player, long currentTick) throws PlaceholderException {
+    @Nullable String doComputeReplacement(Player player, long currentTick) throws PlaceholderException {
         return replacementHolderByPlayer
                 .computeIfAbsent(player, mappingFunction)
-                .updateAndGet(player, currentTick);
+                .computeReplacement(player, currentTick);
     }
 
 }

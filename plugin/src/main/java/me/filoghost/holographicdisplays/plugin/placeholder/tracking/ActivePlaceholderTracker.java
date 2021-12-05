@@ -12,12 +12,12 @@ import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPla
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderExpansion;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import me.filoghost.holographicdisplays.plugin.tick.TickClock;
+import me.filoghost.holographicdisplays.plugin.tick.TickExpiringMap;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class ActivePlaceholderTracker {
@@ -25,7 +25,7 @@ public class ActivePlaceholderTracker {
     private final PlaceholderRegistry registry;
     private final TickClock tickClock;
     private final PlaceholderExceptionHandler exceptionHandler;
-    private final Map<PlaceholderOccurrence, ActivePlaceholder> activePlaceholders;
+    private final TickExpiringMap<PlaceholderOccurrence, ActivePlaceholder> activePlaceholders;
 
     private long lastRegistryVersion;
 
@@ -33,7 +33,7 @@ public class ActivePlaceholderTracker {
         this.registry = registry;
         this.tickClock = tickClock;
         this.exceptionHandler = new PlaceholderExceptionHandler(tickClock);
-        this.activePlaceholders = new HashMap<>();
+        this.activePlaceholders = new TickExpiringMap<>(new HashMap<>(), 1);
     }
 
     public void clearOutdatedEntries() {
@@ -44,9 +44,8 @@ public class ActivePlaceholderTracker {
         lastRegistryVersion = currentRegistryVersion;
 
         // Remove entries whose placeholder expansion sources are outdated
-        activePlaceholders.entrySet().removeIf(entry -> {
-            PlaceholderOccurrence placeholderOccurrence = entry.getKey();
-            PlaceholderExpansion currentSource = entry.getValue().getSource();
+        activePlaceholders.removeEntries((PlaceholderOccurrence placeholderOccurrence, ActivePlaceholder activePlaceholder) -> {
+            PlaceholderExpansion currentSource = activePlaceholder.getSource();
             PlaceholderExpansion newSource = registry.find(placeholderOccurrence);
 
             return !Objects.equals(currentSource, newSource);
@@ -54,28 +53,26 @@ public class ActivePlaceholderTracker {
     }
 
     public void clearUnusedEntries() {
-        long currentTick = tickClock.getCurrentTick();
-        activePlaceholders.values().removeIf(
-                activePlaceholder -> currentTick - activePlaceholder.getLastRequestTick() >= 1);
+        activePlaceholders.clearUnusedEntries(tickClock.getCurrentTick());
     }
 
-    public @Nullable String updateAndGetGlobalReplacement(PlaceholderOccurrence placeholderOccurrence) {
+    public @Nullable String computeGlobalReplacement(PlaceholderOccurrence placeholderOccurrence) {
         try {
             ActivePlaceholder activePlaceholder = trackAndGetPlaceholder(placeholderOccurrence);
             if (activePlaceholder.isIndividual()) {
                 return null;
             }
-            return activePlaceholder.updateAndGetReplacement(null, tickClock.getCurrentTick());
+            return activePlaceholder.computeReplacement(null, tickClock.getCurrentTick());
         } catch (PlaceholderException e) {
             exceptionHandler.handle(e);
             return "[Error]";
         }
     }
 
-    public @Nullable String updateAndGetReplacement(PlaceholderOccurrence placeholderOccurrence, Player player) {
+    public @Nullable String computeReplacement(PlaceholderOccurrence placeholderOccurrence, Player player) {
         try {
             ActivePlaceholder activePlaceholder = trackAndGetPlaceholder(placeholderOccurrence);
-            return activePlaceholder.updateAndGetReplacement(player, tickClock.getCurrentTick());
+            return activePlaceholder.computeReplacement(player, tickClock.getCurrentTick());
         } catch (PlaceholderException e) {
             exceptionHandler.handle(e);
             return "[Error]";

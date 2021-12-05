@@ -27,8 +27,8 @@ class GlobalActivePlaceholder extends ActivePlaceholder {
     }
 
     @Override
-    @Nullable String doUpdateAndGetReplacement(Player player, long currentTick) throws PlaceholderException {
-        return replacementHolder.updateAndGet(player, currentTick);
+    @Nullable String doComputeReplacement(Player player, long currentTick) throws PlaceholderException {
+        return replacementHolder.computeReplacement(player, currentTick);
     }
 
 
