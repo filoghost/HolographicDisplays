@@ -25,7 +25,7 @@ class ReplacementHolder {
         this.placeholderOccurrence = placeholderOccurrence;
     }
 
-    @Nullable String updateAndGet(Player player, long currentTick) throws PlaceholderException {
+    @Nullable String computeReplacement(Player player, long currentTick) throws PlaceholderException {
         if (needsRefresh(currentTick)) {
             currentReplacement = placeholder.getReplacement(player, placeholderOccurrence.getArgument());
             lastUpdateTick = currentTick;

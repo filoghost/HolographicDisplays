@@ -7,10 +7,11 @@ package me.filoghost.holographicdisplays.plugin.placeholder.tracking;
 
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderExpansion;
+import me.filoghost.holographicdisplays.plugin.tick.TickExpiringValue;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-abstract class ActivePlaceholder {
+abstract class ActivePlaceholder implements TickExpiringValue {
 
     private final @Nullable PlaceholderExpansion source;
     private long lastRequestTick;
@@ -24,17 +25,18 @@ abstract class ActivePlaceholder {
         return source;
     }
 
-    final long getLastRequestTick() {
+    @Override
+    public final long getLastUseTick() {
         return lastRequestTick;
     }
 
-    final @Nullable String updateAndGetReplacement(Player player, long currentTick) throws PlaceholderException {
+    final @Nullable String computeReplacement(Player player, long currentTick) throws PlaceholderException {
         this.lastRequestTick = currentTick;
-        return doUpdateAndGetReplacement(player, currentTick);
+        return doComputeReplacement(player, currentTick);
     }
 
     abstract boolean isIndividual();
 
-    abstract @Nullable String doUpdateAndGetReplacement(Player player, long currentTick) throws PlaceholderException;
+    abstract @Nullable String doComputeReplacement(Player player, long currentTick) throws PlaceholderException;
 
 }
