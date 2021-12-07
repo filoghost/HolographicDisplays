@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.placeholder.parsing;
+package me.filoghost.holographicdisplays.plugin.placeholder;
 
 import me.filoghost.fcommons.Strings;
 import org.jetbrains.annotations.NotNull;

@@ -15,9 +15,9 @@ import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlacehold
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplacementSupplier;
 import me.filoghost.holographicdisplays.api.beta.placeholder.RegisteredPlaceholder;
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderIdentifier;
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PluginName;
+import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderIdentifier;
+import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderOccurrence;
+import me.filoghost.holographicdisplays.plugin.placeholder.PluginName;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 

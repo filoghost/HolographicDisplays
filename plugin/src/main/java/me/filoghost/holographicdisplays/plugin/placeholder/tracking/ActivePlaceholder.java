@@ -30,7 +30,7 @@ abstract class ActivePlaceholder implements TickExpiringValue {
         return lastRequestTick;
     }
 
-    final @Nullable String computeReplacement(Player player, long currentTick) throws PlaceholderException {
+    final @Nullable String computeReplacement(@Nullable Player player, long currentTick) throws PlaceholderException {
         this.lastRequestTick = currentTick;
         return doComputeReplacement(player, currentTick);
     }
