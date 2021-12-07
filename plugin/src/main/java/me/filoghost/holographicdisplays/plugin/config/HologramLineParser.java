@@ -33,7 +33,7 @@ public class HologramLineParser {
 
         } else {
             // Don't apply display format inside placeholders
-            String displayText = StringWithPlaceholders.of(serializedLine).replaceLiteralParts(DisplayFormat::apply);
+            String displayText = StringWithPlaceholders.of(serializedLine).replaceStrings(DisplayFormat::apply);
             hologramLine = hologram.createTextLine(displayText, serializedLine);
         }
 

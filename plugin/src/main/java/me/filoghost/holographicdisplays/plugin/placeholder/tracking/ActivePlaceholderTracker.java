@@ -6,8 +6,9 @@
 package me.filoghost.holographicdisplays.plugin.placeholder.tracking;
 
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
+import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.placeholder.StandardPlaceholder;
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
+import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderReplaceFunction;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderExpansion;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
@@ -20,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class ActivePlaceholderTracker {
+public class ActivePlaceholderTracker implements PlaceholderReplaceFunction {
 
     private final PlaceholderRegistry registry;
     private final TickClock tickClock;
@@ -56,22 +57,13 @@ public class ActivePlaceholderTracker {
         activePlaceholders.clearUnusedEntries(tickClock.getCurrentTick());
     }
 
-    public @Nullable String computeGlobalReplacement(PlaceholderOccurrence placeholderOccurrence) {
+    @Override
+    public @Nullable String getReplacement(@Nullable Player player, @NotNull PlaceholderOccurrence placeholderOccurrence) {
         try {
             ActivePlaceholder activePlaceholder = trackAndGetPlaceholder(placeholderOccurrence);
-            if (activePlaceholder.isIndividual()) {
+            if (player == null && activePlaceholder.isIndividual()) {
                 return null;
             }
-            return activePlaceholder.computeReplacement(null, tickClock.getCurrentTick());
-        } catch (PlaceholderException e) {
-            exceptionHandler.handle(e);
-            return "[Error]";
-        }
-    }
-
-    public @Nullable String computeReplacement(PlaceholderOccurrence placeholderOccurrence, Player player) {
-        try {
-            ActivePlaceholder activePlaceholder = trackAndGetPlaceholder(placeholderOccurrence);
             return activePlaceholder.computeReplacement(player, tickClock.getCurrentTick());
         } catch (PlaceholderException e) {
             exceptionHandler.handle(e);

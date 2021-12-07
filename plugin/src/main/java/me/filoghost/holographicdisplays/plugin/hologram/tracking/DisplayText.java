@@ -6,11 +6,8 @@
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +21,6 @@ class DisplayText {
     private @Nullable StringWithPlaceholders unreplacedText;
     private boolean allowPlaceholders;
     private @Nullable String globalText;
-    private boolean containsPlaceholderAPIPattern;
     private @Nullable Boolean containsIndividualPlaceholders;
     private long lastPlaceholderRegistryVersion;
 
@@ -35,9 +31,6 @@ class DisplayText {
     boolean containsIndividualPlaceholders() {
         if (!allowPlaceholders || unreplacedText == null) {
             return false;
-        }
-        if (containsPlaceholderAPIPattern) {
-            return true;
         }
         long currentPlaceholderRegistryVersion = placeholderTracker.getRegistryVersion();
         if (containsIndividualPlaceholders == null || lastPlaceholderRegistryVersion != currentPlaceholderRegistryVersion) {
@@ -50,8 +43,6 @@ class DisplayText {
     void setUnreplacedText(@Nullable String text) {
         unreplacedText = text != null ? StringWithPlaceholders.of(text) : null;
         globalText = null;
-        containsPlaceholderAPIPattern = unreplacedText != null
-                && unreplacedText.anyLiteralPartMatch(PlaceholderAPIHook::containsPlaceholderPattern);
         containsIndividualPlaceholders = null;
     }
 
@@ -77,8 +68,7 @@ class DisplayText {
         if (containsIndividualPlaceholders()) {
             this.globalText = null;
             for (TextLineViewer viewer : viewers) {
-                String individualText = computeIndividualText(viewer);
-                if (viewer.updateIndividualText(individualText)) {
+                if (viewer.updateIndividualText()) {
                     changed = true;
                 }
             }
@@ -95,7 +85,7 @@ class DisplayText {
 
     private @Nullable String computeGlobalText() {
         if (allowPlaceholders && unreplacedText != null && unreplacedText.containsPlaceholders()) {
-            return unreplacedText.replacePlaceholders(placeholderTracker::computeGlobalReplacement);
+            return unreplacedText.replacePlaceholders(null, placeholderTracker);
         } else {
             return unreplacedText != null ? unreplacedText.getString() : null;
         }
@@ -103,22 +93,8 @@ class DisplayText {
 
     public @NotNull String computeIndividualText(Viewer viewer) {
         Preconditions.notNull(unreplacedText, "unreplacedText");
-        Player player = viewer.getPlayer();
 
-        return unreplacedText.replaceParts(
-                (PlaceholderOccurrence placeholderOccurrence) -> {
-                    return placeholderTracker.computeReplacement(placeholderOccurrence, player);
-                },
-                (String literalPart) -> {
-                    if (containsPlaceholderAPIPattern
-                            && PlaceholderAPIHook.isEnabled()
-                            && PlaceholderAPIHook.containsPlaceholderPattern(literalPart)) {
-                        return PlaceholderAPIHook.replacePlaceholders(player, literalPart);
-                    } else {
-                        return literalPart;
-                    }
-                }
-        );
+        return unreplacedText.replacePlaceholders(viewer.getPlayer(), placeholderTracker);
     }
 
 }

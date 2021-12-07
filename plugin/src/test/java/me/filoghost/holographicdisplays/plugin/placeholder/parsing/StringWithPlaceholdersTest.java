@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.parsing;
 
+import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderOccurrence;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -24,7 +25,7 @@ class StringWithPlaceholdersTest {
         boolean expectedContainsPlaceholders = expectedOutput.contains("#");
         StringWithPlaceholders s = StringWithPlaceholders.of(input);
 
-        assertThat(s.replacePlaceholders(occurrence -> "#")).isEqualTo(expectedOutput);
+        assertThat(s.replacePlaceholders(null, (player, occurrence) -> "#")).isEqualTo(expectedOutput);
         assertThat(s.containsPlaceholders()).isEqualTo(expectedContainsPlaceholders);
     }
 
@@ -45,7 +46,7 @@ class StringWithPlaceholdersTest {
     @MethodSource("replaceLiteralPartsTestArguments")
     void replaceLiteralParts(String input, String expectedOutput) {
         StringWithPlaceholders s = StringWithPlaceholders.of(input);
-        assertThat(s.replaceLiteralParts(literalPart -> "_")).isEqualTo(expectedOutput);
+        assertThat(s.replaceStrings(literalPart -> "_")).isEqualTo(expectedOutput);
     }
 
     static Stream<Arguments> replaceLiteralPartsTestArguments() {
@@ -61,7 +62,7 @@ class StringWithPlaceholdersTest {
     void skipReplacing() {
         String input = "{p} a {p} b {p}";
         StringWithPlaceholders s = StringWithPlaceholders.of(input);
-        assertThat(s.replacePlaceholders(occurrence -> null)).isEqualTo(input);
+        assertThat(s.replacePlaceholders(null, (player, occurrence) -> null)).isEqualTo(input);
     }
 
     @ParameterizedTest(name = "[{index}] {0} -> {1}, {2}, {3}")
@@ -70,7 +71,7 @@ class StringWithPlaceholdersTest {
         StringWithPlaceholders s = StringWithPlaceholders.of(input);
 
         List<PlaceholderOccurrence> placeholders = new ArrayList<>();
-        s.replacePlaceholders(occurrence -> {
+        s.replacePlaceholders(null, (player, occurrence) -> {
             placeholders.add(occurrence); // Just collect occurrences
             return null;
         });

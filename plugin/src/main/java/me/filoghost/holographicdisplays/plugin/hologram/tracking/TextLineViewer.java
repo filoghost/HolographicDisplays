@@ -50,7 +50,8 @@ class TextLineViewer extends Viewer {
         }
     }
 
-    public boolean updateIndividualText(String individualText) {
+    public boolean updateIndividualText() {
+        String individualText = displayText.computeIndividualText(this);
         if (!Objects.equals(this.individualText, individualText)) {
             this.individualText = individualText;
             return true;

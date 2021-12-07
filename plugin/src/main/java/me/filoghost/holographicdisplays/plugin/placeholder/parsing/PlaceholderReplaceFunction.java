@@ -5,14 +5,16 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.parsing;
 
+import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderOccurrence;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @FunctionalInterface
 public interface PlaceholderReplaceFunction {
 
-    PlaceholderReplaceFunction NO_REPLACEMENTS = placeholderOccurrence -> null;
+    PlaceholderReplaceFunction NO_REPLACEMENTS = (player, placeholderOccurrence) -> null;
 
-    @Nullable String getReplacement(@NotNull PlaceholderOccurrence placeholderOccurrence);
+    @Nullable String getReplacement(@Nullable Player player, @NotNull PlaceholderOccurrence placeholderOccurrence);
 
 }
