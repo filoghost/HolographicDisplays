@@ -114,6 +114,8 @@ public class DefaultPlaceholders {
         placeholderRegistry.registerIndividualPlaceholder(plugin, "displayName", 20, (player, argument) -> {
             return player.getDisplayName();
         });
+
+        placeholderRegistry.registerIndividualPlaceholderFactory(plugin, "papi", new PlaceholderAPIPlaceholderFactory());
     }
 
     private static List<String> toStringList(ChatColor... colors) {
