@@ -9,7 +9,6 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
 import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntList;
 
 import java.lang.reflect.Field;
 
@@ -38,7 +37,7 @@ class PacketHelper {
     private static boolean useEntityListDestroyPacket() {
         try {
             for (Field field : PacketPlayOutEntityDestroy.class.getDeclaredFields()) {
-                if (field.getType() == IntList.class) {
+                if (field.getType().getSimpleName().equals("IntList")) {
                     return true;
                 }
             }
