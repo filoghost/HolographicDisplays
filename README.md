@@ -19,7 +19,7 @@ Development Builds: https://ci.codemc.io/job/filoghost/job/HolographicDisplays
 <dependency>
     <groupId>me.filoghost.holographicdisplays</groupId>
     <artifactId>holographicdisplays-api</artifactId>
-    <version>3.0.0</version>
+    <version>2.4.9</version>
     <scope>provided</scope>
 </dependency>
 ```
