@@ -17,6 +17,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -107,8 +108,9 @@ public class BungeeServerTracker {
             return ServerInfo.online(0, 0, "Invalid ping response (" + e.getMessage() + ")");
 
         } catch (IOException e) {
-            if (e instanceof SocketTimeoutException) {
-                // Common error, do not log
+            if (e instanceof SocketTimeoutException || e instanceof ConnectException) {
+                // Common error, only log when debugging
+                DebugLogger.warning("Couldn't fetch data from " + serverAddress + ".", e);
             } else if (e instanceof UnknownHostException) {
                 Log.warning("Couldn't fetch data from " + serverAddress + ": unknown host address.");
             } else {
