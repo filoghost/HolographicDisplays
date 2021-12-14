@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.plugin.tick;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
+import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
 
 public class TickingTask implements Runnable {
@@ -48,8 +48,8 @@ public class TickingTask implements Runnable {
             }
         }
 
-        // Remove entries which were not used by line trackers
-        placeholderTracker.clearUnusedEntries();
+        // Remove placeholders which were not used by line trackers
+        placeholderTracker.clearInactivePlaceholders();
 
         lineClickListener.processQueuedClickEvents();
     }

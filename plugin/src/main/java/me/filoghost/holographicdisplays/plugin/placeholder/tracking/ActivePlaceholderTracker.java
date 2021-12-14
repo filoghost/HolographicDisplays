@@ -53,7 +53,7 @@ public class ActivePlaceholderTracker implements PlaceholderReplaceFunction {
         });
     }
 
-    public void clearUnusedEntries() {
+    public void clearInactivePlaceholders() {
         activePlaceholders.clearUnusedEntries(tickClock.getCurrentTick());
     }
 
