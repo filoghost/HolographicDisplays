@@ -5,7 +5,6 @@
  */
 package me.filoghost.holographicdisplays.plugin.internal.placeholder;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderFactory;
 import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
@@ -42,7 +41,7 @@ public class PlaceholderAPIPlaceholderFactory implements IndividualPlaceholderFa
             if (!PlaceholderAPIHook.isEnabled()) {
                 return null;
             }
-            return PlaceholderAPI.setPlaceholders(player, content);
+            return PlaceholderAPIHook.replacePlaceholders(player, content);
         }
 
     }
