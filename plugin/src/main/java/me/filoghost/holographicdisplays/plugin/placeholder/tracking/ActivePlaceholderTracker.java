@@ -34,7 +34,7 @@ public class ActivePlaceholderTracker implements PlaceholderReplaceFunction {
         this.registry = registry;
         this.tickClock = tickClock;
         this.exceptionHandler = new PlaceholderExceptionHandler(tickClock);
-        this.activePlaceholders = new TickExpiringMap<>(new HashMap<>(), 1);
+        this.activePlaceholders = new TickExpiringMap<>(new HashMap<>(), 10);
     }
 
     public void clearOutdatedEntries() {
