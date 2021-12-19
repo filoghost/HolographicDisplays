@@ -54,7 +54,7 @@ public abstract class LineTracker<T extends Viewer> {
             sendChangesPackets = true;
         }
 
-        if (updatePlaceholders()) {
+        if (hasViewers() && updatePlaceholders()) {
             sendChangesPackets = true;
         }
 
