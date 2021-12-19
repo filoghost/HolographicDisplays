@@ -6,11 +6,9 @@
 package me.filoghost.holographicdisplays.plugin.bridge.placeholderapi;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.filoghost.fcommons.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class PlaceholderAPIHook {
 
@@ -24,21 +22,11 @@ public class PlaceholderAPIHook {
         enabled = true;
     }
 
-    public static boolean containsPlaceholderPattern(@Nullable String text) {
-        if (Strings.isEmpty(text)) {
-            return false;
-        }
-
-        int firstIndex = text.indexOf('%');
-        if (firstIndex < 0) {
-            return false;
-        }
-
-        int lastIndex = text.lastIndexOf('%');
-        return lastIndex - firstIndex >= 2; // At least one character between the two indexes
-    }
-
     public static @NotNull String replacePlaceholders(@NotNull Player player, @NotNull String text) {
+        if (!enabled) {
+            return text;
+        }
+
         return PlaceholderAPI.setPlaceholders(player, text);
     }
 
