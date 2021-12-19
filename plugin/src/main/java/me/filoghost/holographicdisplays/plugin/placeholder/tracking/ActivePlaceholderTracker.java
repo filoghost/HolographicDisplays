@@ -66,7 +66,7 @@ public class ActivePlaceholderTracker implements PlaceholderReplaceFunction {
             }
             return activePlaceholder.computeReplacement(player, tickClock.getCurrentTick());
         } catch (PlaceholderException e) {
-            exceptionHandler.handle(e);
+            exceptionHandler.handle(e, placeholderOccurrence);
             return "[Error]";
         }
     }

@@ -13,17 +13,23 @@ import java.util.Objects;
 
 public class PlaceholderOccurrence {
 
+    private final String unparsedContent;
     private final PluginName pluginName;
     private final PlaceholderIdentifier identifier;
     private final String argument;
 
     private final int hashCode; // Cached for performance reasons
 
-    private PlaceholderOccurrence(PluginName pluginName, PlaceholderIdentifier identifier, String argument) {
+    private PlaceholderOccurrence(String unparsedContent, PluginName pluginName, PlaceholderIdentifier identifier, String argument) {
+        this.unparsedContent = unparsedContent;
         this.pluginName = pluginName;
         this.identifier = identifier;
         this.argument = argument;
         this.hashCode = Objects.hash(pluginName, identifier, argument);
+    }
+
+    public String getUnparsedContent() {
+        return unparsedContent;
     }
 
     public @Nullable PluginName getPluginName() {
@@ -39,11 +45,11 @@ public class PlaceholderOccurrence {
     }
 
     /*
-     * Valid placeholder formats:
-     * {identifier}
-     * {identifier: argument}
-     * {pluginName/identifier}
-     * {pluginName/identifier: argument}
+     * Valid placeholder content formats (delimiters are not included in the content):
+     * "identifier"
+     * "identifier: argument"
+     * "pluginName/identifier"
+     * "pluginName/identifier: argument"
      *
      * identifier is required, pluginName and argument are optional
      */
@@ -67,7 +73,7 @@ public class PlaceholderOccurrence {
         }
 
         PlaceholderIdentifier identifier = new PlaceholderIdentifier(identifierString);
-        return new PlaceholderOccurrence(pluginName, identifier, argument);
+        return new PlaceholderOccurrence(placeholderContent, pluginName, identifier, argument);
     }
 
     @Override

@@ -7,8 +7,8 @@ package me.filoghost.holographicdisplays.plugin.placeholder.tracking;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
+import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.tick.TickClock;
-import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderExpansion;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -16,28 +16,27 @@ import java.util.WeakHashMap;
 class PlaceholderExceptionHandler {
 
     private final TickClock tickClock;
-    private final Map<PlaceholderExpansion, Long> lastErrorLogByPlaceholderExpansion;
+    private final Map<String, Long> lastErrorLogByPlaceholderContent;
 
     PlaceholderExceptionHandler(TickClock tickClock) {
         this.tickClock = tickClock;
-        this.lastErrorLogByPlaceholderExpansion = new WeakHashMap<>();
+        this.lastErrorLogByPlaceholderContent = new WeakHashMap<>();
     }
 
-    void handle(PlaceholderException exception) {
-        PlaceholderExpansion placeholderExpansion = exception.getPlaceholderExpansion();
-        Long lastErrorLog = lastErrorLogByPlaceholderExpansion.get(placeholderExpansion);
+    void handle(PlaceholderException exception, PlaceholderOccurrence placeholderOccurrence) {
+        String unparsedContent = placeholderOccurrence.getUnparsedContent();
+        Long lastErrorLog = lastErrorLogByPlaceholderContent.get(unparsedContent);
         long currentTick = tickClock.getCurrentTick();
 
         if (lastErrorLog != null && currentTick - lastErrorLog < 20) {
             return; // Avoid spamming the console too frequently
         }
 
-        lastErrorLogByPlaceholderExpansion.put(placeholderExpansion, currentTick);
+        lastErrorLogByPlaceholderContent.put(unparsedContent, currentTick);
 
-        Log.warning("The placeholder \"" + placeholderExpansion.getIdentifier() + "\""
-                        + " registered by the plugin " + placeholderExpansion.getPluginName()
-                        + " generated an exception."
-                        + " Please contact the author of " + placeholderExpansion.getPluginName(),
+        Log.warning("The placeholder {" + unparsedContent + "}"
+                        + " registered by the plugin " + exception.getPlaceholderExpansion().getPluginName()
+                        + " generated an exception.",
                 exception.getCause());
     }
 
