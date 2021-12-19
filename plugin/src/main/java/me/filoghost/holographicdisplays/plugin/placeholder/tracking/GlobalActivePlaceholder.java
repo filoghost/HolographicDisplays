@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.plugin.placeholder.tracking;
 
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
-import me.filoghost.holographicdisplays.plugin.placeholder.StandardPlaceholder;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderOccurrence;
+import me.filoghost.holographicdisplays.plugin.placeholder.StandardPlaceholder;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

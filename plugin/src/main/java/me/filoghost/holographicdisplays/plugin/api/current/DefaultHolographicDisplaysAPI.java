@@ -7,8 +7,8 @@ package me.filoghost.holographicdisplays.plugin.api.current;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
-import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.beta.Position;
+import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplacementSupplier;
