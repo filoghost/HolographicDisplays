@@ -9,7 +9,6 @@ import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -40,13 +39,13 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
 
     @MustBeInvokedByOverriders
     @Override
-    protected void update(Collection<? extends Player> onlinePlayers) {
+    protected void update(Collection<CachedPlayer> onlinePlayers) {
         super.update(onlinePlayers);
 
         if (spawnItemEntity && hasViewers() && line.hasPickupCallback()) {
             for (Viewer viewer : getViewers()) {
-                if (CollisionHelper.isInPickupRange(viewer.getPlayer(), position)) {
-                    line.onPickup(viewer.getPlayer());
+                if (CollisionHelper.isInPickupRange(viewer.getLocation(), position)) {
+                    line.onPickup(viewer.getBukkitPlayer());
                 }
             }
         }
@@ -58,8 +57,8 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
     }
 
     @Override
-    protected Viewer createViewer(Player player) {
-        return new Viewer(player);
+    protected Viewer createViewer(CachedPlayer cachedPlayer) {
+        return new Viewer(cachedPlayer);
     }
 
     @MustBeInvokedByOverriders

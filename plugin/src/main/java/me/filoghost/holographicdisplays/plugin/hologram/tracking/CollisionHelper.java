@@ -7,7 +7,6 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 public class CollisionHelper {
 
@@ -25,7 +24,7 @@ public class CollisionHelper {
     private static final double REQUIRED_DISTANCE_Z = REQUIRED_DISTANCE_X;
     private static final double REQUIRED_DISTANCE_Y = PLAYER_HEIGHT_RADIUS + PLAYER_GROW_HEIGHT + ITEM_HEIGHT_RADIUS;
 
-    public static boolean isInPickupRange(Player player, PositionCoordinates itemPosition) {
+    public static boolean isInPickupRange(Location playerLocation, PositionCoordinates itemPosition) {
         /*
          * Normally, the server determines if a player is picking up a dropped item
          * by checking if the bounding boxes of the player and the item intersect.
@@ -58,7 +57,6 @@ public class CollisionHelper {
          * In the example above, the distance between the centers is lower than the sum of the two radii,
          * so the boxes collide in that direction.
          */
-        Location playerLocation = player.getLocation();
 
         // The Y position is on lowest point of the bounding box, not in the center
         double playerCenterY = playerLocation.getY() + PLAYER_HEIGHT_RADIUS;

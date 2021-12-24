@@ -44,7 +44,7 @@ public abstract class LineTracker<T extends Viewer> {
     }
 
     @MustBeInvokedByOverriders
-    protected void update(Collection<? extends Player> onlinePlayers) {
+    protected void update(Collection<CachedPlayer> onlinePlayers) {
         boolean sendChangesPackets = false;
 
         // First, detect the changes if the flag is on and set it off
@@ -76,7 +76,7 @@ public abstract class LineTracker<T extends Viewer> {
 
     protected abstract boolean updatePlaceholders();
 
-    private void modifyViewersAndSendPackets(Collection<? extends Player> onlinePlayers) {
+    private void modifyViewersAndSendPackets(Collection<CachedPlayer> onlinePlayers) {
         if (!getLine().isInLoadedChunk()) {
             resetViewersAndSendDestroyPackets();
             return;
@@ -86,19 +86,20 @@ public abstract class LineTracker<T extends Viewer> {
         MutableViewers<T> addedPlayers = null;
         MutableViewers<T> removedPlayers = null;
 
-        for (Player player : onlinePlayers) {
-            if (shouldTrackPlayer(player)) {
-                if (!viewers.containsKey(player)) {
-                    T viewer = createViewer(player);
-                    viewers.put(player, viewer);
+        for (CachedPlayer cachedPlayer : onlinePlayers) {
+            Player bukkitPlayer = cachedPlayer.getBukkitPlayer();
+            if (shouldTrackPlayer(cachedPlayer)) {
+                if (!viewers.containsKey(bukkitPlayer)) {
+                    T viewer = createViewer(cachedPlayer);
+                    viewers.put(bukkitPlayer, viewer);
                     if (addedPlayers == null) {
                         addedPlayers = new MutableViewers<>();
                     }
                     addedPlayers.add(viewer);
                 }
             } else {
-                if (viewers.containsKey(player)) {
-                    T viewer = viewers.remove(player);
+                if (viewers.containsKey(bukkitPlayer)) {
+                    T viewer = viewers.remove(bukkitPlayer);
                     if (removedPlayers == null) {
                         removedPlayers = new MutableViewers<>();
                     }
@@ -115,9 +116,9 @@ public abstract class LineTracker<T extends Viewer> {
         }
     }
 
-    protected abstract T createViewer(Player player);
+    protected abstract T createViewer(CachedPlayer cachedPlayer);
 
-    protected abstract boolean shouldTrackPlayer(Player player);
+    protected abstract boolean shouldTrackPlayer(CachedPlayer cachedPlayer);
 
     protected final boolean hasViewers() {
         return !viewers.isEmpty();

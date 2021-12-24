@@ -10,7 +10,6 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLin
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -43,9 +42,7 @@ public class LineTrackerManager {
         return tracker;
     }
 
-    public void update() {
-        Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
-
+    public void update(Collection<CachedPlayer> onlinePlayers) {
         Iterator<LineTracker<?>> iterator = lineTrackers.iterator();
         while (iterator.hasNext()) {
             LineTracker<?> lineTracker = iterator.next();

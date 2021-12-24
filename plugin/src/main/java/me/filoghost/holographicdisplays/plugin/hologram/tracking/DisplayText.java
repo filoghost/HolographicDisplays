@@ -94,7 +94,7 @@ class DisplayText {
     public @NotNull String computeIndividualText(Viewer viewer) {
         Preconditions.notNull(unreplacedText, "unreplacedText");
 
-        return unreplacedText.replacePlaceholders(viewer.getPlayer(), placeholderTracker);
+        return unreplacedText.replacePlaceholders(viewer.getBukkitPlayer(), placeholderTracker);
     }
 
 }

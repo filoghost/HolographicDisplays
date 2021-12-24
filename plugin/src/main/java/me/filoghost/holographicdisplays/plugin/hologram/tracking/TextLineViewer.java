@@ -6,7 +6,6 @@
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.nms.common.IndividualTextPacketGroup;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -18,7 +17,7 @@ class TextLineViewer extends Viewer {
     private String individualText;
     private String lastSentText;
 
-    TextLineViewer(Player player, DisplayText displayText) {
+    TextLineViewer(CachedPlayer player, DisplayText displayText) {
         super(player);
         this.displayText = displayText;
     }
@@ -26,7 +25,7 @@ class TextLineViewer extends Viewer {
     public void sendTextPackets(IndividualTextPacketGroup packets) {
         String text = getOrComputeText();
         this.lastSentText = text;
-        packets.sendTo(getPlayer(), text);
+        sendIndividualPackets(packets, text);
     }
 
     public void sendTextPacketsIfNecessary(IndividualTextPacketGroup packets) {
@@ -35,7 +34,7 @@ class TextLineViewer extends Viewer {
             return; // Avoid sending unnecessary packets
         }
         this.lastSentText = text;
-        packets.sendTo(getPlayer(), text);
+        sendIndividualPackets(packets, text);
     }
 
     private @Nullable String getOrComputeText() {

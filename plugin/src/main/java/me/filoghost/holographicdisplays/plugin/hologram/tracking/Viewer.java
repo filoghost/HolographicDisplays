@@ -5,23 +5,33 @@
  */
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
+import me.filoghost.holographicdisplays.nms.common.IndividualTextPacketGroup;
 import me.filoghost.holographicdisplays.nms.common.PacketGroup;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 class Viewer {
 
-    private final Player player;
+    private final CachedPlayer player;
 
-    Viewer(Player player) {
+    Viewer(CachedPlayer player) {
         this.player = player;
     }
 
-    public final Player getPlayer() {
-        return player;
+    public final Player getBukkitPlayer() {
+        return player.getBukkitPlayer();
+    }
+
+    public Location getLocation() {
+        return player.getLocation();
     }
 
     public void sendPackets(PacketGroup packetGroup) {
-        packetGroup.sendTo(player);
+        packetGroup.sendTo(player.getBukkitPlayer());
+    }
+
+    public void sendIndividualPackets(IndividualTextPacketGroup packetGroup, String text) {
+        packetGroup.sendTo(player.getBukkitPlayer(), text);
     }
 
 }
