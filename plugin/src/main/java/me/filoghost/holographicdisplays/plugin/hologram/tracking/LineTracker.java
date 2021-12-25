@@ -25,7 +25,7 @@ public abstract class LineTracker<T extends Viewer> {
 
     protected LineTracker() {
         this.viewers = new HashMap<>();
-        this.iterableViewers = action -> viewers.values().forEach(action);
+        this.iterableViewers = new DelegateViewers<>(viewers.values());
     }
 
     protected abstract BaseHologramLine getLine();
