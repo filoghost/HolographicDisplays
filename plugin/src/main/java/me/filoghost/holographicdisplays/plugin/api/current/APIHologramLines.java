@@ -34,8 +34,7 @@ class APIHologramLines extends BaseHologramLines<APIHologramLine> implements Hol
     }
 
     @Override
-    public @NotNull ItemHologramLine appendItem(@NotNull ItemStack itemStack) {
-        Preconditions.notNull(itemStack, "itemStack");
+    public @NotNull ItemHologramLine appendItem(@Nullable ItemStack itemStack) {
         checkNotDeleted();
 
         APIItemHologramLine line = new APIItemHologramLine(hologram, itemStack);

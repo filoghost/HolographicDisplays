@@ -35,7 +35,7 @@ public interface HologramLines {
      * @return the created line
      * @since 1
      */
-    @NotNull ItemHologramLine appendItem(@NotNull ItemStack itemStack);
+    @NotNull ItemHologramLine appendItem(@Nullable ItemStack itemStack);
 
     /**
      * Inserts a new text line before the given index.
