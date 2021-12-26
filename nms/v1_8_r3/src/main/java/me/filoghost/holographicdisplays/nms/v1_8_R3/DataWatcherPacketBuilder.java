@@ -30,6 +30,9 @@ abstract class DataWatcherPacketBuilder<T> {
     }
 
     DataWatcherPacketBuilder<T> setCustomName(String customName) {
+        if (customName == null) {
+            customName = "";
+        }
         packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.CUSTOM_NAME, Strings.truncate(customName, 300));
         packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.CUSTOM_NAME_VISIBILITY, Strings.isEmpty(customName) ? (byte) 0 : (byte) 1);
         return this;
