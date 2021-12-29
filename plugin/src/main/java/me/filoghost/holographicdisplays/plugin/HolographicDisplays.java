@@ -60,6 +60,7 @@ public class HolographicDisplays extends FCommonsPlugin {
     private InternalHologramManager internalHologramManager;
     private APIHologramManager apiHologramManager;
     private V2HologramManager v2HologramManager;
+    private HologramCommandManager hologramCommandManager;
 
     @Override
     public void onCheckedEnable() throws PluginEnableException {
@@ -92,7 +93,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         try {
             nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
         } catch (UnknownVersionException e) {
-            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.17.");
+            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.18.");
         } catch (OutdatedVersionException e) {
             throw new PluginEnableException("Holographic Displays only supports " + e.getMinimumSupportedVersion() + " and above.");
         } catch (Throwable t) {
@@ -124,7 +125,8 @@ public class HolographicDisplays extends FCommonsPlugin {
         }
 
         // Commands
-        new HologramCommandManager(this, internalHologramManager, configManager).register(this);
+        hologramCommandManager = new HologramCommandManager(this, internalHologramManager, configManager);
+        hologramCommandManager.register(this);
 
         // Listeners
         registerListener(new PlayerListener(nmsManager, lineTrackerManager, lineClickListener));
@@ -195,6 +197,8 @@ public class HolographicDisplays extends FCommonsPlugin {
             }
         }
     }
+
+    public HologramCommandManager getHologramCommandManager() { return hologramCommandManager; }
 
     public static HolographicDisplays getInstance() {
         return instance;
