@@ -30,11 +30,9 @@ import me.filoghost.holographicdisplays.plugin.commands.subs.ReloadCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.RemoveLineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.SetLineCommand;
 import me.filoghost.holographicdisplays.plugin.commands.subs.TeleportCommand;
-import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -55,12 +53,8 @@ public class HologramCommandManager extends SubCommandManager {
     private final List<HologramSubCommand> subCommands;
     private final HelpCommand helpCommand;
 
-    public HologramCommandManager(
-            HolographicDisplays holographicDisplays,
-            InternalHologramManager internalHologramManager,
-            ConfigManager configManager) {
+    public HologramCommandManager(HolographicDisplays holographicDisplays, InternalHologramEditor hologramEditor) {
         setName("holograms");
-        InternalHologramEditor hologramEditor = new InternalHologramEditor(internalHologramManager, configManager);
         this.holographicDisplays = holographicDisplays;
         this.helpCommand = new HelpCommand(this);
         this.subCommands = new ArrayList<>();
