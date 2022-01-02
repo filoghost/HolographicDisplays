@@ -52,18 +52,15 @@ import java.util.logging.Level;
 public class HologramCommandManager extends SubCommandManager {
 
     private final HolographicDisplays holographicDisplays;
-    private final InternalHologramEditor hologramEditor;
     private final List<HologramSubCommand> subCommands;
     private final HelpCommand helpCommand;
-
-    public InternalHologramEditor getInternalHologramEditor() { return hologramEditor; }
 
     public HologramCommandManager(
             HolographicDisplays holographicDisplays,
             InternalHologramManager internalHologramManager,
             ConfigManager configManager) {
         setName("holograms");
-        hologramEditor = new InternalHologramEditor(internalHologramManager, configManager);
+        InternalHologramEditor hologramEditor = new InternalHologramEditor(internalHologramManager, configManager);
         this.holographicDisplays = holographicDisplays;
         this.helpCommand = new HelpCommand(this);
         this.subCommands = new ArrayList<>();
