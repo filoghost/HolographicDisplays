@@ -83,7 +83,8 @@ public class InternalHologramEditor {
 
     public void saveChanges(InternalHologram hologram, ChangeType changeType) {
         configManager.saveHologramDatabase(internalHologramManager);
-        Bukkit.getPluginManager().callEvent(new InternalHologramChangeEvent(hologram, changeType));
+        if(changeType != null)
+            Bukkit.getPluginManager().callEvent(new InternalHologramChangeEvent(hologram, changeType));
     }
 
     public void teleportLookingDown(Player player, Location location) {
