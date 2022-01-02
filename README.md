@@ -17,11 +17,22 @@ Development Builds: https://ci.codemc.io/job/filoghost/job/HolographicDisplays
 
 ```xml
 <dependency>
-    <groupId>me.filoghost.holographicdisplays</groupId>
+    <groupId>com.gmail.filoghost.holographicdisplays</groupId>
     <artifactId>holographicdisplays-api</artifactId>
     <version>2.4.9</version>
     <scope>provided</scope>
 </dependency>
+```
+
+## Gradle
+```groovy
+maven {
+  url "https://repo.codemc.io/repository/maven-public/"
+}
+```
+
+```groovy
+implementation 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
 ```
 
 ## License

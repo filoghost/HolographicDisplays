@@ -18,6 +18,7 @@ import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramsAPIProvider;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
+import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.config.HologramDatabase;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
@@ -60,6 +61,7 @@ public class HolographicDisplays extends FCommonsPlugin {
     private InternalHologramManager internalHologramManager;
     private APIHologramManager apiHologramManager;
     private V2HologramManager v2HologramManager;
+    private InternalHologramEditor internalHologramEditor;
 
     @Override
     public void onCheckedEnable() throws PluginEnableException {
@@ -92,7 +94,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         try {
             nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
         } catch (UnknownVersionException e) {
-            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.17.");
+            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.18.");
         } catch (OutdatedVersionException e) {
             throw new PluginEnableException("Holographic Displays only supports " + e.getMinimumSupportedVersion() + " and above.");
         } catch (Throwable t) {
@@ -124,7 +126,8 @@ public class HolographicDisplays extends FCommonsPlugin {
         }
 
         // Commands
-        new HologramCommandManager(this, internalHologramManager, configManager).register(this);
+        internalHologramEditor = new InternalHologramEditor(internalHologramManager, configManager);
+        new HologramCommandManager(this, internalHologramEditor).register(this);
 
         // Listeners
         registerListener(new PlayerListener(nmsManager, lineTrackerManager, lineClickListener));
@@ -198,6 +201,10 @@ public class HolographicDisplays extends FCommonsPlugin {
 
     public static HolographicDisplays getInstance() {
         return instance;
+    }
+
+    public InternalHologramEditor getInternalHologramEditor() {
+        return internalHologramEditor;
     }
 
 }

@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.config;
 
+import me.filoghost.fcommons.collection.CollectionUtils;
 import me.filoghost.fcommons.config.BaseConfigManager;
 import me.filoghost.fcommons.config.Config;
 import me.filoghost.fcommons.config.ConfigErrors;
@@ -17,6 +18,7 @@ import me.filoghost.fcommons.config.exception.ConfigValueException;
 import me.filoghost.fcommons.config.mapped.MappedConfigLoader;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
+import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.internal.placeholder.AnimationPlaceholder;
 import me.filoghost.holographicdisplays.plugin.internal.placeholder.AnimationPlaceholderFactory;
@@ -97,10 +99,7 @@ public class ConfigManager extends BaseConfigManager {
                 animationFiles.filter(this::isYamlFile).forEach(file -> {
                     try {
                         String fileName = file.getFileName().toString();
-                        AnimationConfig animationConfig = loadAnimation(file);
-                        AnimationPlaceholder animationPlaceholder = new AnimationPlaceholder(
-                                animationConfig.getIntervalTicks(),
-                                animationConfig.getFrames());
+                        AnimationPlaceholder animationPlaceholder = loadAnimationPlaceholder(file);
                         animationsByFileName.put(fileName, animationPlaceholder);
                     } catch (ConfigException e) {
                         logConfigException(errorCollector, file, e);
@@ -114,9 +113,12 @@ public class ConfigManager extends BaseConfigManager {
         return new AnimationPlaceholderFactory(animationsByFileName);
     }
 
-    private AnimationConfig loadAnimation(Path animationFile) throws ConfigLoadException, ConfigValueException {
-        FileConfig animationFileConfig = getConfigLoader(animationFile).load();
-        return new AnimationConfig(animationFileConfig);
+    private AnimationPlaceholder loadAnimationPlaceholder(Path animationFile) throws ConfigLoadException, ConfigValueException {
+        AnimationConfig animationConfig = new AnimationConfig(getConfigLoader(animationFile).load());
+        return new AnimationPlaceholder(
+                animationConfig.getIntervalTicks(),
+                CollectionUtils.toArrayList(animationConfig.getFrames(), DisplayFormat::apply)
+        );
     }
 
     public void reloadStaticReplacements(ErrorCollector errorCollector) {
