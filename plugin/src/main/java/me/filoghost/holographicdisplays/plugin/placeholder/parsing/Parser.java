@@ -7,7 +7,6 @@ package me.filoghost.holographicdisplays.plugin.placeholder.parsing;
 
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderOccurrence;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +15,9 @@ class Parser {
 
     private static final char PLACEHOLDER_START_CHAR = '{';
     private static final char PLACEHOLDER_END_CHAR = '}';
+    private static final char ESCAPE_CHAR = '\\';
 
-    /**
-     * Returns null if the string doesn't contain any placeholder (optimization).
-     */
-    static @Nullable List<Part> parse(@NotNull String string) {
+    static @NotNull StringWithPlaceholders parse(@NotNull String string, boolean keepEscapes) {
         List<Part> parts = null;
         int placeholderStartIndex = -1;
         int lastAppendIndex = 0;
@@ -28,13 +25,22 @@ class Parser {
         for (int currentIndex = 0; currentIndex < string.length(); currentIndex++) {
             char currentChar = string.charAt(currentIndex);
 
+            if (currentChar == ESCAPE_CHAR && currentIndex < string.length() - 1) {
+                char nextChar = string.charAt(currentIndex + 1);
+                if (isSpecialCharacter(nextChar)) {
+                    // Skip the escape character and the next one if is a special character
+                    currentIndex++;
+                    continue;
+                }
+            }
+
             if (placeholderStartIndex >= 0) {
-                // Inside placeholder
                 if (currentChar == PLACEHOLDER_END_CHAR) {
+                    // Inside placeholder
                     int endIndex = currentIndex + 1;
 
                     // The unparsed string includes the opening and closing tags (e.g.: "{online: lobby}")
-                    String unparsedString = string.substring(placeholderStartIndex, endIndex);
+                    String unparsedString = substring(string, placeholderStartIndex, endIndex, keepEscapes);
 
                     // The content string does NOT include the opening and closing tags (e.g.: "online: lobby")
                     String contentString = unparsedString.substring(1, unparsedString.length() - 1);
@@ -46,7 +52,7 @@ class Parser {
 
                     // Append leading literal part (if any)
                     if (placeholderStartIndex != lastAppendIndex) {
-                        parts.add(new StringPart(string.substring(lastAppendIndex, placeholderStartIndex)));
+                        parts.add(new StringPart(substring(string, lastAppendIndex, placeholderStartIndex, keepEscapes)));
                     }
 
                     // Append placeholder part
@@ -68,10 +74,59 @@ class Parser {
 
         // Append trailing literal part (if any)
         if (lastAppendIndex != string.length() && parts != null) {
-            parts.add(new StringPart(string.substring(lastAppendIndex)));
+            parts.add(new StringPart(substring(string, lastAppendIndex, string.length(), keepEscapes)));
         }
 
-        return parts;
+        return new StringWithPlaceholders(keepEscapes ? string : removeEscapes(string), parts);
+    }
+
+    private static String substring(String string, int startIndex, int endIndex, boolean keepEscapes) {
+        String substring = string.substring(startIndex, endIndex);
+        if (keepEscapes) {
+            return substring;
+        } else {
+            return removeEscapes(substring);
+        }
+    }
+
+    private static String removeEscapes(String string) {
+        StringBuilder output = null;
+
+        for (int currentIndex = 0; currentIndex < string.length(); currentIndex++) {
+            char currentChar = string.charAt(currentIndex);
+
+            if (currentChar == ESCAPE_CHAR && currentIndex < string.length() - 1) {
+                char nextChar = string.charAt(currentIndex + 1);
+                if (isSpecialCharacter(nextChar)) {
+                    // Lazy initialization, append the initial part of the string (optimization)
+                    if (output == null) {
+                        output = new StringBuilder(string.length());
+                        output.append(string, 0, currentIndex);
+                    }
+
+                    // Append the next character without the escape and skip it
+                    output.append(nextChar);
+                    currentIndex++;
+                    continue;
+                }
+            }
+
+            if (output != null) {
+                output.append(currentChar);
+            }
+        }
+
+        if (output != null) {
+            return output.toString();
+        } else {
+            return string;
+        }
+    }
+
+    private static boolean isSpecialCharacter(char currentChar) {
+        return currentChar == ESCAPE_CHAR
+                || currentChar == PLACEHOLDER_START_CHAR
+                || currentChar == PLACEHOLDER_END_CHAR;
     }
 
 }

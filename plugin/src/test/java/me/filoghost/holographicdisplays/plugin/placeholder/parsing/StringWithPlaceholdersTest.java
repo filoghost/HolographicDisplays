@@ -100,4 +100,37 @@ class StringWithPlaceholdersTest {
         );
     }
 
+    @ParameterizedTest(name = "[{index}] {0} -> {1}")
+    @MethodSource("escapesTestArguments")
+    void escapes(String input, String expectedOutput) {
+        StringWithPlaceholders s = StringWithPlaceholders.of(input);
+
+        String actualOutput = s.replacePlaceholders(null, (player, occurrence) -> "<" + occurrence.getUnparsedContent() + ">");
+        assertThat(actualOutput).isEqualTo(expectedOutput);
+    }
+
+    @ParameterizedTest(name = "[{index}] {0} -> {0}")
+    @MethodSource("escapesTestArguments")
+    void preservingEscapes(String input) {
+        String output = StringWithPlaceholders.withEscapes(input).replaceStrings(StringReplaceFunction.NO_REPLACEMENTS);
+        assertThat(output).isEqualTo(input);
+    }
+
+    static Stream<Arguments> escapesTestArguments() {
+        return Stream.of(
+                Arguments.of("\\{", "{"),
+                Arguments.of("\\}", "}"),
+                Arguments.of("\\\\", "\\"),
+                Arguments.of("x\\", "x\\"),
+                Arguments.of("\\x", "\\x"),
+                Arguments.of("{\\{x\\}}", "<{x}>"),
+                Arguments.of("\\{{x}", "{<x>"),
+                Arguments.of("{x\\}}", "<x}>"),
+                Arguments.of("{\\x}", "<\\x>"),
+                Arguments.of("{\\{}", "<{>"),
+                Arguments.of("{\\}}", "<}>"),
+                Arguments.of("{\\\\}", "<\\>")
+        );
+    }
+
 }

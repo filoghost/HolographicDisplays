@@ -20,7 +20,11 @@ public final class StringWithPlaceholders {
     private final @Nullable List<Part> parts;
 
     public static @NotNull StringWithPlaceholders of(@NotNull String string) {
-        return new StringWithPlaceholders(string, Parser.parse(string));
+        return Parser.parse(string, false);
+    }
+
+    public static @NotNull StringWithPlaceholders withEscapes(@NotNull String string) {
+        return Parser.parse(string, true);
     }
 
     StringWithPlaceholders(@NotNull String string, @Nullable List<Part> parts) {
