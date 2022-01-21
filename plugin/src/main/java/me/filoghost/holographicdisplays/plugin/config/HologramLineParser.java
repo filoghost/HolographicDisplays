@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.config;
 
+import me.filoghost.fcommons.Colors;
 import me.filoghost.fcommons.MaterialsHelper;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
@@ -32,8 +33,9 @@ public class HologramLineParser {
             hologramLine = hologram.createItemLine(icon, serializedLine);
 
         } else {
-            // Don't apply display format inside placeholders
-            String displayText = StringWithPlaceholders.withEscapes(serializedLine).replaceStrings(DisplayFormat::apply);
+            String displayText = DisplayFormat.apply(serializedLine, false);
+            // Apply colors only outside placeholders
+            displayText = StringWithPlaceholders.withEscapes(displayText).replaceStrings(Colors::colorize);
             hologramLine = hologram.createTextLine(displayText, serializedLine);
         }
 

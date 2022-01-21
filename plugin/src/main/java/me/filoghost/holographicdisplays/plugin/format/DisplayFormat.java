@@ -25,13 +25,19 @@ import java.util.List;
 public class DisplayFormat {
 
     public static String apply(String input) {
+        return apply(input, true);
+    }
+
+    public static String apply(String input, boolean addColors) {
         if (input == null) {
             return null;
         }
 
         input = StaticReplacements.searchAndReplace(input);
         input = input.replace("&u", "{rainbow}");
-        input = Colors.colorize(input);
+        if (addColors) {
+            input = Colors.colorize(input);
+        }
         return input;
     }
 
