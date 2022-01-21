@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.placeholder.tracking;
 
+import me.filoghost.fcommons.collection.CaseInsensitiveString;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderException;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderOccurrence;
@@ -16,7 +17,7 @@ import java.util.WeakHashMap;
 class PlaceholderExceptionHandler {
 
     private final TickClock tickClock;
-    private final Map<String, Long> lastErrorLogByPlaceholderContent;
+    private final Map<CaseInsensitiveString, Long> lastErrorLogByPlaceholderContent;
 
     PlaceholderExceptionHandler(TickClock tickClock) {
         this.tickClock = tickClock;
@@ -24,7 +25,7 @@ class PlaceholderExceptionHandler {
     }
 
     void handle(PlaceholderException exception, PlaceholderOccurrence placeholderOccurrence) {
-        String unparsedContent = placeholderOccurrence.getUnparsedContent();
+        CaseInsensitiveString unparsedContent = placeholderOccurrence.getUnparsedContent();
         Long lastErrorLog = lastErrorLogByPlaceholderContent.get(unparsedContent);
         long currentTick = tickClock.getCurrentTick();
 

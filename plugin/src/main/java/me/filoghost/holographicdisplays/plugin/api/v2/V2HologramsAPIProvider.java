@@ -10,8 +10,8 @@ import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider
 import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.collection.CollectionUtils;
-import me.filoghost.holographicdisplays.api.beta.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
+import me.filoghost.holographicdisplays.plugin.placeholder.registry.LegacyGlobalPlaceholderExpansion;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -65,10 +65,10 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
         Preconditions.notNull(replacer, "replacer");
 
         int refreshIntervalTicks = Math.min((int) (refreshRate * 20.0), 1);
-        boolean alreadyRegistered = placeholderRegistry.isRegisteredIdentifier(plugin, textPlaceholder);
+        boolean alreadyRegistered = placeholderRegistry.isRegisteredLegacyPlaceholder(plugin, textPlaceholder);
 
         if (!alreadyRegistered) {
-            placeholderRegistry.registerGlobalPlaceholder(
+            placeholderRegistry.registerLegacyPlaceholder(
                     plugin,
                     textPlaceholder,
                     refreshIntervalTicks,
@@ -83,8 +83,9 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
     public Collection<String> getRegisteredPlaceholders(Plugin plugin) {
         Preconditions.notNull(plugin, "plugin");
 
-        List<RegisteredPlaceholder> registeredPlaceholders = placeholderRegistry.getRegisteredPlaceholders(plugin);
-        return CollectionUtils.toArrayList(registeredPlaceholders, RegisteredPlaceholder::getIdentifier);
+        return CollectionUtils.toArrayList(
+                placeholderRegistry.getRegisteredLegacyPlaceholders(plugin),
+                LegacyGlobalPlaceholderExpansion::getTextPlaceholder);
     }
 
     @Override
@@ -92,10 +93,10 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
         Preconditions.notNull(plugin, "plugin");
         Preconditions.notNull(textPlaceholder, "textPlaceholder");
 
-        boolean registered = placeholderRegistry.isRegisteredIdentifier(plugin, textPlaceholder);
+        boolean registered = placeholderRegistry.isRegisteredLegacyPlaceholder(plugin, textPlaceholder);
 
         if (registered) {
-            placeholderRegistry.unregister(plugin, textPlaceholder);
+            placeholderRegistry.unregisterLegacyPlaceholder(plugin, textPlaceholder);
             return true;
         } else {
             return false;
@@ -106,7 +107,7 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
     public void unregisterPlaceholders(Plugin plugin) {
         Preconditions.notNull(plugin, "plugin");
 
-        placeholderRegistry.unregisterAll(plugin);
+        placeholderRegistry.unregisterAllLegacyPlaceholders(plugin);
     }
 
     @Override

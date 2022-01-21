@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.placeholder;
 
 import me.filoghost.fcommons.Strings;
+import me.filoghost.fcommons.collection.CaseInsensitiveString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 public class PlaceholderOccurrence {
 
-    private final String unparsedContent;
+    private final CaseInsensitiveString unparsedContent;
     private final PluginName pluginName;
     private final PlaceholderIdentifier identifier;
     private final String argument;
@@ -21,14 +22,14 @@ public class PlaceholderOccurrence {
     private final int hashCode; // Cached for performance reasons
 
     private PlaceholderOccurrence(String unparsedContent, PluginName pluginName, PlaceholderIdentifier identifier, String argument) {
-        this.unparsedContent = unparsedContent;
+        this.unparsedContent = new CaseInsensitiveString(unparsedContent);
         this.pluginName = pluginName;
         this.identifier = identifier;
         this.argument = argument;
         this.hashCode = Objects.hash(pluginName, identifier, argument);
     }
 
-    public String getUnparsedContent() {
+    public CaseInsensitiveString getUnparsedContent() {
         return unparsedContent;
     }
 

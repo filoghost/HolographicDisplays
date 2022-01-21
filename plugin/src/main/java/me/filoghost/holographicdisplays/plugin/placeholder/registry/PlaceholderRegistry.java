@@ -8,6 +8,8 @@ package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
+import me.filoghost.fcommons.collection.CaseInsensitiveString;
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplacementSupplier;
@@ -22,16 +24,19 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class PlaceholderRegistry {
 
     private final Table<PlaceholderIdentifier, PluginName, PlaceholderExpansion> placeholderExpansions;
+    private final Table<CaseInsensitiveString, PluginName, LegacyGlobalPlaceholderExpansion> legacyPlaceholderExpansions;
     private final AtomicLong version;
 
     public PlaceholderRegistry() {
         this.placeholderExpansions = HashBasedTable.create();
+        this.legacyPlaceholderExpansions = HashBasedTable.create();
         this.version = new AtomicLong();
     }
 
@@ -88,15 +93,20 @@ public class PlaceholderRegistry {
     public @Nullable PlaceholderExpansion find(PlaceholderOccurrence textOccurrence) {
         PluginName pluginName = textOccurrence.getPluginName();
         PlaceholderIdentifier identifier = textOccurrence.getIdentifier();
+        PlaceholderExpansion result;
 
         if (pluginName != null) {
             // Find exact entry if plugin name is specified
-            return placeholderExpansions.get(identifier, pluginName);
-
+            result = placeholderExpansions.get(identifier, pluginName);
         } else {
             // Otherwise find any match with the given identifier
-            return Iterables.getFirst(placeholderExpansions.row(identifier).values(), null);
+            result = Iterables.getFirst(placeholderExpansions.row(identifier).values(), null);
         }
+
+        if (result == null && !legacyPlaceholderExpansions.isEmpty()) {
+            result = Iterables.getFirst(legacyPlaceholderExpansions.row(textOccurrence.getUnparsedContent()).values(), null);
+        }
+        return result;
     }
 
     public List<RegisteredPlaceholder> getRegisteredPlaceholders(Plugin plugin) {
@@ -107,6 +117,64 @@ public class PlaceholderRegistry {
 
     public boolean isRegisteredIdentifier(Plugin plugin, String identifier) {
         return placeholderExpansions.contains(new PlaceholderIdentifier(identifier), new PluginName(plugin));
+    }
+
+    public void registerLegacyPlaceholder(
+            Plugin plugin,
+            String textPlaceholder,
+            int refreshIntervalTicks,
+            GlobalPlaceholderReplacementSupplier replacementSupplier) {
+        String identifier = convertToNewFormat(textPlaceholder);
+        if (!identifier.equals(textPlaceholder)) {
+            Log.warning("The plugin " + plugin.getName() + " registered the placeholder " + textPlaceholder
+                    + " with the old v2 API, but it doesn't comply with the new format. In order to display it,"
+                    + " you must use {" + textPlaceholder + "} instead.");
+        }
+        GlobalPlaceholder placeholder = new SimpleGlobalPlaceholder(refreshIntervalTicks, replacementSupplier);
+        GlobalPlaceholderFactory placeholderFactory = (String argument) -> placeholder;
+        LegacyGlobalPlaceholderExpansion expansion = new LegacyGlobalPlaceholderExpansion(
+                plugin,
+                identifier,
+                placeholderFactory,
+                textPlaceholder);
+
+        legacyPlaceholderExpansions.put(new CaseInsensitiveString(identifier), new PluginName(plugin), expansion);
+
+        version.incrementAndGet();
+    }
+
+    public void unregisterLegacyPlaceholder(Plugin plugin, String textPlaceholder) {
+        String identifier = convertToNewFormat(textPlaceholder);
+        legacyPlaceholderExpansions.remove(new CaseInsensitiveString(identifier), new PluginName(plugin));
+
+        version.incrementAndGet();
+    }
+
+    public void unregisterAllLegacyPlaceholders(Plugin plugin) {
+        legacyPlaceholderExpansions.column(new PluginName(plugin)).clear();
+
+        version.incrementAndGet();
+    }
+
+    public boolean isRegisteredLegacyPlaceholder(Plugin plugin, String textPlaceholder) {
+        String identifier = convertToNewFormat(textPlaceholder);
+        return legacyPlaceholderExpansions.contains(new CaseInsensitiveString(identifier), new PluginName(plugin));
+    }
+
+    public Collection<LegacyGlobalPlaceholderExpansion> getRegisteredLegacyPlaceholders(Plugin plugin) {
+        return legacyPlaceholderExpansions.column(new PluginName(plugin)).values();
+    }
+
+    private String convertToNewFormat(String textPlaceholder) {
+        String identifier;
+        if (textPlaceholder.startsWith("{") && textPlaceholder.endsWith("}")) {
+            // The placeholder already had the correct format, remove the curly braces
+            identifier = textPlaceholder.substring(1, textPlaceholder.length() - 1);
+        } else {
+            // The placeholder will be wrapped with curly braces to partially maintain compatibility
+            identifier = textPlaceholder;
+        }
+        return identifier;
     }
 
 }
