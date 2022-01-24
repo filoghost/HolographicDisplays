@@ -18,7 +18,11 @@ public class InternalHologramManager extends BaseHologramManager<InternalHologra
     }
 
     public InternalHologram createHologram(ImmutablePosition position, String name) {
-        InternalHologram hologram = new InternalHologram(position, name, lineTrackerManager);
+        return createHologram(position, name, -1);
+    }
+
+    public InternalHologram createHologram(ImmutablePosition position, String name, int viewRange) {
+        InternalHologram hologram = new InternalHologram(position, name, lineTrackerManager, viewRange);
         super.addHologram(hologram);
         return hologram;
     }

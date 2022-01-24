@@ -20,11 +20,13 @@ public class HologramConfig {
     private final String name;
     private final List<String> serializedLines;
     private final ConfigSection positionConfigSection;
+    private final int viewRange;
 
     public HologramConfig(String name, ConfigSection configSection) {
         this.name = name;
         this.serializedLines = configSection.getStringList("lines");
         this.positionConfigSection = configSection.getConfigSection("position");
+        this.viewRange = configSection.getInt("viewRange", -1);
     }
 
     public HologramConfig(InternalHologram hologram) {
@@ -40,12 +42,14 @@ public class HologramConfig {
         positionConfigSection.setDouble("x", position.getX());
         positionConfigSection.setDouble("y", position.getY());
         positionConfigSection.setDouble("z", position.getZ());
+        viewRange = hologram.getViewRange();
     }
 
     public ConfigSection toConfigSection() {
         ConfigSection configSection = new ConfigSection();
         configSection.setStringList("lines", serializedLines);
         configSection.setConfigSection("position", positionConfigSection);
+        configSection.setInt("viewRange", viewRange);
         return configSection;
     }
 
@@ -58,7 +62,7 @@ public class HologramConfig {
         }
 
         ImmutablePosition position = parsePosition();
-        InternalHologram hologram = internalHologramManager.createHologram(position, name);
+        InternalHologram hologram = internalHologramManager.createHologram(position, name, viewRange);
         List<InternalHologramLine> lines = new ArrayList<>();
 
         for (String serializedLine : serializedLines) {

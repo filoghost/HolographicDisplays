@@ -18,11 +18,17 @@ public class InternalHologram extends BaseHologram {
 
     private final BaseHologramLines<InternalHologramLine> lines;
     private final String name;
-
+    private final int viewRange;
+    
     protected InternalHologram(ImmutablePosition position, String name, LineTrackerManager lineTrackerManager) {
+        this(position, name, lineTrackerManager, -1);
+    }
+
+    protected InternalHologram(ImmutablePosition position, String name, LineTrackerManager lineTrackerManager, int viewRange) {
         super(position, lineTrackerManager);
         this.lines = new BaseHologramLines<>(this);
         this.name = name;
+        this.viewRange = viewRange;
     }
 
     @Override
@@ -41,6 +47,10 @@ public class InternalHologram extends BaseHologram {
     public String getName() {
         return name;
     }
+    
+    public int getViewRange() {
+        return viewRange;
+    }
 
     @Override
     public Plugin getCreatorPlugin() {
@@ -49,6 +59,12 @@ public class InternalHologram extends BaseHologram {
 
     @Override
     public boolean isVisibleTo(Player player) {
+        if(viewRange > 0) {
+            ImmutablePosition position = getPosition();
+            if(!position.isInSameWorld(player) || !(position.distance(player) <= viewRange)) {
+                return false;
+            }
+        }
         return true;
     }
 
