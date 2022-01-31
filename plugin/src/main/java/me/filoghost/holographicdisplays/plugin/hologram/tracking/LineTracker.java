@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
+import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 

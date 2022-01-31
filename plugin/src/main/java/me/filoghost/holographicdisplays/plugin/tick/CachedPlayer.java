@@ -3,9 +3,8 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.plugin.hologram.tracking;
+package me.filoghost.holographicdisplays.plugin.tick;
 
-import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -28,6 +27,7 @@ public class CachedPlayer {
     }
 
     public Location getLocation() {
+        // Avoid creating a new object on each invocation
         long currentTick = tickClock.getCurrentTick();
         if (locationUpdateTick != currentTick) {
             location = player.getLocation();

@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
+import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
 import org.bukkit.Location;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -35,8 +36,8 @@ abstract class PositionBasedLineTracker<T extends Viewer> extends LineTracker<T>
     }
 
     @Override
-    protected final boolean shouldTrackPlayer(CachedPlayer cachedPlayer) {
-        Location playerLocation = cachedPlayer.getLocation();
+    protected final boolean shouldTrackPlayer(CachedPlayer player) {
+        Location playerLocation = player.getLocation();
         if (playerLocation.getWorld() != getLine().getWorldIfLoaded()) {
             return false;
         }
@@ -46,7 +47,7 @@ abstract class PositionBasedLineTracker<T extends Viewer> extends LineTracker<T>
 
         return diffX <= (double) ENTITY_VIEW_RANGE
                 && diffZ <= (double) ENTITY_VIEW_RANGE
-                && getLine().isVisibleTo(cachedPlayer.getBukkitPlayer());
+                && getLine().isVisibleTo(player.getBukkitPlayer());
     }
 
     @MustBeInvokedByOverriders

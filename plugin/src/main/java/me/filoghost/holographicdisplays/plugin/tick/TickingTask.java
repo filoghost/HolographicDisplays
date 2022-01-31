@@ -6,16 +6,14 @@
 package me.filoghost.holographicdisplays.plugin.tick;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.plugin.hologram.tracking.CachedPlayer;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.WeakHashMap;
+import java.util.Iterator;
+import java.util.List;
 
 public class TickingTask implements Runnable {
 
@@ -23,7 +21,7 @@ public class TickingTask implements Runnable {
     private final ActivePlaceholderTracker placeholderTracker;
     private final LineTrackerManager lineTrackerManager;
     private final LineClickListener lineClickListener;
-    private final WeakHashMap<Player, CachedPlayer> cachedPlayersMap;
+    private final List<CachedPlayer> onlinePlayers;
 
     private long lastErrorLogTick;
 
@@ -36,7 +34,24 @@ public class TickingTask implements Runnable {
         this.placeholderTracker = placeholderTracker;
         this.lineTrackerManager = lineTrackerManager;
         this.lineClickListener = lineClickListener;
-        this.cachedPlayersMap = new WeakHashMap<>();
+        this.onlinePlayers = new ArrayList<>();
+    }
+
+    public void onPlayerJoin(Player player) {
+        onlinePlayers.add(new CachedPlayer(player, tickClock));
+    }
+
+    public void onPlayerQuit(Player player) {
+        Iterator<CachedPlayer> iterator = onlinePlayers.iterator();
+
+        while (iterator.hasNext()) {
+            if (iterator.next().getBukkitPlayer() == player) {
+                iterator.remove();
+                break;
+            }
+        }
+
+        lineTrackerManager.onPlayerQuit(player);
     }
 
     @Override
@@ -47,7 +62,7 @@ public class TickingTask implements Runnable {
         placeholderTracker.clearOutdatedEntries();
 
         try {
-            lineTrackerManager.update(getOnlineCachedPlayers());
+            lineTrackerManager.update(onlinePlayers);
         } catch (Throwable t) {
             // Catch all types of Throwable because we're using NMS code
             if (tickClock.getCurrentTick() - lastErrorLogTick >= 20) {
@@ -61,18 +76,6 @@ public class TickingTask implements Runnable {
         placeholderTracker.clearInactivePlaceholders();
 
         lineClickListener.processQueuedClickEvents();
-    }
-
-    private Collection<CachedPlayer> getOnlineCachedPlayers() {
-        Collection<? extends Player> bukkitPlayers = Bukkit.getOnlinePlayers();
-        Collection<CachedPlayer> cachedPlayers = new ArrayList<>(bukkitPlayers.size());
-
-        for (Player bukkitPlayer : bukkitPlayers) {
-            CachedPlayer cachedPlayer = cachedPlayersMap.computeIfAbsent(bukkitPlayer, key -> new CachedPlayer(key, tickClock));
-            cachedPlayers.add(cachedPlayer);
-        }
-
-        return cachedPlayers;
     }
 
 }

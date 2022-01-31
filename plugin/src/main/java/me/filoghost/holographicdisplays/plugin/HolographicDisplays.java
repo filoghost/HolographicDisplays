@@ -129,16 +129,16 @@ public class HolographicDisplays extends FCommonsPlugin {
         internalHologramEditor = new InternalHologramEditor(internalHologramManager, configManager);
         new HologramCommandManager(this, internalHologramEditor).register(this);
 
-        // Listeners
-        registerListener(new PlayerListener(nmsManager, lineTrackerManager, lineClickListener));
-        registerListener(new ChunkListener(this, internalHologramManager, apiHologramManager, v2HologramManager));
-        UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
-        registerListener(updateNotificationListener);
-
         // Tasks
         TickingTask tickingTask = new TickingTask(tickClock, placeholderTracker, lineTrackerManager, lineClickListener);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, tickingTask, 0, 1);
-        updateNotificationListener.runAsyncUpdateCheck(this);
+
+        // Listeners
+        PlayerListener playerListener = new PlayerListener(nmsManager, lineClickListener, tickingTask);
+        registerListener(playerListener);
+        registerListener(new ChunkListener(this, internalHologramManager, apiHologramManager, v2HologramManager));
+        UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
+        registerListener(updateNotificationListener);
 
         // Enable the APIs
         HolographicDisplaysAPIProvider.setImplementation(
@@ -157,6 +157,9 @@ public class HolographicDisplays extends FCommonsPlugin {
             errorCollector.logToConsole();
             Bukkit.getScheduler().runTaskLater(this, errorCollector::logSummaryToConsole, 10L);
         }
+
+        // Run the update checker
+        updateNotificationListener.runAsyncUpdateCheck(this);
     }
 
     @SuppressWarnings("deprecation")

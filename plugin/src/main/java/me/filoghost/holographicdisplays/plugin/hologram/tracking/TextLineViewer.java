@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.nms.common.IndividualTextPacketGroup;
+import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;

@@ -10,6 +10,7 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLin
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
+import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;

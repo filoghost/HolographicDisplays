@@ -9,6 +9,7 @@ import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
+import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 

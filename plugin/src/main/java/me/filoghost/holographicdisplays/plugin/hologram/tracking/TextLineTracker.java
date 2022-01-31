@@ -11,6 +11,7 @@ import me.filoghost.holographicdisplays.nms.common.entity.TextNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
+import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;

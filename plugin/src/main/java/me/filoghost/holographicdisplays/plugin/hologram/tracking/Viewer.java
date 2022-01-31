@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.nms.common.IndividualTextPacketGroup;
 import me.filoghost.holographicdisplays.nms.common.PacketGroup;
+import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
