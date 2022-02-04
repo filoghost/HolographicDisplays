@@ -51,7 +51,11 @@ public class TickingTask implements Runnable {
             }
         }
 
-        lineTrackerManager.onPlayerQuit(player);
+        lineTrackerManager.removeViewer(player);
+    }
+
+    public void onPlayerRespawn(Player player) {
+        lineTrackerManager.removeViewer(player);
     }
 
     @Override

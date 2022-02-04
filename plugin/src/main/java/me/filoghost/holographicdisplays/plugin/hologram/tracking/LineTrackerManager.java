@@ -65,7 +65,7 @@ public class LineTrackerManager {
         }
     }
 
-    public void onPlayerQuit(Player player) {
+    public void removeViewer(Player player) {
         for (LineTracker<?> tracker : lineTrackers) {
             tracker.removeViewer(player);
         }

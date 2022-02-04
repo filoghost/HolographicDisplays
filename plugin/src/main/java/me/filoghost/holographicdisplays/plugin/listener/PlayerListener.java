@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerListener implements Listener {
 
@@ -38,6 +39,12 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         tickingTask.onPlayerQuit(player);
         nmsManager.uninjectPacketListener(player);
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        tickingTask.onPlayerRespawn(player);
     }
 
 }
