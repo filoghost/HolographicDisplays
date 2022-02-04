@@ -58,6 +58,11 @@ public class BungeeMessenger implements PluginMessageListener {
                 return;
             }
 
+            if (in.available() == 0) {
+                // The server name was unknown on BungeeCord, can't know which one
+                return;
+            }
+
             String server = in.readUTF();
             int online = in.readInt();
             playerCountListener.onReceive(server, online);
