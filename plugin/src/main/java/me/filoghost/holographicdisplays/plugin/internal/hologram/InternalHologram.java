@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.internal.hologram;
 
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
+import me.filoghost.holographicdisplays.plugin.api.current.DefaultVisibilitySettings;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLines;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
@@ -18,11 +19,13 @@ public class InternalHologram extends BaseHologram {
 
     private final BaseHologramLines<InternalHologramLine> lines;
     private final String name;
+    private final DefaultVisibilitySettings visibilitySettings;
 
     protected InternalHologram(ImmutablePosition position, String name, LineTrackerManager lineTrackerManager) {
         super(position, lineTrackerManager);
         this.lines = new BaseHologramLines<>(this);
         this.name = name;
+        this.visibilitySettings = new DefaultVisibilitySettings();
     }
 
     @Override
@@ -42,6 +45,10 @@ public class InternalHologram extends BaseHologram {
         return name;
     }
 
+    public DefaultVisibilitySettings getVisibilitySettings() {
+        return visibilitySettings;
+    }
+
     @Override
     public Plugin getCreatorPlugin() {
         return HolographicDisplays.getInstance();
@@ -49,7 +56,7 @@ public class InternalHologram extends BaseHologram {
 
     @Override
     public boolean isVisibleTo(Player player) {
-        return true;
+        return visibilitySettings.isVisibleTo(player);
     }
 
     @Override
