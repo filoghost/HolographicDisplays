@@ -55,53 +55,53 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public void registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier) {
+    public RegisteredPlaceholder registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier) {
         checkIdentifier(identifier);
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
         Preconditions.notNull(replacementSupplier, "replacementSupplier");
 
-        placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
+        return placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
     }
 
     @Override
-    public void registerGlobalPlaceholder(@NotNull String identifier, @NotNull GlobalPlaceholder placeholder) {
+    public RegisteredPlaceholder registerGlobalPlaceholder(@NotNull String identifier, @NotNull GlobalPlaceholder placeholder) {
         checkIdentifier(identifier);
         Preconditions.notNull(placeholder, "placeholder");
 
-        placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, placeholder);
+        return placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, placeholder);
     }
 
     @Override
-    public void registerGlobalPlaceholderFactory(@NotNull String identifier, @NotNull GlobalPlaceholderFactory placeholderFactory) {
+    public RegisteredPlaceholder registerGlobalPlaceholderFactory(@NotNull String identifier, @NotNull GlobalPlaceholderFactory placeholderFactory) {
         checkIdentifier(identifier);
         Preconditions.notNull(placeholderFactory, "placeholderFactory");
 
-        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, identifier, placeholderFactory);
+        return placeholderRegistry.registerGlobalPlaceholderFactory(plugin, identifier, placeholderFactory);
     }
 
     @Override
-    public void registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplacementSupplier replacementSupplier) {
+    public RegisteredPlaceholder registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplacementSupplier replacementSupplier) {
         checkIdentifier(identifier);
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
         Preconditions.notNull(replacementSupplier, "replacementSupplier");
 
-        placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
+        return placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
     }
 
     @Override
-    public void registerIndividualPlaceholder(@NotNull String identifier, @NotNull IndividualPlaceholder placeholder) {
+    public RegisteredPlaceholder registerIndividualPlaceholder(@NotNull String identifier, @NotNull IndividualPlaceholder placeholder) {
         checkIdentifier(identifier);
         Preconditions.notNull(placeholder, "placeholder");
 
-        placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, placeholder);
+        return placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, placeholder);
     }
 
     @Override
-    public void registerIndividualPlaceholderFactory(@NotNull String identifier, @NotNull IndividualPlaceholderFactory placeholderFactory) {
+    public RegisteredPlaceholder registerIndividualPlaceholderFactory(@NotNull String identifier, @NotNull IndividualPlaceholderFactory placeholderFactory) {
         checkIdentifier(identifier);
         Preconditions.notNull(placeholderFactory, "placeholderFactory");
 
-        placeholderRegistry.registerIndividualPlaceholderFactory(plugin, identifier, placeholderFactory);
+        return placeholderRegistry.registerIndividualPlaceholderFactory(plugin, identifier, placeholderFactory);
     }
 
     private void checkIdentifier(String identifier) {

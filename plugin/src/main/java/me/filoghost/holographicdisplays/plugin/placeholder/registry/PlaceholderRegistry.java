@@ -44,32 +44,34 @@ public class PlaceholderRegistry {
         return version.get();
     }
 
-    public void registerIndividualPlaceholder(
+    public PlaceholderExpansion registerIndividualPlaceholder(
             Plugin plugin, String identifier, int refreshIntervalTicks, IndividualPlaceholderReplacementSupplier replacementSupplier) {
-        registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, replacementSupplier));
+        return registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, replacementSupplier));
     }
 
-    public void registerIndividualPlaceholder(Plugin plugin, String identifier, IndividualPlaceholder placeholder) {
-        registerIndividualPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
+    public PlaceholderExpansion registerIndividualPlaceholder(Plugin plugin, String identifier, IndividualPlaceholder placeholder) {
+        return registerIndividualPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
     }
 
-    public void registerIndividualPlaceholderFactory(Plugin plugin, String identifier, IndividualPlaceholderFactory factory) {
+    public PlaceholderExpansion registerIndividualPlaceholderFactory(Plugin plugin, String identifier, IndividualPlaceholderFactory factory) {
         PlaceholderExpansion expansion = new IndividualPlaceholderExpansion(plugin, identifier, factory);
         registerExpansion(expansion);
+        return expansion;
     }
 
-    public void registerGlobalPlaceholder(
+    public PlaceholderExpansion registerGlobalPlaceholder(
             Plugin plugin, String identifier, int refreshIntervalTicks, GlobalPlaceholderReplacementSupplier replacementSupplier) {
-        registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, replacementSupplier));
+        return registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, replacementSupplier));
     }
 
-    public void registerGlobalPlaceholder(Plugin plugin, String identifier, GlobalPlaceholder placeholder) {
-        registerGlobalPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
+    public PlaceholderExpansion registerGlobalPlaceholder(Plugin plugin, String identifier, GlobalPlaceholder placeholder) {
+        return registerGlobalPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
     }
 
-    public void registerGlobalPlaceholderFactory(Plugin plugin, String identifier, GlobalPlaceholderFactory factory) {
+    public PlaceholderExpansion registerGlobalPlaceholderFactory(Plugin plugin, String identifier, GlobalPlaceholderFactory factory) {
         PlaceholderExpansion expansion = new GlobalPlaceholderExpansion(plugin, identifier, factory);
         registerExpansion(expansion);
+        return expansion;
     }
 
     private void registerExpansion(PlaceholderExpansion expansion) {
