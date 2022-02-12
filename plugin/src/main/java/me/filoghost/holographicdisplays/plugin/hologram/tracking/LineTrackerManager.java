@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 public class LineTrackerManager {
 
@@ -43,7 +44,7 @@ public class LineTrackerManager {
         return tracker;
     }
 
-    public void update(Collection<CachedPlayer> onlinePlayers) {
+    public void update(List<CachedPlayer> onlinePlayers) {
         Iterator<LineTracker<?>> iterator = lineTrackers.iterator();
         while (iterator.hasNext()) {
             LineTracker<?> lineTracker = iterator.next();

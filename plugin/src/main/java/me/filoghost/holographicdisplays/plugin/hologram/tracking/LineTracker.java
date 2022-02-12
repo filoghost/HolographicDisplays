@@ -12,6 +12,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class LineTracker<T extends Viewer> {
@@ -45,7 +46,7 @@ public abstract class LineTracker<T extends Viewer> {
     }
 
     @MustBeInvokedByOverriders
-    protected void update(Collection<CachedPlayer> onlinePlayers) {
+    protected void update(List<CachedPlayer> onlinePlayers) {
         boolean sendChangesPackets = false;
 
         // First, detect the changes if the flag is on and set it off
@@ -77,7 +78,7 @@ public abstract class LineTracker<T extends Viewer> {
 
     protected abstract boolean updatePlaceholders();
 
-    private void modifyViewersAndSendPackets(Collection<CachedPlayer> onlinePlayers) {
+    private void modifyViewersAndSendPackets(List<CachedPlayer> onlinePlayers) {
         if (!getLine().isInLoadedChunk()) {
             resetViewersAndSendDestroyPackets();
             return;
@@ -87,11 +88,14 @@ public abstract class LineTracker<T extends Viewer> {
         MutableViewers<T> addedPlayers = null;
         MutableViewers<T> removedPlayers = null;
 
-        for (CachedPlayer cachedPlayer : onlinePlayers) {
-            Player bukkitPlayer = cachedPlayer.getBukkitPlayer();
-            if (shouldTrackPlayer(cachedPlayer)) {
+        // Micro-optimization, don't use for-each loop to avoid creating a new Iterator (method called frequently)
+        int size = onlinePlayers.size();
+        for (int i = 0; i < size; i++) {
+            CachedPlayer player = onlinePlayers.get(i);
+            Player bukkitPlayer = player.getBukkitPlayer();
+            if (shouldTrackPlayer(player)) {
                 if (!viewers.containsKey(bukkitPlayer)) {
-                    T viewer = createViewer(cachedPlayer);
+                    T viewer = createViewer(player);
                     viewers.put(bukkitPlayer, viewer);
                     if (addedPlayers == null) {
                         addedPlayers = new MutableViewers<>();

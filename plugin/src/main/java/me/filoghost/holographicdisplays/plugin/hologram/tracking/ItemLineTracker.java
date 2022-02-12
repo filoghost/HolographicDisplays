@@ -13,7 +13,7 @@ import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 public class ItemLineTracker extends ClickableLineTracker<Viewer> {
@@ -40,7 +40,7 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
 
     @MustBeInvokedByOverriders
     @Override
-    protected void update(Collection<CachedPlayer> onlinePlayers) {
+    protected void update(List<CachedPlayer> onlinePlayers) {
         super.update(onlinePlayers);
 
         if (spawnItemEntity && hasViewers() && line.hasPickupCallback()) {
