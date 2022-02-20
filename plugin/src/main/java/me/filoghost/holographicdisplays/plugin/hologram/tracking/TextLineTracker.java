@@ -12,6 +12,7 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLin
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
 import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
+import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
@@ -28,8 +29,9 @@ public class TextLineTracker extends ClickableLineTracker<TextLineViewer> {
             BaseTextHologramLine line,
             NMSManager nmsManager,
             LineClickListener lineClickListener,
-            ActivePlaceholderTracker placeholderTracker) {
-        super(line, nmsManager, lineClickListener);
+            ActivePlaceholderTracker placeholderTracker,
+            TickClock tickClock) {
+        super(line, nmsManager, lineClickListener, tickClock);
         this.line = line;
         this.textEntity = nmsManager.newTextPacketEntity();
         this.displayText = new DisplayText(placeholderTracker);

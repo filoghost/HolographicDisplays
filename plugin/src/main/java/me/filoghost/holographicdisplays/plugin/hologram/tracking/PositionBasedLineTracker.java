@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
+import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import org.bukkit.Location;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -18,6 +19,10 @@ abstract class PositionBasedLineTracker<T extends Viewer> extends LineTracker<T>
 
     protected PositionCoordinates position;
     private boolean positionChanged;
+
+    protected PositionBasedLineTracker(TickClock tickClock) {
+        super(tickClock);
+    }
 
     @MustBeInvokedByOverriders
     @Override

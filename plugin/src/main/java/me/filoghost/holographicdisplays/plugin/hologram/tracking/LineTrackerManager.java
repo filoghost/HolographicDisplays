@@ -11,6 +11,7 @@ import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLin
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
 import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
+import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -20,26 +21,32 @@ import java.util.List;
 
 public class LineTrackerManager {
 
+    private final TickClock tickClock;
     private final NMSManager nmsManager;
     private final ActivePlaceholderTracker placeholderTracker;
     private final LineClickListener lineClickListener;
     private final Collection<LineTracker<?>> lineTrackers;
 
-    public LineTrackerManager(NMSManager nmsManager, ActivePlaceholderTracker placeholderTracker, LineClickListener lineClickListener) {
+    public LineTrackerManager(
+            NMSManager nmsManager,
+            ActivePlaceholderTracker placeholderTracker,
+            LineClickListener lineClickListener,
+            TickClock tickClock) {
         this.nmsManager = nmsManager;
         this.placeholderTracker = placeholderTracker;
         this.lineClickListener = lineClickListener;
         this.lineTrackers = new LinkedList<>();
+        this.tickClock = tickClock;
     }
 
     public TextLineTracker startTracking(BaseTextHologramLine line) {
-        TextLineTracker tracker = new TextLineTracker(line, nmsManager, lineClickListener, placeholderTracker);
+        TextLineTracker tracker = new TextLineTracker(line, nmsManager, lineClickListener, placeholderTracker, tickClock);
         lineTrackers.add(tracker);
         return tracker;
     }
 
     public ItemLineTracker startTracking(BaseItemHologramLine line) {
-        ItemLineTracker tracker = new ItemLineTracker(line, nmsManager, lineClickListener);
+        ItemLineTracker tracker = new ItemLineTracker(line, nmsManager, lineClickListener, tickClock);
         lineTrackers.add(tracker);
         return tracker;
     }

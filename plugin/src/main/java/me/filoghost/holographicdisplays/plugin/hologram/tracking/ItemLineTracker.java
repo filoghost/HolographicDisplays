@@ -10,6 +10,7 @@ import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseItemHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
 import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
+import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -27,8 +28,12 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
     private boolean spawnItemEntity;
     private boolean spawnItemEntityChanged;
 
-    public ItemLineTracker(BaseItemHologramLine line, NMSManager nmsManager, LineClickListener lineClickListener) {
-        super(line, nmsManager, lineClickListener);
+    public ItemLineTracker(
+            BaseItemHologramLine line,
+            NMSManager nmsManager,
+            LineClickListener lineClickListener,
+            TickClock tickClock) {
+        super(line, nmsManager, lineClickListener, tickClock);
         this.line = line;
         this.itemEntity = nmsManager.newItemPacketEntity();
     }

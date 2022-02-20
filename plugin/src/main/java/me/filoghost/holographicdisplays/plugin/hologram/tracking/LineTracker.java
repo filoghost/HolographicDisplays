@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.plugin.hologram.tracking;
 
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLine;
 import me.filoghost.holographicdisplays.plugin.tick.CachedPlayer;
+import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -17,6 +18,9 @@ import java.util.Map;
 
 public abstract class LineTracker<T extends Viewer> {
 
+    private static final int MODIFY_VIEWERS_INTERVAL_TICKS = 5;
+
+    private final TickClock tickClock;
     private final Map<Player, T> viewers;
     private final Viewers<T> iterableViewers;
 
@@ -25,7 +29,8 @@ public abstract class LineTracker<T extends Viewer> {
      */
     private boolean lineChanged;
 
-    protected LineTracker() {
+    protected LineTracker(TickClock tickClock) {
+        this.tickClock = tickClock;
         this.viewers = new HashMap<>();
         this.iterableViewers = new DelegateViewers<>(viewers.values());
     }
@@ -81,6 +86,11 @@ public abstract class LineTracker<T extends Viewer> {
     private void modifyViewersAndSendPackets(List<CachedPlayer> onlinePlayers) {
         if (!getLine().isInLoadedChunk()) {
             resetViewersAndSendDestroyPackets();
+            return;
+        }
+
+        // Add the identity hash code to avoid updating all the lines at the same time
+        if ((tickClock.getCurrentTick() + hashCode()) % MODIFY_VIEWERS_INTERVAL_TICKS != 0) {
             return;
         }
 

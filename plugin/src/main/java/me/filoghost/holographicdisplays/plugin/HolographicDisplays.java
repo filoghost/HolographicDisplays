@@ -107,7 +107,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         TickClock tickClock = new TickClock();
         ActivePlaceholderTracker placeholderTracker = new ActivePlaceholderTracker(placeholderRegistry, tickClock);
         LineClickListener lineClickListener = new LineClickListener();
-        lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener);
+        lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener, tickClock);
         internalHologramManager = new InternalHologramManager(lineTrackerManager);
         apiHologramManager = new APIHologramManager(lineTrackerManager);
         v2HologramManager = new V2HologramManager(lineTrackerManager);

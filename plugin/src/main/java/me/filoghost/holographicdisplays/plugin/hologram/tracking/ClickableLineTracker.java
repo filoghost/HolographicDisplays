@@ -10,6 +10,7 @@ import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseClickableHologramLine;
 import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
+import me.filoghost.holographicdisplays.plugin.tick.TickClock;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 public abstract class ClickableLineTracker<T extends Viewer> extends PositionBasedLineTracker<T> {
@@ -21,7 +22,8 @@ public abstract class ClickableLineTracker<T extends Viewer> extends PositionBas
     private boolean spawnClickableEntity;
     private boolean spawnClickableEntityChanged;
 
-    public ClickableLineTracker(BaseClickableHologramLine line, NMSManager nmsManager, LineClickListener lineClickListener) {
+    public ClickableLineTracker(BaseClickableHologramLine line, NMSManager nmsManager, LineClickListener lineClickListener, TickClock tickClock) {
+        super(tickClock);
         this.clickableEntity = nmsManager.newClickablePacketEntity();
         this.positionOffsetY = (line.getHeight() - ClickableNMSPacketEntity.SLIME_HEIGHT) / 2;
         this.lineClickListener = lineClickListener;
