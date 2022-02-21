@@ -49,13 +49,13 @@ import java.util.logging.Level;
 
 public class HologramCommandManager extends SubCommandManager {
 
-    private final HolographicDisplays holographicDisplays;
+    private final String pluginVersion;
     private final List<HologramSubCommand> subCommands;
     private final HelpCommand helpCommand;
 
     public HologramCommandManager(HolographicDisplays holographicDisplays, InternalHologramEditor hologramEditor) {
         setName("holograms");
-        this.holographicDisplays = holographicDisplays;
+        this.pluginVersion = holographicDisplays.getDescription().getVersion();
         this.helpCommand = new HelpCommand(this);
         this.subCommands = new ArrayList<>();
 
@@ -144,9 +144,8 @@ public class HologramCommandManager extends SubCommandManager {
     @Override
     protected void sendNoArgsMessage(CommandContext context) {
         CommandSender sender = context.getSender();
-        String version = holographicDisplays.getDescription().getVersion();
         sender.sendMessage(ColorScheme.PRIMARY_DARK + "Server is running " + ColorScheme.PRIMARY + "Holographic Displays "
-                + ColorScheme.PRIMARY_DARK + "v" + version + " by " + ColorScheme.PRIMARY + "filoghost");
+                + ColorScheme.PRIMARY_DARK + "v" + pluginVersion + " by " + ColorScheme.PRIMARY + "filoghost");
         if (helpCommand.hasPermission(sender)) {
             sender.sendMessage(ColorScheme.PRIMARY_DARK + "Commands: " + ColorScheme.PRIMARY + helpCommand.getFullUsageText(context));
         }
