@@ -289,10 +289,10 @@
                     <version>3.3.0</version>
                     <configuration>
                         <sourceFileIncludes>
-                            <include>**/me/filoghost/holographicdisplays/api/**/*.java</include>
+                            <include>**/com/gmail/filoghost/holographicdisplays/api/**/*.java</include>
                         </sourceFileIncludes>
                         <sourceFileExcludes>
-                            <exclude>**/me/filoghost/holographicdisplays/api/internal/**/*.java</exclude>
+                            <exclude>**/com/gmail/filoghost/holographicdisplays/api/internal/**/*.java</exclude>
                         </sourceFileExcludes>
                         <windowtitle>Holographic Displays API</windowtitle>
                         <doctitle>Holographic Displays API &amp;ndash; ${project.version}</doctitle>
