@@ -114,6 +114,9 @@ public class VersionNMSManager implements NMSManager {
         Channel channel = networkManager.channel;
 
         channel.eventLoop().execute(() -> {
+            if (!player.isOnline()) {
+                return;
+            }
             try {
                 pipelineModifierTask.accept(channel.pipeline());
             } catch (Exception e) {
