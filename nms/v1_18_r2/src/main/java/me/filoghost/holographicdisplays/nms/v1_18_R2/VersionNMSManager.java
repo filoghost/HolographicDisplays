@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 
 public class VersionNMSManager implements NMSManager {
 
-    private static final ReflectField<AtomicInteger> ENTITY_ID_COUNTER_FIELD = ReflectField.lookup(AtomicInteger.class, Entity.class, "b");
+    private static final ReflectField<AtomicInteger> ENTITY_ID_COUNTER_FIELD = ReflectField.lookup(AtomicInteger.class, Entity.class, "c");
     private final Supplier<Integer> entityIDGenerator;
 
     public VersionNMSManager(ErrorCollector errorCollector) {
