@@ -94,7 +94,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         try {
             nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
         } catch (UnknownVersionException e) {
-            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.18.");
+            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.18.2.");
         } catch (OutdatedVersionException e) {
             throw new PluginEnableException("Holographic Displays only supports " + e.getMinimumSupportedVersion() + " and above.");
         } catch (Throwable t) {
