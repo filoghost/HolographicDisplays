@@ -74,7 +74,7 @@ public class InternalHologramEditor {
     }
 
     public InternalHologram create(ImmutablePosition spawnPosition, String hologramName) {
-        return internalHologramManager.createHologram(spawnPosition, hologramName);
+        return internalHologramManager.createHologram(hologramName, spawnPosition);
     }
 
     public void delete(InternalHologram hologram) {

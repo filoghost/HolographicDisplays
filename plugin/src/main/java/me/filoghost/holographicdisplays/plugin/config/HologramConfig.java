@@ -58,7 +58,7 @@ public class HologramConfig {
         }
 
         ImmutablePosition position = parsePosition();
-        InternalHologram hologram = internalHologramManager.createHologram(position, name);
+        InternalHologram hologram = internalHologramManager.createHologram(name, position);
         List<InternalHologramLine> lines = new ArrayList<>();
 
         for (String serializedLine : serializedLines) {

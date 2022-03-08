@@ -210,4 +210,8 @@ public class HolographicDisplays extends FCommonsPlugin {
         return internalHologramEditor;
     }
 
+    public InternalHologramManager getInternalHologramManager() {
+        return internalHologramManager;
+    }
+
 }

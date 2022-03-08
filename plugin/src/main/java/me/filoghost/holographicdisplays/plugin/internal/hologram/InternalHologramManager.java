@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin.internal.hologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramManager;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
+import org.jetbrains.annotations.Nullable;
 
 public class InternalHologramManager extends BaseHologramManager<InternalHologram> {
 
@@ -17,13 +18,16 @@ public class InternalHologramManager extends BaseHologramManager<InternalHologra
         this.lineTrackerManager = lineTrackerManager;
     }
 
-    public InternalHologram createHologram(ImmutablePosition position, String name) {
+    public InternalHologram createHologram(String name, ImmutablePosition position) {
+        if (getHologramByName(name) != null) {
+            throw new IllegalStateException("hologram named \"" + name + "\" already exists");
+        }
         InternalHologram hologram = new InternalHologram(position, name, lineTrackerManager);
         super.addHologram(hologram);
         return hologram;
     }
 
-    public InternalHologram getHologramByName(String name) {
+    public @Nullable InternalHologram getHologramByName(String name) {
         for (InternalHologram hologram : getHolograms()) {
             if (hologram.getName().equalsIgnoreCase(name)) {
                 return hologram;
