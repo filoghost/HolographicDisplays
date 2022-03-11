@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 
 abstract class DataWatcherPacketBuilder<T> {
 
+    private static final int MAX_CUSTOM_NAME_LENGTH = 5000;
+
     private final PacketByteBuffer packetByteBuffer;
 
     DataWatcherPacketBuilder(PacketByteBuffer packetByteBuffer) {
@@ -33,7 +35,7 @@ abstract class DataWatcherPacketBuilder<T> {
         if (customName == null) {
             customName = "";
         }
-        packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.CUSTOM_NAME, Strings.truncate(customName, 300));
+        packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.CUSTOM_NAME, Strings.truncate(customName, MAX_CUSTOM_NAME_LENGTH));
         packetByteBuffer.writeDataWatcherEntry(DataWatcherKey.CUSTOM_NAME_VISIBILITY, !Strings.isEmpty(customName));
         return this;
     }

@@ -15,6 +15,8 @@ import java.util.Optional;
 
 abstract class DataWatcherPacketBuilder<T> {
 
+    private static final int MAX_CUSTOM_NAME_LENGTH = 5000;
+
     private final PacketByteBuffer packetByteBuffer;
 
     DataWatcherPacketBuilder(PacketByteBuffer packetByteBuffer) {
@@ -40,7 +42,7 @@ abstract class DataWatcherPacketBuilder<T> {
     }
 
     private Optional<IChatBaseComponent> getCustomNameDataWatcherValue(String customName) {
-        customName = Strings.truncate(customName, 300);
+        customName = Strings.truncate(customName, MAX_CUSTOM_NAME_LENGTH);
         if (!Strings.isEmpty(customName)) {
             return Optional.of(CraftChatMessage.fromString(customName, false)[0]);
         } else {
