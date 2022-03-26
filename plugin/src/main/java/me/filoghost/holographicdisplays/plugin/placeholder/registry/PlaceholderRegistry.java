@@ -9,6 +9,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
 import me.filoghost.fcommons.collection.CaseInsensitiveString;
+import me.filoghost.fcommons.collection.CollectionUtils;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderFactory;
@@ -16,16 +17,13 @@ import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderRe
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplacementSupplier;
-import me.filoghost.holographicdisplays.api.beta.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderIdentifier;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.placeholder.PluginName;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class PlaceholderRegistry {
@@ -44,38 +42,36 @@ public class PlaceholderRegistry {
         return version.get();
     }
 
-    public PlaceholderExpansion registerIndividualPlaceholder(
+    public void registerIndividualPlaceholder(
             Plugin plugin, String identifier, int refreshIntervalTicks, IndividualPlaceholderReplacementSupplier replacementSupplier) {
-        return registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, replacementSupplier));
+        registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, replacementSupplier));
     }
 
-    public PlaceholderExpansion registerIndividualPlaceholder(Plugin plugin, String identifier, IndividualPlaceholder placeholder) {
-        return registerIndividualPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
+    public void registerIndividualPlaceholder(Plugin plugin, String identifier, IndividualPlaceholder placeholder) {
+        registerIndividualPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
     }
 
-    public PlaceholderExpansion registerIndividualPlaceholderFactory(Plugin plugin, String identifier, IndividualPlaceholderFactory factory) {
+    public void registerIndividualPlaceholderFactory(Plugin plugin, String identifier, IndividualPlaceholderFactory factory) {
         PlaceholderExpansion expansion = new IndividualPlaceholderExpansion(plugin, identifier, factory);
         registerExpansion(expansion);
-        return expansion;
     }
 
-    public PlaceholderExpansion registerGlobalPlaceholder(
+    public void registerGlobalPlaceholder(
             Plugin plugin, String identifier, int refreshIntervalTicks, GlobalPlaceholderReplacementSupplier replacementSupplier) {
-        return registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, replacementSupplier));
+        registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, replacementSupplier));
     }
 
-    public PlaceholderExpansion registerGlobalPlaceholder(Plugin plugin, String identifier, GlobalPlaceholder placeholder) {
-        return registerGlobalPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
+    public void registerGlobalPlaceholder(Plugin plugin, String identifier, GlobalPlaceholder placeholder) {
+        registerGlobalPlaceholderFactory(plugin, identifier, (String argument) -> placeholder);
     }
 
-    public PlaceholderExpansion registerGlobalPlaceholderFactory(Plugin plugin, String identifier, GlobalPlaceholderFactory factory) {
+    public void registerGlobalPlaceholderFactory(Plugin plugin, String identifier, GlobalPlaceholderFactory factory) {
         PlaceholderExpansion expansion = new GlobalPlaceholderExpansion(plugin, identifier, factory);
         registerExpansion(expansion);
-        return expansion;
     }
 
     private void registerExpansion(PlaceholderExpansion expansion) {
-        placeholderExpansions.put(expansion.getCaseInsensitiveIdentifier(), expansion.getPluginName(), expansion);
+        placeholderExpansions.put(expansion.getIdentifier(), expansion.getPluginName(), expansion);
 
         version.incrementAndGet();
     }
@@ -111,10 +107,11 @@ public class PlaceholderRegistry {
         return result;
     }
 
-    public List<RegisteredPlaceholder> getRegisteredPlaceholders(Plugin plugin) {
+    public Collection<String> getRegisteredPlaceholders(Plugin plugin) {
         PluginName pluginName = new PluginName(plugin);
 
-        return new ArrayList<>(placeholderExpansions.column(pluginName).values());
+        Collection<PlaceholderExpansion> pluginExpansions = placeholderExpansions.column(pluginName).values();
+        return CollectionUtils.toImmutableSet(pluginExpansions, expansion -> expansion.getIdentifier().toString());
     }
 
     public boolean isRegisteredIdentifier(Plugin plugin, String identifier) {

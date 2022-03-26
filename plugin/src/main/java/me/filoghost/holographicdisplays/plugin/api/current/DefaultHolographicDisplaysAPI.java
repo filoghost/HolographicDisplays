@@ -15,7 +15,6 @@ import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderRe
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplacementSupplier;
-import me.filoghost.holographicdisplays.api.beta.placeholder.RegisteredPlaceholder;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;
@@ -55,53 +54,53 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public RegisteredPlaceholder registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier) {
+    public void registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier) {
         checkIdentifier(identifier);
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
         Preconditions.notNull(replacementSupplier, "replacementSupplier");
 
-        return placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
+        placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
     }
 
     @Override
-    public RegisteredPlaceholder registerGlobalPlaceholder(@NotNull String identifier, @NotNull GlobalPlaceholder placeholder) {
+    public void registerGlobalPlaceholder(@NotNull String identifier, @NotNull GlobalPlaceholder placeholder) {
         checkIdentifier(identifier);
         Preconditions.notNull(placeholder, "placeholder");
 
-        return placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, placeholder);
+        placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, placeholder);
     }
 
     @Override
-    public RegisteredPlaceholder registerGlobalPlaceholderFactory(@NotNull String identifier, @NotNull GlobalPlaceholderFactory placeholderFactory) {
+    public void registerGlobalPlaceholderFactory(@NotNull String identifier, @NotNull GlobalPlaceholderFactory placeholderFactory) {
         checkIdentifier(identifier);
         Preconditions.notNull(placeholderFactory, "placeholderFactory");
 
-        return placeholderRegistry.registerGlobalPlaceholderFactory(plugin, identifier, placeholderFactory);
+        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, identifier, placeholderFactory);
     }
 
     @Override
-    public RegisteredPlaceholder registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplacementSupplier replacementSupplier) {
+    public void registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplacementSupplier replacementSupplier) {
         checkIdentifier(identifier);
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
         Preconditions.notNull(replacementSupplier, "replacementSupplier");
 
-        return placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
+        placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
     }
 
     @Override
-    public RegisteredPlaceholder registerIndividualPlaceholder(@NotNull String identifier, @NotNull IndividualPlaceholder placeholder) {
+    public void registerIndividualPlaceholder(@NotNull String identifier, @NotNull IndividualPlaceholder placeholder) {
         checkIdentifier(identifier);
         Preconditions.notNull(placeholder, "placeholder");
 
-        return placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, placeholder);
+        placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, placeholder);
     }
 
     @Override
-    public RegisteredPlaceholder registerIndividualPlaceholderFactory(@NotNull String identifier, @NotNull IndividualPlaceholderFactory placeholderFactory) {
+    public void registerIndividualPlaceholderFactory(@NotNull String identifier, @NotNull IndividualPlaceholderFactory placeholderFactory) {
         checkIdentifier(identifier);
         Preconditions.notNull(placeholderFactory, "placeholderFactory");
 
-        return placeholderRegistry.registerIndividualPlaceholderFactory(plugin, identifier, placeholderFactory);
+        placeholderRegistry.registerIndividualPlaceholderFactory(plugin, identifier, placeholderFactory);
     }
 
     private void checkIdentifier(String identifier) {
@@ -137,7 +136,7 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public @NotNull Collection<RegisteredPlaceholder> getRegisteredPlaceholders() {
+    public @NotNull Collection<String> getRegisteredPlaceholders() {
         return placeholderRegistry.getRegisteredPlaceholders(plugin);
     }
 

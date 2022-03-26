@@ -13,7 +13,6 @@ import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderRe
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderFactory;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplacementSupplier;
-import me.filoghost.holographicdisplays.api.beta.placeholder.RegisteredPlaceholder;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -85,32 +84,32 @@ public interface HolographicDisplaysAPI {
     /**
      * @since 1
      */
-    RegisteredPlaceholder registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier);
+    void registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier);
 
     /**
      * @since 1
      */
-    RegisteredPlaceholder registerGlobalPlaceholder(@NotNull String identifier, @NotNull GlobalPlaceholder placeholder);
+    void registerGlobalPlaceholder(@NotNull String identifier, @NotNull GlobalPlaceholder placeholder);
 
     /**
      * @since 1
      */
-    RegisteredPlaceholder registerGlobalPlaceholderFactory(@NotNull String identifier, @NotNull GlobalPlaceholderFactory placeholderFactory);
+    void registerGlobalPlaceholderFactory(@NotNull String identifier, @NotNull GlobalPlaceholderFactory placeholderFactory);
 
     /**
      * @since 1
      */
-    RegisteredPlaceholder registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplacementSupplier replacementSupplier);
+    void registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplacementSupplier replacementSupplier);
 
     /**
      * @since 1
      */
-    RegisteredPlaceholder registerIndividualPlaceholder(@NotNull String identifier, @NotNull IndividualPlaceholder placeholder);
+    void registerIndividualPlaceholder(@NotNull String identifier, @NotNull IndividualPlaceholder placeholder);
 
     /**
      * @since 1
      */
-    RegisteredPlaceholder registerIndividualPlaceholderFactory(@NotNull String identifier, @NotNull IndividualPlaceholderFactory placeholderFactory);
+    void registerIndividualPlaceholderFactory(@NotNull String identifier, @NotNull IndividualPlaceholderFactory placeholderFactory);
 
     /**
      * @since 1
@@ -123,7 +122,7 @@ public interface HolographicDisplaysAPI {
      * @return a collection of placeholder identifiers
      * @since 1
      */
-    @NotNull Collection<RegisteredPlaceholder> getRegisteredPlaceholders();
+    @NotNull Collection<String> getRegisteredPlaceholders();
 
     /**
      * Unregisters a placeholder.
