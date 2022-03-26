@@ -32,7 +32,7 @@ maven {
 ```
 
 ```groovy
-implementation 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
+compileOnly 'com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9'
 ```
 
 ## License
