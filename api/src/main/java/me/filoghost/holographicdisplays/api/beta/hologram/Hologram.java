@@ -83,12 +83,12 @@ public interface Hologram {
     /**
      * @since 1
      */
-    @NotNull ResolvePlaceholders getResolvePlaceholders();
+    @NotNull PlaceholderSetting getPlaceholderSetting();
 
     /**
      * @since 1
      */
-    void setResolvePlaceholders(@NotNull ResolvePlaceholders resolvePlaceholders);
+    void setPlaceholderSetting(@NotNull PlaceholderSetting placeholderSetting);
 
     /**
      * Deletes this hologram. Editing or teleporting the hologram when deleted

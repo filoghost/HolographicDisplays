@@ -5,10 +5,10 @@
  */
 package me.filoghost.holographicdisplays.api.beta.hologram;
 
-public enum ResolvePlaceholders {
+public enum PlaceholderSetting {
 
     DEFAULT,
-    ALL,
-    NONE
+    ENABLE_ALL,
+    DISABLE_ALL
 
 }

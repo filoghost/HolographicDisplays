@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.api.current;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.api.beta.Position;
 import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.beta.hologram.ResolvePlaceholders;
+import me.filoghost.holographicdisplays.api.beta.hologram.PlaceholderSetting;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
@@ -23,7 +23,7 @@ class APIHologram extends BaseHologram implements Hologram {
     private final APIHologramManager hologramManager;
     private final DefaultVisibilitySettings visibilitySettings;
 
-    private @NotNull ResolvePlaceholders resolvePlaceholders;
+    private @NotNull PlaceholderSetting placeholderSetting;
 
     APIHologram(
             ImmutablePosition position,
@@ -36,7 +36,7 @@ class APIHologram extends BaseHologram implements Hologram {
         this.plugin = plugin;
         this.hologramManager = hologramManager;
         this.visibilitySettings = new DefaultVisibilitySettings();
-        this.resolvePlaceholders = ResolvePlaceholders.DEFAULT;
+        this.placeholderSetting = PlaceholderSetting.DEFAULT;
     }
 
     @Override
@@ -55,20 +55,20 @@ class APIHologram extends BaseHologram implements Hologram {
     }
 
     @Override
-    public @NotNull ResolvePlaceholders getResolvePlaceholders() {
-        return resolvePlaceholders;
+    public @NotNull PlaceholderSetting getPlaceholderSetting() {
+        return placeholderSetting;
     }
 
     @Override
-    public void setResolvePlaceholders(@NotNull ResolvePlaceholders resolvePlaceholders) {
-        Preconditions.notNull(resolvePlaceholders, "resolvePlaceholders");
+    public void setPlaceholderSetting(@NotNull PlaceholderSetting placeholderSetting) {
+        Preconditions.notNull(placeholderSetting, "placeholderSetting");
         checkNotDeleted();
 
-        if (this.resolvePlaceholders == resolvePlaceholders) {
+        if (this.placeholderSetting == placeholderSetting) {
             return;
         }
 
-        this.resolvePlaceholders = resolvePlaceholders;
+        this.placeholderSetting = placeholderSetting;
         for (APIHologramLine line : lines) {
             line.setChanged();
         }

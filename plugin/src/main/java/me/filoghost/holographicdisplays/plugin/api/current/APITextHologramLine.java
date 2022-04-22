@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.api.current;
 
-import me.filoghost.holographicdisplays.api.beta.hologram.ResolvePlaceholders;
+import me.filoghost.holographicdisplays.api.beta.hologram.PlaceholderSetting;
 import me.filoghost.holographicdisplays.api.beta.hologram.line.HologramLineClickListener;
 import me.filoghost.holographicdisplays.api.beta.hologram.line.TextHologramLine;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseTextHologramLine;
@@ -24,7 +24,7 @@ class APITextHologramLine extends BaseTextHologramLine implements TextHologramLi
 
     @Override
     public boolean isAllowPlaceholders() {
-        return hologram.getResolvePlaceholders() == ResolvePlaceholders.ALL;
+        return hologram.getPlaceholderSetting() == PlaceholderSetting.ENABLE_ALL;
     }
 
     @Override
