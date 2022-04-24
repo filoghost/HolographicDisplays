@@ -6,16 +6,16 @@
 package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
-import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplaceFunction;
 
 class SimpleGlobalPlaceholder implements GlobalPlaceholder {
 
     private final int refreshIntervalTicks;
-    private final GlobalPlaceholderReplacementSupplier replacementSupplier;
+    private final GlobalPlaceholderReplaceFunction replaceFunction;
 
-    SimpleGlobalPlaceholder(int refreshIntervalTicks, GlobalPlaceholderReplacementSupplier replacementSupplier) {
+    SimpleGlobalPlaceholder(int refreshIntervalTicks, GlobalPlaceholderReplaceFunction replaceFunction) {
         this.refreshIntervalTicks = refreshIntervalTicks;
-        this.replacementSupplier = replacementSupplier;
+        this.replaceFunction = replaceFunction;
     }
 
     @Override
@@ -25,7 +25,7 @@ class SimpleGlobalPlaceholder implements GlobalPlaceholder {
 
     @Override
     public String getReplacement(String argument) {
-        return replacementSupplier.getReplacement(argument);
+        return replaceFunction.getReplacement(argument);
     }
 
 }

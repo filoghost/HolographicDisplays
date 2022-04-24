@@ -11,10 +11,10 @@ import me.filoghost.holographicdisplays.api.beta.Position;
 import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplaceFunction;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplaceFunction;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;
@@ -54,12 +54,12 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public void registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier) {
+    public void registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplaceFunction replaceFunction) {
         checkIdentifier(identifier);
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
-        Preconditions.notNull(replacementSupplier, "replacementSupplier");
+        Preconditions.notNull(replaceFunction, "replaceFunction");
 
-        placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
+        placeholderRegistry.registerGlobalPlaceholder(plugin, identifier, refreshIntervalTicks, replaceFunction);
     }
 
     @Override
@@ -79,12 +79,12 @@ class DefaultHolographicDisplaysAPI implements HolographicDisplaysAPI {
     }
 
     @Override
-    public void registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplacementSupplier replacementSupplier) {
+    public void registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplaceFunction replaceFunction) {
         checkIdentifier(identifier);
         Preconditions.checkArgument(refreshIntervalTicks >= 0, "refreshIntervalTicks should be positive");
-        Preconditions.notNull(replacementSupplier, "replacementSupplier");
+        Preconditions.notNull(replaceFunction, "replaceFunction");
 
-        placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, refreshIntervalTicks, replacementSupplier);
+        placeholderRegistry.registerIndividualPlaceholder(plugin, identifier, refreshIntervalTicks, replaceFunction);
     }
 
     @Override

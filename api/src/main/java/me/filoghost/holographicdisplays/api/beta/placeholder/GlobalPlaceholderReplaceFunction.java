@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 1
  */
 @FunctionalInterface
-public interface GlobalPlaceholderReplacementSupplier {
+public interface GlobalPlaceholderReplaceFunction {
 
     /**
      * @see GlobalPlaceholder#getReplacement(String)

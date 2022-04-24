@@ -9,10 +9,10 @@ import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.beta.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplaceFunction;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplaceFunction;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -84,7 +84,7 @@ public interface HolographicDisplaysAPI {
     /**
      * @since 1
      */
-    void registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplacementSupplier replacementSupplier);
+    void registerGlobalPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull GlobalPlaceholderReplaceFunction replaceFunction);
 
     /**
      * @since 1
@@ -99,7 +99,7 @@ public interface HolographicDisplaysAPI {
     /**
      * @since 1
      */
-    void registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplacementSupplier replacementSupplier);
+    void registerIndividualPlaceholder(@NotNull String identifier, int refreshIntervalTicks, @NotNull IndividualPlaceholderReplaceFunction replaceFunction);
 
     /**
      * @since 1

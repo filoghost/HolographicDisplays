@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 1
  */
 @FunctionalInterface
-public interface IndividualPlaceholderReplacementSupplier {
+public interface IndividualPlaceholderReplaceFunction {
 
     /**
      * @see IndividualPlaceholder#getReplacement(Player, String)

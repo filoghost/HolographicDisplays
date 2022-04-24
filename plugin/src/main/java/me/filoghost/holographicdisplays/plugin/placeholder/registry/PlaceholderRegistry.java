@@ -13,10 +13,10 @@ import me.filoghost.fcommons.collection.CollectionUtils;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplaceFunction;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplaceFunction;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderIdentifier;
 import me.filoghost.holographicdisplays.plugin.placeholder.PlaceholderOccurrence;
 import me.filoghost.holographicdisplays.plugin.placeholder.PluginName;
@@ -43,8 +43,8 @@ public class PlaceholderRegistry {
     }
 
     public void registerIndividualPlaceholder(
-            Plugin plugin, String identifier, int refreshIntervalTicks, IndividualPlaceholderReplacementSupplier replacementSupplier) {
-        registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, replacementSupplier));
+            Plugin plugin, String identifier, int refreshIntervalTicks, IndividualPlaceholderReplaceFunction replaceFunction) {
+        registerIndividualPlaceholder(plugin, identifier, new SimpleIndividualPlaceholder(refreshIntervalTicks, replaceFunction));
     }
 
     public void registerIndividualPlaceholder(Plugin plugin, String identifier, IndividualPlaceholder placeholder) {
@@ -57,8 +57,8 @@ public class PlaceholderRegistry {
     }
 
     public void registerGlobalPlaceholder(
-            Plugin plugin, String identifier, int refreshIntervalTicks, GlobalPlaceholderReplacementSupplier replacementSupplier) {
-        registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, replacementSupplier));
+            Plugin plugin, String identifier, int refreshIntervalTicks, GlobalPlaceholderReplaceFunction replaceFunction) {
+        registerGlobalPlaceholder(plugin, identifier, new SimpleGlobalPlaceholder(refreshIntervalTicks, replaceFunction));
     }
 
     public void registerGlobalPlaceholder(Plugin plugin, String identifier, GlobalPlaceholder placeholder) {
@@ -122,14 +122,14 @@ public class PlaceholderRegistry {
             Plugin plugin,
             String textPlaceholder,
             int refreshIntervalTicks,
-            GlobalPlaceholderReplacementSupplier replacementSupplier) {
+            GlobalPlaceholderReplaceFunction replaceFunction) {
         String identifier = convertToNewFormat(textPlaceholder);
         if (!identifier.equals(textPlaceholder)) {
             Log.warning("The plugin " + plugin.getName() + " registered the placeholder " + textPlaceholder
                     + " with the old v2 API, but it doesn't comply with the new format. In order to display it,"
                     + " you must use {" + textPlaceholder + "} instead.");
         }
-        GlobalPlaceholder placeholder = new SimpleGlobalPlaceholder(refreshIntervalTicks, replacementSupplier);
+        GlobalPlaceholder placeholder = new SimpleGlobalPlaceholder(refreshIntervalTicks, replaceFunction);
         GlobalPlaceholderFactory placeholderFactory = (String argument) -> placeholder;
         LegacyGlobalPlaceholderExpansion expansion = new LegacyGlobalPlaceholderExpansion(
                 plugin,

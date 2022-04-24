@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.placeholder.registry;
 
 import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
-import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplacementSupplier;
+import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplaceFunction;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,11 +14,11 @@ import org.jetbrains.annotations.Nullable;
 class SimpleIndividualPlaceholder implements IndividualPlaceholder {
 
     private final int refreshIntervalTicks;
-    private final IndividualPlaceholderReplacementSupplier replacementSupplier;
+    private final IndividualPlaceholderReplaceFunction replaceFunction;
 
-    SimpleIndividualPlaceholder(int refreshIntervalTicks, IndividualPlaceholderReplacementSupplier replacementSupplier) {
+    SimpleIndividualPlaceholder(int refreshIntervalTicks, IndividualPlaceholderReplaceFunction replaceFunction) {
         this.refreshIntervalTicks = refreshIntervalTicks;
-        this.replacementSupplier = replacementSupplier;
+        this.replaceFunction = replaceFunction;
     }
 
     @Override
@@ -28,7 +28,7 @@ class SimpleIndividualPlaceholder implements IndividualPlaceholder {
 
     @Override
     public String getReplacement(@NotNull Player player, @Nullable String argument) {
-        return replacementSupplier.getReplacement(player, argument);
+        return replaceFunction.getReplacement(player, argument);
     }
 
 }
