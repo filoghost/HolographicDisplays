@@ -120,31 +120,36 @@ public class PlaceholderRegistry {
 
     public void registerLegacyPlaceholder(
             Plugin plugin,
-            String textPlaceholder,
+            String legacyTextPlaceholder,
             int refreshIntervalTicks,
             GlobalPlaceholderReplaceFunction replaceFunction) {
-        String identifier = convertToNewFormat(textPlaceholder);
-        if (!identifier.equals(textPlaceholder)) {
-            Log.warning("The plugin " + plugin.getName() + " registered the placeholder " + textPlaceholder
-                    + " with the old v2 API, but it doesn't comply with the new format. In order to display it,"
-                    + " you must use {" + textPlaceholder + "} instead.");
+        String newIdentifier = convertLegacyPlaceholderToNewIdentifier(legacyTextPlaceholder);
+
+        // If the whole legacy placeholder is used as identifier, it was not compliant with the new format.
+        // If it was compliant, the curly braces surrounding the legacy placeholder would be removed for
+        // determining the new identifier, which would be different from the legacy placeholder.
+        if (newIdentifier.equals(legacyTextPlaceholder)) {
+            Log.warning("The plugin " + plugin.getName() + " registered the placeholder " + legacyTextPlaceholder
+                    + " with the old v2 API, but is not compliant with the new format. In order to display it,"
+                    + " you must use {" + newIdentifier + "} instead.");
         }
+
         GlobalPlaceholder placeholder = new SimpleGlobalPlaceholder(refreshIntervalTicks, replaceFunction);
         GlobalPlaceholderFactory placeholderFactory = (String argument) -> placeholder;
         LegacyGlobalPlaceholderExpansion expansion = new LegacyGlobalPlaceholderExpansion(
                 plugin,
-                identifier,
+                newIdentifier,
                 placeholderFactory,
-                textPlaceholder);
+                legacyTextPlaceholder);
 
-        legacyPlaceholderExpansions.put(new CaseInsensitiveString(identifier), new PluginName(plugin), expansion);
+        legacyPlaceholderExpansions.put(new CaseInsensitiveString(newIdentifier), new PluginName(plugin), expansion);
 
         version.incrementAndGet();
     }
 
-    public void unregisterLegacyPlaceholder(Plugin plugin, String textPlaceholder) {
-        String identifier = convertToNewFormat(textPlaceholder);
-        legacyPlaceholderExpansions.remove(new CaseInsensitiveString(identifier), new PluginName(plugin));
+    public void unregisterLegacyPlaceholder(Plugin plugin, String legacyTextPlaceholder) {
+        String newIdentifier = convertLegacyPlaceholderToNewIdentifier(legacyTextPlaceholder);
+        legacyPlaceholderExpansions.remove(new CaseInsensitiveString(newIdentifier), new PluginName(plugin));
 
         version.incrementAndGet();
     }
@@ -155,25 +160,24 @@ public class PlaceholderRegistry {
         version.incrementAndGet();
     }
 
-    public boolean isRegisteredLegacyPlaceholder(Plugin plugin, String textPlaceholder) {
-        String identifier = convertToNewFormat(textPlaceholder);
-        return legacyPlaceholderExpansions.contains(new CaseInsensitiveString(identifier), new PluginName(plugin));
+    public boolean isRegisteredLegacyPlaceholder(Plugin plugin, String legacyTextPlaceholder) {
+        String newIdentifier = convertLegacyPlaceholderToNewIdentifier(legacyTextPlaceholder);
+        return legacyPlaceholderExpansions.contains(new CaseInsensitiveString(newIdentifier), new PluginName(plugin));
     }
 
     public Collection<LegacyGlobalPlaceholderExpansion> getRegisteredLegacyPlaceholders(Plugin plugin) {
         return legacyPlaceholderExpansions.column(new PluginName(plugin)).values();
     }
 
-    private String convertToNewFormat(String textPlaceholder) {
-        String identifier;
-        if (textPlaceholder.startsWith("{") && textPlaceholder.endsWith("}")) {
-            // The placeholder already had the correct format, remove the curly braces
-            identifier = textPlaceholder.substring(1, textPlaceholder.length() - 1);
+    private String convertLegacyPlaceholderToNewIdentifier(String legacyTextPlaceholder) {
+        if (legacyTextPlaceholder.startsWith("{") && legacyTextPlaceholder.endsWith("}")) {
+            // The legacy placeholder has correct format, remove the curly braces to get the identifier
+            return legacyTextPlaceholder.substring(1, legacyTextPlaceholder.length() - 1);
         } else {
-            // The placeholder will be wrapped with curly braces to partially maintain compatibility
-            identifier = textPlaceholder;
+            // Partial compatibility: the whole legacy placeholder will be used as identifier,
+            // thus will be replaced only when surrounded by curly braces
+            return legacyTextPlaceholder;
         }
-        return identifier;
     }
 
 }
