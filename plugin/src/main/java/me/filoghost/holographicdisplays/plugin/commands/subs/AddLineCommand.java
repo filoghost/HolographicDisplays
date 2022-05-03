@@ -10,10 +10,10 @@ import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import org.bukkit.command.CommandSender;
 
 public class AddLineCommand extends LineEditingCommand implements QuickEditCommand {
@@ -36,9 +36,9 @@ public class AddLineCommand extends LineEditingCommand implements QuickEditComma
         InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
         String serializedLine = Strings.joinFrom(" ", args, 1);
 
-        InternalHologramLine line = hologramEditor.parseHologramLine(hologram, serializedLine);
+        InternalHologramLine line = hologramEditor.parseHologramLine(serializedLine);
 
-        hologram.getLines().add(line);
+        hologram.addLine(line);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         sender.sendMessage(ColorScheme.PRIMARY + "Line added.");

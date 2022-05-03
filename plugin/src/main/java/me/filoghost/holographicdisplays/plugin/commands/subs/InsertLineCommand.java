@@ -11,11 +11,11 @@ import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import org.bukkit.command.CommandSender;
 
 public class InsertLineCommand extends LineEditingCommand implements QuickEditCommand {
@@ -46,9 +46,9 @@ public class InsertLineCommand extends LineEditingCommand implements QuickEditCo
         CommandValidate.check(insertAfterIndex >= 0 && insertAfterIndex <= oldLinesAmount,
                 "The line number must be between 0 and " + oldLinesAmount + ".");
 
-        InternalHologramLine line = hologramEditor.parseHologramLine(hologram, serializedLine);
+        InternalHologramLine line = hologramEditor.parseHologramLine(serializedLine);
 
-        hologram.getLines().insert(insertAfterIndex, line);
+        hologram.insertLine(insertAfterIndex, line);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         if (insertAfterIndex == 0) {

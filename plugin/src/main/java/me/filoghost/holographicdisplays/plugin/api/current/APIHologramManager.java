@@ -24,7 +24,7 @@ public class APIHologramManager extends BaseHologramManager<APIHologram> {
         this.lineTrackerManager = lineTrackerManager;
     }
 
-    APIHologram createHologram(ImmutablePosition position, Plugin plugin) {
+    public APIHologram createHologram(ImmutablePosition position, Plugin plugin) {
         APIHologram hologram = new APIHologram(position, plugin, this, lineTrackerManager);
         super.addHologram(hologram);
         return hologram;

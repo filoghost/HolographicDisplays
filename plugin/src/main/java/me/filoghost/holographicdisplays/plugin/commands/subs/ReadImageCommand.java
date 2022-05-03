@@ -12,6 +12,7 @@ import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
@@ -19,7 +20,6 @@ import me.filoghost.holographicdisplays.plugin.image.ImageMessage;
 import me.filoghost.holographicdisplays.plugin.image.ImageReadException;
 import me.filoghost.holographicdisplays.plugin.image.ImageReader;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalTextHologramLine;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -103,9 +103,9 @@ public class ReadImageCommand extends LineEditingCommand {
         }
 
         ImageMessage imageMessage = new ImageMessage(image, width);
-        List<InternalTextHologramLine> newLines = new ArrayList<>();
+        List<InternalHologramLine> newLines = new ArrayList<>();
         for (String newLine : imageMessage.getLines()) {
-            newLines.add(hologram.createTextLine(newLine, Colors.uncolorize(newLine)));
+            newLines.add(hologramEditor.parseHologramLine(Colors.uncolorize(newLine)));
         }
 
         if (newLines.size() < 5) {
@@ -113,10 +113,11 @@ public class ReadImageCommand extends LineEditingCommand {
                     + " You can increase it by increasing the width, it will scale automatically.");
         }
 
-        if (!append) {
-            hologram.getLines().clear();
+        if (append) {
+            hologram.addLines(newLines);
+        } else {
+            hologram.setLines(newLines);
         }
-        hologram.getLines().addAll(newLines);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         if (append) {

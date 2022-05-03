@@ -5,13 +5,13 @@
  */
 package me.filoghost.holographicdisplays.plugin.config;
 
-public class HologramLoadException extends Exception {
+public class InternalHologramLoadException extends Exception {
 
-    public HologramLoadException(String message) {
+    public InternalHologramLoadException(String message) {
         super(message);
     }
 
-    public HologramLoadException(String message, Throwable cause) {
+    public InternalHologramLoadException(String message, Throwable cause) {
         super(message, cause);
     }
 

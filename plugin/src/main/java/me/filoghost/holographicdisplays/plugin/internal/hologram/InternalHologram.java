@@ -5,66 +5,118 @@
  */
 package me.filoghost.holographicdisplays.plugin.internal.hologram;
 
-import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
-import me.filoghost.holographicdisplays.plugin.api.current.DefaultVisibilitySettings;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologramLines;
+import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.beta.hologram.PlaceholderSetting;
+import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent;
+import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
-import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.Bukkit;
 
-public class InternalHologram extends BaseHologram {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
 
-    private final BaseHologramLines<InternalHologramLine> lines;
+public class InternalHologram {
+
+    private final Hologram renderedHologram;
     private final String name;
-    private final DefaultVisibilitySettings visibilitySettings;
+    private ImmutablePosition position;
+    private final List<InternalHologramLine> lines;
+    private final List<InternalHologramLine> unmodifiableLinesView;
+    private boolean deleted;
 
-    protected InternalHologram(ImmutablePosition position, String name, LineTrackerManager lineTrackerManager) {
-        super(position, lineTrackerManager);
-        this.lines = new BaseHologramLines<>(this);
+    public InternalHologram(Function<ImmutablePosition, Hologram> hologramFactory, String name, ImmutablePosition position) {
+        this.renderedHologram = hologramFactory.apply(position);
+        this.renderedHologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
         this.name = name;
-        this.visibilitySettings = new DefaultVisibilitySettings();
+        this.position = position;
+        this.lines = new ArrayList<>();
+        this.unmodifiableLinesView = Collections.unmodifiableList(lines);
     }
 
-    @Override
-    public BaseHologramLines<InternalHologramLine> getLines() {
-        return lines;
-    }
-
-    public InternalTextHologramLine createTextLine(String text, String serializedConfigValue) {
-        return new InternalTextHologramLine(this, text, serializedConfigValue);
-    }
-
-    public InternalItemHologramLine createItemLine(ItemStack icon, String serializedConfigValue) {
-        return new InternalItemHologramLine(this, icon, serializedConfigValue);
+    public Hologram getRenderedHologram() {
+        return renderedHologram;
     }
 
     public String getName() {
         return name;
     }
 
-    public DefaultVisibilitySettings getVisibilitySettings() {
-        return visibilitySettings;
+    public ImmutablePosition getPosition() {
+        return position;
     }
 
-    @Override
-    public Plugin getCreatorPlugin() {
-        return HolographicDisplays.getInstance();
+    public void setPosition(ImmutablePosition position) {
+        checkNotDeleted();
+        this.position = position;
+        updateRendering();
     }
 
-    @Override
-    public boolean isVisibleTo(Player player) {
-        return visibilitySettings.isVisibleTo(player);
+    public List<InternalHologramLine> getLines() {
+        return unmodifiableLinesView;
     }
 
-    @Override
-    public String toString() {
-        return "InternalHologram{"
-                + "name=" + name
-                + ", super=" + super.toString()
-                + "}";
+    public void addLine(InternalHologramLine line) {
+        checkNotDeleted();
+        lines.add(line);
+        updateRendering();
+    }
+
+    public void addLines(List<InternalHologramLine> lines) {
+        checkNotDeleted();
+        this.lines.addAll(lines);
+        updateRendering();
+    }
+
+    public void setLine(int index, InternalHologramLine line) {
+        checkNotDeleted();
+        lines.set(index, line);
+        updateRendering();
+    }
+
+    public void setLines(List<InternalHologramLine> lines) {
+        checkNotDeleted();
+        this.lines.clear();
+        this.lines.addAll(lines);
+        updateRendering();
+    }
+
+    public void insertLine(int beforeIndex, InternalHologramLine line) {
+        checkNotDeleted();
+        lines.add(beforeIndex, line);
+        updateRendering();
+    }
+
+    public void removeLine(int index) {
+        checkNotDeleted();
+        lines.remove(index);
+        updateRendering();
+    }
+
+    void delete() {
+        if (!deleted) {
+            deleted = true;
+            renderedHologram.delete();
+        }
+    }
+
+    private void updateRendering() {
+        renderedHologram.setPosition(position);
+        renderedHologram.getLines().clear();
+        for (InternalHologramLine serializedLine : lines) {
+            serializedLine.appendTo(renderedHologram);
+        }
+    }
+
+    private void checkNotDeleted() {
+        if (deleted) {
+            throw new IllegalStateException("already deleted");
+        }
+    }
+
+    public void callChangeEvent(ChangeType changeType) {
+        Bukkit.getPluginManager().callEvent(new InternalHologramChangeEvent(this, changeType));
     }
 
 }

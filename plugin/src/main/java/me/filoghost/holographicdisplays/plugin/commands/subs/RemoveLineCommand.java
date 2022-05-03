@@ -44,7 +44,7 @@ public class RemoveLineCommand extends LineEditingCommand implements QuickEditCo
         CommandValidate.check(linesAmount >= 2,
                 "A hologram must always have at least 1 line. If you want to delete it, use /" + context.getRootLabel() + " delete.");
 
-        hologram.getLines().remove(index);
+        hologram.removeLine(index);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         sender.sendMessage(ColorScheme.PRIMARY + "Line " + lineNumber + " removed.");

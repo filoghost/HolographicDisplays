@@ -12,11 +12,7 @@ import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import org.bukkit.command.CommandSender;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CopyCommand extends HologramSubCommand {
 
@@ -36,12 +32,7 @@ public class CopyCommand extends HologramSubCommand {
         InternalHologram fromHologram = hologramEditor.getExistingHologram(args[0]);
         InternalHologram toHologram = hologramEditor.getExistingHologram(args[1]);
 
-        List<InternalHologramLine> clonedLines = new ArrayList<>();
-        for (InternalHologramLine line : fromHologram.getLines()) {
-            clonedLines.add(hologramEditor.parseHologramLine(toHologram, line.getSerializedConfigValue()));
-        }
-
-        toHologram.getLines().setAll(clonedLines);
+        toHologram.setLines(fromHologram.getLines());
         hologramEditor.saveChanges(toHologram, ChangeType.EDIT_LINES);
 
         sender.sendMessage(ColorScheme.PRIMARY + "Lines of hologram \"" + fromHologram.getName() + "\""

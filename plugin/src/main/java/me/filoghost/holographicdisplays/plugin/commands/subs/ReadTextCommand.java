@@ -10,13 +10,13 @@ import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
-import me.filoghost.holographicdisplays.plugin.config.HologramLineParser;
-import me.filoghost.holographicdisplays.plugin.config.HologramLoadException;
+import me.filoghost.holographicdisplays.plugin.config.InternalHologramLineParser;
+import me.filoghost.holographicdisplays.plugin.config.InternalHologramLoadException;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.util.FileUtils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -78,14 +78,14 @@ public class ReadTextCommand extends LineEditingCommand {
         List<InternalHologramLine> newLines = new ArrayList<>();
         for (int i = 0; i < linesAmount; i++) {
             try {
-                InternalHologramLine line = HologramLineParser.parseLine(hologram, serializedLines.get(i));
+                InternalHologramLine line = InternalHologramLineParser.parseLine(serializedLines.get(i));
                 newLines.add(line);
-            } catch (HologramLoadException e) {
+            } catch (InternalHologramLoadException e) {
                 throw new CommandException("Error at line " + (i + 1) + ": " + e.getMessage());
             }
         }
 
-        hologram.getLines().setAll(newLines);
+        hologram.setLines(newLines);
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_LINES);
 
         if (FileUtils.hasFileExtension(fileToRead, "jpg", "png", "jpeg", "gif")) {

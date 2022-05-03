@@ -11,11 +11,11 @@ import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -53,21 +53,21 @@ public class CreateCommand extends HologramSubCommand {
             spawnPosition = spawnPosition.add(0, 1.2, 0);
         }
 
-        InternalHologram hologram = hologramEditor.create(spawnPosition, hologramName);
+        InternalHologram hologram = hologramEditor.create(hologramName, spawnPosition);
         InternalHologramLine line;
 
         if (args.length > 1) {
             String text = Strings.joinFrom(" ", args, 1);
-            line = hologramEditor.parseHologramLine(hologram, text);
+            line = hologramEditor.parseHologramLine(text);
             player.sendMessage(ColorScheme.SECONDARY_DARK + "(Change the lines with /" + context.getRootLabel()
                     + " edit " + hologram.getName() + ")");
         } else {
-            String defaultText = "Default hologram. Change it with "
-                    + ColorScheme.PRIMARY + "/" + context.getRootLabel() + " edit " + hologram.getName();
-            line = hologram.createTextLine(defaultText, defaultText.replace(ChatColor.COLOR_CHAR, '&'));
+            line = hologramEditor.parseHologramLine("Default hologram. Change it with "
+                    + ColorScheme.PRIMARY.toString().replace(ChatColor.COLOR_CHAR, '&')
+                    + "/" + context.getRootLabel() + " edit " + hologram.getName());
         }
 
-        hologram.getLines().add(line);
+        hologram.addLine(line);
         hologramEditor.saveChanges(hologram, ChangeType.CREATE);
 
         hologramEditor.teleportLookingDown(player, player.getLocation());

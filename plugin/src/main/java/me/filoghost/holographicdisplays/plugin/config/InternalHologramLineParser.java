@@ -9,8 +9,9 @@ import me.filoghost.fcommons.Colors;
 import me.filoghost.fcommons.MaterialsHelper;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
-import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.ItemInternalHologramLine;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.TextInternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParseException;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParser;
 import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
@@ -20,31 +21,26 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Locale;
 
-public class HologramLineParser {
+public class InternalHologramLineParser {
 
     private static final String ICON_PREFIX = "icon:";
 
-    public static InternalHologramLine parseLine(InternalHologram hologram, String serializedLine) throws HologramLoadException {
-        InternalHologramLine hologramLine;
-
+    public static InternalHologramLine parseLine(String serializedLine) throws InternalHologramLoadException {
         if (serializedLine.toLowerCase(Locale.ROOT).startsWith(ICON_PREFIX)) {
             String serializedIcon = serializedLine.substring(ICON_PREFIX.length());
             ItemStack icon = parseItemStack(serializedIcon);
-            hologramLine = hologram.createItemLine(icon, serializedLine);
+            return new ItemInternalHologramLine(serializedLine, icon);
 
         } else {
             String displayText = DisplayFormat.apply(serializedLine, false);
             // Apply colors only outside placeholders
             displayText = StringWithPlaceholders.withEscapes(displayText).replaceStrings(Colors::colorize);
-            hologramLine = hologram.createTextLine(displayText, serializedLine);
+            return new TextInternalHologramLine(serializedLine, displayText);
         }
-
-        return hologramLine;
     }
 
-
     @SuppressWarnings("deprecation")
-    private static ItemStack parseItemStack(String serializedItem) throws HologramLoadException {
+    private static ItemStack parseItemStack(String serializedItem) throws InternalHologramLoadException {
         serializedItem = serializedItem.trim();
 
         // Parse json
@@ -71,7 +67,7 @@ public class HologramLineParser {
             try {
                 dataValue = (short) Integer.parseInt(materialAndDataValue[1]);
             } catch (NumberFormatException e) {
-                throw new HologramLoadException("data value \"" + materialAndDataValue[1] + "\" is not a valid number");
+                throw new InternalHologramLoadException("data value \"" + materialAndDataValue[1] + "\" is not a valid number");
             }
             materialName = materialAndDataValue[0];
         } else {
@@ -80,7 +76,7 @@ public class HologramLineParser {
 
         Material material = MaterialsHelper.matchMaterial(materialName);
         if (material == null) {
-            throw new HologramLoadException("\"" + materialName + "\" is not a valid material");
+            throw new InternalHologramLoadException("\"" + materialName + "\" is not a valid material");
         }
 
         ItemStack itemStack = new ItemStack(material, 1, dataValue);
@@ -91,9 +87,9 @@ public class HologramLineParser {
                 MojangsonParser.parse(nbtString);
                 Bukkit.getUnsafe().modifyItemStack(itemStack, nbtString);
             } catch (MojangsonParseException e) {
-                throw new HologramLoadException("invalid NBT data, " + e.getMessage());
+                throw new InternalHologramLoadException("invalid NBT data, " + e.getMessage());
             } catch (Exception e) {
-                throw new HologramLoadException("unexpected exception while parsing NBT data", e);
+                throw new InternalHologramLoadException("unexpected exception while parsing NBT data", e);
             }
         }
 

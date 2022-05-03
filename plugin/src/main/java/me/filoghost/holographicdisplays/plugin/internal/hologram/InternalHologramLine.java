@@ -5,10 +5,20 @@
  */
 package me.filoghost.holographicdisplays.plugin.internal.hologram;
 
-import me.filoghost.holographicdisplays.plugin.hologram.base.EditableHologramLine;
+import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
 
-public interface InternalHologramLine extends EditableHologramLine {
+public abstract class InternalHologramLine {
 
-    String getSerializedConfigValue();
+    private final String serializedString;
+
+    public InternalHologramLine(String serializedString) {
+        this.serializedString = serializedString;
+    }
+
+    public String getSerializedString() {
+        return serializedString;
+    }
+
+    public abstract void appendTo(Hologram hologram);
 
 }

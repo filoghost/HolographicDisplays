@@ -11,7 +11,7 @@ import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.config.exception.ConfigSyntaxException;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.ErrorLog;
-import me.filoghost.holographicdisplays.plugin.config.HologramLoadException;
+import me.filoghost.holographicdisplays.plugin.config.InternalHologramLoadException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -58,7 +58,7 @@ public class PrintableErrorCollector extends ErrorCollector {
                 details = ((ConfigSyntaxException) exception).getSyntaxErrorDetails();
                 break;
 
-            } else if (exception instanceof ConfigException || exception instanceof HologramLoadException) {
+            } else if (exception instanceof ConfigException || exception instanceof InternalHologramLoadException) {
                 // Known exceptions, add the message and inspect the cause
                 messageParts.add(exception.getMessage());
                 exception = exception.getCause();

@@ -9,10 +9,10 @@ import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
-import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import org.bukkit.command.CommandSender;
 
 public class InfoCommand extends LineEditingCommand implements QuickEditCommand {
@@ -40,7 +40,7 @@ public class InfoCommand extends LineEditingCommand implements QuickEditCommand 
         for (InternalHologramLine line : hologram.getLines()) {
             index++;
             sender.sendMessage(ColorScheme.SECONDARY_BOLD + index + ColorScheme.SECONDARY_DARK + ". "
-                    + ColorScheme.SECONDARY + line.getSerializedConfigValue());
+                    + ColorScheme.SECONDARY + line.getSerializedString());
         }
         commandManager.sendQuickEditCommands(context, hologram);
     }

@@ -9,16 +9,14 @@ import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
-import me.filoghost.holographicdisplays.plugin.config.HologramLineParser;
-import me.filoghost.holographicdisplays.plugin.config.HologramLoadException;
-import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent;
+import me.filoghost.holographicdisplays.plugin.config.InternalHologramLineParser;
+import me.filoghost.holographicdisplays.plugin.config.InternalHologramLoadException;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.util.FileUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -38,10 +36,10 @@ public class InternalHologramEditor {
         this.configManager = configManager;
     }
 
-    public InternalHologramLine parseHologramLine(InternalHologram hologram, String serializedLine) throws CommandException {
+    public InternalHologramLine parseHologramLine(String serializedLine) throws CommandException {
         try {
-            return HologramLineParser.parseLine(hologram, serializedLine);
-        } catch (HologramLoadException e) {
+            return InternalHologramLineParser.parseLine(serializedLine);
+        } catch (InternalHologramLoadException e) {
             throw new CommandException(formatExceptionMessage(e));
         }
     }
@@ -73,7 +71,7 @@ public class InternalHologramEditor {
         return internalHologramManager.getHolograms();
     }
 
-    public InternalHologram create(ImmutablePosition spawnPosition, String hologramName) {
+    public InternalHologram create(String hologramName, ImmutablePosition spawnPosition) {
         return internalHologramManager.createHologram(hologramName, spawnPosition);
     }
 
@@ -82,8 +80,8 @@ public class InternalHologramEditor {
     }
 
     public void saveChanges(InternalHologram hologram, ChangeType changeType) {
-        configManager.saveHologramDatabase(internalHologramManager);
-        Bukkit.getPluginManager().callEvent(new InternalHologramChangeEvent(hologram, changeType));
+        configManager.saveHologramDatabase(internalHologramManager.getHolograms());
+        hologram.callChangeEvent(changeType);
     }
 
     public void teleportLookingDown(Player player, Location location) {

@@ -9,6 +9,7 @@ import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider
 import me.filoghost.fcommons.FCommonsPlugin;
 import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.logging.ErrorCollector;
+import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.beta.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import me.filoghost.holographicdisplays.plugin.api.current.APIHologramManager;
@@ -20,13 +21,17 @@ import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.Placeholder
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
-import me.filoghost.holographicdisplays.plugin.config.HologramDatabase;
+import me.filoghost.holographicdisplays.plugin.config.InternalHologramLoadException;
+import me.filoghost.holographicdisplays.plugin.config.InternalHologramConfig;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.AnimationsLegacyUpgrade;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.DatabaseLegacyUpgrade;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.SymbolsLegacyUpgrade;
 import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
+import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.internal.placeholder.AnimationPlaceholderFactory;
 import me.filoghost.holographicdisplays.plugin.internal.placeholder.DefaultPlaceholders;
@@ -47,7 +52,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 public class HolographicDisplays extends FCommonsPlugin {
 
@@ -108,9 +115,11 @@ public class HolographicDisplays extends FCommonsPlugin {
         ActivePlaceholderTracker placeholderTracker = new ActivePlaceholderTracker(placeholderRegistry, tickClock);
         LineClickListener lineClickListener = new LineClickListener();
         lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener, tickClock);
-        internalHologramManager = new InternalHologramManager(lineTrackerManager);
         apiHologramManager = new APIHologramManager(lineTrackerManager);
         v2HologramManager = new V2HologramManager(lineTrackerManager);
+        Function<ImmutablePosition, Hologram> hologramFactory =
+                (ImmutablePosition position) -> apiHologramManager.createHologram(position, this);
+        internalHologramManager = new InternalHologramManager(hologramFactory);
 
         // Run only once at startup, before loading the configuration
         new SymbolsLegacyUpgrade(configManager, errorCollector).tryRun();
@@ -136,7 +145,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         // Listeners
         PlayerListener playerListener = new PlayerListener(nmsManager, lineClickListener, tickingTask);
         registerListener(playerListener);
-        registerListener(new ChunkListener(this, internalHologramManager, apiHologramManager, v2HologramManager));
+        registerListener(new ChunkListener(this, apiHologramManager, v2HologramManager));
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
         registerListener(updateNotificationListener);
 
@@ -178,8 +187,18 @@ public class HolographicDisplays extends FCommonsPlugin {
 
         bungeeServerTracker.restart(Settings.bungeeRefreshSeconds, TimeUnit.SECONDS);
 
-        HologramDatabase hologramDatabase = configManager.loadHologramDatabase(errorCollector);
-        hologramDatabase.createHolograms(internalHologramManager, errorCollector);
+        // Load holograms from database
+        List<InternalHologramConfig> hologramConfigs = configManager.readHologramDatabase(errorCollector);
+        for (InternalHologramConfig hologramConfig : hologramConfigs) {
+            try {
+                List<InternalHologramLine> lines = hologramConfig.deserializeLines();
+                ImmutablePosition position = hologramConfig.deserializePosition();
+                InternalHologram hologram = internalHologramManager.createHologram(hologramConfig.getName(), position);
+                hologram.addLines(lines);
+            } catch (InternalHologramLoadException e) {
+                errorCollector.add(e, "error while loading hologram \"" + hologramConfig.getName() + "\"");
+            }
+        }
 
         for (BaseHologram hologram : apiHologramManager.getHolograms()) {
             hologram.getLines().updatePositions();
