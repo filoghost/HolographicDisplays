@@ -9,7 +9,7 @@ import me.filoghost.fcommons.collection.CollectionUtils;
 import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.exception.ConfigValueException;
 import me.filoghost.holographicdisplays.api.beta.Position;
-import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
+import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 

@@ -14,7 +14,7 @@ import me.filoghost.holographicdisplays.plugin.internal.hologram.ItemInternalHol
 import me.filoghost.holographicdisplays.plugin.internal.hologram.TextInternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParseException;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParser;
-import me.filoghost.holographicdisplays.plugin.placeholder.parsing.StringWithPlaceholders;
+import me.filoghost.holographicdisplays.core.placeholder.parsing.StringWithPlaceholders;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

@@ -5,69 +5,46 @@
  */
 package me.filoghost.holographicdisplays.plugin;
 
-import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider;
 import me.filoghost.fcommons.FCommonsPlugin;
 import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.beta.internal.HolographicDisplaysAPIProvider;
-import me.filoghost.holographicdisplays.nms.common.NMSManager;
-import me.filoghost.holographicdisplays.plugin.api.current.APIHologramManager;
-import me.filoghost.holographicdisplays.plugin.api.current.DefaultHolographicDisplaysAPIProvider;
-import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramManager;
-import me.filoghost.holographicdisplays.plugin.api.v2.V2HologramsAPIProvider;
+import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.core.HolographicDisplaysCore;
+import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
-import me.filoghost.holographicdisplays.plugin.config.InternalHologramLoadException;
 import me.filoghost.holographicdisplays.plugin.config.InternalHologramConfig;
+import me.filoghost.holographicdisplays.plugin.config.InternalHologramLoadException;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.AnimationsLegacyUpgrade;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.DatabaseLegacyUpgrade;
 import me.filoghost.holographicdisplays.plugin.config.upgrade.SymbolsLegacyUpgrade;
-import me.filoghost.holographicdisplays.plugin.hologram.base.BaseHologram;
-import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
-import me.filoghost.holographicdisplays.plugin.hologram.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.internal.placeholder.AnimationPlaceholderFactory;
 import me.filoghost.holographicdisplays.plugin.internal.placeholder.DefaultPlaceholders;
-import me.filoghost.holographicdisplays.plugin.listener.ChunkListener;
-import me.filoghost.holographicdisplays.plugin.listener.LineClickListener;
-import me.filoghost.holographicdisplays.plugin.listener.PlayerListener;
 import me.filoghost.holographicdisplays.plugin.listener.UpdateNotificationListener;
 import me.filoghost.holographicdisplays.plugin.log.PrintableErrorCollector;
-import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
-import me.filoghost.holographicdisplays.plugin.placeholder.tracking.ActivePlaceholderTracker;
-import me.filoghost.holographicdisplays.plugin.tick.TickClock;
-import me.filoghost.holographicdisplays.plugin.tick.TickingTask;
-import me.filoghost.holographicdisplays.plugin.util.NMSVersion;
-import me.filoghost.holographicdisplays.plugin.util.NMSVersion.OutdatedVersionException;
-import me.filoghost.holographicdisplays.plugin.util.NMSVersion.UnknownVersionException;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 public class HolographicDisplays extends FCommonsPlugin {
 
     private static HolographicDisplays instance;
 
-    private NMSManager nmsManager;
+    private HolographicDisplaysCore core;
+    private HolographicDisplaysAPI api;
     private ConfigManager configManager;
     private BungeeServerTracker bungeeServerTracker;
-    private PlaceholderRegistry placeholderRegistry;
-    private LineTrackerManager lineTrackerManager;
     private InternalHologramManager internalHologramManager;
-    private APIHologramManager apiHologramManager;
-    private V2HologramManager v2HologramManager;
     private InternalHologramEditor internalHologramEditor;
 
     @Override
@@ -97,29 +74,13 @@ public class HolographicDisplays extends FCommonsPlugin {
 
         PrintableErrorCollector errorCollector = new PrintableErrorCollector();
 
-        // Initialize class fields
-        try {
-            nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
-        } catch (UnknownVersionException e) {
-            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.18.2.");
-        } catch (OutdatedVersionException e) {
-            throw new PluginEnableException("Holographic Displays only supports " + e.getMinimumSupportedVersion() + " and above.");
-        } catch (Throwable t) {
-            throw new PluginEnableException(t, "Couldn't initialize the NMS manager.");
-        }
+        core = new HolographicDisplaysCore();
+        core.enable(this, errorCollector);
+        api = HolographicDisplaysAPI.get(this);
 
         configManager = new ConfigManager(getDataFolder().toPath());
         bungeeServerTracker = new BungeeServerTracker(this);
-        placeholderRegistry = new PlaceholderRegistry();
-        TickClock tickClock = new TickClock();
-        ActivePlaceholderTracker placeholderTracker = new ActivePlaceholderTracker(placeholderRegistry, tickClock);
-        LineClickListener lineClickListener = new LineClickListener();
-        lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener, tickClock);
-        apiHologramManager = new APIHologramManager(lineTrackerManager);
-        v2HologramManager = new V2HologramManager(lineTrackerManager);
-        Function<ImmutablePosition, Hologram> hologramFactory =
-                (ImmutablePosition position) -> apiHologramManager.createHologram(position, this);
-        internalHologramManager = new InternalHologramManager(hologramFactory);
+        internalHologramManager = new InternalHologramManager(api);
 
         // Run only once at startup, before loading the configuration
         new SymbolsLegacyUpgrade(configManager, errorCollector).tryRun();
@@ -129,30 +90,13 @@ public class HolographicDisplays extends FCommonsPlugin {
         // Load the configuration
         load(errorCollector);
 
-        // Add packet listener for currently online players (may happen if the plugin is disabled and re-enabled)
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            nmsManager.injectPacketListener(player, lineClickListener);
-        }
-
         // Commands
         internalHologramEditor = new InternalHologramEditor(internalHologramManager, configManager);
         new HologramCommandManager(this, internalHologramEditor).register(this);
 
-        // Tasks
-        TickingTask tickingTask = new TickingTask(tickClock, placeholderTracker, lineTrackerManager, lineClickListener);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, tickingTask, 0, 1);
-
-        // Listeners
-        PlayerListener playerListener = new PlayerListener(nmsManager, lineClickListener, tickingTask);
-        registerListener(playerListener);
-        registerListener(new ChunkListener(this, apiHologramManager, v2HologramManager));
+        // Listener
         UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
         registerListener(updateNotificationListener);
-
-        // Enable the APIs
-        HolographicDisplaysAPIProvider.setImplementation(
-                new DefaultHolographicDisplaysAPIProvider(apiHologramManager, placeholderRegistry));
-        enableLegacyAPI(v2HologramManager, placeholderRegistry);
 
         // Setup external plugin hooks
         PlaceholderAPIHook.setup();
@@ -171,11 +115,6 @@ public class HolographicDisplays extends FCommonsPlugin {
         updateNotificationListener.runAsyncUpdateCheck(this);
     }
 
-    @SuppressWarnings("deprecation")
-    private void enableLegacyAPI(V2HologramManager hologramManager, PlaceholderRegistry placeholderRegistry) {
-        HologramsAPIProvider.setImplementation(new V2HologramsAPIProvider(hologramManager, placeholderRegistry));
-    }
-
     public void load(ErrorCollector errorCollector) {
         internalHologramManager.deleteHolograms();
 
@@ -183,7 +122,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         configManager.reloadMainSettings(errorCollector);
 
         AnimationPlaceholderFactory animationPlaceholderFactory = configManager.loadAnimations(errorCollector);
-        DefaultPlaceholders.resetAndRegister(this, placeholderRegistry, animationPlaceholderFactory, bungeeServerTracker);
+        DefaultPlaceholders.resetAndRegister(api, animationPlaceholderFactory, bungeeServerTracker);
 
         bungeeServerTracker.restart(Settings.bungeeRefreshSeconds, TimeUnit.SECONDS);
 
@@ -200,25 +139,12 @@ public class HolographicDisplays extends FCommonsPlugin {
             }
         }
 
-        for (BaseHologram hologram : apiHologramManager.getHolograms()) {
-            hologram.getLines().updatePositions();
-        }
-        for (BaseHologram hologram : v2HologramManager.getHolograms()) {
-            hologram.getLines().updatePositions();
-        }
+        core.setSpaceBetweenHologramLines(Settings.spaceBetweenLines);
     }
 
     @Override
     public void onDisable() {
-        if (lineTrackerManager != null) {
-            lineTrackerManager.resetViewersAndSendDestroyPackets();
-        }
-
-        if (nmsManager != null) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                nmsManager.uninjectPacketListener(player);
-            }
-        }
+        core.disable();
     }
 
     public static HolographicDisplays getInstance() {

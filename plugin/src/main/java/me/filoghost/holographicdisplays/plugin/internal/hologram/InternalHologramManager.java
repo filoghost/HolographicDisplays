@@ -5,22 +5,21 @@
  */
 package me.filoghost.holographicdisplays.plugin.internal.hologram;
 
-import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
-import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
+import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 public class InternalHologramManager {
 
-    private final Function<ImmutablePosition, Hologram> hologramFactory;
+    private final HolographicDisplaysAPI api;
     private final List<InternalHologram> holograms;
 
-    public InternalHologramManager(Function<ImmutablePosition, Hologram> hologramFactory) {
-        this.hologramFactory = hologramFactory;
+    public InternalHologramManager(HolographicDisplaysAPI api) {
+        this.api = api;
         this.holograms = new ArrayList<>();
     }
 
@@ -37,7 +36,7 @@ public class InternalHologramManager {
         if (getHologramByName(name) != null) {
             throw new IllegalStateException("hologram named \"" + name + "\" already exists");
         }
-        InternalHologram hologram = new InternalHologram(hologramFactory, name, position);
+        InternalHologram hologram = new InternalHologram(api, name, position);
         holograms.add(hologram);
         return hologram;
     }

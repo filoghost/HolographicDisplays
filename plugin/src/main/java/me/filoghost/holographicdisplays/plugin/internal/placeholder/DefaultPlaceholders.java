@@ -6,13 +6,12 @@
 package me.filoghost.holographicdisplays.plugin.internal.placeholder;
 
 import me.filoghost.fcommons.collection.CollectionUtils;
+import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.ServerInfo;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
-import me.filoghost.holographicdisplays.plugin.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.Plugin;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -24,17 +23,16 @@ public class DefaultPlaceholders {
     private static final String NO_SERVER_SPECIFIED_ERROR = "[No server specified]";
 
     public static void resetAndRegister(
-            Plugin plugin,
-            PlaceholderRegistry placeholderRegistry,
+            HolographicDisplaysAPI api,
             AnimationPlaceholderFactory animationPlaceholderFactory,
             BungeeServerTracker bungeeServerTracker) {
-        placeholderRegistry.unregisterAll(plugin);
+        api.unregisterPlaceholders();
 
-        placeholderRegistry.registerGlobalPlaceholder(plugin, "empty", Integer.MAX_VALUE, (argument) -> {
+        api.registerGlobalPlaceholder("empty", Integer.MAX_VALUE, (argument) -> {
             return "";
         });
 
-        placeholderRegistry.registerGlobalPlaceholder(plugin, "rainbow", new AnimationPlaceholder(4, toStringList(
+        api.registerGlobalPlaceholder("rainbow", new AnimationPlaceholder(4, toStringList(
                 ChatColor.RED,
                 ChatColor.GOLD,
                 ChatColor.YELLOW,
@@ -43,17 +41,17 @@ public class DefaultPlaceholders {
                 ChatColor.LIGHT_PURPLE
         )));
 
-        placeholderRegistry.registerGlobalPlaceholder(plugin, "time", 10, (argument) -> {
+        api.registerGlobalPlaceholder("time", 10, (argument) -> {
             return Settings.timeFormat.format(Instant.now());
         });
 
-        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "animation", animationPlaceholderFactory);
+        api.registerGlobalPlaceholderFactory("animation", animationPlaceholderFactory);
 
-        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "world", new WorldPlayersPlaceholderFactory());
+        api.registerGlobalPlaceholderFactory("world", new WorldPlayersPlaceholderFactory());
 
-        placeholderRegistry.registerGlobalPlaceholderFactory(plugin, "online", new OnlinePlayersPlaceholderFactory(bungeeServerTracker));
+        api.registerGlobalPlaceholderFactory("online", new OnlinePlayersPlaceholderFactory(bungeeServerTracker));
 
-        placeholderRegistry.registerGlobalPlaceholder(plugin, "max_players", 20, (serverName) -> {
+        api.registerGlobalPlaceholder("max_players", 20, (serverName) -> {
             if (serverName == null) {
                 // No argument specified, return max players of this server
                 return String.valueOf(Bukkit.getMaxPlayers());
@@ -66,7 +64,7 @@ public class DefaultPlaceholders {
             return String.valueOf(bungeeServerTracker.getCurrentServerInfo(serverName).getMaxPlayers());
         });
 
-        placeholderRegistry.registerGlobalPlaceholder(plugin, "status", 20, (serverName) -> {
+        api.registerGlobalPlaceholder("status", 20, (serverName) -> {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
@@ -83,7 +81,7 @@ public class DefaultPlaceholders {
             }
         });
 
-        placeholderRegistry.registerGlobalPlaceholder(plugin, "motd", 20, (serverName) -> {
+        api.registerGlobalPlaceholder("motd", 20, (serverName) -> {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
@@ -95,7 +93,7 @@ public class DefaultPlaceholders {
             return bungeeServerTracker.getCurrentServerInfo(serverName).getMotdLine1();
         });
 
-        placeholderRegistry.registerGlobalPlaceholder(plugin, "motd2", 20, (serverName) -> {
+        api.registerGlobalPlaceholder("motd2", 20, (serverName) -> {
             if (serverName == null) {
                 return NO_SERVER_SPECIFIED_ERROR;
             }
@@ -107,15 +105,15 @@ public class DefaultPlaceholders {
             return bungeeServerTracker.getCurrentServerInfo(serverName).getMotdLine2();
         });
 
-        placeholderRegistry.registerIndividualPlaceholder(plugin, "player", Integer.MAX_VALUE, (player, argument) -> {
+        api.registerIndividualPlaceholder("player", Integer.MAX_VALUE, (player, argument) -> {
             return player.getName();
         });
 
-        placeholderRegistry.registerIndividualPlaceholder(plugin, "displayName", 20, (player, argument) -> {
+        api.registerIndividualPlaceholder("displayName", 20, (player, argument) -> {
             return player.getDisplayName();
         });
 
-        placeholderRegistry.registerIndividualPlaceholderFactory(plugin, "papi", new PlaceholderAPIPlaceholderFactory());
+        api.registerIndividualPlaceholderFactory("papi", new PlaceholderAPIPlaceholderFactory());
     }
 
     private static List<String> toStringList(ChatColor... colors) {

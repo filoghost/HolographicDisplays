@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.format;
 
 import me.filoghost.fcommons.Colors;
 import me.filoghost.holographicdisplays.plugin.config.StaticReplacements;
-import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
+import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;

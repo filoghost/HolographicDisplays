@@ -5,17 +5,17 @@
  */
 package me.filoghost.holographicdisplays.plugin.internal.hologram;
 
+import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.beta.hologram.PlaceholderSetting;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
-import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
+import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 public class InternalHologram {
 
@@ -26,8 +26,8 @@ public class InternalHologram {
     private final List<InternalHologramLine> unmodifiableLinesView;
     private boolean deleted;
 
-    public InternalHologram(Function<ImmutablePosition, Hologram> hologramFactory, String name, ImmutablePosition position) {
-        this.renderedHologram = hologramFactory.apply(position);
+    public InternalHologram(HolographicDisplaysAPI api, String name, ImmutablePosition position) {
+        this.renderedHologram = api.createHologram(position);
         this.renderedHologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
         this.name = name;
         this.position = position;

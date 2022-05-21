@@ -1,0 +1,50 @@
+/*
+ * Copyright (C) filoghost and contributors
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+package me.filoghost.holographicdisplays.core.listener;
+
+import me.filoghost.holographicdisplays.nms.common.NMSManager;
+import me.filoghost.holographicdisplays.core.tick.TickingTask;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+
+public class PlayerListener implements Listener {
+
+    private final NMSManager nmsManager;
+    private final LineClickListener lineClickListener;
+    private final TickingTask tickingTask;
+
+    public PlayerListener(NMSManager nmsManager, LineClickListener lineClickListener, TickingTask tickingTask) {
+        this.nmsManager = nmsManager;
+        this.lineClickListener = lineClickListener;
+        this.tickingTask = tickingTask;
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        tickingTask.onPlayerJoin(player);
+        nmsManager.injectPacketListener(player, lineClickListener);
+    }
+
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        tickingTask.onPlayerQuit(player);
+        nmsManager.uninjectPacketListener(player);
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        tickingTask.onPlayerRespawn(player);
+    }
+
+}

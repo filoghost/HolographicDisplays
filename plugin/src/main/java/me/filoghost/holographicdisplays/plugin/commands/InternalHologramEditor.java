@@ -12,7 +12,7 @@ import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.config.InternalHologramLineParser;
 import me.filoghost.holographicdisplays.plugin.config.InternalHologramLoadException;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
-import me.filoghost.holographicdisplays.plugin.hologram.base.ImmutablePosition;
+import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;

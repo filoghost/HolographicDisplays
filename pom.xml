@@ -21,6 +21,7 @@
         <module>api</module>
         <module>legacy-api</module>
         <module>nms</module>
+        <module>core</module>
         <module>plugin</module>
         <module>example</module>
     </modules>
@@ -83,6 +84,12 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>holographicdisplays-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>holographicdisplays-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
