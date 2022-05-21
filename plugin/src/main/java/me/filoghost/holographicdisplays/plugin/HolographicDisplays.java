@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.plugin;
 import me.filoghost.fcommons.FCommonsPlugin;
 import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.logging.ErrorCollector;
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.core.HolographicDisplaysCore;
 import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
@@ -29,6 +30,7 @@ import me.filoghost.holographicdisplays.plugin.internal.placeholder.AnimationPla
 import me.filoghost.holographicdisplays.plugin.internal.placeholder.DefaultPlaceholders;
 import me.filoghost.holographicdisplays.plugin.listener.UpdateNotificationListener;
 import me.filoghost.holographicdisplays.plugin.log.PrintableErrorCollector;
+import me.filoghost.updatechecker.UpdateChecker;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -94,16 +96,12 @@ public class HolographicDisplays extends FCommonsPlugin {
         internalHologramEditor = new InternalHologramEditor(internalHologramManager, configManager);
         new HologramCommandManager(this, internalHologramEditor).register(this);
 
-        // Listener
-        UpdateNotificationListener updateNotificationListener = new UpdateNotificationListener();
-        registerListener(updateNotificationListener);
-
         // Setup external plugin hooks
         PlaceholderAPIHook.setup();
 
         // Register bStats metrics
-        int pluginID = 3123;
-        new MetricsLite(this, pluginID);
+        int bStatsPluginID = 3123;
+        new MetricsLite(this, bStatsPluginID);
 
         // Log all loading errors at the end
         if (errorCollector.hasErrors()) {
@@ -112,7 +110,15 @@ public class HolographicDisplays extends FCommonsPlugin {
         }
 
         // Run the update checker
-        updateNotificationListener.runAsyncUpdateCheck(this);
+        if (Settings.updateNotification) {
+            int bukkitPluginID = 75097;
+            UpdateChecker.run(this, bukkitPluginID, (String newVersion) -> {
+                registerListener(new UpdateNotificationListener(newVersion));
+                Log.info("Found a new version available: " + newVersion);
+                Log.info("Download it on Bukkit Dev:");
+                Log.info("https://dev.bukkit.org/projects/holographic-displays");
+            });
+        }
     }
 
     public void load(ErrorCollector errorCollector) {
