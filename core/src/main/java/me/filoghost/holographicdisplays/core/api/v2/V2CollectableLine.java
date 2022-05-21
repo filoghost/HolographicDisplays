@@ -19,13 +19,9 @@ interface V2CollectableLine extends CollectableLine, V2HologramLine, PickupCallb
 
     @Override
     default void invokePickupCallback(Player player) {
-        try {
-            PickupHandler pickupListener = getPickupHandler();
-            if (pickupListener != null) {
-                pickupListener.onPickup(player);
-            }
-        } catch (Throwable t) {
-            logPickupCallbackException(getCreatorPlugin(), player, t);
+        PickupHandler pickupListener = getPickupHandler();
+        if (pickupListener != null) {
+            pickupListener.onPickup(player);
         }
     }
 

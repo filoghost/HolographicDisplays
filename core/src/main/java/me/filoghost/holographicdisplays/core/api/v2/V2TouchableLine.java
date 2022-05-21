@@ -19,13 +19,9 @@ interface V2TouchableLine extends TouchableLine, V2HologramLine, ClickCallbackPr
 
     @Override
     default void invokeClickCallback(Player player) {
-        try {
-            TouchHandler touchHandler = getTouchHandler();
-            if (touchHandler != null) {
-                touchHandler.onTouch(player);
-            }
-        } catch (Throwable t) {
-            logClickCallbackException(getCreatorPlugin(), player, t);
+        TouchHandler touchHandler = getTouchHandler();
+        if (touchHandler != null) {
+            touchHandler.onTouch(player);
         }
     }
 

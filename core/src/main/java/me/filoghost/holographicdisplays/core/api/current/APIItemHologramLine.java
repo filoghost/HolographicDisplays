@@ -53,12 +53,8 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
 
     @Override
     public void invokePickupCallback(Player player) {
-        try {
-            if (pickupListener != null) {
-                pickupListener.onPickup(new SimpleHologramLinePickupEvent(player));
-            }
-        } catch (Throwable t) {
-            logPickupCallbackException(getCreatorPlugin(), player, t);
+        if (pickupListener != null) {
+            pickupListener.onPickup(new SimpleHologramLinePickupEvent(player));
         }
     }
 

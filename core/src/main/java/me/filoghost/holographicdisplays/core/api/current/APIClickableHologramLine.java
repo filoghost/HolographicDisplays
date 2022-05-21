@@ -19,13 +19,9 @@ interface APIClickableHologramLine extends ClickableHologramLine, APIHologramLin
 
     @Override
     default void invokeClickCallback(Player player) {
-        try {
-            HologramLineClickListener clickListener = getClickListener();
-            if (clickListener != null) {
-                clickListener.onClick(new SimpleHologramLineClickEvent(player));
-            }
-        } catch (Throwable t) {
-            logClickCallbackException(getCreatorPlugin(), player, t);
+        HologramLineClickListener clickListener = getClickListener();
+        if (clickListener != null) {
+            clickListener.onClick(new SimpleHologramLineClickEvent(player));
         }
     }
 

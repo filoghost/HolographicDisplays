@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.core.base;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.core.tracking.ItemLineTracker;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
@@ -29,7 +30,12 @@ public abstract class BaseItemHologramLine extends BaseClickableHologramLine imp
 
     public void onPickup(Player player) {
         if (hasPickupCallback() && canInteract(player)) {
-            invokePickupCallback(player);
+            try {
+                invokePickupCallback(player);
+            } catch (Throwable t) {
+                Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
+                        + " when the player " + player.getName() + " picked up an item from a hologram.", t);
+            }
         }
     }
 

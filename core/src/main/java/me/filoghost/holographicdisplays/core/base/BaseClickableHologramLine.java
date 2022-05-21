@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.base;
 
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,7 +18,12 @@ public abstract class BaseClickableHologramLine extends BaseHologramLine impleme
 
     public void onClick(Player player) {
         if (hasClickCallback() && canInteract(player) && isInClickRange(player)) {
-            invokeClickCallback(player);
+            try {
+                invokeClickCallback(player);
+            } catch (Throwable t) {
+                Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
+                        + " when the player " + player.getName() + " clicked a hologram.", t);
+            }
         }
     }
 
