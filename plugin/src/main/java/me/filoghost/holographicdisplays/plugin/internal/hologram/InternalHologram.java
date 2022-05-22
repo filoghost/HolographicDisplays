@@ -6,11 +6,11 @@
 package me.filoghost.holographicdisplays.plugin.internal.hologram;
 
 import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.beta.Position;
 import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.beta.hologram.PlaceholderSetting;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
-import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -21,12 +21,12 @@ public class InternalHologram {
 
     private final Hologram renderedHologram;
     private final String name;
-    private ImmutablePosition position;
+    private Position position;
     private final List<InternalHologramLine> lines;
     private final List<InternalHologramLine> unmodifiableLinesView;
     private boolean deleted;
 
-    public InternalHologram(HolographicDisplaysAPI api, String name, ImmutablePosition position) {
+    public InternalHologram(HolographicDisplaysAPI api, String name, Position position) {
         this.renderedHologram = api.createHologram(position);
         this.renderedHologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
         this.name = name;
@@ -43,11 +43,11 @@ public class InternalHologram {
         return name;
     }
 
-    public ImmutablePosition getPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    public void setPosition(ImmutablePosition position) {
+    public void setPosition(Position position) {
         checkNotDeleted();
         this.position = position;
         updateRendering();

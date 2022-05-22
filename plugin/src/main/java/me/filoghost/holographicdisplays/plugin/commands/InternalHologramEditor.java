@@ -8,11 +8,11 @@ package me.filoghost.holographicdisplays.plugin.commands;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
+import me.filoghost.holographicdisplays.api.beta.Position;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.config.InternalHologramLineParser;
 import me.filoghost.holographicdisplays.plugin.config.InternalHologramLoadException;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
-import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
@@ -71,7 +71,7 @@ public class InternalHologramEditor {
         return internalHologramManager.getHolograms();
     }
 
-    public InternalHologram create(String hologramName, ImmutablePosition spawnPosition) {
+    public InternalHologram create(String hologramName, Position spawnPosition) {
         return internalHologramManager.createHologram(hologramName, spawnPosition);
     }
 

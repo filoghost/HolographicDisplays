@@ -9,13 +9,13 @@ import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
+import me.filoghost.holographicdisplays.api.beta.Position;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
-import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
-import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
+import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -46,7 +46,7 @@ public class CreateCommand extends HologramSubCommand {
                 "The name must contain only alphanumeric characters, underscores and hyphens.");
         CommandValidate.check(!hologramEditor.hologramExists(hologramName), "A hologram with that name already exists.");
 
-        ImmutablePosition spawnPosition = ImmutablePosition.of(player.getLocation());
+        Position spawnPosition = Position.of(player);
         boolean moveUp = player.isOnGround();
 
         if (moveUp) {

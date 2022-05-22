@@ -8,11 +8,11 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
+import me.filoghost.holographicdisplays.api.beta.Position;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
-import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import org.bukkit.command.CommandSender;
 
@@ -36,19 +36,19 @@ public class AlignCommand extends HologramSubCommand {
 
         CommandValidate.check(hologram != referenceHologram, "The holograms must not be the same.");
 
-        ImmutablePosition referencePosition = referenceHologram.getPosition();
-        ImmutablePosition newPosition = hologram.getPosition();
+        Position referencePosition = referenceHologram.getPosition();
+        Position oldPosition = hologram.getPosition();
+        Position newPosition;
 
         String axis = args[0];
         if (axis.equalsIgnoreCase("x")) {
-            newPosition = newPosition.withX(referencePosition.getX());
+            newPosition = Position.of(oldPosition.getWorldName(), referencePosition.getX(), oldPosition.getY(), oldPosition.getZ());
         } else if (axis.equalsIgnoreCase("y")) {
-            newPosition = newPosition.withY(referencePosition.getY());
+            newPosition = Position.of(oldPosition.getWorldName(), oldPosition.getX(), referencePosition.getY(), oldPosition.getZ());
         } else if (axis.equalsIgnoreCase("z")) {
-            newPosition = newPosition.withZ(referencePosition.getZ());
+            newPosition = Position.of(oldPosition.getWorldName(), oldPosition.getX(), oldPosition.getY(), referencePosition.getZ());
         } else if (axis.equalsIgnoreCase("xz")) {
-            newPosition = newPosition.withX(referencePosition.getX());
-            newPosition = newPosition.withZ(referencePosition.getZ());
+            newPosition = Position.of(oldPosition.getWorldName(), referencePosition.getX(), oldPosition.getY(), referencePosition.getZ());
         } else {
             throw new CommandException("You must specify either X, Y, Z or XZ, " + axis + " is not a valid axis.");
         }

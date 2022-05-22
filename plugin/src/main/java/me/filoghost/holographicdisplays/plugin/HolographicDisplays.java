@@ -10,8 +10,8 @@ import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.beta.Position;
 import me.filoghost.holographicdisplays.core.HolographicDisplaysCore;
-import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.bridge.bungeecord.BungeeServerTracker;
 import me.filoghost.holographicdisplays.plugin.bridge.placeholderapi.PlaceholderAPIHook;
 import me.filoghost.holographicdisplays.plugin.commands.HologramCommandManager;
@@ -137,7 +137,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         for (InternalHologramConfig hologramConfig : hologramConfigs) {
             try {
                 List<InternalHologramLine> lines = hologramConfig.deserializeLines();
-                ImmutablePosition position = hologramConfig.deserializePosition();
+                Position position = hologramConfig.deserializePosition();
                 InternalHologram hologram = internalHologramManager.createHologram(hologramConfig.getName(), position);
                 hologram.addLines(lines);
             } catch (InternalHologramLoadException e) {

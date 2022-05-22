@@ -8,11 +8,11 @@ package me.filoghost.holographicdisplays.plugin.commands.subs;
 import me.filoghost.fcommons.command.sub.SubCommandContext;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
+import me.filoghost.holographicdisplays.api.beta.Position;
 import me.filoghost.holographicdisplays.plugin.commands.HologramSubCommand;
 import me.filoghost.holographicdisplays.plugin.commands.InternalHologramEditor;
 import me.filoghost.holographicdisplays.plugin.event.InternalHologramChangeEvent.ChangeType;
 import me.filoghost.holographicdisplays.plugin.format.ColorScheme;
-import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class MoveHereCommand extends HologramSubCommand {
         Player player = CommandValidate.getPlayerSender(sender);
         InternalHologram hologram = hologramEditor.getExistingHologram(args[0]);
 
-        hologram.setPosition(ImmutablePosition.of(player.getLocation()));
+        hologram.setPosition(Position.of(player));
         hologramEditor.saveChanges(hologram, ChangeType.EDIT_POSITION);
 
         hologramEditor.teleportLookingDown(player, player.getLocation());

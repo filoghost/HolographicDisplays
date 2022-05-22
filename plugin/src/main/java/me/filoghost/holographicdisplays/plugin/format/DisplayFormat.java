@@ -7,8 +7,8 @@
 package me.filoghost.holographicdisplays.plugin.format;
 
 import me.filoghost.fcommons.Colors;
+import me.filoghost.holographicdisplays.api.beta.Position;
 import me.filoghost.holographicdisplays.plugin.config.StaticReplacements;
-import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -93,7 +93,7 @@ public class DisplayFormat {
     }
 
     public static void sendHologramSummary(CommandSender sender, InternalHologram hologram, boolean showWorld) {
-        ImmutablePosition position = hologram.getPosition();
+        Position position = hologram.getPosition();
         sender.sendMessage(ColorScheme.SECONDARY_DARK + "- " + ColorScheme.SECONDARY_BOLD + hologram.getName()
                 + ColorScheme.SECONDARY_DARK + " (" + hologram.getLines().size() + " lines) at "
                 + (showWorld ? "world: \"" + position.getWorldName() + "\", " : "")

@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.plugin.internal.hologram;
 
 import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
-import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
+import me.filoghost.holographicdisplays.api.beta.Position;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class InternalHologramManager {
         return null;
     }
 
-    public InternalHologram createHologram(String name, ImmutablePosition position) {
+    public InternalHologram createHologram(String name, Position position) {
         if (getHologramByName(name) != null) {
             throw new IllegalStateException("hologram named \"" + name + "\" already exists");
         }

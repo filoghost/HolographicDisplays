@@ -9,7 +9,6 @@ import me.filoghost.fcommons.collection.CollectionUtils;
 import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.exception.ConfigValueException;
 import me.filoghost.holographicdisplays.api.beta.Position;
-import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 
@@ -77,7 +76,7 @@ public class InternalHologramConfig {
         return positionConfigSection;
     }
 
-    public ImmutablePosition deserializePosition() throws InternalHologramLoadException {
+    public Position deserializePosition() throws InternalHologramLoadException {
         ConfigSection positionConfigSection = configSection.getConfigSection("position");
 
         if (positionConfigSection == null) {
@@ -89,7 +88,7 @@ public class InternalHologramConfig {
             double x = positionConfigSection.getRequiredDouble("x");
             double y = positionConfigSection.getRequiredDouble("y");
             double z = positionConfigSection.getRequiredDouble("z");
-            return new ImmutablePosition(worldName, x, y, z);
+            return Position.of(worldName, x, y, z);
         } catch (ConfigValueException e) {
             throw new InternalHologramLoadException("invalid position attribute \"" + e.getConfigPath() + "\"", e);
         }
