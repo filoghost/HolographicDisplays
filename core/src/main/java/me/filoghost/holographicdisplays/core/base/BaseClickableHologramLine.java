@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public abstract class BaseClickableHologramLine extends BaseHologramLine implements ClickCallbackProvider {
+public abstract class BaseClickableHologramLine extends BaseHologramLine {
 
     protected BaseClickableHologramLine(BaseHologram hologram) {
         super(hologram);
@@ -26,6 +26,10 @@ public abstract class BaseClickableHologramLine extends BaseHologramLine impleme
             }
         }
     }
+
+    public abstract boolean hasClickCallback();
+
+    protected abstract void invokeClickCallback(Player player);
 
     private boolean isInClickRange(Player player) {
         Location playerLocation = player.getLocation();

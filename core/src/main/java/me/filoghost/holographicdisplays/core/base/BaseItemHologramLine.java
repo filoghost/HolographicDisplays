@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BaseItemHologramLine extends BaseClickableHologramLine implements PickupCallbackProvider {
+public abstract class BaseItemHologramLine extends BaseClickableHologramLine {
 
     private ItemStack itemStack;
 
@@ -38,6 +38,10 @@ public abstract class BaseItemHologramLine extends BaseClickableHologramLine imp
             }
         }
     }
+
+    public abstract boolean hasPickupCallback();
+
+    protected abstract void invokePickupCallback(Player player);
 
     public @Nullable ItemStack getItemStack() {
         return clone(itemStack);

@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLine, APIClickableHologramLine {
+class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLine, APIHologramLine {
 
     private HologramLinePickupListener pickupListener;
     private HologramLineClickListener clickListener;
@@ -40,6 +40,18 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
     }
 
     @Override
+    public boolean hasPickupCallback() {
+        return pickupListener != null;
+    }
+
+    @Override
+    protected void invokePickupCallback(Player player) {
+        if (pickupListener != null) {
+            pickupListener.onPickup(new SimpleHologramLinePickupEvent(player));
+        }
+    }
+
+    @Override
     public void setClickListener(@Nullable HologramLineClickListener clickListener) {
         checkNotDeleted();
 
@@ -47,14 +59,14 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
     }
 
     @Override
-    public boolean hasPickupCallback() {
-        return pickupListener != null;
+    public boolean hasClickCallback() {
+        return clickListener != null;
     }
 
     @Override
-    public void invokePickupCallback(Player player) {
-        if (pickupListener != null) {
-            pickupListener.onPickup(new SimpleHologramLinePickupEvent(player));
+    protected void invokeClickCallback(Player player) {
+        if (clickListener != null) {
+            clickListener.onClick(new SimpleHologramLineClickEvent(player));
         }
     }
 

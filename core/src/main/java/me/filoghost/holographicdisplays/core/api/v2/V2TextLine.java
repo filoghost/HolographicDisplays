@@ -8,9 +8,10 @@ package me.filoghost.holographicdisplays.core.api.v2;
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.filoghost.holographicdisplays.core.base.BaseTextHologramLine;
+import org.bukkit.entity.Player;
 
 @SuppressWarnings("deprecation")
-class V2TextLine extends BaseTextHologramLine implements TextLine, V2TouchableLine {
+class V2TextLine extends BaseTextHologramLine implements TextLine, V2HologramLine {
 
     private final V2Hologram hologram;
 
@@ -39,6 +40,18 @@ class V2TextLine extends BaseTextHologramLine implements TextLine, V2TouchableLi
     @Override
     public TouchHandler getTouchHandler() {
         return touchHandler;
+    }
+
+    @Override
+    public boolean hasClickCallback() {
+        return touchHandler != null;
+    }
+
+    @Override
+    protected void invokeClickCallback(Player player) {
+        if (touchHandler != null) {
+            touchHandler.onTouch(player);
+        }
     }
 
 }

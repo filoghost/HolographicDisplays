@@ -9,10 +9,11 @@ import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import me.filoghost.holographicdisplays.core.base.BaseItemHologramLine;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("deprecation")
-class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2CollectableLine, V2TouchableLine {
+class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2HologramLine {
 
     private final V2Hologram hologram;
 
@@ -40,6 +41,18 @@ class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2Collectable
     }
 
     @Override
+    public boolean hasClickCallback() {
+        return touchHandler != null;
+    }
+
+    @Override
+    protected void invokeClickCallback(Player player) {
+        if (touchHandler != null) {
+            touchHandler.onTouch(player);
+        }
+    }
+
+    @Override
     public void setPickupHandler(PickupHandler pickupHandler) {
         this.pickupHandler = pickupHandler;
     }
@@ -47,6 +60,18 @@ class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2Collectable
     @Override
     public PickupHandler getPickupHandler() {
         return pickupHandler;
+    }
+
+    @Override
+    public boolean hasPickupCallback() {
+        return pickupHandler != null;
+    }
+
+    @Override
+    protected void invokePickupCallback(Player player) {
+        if (pickupHandler != null) {
+            pickupHandler.onPickup(player);
+        }
     }
 
 }
