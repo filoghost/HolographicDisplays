@@ -13,13 +13,12 @@ class EntityDestroyNMSPacket extends VersionNMSPacket {
 
     private final Packet<?> rawPacket;
 
-    EntityDestroyNMSPacket(EntityID... entityIDs) {
-        int[] entityIDsArray = new int[entityIDs.length];
-        for (int i = 0; i < entityIDs.length; i++) {
-            entityIDsArray[i] = entityIDs[i].getNumericID();
-        }
+    EntityDestroyNMSPacket(EntityID entityID) {
+        this.rawPacket = new PacketPlayOutEntityDestroy(entityID.getNumericID());
+    }
 
-        this.rawPacket = new PacketPlayOutEntityDestroy(entityIDsArray);
+    EntityDestroyNMSPacket(EntityID entityID1, EntityID entityID2) {
+        this.rawPacket = new PacketPlayOutEntityDestroy(entityID1.getNumericID(), entityID2.getNumericID());
     }
 
     @Override
