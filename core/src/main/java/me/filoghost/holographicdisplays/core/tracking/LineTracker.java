@@ -61,8 +61,11 @@ public abstract class LineTracker<T extends Viewer> {
             sendChangesPackets = true;
         }
 
-        if (hasViewers() && updatePlaceholders()) {
-            sendChangesPackets = true;
+        if (hasViewers()) {
+            boolean textChanged = updatePlaceholders();
+            if (textChanged) {
+                sendChangesPackets = true;
+            }
         }
 
         // Then, send the changes (if any) to already tracked players

@@ -114,4 +114,9 @@ public class TextLineTracker extends ClickableLineTracker<TextLineViewer> {
         viewers.sendPackets(textEntity.newTeleportPackets(position));
     }
 
+    @Override
+    protected double getViewRange() {
+        return 64;
+    }
+
 }

@@ -140,4 +140,9 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
         }
     }
 
+    @Override
+    protected double getViewRange() {
+        return 16;
+    }
+
 }

@@ -15,8 +15,6 @@ import java.util.Objects;
 
 abstract class PositionBasedLineTracker<T extends Viewer> extends LineTracker<T> {
 
-    private static final int ENTITY_VIEW_RANGE = 64;
-
     protected PositionCoordinates position;
     private boolean positionChanged;
 
@@ -50,8 +48,8 @@ abstract class PositionBasedLineTracker<T extends Viewer> extends LineTracker<T>
         double diffX = Math.abs(playerLocation.getX() - position.getX());
         double diffZ = Math.abs(playerLocation.getZ() - position.getZ());
 
-        return diffX <= (double) ENTITY_VIEW_RANGE
-                && diffZ <= (double) ENTITY_VIEW_RANGE
+        return diffX <= getViewRange()
+                && diffZ <= getViewRange()
                 && getLine().isVisibleTo(player.getBukkitPlayer());
     }
 
@@ -64,5 +62,7 @@ abstract class PositionBasedLineTracker<T extends Viewer> extends LineTracker<T>
     }
 
     protected abstract void sendPositionChangePackets(Viewers<T> viewers);
+
+    protected abstract double getViewRange();
 
 }
