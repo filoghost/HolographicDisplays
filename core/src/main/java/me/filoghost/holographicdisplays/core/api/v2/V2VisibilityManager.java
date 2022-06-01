@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.core.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
+import me.filoghost.holographicdisplays.api.beta.hologram.VisibilitySettings;
 import me.filoghost.holographicdisplays.api.beta.hologram.VisibilitySettings.Visibility;
 import me.filoghost.holographicdisplays.core.api.current.DefaultVisibilitySettings;
 import org.bukkit.entity.Player;
@@ -13,9 +14,9 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("deprecation")
 class V2VisibilityManager implements VisibilityManager {
 
-    private final DefaultVisibilitySettings v3VisibilitySettings;
+    private final VisibilitySettings v3VisibilitySettings;
 
-    V2VisibilityManager() {
+    V2VisibilityManager(VisibilitySettings visibilitySettings) {
         this.v3VisibilitySettings = new DefaultVisibilitySettings();
     }
 

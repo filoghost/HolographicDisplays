@@ -6,11 +6,11 @@
 package me.filoghost.holographicdisplays.core.base;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.holographicdisplays.core.api.current.DefaultVisibilitySettings;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,16 +18,16 @@ import org.jetbrains.annotations.Nullable;
 public abstract class BaseHologram extends BaseHologramComponent {
 
     private final HologramPosition hologramPosition;
+    private final DefaultVisibilitySettings visibilitySettings;
     private final LineTrackerManager lineTrackerManager;
 
     public BaseHologram(ImmutablePosition position, LineTrackerManager lineTrackerManager) {
         this.hologramPosition = new HologramPosition(position);
+        this.visibilitySettings = new DefaultVisibilitySettings();
         this.lineTrackerManager = lineTrackerManager;
     }
 
     public abstract BaseHologramLines<? extends EditableHologramLine> getLines();
-
-    protected abstract boolean isVisibleTo(Player player);
 
     public abstract Plugin getCreatorPlugin();
 
@@ -43,6 +43,10 @@ public abstract class BaseHologram extends BaseHologramComponent {
 
     public @NotNull ImmutablePosition getPosition() {
         return hologramPosition.getPosition();
+    }
+
+    public @NotNull DefaultVisibilitySettings getVisibilitySettings() {
+        return visibilitySettings;
     }
 
     public @Nullable World getWorldIfLoaded() {

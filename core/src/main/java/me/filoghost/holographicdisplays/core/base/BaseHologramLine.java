@@ -61,7 +61,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     }
 
     public final boolean isVisibleTo(Player player) {
-        return hologram.isVisibleTo(player);
+        return hologram.getVisibilitySettings().isVisibleTo(player);
     }
 
     public final Plugin getCreatorPlugin() {

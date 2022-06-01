@@ -16,7 +16,6 @@ import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -39,18 +38,13 @@ class V2Hologram extends BaseHologram implements Hologram {
         this.plugin = plugin;
         this.hologramManager = hologramManager;
         this.lines = new BaseHologramLines<>(this);
-        this.visibilityManager = new V2VisibilityManager();
+        this.visibilityManager = new V2VisibilityManager(getVisibilitySettings());
         this.creationTimestamp = System.currentTimeMillis();
     }
 
     @Override
     public BaseHologramLines<V2HologramLine> getLines() {
         return lines;
-    }
-
-    @Override
-    protected boolean isVisibleTo(Player player) {
-        return visibilityManager.isVisibleTo(player);
     }
 
     @Override

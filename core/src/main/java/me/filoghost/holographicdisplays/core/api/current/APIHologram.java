@@ -12,7 +12,6 @@ import me.filoghost.holographicdisplays.api.beta.hologram.PlaceholderSetting;
 import me.filoghost.holographicdisplays.core.base.BaseHologram;
 import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +20,6 @@ class APIHologram extends BaseHologram implements Hologram {
     private final APIHologramLines lines;
     private final Plugin plugin;
     private final APIHologramManager hologramManager;
-    private final DefaultVisibilitySettings visibilitySettings;
 
     private @NotNull PlaceholderSetting placeholderSetting;
 
@@ -35,18 +33,12 @@ class APIHologram extends BaseHologram implements Hologram {
         this.lines = new APIHologramLines(this);
         this.plugin = plugin;
         this.hologramManager = hologramManager;
-        this.visibilitySettings = new DefaultVisibilitySettings();
         this.placeholderSetting = PlaceholderSetting.DEFAULT;
     }
 
     @Override
     public @NotNull APIHologramLines getLines() {
         return lines;
-    }
-
-    @Override
-    public @NotNull DefaultVisibilitySettings getVisibilitySettings() {
-        return visibilitySettings;
     }
 
     @Override
@@ -77,11 +69,6 @@ class APIHologram extends BaseHologram implements Hologram {
     @Override
     public Plugin getCreatorPlugin() {
         return plugin;
-    }
-
-    @Override
-    public boolean isVisibleTo(Player player) {
-        return visibilitySettings.isVisibleTo(player);
     }
 
     @Override
