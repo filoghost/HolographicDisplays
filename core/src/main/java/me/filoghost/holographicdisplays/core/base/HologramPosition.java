@@ -99,6 +99,11 @@ class HologramPosition {
         return position;
     }
 
+    @Override
+    public String toString() {
+        return position.toString();
+    }
+
 
     private enum ChunkLoadState {
 

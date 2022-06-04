@@ -13,13 +13,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DefaultVisibilitySettings implements VisibilitySettings {
 
+    private final AtomicInteger version;
     private Visibility globalVisibility;
     private Map<UUID, Visibility> individualVisibilities;
 
     public DefaultVisibilitySettings() {
+        this.version = new AtomicInteger();
         this.globalVisibility = Visibility.VISIBLE;
     }
 
@@ -35,6 +38,7 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
         }
 
         this.globalVisibility = visibility;
+        version.incrementAndGet();
     }
 
     @Override
@@ -43,7 +47,10 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
         if (individualVisibilities == null) {
             individualVisibilities = new ConcurrentHashMap<>();
         }
-        individualVisibilities.put(player.getUniqueId(), visibility);
+        Visibility previousVisibility = individualVisibilities.put(player.getUniqueId(), visibility);
+        if (visibility != previousVisibility) {
+            version.incrementAndGet();
+        }
     }
 
     @Override
@@ -72,16 +79,24 @@ public class DefaultVisibilitySettings implements VisibilitySettings {
             return;
         }
 
-        individualVisibilities.remove(player.getUniqueId());
+        Visibility previousVisibility = individualVisibilities.remove(player.getUniqueId());
+        if (previousVisibility != null) {
+            version.incrementAndGet();
+        }
     }
 
     @Override
     public void clearIndividualVisibilities() {
-        if (individualVisibilities == null) {
+        if (individualVisibilities == null || individualVisibilities.isEmpty()) {
             return;
         }
 
         individualVisibilities.clear();
+        version.incrementAndGet();
+    }
+
+    public int getVersion() {
+        return version.get();
     }
 
     @Override

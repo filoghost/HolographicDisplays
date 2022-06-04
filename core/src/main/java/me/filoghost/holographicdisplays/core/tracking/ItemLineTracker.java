@@ -5,12 +5,11 @@
  */
 package me.filoghost.holographicdisplays.core.tracking;
 
-import me.filoghost.holographicdisplays.nms.common.NMSManager;
-import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.core.base.BaseItemHologramLine;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.tick.CachedPlayer;
-import me.filoghost.holographicdisplays.core.tick.TickClock;
+import me.filoghost.holographicdisplays.nms.common.NMSManager;
+import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -31,9 +30,8 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
     public ItemLineTracker(
             BaseItemHologramLine line,
             NMSManager nmsManager,
-            LineClickListener lineClickListener,
-            TickClock tickClock) {
-        super(line, nmsManager, lineClickListener, tickClock);
+            LineClickListener lineClickListener) {
+        super(line, nmsManager, lineClickListener);
         this.line = line;
         this.itemEntity = nmsManager.newItemPacketEntity();
     }
@@ -45,12 +43,12 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
 
     @MustBeInvokedByOverriders
     @Override
-    protected void update(List<CachedPlayer> onlinePlayers) {
-        super.update(onlinePlayers);
+    protected void update(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers) {
+        super.update(onlinePlayers, movedPlayers);
 
         if (spawnItemEntity && hasViewers() && line.hasPickupCallback()) {
             for (Viewer viewer : getViewers()) {
-                if (CollisionHelper.isInPickupRange(viewer.getLocation(), position)) {
+                if (CollisionHelper.isInPickupRange(viewer.getLocation(), positionCoordinates)) {
                     line.onPickup(viewer.getBukkitPlayer());
                 }
             }
@@ -99,7 +97,7 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
         super.sendSpawnPackets(viewers);
 
         if (spawnItemEntity) {
-            viewers.sendPackets(itemEntity.newSpawnPackets(position, itemStack));
+            viewers.sendPackets(itemEntity.newSpawnPackets(positionCoordinates, itemStack));
         }
     }
 
@@ -120,7 +118,7 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
 
         if (spawnItemEntityChanged) {
             if (spawnItemEntity) {
-                viewers.sendPackets(itemEntity.newSpawnPackets(position, itemStack));
+                viewers.sendPackets(itemEntity.newSpawnPackets(positionCoordinates, itemStack));
             } else {
                 viewers.sendPackets(itemEntity.newDestroyPackets());
             }
@@ -136,7 +134,7 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
         super.sendPositionChangePackets(viewers);
 
         if (spawnItemEntity) {
-            viewers.sendPackets(itemEntity.newTeleportPackets(position));
+            viewers.sendPackets(itemEntity.newTeleportPackets(positionCoordinates));
         }
     }
 

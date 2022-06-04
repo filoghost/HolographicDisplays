@@ -100,7 +100,7 @@ public abstract class BaseHologram extends BaseHologramComponent {
     @Override
     public String toString() {
         return "Hologram{"
-                + "position=" + hologramPosition.getPosition()
+                + "position=" + hologramPosition
                 + ", lines=" + getLines()
                 + ", deleted=" + isDeleted()
                 + "}";

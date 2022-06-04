@@ -6,11 +6,10 @@
 package me.filoghost.holographicdisplays.core.tracking;
 
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
-import me.filoghost.holographicdisplays.nms.common.NMSManager;
-import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
 import me.filoghost.holographicdisplays.core.base.BaseClickableHologramLine;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
-import me.filoghost.holographicdisplays.core.tick.TickClock;
+import me.filoghost.holographicdisplays.nms.common.NMSManager;
+import me.filoghost.holographicdisplays.nms.common.entity.ClickableNMSPacketEntity;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 public abstract class ClickableLineTracker<T extends Viewer> extends LineTracker<T> {
@@ -22,8 +21,7 @@ public abstract class ClickableLineTracker<T extends Viewer> extends LineTracker
     private boolean spawnClickableEntity;
     private boolean spawnClickableEntityChanged;
 
-    public ClickableLineTracker(BaseClickableHologramLine line, NMSManager nmsManager, LineClickListener lineClickListener, TickClock tickClock) {
-        super(tickClock);
+    public ClickableLineTracker(BaseClickableHologramLine line, NMSManager nmsManager, LineClickListener lineClickListener) {
         this.clickableEntity = nmsManager.newClickablePacketEntity();
         this.positionOffsetY = (line.getHeight() - ClickableNMSPacketEntity.SLIME_HEIGHT) / 2;
         this.lineClickListener = lineClickListener;
@@ -102,7 +100,7 @@ public abstract class ClickableLineTracker<T extends Viewer> extends LineTracker
     }
 
     private PositionCoordinates getClickableEntityPosition() {
-        return position.addY(positionOffsetY);
+        return positionCoordinates.addY(positionOffsetY);
     }
 
 }

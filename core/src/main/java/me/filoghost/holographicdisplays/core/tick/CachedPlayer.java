@@ -11,15 +11,29 @@ import org.bukkit.entity.Player;
 public class CachedPlayer {
 
     private final Player player;
-    private final TickClock tickClock;
 
     private Location location;
-    private long locationUpdateTick;
 
-    public CachedPlayer(Player player, TickClock tickClock) {
+    public CachedPlayer(Player player) {
         this.player = player;
-        this.tickClock = tickClock;
-        this.locationUpdateTick = -1;
+    }
+
+    boolean onTick() {
+        Location newLocation = player.getLocation();
+        boolean moved = isDifferentPosition(location, newLocation);
+        location = newLocation;
+        return moved;
+    }
+
+    private boolean isDifferentPosition(Location oldLocation, Location newLocation) {
+        if (oldLocation == null) {
+            return true;
+        }
+
+        return newLocation.getWorld() != oldLocation.getWorld()
+                || newLocation.getX() != oldLocation.getX()
+                || newLocation.getY() != oldLocation.getY()
+                || newLocation.getZ() != oldLocation.getZ();
     }
 
     public Player getBukkitPlayer() {
@@ -27,13 +41,6 @@ public class CachedPlayer {
     }
 
     public Location getLocation() {
-        // Avoid creating a new object on each invocation
-        long currentTick = tickClock.getCurrentTick();
-        if (locationUpdateTick != currentTick) {
-            location = player.getLocation();
-            locationUpdateTick = currentTick;
-        }
-
         return location;
     }
 

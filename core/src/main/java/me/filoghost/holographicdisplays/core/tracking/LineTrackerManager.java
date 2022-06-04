@@ -40,18 +40,18 @@ public class LineTrackerManager {
     }
 
     public TextLineTracker startTracking(BaseTextHologramLine line) {
-        TextLineTracker tracker = new TextLineTracker(line, nmsManager, lineClickListener, placeholderTracker, tickClock);
+        TextLineTracker tracker = new TextLineTracker(line, nmsManager, lineClickListener, placeholderTracker);
         lineTrackers.add(tracker);
         return tracker;
     }
 
     public ItemLineTracker startTracking(BaseItemHologramLine line) {
-        ItemLineTracker tracker = new ItemLineTracker(line, nmsManager, lineClickListener, tickClock);
+        ItemLineTracker tracker = new ItemLineTracker(line, nmsManager, lineClickListener);
         lineTrackers.add(tracker);
         return tracker;
     }
 
-    public void update(List<CachedPlayer> onlinePlayers) {
+    public void update(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers) {
         Iterator<LineTracker<?>> iterator = lineTrackers.iterator();
         while (iterator.hasNext()) {
             LineTracker<?> lineTracker = iterator.next();
@@ -63,7 +63,7 @@ public class LineTrackerManager {
                 continue;
             }
 
-            lineTracker.update(onlinePlayers);
+            lineTracker.update(onlinePlayers, movedPlayers);
         }
     }
 

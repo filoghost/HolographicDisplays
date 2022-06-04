@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.core.base;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
+import me.filoghost.holographicdisplays.core.api.current.DefaultVisibilitySettings;
 import me.filoghost.holographicdisplays.core.tracking.LineTracker;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import org.bukkit.GameMode;
@@ -21,7 +22,7 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     private final BaseHologram hologram;
     private final LineTracker<?> tracker;
 
-    private PositionCoordinates position;
+    private PositionCoordinates coordinates;
 
     protected BaseHologramLine(BaseHologram hologram) {
         Preconditions.notNull(hologram, "hologram");
@@ -40,16 +41,20 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
     }
 
     @Override
-    public final void setPosition(double x, double y, double z) {
-        position = new PositionCoordinates(x, y, z);
+    public final void setCoordinates(double x, double y, double z) {
+        coordinates = new PositionCoordinates(x, y, z);
         setChanged();
     }
 
-    public @NotNull PositionCoordinates getPosition() {
-        if (position == null) {
+    public @NotNull PositionCoordinates getCoordinates() {
+        if (coordinates == null) {
             throw new IllegalStateException("position not set");
         }
-        return position;
+        return coordinates;
+    }
+
+    public @NotNull String getWorldName() {
+        return hologram.getPosition().getWorldName();
     }
 
     public @Nullable World getWorldIfLoaded() {
@@ -66,6 +71,10 @@ public abstract class BaseHologramLine extends BaseHologramComponent implements 
 
     public final Plugin getCreatorPlugin() {
         return hologram.getCreatorPlugin();
+    }
+
+    public final DefaultVisibilitySettings getVisibilitySettings() {
+        return hologram.getVisibilitySettings();
     }
 
     protected boolean canInteract(Player player) {

@@ -5,14 +5,13 @@
  */
 package me.filoghost.holographicdisplays.core.tracking;
 
-import me.filoghost.holographicdisplays.nms.common.IndividualTextPacketGroup;
-import me.filoghost.holographicdisplays.nms.common.NMSManager;
-import me.filoghost.holographicdisplays.nms.common.entity.TextNMSPacketEntity;
 import me.filoghost.holographicdisplays.core.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.placeholder.tracking.ActivePlaceholderTracker;
 import me.filoghost.holographicdisplays.core.tick.CachedPlayer;
-import me.filoghost.holographicdisplays.core.tick.TickClock;
+import me.filoghost.holographicdisplays.nms.common.IndividualTextPacketGroup;
+import me.filoghost.holographicdisplays.nms.common.NMSManager;
+import me.filoghost.holographicdisplays.nms.common.entity.TextNMSPacketEntity;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Objects;
@@ -29,9 +28,8 @@ public class TextLineTracker extends ClickableLineTracker<TextLineViewer> {
             BaseTextHologramLine line,
             NMSManager nmsManager,
             LineClickListener lineClickListener,
-            ActivePlaceholderTracker placeholderTracker,
-            TickClock tickClock) {
-        super(line, nmsManager, lineClickListener, tickClock);
+            ActivePlaceholderTracker placeholderTracker) {
+        super(line, nmsManager, lineClickListener);
         this.line = line;
         this.textEntity = nmsManager.newTextPacketEntity();
         this.displayText = new DisplayText(placeholderTracker);
@@ -86,7 +84,7 @@ public class TextLineTracker extends ClickableLineTracker<TextLineViewer> {
     protected void sendSpawnPackets(Viewers<TextLineViewer> viewers) {
         super.sendSpawnPackets(viewers);
 
-        IndividualTextPacketGroup spawnPackets = textEntity.newSpawnPackets(position);
+        IndividualTextPacketGroup spawnPackets = textEntity.newSpawnPackets(positionCoordinates);
         viewers.forEach(viewer -> viewer.sendTextPackets(spawnPackets));
     }
 
@@ -111,7 +109,7 @@ public class TextLineTracker extends ClickableLineTracker<TextLineViewer> {
     @Override
     protected void sendPositionChangePackets(Viewers<TextLineViewer> viewers) {
         super.sendPositionChangePackets(viewers);
-        viewers.sendPackets(textEntity.newTeleportPackets(position));
+        viewers.sendPackets(textEntity.newTeleportPackets(positionCoordinates));
     }
 
     @Override

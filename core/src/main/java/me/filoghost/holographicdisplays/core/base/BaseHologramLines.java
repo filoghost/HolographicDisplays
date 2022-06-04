@@ -101,7 +101,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
                 currentLineY -= spaceBetweenLines;
             }
 
-            line.setPosition(hologramPosition.getX(), currentLineY, hologramPosition.getZ());
+            line.setCoordinates(hologramPosition.getX(), currentLineY, hologramPosition.getZ());
         }
     }
 

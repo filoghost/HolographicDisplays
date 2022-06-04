@@ -38,7 +38,7 @@ public class TickingTask implements Runnable {
     }
 
     public void onPlayerJoin(Player player) {
-        onlinePlayers.add(new CachedPlayer(player, tickClock));
+        onlinePlayers.add(new CachedPlayer(player));
     }
 
     public void onPlayerQuit(Player player) {
@@ -65,8 +65,16 @@ public class TickingTask implements Runnable {
         // Remove outdated entries before using them from line trackers
         placeholderTracker.clearOutdatedEntries();
 
+        List<CachedPlayer> movedPlayers = new ArrayList<>();
+        for (CachedPlayer onlinePlayer : onlinePlayers) {
+            boolean moved = onlinePlayer.onTick();
+            if (moved) {
+                movedPlayers.add(onlinePlayer);
+            }
+        }
+
         try {
-            lineTrackerManager.update(onlinePlayers);
+            lineTrackerManager.update(onlinePlayers, movedPlayers);
         } catch (Throwable t) {
             // Catch all types of Throwable because we're using NMS code
             if (tickClock.getCurrentTick() - lastErrorLogTick >= 20) {
