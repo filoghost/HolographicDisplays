@@ -8,6 +8,8 @@ package me.filoghost.holographicdisplays.api.hologram.line;
 import org.jetbrains.annotations.Nullable;
 
 /**
+ * A hologram line displaying text.
+ *
  * @since 1
  */
 public interface TextHologramLine extends ClickableHologramLine {
@@ -15,7 +17,7 @@ public interface TextHologramLine extends ClickableHologramLine {
     /**
      * Returns the currently displayed text.
      *
-     * @return the currently displayed text.
+     * @return the current text
      * @since 1
      */
     @Nullable String getText();
@@ -23,7 +25,7 @@ public interface TextHologramLine extends ClickableHologramLine {
     /**
      * Sets the displayed text.
      *
-     * @param text the new displayed text.
+     * @param text the new text
      * @since 1
      */
     void setText(@Nullable String text);

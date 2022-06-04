@@ -13,14 +13,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * The editable list of lines of a hologram.
+ * The editable lines of a hologram, following a top to bottom order (first line is top one, last line is the bottom
+ * one).
  *
  * @since 1
  */
 public interface HologramLines {
 
     /**
-     * Adds a new text line at the end.
+     * Adds a new text line at the bottom.
      *
      * @param text the content of the line, see {@link TextHologramLine#setText(String)}
      * @return the created line
@@ -29,7 +30,7 @@ public interface HologramLines {
     @NotNull TextHologramLine appendText(@Nullable String text);
 
     /**
-     * Adds a new item line at the end.
+     * Adds a new item line at the bottom.
      *
      * @param itemStack the content of the line, see {@link ItemHologramLine#setItemStack(ItemStack)}
      * @return the created line
@@ -38,9 +39,9 @@ public interface HologramLines {
     @NotNull ItemHologramLine appendItem(@Nullable ItemStack itemStack);
 
     /**
-     * Inserts a new text line before the given index.
+     * Inserts a new text line before the line at the given index, shifting all the lines below.
      *
-     * @param beforeIndex the index before which the line is inserted, 0 to insert as first
+     * @param beforeIndex the index before which the line should be inserted, 0 to insert on top
      * @param text the content of the line, see {@link TextHologramLine#setText(String)}
      * @return the created line
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
@@ -49,9 +50,9 @@ public interface HologramLines {
     @NotNull TextHologramLine insertText(int beforeIndex, @Nullable String text);
 
     /**
-     * Inserts a new item line before the given index.
+     * Inserts a new item line before the line at the given index, shifting all the lines below.
      *
-     * @param beforeIndex the index before which the line is inserted, 0 to insert as first
+     * @param beforeIndex the index before which the line should be inserted, 0 to insert on top
      * @param itemStack the content of the line, see {@link ItemHologramLine#setItemStack(ItemStack)}
      * @return the created line
      * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt;= size())
@@ -95,15 +96,15 @@ public interface HologramLines {
     void clear();
 
     /**
-     * Returns the amount of lines.
+     * Returns the current amount of lines.
      *
-     * @return the amount of lines
+     * @return the current amount of lines
      * @since 1
      */
     int size();
 
     /**
-     * The total height of the lines, including the gaps between them.
+     * The total height in blocks occupied by the lines, including the gaps between them.
      *
      * @return the total height of the lines
      * @since 1

@@ -6,8 +6,10 @@
 package me.filoghost.holographicdisplays.api.hologram.line;
 
 /**
- * Interface to represent a line in a Hologram.
+ * A line of a hologram.
  *
+ * @see TextHologramLine
+ * @see ItemHologramLine
  * @since 1
  */
 public interface HologramLine {

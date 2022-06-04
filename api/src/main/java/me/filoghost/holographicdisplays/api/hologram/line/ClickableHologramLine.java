@@ -8,7 +8,8 @@ package me.filoghost.holographicdisplays.api.hologram.line;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A hologram line that can be clicked (left or right click).
+ * A hologram line that can be left-clicked or right-click. Currently, both {@link TextHologramLine} and
+ * {@link ItemHologramLine} are clickable.
  *
  * @since 1
  */
@@ -17,7 +18,7 @@ public interface ClickableHologramLine extends HologramLine {
     /**
      * Returns the current click listener.
      *
-     * @return the current click listener, null if not present
+     * @return the current click listener, null if absent
      * @since 1
      */
     @Nullable HologramLineClickListener getClickListener();
@@ -25,7 +26,7 @@ public interface ClickableHologramLine extends HologramLine {
     /**
      * Sets the click listener.
      *
-     * @param clickListener the new click listener, null to unset
+     * @param clickListener the new click listener, null to remove it
      * @since 1
      */
     void setClickListener(@Nullable HologramLineClickListener clickListener);

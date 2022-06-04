@@ -8,7 +8,10 @@ package me.filoghost.holographicdisplays.api.hologram.line;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Interface to handle hologram lines being picked up by players.
+ * The listener class for {@link HologramLinePickupEvent}.
+ * <p>
+ * This is not a Bukkit listener, it must be set with
+ * {@link ItemHologramLine#setPickupListener(HologramLinePickupListener)}.
  *
  * @since 1
  */
@@ -16,6 +19,11 @@ import org.jetbrains.annotations.NotNull;
 public interface HologramLinePickupListener {
 
     /**
+     * Invoked when a player is being in pickup range of the item line. Note that this method is invoked repeatedly
+     * every tick until the player moves out of range, the listener is removed, the item line is no longer visible to
+     * the player, or the item line is removed.
+     *
+     * @param pickupEvent the event data
      * @since 1
      */
     void onPickup(@NotNull HologramLinePickupEvent pickupEvent);

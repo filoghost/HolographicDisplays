@@ -14,6 +14,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
+/**
+ * This class is used internally and can change without notice, do not use it.
+ */
 @Internal
 public abstract class HolographicDisplaysAPIProvider {
 

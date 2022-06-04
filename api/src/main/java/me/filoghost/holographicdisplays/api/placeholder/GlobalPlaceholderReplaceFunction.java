@@ -5,10 +5,14 @@
  */
 package me.filoghost.holographicdisplays.api.placeholder;
 
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Simple callback to provide a placeholder replacement.
+ * Simplified version of {@link GlobalPlaceholder} where the refresh interval in ticks is passed through the
+ * registration method
+ * {@link HolographicDisplaysAPI#registerGlobalPlaceholder(String, int, GlobalPlaceholderReplaceFunction)} as a
+ * constant.
  *
  * @since 1
  */
@@ -16,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public interface GlobalPlaceholderReplaceFunction {
 
     /**
-     * @see GlobalPlaceholder#getReplacement(String)
+     * Same as {@link GlobalPlaceholder#getReplacement(String)}.
      *
      * @since 1
      */

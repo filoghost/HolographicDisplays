@@ -12,24 +12,27 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Entity to manage a group of vertically aligned lines, which display floating text and items.
- * To create one see {@link HolographicDisplaysAPI}.
+ * Group of one or more vertically aligned lines which appear as floating text lines and items. To create one see
+ * {@link HolographicDisplaysAPI#createHologram(Position)}.
+ * <p>
+ * The lines are displayed in a top to bottom order starting from the hologram position and going down.
  *
  * @since 1
  */
 public interface Hologram {
 
     /**
-     * Returns the editable list of lines.
+     * Returns the editable lines of this hologram.
      *
+     * @return the editable lines
      * @since 1
      */
     @NotNull HologramLines getLines();
 
     /**
-     * Returns the {@link VisibilitySettings} of this hologram.
+     * Returns the visibility settings.
      *
-     * @return the VisibilitySettings of this hologram
+     * @return the visibility settings
      * @since 1
      */
     @NotNull VisibilitySettings getVisibilitySettings();
@@ -53,7 +56,7 @@ public interface Hologram {
     /**
      * Moves the hologram to the given position.
      *
-     * @param worldName the world name where the hologram should be moved
+     * @param worldName the name of the world where the hologram should be moved
      * @param x the X coordinate
      * @param y the Y coordinate
      * @param z the Z coordinate
@@ -81,28 +84,33 @@ public interface Hologram {
     void setPosition(@NotNull Location location);
 
     /**
+     * Returns the placeholder setting.
+     *
+     * @return the placeholder setting
      * @since 1
      */
     @NotNull PlaceholderSetting getPlaceholderSetting();
 
     /**
+     * Changes the placeholder setting.
+     *
+     * @param placeholderSetting the new placeholder setting
      * @since 1
      */
     void setPlaceholderSetting(@NotNull PlaceholderSetting placeholderSetting);
 
     /**
-     * Deletes this hologram. Editing or teleporting the hologram when deleted
-     * will throw an exception. Lines will be automatically cleared.
-     * You should remove all the references of the hologram after deletion.
+     * Deletes this hologram, clearing the lines. Editing or teleporting the hologram after deleting it throws an
+     * exception. A deleted hologram should no longer be referenced.
      *
      * @since 1
      */
     void delete();
 
     /**
-     * Checks if a hologram was deleted.
+     * Returns if this hologram is deleted.
      *
-     * @return true if this hologram was deleted
+     * @return true if this hologram is deleted
      * @since 1
      */
     boolean isDeleted();

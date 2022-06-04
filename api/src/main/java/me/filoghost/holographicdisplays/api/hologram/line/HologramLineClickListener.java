@@ -8,7 +8,10 @@ package me.filoghost.holographicdisplays.api.hologram.line;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Interface to handle clickable hologram lines.
+ * The listener class for {@link HologramLineClickEvent}.
+ * <p>
+ * This is not a Bukkit listener, it must be set with
+ * {@link ClickableHologramLine#setClickListener(HologramLineClickListener)}.
  *
  * @since 1
  */
@@ -16,6 +19,9 @@ import org.jetbrains.annotations.NotNull;
 public interface HologramLineClickListener {
 
     /**
+     * Invoked when a player clicks on the clickable line.
+     *
+     * @param clickEvent the event data
      * @since 1
      */
     void onClick(@NotNull HologramLineClickEvent clickEvent);

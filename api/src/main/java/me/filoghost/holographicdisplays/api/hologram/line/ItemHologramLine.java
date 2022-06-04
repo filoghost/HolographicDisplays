@@ -9,22 +9,24 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 /**
+ * A hologram line displaying an item.
+ *
  * @since 1
  */
 public interface ItemHologramLine extends ClickableHologramLine {
 
     /**
-     * Returns the ItemStack of this ItemLine.
+     * Returns the currently displayed item.
      *
-     * @return the ItemStack if this ItemLine.
+     * @return the current item
      * @since 1
      */
     @Nullable ItemStack getItemStack();
 
     /**
-     * Sets the ItemStack for this ItemLine.
+     * Sets the displayed item.
      *
-     * @param itemStack the new item, should not be null.
+     * @param itemStack the new item, null to display air
      * @since 1
      */
     void setItemStack(@Nullable ItemStack itemStack);
@@ -32,7 +34,7 @@ public interface ItemHologramLine extends ClickableHologramLine {
     /**
      * Returns the current pickup listener.
      *
-     * @return the current pickup listener, null if not present
+     * @return the current pickup listener, null if absent
      * @since 1
      */
     @Nullable HologramLinePickupListener getPickupListener();
@@ -40,7 +42,7 @@ public interface ItemHologramLine extends ClickableHologramLine {
     /**
      * Sets the pickup listener.
      *
-     * @param pickupListener the new pickup listener, null to unset
+     * @param pickupListener the new pickup listener, null to remove it
      * @since 1
      */
     void setPickupListener(@Nullable HologramLinePickupListener pickupListener);
