@@ -22,6 +22,8 @@ public interface GlobalPlaceholderReplaceFunction {
     /**
      * Same as {@link GlobalPlaceholder#getReplacement(String)}.
      *
+     * @param argument the optional placeholder argument, null if not specified
+     * @return the optional placeholder replacement, null to leave the placeholder unreplaced
      * @since 1
      */
     @Nullable String getReplacement(@Nullable String argument);

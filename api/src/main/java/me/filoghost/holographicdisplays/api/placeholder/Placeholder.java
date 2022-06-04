@@ -49,6 +49,7 @@ public interface Placeholder {
      * Note that more ticks can pass between invocations if no player is near, do not use the replacement callback as a
      * timer.
      *
+     * @return the refresh interval in ticks
      * @since 1
      */
     int getRefreshIntervalTicks();

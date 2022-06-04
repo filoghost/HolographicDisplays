@@ -24,6 +24,9 @@ public interface IndividualPlaceholderReplaceFunction {
     /**
      * Same as {@link IndividualPlaceholder#getReplacement(Player, String)}.
      *
+     * @param player the player that will see the provided replacement
+     * @param argument the optional placeholder argument, null if not specified
+     * @return the optional placeholder replacement, null to leave the placeholder unreplaced
      * @since 1
      */
     @Nullable String getReplacement(@NotNull Player player, @Nullable String argument);

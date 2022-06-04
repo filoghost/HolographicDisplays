@@ -192,6 +192,7 @@ public interface HolographicDisplaysAPI {
      * Returns if a placeholder with a given identifier is registered.
      *
      * @param identifier the case-insensitive identifier of the placeholder
+     * @return if the given placeholder identifier exists
      * @since 1
      */
     boolean isRegisteredPlaceholder(@NotNull String identifier);

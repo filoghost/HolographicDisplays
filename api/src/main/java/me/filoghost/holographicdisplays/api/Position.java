@@ -199,6 +199,7 @@ public interface Position {
      * @param x the length to add to the X coordinate
      * @param y the length to add to the Y coordinate
      * @param z the length to add to the Z coordinate
+     * @return the new position
      * @since 1
      */
     @NotNull Position add(double x, double y, double z);
@@ -209,6 +210,7 @@ public interface Position {
      * @param x the length to subtract from the X coordinate
      * @param y the length to subtract from the Y coordinate
      * @param z the length to subtract from the Z coordinate
+     * @return the new position
      * @since 1
      */
     @NotNull Position subtract(double x, double y, double z);

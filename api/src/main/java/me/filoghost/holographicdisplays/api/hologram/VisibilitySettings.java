@@ -41,6 +41,8 @@ public interface VisibilitySettings {
      * ({@link #getGlobalVisibility()}). The individual visibility value can be removed with
      * {@link #removeIndividualVisibility(Player)}.
      *
+     * @param player the player for which to set the individual visibility
+     * @param visibility the new individual visibility to use for the player
      * @since 1
      */
     void setIndividualVisibility(@NotNull Player player, @NotNull Visibility visibility);
@@ -49,6 +51,7 @@ public interface VisibilitySettings {
      * Removes the individual visibility for a player. The visibility for the player will then be determined by the
      * global visibility ({@link #getGlobalVisibility()}).
      *
+     * @param player the player for which to remove the individual visibility
      * @since 1
      */
     void removeIndividualVisibility(@NotNull Player player);
@@ -65,7 +68,7 @@ public interface VisibilitySettings {
      * Checks if a hologram is visible to a player, taking into account both the global visibility and the individual
      * visibility for the player (if set).
      *
-     * @param player the player
+     * @param player the player for which to check the visibility
      * @return if the player can see the hologram
      * @since 1
      */
