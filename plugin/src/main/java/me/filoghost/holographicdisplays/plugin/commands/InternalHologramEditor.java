@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.commands;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
-import me.filoghost.holographicdisplays.api.beta.Position;
+import me.filoghost.holographicdisplays.api.Position;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.config.InternalHologramLineParser;
 import me.filoghost.holographicdisplays.plugin.config.InternalHologramLoadException;

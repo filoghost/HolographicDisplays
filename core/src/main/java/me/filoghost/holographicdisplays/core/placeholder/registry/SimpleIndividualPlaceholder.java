@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.core.placeholder.registry;
 
-import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
-import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplaceFunction;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplaceFunction;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

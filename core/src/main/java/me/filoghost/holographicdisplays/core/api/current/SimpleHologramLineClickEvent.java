@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.api.current;
 
-import me.filoghost.holographicdisplays.api.beta.hologram.line.HologramLineClickEvent;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickEvent;
 import org.bukkit.entity.Player;
 
 class SimpleHologramLineClickEvent implements HologramLineClickEvent {

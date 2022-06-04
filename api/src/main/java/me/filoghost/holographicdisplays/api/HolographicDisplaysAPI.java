@@ -3,16 +3,16 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.api.beta;
+package me.filoghost.holographicdisplays.api;
 
-import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.beta.internal.HolographicDisplaysAPIProvider;
-import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
-import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderReplaceFunction;
-import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholder;
-import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderFactory;
-import me.filoghost.holographicdisplays.api.beta.placeholder.IndividualPlaceholderReplaceFunction;
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderReplaceFunction;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholderReplaceFunction;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;

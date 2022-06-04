@@ -7,7 +7,7 @@ package me.filoghost.holographicdisplays.plugin.internal.placeholder;
 
 import com.google.common.collect.ImmutableList;
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
 
 import java.util.List;
 

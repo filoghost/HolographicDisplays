@@ -5,10 +5,10 @@
  */
 package me.filoghost.example.powerups;
 
-import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
-import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.beta.hologram.line.HologramLinePickupEvent;
-import me.filoghost.holographicdisplays.api.beta.hologram.line.ItemHologramLine;
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLinePickupEvent;
+import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;

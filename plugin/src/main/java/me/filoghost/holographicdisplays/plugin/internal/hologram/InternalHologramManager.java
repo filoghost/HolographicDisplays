@@ -5,8 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin.internal.hologram;
 
-import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
-import me.filoghost.holographicdisplays.api.beta.Position;
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.Position;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

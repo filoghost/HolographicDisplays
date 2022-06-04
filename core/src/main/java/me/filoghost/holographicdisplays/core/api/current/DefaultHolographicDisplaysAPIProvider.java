@@ -6,9 +6,9 @@
 package me.filoghost.holographicdisplays.core.api.current;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.api.beta.HolographicDisplaysAPI;
-import me.filoghost.holographicdisplays.api.beta.Position;
-import me.filoghost.holographicdisplays.api.beta.internal.HolographicDisplaysAPIProvider;
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.Position;
+import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.core.placeholder.registry.PlaceholderRegistry;
 import org.bukkit.Location;

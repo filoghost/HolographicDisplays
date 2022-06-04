@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.api.current;
 
-import me.filoghost.holographicdisplays.api.beta.hologram.line.HologramLinePickupEvent;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLinePickupEvent;
 import org.bukkit.entity.Player;
 
 class SimpleHologramLinePickupEvent implements HologramLinePickupEvent {

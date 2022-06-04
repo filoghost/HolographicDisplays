@@ -3,9 +3,9 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package me.filoghost.holographicdisplays.api.beta;
+package me.filoghost.holographicdisplays.api;
 
-import me.filoghost.holographicdisplays.api.beta.internal.HolographicDisplaysAPIProvider;
+import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;

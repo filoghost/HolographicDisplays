@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.api.current;
 
-import me.filoghost.holographicdisplays.api.beta.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.core.base.BaseHologramManager;
 import me.filoghost.holographicdisplays.core.base.ImmutablePosition;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;

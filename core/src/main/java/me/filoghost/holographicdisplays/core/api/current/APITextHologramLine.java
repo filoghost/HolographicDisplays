@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.core.api.current;
 
-import me.filoghost.holographicdisplays.api.beta.hologram.PlaceholderSetting;
-import me.filoghost.holographicdisplays.api.beta.hologram.line.HologramLineClickListener;
-import me.filoghost.holographicdisplays.api.beta.hologram.line.TextHologramLine;
+import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickListener;
+import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import me.filoghost.holographicdisplays.core.base.BaseTextHologramLine;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;

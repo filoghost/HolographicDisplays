@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.placeholder.registry;
 
-import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholderFactory;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholderFactory;
 import org.bukkit.plugin.Plugin;
 
 public class LegacyGlobalPlaceholderExpansion extends GlobalPlaceholderExpansion {

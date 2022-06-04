@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.api.current;
 
-import me.filoghost.holographicdisplays.api.beta.hologram.line.HologramLine;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramLine;
 import me.filoghost.holographicdisplays.core.base.EditableHologramLine;
 import org.bukkit.plugin.Plugin;
 

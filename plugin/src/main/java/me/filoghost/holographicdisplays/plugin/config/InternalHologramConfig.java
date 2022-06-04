@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.plugin.config;
 import me.filoghost.fcommons.collection.CollectionUtils;
 import me.filoghost.fcommons.config.ConfigSection;
 import me.filoghost.fcommons.config.exception.ConfigValueException;
-import me.filoghost.holographicdisplays.api.beta.Position;
+import me.filoghost.holographicdisplays.api.Position;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologram;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 

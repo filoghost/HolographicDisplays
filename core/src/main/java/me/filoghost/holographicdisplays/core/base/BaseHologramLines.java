@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.base;
 
-import me.filoghost.holographicdisplays.api.beta.Position;
+import me.filoghost.holographicdisplays.api.Position;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

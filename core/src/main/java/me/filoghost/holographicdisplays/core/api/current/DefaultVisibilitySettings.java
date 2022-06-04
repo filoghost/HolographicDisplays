@@ -6,7 +6,7 @@
 package me.filoghost.holographicdisplays.core.api.current;
 
 import me.filoghost.fcommons.Preconditions;
-import me.filoghost.holographicdisplays.api.beta.hologram.VisibilitySettings;
+import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

@@ -5,7 +5,7 @@
  */
 package me.filoghost.holographicdisplays.plugin.internal.placeholder;
 
-import me.filoghost.holographicdisplays.api.beta.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
 
 public class ImmutablePlaceholder implements GlobalPlaceholder {
 

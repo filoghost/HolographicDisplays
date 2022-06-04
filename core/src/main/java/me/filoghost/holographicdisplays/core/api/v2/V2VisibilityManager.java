@@ -6,8 +6,8 @@
 package me.filoghost.holographicdisplays.core.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
-import me.filoghost.holographicdisplays.api.beta.hologram.VisibilitySettings;
-import me.filoghost.holographicdisplays.api.beta.hologram.VisibilitySettings.Visibility;
+import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
+import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings.Visibility;
 import me.filoghost.holographicdisplays.core.api.current.DefaultVisibilitySettings;
 import org.bukkit.entity.Player;
 

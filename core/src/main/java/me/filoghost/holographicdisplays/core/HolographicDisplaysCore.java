@@ -8,7 +8,7 @@ package me.filoghost.holographicdisplays.core;
 import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider;
 import me.filoghost.fcommons.FCommonsPlugin.PluginEnableException;
 import me.filoghost.fcommons.logging.ErrorCollector;
-import me.filoghost.holographicdisplays.api.beta.internal.HolographicDisplaysAPIProvider;
+import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
 import me.filoghost.holographicdisplays.core.NMSVersion.OutdatedVersionException;
 import me.filoghost.holographicdisplays.core.NMSVersion.UnknownVersionException;
 import me.filoghost.holographicdisplays.core.api.current.APIHologramManager;
