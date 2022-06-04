@@ -36,10 +36,6 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
         return lines.size();
     }
 
-    public boolean isEmpty() {
-        return lines.isEmpty();
-    }
-
     public @NotNull T get(int index) {
         return lines.get(index);
     }
@@ -51,33 +47,10 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
         updatePositions();
     }
 
-    public void addAll(List<? extends T> newLines) {
-        checkNotDeleted();
-
-        lines.addAll(newLines);
-        updatePositions();
-    }
-
     public void insert(int beforeIndex, T line) {
         checkNotDeleted();
 
         lines.add(beforeIndex, line);
-        updatePositions();
-    }
-
-    public void set(int index, T line) {
-        checkNotDeleted();
-
-        T previousLine = lines.set(index, line);
-        previousLine.setDeleted();
-        updatePositions();
-    }
-
-    public void setAll(List<T> newLines) {
-        checkNotDeleted();
-
-        clear();
-        lines.addAll(newLines);
         updatePositions();
     }
 
@@ -133,7 +106,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
     }
 
     public double getHeight() {
-        if (isEmpty()) {
+        if (lines.isEmpty()) {
             return 0;
         }
 
