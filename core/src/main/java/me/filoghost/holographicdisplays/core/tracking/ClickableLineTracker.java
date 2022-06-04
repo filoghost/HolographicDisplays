@@ -13,7 +13,7 @@ import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.tick.TickClock;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-public abstract class ClickableLineTracker<T extends Viewer> extends PositionBasedLineTracker<T> {
+public abstract class ClickableLineTracker<T extends Viewer> extends LineTracker<T> {
 
     private final ClickableNMSPacketEntity clickableEntity;
     private final double positionOffsetY;

@@ -5,9 +5,11 @@
  */
 package me.filoghost.holographicdisplays.core.tracking;
 
+import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.core.base.BaseHologramLine;
 import me.filoghost.holographicdisplays.core.tick.CachedPlayer;
 import me.filoghost.holographicdisplays.core.tick.TickClock;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -15,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class LineTracker<T extends Viewer> {
 
@@ -23,6 +26,9 @@ public abstract class LineTracker<T extends Viewer> {
     private final TickClock tickClock;
     private final Map<Player, T> viewers;
     private final Viewers<T> iterableViewers;
+
+    protected PositionCoordinates position;
+    private boolean positionChanged;
 
     /**
      * Flag to indicate that the line has changed in some way and there could be the need to send update packets.
@@ -80,10 +86,6 @@ public abstract class LineTracker<T extends Viewer> {
         modifyViewersAndSendPackets(onlinePlayers);
     }
 
-    protected abstract void detectChanges();
-
-    protected abstract void clearDetectedChanges();
-
     protected abstract boolean updatePlaceholders();
 
     private void modifyViewersAndSendPackets(List<CachedPlayer> onlinePlayers) {
@@ -134,9 +136,23 @@ public abstract class LineTracker<T extends Viewer> {
         }
     }
 
-    protected abstract T createViewer(CachedPlayer cachedPlayer);
+    private boolean shouldTrackPlayer(CachedPlayer player) {
+        Location playerLocation = player.getLocation();
+        if (playerLocation.getWorld() != getLine().getWorldIfLoaded()) {
+            return false;
+        }
 
-    protected abstract boolean shouldTrackPlayer(CachedPlayer cachedPlayer);
+        double diffX = Math.abs(playerLocation.getX() - position.getX());
+        double diffZ = Math.abs(playerLocation.getZ() - position.getZ());
+
+        return diffX <= getViewRange()
+                && diffZ <= getViewRange()
+                && getLine().isVisibleTo(player.getBukkitPlayer());
+    }
+
+    protected abstract double getViewRange();
+
+    protected abstract T createViewer(CachedPlayer cachedPlayer);
 
     protected final boolean hasViewers() {
         return !viewers.isEmpty();
@@ -154,6 +170,20 @@ public abstract class LineTracker<T extends Viewer> {
         viewers.remove(player);
     }
 
+    @MustBeInvokedByOverriders
+    protected void detectChanges() {
+        PositionCoordinates position = getLine().getPosition();
+        if (!Objects.equals(this.position, position)) {
+            this.position = position;
+            this.positionChanged = true;
+        }
+    }
+
+    @MustBeInvokedByOverriders
+    protected void clearDetectedChanges() {
+        this.positionChanged = false;
+    }
+
     protected final void resetViewersAndSendDestroyPackets() {
         if (!hasViewers()) {
             return;
@@ -167,6 +197,13 @@ public abstract class LineTracker<T extends Viewer> {
 
     protected abstract void sendDestroyPackets(Viewers<T> viewers);
 
-    protected abstract void sendChangesPackets(Viewers<T> viewers);
+    @MustBeInvokedByOverriders
+    protected void sendChangesPackets(Viewers<T> viewers) {
+        if (positionChanged) {
+            sendPositionChangePackets(viewers);
+        }
+    }
+
+    protected abstract void sendPositionChangePackets(Viewers<T> viewers);
 
 }
