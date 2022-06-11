@@ -33,6 +33,7 @@ class APITextHologramLine extends BaseTextHologramLine implements TextHologramLi
         checkNotDeleted();
 
         this.clickListener = clickListener;
+        setChanged();
     }
 
     @Override
