@@ -56,6 +56,7 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
         checkNotDeleted();
 
         this.clickListener = clickListener;
+        setChanged();
     }
 
     @Override
