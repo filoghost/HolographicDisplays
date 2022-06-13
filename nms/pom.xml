@@ -29,6 +29,7 @@
         <module>v1_17_r1</module>
         <module>v1_18_r1</module>
         <module>v1_18_r2</module>
+        <module>v1_19_r1</module>
     </modules>
 
     <dependencies>
