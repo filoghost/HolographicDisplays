@@ -22,10 +22,10 @@ public class SettingsModel implements MappedConfig {
     boolean quickEditCommands = true;
 
     @Path("image-rendering.solid-pixel")
-    String imageRenderingSolidPixel = "[x]";
+    String imageRenderingSolidPixel = "\\u2588";
 
     @Path("image-rendering.transparent-pixel")
-    String imageRenderingTransparentPixel = "&7 [|] ";
+    String imageRenderingTransparentPixel = "&7 \\u23B9 ";
 
     @Path("bungee.refresh-seconds")
     int bungeeRefreshSeconds = 3;
