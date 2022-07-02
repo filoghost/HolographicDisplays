@@ -36,7 +36,7 @@ public abstract class BaseHologramManager<H extends BaseHologram> {
         Iterator<H> iterator = holograms.iterator();
         while (iterator.hasNext()) {
             H hologram = iterator.next();
-            if (condition.test(hologram)) {
+            if (hologram != null && condition.test(hologram)) {
                 iterator.remove();
                 hologram.setDeleted();
             }
@@ -47,6 +47,8 @@ public abstract class BaseHologramManager<H extends BaseHologram> {
         Iterator<H> iterator = holograms.iterator();
         while (iterator.hasNext()) {
             H hologram = iterator.next();
+            if (hologram == null) continue;
+
             iterator.remove();
             hologram.setDeleted();
         }
@@ -54,24 +56,32 @@ public abstract class BaseHologramManager<H extends BaseHologram> {
 
     public void onWorldLoad(World world) {
         for (H hologram : holograms) {
+            if (hologram == null) continue;
+
             hologram.onWorldLoad(world);
         }
     }
 
     public void onWorldUnload(World world) {
         for (H hologram : holograms) {
+            if (hologram == null) continue;
+
             hologram.onWorldUnload(world);
         }
     }
 
     public void onChunkLoad(Chunk chunk) {
         for (H hologram : holograms) {
+            if (hologram == null) continue;
+
             hologram.onChunkLoad(chunk);
         }
     }
 
     public void onChunkUnload(Chunk chunk) {
         for (H hologram : holograms) {
+            if (hologram == null) continue;
+
             hologram.onChunkUnload(chunk);
         }
     }
