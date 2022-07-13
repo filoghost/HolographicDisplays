@@ -16,10 +16,13 @@ import java.util.function.Predicate;
 
 public abstract class BaseHologramManager<H extends BaseHologram> {
 
-    private final List<H> holograms = new ArrayList<>();
+    private final List<H> holograms = Collections.synchronizedList(new ArrayList<>());
     private final List<H> unmodifiableHologramsView = Collections.unmodifiableList(holograms);
 
     protected void addHologram(H hologram) {
+        if (hologram == null) {
+            throw new IllegalArgumentException("hologram cannot be null!");
+        }
         holograms.add(hologram);
     }
 
@@ -33,46 +36,58 @@ public abstract class BaseHologramManager<H extends BaseHologram> {
     }
 
     public void deleteHologramsIf(Predicate<H> condition) {
-        Iterator<H> iterator = holograms.iterator();
-        while (iterator.hasNext()) {
-            H hologram = iterator.next();
-            if (condition.test(hologram)) {
+        synchronized (holograms) {
+            Iterator<H> iterator = holograms.iterator();
+            while (iterator.hasNext()) {
+                H hologram = iterator.next();
+                if (condition.test(hologram)) {
+                    iterator.remove();
+                    hologram.setDeleted();
+                }
+            }
+        }
+    }
+
+    public void deleteHolograms() {
+        synchronized (holograms) {
+            Iterator<H> iterator = holograms.iterator();
+            while (iterator.hasNext()) {
+                H hologram = iterator.next();
                 iterator.remove();
                 hologram.setDeleted();
             }
         }
     }
 
-    public void deleteHolograms() {
-        Iterator<H> iterator = holograms.iterator();
-        while (iterator.hasNext()) {
-            H hologram = iterator.next();
-            iterator.remove();
-            hologram.setDeleted();
-        }
-    }
-
     public void onWorldLoad(World world) {
-        for (H hologram : holograms) {
-            hologram.onWorldLoad(world);
+        synchronized (holograms) {
+            for (H hologram : holograms) {
+                hologram.onWorldLoad(world);
+            }
         }
     }
 
     public void onWorldUnload(World world) {
-        for (H hologram : holograms) {
-            hologram.onWorldUnload(world);
+        synchronized (holograms) {
+            for (H hologram : holograms) {
+                hologram.onWorldUnload(world);
+            }
         }
     }
 
     public void onChunkLoad(Chunk chunk) {
-        for (H hologram : holograms) {
-            hologram.onChunkLoad(chunk);
+        synchronized (holograms) {
+            for (H hologram : holograms) {
+                hologram.onChunkLoad(chunk);
+            }
         }
     }
 
     public void onChunkUnload(Chunk chunk) {
-        for (H hologram : holograms) {
-            hologram.onChunkUnload(chunk);
+        synchronized (holograms) {
+            for (H hologram : holograms) {
+                hologram.onChunkUnload(chunk);
+            }
         }
     }
 
