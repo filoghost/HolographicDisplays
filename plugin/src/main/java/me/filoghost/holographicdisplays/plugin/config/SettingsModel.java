@@ -21,6 +21,12 @@ public class SettingsModel implements MappedConfig {
     @Path("quick-edit-commands")
     boolean quickEditCommands = true;
 
+    @Path("placeholders.PlaceholderAPI.enabled")
+    boolean placeholderAPIEnabled = true;
+
+    @Path("placeholders.PlaceholderAPI.default-refresh-interval-ticks")
+    int placeholderAPIDefaultRefreshIntervalTicks = 200;
+
     @Path("image-rendering.solid-pixel")
     String imageRenderingSolidPixel = "\\u2588";
 

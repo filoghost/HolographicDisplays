@@ -24,6 +24,9 @@ public class Settings {
     public static DateTimeFormatter timeFormat;
     public static boolean updateNotification;
 
+    public static boolean placeholderAPIEnabled;
+    public static int placeholderAPIDefaultRefreshInternalTicks;
+
     public static String imageSymbol;
     public static String transparencySymbol;
 
@@ -42,6 +45,9 @@ public class Settings {
         quickEditCommands = config.quickEditCommands;
         timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone, errorCollector);
         updateNotification = config.updateNotification;
+
+        placeholderAPIEnabled = config.placeholderAPIEnabled;
+        placeholderAPIDefaultRefreshInternalTicks = config.placeholderAPIDefaultRefreshIntervalTicks;
 
         imageSymbol = DisplayFormat.apply(config.imageRenderingSolidPixel);
         transparencySymbol = DisplayFormat.apply(config.imageRenderingTransparentPixel);

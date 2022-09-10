@@ -6,8 +6,12 @@
 package me.filoghost.holographicdisplays.plugin.internal.placeholder;
 
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
+import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class ImmutablePlaceholder implements GlobalPlaceholder {
+public class ImmutablePlaceholder implements GlobalPlaceholder, IndividualPlaceholder {
 
     private final String text;
 
@@ -21,7 +25,12 @@ public class ImmutablePlaceholder implements GlobalPlaceholder {
     }
 
     @Override
-    public String getReplacement(String argument) {
+    public String getReplacement(@Nullable String argument) {
+        return text;
+    }
+
+    @Override
+    public String getReplacement(@NotNull Player player, @Nullable String argument) {
         return text;
     }
 
