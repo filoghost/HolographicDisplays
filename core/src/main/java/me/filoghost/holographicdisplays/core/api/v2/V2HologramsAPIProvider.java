@@ -38,7 +38,6 @@ public class V2HologramsAPIProvider extends HologramsAPIProvider {
         Preconditions.notNull(plugin, "plugin");
         Preconditions.notNull(source, "source");
         Preconditions.notNull(source.getWorld(), "source.getWorld()");
-        Preconditions.checkMainThread("async hologram creation");
 
         return hologramManager.createHologram(ImmutablePosition.of(source), plugin);
     }

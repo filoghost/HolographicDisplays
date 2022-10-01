@@ -48,6 +48,16 @@ public class ChunkListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
         Chunk chunk = event.getChunk();
+
+        // Always execute on the main thread
+        if (Bukkit.isPrimaryThread()) {
+            onChunkUnload(chunk);
+        } else {
+            Bukkit.getScheduler().runTask(plugin, () -> onChunkUnload(chunk));
+        }
+    }
+
+    private void onChunkUnload(Chunk chunk) {
         apiHologramManager.onChunkUnload(chunk);
         v2HologramManager.onChunkUnload(chunk);
     }
@@ -61,7 +71,7 @@ public class ChunkListener implements Listener {
             return;
         }
 
-        // In case another plugin loads the chunk asynchronously, always make sure to load the holograms on the main thread
+        // Always execute on the main thread
         if (Bukkit.isPrimaryThread()) {
             onChunkLoad(chunk);
         } else {
