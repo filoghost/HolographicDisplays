@@ -43,8 +43,8 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
 
     @MustBeInvokedByOverriders
     @Override
-    protected void update(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers) {
-        super.update(onlinePlayers, movedPlayers);
+    protected void update(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers, int maxViewRange) {
+        super.update(onlinePlayers, movedPlayers, maxViewRange);
 
         if (spawnItemEntity && hasViewers() && line.hasPickupCallback()) {
             for (Viewer viewer : getViewers()) {

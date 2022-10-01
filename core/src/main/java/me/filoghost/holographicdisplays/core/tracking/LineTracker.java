@@ -54,7 +54,7 @@ public abstract class LineTracker<T extends Viewer> {
     }
 
     @MustBeInvokedByOverriders
-    protected void update(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers) {
+    protected void update(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers, int maxViewRange) {
         boolean sendChangesPackets = false;
 
         // First, detect the changes if the flag is on and set it off
@@ -77,7 +77,7 @@ public abstract class LineTracker<T extends Viewer> {
         }
 
         // Finally, add/remove viewers sending them the full spawn/destroy packets
-        modifyViewersAndSendPackets(onlinePlayers, movedPlayers);
+        modifyViewersAndSendPackets(onlinePlayers, movedPlayers, maxViewRange);
 
         if (sendChangesPackets) {
             clearDetectedChanges();
@@ -86,7 +86,7 @@ public abstract class LineTracker<T extends Viewer> {
 
     protected abstract boolean updatePlaceholders();
 
-    private void modifyViewersAndSendPackets(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers) {
+    private void modifyViewersAndSendPackets(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers, int maxViewRange) {
         if (!getLine().isInLoadedChunk()) {
             resetViewersAndSendDestroyPackets();
             return;
@@ -120,7 +120,7 @@ public abstract class LineTracker<T extends Viewer> {
         for (int i = 0; i < size; i++) {
             CachedPlayer player = playersToCheck.get(i);
             Player bukkitPlayer = player.getBukkitPlayer();
-            if (shouldTrackPlayer(player)) {
+            if (shouldTrackPlayer(player, maxViewRange)) {
                 if (!viewers.containsKey(bukkitPlayer)) {
                     T viewer = createViewer(player);
                     viewers.put(bukkitPlayer, viewer);
@@ -148,17 +148,22 @@ public abstract class LineTracker<T extends Viewer> {
         }
     }
 
-    private boolean shouldTrackPlayer(CachedPlayer player) {
+    private boolean shouldTrackPlayer(CachedPlayer player, int maxViewRange) {
         Location playerLocation = player.getLocation();
         if (playerLocation.getWorld() != getLine().getWorldIfLoaded()) {
             return false;
         }
 
+        double viewRange = getViewRange();
+        if (viewRange > maxViewRange) {
+            viewRange = maxViewRange;
+        }
+
         double diffX = Math.abs(playerLocation.getX() - positionCoordinates.getX());
         double diffZ = Math.abs(playerLocation.getZ() - positionCoordinates.getZ());
 
-        return diffX <= getViewRange()
-                && diffZ <= getViewRange()
+        return diffX <= viewRange
+                && diffZ <= viewRange
                 && getLine().isVisibleTo(player.getBukkitPlayer());
     }
 

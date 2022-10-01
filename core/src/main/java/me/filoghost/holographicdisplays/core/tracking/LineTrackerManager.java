@@ -47,7 +47,7 @@ public class LineTrackerManager {
         return tracker;
     }
 
-    public void update(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers) {
+    public void update(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers, int maxViewRange) {
         Iterator<LineTracker<?>> iterator = lineTrackers.iterator();
         while (iterator.hasNext()) {
             LineTracker<?> lineTracker = iterator.next();
@@ -59,7 +59,7 @@ public class LineTrackerManager {
                 continue;
             }
 
-            lineTracker.update(onlinePlayers, movedPlayers);
+            lineTracker.update(onlinePlayers, movedPlayers, maxViewRange);
         }
     }
 

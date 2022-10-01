@@ -9,6 +9,7 @@ import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.placeholder.tracking.ActivePlaceholderTracker;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -73,8 +74,11 @@ public class TickingTask implements Runnable {
             }
         }
 
+        // Holograms need to disappear before chunks (code taken from Bukkit)
+        int maxViewRange = (Bukkit.getViewDistance() - 1) * 16;
+
         try {
-            lineTrackerManager.update(onlinePlayers, movedPlayers);
+            lineTrackerManager.update(onlinePlayers, movedPlayers, maxViewRange);
         } catch (Throwable t) {
             // Catch all types of Throwable because we're using NMS code
             if (tickClock.getCurrentTick() - lastErrorLogTick >= 20) {
