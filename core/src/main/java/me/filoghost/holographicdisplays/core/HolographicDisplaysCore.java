@@ -52,7 +52,7 @@ public class HolographicDisplaysCore {
         TickClock tickClock = new TickClock();
         ActivePlaceholderTracker placeholderTracker = new ActivePlaceholderTracker(placeholderRegistry, tickClock);
         LineClickListener lineClickListener = new LineClickListener();
-        lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener, tickClock);
+        lineTrackerManager = new LineTrackerManager(nmsManager, placeholderTracker, lineClickListener);
         apiHologramManager = new APIHologramManager(lineTrackerManager);
         v2HologramManager = new V2HologramManager(lineTrackerManager);
 

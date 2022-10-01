@@ -5,13 +5,12 @@
  */
 package me.filoghost.holographicdisplays.core.tracking;
 
-import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import me.filoghost.holographicdisplays.core.base.BaseItemHologramLine;
 import me.filoghost.holographicdisplays.core.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.placeholder.tracking.ActivePlaceholderTracker;
 import me.filoghost.holographicdisplays.core.tick.CachedPlayer;
-import me.filoghost.holographicdisplays.core.tick.TickClock;
+import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -21,7 +20,6 @@ import java.util.List;
 
 public class LineTrackerManager {
 
-    private final TickClock tickClock;
     private final NMSManager nmsManager;
     private final ActivePlaceholderTracker placeholderTracker;
     private final LineClickListener lineClickListener;
@@ -30,13 +28,11 @@ public class LineTrackerManager {
     public LineTrackerManager(
             NMSManager nmsManager,
             ActivePlaceholderTracker placeholderTracker,
-            LineClickListener lineClickListener,
-            TickClock tickClock) {
+            LineClickListener lineClickListener) {
         this.nmsManager = nmsManager;
         this.placeholderTracker = placeholderTracker;
         this.lineClickListener = lineClickListener;
         this.lineTrackers = new LinkedList<>();
-        this.tickClock = tickClock;
     }
 
     public TextLineTracker startTracking(BaseTextHologramLine line) {
