@@ -23,6 +23,7 @@ public class Mocks {
         SERVER_LOGGER = mock(Logger.class);
         SERVER = mock(Server.class);
         when(SERVER.getLogger()).thenReturn(SERVER_LOGGER);
+        when(SERVER.isPrimaryThread()).thenReturn(true);
         PLUGIN = mock(Plugin.class);
         when(PLUGIN.getName()).thenReturn("HolographicDisplays");
     }
