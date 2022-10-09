@@ -48,7 +48,7 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
 
         if (spawnItemEntity && hasViewers() && line.hasPickupCallback()) {
             for (Viewer viewer : getViewers()) {
-                if (CollisionHelper.isInPickupRange(viewer.getLocation(), positionCoordinates)) {
+                if (viewer.getLocation() != null && CollisionHelper.isInPickupRange(viewer.getLocation(), positionCoordinates)) {
                     line.onPickup(viewer.getBukkitPlayer());
                 }
             }

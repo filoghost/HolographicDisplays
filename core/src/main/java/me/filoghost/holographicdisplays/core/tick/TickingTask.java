@@ -6,9 +6,9 @@
 package me.filoghost.holographicdisplays.core.tick;
 
 import me.filoghost.fcommons.logging.Log;
-import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.placeholder.tracking.ActivePlaceholderTracker;
+import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -68,8 +68,7 @@ public class TickingTask implements Runnable {
 
         List<CachedPlayer> movedPlayers = new ArrayList<>();
         for (CachedPlayer onlinePlayer : onlinePlayers) {
-            boolean moved = onlinePlayer.onTick();
-            if (moved) {
+            if (onlinePlayer.isMovedLastTick()) {
                 movedPlayers.add(onlinePlayer);
             }
         }
@@ -91,7 +90,14 @@ public class TickingTask implements Runnable {
         // Remove placeholders which were not used by line trackers
         placeholderTracker.clearInactivePlaceholders();
 
+        // Invoke click listeners
         lineClickListener.processQueuedClickEvents();
+
+        // Delay position updates, so that they will be handled next tick.
+        // A tick of delay is necessary to avoid issues such as holograms not being visible after a teleport.
+        for (CachedPlayer onlinePlayer : onlinePlayers) {
+            onlinePlayer.onTick();
+        }
     }
 
 }

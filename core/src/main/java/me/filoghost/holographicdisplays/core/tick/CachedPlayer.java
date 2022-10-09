@@ -7,22 +7,23 @@ package me.filoghost.holographicdisplays.core.tick;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 public class CachedPlayer {
 
     private final Player player;
 
     private Location location;
+    private boolean movedLastTick;
 
     public CachedPlayer(Player player) {
         this.player = player;
     }
 
-    boolean onTick() {
+    void onTick() {
         Location newLocation = player.getLocation();
-        boolean moved = isDifferentPosition(location, newLocation);
+        movedLastTick = isDifferentPosition(location, newLocation);
         location = newLocation;
-        return moved;
     }
 
     private boolean isDifferentPosition(Location oldLocation, Location newLocation) {
@@ -40,8 +41,12 @@ public class CachedPlayer {
         return player;
     }
 
-    public Location getLocation() {
+    public @Nullable Location getLocation() {
         return location;
+    }
+
+    public boolean isMovedLastTick() {
+        return movedLastTick;
     }
 
     @Override

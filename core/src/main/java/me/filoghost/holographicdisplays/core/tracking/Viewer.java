@@ -10,6 +10,7 @@ import me.filoghost.holographicdisplays.nms.common.PacketGroup;
 import me.filoghost.holographicdisplays.core.tick.CachedPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 class Viewer {
 
@@ -23,7 +24,7 @@ class Viewer {
         return player.getBukkitPlayer();
     }
 
-    public Location getLocation() {
+    public @Nullable Location getLocation() {
         return player.getLocation();
     }
 

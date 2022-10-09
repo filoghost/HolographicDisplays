@@ -31,6 +31,7 @@ public abstract class LineTracker<T extends Viewer> {
      * Flag to indicate that the line has changed in some way and there could be the need to send update packets.
      */
     private boolean lineChanged;
+    private boolean inLoadedChunk;
     private int lastVisibilitySettingsVersion;
 
     protected LineTracker() {
@@ -88,11 +89,20 @@ public abstract class LineTracker<T extends Viewer> {
 
     private void modifyViewersAndSendPackets(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers, int maxViewRange) {
         if (!getLine().isInLoadedChunk()) {
-            resetViewersAndSendDestroyPackets();
+            if (inLoadedChunk) {
+                inLoadedChunk = false;
+                resetViewersAndSendDestroyPackets();
+            }
             return;
         }
 
         boolean checkAllPlayers = false;
+
+        if (!inLoadedChunk) {
+            // The chunk was just loaded, check all players
+            inLoadedChunk = true;
+            checkAllPlayers = true;
+        }
 
         int visibilitySettingsVersion = getLine().getVisibilitySettings().getVersion();
         if (visibilitySettingsVersion != lastVisibilitySettingsVersion) {
@@ -150,7 +160,7 @@ public abstract class LineTracker<T extends Viewer> {
 
     private boolean shouldTrackPlayer(CachedPlayer player, int maxViewRange) {
         Location playerLocation = player.getLocation();
-        if (playerLocation.getWorld() != getLine().getWorldIfLoaded()) {
+        if (playerLocation == null || playerLocation.getWorld() != getLine().getWorldIfLoaded()) {
             return false;
         }
 
