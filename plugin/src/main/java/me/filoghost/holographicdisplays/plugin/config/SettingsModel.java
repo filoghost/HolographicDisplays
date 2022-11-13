@@ -18,6 +18,9 @@ public class SettingsModel implements MappedConfig {
     @Path("space-between-lines")
     double spaceBetweenLines = 0.02;
 
+    @Path("holograms-view-range")
+    int viewRange = 48;
+
     @Path("quick-edit-commands")
     boolean quickEditCommands = true;
 

@@ -8,5 +8,6 @@ package me.filoghost.holographicdisplays.core;
 public class CoreGlobalConfig {
 
     public static double spaceBetweenLines;
+    public static int maxViewRange;
 
 }

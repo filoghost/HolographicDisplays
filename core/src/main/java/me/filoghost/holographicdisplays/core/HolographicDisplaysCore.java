@@ -89,6 +89,10 @@ public class HolographicDisplaysCore {
         }
     }
 
+    public void setMaxViewRange(int maxViewRange) {
+        CoreGlobalConfig.maxViewRange = maxViewRange;
+    }
+
     public void disable() {
         if (lineTrackerManager != null) {
             lineTrackerManager.resetViewersAndSendDestroyPackets();

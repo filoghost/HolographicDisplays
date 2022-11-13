@@ -128,6 +128,7 @@ public class HolographicDisplays extends FCommonsPlugin {
         configManager.reloadMainSettings(errorCollector);
 
         core.setSpaceBetweenHologramLines(Settings.spaceBetweenLines);
+        core.setMaxViewRange(Settings.viewRange);
 
         AnimationPlaceholderFactory animationPlaceholderFactory = configManager.loadAnimations(errorCollector);
         DefaultPlaceholders.resetAndRegister(api, animationPlaceholderFactory, bungeeServerTracker);

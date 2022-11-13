@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.core.tick;
 
 import me.filoghost.fcommons.logging.Log;
+import me.filoghost.holographicdisplays.core.CoreGlobalConfig;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.placeholder.tracking.ActivePlaceholderTracker;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
@@ -75,6 +76,9 @@ public class TickingTask implements Runnable {
 
         // Holograms need to disappear before chunks (code taken from Bukkit)
         int maxViewRange = (Bukkit.getViewDistance() - 1) * 16;
+        if (maxViewRange > CoreGlobalConfig.maxViewRange) {
+            maxViewRange = CoreGlobalConfig.maxViewRange;
+        }
 
         try {
             lineTrackerManager.update(onlinePlayers, movedPlayers, maxViewRange);
