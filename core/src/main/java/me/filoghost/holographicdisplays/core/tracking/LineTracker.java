@@ -37,6 +37,7 @@ public abstract class LineTracker<T extends Viewer> {
     protected LineTracker() {
         this.viewers = new HashMap<>();
         this.iterableViewers = new DelegateViewers<>(viewers.values());
+        setLineChanged(); // Force the initial refresh
     }
 
     protected abstract BaseHologramLine getLine();
