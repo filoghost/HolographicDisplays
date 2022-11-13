@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.core.base;
 
 import me.filoghost.holographicdisplays.api.Position;
+import me.filoghost.holographicdisplays.core.CoreGlobalConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -14,8 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class BaseHologramLines<T extends EditableHologramLine> implements Iterable<T> {
-
-    public static double spaceBetweenLines;
 
     private final BaseHologram hologram;
     private final List<T> lines;
@@ -98,7 +97,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
 
             currentLineY -= line.getHeight();
             if (i > 0) {
-                currentLineY -= spaceBetweenLines;
+                currentLineY -= CoreGlobalConfig.spaceBetweenLines;
             }
 
             line.setCoordinates(hologramPosition.getX(), currentLineY, hologramPosition.getZ());
@@ -116,7 +115,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
             height += line.getHeight();
         }
 
-        height += spaceBetweenLines * (lines.size() - 1);
+        height += CoreGlobalConfig.spaceBetweenLines * (lines.size() - 1);
         return height;
     }
 

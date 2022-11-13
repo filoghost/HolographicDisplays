@@ -16,7 +16,6 @@ import me.filoghost.holographicdisplays.core.api.current.DefaultHolographicDispl
 import me.filoghost.holographicdisplays.core.api.v2.V2HologramManager;
 import me.filoghost.holographicdisplays.core.api.v2.V2HologramsAPIProvider;
 import me.filoghost.holographicdisplays.core.base.BaseHologram;
-import me.filoghost.holographicdisplays.core.base.BaseHologramLines;
 import me.filoghost.holographicdisplays.core.listener.ChunkListener;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.listener.PlayerListener;
@@ -81,7 +80,7 @@ public class HolographicDisplaysCore {
     }
 
     public void setSpaceBetweenHologramLines(double spaceBetweenLines) {
-        BaseHologramLines.spaceBetweenLines = spaceBetweenLines;
+        CoreGlobalConfig.spaceBetweenLines = spaceBetweenLines;
         for (BaseHologram hologram : apiHologramManager.getHolograms()) {
             hologram.getLines().updatePositions();
         }

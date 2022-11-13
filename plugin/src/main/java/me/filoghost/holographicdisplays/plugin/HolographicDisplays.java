@@ -127,6 +127,8 @@ public class HolographicDisplays extends FCommonsPlugin {
         configManager.reloadStaticReplacements(errorCollector);
         configManager.reloadMainSettings(errorCollector);
 
+        core.setSpaceBetweenHologramLines(Settings.spaceBetweenLines);
+
         AnimationPlaceholderFactory animationPlaceholderFactory = configManager.loadAnimations(errorCollector);
         DefaultPlaceholders.resetAndRegister(api, animationPlaceholderFactory, bungeeServerTracker);
 
@@ -144,8 +146,6 @@ public class HolographicDisplays extends FCommonsPlugin {
                 errorCollector.add(e, "error while loading hologram \"" + hologramConfig.getName() + "\"");
             }
         }
-
-        core.setSpaceBetweenHologramLines(Settings.spaceBetweenLines);
     }
 
     @Override
