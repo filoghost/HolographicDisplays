@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.core.base;
 
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.logging.Log;
+import me.filoghost.holographicdisplays.core.CorePreconditions;
 import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
 import me.filoghost.holographicdisplays.core.tracking.ItemLineTracker;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
@@ -48,6 +49,7 @@ public abstract class BaseItemHologramLine extends BaseClickableHologramLine {
     }
 
     public void setItemStack(@Nullable ItemStack itemStack) {
+        CorePreconditions.checkMainThread();
         checkNotDeleted();
 
         if (itemStack != null) {

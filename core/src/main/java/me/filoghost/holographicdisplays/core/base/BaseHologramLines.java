@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.core.base;
 
 import me.filoghost.holographicdisplays.api.Position;
 import me.filoghost.holographicdisplays.core.CoreGlobalConfig;
+import me.filoghost.holographicdisplays.core.CorePreconditions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -28,18 +29,22 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
 
     @Override
     public Iterator<T> iterator() {
+        CorePreconditions.checkMainThread();
         return unmodifiableLinesView.iterator();
     }
 
     public int size() {
+        CorePreconditions.checkMainThread();
         return lines.size();
     }
 
     public @NotNull T get(int index) {
+        CorePreconditions.checkMainThread();
         return lines.get(index);
     }
 
     public void add(T line) {
+        CorePreconditions.checkMainThread();
         checkNotDeleted();
 
         lines.add(line);
@@ -47,6 +52,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
     }
 
     public void insert(int beforeIndex, T line) {
+        CorePreconditions.checkMainThread();
         checkNotDeleted();
 
         lines.add(beforeIndex, line);
@@ -54,6 +60,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
     }
 
     public void remove(int index) {
+        CorePreconditions.checkMainThread();
         checkNotDeleted();
 
         lines.remove(index).setDeleted();
@@ -61,6 +68,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
     }
 
     public boolean remove(T line) {
+        CorePreconditions.checkMainThread();
         checkNotDeleted();
 
         boolean removed = lines.remove(line);
@@ -72,6 +80,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
     }
 
     public void clear() {
+        CorePreconditions.checkMainThread();
         checkNotDeleted();
 
         Iterator<T> iterator = lines.iterator();
@@ -105,6 +114,8 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
     }
 
     public double getHeight() {
+        CorePreconditions.checkMainThread();
+
         if (lines.isEmpty()) {
             return 0;
         }

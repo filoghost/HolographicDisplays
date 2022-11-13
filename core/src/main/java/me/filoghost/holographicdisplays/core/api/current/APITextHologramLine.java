@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.core.api.current;
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
+import me.filoghost.holographicdisplays.core.CorePreconditions;
 import me.filoghost.holographicdisplays.core.base.BaseTextHologramLine;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -30,6 +31,7 @@ class APITextHologramLine extends BaseTextHologramLine implements TextHologramLi
 
     @Override
     public void setClickListener(@Nullable HologramLineClickListener clickListener) {
+        CorePreconditions.checkMainThread();
         checkNotDeleted();
 
         this.clickListener = clickListener;

@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.core.base;
 
 import me.filoghost.fcommons.Preconditions;
+import me.filoghost.holographicdisplays.core.CorePreconditions;
 import me.filoghost.holographicdisplays.core.api.current.DefaultVisibilitySettings;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import org.bukkit.Chunk;
@@ -70,6 +71,7 @@ public abstract class BaseHologram extends BaseHologramComponent {
     }
 
     public void setPosition(@NotNull ImmutablePosition position) {
+        CorePreconditions.checkMainThread();
         Preconditions.notNull(position, "position");
         checkNotDeleted();
 

@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.base;
 
+import me.filoghost.holographicdisplays.core.CorePreconditions;
 import me.filoghost.holographicdisplays.nms.common.entity.TextNMSPacketEntity;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.core.tracking.TextLineTracker;
@@ -31,6 +32,7 @@ public abstract class BaseTextHologramLine extends BaseClickableHologramLine {
     }
 
     public void setText(@Nullable String text) {
+        CorePreconditions.checkMainThread();
         checkNotDeleted();
 
         this.text = text;

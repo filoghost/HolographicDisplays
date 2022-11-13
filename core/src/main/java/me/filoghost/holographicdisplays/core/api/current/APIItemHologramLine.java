@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.core.api.current;
 import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.HologramLinePickupListener;
 import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
+import me.filoghost.holographicdisplays.core.CorePreconditions;
 import me.filoghost.holographicdisplays.core.base.BaseItemHologramLine;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -24,19 +25,16 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
 
     @Override
     public @Nullable HologramLinePickupListener getPickupListener() {
+        CorePreconditions.checkMainThread();
         return pickupListener;
     }
 
     @Override
     public void setPickupListener(@Nullable HologramLinePickupListener pickupListener) {
+        CorePreconditions.checkMainThread();
         checkNotDeleted();
 
         this.pickupListener = pickupListener;
-    }
-
-    @Override
-    public @Nullable HologramLineClickListener getClickListener() {
-        return clickListener;
     }
 
     @Override
@@ -52,7 +50,14 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
     }
 
     @Override
+    public @Nullable HologramLineClickListener getClickListener() {
+        CorePreconditions.checkMainThread();
+        return clickListener;
+    }
+
+    @Override
     public void setClickListener(@Nullable HologramLineClickListener clickListener) {
+        CorePreconditions.checkMainThread();
         checkNotDeleted();
 
         this.clickListener = clickListener;
