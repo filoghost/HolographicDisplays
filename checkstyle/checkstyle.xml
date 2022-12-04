@@ -125,7 +125,6 @@
 
         <!-- Miscellaneous -->
         <module name="ArrayTypeStyle"/>
-        <module name="AvoidEscapedUnicodeCharacters"/>
         <module name="CommentsIndentation"/>
         <module name="Indentation">
             <property name="basicOffset" value="4"/>

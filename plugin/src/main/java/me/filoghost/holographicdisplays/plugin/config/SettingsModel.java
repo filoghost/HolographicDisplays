@@ -31,10 +31,10 @@ public class SettingsModel implements MappedConfig {
     int placeholderAPIDefaultRefreshIntervalTicks = 200;
 
     @Path("image-rendering.solid-pixel")
-    String imageRenderingSolidPixel = "\\u2588";
+    String imageRenderingSolidPixel = "\u2588";
 
     @Path("image-rendering.transparent-pixel")
-    String imageRenderingTransparentPixel = "&7 \\u23B9 ";
+    String imageRenderingTransparentPixel = "&7 \u23B9 ";
 
     @Path("bungee.refresh-seconds")
     int bungeeRefreshSeconds = 3;
