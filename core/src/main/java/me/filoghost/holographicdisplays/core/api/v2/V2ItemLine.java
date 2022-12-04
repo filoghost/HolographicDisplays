@@ -46,7 +46,7 @@ class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2HologramLin
     }
 
     @Override
-    protected void invokeClickCallback(Player player) {
+    protected void invokeExternalClickCallback(Player player) {
         if (touchHandler != null) {
             touchHandler.onTouch(player);
         }
@@ -68,7 +68,7 @@ class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2HologramLin
     }
 
     @Override
-    protected void invokePickupCallback(Player player) {
+    protected void invokeExternalPickupCallback(Player player) {
         if (pickupHandler != null) {
             pickupHandler.onPickup(player);
         }

@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.core.base;
 import me.filoghost.holographicdisplays.api.Position;
 import me.filoghost.holographicdisplays.core.CoreGlobalConfig;
 import me.filoghost.holographicdisplays.core.CorePreconditions;
+import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -18,11 +19,13 @@ import java.util.List;
 public class BaseHologramLines<T extends EditableHologramLine> implements Iterable<T> {
 
     private final BaseHologram hologram;
+    private final LineTrackerManager lineTrackerManager;
     private final List<T> lines;
     private final List<T> unmodifiableLinesView;
 
-    public BaseHologramLines(BaseHologram hologram) {
+    public BaseHologramLines(BaseHologram hologram, LineTrackerManager lineTrackerManager) {
         this.hologram = hologram;
+        this.lineTrackerManager = lineTrackerManager;
         this.lines = new ArrayList<>();
         this.unmodifiableLinesView = Collections.unmodifiableList(lines);
     }
@@ -48,6 +51,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
         checkNotDeleted();
 
         lines.add(line);
+        lineTrackerManager.startTracking(line);
         updatePositions();
     }
 
@@ -56,6 +60,7 @@ public class BaseHologramLines<T extends EditableHologramLine> implements Iterab
         checkNotDeleted();
 
         lines.add(beforeIndex, line);
+        lineTrackerManager.startTracking(line);
         updatePositions();
     }
 

@@ -11,6 +11,7 @@ import me.filoghost.holographicdisplays.api.hologram.line.HologramLine;
 import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
 import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import me.filoghost.holographicdisplays.core.base.BaseHologramLines;
+import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,8 +20,8 @@ class APIHologramLines extends BaseHologramLines<APIHologramLine> implements Hol
 
     private final APIHologram hologram;
 
-    APIHologramLines(APIHologram hologram) {
-        super(hologram);
+    APIHologramLines(APIHologram hologram, LineTrackerManager lineTrackerManager) {
+        super(hologram, lineTrackerManager);
         this.hologram = hologram;
     }
 

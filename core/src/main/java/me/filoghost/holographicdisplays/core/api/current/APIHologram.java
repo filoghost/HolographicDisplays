@@ -31,7 +31,7 @@ class APIHologram extends BaseHologram implements Hologram {
             LineTrackerManager lineTrackerManager) {
         super(position, lineTrackerManager);
         Preconditions.notNull(plugin, "plugin");
-        this.lines = new APIHologramLines(this);
+        this.lines = new APIHologramLines(this, lineTrackerManager);
         this.plugin = plugin;
         this.hologramManager = hologramManager;
         this.placeholderSetting = PlaceholderSetting.DEFAULT;

@@ -10,6 +10,8 @@ import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.tick.CachedPlayer;
 import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import me.filoghost.holographicdisplays.nms.common.entity.ItemNMSPacketEntity;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
@@ -48,10 +50,17 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
 
         if (spawnItemEntity && hasViewers() && line.hasPickupCallback()) {
             for (Viewer viewer : getViewers()) {
-                if (viewer.getLocation() != null && CollisionHelper.isInPickupRange(viewer.getLocation(), positionCoordinates)) {
-                    line.onPickup(viewer.getBukkitPlayer());
-                }
+                invokePickupIfNecessary(viewer);
             }
+        }
+    }
+
+    private void invokePickupIfNecessary(Viewer viewer) {
+        Location location = viewer.getLocation();
+        Player player = viewer.getBukkitPlayer();
+
+        if (location != null && CollisionHelper.isInPickupRange(location, positionCoordinates) && canInteract(player)) {
+            line.onPickup(player);
         }
     }
 

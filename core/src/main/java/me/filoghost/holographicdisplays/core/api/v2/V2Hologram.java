@@ -37,7 +37,7 @@ class V2Hologram extends BaseHologram implements Hologram {
         super(position, lineTrackerManager);
         this.plugin = plugin;
         this.hologramManager = hologramManager;
-        this.lines = new BaseHologramLines<>(this);
+        this.lines = new BaseHologramLines<>(this, lineTrackerManager);
         this.visibilityManager = new V2VisibilityManager(getVisibilitySettings());
         this.creationTimestamp = System.currentTimeMillis();
     }

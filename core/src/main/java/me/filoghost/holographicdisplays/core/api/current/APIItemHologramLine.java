@@ -43,7 +43,7 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
     }
 
     @Override
-    protected void invokePickupCallback(Player player) {
+    protected void invokeExternalPickupCallback(Player player) {
         if (pickupListener != null) {
             pickupListener.onPickup(new SimpleHologramLinePickupEvent(player));
         }
@@ -70,7 +70,7 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
     }
 
     @Override
-    protected void invokeClickCallback(Player player) {
+    protected void invokeExternalClickCallback(Player player) {
         if (clickListener != null) {
             clickListener.onClick(new SimpleHologramLineClickEvent(player));
         }

@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.core.tracking;
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.core.base.BaseHologramLine;
 import me.filoghost.holographicdisplays.core.tick.CachedPlayer;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
@@ -27,17 +28,12 @@ public abstract class LineTracker<T extends Viewer> {
     protected PositionCoordinates positionCoordinates;
     private boolean positionChanged;
 
-    /**
-     * Flag to indicate that the line has changed in some way and there could be the need to send update packets.
-     */
-    private boolean lineChanged;
     private boolean inLoadedChunk;
     private int lastVisibilitySettingsVersion;
 
     protected LineTracker() {
         this.viewers = new HashMap<>();
         this.iterableViewers = new DelegateViewers<>(viewers.values());
-        setLineChanged(); // Force the initial refresh
     }
 
     protected abstract BaseHologramLine getLine();
@@ -51,17 +47,13 @@ public abstract class LineTracker<T extends Viewer> {
         resetViewersAndSendDestroyPackets();
     }
 
-    public final void setLineChanged() {
-        lineChanged = true;
-    }
-
     @MustBeInvokedByOverriders
     protected void update(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers, int maxViewRange) {
         boolean sendChangesPackets = false;
 
         // First, detect the changes if the flag is on and set it off
-        if (lineChanged) {
-            lineChanged = false;
+        if (getLine().hasChanged()) {
+            getLine().clearChanged();
             detectChanges();
             sendChangesPackets = true;
         }
@@ -190,12 +182,20 @@ public abstract class LineTracker<T extends Viewer> {
         return viewers.values();
     }
 
-    public final boolean isViewer(Player player) {
+    protected final boolean isViewer(Player player) {
         return viewers.containsKey(player);
     }
 
     protected final void removeViewer(Player player) {
         viewers.remove(player);
+    }
+
+    protected boolean canInteract(Player player) {
+        return !getLine().isDeleted()
+                && player.isOnline()
+                && player.getGameMode() != GameMode.SPECTATOR
+                && isViewer(player)
+                && getLine().isVisibleTo(player);
     }
 
     @MustBeInvokedByOverriders

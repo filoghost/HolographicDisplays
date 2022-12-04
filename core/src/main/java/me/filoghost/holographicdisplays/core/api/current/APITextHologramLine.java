@@ -49,7 +49,7 @@ class APITextHologramLine extends BaseTextHologramLine implements TextHologramLi
     }
 
     @Override
-    protected void invokeClickCallback(Player player) {
+    protected void invokeExternalClickCallback(Player player) {
         if (clickListener != null) {
             clickListener.onClick(new SimpleHologramLineClickEvent(player));
         }

@@ -48,7 +48,7 @@ class V2TextLine extends BaseTextHologramLine implements TextLine, V2HologramLin
     }
 
     @Override
-    protected void invokeClickCallback(Player player) {
+    protected void invokeExternalClickCallback(Player player) {
         if (touchHandler != null) {
             touchHandler.onTouch(player);
         }

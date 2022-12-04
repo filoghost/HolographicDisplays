@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.core.tracking;
 
 import me.filoghost.holographicdisplays.core.base.BaseItemHologramLine;
 import me.filoghost.holographicdisplays.core.base.BaseTextHologramLine;
+import me.filoghost.holographicdisplays.core.base.EditableHologramLine;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.placeholder.tracking.ActivePlaceholderTracker;
 import me.filoghost.holographicdisplays.core.tick.CachedPlayer;
@@ -35,16 +36,14 @@ public class LineTrackerManager {
         this.lineTrackers = new LinkedList<>();
     }
 
-    public TextLineTracker startTracking(BaseTextHologramLine line) {
-        TextLineTracker tracker = new TextLineTracker(line, nmsManager, lineClickListener, placeholderTracker);
-        lineTrackers.add(tracker);
-        return tracker;
-    }
-
-    public ItemLineTracker startTracking(BaseItemHologramLine line) {
-        ItemLineTracker tracker = new ItemLineTracker(line, nmsManager, lineClickListener);
-        lineTrackers.add(tracker);
-        return tracker;
+    public <T extends EditableHologramLine> void startTracking(T line) {
+        if (line instanceof BaseTextHologramLine) {
+            lineTrackers.add(new TextLineTracker((BaseTextHologramLine) line, nmsManager, lineClickListener, placeholderTracker));
+        } else if (line instanceof BaseItemHologramLine) {
+            lineTrackers.add(new ItemLineTracker((BaseItemHologramLine) line, nmsManager, lineClickListener));
+        } else {
+            throw new UnsupportedOperationException("unsupported line class: " + line.getClass().getName());
+        }
     }
 
     public void update(List<CachedPlayer> onlinePlayers, List<CachedPlayer> movedPlayers, int maxViewRange) {

@@ -5,9 +5,9 @@
  */
 package me.filoghost.holographicdisplays.core.listener;
 
+import me.filoghost.holographicdisplays.core.tracking.ClickableLineTracker;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
 import me.filoghost.holographicdisplays.nms.common.PacketListener;
-import me.filoghost.holographicdisplays.core.base.BaseClickableHologramLine;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -17,22 +17,22 @@ import java.util.concurrent.ConcurrentMap;
 
 public class LineClickListener implements PacketListener {
 
-    private final ConcurrentMap<Integer, BaseClickableHologramLine> linesByEntityID;
+    private final ConcurrentMap<Integer, ClickableLineTracker<?>> lineTrackerByEntityID;
 
     // It is necessary to queue async click events to process them from the main thread.
     // Use a set to avoid duplicate click events to the same line.
     private final Set<QueuedClickEvent> queuedClickEvents;
 
     public LineClickListener() {
-        linesByEntityID = new ConcurrentHashMap<>();
+        lineTrackerByEntityID = new ConcurrentHashMap<>();
         queuedClickEvents = Collections.newSetFromMap(new ConcurrentHashMap<>());
     }
 
     @Override
     public boolean onAsyncEntityInteract(Player player, int entityID) {
-        BaseClickableHologramLine line = linesByEntityID.get(entityID);
-        if (line != null) {
-            queuedClickEvents.add(new QueuedClickEvent(player, line));
+        ClickableLineTracker<?> lineTracker = lineTrackerByEntityID.get(entityID);
+        if (lineTracker != null) {
+            queuedClickEvents.add(new QueuedClickEvent(player, lineTracker));
             return true;
         } else {
             return false;
@@ -41,19 +41,19 @@ public class LineClickListener implements PacketListener {
 
     // This method is called from the main thread
     public void processQueuedClickEvents() {
-        for (QueuedClickEvent queuedClickEvent : queuedClickEvents) {
-            queuedClickEvent.line.onClick(queuedClickEvent.player);
+        for (QueuedClickEvent event : queuedClickEvents) {
+            event.lineTracker.onClientClick(event.player);
         }
         queuedClickEvents.clear();
     }
 
-    public void registerLine(EntityID clickableEntityID, BaseClickableHologramLine line) {
-        linesByEntityID.put(clickableEntityID.getNumericID(), line);
+    public void addLineTracker(EntityID clickableEntityID, ClickableLineTracker<?> lineTracker) {
+        lineTrackerByEntityID.put(clickableEntityID.getNumericID(), lineTracker);
     }
 
-    public void unregisterLine(EntityID clickableEntityID) {
+    public void removeLineTracker(EntityID clickableEntityID) {
         if (clickableEntityID.hasInitializedNumericID()) {
-            linesByEntityID.remove(clickableEntityID.getNumericID());
+            lineTrackerByEntityID.remove(clickableEntityID.getNumericID());
         }
     }
 
@@ -61,11 +61,11 @@ public class LineClickListener implements PacketListener {
     private static class QueuedClickEvent {
 
         private final Player player;
-        private final BaseClickableHologramLine line;
+        private final ClickableLineTracker<?> lineTracker;
 
-        QueuedClickEvent(Player player, BaseClickableHologramLine line) {
+        QueuedClickEvent(Player player, ClickableLineTracker<?> lineTracker) {
             this.player = player;
-            this.line = line;
+            this.lineTracker = lineTracker;
         }
 
         @Override
@@ -78,13 +78,13 @@ public class LineClickListener implements PacketListener {
             }
 
             QueuedClickEvent other = (QueuedClickEvent) obj;
-            return this.player.equals(other.player) && this.line.equals(other.line);
+            return this.player.equals(other.player) && this.lineTracker.equals(other.lineTracker);
         }
 
         @Override
         public int hashCode() {
             int result = player.hashCode();
-            result = 31 * result + line.hashCode();
+            result = 31 * result + lineTracker.hashCode();
             return result;
         }
 
