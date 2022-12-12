@@ -21,6 +21,9 @@ public class SettingsModel implements MappedConfig {
     @Path("holograms-view-range")
     int viewRange = 48;
 
+    @Path("run-on-unsupported-versions")
+    boolean runOnLackSupport = false;
+
     @Path("quick-edit-commands")
     boolean quickEditCommands = true;
 
