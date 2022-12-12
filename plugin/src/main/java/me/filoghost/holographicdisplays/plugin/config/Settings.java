@@ -47,6 +47,7 @@ public class Settings {
         quickEditCommands = config.quickEditCommands;
         timeFormat = parseTimeFormatter(config.timeFormat, config.timeZone, errorCollector);
         updateNotification = config.updateNotification;
+        runOnLackSupport = config.runOnLackSupport;
 
         placeholderAPIEnabled = config.placeholderAPIEnabled;
         placeholderAPIDefaultRefreshInternalTicks = config.placeholderAPIDefaultRefreshIntervalTicks;
