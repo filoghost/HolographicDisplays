@@ -42,7 +42,7 @@ public class HolographicDisplaysCore {
         try {
             nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
         } catch (UnknownVersionException e) {
-            if (YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder() + "/config.yml).getBoolean("run-on-unsupported-versions" == true) {
+            if (YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder() + "/config.yml").getBoolean("run-on-unsupported-versions" == true) {
                 Bukkit.getServer().getConsoleSender().sendMessage("You are running an unsupported version of Spigot");
                 Bukkit.getServer().getConsoleSender().sendMessage("Functionality will be unstable/not work, and you will get no support");
             } else {
