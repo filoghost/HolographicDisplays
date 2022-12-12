@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.core;
 
 import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider;
+import java.io.File;
 import me.filoghost.fcommons.FCommonsPlugin.PluginEnableException;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.holographicdisplays.api.internal.HolographicDisplaysAPIProvider;
@@ -26,6 +27,7 @@ import me.filoghost.holographicdisplays.core.tick.TickingTask;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
 import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -40,7 +42,12 @@ public class HolographicDisplaysCore {
         try {
             nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
         } catch (UnknownVersionException e) {
-            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.18.2.");
+            if (YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder() + "/config.yml).getBoolean("run-on-unsupported-versions" == true) {
+                Bukkit.getServer().getConsoleSender().sendMessage("You are running an unsupported version of Spigot");
+                Bukkit.getServer().getConsoleSender().sendMessage("Functionality will be unstable/not work, and you will get no support");
+            } else {
+                throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.19.2.");
+            }
         } catch (OutdatedVersionException e) {
             throw new PluginEnableException("Holographic Displays only supports " + e.getMinimumSupportedVersion() + " and above.");
         } catch (Throwable t) {
