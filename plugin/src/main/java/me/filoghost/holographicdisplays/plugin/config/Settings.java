@@ -24,6 +24,7 @@ public class Settings {
     public static boolean quickEditCommands;
     public static DateTimeFormatter timeFormat;
     public static boolean updateNotification;
+    public static boolean runOnLackSupport;
 
     public static boolean placeholderAPIEnabled;
     public static int placeholderAPIDefaultRefreshInternalTicks;
