@@ -8,22 +8,25 @@ package me.filoghost.holographicdisplays.plugin.config;
 import me.filoghost.fcommons.Colors;
 import me.filoghost.fcommons.MaterialsHelper;
 import me.filoghost.fcommons.Strings;
+import me.filoghost.holographicdisplays.core.placeholder.parsing.StringWithPlaceholders;
 import me.filoghost.holographicdisplays.plugin.format.DisplayFormat;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.ItemInternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.internal.hologram.TextInternalHologramLine;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParseException;
 import me.filoghost.holographicdisplays.plugin.lib.nbt.parser.MojangsonParser;
-import me.filoghost.holographicdisplays.core.placeholder.parsing.StringWithPlaceholders;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InternalHologramLineParser {
 
     private static final String ICON_PREFIX = "icon:";
+    private static final Pattern PLACEHOLDER_API_SHORT_FORMAT = Pattern.compile("%(.+?)%");
 
     public static InternalHologramLine parseLine(String serializedLine) throws InternalHologramLoadException {
         if (serializedLine.toLowerCase(Locale.ROOT).startsWith(ICON_PREFIX)) {
@@ -32,11 +35,40 @@ public class InternalHologramLineParser {
             return new ItemInternalHologramLine(serializedLine, icon);
 
         } else {
-            String displayText = DisplayFormat.apply(serializedLine, false);
-            // Apply colors only outside placeholders
-            displayText = StringWithPlaceholders.withEscapes(displayText).replaceStrings(Colors::colorize);
+            String displayText = parseText(serializedLine);
             return new TextInternalHologramLine(serializedLine, displayText);
         }
+    }
+
+    protected static String parseText(String serializedLine) {
+        String displayText = DisplayFormat.apply(serializedLine, false);
+        if (Settings.placeholderAPIExpandShortFormat) {
+            displayText = expandPlaceholderAPIShortFormat(displayText);
+        }
+        // Apply colors only outside placeholders
+        displayText = StringWithPlaceholders.withEscapes(displayText).replaceOutsidePlaceholders(Colors::colorize);
+        return displayText;
+    }
+
+    private static String expandPlaceholderAPIShortFormat(String text) {
+        Matcher matcher = PLACEHOLDER_API_SHORT_FORMAT.matcher(text);
+        boolean foundMatch = matcher.find();
+
+        if (!foundMatch) {
+            return text;
+        }
+
+        StringBuffer result = new StringBuffer();
+
+        while (foundMatch) {
+            String placeholderContent = matcher.group(1);
+            matcher.appendReplacement(result, "");
+            result.append("{papi: ").append(StringWithPlaceholders.addEscapes(placeholderContent)).append("}");
+            foundMatch = matcher.find();
+        }
+
+        matcher.appendTail(result);
+        return result.toString();
     }
 
     @SuppressWarnings("deprecation")

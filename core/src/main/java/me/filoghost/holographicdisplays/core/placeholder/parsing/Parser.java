@@ -123,6 +123,22 @@ class Parser {
         }
     }
 
+    public static String addEscapes(String string) {
+        StringBuilder output = new StringBuilder(string.length() + 16); // String gets longer with escapes
+
+        for (int i = 0; i < string.length(); i++) {
+            char currentChar = string.charAt(i);
+
+            if (isSpecialCharacter(currentChar)) {
+                output.append(ESCAPE_CHAR);
+            }
+
+            output.append(currentChar);
+        }
+
+        return output.toString();
+    }
+
     private static boolean isSpecialCharacter(char currentChar) {
         return currentChar == ESCAPE_CHAR
                 || currentChar == PLACEHOLDER_START_CHAR

@@ -37,6 +37,8 @@ class StringWithPlaceholdersTest {
                 Arguments.of(" {p} ", " # "),
                 Arguments.of("{p} {p} {p}", "# # #"),
                 Arguments.of("{{p}}", "{#}"), // Only the innermost placeholder should be replaced
+                Arguments.of("{{p}", "{#"),
+                Arguments.of("{p}}", "#}"),
                 Arguments.of("{p abc", "{p abc"), // Placeholder without closing tag
                 Arguments.of("abc p}", "abc p}") // Placeholder without opening tag
         );
@@ -46,7 +48,7 @@ class StringWithPlaceholdersTest {
     @MethodSource("replaceLiteralPartsTestArguments")
     void replaceLiteralParts(String input, String expectedOutput) {
         StringWithPlaceholders s = StringWithPlaceholders.of(input);
-        assertThat(s.replaceStrings(literalPart -> "_")).isEqualTo(expectedOutput);
+        assertThat(s.replaceOutsidePlaceholders(literalPart -> "_")).isEqualTo(expectedOutput);
     }
 
     static Stream<Arguments> replaceLiteralPartsTestArguments() {
@@ -112,7 +114,7 @@ class StringWithPlaceholdersTest {
     @ParameterizedTest(name = "[{index}] {0} -> {0}")
     @MethodSource("escapesTestArguments")
     void preservingEscapes(String input) {
-        String output = StringWithPlaceholders.withEscapes(input).replaceStrings(StringReplaceFunction.NO_REPLACEMENTS);
+        String output = StringWithPlaceholders.withEscapes(input).replaceOutsidePlaceholders(StringReplaceFunction.NO_REPLACEMENTS);
         assertThat(output).isEqualTo(input);
     }
 
@@ -131,6 +133,12 @@ class StringWithPlaceholdersTest {
                 Arguments.of("{\\}}", "<}>"),
                 Arguments.of("{\\\\}", "<\\>")
         );
+    }
+
+    @Test
+    void addEscapes() {
+        String escaped = StringWithPlaceholders.addEscapes("} { \\");
+        assertThat(escaped).isEqualTo("\\} \\{ \\\\");
     }
 
 }

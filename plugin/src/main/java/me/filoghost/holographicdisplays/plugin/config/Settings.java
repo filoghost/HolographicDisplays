@@ -26,6 +26,7 @@ public class Settings {
     public static boolean updateNotification;
 
     public static boolean placeholderAPIEnabled;
+    public static boolean placeholderAPIExpandShortFormat;
     public static int placeholderAPIDefaultRefreshInternalTicks;
 
     public static String imageSymbol;
@@ -49,6 +50,7 @@ public class Settings {
         updateNotification = config.updateNotification;
 
         placeholderAPIEnabled = config.placeholderAPIEnabled;
+        placeholderAPIExpandShortFormat = config.placeholderAPIShortFormat;
         placeholderAPIDefaultRefreshInternalTicks = config.placeholderAPIDefaultRefreshIntervalTicks;
 
         imageSymbol = DisplayFormat.apply(config.imageRenderingSolidPixel);

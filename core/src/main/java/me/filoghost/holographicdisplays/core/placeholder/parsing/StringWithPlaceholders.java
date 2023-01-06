@@ -27,6 +27,10 @@ public final class StringWithPlaceholders {
         return Parser.parse(string, true);
     }
 
+    public static String addEscapes(@NotNull String string) {
+        return Parser.addEscapes(string);
+    }
+
     StringWithPlaceholders(@NotNull String string, @Nullable List<Part> parts) {
         this.string = string;
         this.parts = parts;
@@ -71,7 +75,7 @@ public final class StringWithPlaceholders {
         return replace(player, replaceFunction, StringReplaceFunction.NO_REPLACEMENTS);
     }
 
-    public @NotNull String replaceStrings(StringReplaceFunction replaceFunction) {
+    public @NotNull String replaceOutsidePlaceholders(StringReplaceFunction replaceFunction) {
         return replace(null, PlaceholderReplaceFunction.NO_REPLACEMENTS, replaceFunction);
     }
 

@@ -27,6 +27,9 @@ public class SettingsModel implements MappedConfig {
     @Path("placeholders.PlaceholderAPI.enabled")
     boolean placeholderAPIEnabled = true;
 
+    @Path("placeholders.PlaceholderAPI.expand-short-format")
+    boolean placeholderAPIShortFormat = true;
+
     @Path("placeholders.PlaceholderAPI.default-refresh-interval-ticks")
     int placeholderAPIDefaultRefreshIntervalTicks = 200;
 
