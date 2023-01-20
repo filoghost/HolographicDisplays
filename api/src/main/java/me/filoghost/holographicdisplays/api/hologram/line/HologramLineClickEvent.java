@@ -25,4 +25,11 @@ public interface HologramLineClickEvent {
      */
     Player getPlayer();
 
+    /**
+     * Returns the click type
+     *
+     * @return the click type
+     * @since 3
+     */
+    HologramClickType getClickType();
 }

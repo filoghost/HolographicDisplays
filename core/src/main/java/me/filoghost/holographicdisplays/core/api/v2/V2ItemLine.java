@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.core.api.v2;
 import com.gmail.filoghost.holographicdisplays.api.handler.PickupHandler;
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramClickType;
 import me.filoghost.holographicdisplays.core.base.BaseItemHologramLine;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -46,9 +47,9 @@ class V2ItemLine extends BaseItemHologramLine implements ItemLine, V2HologramLin
     }
 
     @Override
-    protected void invokeExternalClickCallback(Player player) {
+    protected void invokeExternalClickCallback(Player player, HologramClickType clickType) {
         if (touchHandler != null) {
-            touchHandler.onTouch(player);
+            touchHandler.onTouch(player, clickType);
         }
     }
 

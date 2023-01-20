@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.api.current;
 
+import me.filoghost.holographicdisplays.api.hologram.line.HologramClickType;
 import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.HologramLinePickupListener;
 import me.filoghost.holographicdisplays.api.hologram.line.ItemHologramLine;
@@ -70,9 +71,9 @@ class APIItemHologramLine extends BaseItemHologramLine implements ItemHologramLi
     }
 
     @Override
-    protected void invokeExternalClickCallback(Player player) {
+    protected void invokeExternalClickCallback(Player player, HologramClickType clickType) {
         if (clickListener != null) {
-            clickListener.onClick(new SimpleHologramLineClickEvent(player));
+            clickListener.onClick(new SimpleHologramLineClickEvent(player, clickType));
         }
     }
 

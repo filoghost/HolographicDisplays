@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.core.api.current;
 
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramClickType;
 import me.filoghost.holographicdisplays.api.hologram.line.HologramLineClickListener;
 import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import me.filoghost.holographicdisplays.core.CorePreconditions;
@@ -49,9 +50,9 @@ class APITextHologramLine extends BaseTextHologramLine implements TextHologramLi
     }
 
     @Override
-    protected void invokeExternalClickCallback(Player player) {
+    protected void invokeExternalClickCallback(Player player, HologramClickType clickType) {
         if (clickListener != null) {
-            clickListener.onClick(new SimpleHologramLineClickEvent(player));
+            clickListener.onClick(new SimpleHologramLineClickEvent(player, clickType));
         }
     }
 

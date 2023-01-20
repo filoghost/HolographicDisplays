@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.core.api.v2;
 
 import com.gmail.filoghost.holographicdisplays.api.handler.TouchHandler;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramClickType;
 import me.filoghost.holographicdisplays.core.base.BaseTextHologramLine;
 import org.bukkit.entity.Player;
 
@@ -48,9 +49,9 @@ class V2TextLine extends BaseTextHologramLine implements TextLine, V2HologramLin
     }
 
     @Override
-    protected void invokeExternalClickCallback(Player player) {
+    protected void invokeExternalClickCallback(Player player, HologramClickType clickType) {
         if (touchHandler != null) {
-            touchHandler.onTouch(player);
+            touchHandler.onTouch(player, clickType);
         }
     }
 

@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.listener;
 
+import me.filoghost.holographicdisplays.api.hologram.line.HologramClickType;
 import me.filoghost.holographicdisplays.core.tracking.ClickableLineTracker;
 import me.filoghost.holographicdisplays.nms.common.EntityID;
 import me.filoghost.holographicdisplays.nms.common.PacketListener;
@@ -29,10 +30,10 @@ public class LineClickListener implements PacketListener {
     }
 
     @Override
-    public boolean onAsyncEntityInteract(Player player, int entityID) {
+    public boolean onAsyncEntityInteract(Player player, int entityID, boolean isRightClick) {
         ClickableLineTracker<?> lineTracker = lineTrackerByEntityID.get(entityID);
         if (lineTracker != null) {
-            queuedClickEvents.add(new QueuedClickEvent(player, lineTracker));
+            queuedClickEvents.add(new QueuedClickEvent(player, lineTracker, isRightClick ? HologramClickType.RIGHT_CLICK : HologramClickType.LEFT_CLICK));
             return true;
         } else {
             return false;
@@ -42,7 +43,7 @@ public class LineClickListener implements PacketListener {
     // This method is called from the main thread
     public void processQueuedClickEvents() {
         for (QueuedClickEvent event : queuedClickEvents) {
-            event.lineTracker.onClientClick(event.player);
+            event.lineTracker.onClientClick(event.player, event.clickType);
         }
         queuedClickEvents.clear();
     }
@@ -60,11 +61,13 @@ public class LineClickListener implements PacketListener {
 
     private static class QueuedClickEvent {
 
+        private final HologramClickType clickType;
         private final Player player;
         private final ClickableLineTracker<?> lineTracker;
 
-        QueuedClickEvent(Player player, ClickableLineTracker<?> lineTracker) {
+        QueuedClickEvent(Player player, ClickableLineTracker<?> lineTracker, HologramClickType clickType) {
             this.player = player;
+            this.clickType = clickType;
             this.lineTracker = lineTracker;
         }
 

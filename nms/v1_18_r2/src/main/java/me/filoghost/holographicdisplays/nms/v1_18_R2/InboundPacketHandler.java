@@ -12,6 +12,8 @@ import me.filoghost.fcommons.reflection.ReflectField;
 import me.filoghost.holographicdisplays.nms.common.NMSErrors;
 import me.filoghost.holographicdisplays.nms.common.PacketListener;
 import net.minecraft.network.protocol.game.PacketPlayInUseEntity;
+import net.minecraft.world.EnumHand;
+import net.minecraft.world.phys.Vec3D;
 import org.bukkit.entity.Player;
 
 class InboundPacketHandler extends ChannelInboundHandlerAdapter {
@@ -28,19 +30,43 @@ class InboundPacketHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext context, Object packet) throws Exception {
+    public void channelRead(ChannelHandlerContext context, Object packetObject) throws Exception {
         try {
-            if (packet instanceof PacketPlayInUseEntity) {
-                int entityID = ENTITY_ID_FIELD.get(packet);
-                boolean cancel = packetListener.onAsyncEntityInteract(player, entityID);
-                if (cancel) {
-                    return;
+            if (packetObject instanceof PacketPlayInUseEntity) {
+                PacketPlayInUseEntity packet = (PacketPlayInUseEntity) packetObject;
+
+                int entityID = ENTITY_ID_FIELD.get(packetObject);
+                Action action = new Action();
+                packet.a(action);
+
+                if (action.isRightClick != null) {
+                    boolean cancel = packetListener.onAsyncEntityInteract(player, entityID, action.isRightClick);
+                    if (cancel) {
+                        return;
+                    }
                 }
             }
         } catch (Throwable t) {
             Log.warning(NMSErrors.EXCEPTION_ON_PACKET_READ, t);
         }
-        super.channelRead(context, packet);
+        super.channelRead(context, packetObject);
     }
 
+    private static class Action implements PacketPlayInUseEntity.c {
+
+        Boolean isRightClick = null;
+
+        public void a(EnumHand var1) { // INTERACT
+            if (var1 == EnumHand.b) return; // OFF_HAND
+
+            this.isRightClick = true;
+        }
+
+        public void a(EnumHand var1, Vec3D var2) { // INTERACT_AT
+        }
+
+        public void a() { // ATTACK
+            this.isRightClick = false;
+        }
+    }
 }

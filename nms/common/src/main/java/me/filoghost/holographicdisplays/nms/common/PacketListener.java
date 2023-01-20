@@ -15,6 +15,6 @@ public interface PacketListener {
      * @param entityID the ID of the entity
      * @return true if the packet should be cancelled, false otherwise
      */
-    boolean onAsyncEntityInteract(Player player, int entityID);
+    boolean onAsyncEntityInteract(Player player, int entityID, boolean isRightClick);
 
 }

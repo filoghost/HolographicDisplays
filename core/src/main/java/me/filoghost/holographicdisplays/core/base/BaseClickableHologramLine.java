@@ -6,6 +6,7 @@
 package me.filoghost.holographicdisplays.core.base;
 
 import me.filoghost.fcommons.logging.Log;
+import me.filoghost.holographicdisplays.api.hologram.line.HologramClickType;
 import org.bukkit.entity.Player;
 
 public abstract class BaseClickableHologramLine extends BaseHologramLine {
@@ -14,9 +15,9 @@ public abstract class BaseClickableHologramLine extends BaseHologramLine {
         super(hologram);
     }
 
-    public void onClick(Player player) {
+    public void onClick(Player player, HologramClickType clickType) {
         try {
-            invokeExternalClickCallback(player);
+            invokeExternalClickCallback(player, clickType);
         } catch (Throwable t) {
             Log.warning("The plugin " + getCreatorPlugin().getName() + " generated an exception"
                     + " when the player " + player.getName() + " clicked a hologram.", t);
@@ -25,6 +26,6 @@ public abstract class BaseClickableHologramLine extends BaseHologramLine {
 
     public abstract boolean hasClickCallback();
 
-    protected abstract void invokeExternalClickCallback(Player player);
+    protected abstract void invokeExternalClickCallback(Player player, HologramClickType clickType);
 
 }

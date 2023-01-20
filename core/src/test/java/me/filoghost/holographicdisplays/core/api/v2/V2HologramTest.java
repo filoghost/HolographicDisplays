@@ -38,7 +38,7 @@ class V2HologramTest {
     void setGetTouchHandler() {
         TextLine textLine = hologram.appendTextLine("");
 
-        TouchHandler touchHandler = player -> {};
+        TouchHandler touchHandler = (player,clickType) -> {};
         textLine.setTouchHandler(touchHandler);
         assertThat(textLine.getTouchHandler()).isSameAs(touchHandler);
 

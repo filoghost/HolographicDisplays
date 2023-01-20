@@ -28,19 +28,30 @@ class InboundPacketHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext context, Object packet) throws Exception {
+    public void channelRead(ChannelHandlerContext context, Object packetObject) throws Exception {
         try {
-            if (packet instanceof PacketPlayInUseEntity) {
-                int entityID = ENTITY_ID_FIELD.get(packet);
-                boolean cancel = packetListener.onAsyncEntityInteract(player, entityID);
-                if (cancel) {
-                    return;
+            if (packetObject instanceof PacketPlayInUseEntity) {
+                PacketPlayInUseEntity packet = (PacketPlayInUseEntity) packetObject;
+
+                int entityID = ENTITY_ID_FIELD.get(packetObject);
+                Boolean isRightClick = this.isRightClick(packet);
+
+                if (isRightClick != null) {
+                    boolean cancel = packetListener.onAsyncEntityInteract(player, entityID, isRightClick);
+                    if (cancel) {
+                        return;
+                    }
                 }
             }
         } catch (Throwable t) {
             Log.warning(NMSErrors.EXCEPTION_ON_PACKET_READ, t);
         }
-        super.channelRead(context, packet);
+        super.channelRead(context, packetObject);
+    }
+
+    private Boolean isRightClick(PacketPlayInUseEntity packet) {
+        if (packet.a() == PacketPlayInUseEntity.EnumEntityUseAction.INTERACT_AT) return null;
+        return packet.a() == PacketPlayInUseEntity.EnumEntityUseAction.INTERACT;
     }
 
 }

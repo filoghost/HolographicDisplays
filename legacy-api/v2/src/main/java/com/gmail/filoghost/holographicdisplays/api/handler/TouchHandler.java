@@ -5,6 +5,7 @@
  */
 package com.gmail.filoghost.holographicdisplays.api.handler;
 
+import me.filoghost.holographicdisplays.api.hologram.line.HologramClickType;
 import org.bukkit.entity.Player;
 
 /**
@@ -14,6 +15,6 @@ import org.bukkit.entity.Player;
 public interface TouchHandler {
 
     @Deprecated
-    void onTouch(Player player);
+    void onTouch(Player player, HologramClickType clickType);
 
 }

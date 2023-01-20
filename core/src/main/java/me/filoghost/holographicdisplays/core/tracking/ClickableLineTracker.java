@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.tracking;
 
+import me.filoghost.holographicdisplays.api.hologram.line.HologramClickType;
 import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.core.base.BaseClickableHologramLine;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
@@ -29,9 +30,9 @@ public abstract class ClickableLineTracker<T extends Viewer> extends LineTracker
         this.lineClickListener = lineClickListener;
     }
 
-    public void onClientClick(Player player) {
+    public void onClientClick(Player player, HologramClickType clickType) {
         if (getLine().hasClickCallback() && canInteract(player) && isInClickRange(player)) {
-            getLine().onClick(player);
+            getLine().onClick(player, clickType);
         }
     }
 
