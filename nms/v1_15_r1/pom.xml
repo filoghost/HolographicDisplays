@@ -6,7 +6,7 @@
     <parent>
         <groupId>me.filoghost.holographicdisplays</groupId>
         <artifactId>holographicdisplays-nms</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>holographicdisplays-nms-v1_15_r1</artifactId>
