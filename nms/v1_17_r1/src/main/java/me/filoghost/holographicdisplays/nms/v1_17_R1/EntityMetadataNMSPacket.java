@@ -14,7 +14,7 @@ class EntityMetadataNMSPacket extends VersionNMSPacket {
     private final Packet<?> rawPacket;
 
     private EntityMetadataNMSPacket(PacketByteBuffer packetByteBuffer) {
-        this.rawPacket = new PacketPlayOutEntityMetadata(packetByteBuffer);
+        this.rawPacket = new PacketPlayOutEntityMetadata(packetByteBuffer.getInternalSerializer());
     }
 
     @Override

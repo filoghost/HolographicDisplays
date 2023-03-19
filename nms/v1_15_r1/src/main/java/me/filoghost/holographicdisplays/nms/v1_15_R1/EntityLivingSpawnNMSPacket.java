@@ -38,7 +38,7 @@ class EntityLivingSpawnNMSPacket extends VersionNMSPacket {
         packetByteBuffer.writeShort(0);
         packetByteBuffer.writeShort(0);
 
-        this.rawPacket = writeData(new PacketPlayOutSpawnEntityLiving(), packetByteBuffer);
+        this.rawPacket = packetByteBuffer.writeDataTo(new PacketPlayOutSpawnEntityLiving());
     }
 
     @Override

@@ -18,7 +18,7 @@ class EntityListDestroyNMSPacket extends VersionNMSPacket {
 
         packetByteBuffer.writeVarIntArray(entityID.getNumericID());
 
-        this.rawPacket = new PacketPlayOutEntityDestroy(packetByteBuffer);
+        this.rawPacket = new PacketPlayOutEntityDestroy(packetByteBuffer.getInternalSerializer());
     }
 
     EntityListDestroyNMSPacket(EntityID entityID1, EntityID entityID2) {
@@ -26,7 +26,7 @@ class EntityListDestroyNMSPacket extends VersionNMSPacket {
 
         packetByteBuffer.writeVarIntArray(entityID1.getNumericID(), entityID2.getNumericID());
 
-        this.rawPacket = new PacketPlayOutEntityDestroy(packetByteBuffer);
+        this.rawPacket = new PacketPlayOutEntityDestroy(packetByteBuffer.getInternalSerializer());
     }
 
     @Override

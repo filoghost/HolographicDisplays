@@ -21,7 +21,7 @@ class EntityMountNMSPacket extends VersionNMSPacket {
 
         packetByteBuffer.writeByte(0); // Leash
 
-        this.rawPacket = writeData(new PacketPlayOutAttachEntity(), packetByteBuffer);
+        this.rawPacket = packetByteBuffer.writeDataTo(new PacketPlayOutAttachEntity());
     }
 
     @Override

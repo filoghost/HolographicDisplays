@@ -42,7 +42,7 @@ class EntitySpawnNMSPacket extends VersionNMSPacket {
         packetByteBuffer.writeShort(0);
         packetByteBuffer.writeShort(0);
 
-        this.rawPacket = new PacketPlayOutSpawnEntity(packetByteBuffer);
+        this.rawPacket = new PacketPlayOutSpawnEntity(packetByteBuffer.getInternalSerializer());
     }
 
     @Override

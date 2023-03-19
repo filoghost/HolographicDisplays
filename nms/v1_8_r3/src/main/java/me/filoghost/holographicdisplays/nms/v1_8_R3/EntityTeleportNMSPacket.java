@@ -32,7 +32,7 @@ class EntityTeleportNMSPacket extends VersionNMSPacket {
         // On ground
         packetByteBuffer.writeBoolean(false);
 
-        this.rawPacket = writeData(new PacketPlayOutEntityTeleport(), packetByteBuffer);
+        this.rawPacket = packetByteBuffer.writeDataTo(new PacketPlayOutEntityTeleport());
     }
 
     @Override

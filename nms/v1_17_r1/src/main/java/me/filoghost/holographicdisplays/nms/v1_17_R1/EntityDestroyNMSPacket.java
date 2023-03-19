@@ -18,7 +18,7 @@ class EntityDestroyNMSPacket extends VersionNMSPacket {
 
         packetByteBuffer.writeVarInt(entityID.getNumericID());
 
-        this.rawPacket = new PacketPlayOutEntityDestroy(packetByteBuffer);
+        this.rawPacket = new PacketPlayOutEntityDestroy(packetByteBuffer.getInternalSerializer());
     }
 
     @Override

@@ -10,8 +10,6 @@ import net.minecraft.server.v1_8_R3.Packet;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
-
 abstract class VersionNMSPacket implements PacketGroup {
 
     @Override
@@ -20,15 +18,5 @@ abstract class VersionNMSPacket implements PacketGroup {
     }
 
     abstract Packet<?> getRawPacket();
-
-    protected static <T extends Packet<?>> T writeData(T packet, PacketByteBuffer packetByteBuffer) {
-        try {
-            packet.a(packetByteBuffer);
-            return packet;
-        } catch (IOException e) {
-            // Never thrown by the implementations
-            throw new RuntimeException(e);
-        }
-    }
 
 }

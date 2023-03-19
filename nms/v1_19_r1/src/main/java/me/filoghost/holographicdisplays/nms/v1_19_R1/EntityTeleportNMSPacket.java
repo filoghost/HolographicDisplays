@@ -31,7 +31,7 @@ class EntityTeleportNMSPacket extends VersionNMSPacket {
         // On ground
         packetByteBuffer.writeBoolean(false);
 
-        this.rawPacket = new PacketPlayOutEntityTeleport(packetByteBuffer);
+        this.rawPacket = new PacketPlayOutEntityTeleport(packetByteBuffer.getInternalSerializer());
     }
 
     @Override

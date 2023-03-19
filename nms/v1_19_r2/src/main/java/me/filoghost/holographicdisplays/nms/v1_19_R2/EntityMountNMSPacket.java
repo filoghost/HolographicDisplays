@@ -19,7 +19,7 @@ class EntityMountNMSPacket extends VersionNMSPacket {
         packetByteBuffer.writeVarInt(vehicleEntityID.getNumericID());
         packetByteBuffer.writeVarIntArray(passengerEntityID.getNumericID());
 
-        this.rawPacket = new PacketPlayOutMount(packetByteBuffer);
+        this.rawPacket = new PacketPlayOutMount(packetByteBuffer.getInternalSerializer());
     }
 
     @Override

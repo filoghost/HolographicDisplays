@@ -62,7 +62,7 @@ class EntityLivingSpawnNMSPacket extends VersionNMSPacket {
         // Entries are deserialized and saved into a field which is not used during the re-serialization, set as empty
         packetByteBuffer.writeDataWatcherEntriesEnd();
 
-        Packet<?> rawPacket = writeData(new PacketPlayOutSpawnEntityLiving(), packetByteBuffer);
+        Packet<?> rawPacket = packetByteBuffer.writeDataTo(new PacketPlayOutSpawnEntityLiving());
         return new Builder(rawPacket, PacketByteBuffer.get());
     }
 

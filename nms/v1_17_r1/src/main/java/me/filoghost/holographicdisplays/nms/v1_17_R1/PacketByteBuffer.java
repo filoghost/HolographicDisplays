@@ -10,9 +10,11 @@ import net.minecraft.network.PacketDataSerializer;
 
 import java.util.UUID;
 
-class PacketByteBuffer extends PacketDataSerializer {
+class PacketByteBuffer {
 
     private static final PacketByteBuffer INSTANCE = new PacketByteBuffer();
+
+    private final PacketDataSerializer serializer;
 
     static PacketByteBuffer get() {
         INSTANCE.clear();
@@ -20,11 +22,31 @@ class PacketByteBuffer extends PacketDataSerializer {
     }
 
     private PacketByteBuffer() {
-        super(Unpooled.buffer());
+        this.serializer = new PacketDataSerializer(Unpooled.buffer());
+    }
+
+    void writeBoolean(boolean flag) {
+        serializer.writeBoolean(flag);
+    }
+
+    void writeByte(int i) {
+        serializer.writeByte(i);
+    }
+
+    void writeShort(int i) {
+        serializer.writeShort(i);
+    }
+
+    void writeInt(int i) {
+        serializer.writeInt(i);
+    }
+
+    void writeDouble(double d) {
+        serializer.writeDouble(d);
     }
 
     void writeVarInt(int i) {
-        super.d(i);
+        serializer.d(i);
     }
 
     void writeVarIntArray(int i1) {
@@ -39,17 +61,25 @@ class PacketByteBuffer extends PacketDataSerializer {
     }
 
     void writeUUID(UUID uuid) {
-        super.a(uuid);
+        serializer.a(uuid);
     }
 
     <T> void writeDataWatcherEntry(DataWatcherKey<T> key, T value) {
-        writeByte(key.getIndex());
+        serializer.writeByte(key.getIndex());
         writeVarInt(key.getSerializerTypeID());
-        key.getSerializer().a(this, value);
+        key.getSerializer().a(serializer, value);
     }
 
     void writeDataWatcherEntriesEnd() {
-        writeByte(0xFF);
+        serializer.writeByte(0xFF);
+    }
+
+    public PacketDataSerializer getInternalSerializer() {
+        return serializer;
+    }
+
+    void clear() {
+        serializer.clear();
     }
 
 }
