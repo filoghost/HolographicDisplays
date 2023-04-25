@@ -161,18 +161,6 @@
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>holographicdisplays-nms-v1_16_r1</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>holographicdisplays-nms-v1_16_r2</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
                 <artifactId>holographicdisplays-nms-v1_16_r3</artifactId>
                 <version>${project.version}</version>
             </dependency>
