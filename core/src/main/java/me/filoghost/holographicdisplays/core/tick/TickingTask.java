@@ -7,6 +7,7 @@ package me.filoghost.holographicdisplays.core.tick;
 
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.core.CoreGlobalConfig;
+import me.filoghost.holographicdisplays.core.NMSVersion;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.placeholder.tracking.ActivePlaceholderTracker;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
@@ -57,7 +58,24 @@ public class TickingTask implements Runnable {
     }
 
     public void onPlayerRespawn(Player player) {
-        lineTrackerManager.removeViewer(player);
+        switch (NMSVersion.getCurrent()) {
+            case v1_8_R1:
+            case v1_8_R2:
+            case v1_8_R3:
+            case v1_9_R1:
+            case v1_9_R2:
+            case v1_10_R1:
+            case v1_11_R1:
+            case v1_12_R1:
+            case v1_13_R1:
+            case v1_13_R2:
+            case v1_14_R1:
+                // For older versions, force spawn packets to be resent after the player respawns
+                lineTrackerManager.removeViewer(player);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
