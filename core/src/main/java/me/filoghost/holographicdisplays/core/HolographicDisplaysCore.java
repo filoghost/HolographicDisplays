@@ -40,7 +40,7 @@ public class HolographicDisplaysCore {
         try {
             nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
         } catch (UnknownVersionException e) {
-            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.19.3.");
+            throw new PluginEnableException("Holographic Displays only supports Spigot from 1.8 to 1.20.");
         } catch (OutdatedVersionException e) {
             throw new PluginEnableException("Holographic Displays only supports " + e.getMinimumSupportedVersion() + " and above.");
         } catch (Throwable t) {
