@@ -5,9 +5,11 @@
  */
 package me.filoghost.holographicdisplays.plugin.commands;
 
+import io.papermc.lib.PaperLib;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
+import me.filoghost.fcommons.logging.Log;
 import me.filoghost.holographicdisplays.api.Position;
 import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
@@ -19,6 +21,7 @@ import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologra
 import me.filoghost.holographicdisplays.plugin.internal.hologram.InternalHologramManager;
 import me.filoghost.holographicdisplays.plugin.util.FileUtils;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.jetbrains.annotations.NotNull;
@@ -86,10 +89,8 @@ public class InternalHologramEditor {
     }
 
     public void teleportLookingDown(Player player, Location location) {
-        HolographicDisplays.getScheduler().runTask(()->{
             location.setPitch(90); // Look down
-            player.teleport(location, TeleportCause.PLUGIN);
-        });
+            PaperLib.teleportAsync(player, location, TeleportCause.PLUGIN);
     }
 
     public Path getUserReadableFile(String fileName) throws CommandException {
