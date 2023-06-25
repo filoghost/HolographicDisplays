@@ -5,6 +5,8 @@
  */
 package me.filoghost.holographicdisplays.plugin;
 
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import me.filoghost.fcommons.FCommonsPlugin;
 import me.filoghost.fcommons.FeatureSupport;
 import me.filoghost.fcommons.logging.ErrorCollector;
@@ -48,6 +50,7 @@ public class HolographicDisplays extends FCommonsPlugin {
     private BungeeServerTracker bungeeServerTracker;
     private InternalHologramManager internalHologramManager;
     private InternalHologramEditor internalHologramEditor;
+    private static TaskScheduler SCHEDULER;
 
     @Override
     public void onCheckedEnable() throws PluginEnableException {
@@ -61,7 +64,7 @@ public class HolographicDisplays extends FCommonsPlugin {
 
         System.setProperty("HolographicDisplaysLoaded", "true");
         instance = this;
-
+        SCHEDULER = UniversalScheduler.getScheduler(instance);
         if (!FeatureSupport.CHAT_COMPONENTS) {
             throw new PluginEnableException(
                     "Holographic Displays requires the new chat API.",
@@ -106,18 +109,23 @@ public class HolographicDisplays extends FCommonsPlugin {
         // Log all loading errors at the end
         if (errorCollector.hasErrors()) {
             errorCollector.logToConsole();
-            Bukkit.getScheduler().runTaskLater(this, errorCollector::logSummaryToConsole, 10L);
+            HolographicDisplays.getScheduler().runTaskLater(errorCollector::logSummaryToConsole, 10L);
         }
 
         // Run the update checker
         if (Settings.updateNotification) {
             int bukkitPluginID = 75097;
-            UpdateChecker.run(this, bukkitPluginID, (String newVersion) -> {
-                registerListener(new UpdateNotificationListener(newVersion));
-                Log.info("Found a new version available: " + newVersion);
-                Log.info("Download it on Bukkit Dev:");
-                Log.info("https://dev.bukkit.org/projects/holographic-displays");
-            });
+            try {
+                UpdateChecker.run(this, bukkitPluginID, (String newVersion) -> {
+                    registerListener(new UpdateNotificationListener(newVersion));
+                    Log.info("Found a new version available: " + newVersion);
+                    Log.info("Download it on Bukkit Dev:");
+                    Log.info("https://dev.bukkit.org/projects/holographic-displays");
+                });
+            }
+            catch (UnsupportedOperationException e) {
+                Log.warning("Update checker doesn't support Folia");
+            }
         }
     }
 
@@ -156,6 +164,10 @@ public class HolographicDisplays extends FCommonsPlugin {
 
     public static HolographicDisplays getInstance() {
         return instance;
+    }
+
+    public static TaskScheduler getScheduler() {
+        return SCHEDULER;
     }
 
     public InternalHologramEditor getInternalHologramEditor() {

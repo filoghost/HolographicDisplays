@@ -5,6 +5,8 @@
  */
 package me.filoghost.holographicdisplays.core;
 
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import com.gmail.filoghost.holographicdisplays.api.internal.HologramsAPIProvider;
 import me.filoghost.fcommons.FCommonsPlugin.PluginEnableException;
 import me.filoghost.fcommons.logging.ErrorCollector;
@@ -36,7 +38,10 @@ public class HolographicDisplaysCore {
     private APIHologramManager apiHologramManager;
     private V2HologramManager v2HologramManager;
 
+    private static TaskScheduler SCHEDULER;
+
     public void enable(Plugin plugin, ErrorCollector errorCollector) throws PluginEnableException {
+        SCHEDULER = UniversalScheduler.getScheduler(plugin);
         try {
             nmsManager = NMSVersion.getCurrent().createNMSManager(errorCollector);
         } catch (UnknownVersionException e) {
@@ -62,7 +67,7 @@ public class HolographicDisplaysCore {
 
         // Tasks
         TickingTask tickingTask = new TickingTask(tickClock, placeholderTracker, lineTrackerManager, lineClickListener);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, tickingTask, 0, 1);
+        getScheduler().runTaskTimer(tickingTask, 1, 1);
 
         // Listeners
         Bukkit.getPluginManager().registerEvents(new PlayerListener(nmsManager, lineClickListener, tickingTask), plugin);
@@ -105,4 +110,7 @@ public class HolographicDisplaysCore {
         }
     }
 
+    public static TaskScheduler getScheduler() {
+        return SCHEDULER;
+    }
 }

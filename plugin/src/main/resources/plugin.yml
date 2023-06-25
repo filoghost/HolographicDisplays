@@ -3,6 +3,7 @@ main: me.filoghost.holographicdisplays.plugin.HolographicDisplays
 author: filoghost
 version: ${pluginVersion}
 api-version: 1.13
+folia-supported: true
 
 softdepend: [PlaceholderAPI]
 

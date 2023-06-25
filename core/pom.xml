@@ -123,6 +123,11 @@
             <groupId>me.filoghost.fcommons</groupId>
             <artifactId>fcommons</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.Anon8281</groupId>
+            <artifactId>UniversalScheduler</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

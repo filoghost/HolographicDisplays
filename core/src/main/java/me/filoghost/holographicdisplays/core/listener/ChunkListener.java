@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.listener;
 
+import me.filoghost.holographicdisplays.core.HolographicDisplaysCore;
 import me.filoghost.holographicdisplays.core.api.current.APIHologramManager;
 import me.filoghost.holographicdisplays.core.api.v2.V2HologramManager;
 import org.bukkit.Bukkit;
@@ -53,7 +54,7 @@ public class ChunkListener implements Listener {
         if (Bukkit.isPrimaryThread()) {
             onChunkUnload(chunk);
         } else {
-            Bukkit.getScheduler().runTask(plugin, () -> onChunkUnload(chunk));
+            HolographicDisplaysCore.getScheduler().runTask(() -> onChunkUnload(chunk));
         }
     }
 
@@ -75,7 +76,7 @@ public class ChunkListener implements Listener {
         if (Bukkit.isPrimaryThread()) {
             onChunkLoad(chunk);
         } else {
-            Bukkit.getScheduler().runTask(plugin, () -> onChunkLoad(chunk));
+            HolographicDisplaysCore.getScheduler().runTask(() -> onChunkLoad(chunk));
         }
     }
 

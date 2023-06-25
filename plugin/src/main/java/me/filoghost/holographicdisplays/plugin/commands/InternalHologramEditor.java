@@ -9,6 +9,7 @@ import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.command.validation.CommandException;
 import me.filoghost.fcommons.command.validation.CommandValidate;
 import me.filoghost.holographicdisplays.api.Position;
+import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.config.ConfigManager;
 import me.filoghost.holographicdisplays.plugin.config.InternalHologramLineParser;
 import me.filoghost.holographicdisplays.plugin.config.InternalHologramLoadException;
@@ -85,8 +86,10 @@ public class InternalHologramEditor {
     }
 
     public void teleportLookingDown(Player player, Location location) {
-        location.setPitch(90); // Look down
-        player.teleport(location, TeleportCause.PLUGIN);
+        HolographicDisplays.getScheduler().runTask(()->{
+            location.setPitch(90); // Look down
+            player.teleport(location, TeleportCause.PLUGIN);
+        });
     }
 
     public Path getUserReadableFile(String fileName) throws CommandException {

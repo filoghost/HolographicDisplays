@@ -5,14 +5,15 @@
  */
 package me.filoghost.holographicdisplays.plugin.bridge.bungeecord;
 
+import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.fcommons.ping.MinecraftServerPinger;
 import me.filoghost.fcommons.ping.PingParseException;
 import me.filoghost.fcommons.ping.PingResponse;
 import me.filoghost.holographicdisplays.common.DebugLogger;
+import me.filoghost.holographicdisplays.plugin.HolographicDisplays;
 import me.filoghost.holographicdisplays.plugin.config.ServerAddress;
 import me.filoghost.holographicdisplays.plugin.config.Settings;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +33,7 @@ public class BungeeServerTracker {
     private final ConcurrentMap<String, TrackedServer> trackedServers;
     private final BungeeMessenger bungeeMessenger;
 
-    private int taskID = -1;
+    private MyScheduledTask taskID = null;
 
     public BungeeServerTracker(Plugin plugin) {
         this.plugin = plugin;
@@ -43,12 +44,11 @@ public class BungeeServerTracker {
     public void restart(int updateInterval, TimeUnit timeUnit) {
         trackedServers.clear();
 
-        if (taskID != -1) {
-            Bukkit.getScheduler().cancelTask(taskID);
+        if (taskID != null) {
+            taskID.cancel();
         }
 
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
-                plugin,
+        taskID = HolographicDisplays.getScheduler().scheduleSyncRepeatingTask(
                 this::runPeriodicUpdateTask,
                 1,
                 timeUnit.toSeconds(updateInterval) * 20L);
@@ -69,7 +69,7 @@ public class BungeeServerTracker {
         removeUnusedServers();
 
         if (Settings.pingerEnabled) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            HolographicDisplays.getScheduler().runTaskAsynchronously(() -> {
                 for (TrackedServer trackedServer : trackedServers.values()) {
                     updateServerInfoWithPinger(trackedServer);
                 }
