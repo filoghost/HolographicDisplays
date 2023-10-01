@@ -31,6 +31,7 @@
         <module>v1_19_r2</module>
         <module>v1_19_r3</module>
         <module>v1_20_r1</module>
+        <module>v1_20_r2</module>
     </modules>
 
     <dependencies>
