@@ -15,7 +15,7 @@ package me.filoghost.holographicdisplays.plugin.lib.nbt;
  * </p>
  * <p>
  * For a community maintained documentation of the NBT format and its types, visit the
- * <a href=https://minecraft.gamepedia.com/NBT_format>Minecraft Wiki</a>
+ * <a href=https://minecraft.wiki/w/NBT_format>Minecraft Wiki</a>
  * </p>
  */
 public enum NBTType {
