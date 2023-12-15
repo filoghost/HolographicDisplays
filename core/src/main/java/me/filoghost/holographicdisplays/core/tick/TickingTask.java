@@ -93,7 +93,7 @@ public class TickingTask implements Runnable {
         }
 
         // Holograms need to disappear before chunks (code taken from Bukkit)
-        int maxViewRange = (Bukkit.getViewDistance() - 1) * 16;
+        int maxViewRange = Math.max((Bukkit.getViewDistance() - 1),1) * 16;
         if (maxViewRange > CoreGlobalConfig.maxViewRange) {
             maxViewRange = CoreGlobalConfig.maxViewRange;
         }
