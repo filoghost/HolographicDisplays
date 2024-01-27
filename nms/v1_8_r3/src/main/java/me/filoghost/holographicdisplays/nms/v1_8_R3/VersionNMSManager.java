@@ -8,6 +8,7 @@ package me.filoghost.holographicdisplays.nms.v1_8_R3;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoop;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.Log;
 import me.filoghost.fcommons.reflection.ReflectField;
@@ -112,8 +113,12 @@ public class VersionNMSManager implements NMSManager {
         PlayerConnection playerConnection = ((CraftPlayer) player).getHandle().playerConnection;
         NetworkManager networkManager = playerConnection.a();
         Channel channel = networkManager.channel;
+        if (channel == null) {
+            return;
+        }
+        EventLoop eventLoop = channel.eventLoop();
 
-        channel.eventLoop().execute(() -> {
+        Runnable safeModifierTask = () -> {
             if (!player.isOnline()) {
                 return;
             }
@@ -122,7 +127,13 @@ public class VersionNMSManager implements NMSManager {
             } catch (Exception e) {
                 Log.warning(NMSErrors.EXCEPTION_MODIFYING_CHANNEL_PIPELINE, e);
             }
-        });
+        };
+
+        if (eventLoop.inEventLoop()) {
+            safeModifierTask.run();
+        } else {
+            eventLoop.execute(safeModifierTask);
+        }
     }
 
 }
