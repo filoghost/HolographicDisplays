@@ -6,7 +6,7 @@
     <groupId>me.filoghost.holographicdisplays</groupId>
     <artifactId>holographicdisplays-parent</artifactId>
     <name>HolographicDisplays Parent</name>
-    <version>3.0.4</version>
+    <version>3.0.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
