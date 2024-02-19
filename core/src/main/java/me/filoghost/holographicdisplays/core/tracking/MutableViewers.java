@@ -15,7 +15,7 @@ public class MutableViewers<T extends Viewer> implements Viewers<T> {
     private T viewer;
     private List<T> additionalViewers;
 
-    public void add(T viewer) {
+    public synchronized void add(T viewer) {
         if (this.viewer == null) {
             this.viewer = viewer;
         } else {
@@ -27,7 +27,7 @@ public class MutableViewers<T extends Viewer> implements Viewers<T> {
     }
 
     @Override
-    public void forEach(Consumer<? super T> action) {
+    public synchronized void forEach(Consumer<? super T> action) {
         if (viewer != null) {
             action.accept(viewer);
             if (additionalViewers != null) {

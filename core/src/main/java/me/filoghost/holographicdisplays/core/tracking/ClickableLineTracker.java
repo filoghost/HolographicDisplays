@@ -85,7 +85,11 @@ public abstract class ClickableLineTracker<T extends Viewer> extends LineTracker
     @Override
     protected void sendSpawnPackets(Viewers<T> viewers) {
         if (spawnClickableEntity) {
-            viewers.sendPackets(clickableEntity.newSpawnPackets(getClickableEntityPosition()));
+            // Copy for async use
+            PositionCoordinates clickableEntityPosition = getClickableEntityPosition();
+            PacketSenderExecutor.execute(() -> {
+                viewers.sendPackets(clickableEntity.newSpawnPackets(clickableEntityPosition));
+            });
         }
     }
 
@@ -93,7 +97,9 @@ public abstract class ClickableLineTracker<T extends Viewer> extends LineTracker
     @Override
     protected void sendDestroyPackets(Viewers<T> viewers) {
         if (spawnClickableEntity) {
-            viewers.sendPackets(clickableEntity.newDestroyPackets());
+            PacketSenderExecutor.execute(() -> {
+                viewers.sendPackets(clickableEntity.newDestroyPackets());
+            });
         }
     }
 
@@ -104,9 +110,15 @@ public abstract class ClickableLineTracker<T extends Viewer> extends LineTracker
 
         if (spawnClickableEntityChanged) {
             if (spawnClickableEntity) {
-                viewers.sendPackets(clickableEntity.newSpawnPackets(getClickableEntityPosition()));
+                // Copy for async use
+                PositionCoordinates clickableEntityPosition = getClickableEntityPosition();
+                PacketSenderExecutor.execute(() -> {
+                    viewers.sendPackets(clickableEntity.newSpawnPackets(clickableEntityPosition));
+                });
             } else {
-                viewers.sendPackets(clickableEntity.newDestroyPackets());
+                PacketSenderExecutor.execute(() -> {
+                    viewers.sendPackets(clickableEntity.newDestroyPackets());
+                });
             }
         }
     }
@@ -115,7 +127,11 @@ public abstract class ClickableLineTracker<T extends Viewer> extends LineTracker
     @Override
     protected void sendPositionChangePackets(Viewers<T> viewers) {
         if (spawnClickableEntity) {
-            viewers.sendPackets(clickableEntity.newTeleportPackets(getClickableEntityPosition()));
+            // Copy for async use
+            PositionCoordinates clickableEntityPosition = getClickableEntityPosition();
+            PacketSenderExecutor.execute(() -> {
+                viewers.sendPackets(clickableEntity.newTeleportPackets(clickableEntityPosition));
+            });
         }
     }
 

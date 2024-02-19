@@ -14,14 +14,14 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public abstract class LineTracker<T extends Viewer> {
 
-    private final Map<Player, T> viewers;
+    private final ConcurrentMap<Player, T> viewers;
     private final Viewers<T> iterableViewers;
 
     private String positionWorldName;
@@ -32,7 +32,7 @@ public abstract class LineTracker<T extends Viewer> {
     private int lastVisibilitySettingsVersion;
 
     protected LineTracker() {
-        this.viewers = new HashMap<>();
+        this.viewers = new ConcurrentHashMap<>();
         this.iterableViewers = new DelegateViewers<>(viewers.values());
     }
 

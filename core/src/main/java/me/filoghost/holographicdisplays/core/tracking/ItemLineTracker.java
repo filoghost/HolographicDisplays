@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.tracking;
 
+import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.core.base.BaseItemHologramLine;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.tick.CachedPlayer;
@@ -106,7 +107,12 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
         super.sendSpawnPackets(viewers);
 
         if (spawnItemEntity) {
-            viewers.sendPackets(itemEntity.newSpawnPackets(positionCoordinates, itemStack));
+            // Copy for async use
+            PositionCoordinates positionCoordinates = this.positionCoordinates;
+            ItemStack itemStack = this.itemStack;
+            PacketSenderExecutor.execute(() -> {
+                viewers.sendPackets(itemEntity.newSpawnPackets(positionCoordinates, itemStack));
+            });
         }
     }
 
@@ -116,7 +122,9 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
         super.sendDestroyPackets(viewers);
 
         if (spawnItemEntity) {
-            viewers.sendPackets(itemEntity.newDestroyPackets());
+            PacketSenderExecutor.execute(() -> {
+                viewers.sendPackets(itemEntity.newDestroyPackets());
+            });
         }
     }
 
@@ -127,13 +135,24 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
 
         if (spawnItemEntityChanged) {
             if (spawnItemEntity) {
-                viewers.sendPackets(itemEntity.newSpawnPackets(positionCoordinates, itemStack));
+                // Copy for async use
+                PositionCoordinates positionCoordinates = this.positionCoordinates;
+                ItemStack itemStack = this.itemStack;
+                PacketSenderExecutor.execute(() -> {
+                    viewers.sendPackets(itemEntity.newSpawnPackets(positionCoordinates, itemStack));
+                });
             } else {
-                viewers.sendPackets(itemEntity.newDestroyPackets());
+                PacketSenderExecutor.execute(() -> {
+                    viewers.sendPackets(itemEntity.newDestroyPackets());
+                });
             }
         } else if (itemStackChanged) {
             // Only send item changes if full spawn/destroy packets were not sent
-            viewers.sendPackets(itemEntity.newChangePackets(itemStack));
+            // Copy for async use
+            ItemStack itemStack = this.itemStack;
+            PacketSenderExecutor.execute(() -> {
+                viewers.sendPackets(itemEntity.newChangePackets(itemStack));
+            });
         }
     }
 
@@ -143,7 +162,11 @@ public class ItemLineTracker extends ClickableLineTracker<Viewer> {
         super.sendPositionChangePackets(viewers);
 
         if (spawnItemEntity) {
-            viewers.sendPackets(itemEntity.newTeleportPackets(positionCoordinates));
+            // Copy for async use
+            PositionCoordinates positionCoordinates = this.positionCoordinates;
+            PacketSenderExecutor.execute(() -> {
+                viewers.sendPackets(itemEntity.newTeleportPackets(positionCoordinates));
+            });
         }
     }
 

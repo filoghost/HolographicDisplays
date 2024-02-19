@@ -5,6 +5,7 @@
  */
 package me.filoghost.holographicdisplays.core.tracking;
 
+import me.filoghost.holographicdisplays.common.PositionCoordinates;
 import me.filoghost.holographicdisplays.core.base.BaseTextHologramLine;
 import me.filoghost.holographicdisplays.core.listener.LineClickListener;
 import me.filoghost.holographicdisplays.core.placeholder.tracking.ActivePlaceholderTracker;
@@ -84,15 +85,22 @@ public class TextLineTracker extends ClickableLineTracker<TextLineViewer> {
     protected void sendSpawnPackets(Viewers<TextLineViewer> viewers) {
         super.sendSpawnPackets(viewers);
 
-        IndividualTextPacketGroup spawnPackets = textEntity.newSpawnPackets(positionCoordinates);
-        viewers.forEach(viewer -> viewer.sendTextPackets(spawnPackets));
+        // Copy for async use
+        PositionCoordinates positionCoordinates = this.positionCoordinates;
+        viewers.forEach(TextLineViewer::updateNextTextToSend);
+        PacketSenderExecutor.execute(() -> {
+            IndividualTextPacketGroup spawnPackets = textEntity.newSpawnPackets(positionCoordinates);
+            viewers.forEach(viewer -> viewer.sendTextPackets(spawnPackets));
+        });
     }
 
     @MustBeInvokedByOverriders
     @Override
     protected void sendDestroyPackets(Viewers<TextLineViewer> viewers) {
         super.sendDestroyPackets(viewers);
-        viewers.sendPackets(textEntity.newDestroyPackets());
+        PacketSenderExecutor.execute(() -> {
+            viewers.sendPackets(textEntity.newDestroyPackets());
+        });
     }
 
     @Override
@@ -100,8 +108,11 @@ public class TextLineTracker extends ClickableLineTracker<TextLineViewer> {
         super.sendChangesPackets(viewers);
 
         if (displayTextChanged) {
-            IndividualTextPacketGroup changePackets = textEntity.newChangePackets();
-            viewers.forEach(viewer -> viewer.sendTextPacketsIfNecessary(changePackets));
+            viewers.forEach(TextLineViewer::updateNextTextToSend);
+            PacketSenderExecutor.execute(() -> {
+                IndividualTextPacketGroup changePackets = textEntity.newChangePackets();
+                viewers.forEach(viewer -> viewer.sendTextPacketsIfNecessary(changePackets));
+            });
         }
     }
 
@@ -109,7 +120,11 @@ public class TextLineTracker extends ClickableLineTracker<TextLineViewer> {
     @Override
     protected void sendPositionChangePackets(Viewers<TextLineViewer> viewers) {
         super.sendPositionChangePackets(viewers);
-        viewers.sendPackets(textEntity.newTeleportPackets(positionCoordinates));
+        // Copy for async use
+        PositionCoordinates positionCoordinates = this.positionCoordinates;
+        PacketSenderExecutor.execute(() -> {
+            viewers.sendPackets(textEntity.newTeleportPackets(positionCoordinates));
+        });
     }
 
     @Override

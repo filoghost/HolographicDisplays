@@ -12,13 +12,14 @@ import java.util.UUID;
 
 class PacketByteBuffer {
 
-    private static final PacketByteBuffer INSTANCE = new PacketByteBuffer();
+    private static final ThreadLocal<PacketByteBuffer> LOCAL_INSTANCE = ThreadLocal.withInitial(PacketByteBuffer::new);
 
     private final PacketDataSerializer serializer;
 
     static PacketByteBuffer get() {
-        INSTANCE.clear();
-        return INSTANCE;
+        PacketByteBuffer instance = LOCAL_INSTANCE.get();
+        instance.clear();
+        return instance;
     }
 
     private PacketByteBuffer() {

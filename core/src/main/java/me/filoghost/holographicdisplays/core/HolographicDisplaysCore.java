@@ -24,6 +24,7 @@ import me.filoghost.holographicdisplays.core.placeholder.tracking.ActivePlacehol
 import me.filoghost.holographicdisplays.core.tick.TickClock;
 import me.filoghost.holographicdisplays.core.tick.TickingTask;
 import me.filoghost.holographicdisplays.core.tracking.LineTrackerManager;
+import me.filoghost.holographicdisplays.core.tracking.PacketSenderExecutor;
 import me.filoghost.holographicdisplays.nms.common.NMSManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -46,6 +47,8 @@ public class HolographicDisplaysCore {
         } catch (Throwable t) {
             throw new PluginEnableException(t, "Couldn't initialize the NMS manager.");
         }
+
+        PacketSenderExecutor.start();
 
         PlaceholderRegistry placeholderRegistry = new PlaceholderRegistry();
         TickClock tickClock = new TickClock();
@@ -103,6 +106,8 @@ public class HolographicDisplaysCore {
                 nmsManager.uninjectPacketListener(player);
             }
         }
+
+        PacketSenderExecutor.stopGracefully();
     }
 
 }
