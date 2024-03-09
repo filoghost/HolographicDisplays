@@ -5,15 +5,16 @@
  */
 package me.filoghost.holographicdisplays.core.tracking;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-public class DelegateViewers<T extends Viewer> implements Viewers<T> {
+public class ImmutableViewers<T extends Viewer> implements Viewers<T> {
 
     private final Collection<T> viewers;
 
-    public DelegateViewers(Collection<T> viewers) {
-        this.viewers = viewers;
+    public ImmutableViewers(Collection<T> viewers) {
+        this.viewers = new ArrayList<>(viewers);
     }
 
     @Override

@@ -22,7 +22,6 @@ import java.util.concurrent.ConcurrentMap;
 public abstract class LineTracker<T extends Viewer> {
 
     private final ConcurrentMap<Player, T> viewers;
-    private final Viewers<T> iterableViewers;
 
     private String positionWorldName;
     protected PositionCoordinates positionCoordinates;
@@ -33,7 +32,6 @@ public abstract class LineTracker<T extends Viewer> {
 
     protected LineTracker() {
         this.viewers = new ConcurrentHashMap<>();
-        this.iterableViewers = new DelegateViewers<>(viewers.values());
     }
 
     protected abstract BaseHologramLine getLine();
@@ -67,7 +65,7 @@ public abstract class LineTracker<T extends Viewer> {
 
         // Then, send the changes (if any) to already tracked players
         if (sendChangesPackets && hasViewers()) {
-            sendChangesPackets(iterableViewers);
+            sendChangesPackets(new ImmutableViewers<>(viewers.values()));
         }
 
         // Finally, add/remove viewers sending them the full spawn/destroy packets
@@ -223,7 +221,7 @@ public abstract class LineTracker<T extends Viewer> {
             return;
         }
 
-        sendDestroyPackets(iterableViewers);
+        sendDestroyPackets(new ImmutableViewers<>(viewers.values()));
         viewers.clear();
     }
 
